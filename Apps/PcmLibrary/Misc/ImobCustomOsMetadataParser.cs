@@ -10,7 +10,8 @@ namespace PcmHacking
     /// Parsing this header must never alter normal PCM-type detection, native OSID handling,
     /// kernel selection, flash write behavior, or recovery behavior.
     /// </summary>
-    // Integrated against PCMHammer Release/2.0.0.\r\n    public static class ImobCustomOsMetadataParser
+    // Integrated against PCMHammer Release/2.0.0.
+    public static class ImobCustomOsMetadataParser
     {
         public const int HeaderAddress = 0x5F000;
         public const int HeaderSizeV1 = 0x100;
