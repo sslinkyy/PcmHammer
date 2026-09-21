@@ -74,6 +74,7 @@
     <Compile Include="CanLoggerTests.cs" />
     <Compile Include="CanParserTests.cs" />
     <Compile Include="LoggingTests.cs" />
+    <Compile Include="ImobCustomOsMetadataTests.cs" />
     <Compile Include="MockLogger.cs" />
     <Compile Include="TestLogger.cs" />
     <Compile Include="TestPort.cs" />
