@@ -1,0 +1,109 @@
+name: BuildE54CanaryPortable
+
+on:
+  push:
+    branches:
+      - 'imob/2.0-e54-ram-canary'
+  workflow_dispatch:
+
+jobs:
+  Kernel:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install m68k toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-m68k-linux-gnu make
+
+      - name: Build guarded E54 canary kernel
+        run: |
+          cd Kernels
+          mkdir -p build
+          make -f makefile-assembly \
+            PREFIX=/usr/bin/m68k-linux-gnu- \
+            pcm=E54 \
+            address=FF9100 \
+            srcdir=68k-VPW-Asm
+          test -s build/Kernel-E54.bin
+          sha256sum build/Kernel-E54.bin
+
+      - name: Upload guarded E54 kernel
+        uses: actions/upload-artifact@v7
+        with:
+          name: E54-Canary-Kernel-${{ github.sha }}
+          path: Kernels/build/Kernel-E54.bin
+
+  Portable:
+    needs: Kernel
+    runs-on: windows-2025-vs2026
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v3
+
+      - name: Restore NuGet packages
+        run: nuget restore Apps/PcmApps.sln
+
+      - name: Ensure .NET Framework 4.6.2 Developer Pack
+        shell: pwsh
+        run: |
+          Invoke-WebRequest https://go.microsoft.com/fwlink/?linkid=2099466 -OutFile .\NDP462-DevPack-KB3151934-ENU.exe
+          .\NDP462-DevPack-KB3151934-ENU.exe /passive /norestart
+
+      - name: Build PcmHammer
+        run: dotnet build Apps/UI/WindowsForms/PcmHammer/PcmHammer.csproj -c Debug -p:GenerateResourceUsePreserializedResources=true
+
+      - name: Download guarded E54 kernel
+        uses: actions/download-artifact@v8
+        with:
+          name: E54-Canary-Kernel-${{ github.sha }}
+          path: TemporaryArtifactStorage/E54Kernel
+
+      - name: Stage portable canary build
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem -Path "Apps/UI/WindowsForms/PcmHammer/bin" -Recurse -File -Filter "PcmHammer.exe" |
+            Sort-Object LastWriteTime -Descending |
+            Select-Object -First 1
+          if (!$exe) { throw "PcmHammer.exe not found" }
+
+          $stage = "TemporaryArtifactStorage/PcmHammer-E54-Canary"
+          New-Item -ItemType Directory -Force -Path $stage | Out-Null
+          Copy-Item -Path "$($exe.Directory.FullName)/*" -Destination $stage -Recurse -Force
+          Copy-Item -Path "TemporaryArtifactStorage/E54Kernel/Kernel-E54.bin" -Destination "$stage/Kernel-E54.bin" -Force
+
+          @"
+          PCMHammer E54 RAM Canary Bench Build
+
+          BENCH ONLY.
+
+          This build adds a guarded E54-specific canary test:
+          Tools -> E54 RAM Canary Test (Bench)...
+
+          The modified E54 kernel can only:
+          - write ASCII IMOB to 0xFF88C0 with guarded command 3D09 + IMOB
+          - clear those same four bytes with guarded command 3D0A + CLR0
+
+          It does not expose arbitrary RAM writes.
+          No flash erase/write is performed by the canary test.
+          Use only on the spare/recoverable E54 bench PCM.
+          "@ | Out-File -FilePath "$stage/README_E54_CANARY.txt" -Encoding utf8
+
+          Get-FileHash "$stage/PcmHammer.exe" -Algorithm SHA256
+          Get-FileHash "$stage/Kernel-E54.bin" -Algorithm SHA256
+
+      - name: Upload portable E54 canary build
+        uses: actions/upload-artifact@v7
+        with:
+          name: PcmHammer-E54-RAM-Canary-${{ github.sha }}
+          path: TemporaryArtifactStorage/PcmHammer-E54-Canary
