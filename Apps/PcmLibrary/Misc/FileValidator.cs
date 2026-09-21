@@ -97,6 +97,20 @@ namespace PcmHacking
         }
 
         /// <summary>
+        /// Read optional custom-OS metadata without changing normal PCM-type detection,
+        /// native OSID handling, checksum validation, or write/recovery behavior.
+        /// </summary>
+        public CustomOsMetadataStatus GetCustomOsMetadata(
+            out CustomOsMetadata metadata,
+            out string error)
+        {
+            return ImobCustomOsMetadataParser.Parse(
+                this.image,
+                out metadata,
+                out error);
+        }
+
+        /// <summary>
         /// Identify the file type without logging or validating checksums.
         /// Returns Undefined if the file is unrecognised or structurally invalid.
         /// </summary>
