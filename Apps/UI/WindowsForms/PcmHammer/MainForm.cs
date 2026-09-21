@@ -88,6 +88,11 @@ namespace PcmHacking
         private ToolStripMenuItem e54RamSurveyToolStripMenuItem;
 
         /// <summary>
+        /// Bench-only guarded E54 RAM canary command.
+        /// </summary>
+        private ToolStripMenuItem e54RamCanaryToolStripMenuItem;
+
+        /// <summary>
         /// Initializes a new instance of the main window.
         /// </summary>
         public MainForm()
@@ -100,9 +105,20 @@ namespace PcmHacking
             this.e54RamSurveyToolStripMenuItem.ToolTipText =
                 "Development-only read-only survey of E54 RAM 0xFF8000-0xFF90FF.";
             this.e54RamSurveyToolStripMenuItem.Enabled = false;
+            this.e54RamCanaryToolStripMenuItem.Enabled = false;
             this.e54RamSurveyToolStripMenuItem.Click +=
                 new EventHandler(this.e54RamSurveyToolStripMenuItem_Click);
             this.menuItemTools.DropDownItems.Add(this.e54RamSurveyToolStripMenuItem);
+
+            this.e54RamCanaryToolStripMenuItem = new ToolStripMenuItem();
+            this.e54RamCanaryToolStripMenuItem.Name = "e54RamCanaryToolStripMenuItem";
+            this.e54RamCanaryToolStripMenuItem.Text = "E54 RAM Canary Test (Bench)...";
+            this.e54RamCanaryToolStripMenuItem.ToolTipText =
+                "Bench-only guarded four-byte RAM canary at 0xFF88C0.";
+            this.e54RamCanaryToolStripMenuItem.Enabled = false;
+            this.e54RamCanaryToolStripMenuItem.Click +=
+                new EventHandler(this.e54RamCanaryToolStripMenuItem_Click);
+            this.menuItemTools.DropDownItems.Add(this.e54RamCanaryToolStripMenuItem);
         }
 
         /// <summary>
@@ -704,6 +720,7 @@ namespace PcmHacking
                 this.haltRunningKernelToolStripMenuItem.Enabled = true;
                 this.testFileChecksumsToolStripMenuItem.Enabled = true;
                 this.e54RamSurveyToolStripMenuItem.Enabled = true;
+                this.e54RamCanaryToolStripMenuItem.Enabled = true;
 
                 this.readPropertiesButton.Enabled = true;
                 this.readPcmButton.Enabled = true;
@@ -1477,6 +1494,73 @@ namespace PcmHacking
                 // The token / token-source can only be cancelled once, so we need to make sure they won't be re-used.
                 this.cancellationTokenSource = null;
             }
+        private async void e54RamCanaryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.Vehicle == null || BackgroundWorker.IsAlive)
+            {
+                return;
+            }
+
+            DialogResult confirmation = MessageBox.Show(
+                "BENCH ONLY. This test writes the four-byte ASCII canary IMOB to RAM at 0xFF88C0, never to flash. " +
+                "The test verifies the entire 0xFF88B0-0xFF88CF window is zero first and clears the canary when it survives. " +
+                "Use only on the spare/recoverable E54 bench PCM. Continue?",
+                "E54 RAM Canary Test",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (confirmation != DialogResult.Yes)
+            {
+                this.AddUserMessage("E54 RAM canary test canceled.");
+                return;
+            }
+
+            try
+            {
+                this.DisableUserInput();
+                this.cancelButton.Enabled = true;
+                this.cancellationTokenSource = new CancellationTokenSource();
+
+                E54RamCanaryTest test =
+                    new E54RamCanaryTest(this.Vehicle, this);
+
+                E54RamCanaryOutcome outcome =
+                    await test.Run(this.cancellationTokenSource.Token);
+
+                this.AddUserMessage(
+                    "E54 RAM canary outcome: " + outcome);
+
+                if (outcome == E54RamCanaryOutcome.ChangedByFactoryRuntime)
+                {
+                    MessageBox.Show(
+                        "Factory runtime changed the candidate RAM window. Do not use this RAM block. Power-cycle the bench PCM.",
+                        "RAM Candidate Rejected",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                }
+                else if (outcome == E54RamCanaryOutcome.Survived)
+                {
+                    MessageBox.Show(
+                        "The canary survived factory restart plus diagnostic activity and was cleared successfully. This is strong evidence, but the RAM allocation remains provisional until the runtime heartbeat test.",
+                        "RAM Canary Survived",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception exception)
+            {
+                this.AddUserMessage(
+                    "E54 RAM canary test failed: " + exception.Message);
+                this.AddDebugMessage(exception.ToString());
+            }
+            finally
+            {
+                this.cancelButton.Enabled = false;
+                this.cancellationTokenSource = null;
+                this.EnableUserInput();
+            }
+        }
+
         }
         private async void e54RamSurveyToolStripMenuItem_Click(object sender, EventArgs e)
         {
