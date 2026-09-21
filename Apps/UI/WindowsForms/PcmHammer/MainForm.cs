@@ -83,11 +83,26 @@ namespace PcmHacking
         private WriteType currentWriteType = WriteType.None;
 
         /// <summary>
+        /// Development-only read-only E54 RAM survey command.
+        /// </summary>
+        private ToolStripMenuItem e54RamSurveyToolStripMenuItem;
+
+        /// <summary>
         /// Initializes a new instance of the main window.
         /// </summary>
         public MainForm()
         {
             InitializeComponent();
+
+            this.e54RamSurveyToolStripMenuItem = new ToolStripMenuItem();
+            this.e54RamSurveyToolStripMenuItem.Name = "e54RamSurveyToolStripMenuItem";
+            this.e54RamSurveyToolStripMenuItem.Text = "E54 Lower RAM Survey...";
+            this.e54RamSurveyToolStripMenuItem.ToolTipText =
+                "Development-only read-only survey of E54 RAM 0xFF8000-0xFF90FF.";
+            this.e54RamSurveyToolStripMenuItem.Enabled = false;
+            this.e54RamSurveyToolStripMenuItem.Click +=
+                new EventHandler(this.e54RamSurveyToolStripMenuItem_Click);
+            this.menuItemTools.DropDownItems.Add(this.e54RamSurveyToolStripMenuItem);
         }
 
         /// <summary>
@@ -651,6 +666,7 @@ namespace PcmHacking
             this.bruteForceUnlockToolStripMenuItem.Enabled = false;
             this.haltRunningKernelToolStripMenuItem.Enabled = false;
             this.testFileChecksumsToolStripMenuItem.Enabled = false;
+            this.e54RamSurveyToolStripMenuItem.Enabled = false;
 
             this.readPropertiesButton.Enabled = false;
             this.readPcmButton.Enabled = false;
@@ -687,6 +703,7 @@ namespace PcmHacking
                 this.bruteForceUnlockToolStripMenuItem.Enabled = true;
                 this.haltRunningKernelToolStripMenuItem.Enabled = true;
                 this.testFileChecksumsToolStripMenuItem.Enabled = true;
+                this.e54RamSurveyToolStripMenuItem.Enabled = true;
 
                 this.readPropertiesButton.Enabled = true;
                 this.readPcmButton.Enabled = true;
@@ -1461,6 +1478,55 @@ namespace PcmHacking
                 this.cancellationTokenSource = null;
             }
         }
+        private async void e54RamSurveyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.Vehicle == null || BackgroundWorker.IsAlive)
+            {
+                return;
+            }
+
+            string? path = this.ShowSaveAsDialog();
+            if (path == null)
+            {
+                this.AddUserMessage("E54 RAM survey canceled.");
+                return;
+            }
+
+            try
+            {
+                this.DisableUserInput();
+                this.cancelButton.Enabled = true;
+                this.cancellationTokenSource = new CancellationTokenSource();
+
+                E54RamSurvey survey = new E54RamSurvey(this.Vehicle, this);
+                Response<byte[]> response =
+                    await survey.ReadLowerWindow(this.cancellationTokenSource.Token);
+
+                if (response.Status != ResponseStatus.Success)
+                {
+                    this.AddUserMessage(
+                        "E54 RAM survey did not complete: " + response.Status);
+                    return;
+                }
+
+                File.WriteAllBytes(path, response.Value);
+                this.AddUserMessage(
+                    "Saved E54 lower RAM survey: " + path);
+            }
+            catch (Exception exception)
+            {
+                this.AddUserMessage(
+                    "E54 RAM survey failed: " + exception.Message);
+                this.AddDebugMessage(exception.ToString());
+            }
+            finally
+            {
+                this.cancelButton.Enabled = false;
+                this.cancellationTokenSource = null;
+                this.EnableUserInput();
+            }
+        }
+
 
         private async void testFileChecksumsToolStripMenuItem_Click(object sender, EventArgs e)
         {
