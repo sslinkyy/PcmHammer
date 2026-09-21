@@ -1,0 +1,25 @@
+name: VerifyHeartbeatOpcodes
+on:
+  push:
+    branches:
+      - 'imob/dev-heartbeat-opcode-verify'
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install m68k toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-m68k-linux-gnu binutils-m68k-linux-gnu
+      - name: Assemble and dump bytes
+        run: |
+          m68k-linux-gnu-gcc -c -mcpu=68332 Research/E54BootHeartbeatVerify.S -o /tmp/hb.o
+          m68k-linux-gnu-objcopy -O binary -j .text /tmp/hb.o /tmp/hb.bin
+          m68k-linux-gnu-objdump -d /tmp/hb.o
+          xxd -g1 /tmp/hb.bin
+          cp /tmp/hb.bin heartbeat_verify.bin
+      - uses: actions/upload-artifact@v7
+        with:
+          name: heartbeat-opcode-verify-${{ github.sha }}
+          path: heartbeat_verify.bin
