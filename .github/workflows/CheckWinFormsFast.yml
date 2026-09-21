@@ -1,0 +1,42 @@
+name: CheckWinFormsFast
+
+on:
+  push:
+    branches:
+      - 'imob/**'
+  pull_request:
+    branches:
+      - 'Release/2.0.0'
+
+jobs:
+  WinForms:
+    runs-on: windows-2025-vs2026
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v3
+
+      - name: Restore NuGet packages
+        run: nuget restore Apps/PcmApps.sln
+
+      - name: Ensure .NET Framework 4.6.2 Developer Pack
+        shell: pwsh
+        run: |
+          Invoke-WebRequest https://go.microsoft.com/fwlink/?linkid=2099466 -OutFile .\NDP462-DevPack-KB3151934-ENU.exe
+          .\NDP462-DevPack-KB3151934-ENU.exe /passive /norestart
+
+      - name: Build PcmLibrary
+        run: dotnet build Apps/PcmLibrary/PcmLibrary.csproj -c Debug
+
+      - name: Build PcmHammer WinForms
+        run: dotnet build Apps/UI/WindowsForms/PcmHammer/PcmHammer.csproj -c Debug -p:GenerateResourceUsePreserializedResources=true
+
+      - name: Run IMOBMM01 metadata tests
+        run: dotnet test Apps/Tests/Tests.csproj -c Debug --no-restore --filter FullyQualifiedName~ImobCustomOsMetadataTests

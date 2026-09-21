@@ -76,6 +76,7 @@ namespace PcmHacking
                 return false;
             }
             logger.AddUserMessage("File is " + new OSIDInfo(validator.GetFileType()).Description + ".");
+            validator.LogCustomOsMetadata();
 
             UInt64 kernelVersion = 0;
             bool needUnlock;

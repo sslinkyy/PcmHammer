@@ -97,6 +97,65 @@ namespace PcmHacking
         }
 
         /// <summary>
+        /// Read optional custom-OS metadata without changing normal PCM-type detection,
+        /// native OSID handling, checksum validation, or write/recovery behavior.
+        /// </summary>
+        public CustomOsMetadataStatus GetCustomOsMetadata(
+            out CustomOsMetadata metadata,
+            out string error)
+        {
+            return ImobCustomOsMetadataParser.Parse(
+                this.image,
+                out metadata,
+                out error);
+        }
+
+        /// <summary>
+        /// Log optional custom-OS metadata for the current image.
+        /// Absence is silent so stock files behave exactly as before.
+        /// Invalid or unsupported metadata is reported but does not change the
+        /// normal E54 full-image validation/recovery path.
+        /// </summary>
+        public CustomOsMetadataStatus LogCustomOsMetadata()
+        {
+            CustomOsMetadata metadata;
+            string error;
+            CustomOsMetadataStatus status =
+                this.GetCustomOsMetadata(out metadata, out error);
+
+            switch (status)
+            {
+                case CustomOsMetadataStatus.Valid:
+                    this.logger.AddUserMessage(
+                        "Custom OS: " +
+                        metadata.ProductName + " " +
+                        metadata.DisplayVersion);
+                    this.logger.AddUserMessage(
+                        "Custom OS base: " + metadata.BaseOs);
+                    this.logger.AddUserMessage(
+                        "Custom layout/security: " +
+                        metadata.LayoutVersion + "/" +
+                        metadata.SecurityVersion +
+                        ", build " + metadata.BuildNumber);
+                    break;
+
+                case CustomOsMetadataStatus.Invalid:
+                    this.logger.AddUserMessage(
+                        "Warning: custom OS metadata is invalid: " +
+                        error);
+                    break;
+
+                case CustomOsMetadataStatus.Unsupported:
+                    this.logger.AddUserMessage(
+                        "Custom OS metadata is recognized but unsupported: " +
+                        error);
+                    break;
+            }
+
+            return status;
+        }
+
+        /// <summary>
         /// Identify the file type without logging or validating checksums.
         /// Returns Undefined if the file is unrecognised or structurally invalid.
         /// </summary>
