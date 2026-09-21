@@ -165,6 +165,14 @@ Wait01:
 
 MainLoop:
     move.b  #0, MessageBuffer + 3      | Clear last Mode, prevents repeating it
+#if defined E54
+    | Clear guarded canary payload bytes before receive so a short/stale 3D09/3D0A
+    | packet can never inherit guard bytes from a previous message.
+    clr.b   MessageBuffer + 5
+    clr.b   MessageBuffer + 6
+    clr.b   MessageBuffer + 7
+    clr.b   MessageBuffer + 8
+#endif
     bsr.w   ResetWatchdog              | Scratch the dog
     bsr.w   VPWReceive                 | Wait for and read next packet
     bsr.w   WasteTime                  | Twiddle thumbs
