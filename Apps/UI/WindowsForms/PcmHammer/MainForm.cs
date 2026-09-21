@@ -105,7 +105,6 @@ namespace PcmHacking
             this.e54RamSurveyToolStripMenuItem.ToolTipText =
                 "Development-only read-only survey of E54 RAM 0xFF8000-0xFF90FF.";
             this.e54RamSurveyToolStripMenuItem.Enabled = false;
-            this.e54RamCanaryToolStripMenuItem.Enabled = false;
             this.e54RamSurveyToolStripMenuItem.Click +=
                 new EventHandler(this.e54RamSurveyToolStripMenuItem_Click);
             this.menuItemTools.DropDownItems.Add(this.e54RamSurveyToolStripMenuItem);
@@ -683,6 +682,7 @@ namespace PcmHacking
             this.haltRunningKernelToolStripMenuItem.Enabled = false;
             this.testFileChecksumsToolStripMenuItem.Enabled = false;
             this.e54RamSurveyToolStripMenuItem.Enabled = false;
+            this.e54RamCanaryToolStripMenuItem.Enabled = false;
 
             this.readPropertiesButton.Enabled = false;
             this.readPcmButton.Enabled = false;
