@@ -74,8 +74,12 @@ namespace PcmHacking
                         new byte[0]);
                 }
 
+                info = connectedInfo;
+
                 this.logger.AddUserMessage(
                     "E54 RAM survey OSID: " + osidResponse.Value);
+
+                await this.vehicle.SuppressChatter();
 
                 bool unlocked = await this.vehicle.UnlockEcu(info.KeyAlgorithm);
                 if (!unlocked)
