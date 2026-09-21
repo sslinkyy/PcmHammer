@@ -1494,6 +1494,8 @@ namespace PcmHacking
                 // The token / token-source can only be cancelled once, so we need to make sure they won't be re-used.
                 this.cancellationTokenSource = null;
             }
+        }
+
         private async void e54RamCanaryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (this.Vehicle == null || BackgroundWorker.IsAlive)
@@ -1561,7 +1563,6 @@ namespace PcmHacking
             }
         }
 
-        }
         private async void e54RamSurveyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (this.Vehicle == null || BackgroundWorker.IsAlive)
