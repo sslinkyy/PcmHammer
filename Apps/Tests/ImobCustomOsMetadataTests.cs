@@ -86,6 +86,33 @@ namespace Tests
         }
 
         [TestMethod]
+        public void InvalidMetadata_DoesNotChangeE54Detection()
+        {
+            byte[] image = BuildValidHeaderImage();
+
+            image[0x1FFFE] = 0x4A;
+            image[0x1FFFF] = 0xFC;
+            image[0x7FFFE] = 0x4A;
+            image[0x7FFFF] = 0xFC;
+
+            // Corrupt a covered metadata byte after the valid CRC was written.
+            image[ImobCustomOsMetadataParser.HeaderAddress + 0xC0] ^= 1;
+
+            FileValidator validator =
+                new FileValidator(image, new MockLogger(), PcmType.E54);
+
+            Assert.AreEqual(PcmType.E54, validator.GetFileType());
+
+            CustomOsMetadata metadata;
+            string error;
+            CustomOsMetadataStatus status =
+                validator.GetCustomOsMetadata(out metadata, out error);
+
+            Assert.AreEqual(CustomOsMetadataStatus.Invalid, status);
+            StringAssert.Contains(error, "CRC");
+        }
+
+        [TestMethod]
         public void BadCrc_IsInvalid()
         {
             byte[] image = BuildValidHeaderImage();
