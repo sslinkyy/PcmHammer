@@ -15,7 +15,8 @@ namespace PcmHacking
     /// To avoid reading the survey kernel itself, this first-stage survey is restricted
     /// to 0xFF8000-0xFF90FF.
     /// </summary>
-    // Integrated against PCMHammer Release/2.0.0.\r\n    public sealed class E54RamSurvey
+    // Integrated against PCMHammer Release/2.0.0.
+    public sealed class E54RamSurvey
     {
         public const int StartAddress = 0xFF8000;
         public const int EndAddressInclusive = 0xFF90FF;
