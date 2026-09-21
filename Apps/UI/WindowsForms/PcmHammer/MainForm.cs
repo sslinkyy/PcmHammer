@@ -1498,6 +1498,7 @@ namespace PcmHacking
             if (validator.IsValid())
             {
                 this.AddUserMessage("File is " + new OSIDInfo(validator.GetFileType()).Description + ".");
+                validator.LogCustomOsMetadata();
                 this.AddUserMessage("All checksums are valid.");
             }
             else
