@@ -185,6 +185,13 @@ MainLoop:
     cmpi.w  #EraseSector_3D05, %d0     | Is it mode 0x3D 05 Erase Flash Sector (non-standard extension)
     beq.w   ProcessEraseSector         | Process it
 
+#if defined E54
+    cmpi.w  #0x3D09, %d0               | iMob bench-only RAM canary SET
+    beq.w   ProcessImobRamCanarySet
+    cmpi.w  #0x3D0A, %d0               | iMob bench-only RAM canary CLEAR
+    beq.w   ProcessImobRamCanaryClear
+#endif
+
     lsr.w   #8, %d0                    | Shift the Mode into the lower byte of the word
 
 | Modes without Submodes, or Submodes that are ignored here in MainLoop, i.e. single byte actions
@@ -254,6 +261,67 @@ ProcessKernelID:
     move.w  #10, %d0                   | It's 10 bytes long
     bsr.w   VPWSend                    | Send it
     bra.w   MainLoop                   | Return to MainLoop
+
+#if defined E54
+| =============== S U B R O U T I N E =======================================
+| iMob bench-only E54 RAM canary SET
+|
+| Request: 6C 10 F0 3D 09 49 4D 4F 42
+| Writes ASCII "IMOB" to fixed address 0xFF88C0 only with the explicit guard.
+| No arbitrary address or payload is accepted.
+ProcessImobRamCanarySet:
+    move.b  #0x01, ImobRamCanarySetReply + 5 | Default fail
+    cmpi.b  #0x49, MessageBuffer + 5
+    bne.w   ProcessImobRamCanarySetReply
+    cmpi.b  #0x4D, MessageBuffer + 6
+    bne.w   ProcessImobRamCanarySetReply
+    cmpi.b  #0x4F, MessageBuffer + 7
+    bne.w   ProcessImobRamCanarySetReply
+    cmpi.b  #0x42, MessageBuffer + 8
+    bne.w   ProcessImobRamCanarySetReply
+
+    movea.l #0xFF88C0, %a1
+    move.b  #0x49, (%a1)
+    move.b  #0x4D, 1(%a1)
+    move.b  #0x4F, 2(%a1)
+    move.b  #0x42, 3(%a1)
+    move.b  #0x00, ImobRamCanarySetReply + 5
+
+ProcessImobRamCanarySetReply:
+    movea.l #ImobRamCanarySetReply, %a0
+    move.w  #6, %d0
+    bsr.w   VPWSend
+    bra.w   MainLoop
+
+| =============== S U B R O U T I N E =======================================
+| iMob bench-only E54 RAM canary CLEAR
+|
+| Request: 6C 10 F0 3D 0A 43 4C 52 30
+| Clears only the same fixed four-byte address with the explicit "CLR0" guard.
+ProcessImobRamCanaryClear:
+    move.b  #0x01, ImobRamCanaryClearReply + 5 | Default fail
+    cmpi.b  #0x43, MessageBuffer + 5
+    bne.w   ProcessImobRamCanaryClearReply
+    cmpi.b  #0x4C, MessageBuffer + 6
+    bne.w   ProcessImobRamCanaryClearReply
+    cmpi.b  #0x52, MessageBuffer + 7
+    bne.w   ProcessImobRamCanaryClearReply
+    cmpi.b  #0x30, MessageBuffer + 8
+    bne.w   ProcessImobRamCanaryClearReply
+
+    movea.l #0xFF88C0, %a1
+    clr.b   (%a1)
+    clr.b   1(%a1)
+    clr.b   2(%a1)
+    clr.b   3(%a1)
+    move.b  #0x00, ImobRamCanaryClearReply + 5
+
+ProcessImobRamCanaryClearReply:
+    movea.l #ImobRamCanaryClearReply, %a0
+    move.w  #6, %d0
+    bsr.w   VPWSend
+    bra.w   MainLoop
+#endif
 
 | =============== S U B R O U T I N E =======================================
 | Process Operating System ID
@@ -1329,6 +1397,12 @@ Mode60Reply:    .byte  0x6C, toolid, pcmid, 0x60
 
 | Erase Sector Reply, 7 bytes + 1 alignment
 EraseSectorReply:   .byte  0x6C, toolid, pcmid, 0x7D, 0x05, 0x00, 0x00, 0xAA
+
+#if defined E54
+| iMob bench-only E54 RAM canary replies, status byte 0=success, 1=fail
+ImobRamCanarySetReply:   .byte 0x6C, toolid, pcmid, 0x7D, 0x09, 0x01
+ImobRamCanaryClearReply: .byte 0x6C, toolid, pcmid, 0x7D, 0x0A, 0x01
+#endif
 
 | Global buffer, it's at the end and it's not transported, thus length is irrelevant!
   .globl   MessageBuffer
