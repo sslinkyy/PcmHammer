@@ -37,3 +37,6 @@ jobs:
 
       - name: Build PcmHammer WinForms
         run: dotnet build Apps/UI/WindowsForms/PcmHammer/PcmHammer.csproj -c Debug -p:GenerateResourceUsePreserializedResources=true
+
+      - name: Run IMOBMM01 metadata tests
+        run: dotnet test Apps/Tests/Tests.csproj -c Debug --no-restore --filter FullyQualifiedName~ImobCustomOsMetadataTests
