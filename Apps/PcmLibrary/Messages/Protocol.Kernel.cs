@@ -174,6 +174,48 @@ namespace PcmHacking
         }
 
         /// <summary>
+        /// Bench-only E54 canary SET request. The fixed guard prevents accidental writes.
+        /// </summary>
+        public Message CreateE54RamCanarySetRequest()
+        {
+            return new Message(new byte[]
+            {
+                Priority.Physical0,
+                DeviceId.Pcm,
+                DeviceId.Tool,
+                0x3D,
+                0x09,
+                0x49, 0x4D, 0x4F, 0x42, // "IMOB"
+            });
+        }
+
+        internal Response<byte> ParseE54RamCanarySetResponse(Message responseMessage)
+        {
+            return ParseByte(responseMessage, 0x3D, 0x09);
+        }
+
+        /// <summary>
+        /// Bench-only E54 canary CLEAR request. Clears only the fixed 0xFF88C0 address.
+        /// </summary>
+        public Message CreateE54RamCanaryClearRequest()
+        {
+            return new Message(new byte[]
+            {
+                Priority.Physical0,
+                DeviceId.Pcm,
+                DeviceId.Tool,
+                0x3D,
+                0x0A,
+                0x43, 0x4C, 0x52, 0x30, // "CLR0"
+            });
+        }
+
+        internal Response<byte> ParseE54RamCanaryClearResponse(Message responseMessage)
+        {
+            return ParseByte(responseMessage, 0x3D, 0x0A);
+        }
+
+        /// <summary>
         /// Create a request for implementation details... for development use only.
         /// </summary>
         public Message CreateDebugQuery()
