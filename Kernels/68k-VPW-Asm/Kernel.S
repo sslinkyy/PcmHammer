@@ -210,7 +210,7 @@ MainLoop:
     cmpi.b  #Mode_36, %d0              | Is it mode 0x36 (Tool sending data to write, either to RAM or Flash)
     beq.l   ProcessMode36              | Process it
     cmpi.b  #Halt_20, %d0              | Is it mode 0x20 (return to normal comms)
-    bne.s   MainLoop                   | No more options, next packet or reboot
+    bne.w   MainLoop                   | No more options, next packet or reboot
 
 | =============== S U B R O U T I N E =======================================
 Reboot:
