@@ -37,3 +37,12 @@ jobs:
 
       - name: Build PcmHammer WinForms
         run: dotnet build Apps/UI/WindowsForms/PcmHammer/PcmHammer.csproj -c Debug -p:GenerateResourceUsePreserializedResources=true
+
+      - name: Build E54 checksum regression runner
+        run: dotnet build Apps/E54ChecksumRegression/E54ChecksumRegression.csproj -c Debug
+
+      - name: Run E54 checksum regressions
+        shell: pwsh
+        run: |
+          & ./Apps/E54ChecksumRegression/bin/Debug/net48/E54ChecksumRegression.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
