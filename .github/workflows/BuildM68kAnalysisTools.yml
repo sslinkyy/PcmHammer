@@ -1,0 +1,34 @@
+name: BuildM68kAnalysisTools
+on:
+  push:
+    branches: ['imob/devtools-m68k-objdump']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  tools:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Prepare destination
+        run: mkdir -p tools/debs tools/wheels
+      - name: Fetch Debian Bookworm cross-binutils packages
+        run: |
+          docker run --rm -v "$PWD/tools/debs:/out" debian:bookworm-slim sh -ec '
+            apt-get update -qq
+            cd /out
+            apt-get download binutils-m68k-linux-gnu libbinutils binutils-common
+            apt-cache policy binutils-m68k-linux-gnu libbinutils binutils-common > VERSIONS.txt
+          '
+      - name: Fetch standalone disassembler and CPU emulator wheels
+        run: |
+          python -m pip download --only-binary=:all: --no-deps --dest tools/wheels capstone==5.0.6 unicorn==2.1.4
+          python --version > tools/HOST_PYTHON.txt
+          find tools -type f -exec sha256sum {} \; > tools/SHA256SUMS.txt
+      - name: Upload analysis tools
+        uses: actions/upload-artifact@v7
+        with:
+          name: m68k-offline-analysis-tools
+          path: tools/
+          retention-days: 30
+          if-no-files-found: error
