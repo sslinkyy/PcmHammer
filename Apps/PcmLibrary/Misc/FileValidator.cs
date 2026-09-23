@@ -369,7 +369,12 @@ namespace PcmHacking
                     success &= ValidateRangeWordSum(type, 0x20002, 0x6FFFF, 0x20000, "Operating System");
                     success &= ValidateRangeWordSum(type, 0x8002, 0x19FFF, 0x8000, "Engine Calibration");
                     success &= ValidateRangeWordSum(type, 0x1A002, 0x1C7FF, 0x1A000, "Engine Diagnostics");
-                    success &= ValidateRangeWordSum(type, 0x1C002, 0x1DFFF, 0x1C000, "Fuel");
+                    // Exact-stock 15189044 identifies Fuel at 0x1C800. The old range
+                    // overlaps Engine Diagnostics and can hide an invalid Fuel checksum.
+                    // Retain existing behavior for OS layouts not yet independently verified.
+                    UInt32 fuelChecksumAddress = this.GetOsidFromImage(type) == 15189044
+                        ? 0x1C800u : 0x1C000u;
+                    success &= ValidateRangeWordSum(type, fuelChecksumAddress + 2, 0x1DFFF, fuelChecksumAddress, "Fuel");
                     success &= ValidateRangeWordSum(type, 0x1E002, 0x1EFFF, 0x1E000 , "System");
                     success &= ValidateRangeWordSum(type, 0x1F002, 0x1FFEF, 0x1F000, "Speedometer");
                     break;
