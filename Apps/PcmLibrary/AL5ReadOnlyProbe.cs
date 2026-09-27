@@ -58,8 +58,15 @@ namespace PcmHacking
                 BlockId.HardwareID,
                 BlockId.Serial1, BlockId.Serial2, BlockId.Serial3,
                 BlockId.CalibrationID,
+                0x09,
                 BlockId.OperatingSystemID,
+                BlockId.EngineCalID,
+                BlockId.EngineDiagCalID,
                 BlockId.TransCalID,
+                BlockId.TransDiagID,
+                BlockId.FuelCalID,
+                BlockId.SystemCalID,
+                BlockId.SpeedCalID,
                 BlockId.BCC,
                 BlockId.OperatingSystemLvl,
                 BlockId.TransCalLvl,
@@ -93,12 +100,14 @@ namespace PcmHacking
                 return Response.Create(ResponseStatus.Error, result);
             }
 
-            if (result.OperatingSystemId.HasValue)
-                logger.AddUserMessage("AL5 OSID: " + result.OperatingSystemId.Value);
-            if (result.CalibrationId.HasValue)
-                logger.AddUserMessage("AL5 Calibration ID: " + result.CalibrationId.Value);
-            if (result.HardwareId.HasValue)
-                logger.AddUserMessage("AL5 Hardware ID: " + result.HardwareId.Value);
+            // Do not apply PCM block semantics to AL5 yet.  The first vehicle capture
+            // proved that AL5 block 0x08 contains 15183963 (known hardware number) and
+            // block 0x0A begins 00 E7 B0 ED = 15184109 (known OSID), with trailing bytes.
+            // Preserve/log raw payloads until each AL5 block is independently identified.
+            if (result.Blocks.TryGetValue(BlockId.OperatingSystemID, out byte[] osRaw))
+                logger.AddUserMessage("AL5 raw OS block 0x0A: " + BitConverter.ToString(osRaw));
+            if (result.Blocks.TryGetValue(BlockId.CalibrationID, out byte[] block08Raw))
+                logger.AddUserMessage("AL5 raw block 0x08: " + BitConverter.ToString(block08Raw));
 
             logger.AddUserMessage("AL5 read-only identity probe complete.");
             return Response.Create(ResponseStatus.Success, result);
@@ -127,6 +136,21 @@ namespace PcmHacking
                 byte[] bytes = message.GetBytes();
                 if (bytes.Length < 5)
                     continue;
+
+                // Negative response 7F 3C <block> <NRC>.  Log it immediately rather
+                // than treating it as unrelated traffic and waiting through timeouts.
+                if (bytes.Length >= 7 &&
+                    bytes[0] == Priority.Physical0 &&
+                    bytes[1] == DeviceId.Tool &&
+                    bytes[2] == TcmDeviceId &&
+                    bytes[3] == Mode.NegativeResponse &&
+                    bytes[4] == Mode.ReadBlock &&
+                    bytes[5] == block)
+                {
+                    logger.AddUserMessage(
+                        string.Format("AL5 0x3C block 0x{0:X2} rejected, NRC 0x{1:X2}.", block, bytes[6]));
+                    return Response.Create(ResponseStatus.Refused, new byte[0]);
+                }
 
                 // Expected: 6C F0 18 7C <block> <payload...>
                 if (bytes[0] != Priority.Physical0 ||
