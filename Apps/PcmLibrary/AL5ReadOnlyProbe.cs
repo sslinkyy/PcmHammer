@@ -61,15 +61,8 @@ namespace PcmHacking
                 0x09,
                 BlockId.OperatingSystemID,
                 BlockId.EngineCalID,
-                BlockId.EngineDiagCalID,
-                BlockId.TransCalID,
-                BlockId.TransDiagID,
-                BlockId.FuelCalID,
                 BlockId.SystemCalID,
-                BlockId.SpeedCalID,
                 BlockId.BCC,
-                BlockId.OperatingSystemLvl,
-                BlockId.TransCalLvl,
             };
 
             logger.AddUserMessage("AL5 read-only probe: target 0x18, normal VPW speed.");
@@ -110,6 +103,30 @@ namespace PcmHacking
                 logger.AddUserMessage("AL5 raw block 0x08: " + BitConverter.ToString(block08Raw));
 
             logger.AddUserMessage("AL5 read-only identity probe complete.");
+
+            // Optional second-stage transport check.  The user confirmed that with the
+            // interfering vehicle module isolated, VPW 4X works on this truck.  Exercise
+            // only the speed transition plus a known-safe identity read; no security or
+            // programming services are involved.
+            logger.AddUserMessage("AL5 testing VPW 4X using known-safe OS identity block 0x0A...");
+            bool fourX = await this.vehicle.VehicleSetVPW4x(new OSIDInfo(PcmType.E54), VpwSpeed.FourX);
+            if (fourX)
+            {
+                Response<byte[]> fourXOs = await ReadBlock(BlockId.OperatingSystemID, cancellationToken);
+                if (fourXOs.Status == ResponseStatus.Success)
+                {
+                    logger.AddUserMessage("AL5 VPW 4X confirmed at module 0x18: " + BitConverter.ToString(fourXOs.Value));
+                }
+                else
+                {
+                    logger.AddUserMessage("AL5 entered VPW 4X but 0x18 identity read failed: " + fourXOs.Status);
+                }
+            }
+            else
+            {
+                logger.AddUserMessage("AL5 VPW 4X transition was not confirmed; retain 1X fallback.");
+            }
+
             return Response.Create(ResponseStatus.Success, result);
         }
 
