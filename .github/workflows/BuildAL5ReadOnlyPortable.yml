@@ -3,41 +3,11 @@ name: BuildAL5ReadOnlyPortable
 on:
   push:
     branches:
-      - 'imob/2.0-e54-ram-survey'
+      - 'imob/2.0-al5-readonly-probe'
   workflow_dispatch:
 
 jobs:
-  Kernel:
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Install m68k toolchain
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gcc-m68k-linux-gnu make
-
-      - name: Build E54 kernel
-        run: |
-          cd Kernels
-          mkdir -p build
-          make -f makefile-assembly \
-            PREFIX=/usr/bin/m68k-linux-gnu- \
-            pcm=E54 \
-            address=FF9100 \
-            srcdir=68k-VPW-Asm
-          test -s build/Kernel-E54.bin
-          sha256sum build/Kernel-E54.bin
-
-      - name: Upload E54 kernel
-        uses: actions/upload-artifact@v7
-        with:
-          name: E54-Survey-Kernel-${{ github.sha }}
-          path: Kernels/build/Kernel-E54.bin
-
   Portable:
-    needs: Kernel
     runs-on: windows-2025-vs2026
     steps:
       - name: Checkout
@@ -63,13 +33,7 @@ jobs:
       - name: Build PcmHammer
         run: dotnet build Apps/UI/WindowsForms/PcmHammer/PcmHammer.csproj -c Debug -p:GenerateResourceUsePreserializedResources=true
 
-      - name: Download E54 kernel
-        uses: actions/download-artifact@v8
-        with:
-          name: E54-Survey-Kernel-${{ github.sha }}
-          path: TemporaryArtifactStorage/E54Kernel
-
-      - name: Stage portable survey build
+      - name: Stage portable AL5 read-only build
         shell: pwsh
         run: |
           $exe = Get-ChildItem -Path "Apps/UI/WindowsForms/PcmHammer/bin" -Recurse -File -Filter "PcmHammer.exe" |
@@ -77,15 +41,12 @@ jobs:
             Select-Object -First 1
           if (!$exe) { throw "PcmHammer.exe not found" }
 
-          New-Item -ItemType Directory -Force -Path "TemporaryArtifactStorage/PcmHammer-E54-Survey" | Out-Null
-          Copy-Item -Path "$($exe.Directory.FullName)/*" -Destination "TemporaryArtifactStorage/PcmHammer-E54-Survey" -Recurse -Force
-          Copy-Item -Path "TemporaryArtifactStorage/E54Kernel/Kernel-E54.bin" -Destination "TemporaryArtifactStorage/PcmHammer-E54-Survey/Kernel-E54.bin" -Force
+          New-Item -ItemType Directory -Force -Path "TemporaryArtifactStorage/PcmHammer-AL5-ReadOnly" | Out-Null
+          Copy-Item -Path "$($exe.Directory.FullName)/*" -Destination "TemporaryArtifactStorage/PcmHammer-AL5-ReadOnly" -Recurse -Force
+          Get-FileHash "TemporaryArtifactStorage/PcmHammer-AL5-ReadOnly/PcmHammer.exe" -Algorithm SHA256
 
-          Get-FileHash "TemporaryArtifactStorage/PcmHammer-E54-Survey/PcmHammer.exe" -Algorithm SHA256
-          Get-FileHash "TemporaryArtifactStorage/PcmHammer-E54-Survey/Kernel-E54.bin" -Algorithm SHA256
-
-      - name: Upload portable E54 survey build
+      - name: Upload portable AL5 read-only build
         uses: actions/upload-artifact@v7
         with:
-          name: PcmHammer-E54-RAM-Survey-${{ github.sha }}
-          path: TemporaryArtifactStorage/PcmHammer-E54-Survey
+          name: PcmHammer-AL5-ReadOnly-${{ github.sha }}
+          path: TemporaryArtifactStorage/PcmHammer-AL5-ReadOnly
