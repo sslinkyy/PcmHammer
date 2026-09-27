@@ -92,6 +92,9 @@ namespace PcmHacking
         /// </summary>
         private ToolStripMenuItem e54RamCanaryToolStripMenuItem;
 
+        /// <summary>Read-only AL5 identity probe at VPW module 0x18.</summary>
+        private ToolStripMenuItem al5ReadOnlyProbeToolStripMenuItem;
+
         /// <summary>
         /// Initializes a new instance of the main window.
         /// </summary>
@@ -118,6 +121,15 @@ namespace PcmHacking
             this.e54RamCanaryToolStripMenuItem.Click +=
                 new EventHandler(this.e54RamCanaryToolStripMenuItem_Click);
             this.menuItemTools.DropDownItems.Add(this.e54RamCanaryToolStripMenuItem);
+
+            this.al5ReadOnlyProbeToolStripMenuItem = new ToolStripMenuItem();
+            this.al5ReadOnlyProbeToolStripMenuItem.Name = "al5ReadOnlyProbeToolStripMenuItem";
+            this.al5ReadOnlyProbeToolStripMenuItem.Text = "AL5 Read-Only Identity Probe...";
+            this.al5ReadOnlyProbeToolStripMenuItem.ToolTipText =
+                "Non-destructive Mode 0x3C identity probe of the Allison AL5 at VPW module 0x18.";
+            this.al5ReadOnlyProbeToolStripMenuItem.Click +=
+                new EventHandler(this.al5ReadOnlyProbeToolStripMenuItem_Click);
+            this.menuItemTools.DropDownItems.Add(this.al5ReadOnlyProbeToolStripMenuItem);
         }
 
         /// <summary>
@@ -1493,6 +1505,44 @@ namespace PcmHacking
 
                 // The token / token-source can only be cancelled once, so we need to make sure they won't be re-used.
                 this.cancellationTokenSource = null;
+            }
+        }
+
+        private async void al5ReadOnlyProbeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.Vehicle == null || BackgroundWorker.IsAlive)
+                return;
+
+            DialogResult confirmation = MessageBox.Show(
+                "This performs read-only Mode 0x3C identity queries to the Allison AL5 at VPW module 0x18. " +
+                "It does not unlock, upload code, erase, flash, or write memory. Continue?",
+                "AL5 Read-Only Identity Probe",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Information);
+
+            if (confirmation != DialogResult.Yes)
+                return;
+
+            try
+            {
+                this.DisableUserInput();
+                this.cancelButton.Enabled = true;
+                this.cancellationTokenSource = new CancellationTokenSource();
+                AL5ReadOnlyProbe probe = new AL5ReadOnlyProbe(this.Vehicle, this);
+                Response<AL5ReadOnlyProbe.Result> response =
+                    await probe.Probe(this.cancellationTokenSource.Token);
+                this.AddUserMessage("AL5 read-only probe result: " + response.Status);
+            }
+            catch (Exception exception)
+            {
+                this.AddUserMessage("AL5 read-only probe failed: " + exception.Message);
+                this.AddDebugMessage(exception.ToString());
+            }
+            finally
+            {
+                this.cancelButton.Enabled = false;
+                this.cancellationTokenSource = null;
+                this.EnableUserInput();
             }
         }
 
