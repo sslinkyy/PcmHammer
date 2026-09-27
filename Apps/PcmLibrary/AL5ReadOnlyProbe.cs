@@ -47,8 +47,8 @@ namespace PcmHacking
         {
             Result result = new Result();
 
-            // AL5 must remain at normal VPW speed during this first-stage probe.
-            this.vehicle.Enable4xReadWrite = false;
+            // Start identity probing at normal VPW speed. Do not globally disable 4X;
+            // the guarded transport check at the end may explicitly request it.
             await this.vehicle.SetDeviceTimeout(TimeoutScenario.ReadProperty);
             this.vehicle.ClearDeviceMessageQueue();
 
@@ -109,6 +109,8 @@ namespace PcmHacking
             // only the speed transition plus a known-safe identity read; no security or
             // programming services are involved.
             logger.AddUserMessage("AL5 testing VPW 4X using known-safe OS identity block 0x0A...");
+            bool previous4xSetting = this.vehicle.Enable4xReadWrite;
+            this.vehicle.Enable4xReadWrite = true;
             bool fourX = await this.vehicle.VehicleSetVPW4x(new OSIDInfo(PcmType.E54), VpwSpeed.FourX);
             if (fourX)
             {
@@ -127,6 +129,7 @@ namespace PcmHacking
                 logger.AddUserMessage("AL5 VPW 4X transition was not confirmed; retain 1X fallback.");
             }
 
+            this.vehicle.Enable4xReadWrite = previous4xSetting;
             return Response.Create(ResponseStatus.Success, result);
         }
 
