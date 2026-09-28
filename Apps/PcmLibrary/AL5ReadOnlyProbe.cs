@@ -7,13 +7,17 @@ using System.Threading.Tasks;
 namespace PcmHacking
 {
     /// <summary>
-    /// Non-destructive first-stage probe for the Allison AL5 TCM at VPW module 0x18.
-    /// No security access, chatter suppression, VPW speed change, code upload,
-    /// erase, flash, or memory-write service is used.
+    /// Non-destructive read-only probe for the Allison AL5 TCM at VPW module 0x18.
+    /// Identity blocks and the security seed are read at normal VPW speed.
+    /// No security key is sent, and no code upload, erase, flash, or memory-write service is used.
     /// </summary>
     public sealed class AL5ReadOnlyProbe
     {
         public const byte TcmDeviceId = 0x18;
+        // Verified offline against the previously observed AL5 pair:
+        // seed 0x9CE5 -> key 0xBC08.  The key is calculated for characterization
+        // only in this probe and is NOT sent to the TCM.
+        public const int Al5KeyAlgorithm = 50;
         private readonly Vehicle vehicle;
         private readonly ILogger logger;
 
@@ -66,7 +70,7 @@ namespace PcmHacking
             };
 
             logger.AddUserMessage("AL5 read-only probe: target 0x18, normal VPW speed.");
-            logger.AddUserMessage("No unlock, upload, erase, flash, or memory-write services are used.");
+            logger.AddUserMessage("No security key, upload, erase, flash, or memory-write services are used.");
 
             foreach (byte block in blocks)
             {
@@ -104,33 +108,83 @@ namespace PcmHacking
 
             logger.AddUserMessage("AL5 read-only identity probe complete.");
 
-            // Optional second-stage transport check.  The user confirmed that with the
-            // interfering vehicle module isolated, VPW 4X works on this truck.  Exercise
-            // only the speed transition plus a known-safe identity read; no security or
-            // programming services are involved.
-            logger.AddUserMessage("AL5 testing VPW 4X using known-safe OS identity block 0x0A...");
-            bool previous4xSetting = this.vehicle.Enable4xReadWrite;
-            this.vehicle.Enable4xReadWrite = true;
-            bool fourX = await this.vehicle.VehicleSetVPW4x(new OSIDInfo(PcmType.E54), VpwSpeed.FourX);
-            if (fourX)
+            // Vehicle testing showed that module 0x18 acknowledges the global VPW 4X
+            // transition, but AL5 identity reads time out after the adapter switches to 4X.
+            // Keep AL5 characterization at the reliable normal VPW rate for now.
+            logger.AddUserMessage("AL5 retaining normal VPW 1X for security/read characterization.");
+
+            Response<UInt16> seedResponse = await ReadSecuritySeed(cancellationToken);
+            if (seedResponse.Status == ResponseStatus.Success)
             {
-                Response<byte[]> fourXOs = await ReadBlock(BlockId.OperatingSystemID, cancellationToken);
-                if (fourXOs.Status == ResponseStatus.Success)
-                {
-                    logger.AddUserMessage("AL5 VPW 4X confirmed at module 0x18: " + BitConverter.ToString(fourXOs.Value));
-                }
-                else
-                {
-                    logger.AddUserMessage("AL5 entered VPW 4X but 0x18 identity read failed: " + fourXOs.Status);
-                }
+                UInt16 seed = seedResponse.Value;
+                UInt16 predictedKey = KeyAlgorithm.GetKey(Al5KeyAlgorithm, seed);
+                logger.AddUserMessage(
+                    string.Format(
+                        "AL5 security seed 0x{0:X4}; PCM Hammer algorithm #{1} predicts key 0x{2:X4} (not sent).",
+                        seed, Al5KeyAlgorithm, predictedKey));
             }
             else
             {
-                logger.AddUserMessage("AL5 VPW 4X transition was not confirmed; retain 1X fallback.");
+                logger.AddUserMessage("AL5 security-seed probe: " + seedResponse.Status);
             }
 
-            this.vehicle.Enable4xReadWrite = previous4xSetting;
             return Response.Create(ResponseStatus.Success, result);
+        }
+
+        private async Task<Response<UInt16>> ReadSecuritySeed(CancellationToken cancellationToken)
+        {
+            Message request = new Message(new byte[]
+            {
+                Priority.Physical0, TcmDeviceId, DeviceId.Tool, Mode.Seed, Submode.GetSeed
+            });
+
+            this.vehicle.ClearDeviceMessageQueue();
+            if (!await this.vehicle.SendMessage(request))
+                return Response.Create(ResponseStatus.Error, (UInt16)0);
+
+            for (int attempt = 0; attempt < Vehicle.MaxReceiveAttempts; attempt++)
+            {
+                if (cancellationToken.IsCancellationRequested)
+                    return Response.Create(ResponseStatus.Cancelled, (UInt16)0);
+
+                Message message = await this.vehicle.ReceiveMessage();
+                if (message == null)
+                    continue;
+
+                byte[] bytes = message.GetBytes();
+                if (bytes.Length < 5)
+                    continue;
+
+                // Expected negative reply: 6C F0 18 7F 27 01 <NRC>
+                if (bytes.Length >= 7 &&
+                    bytes[0] == Priority.Physical0 &&
+                    bytes[1] == DeviceId.Tool &&
+                    bytes[2] == TcmDeviceId &&
+                    bytes[3] == Mode.NegativeResponse &&
+                    bytes[4] == Mode.Seed &&
+                    bytes[5] == Submode.GetSeed)
+                {
+                    logger.AddUserMessage(
+                        string.Format("AL5 seed request rejected, NRC 0x{0:X2}.", bytes[6]));
+                    return Response.Create(ResponseStatus.Refused, (UInt16)0);
+                }
+
+                // Expected seed reply: 6C F0 18 67 01 <seedHi> <seedLo>
+                if (bytes.Length >= 7 &&
+                    bytes[0] == Priority.Physical0 &&
+                    bytes[1] == DeviceId.Tool &&
+                    bytes[2] == TcmDeviceId &&
+                    bytes[3] == (Mode.Seed + Mode.Response) &&
+                    bytes[4] == Submode.GetSeed)
+                {
+                    UInt16 seed = (UInt16)((bytes[5] << 8) | bytes[6]);
+                    return Response.Create(ResponseStatus.Success, seed);
+                }
+
+                logger.AddDebugMessage("Ignoring unrelated AL5 security-probe message: " + message);
+            }
+
+            return Response.Create(ResponseStatus.Error, (UInt16)0);
         }
 
         private async Task<Response<byte[]>> ReadBlock(byte block, CancellationToken cancellationToken)
