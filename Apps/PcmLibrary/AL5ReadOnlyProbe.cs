@@ -128,7 +128,79 @@ namespace PcmHacking
                 logger.AddUserMessage("AL5 security-seed probe: " + seedResponse.Status);
             }
 
+            // Read-only memory-service characterization.  These addresses are already
+            // known from the offline AL5 image and make strong positive controls:
+            // 0x08024 contains transmission calibration ID 15183960 (00 E7 B0 58),
+            // 0x0A996 begins the known gear-ratio sequence (11 F7 0C 68 ...).
+            logger.AddUserMessage("AL5 testing read-only mode 0x23 at known calibration addresses.");
+            await ProbeRamAddress(0x08024, cancellationToken);
+            await ProbeRamAddress(0x0A996, cancellationToken);
+
             return Response.Create(ResponseStatus.Success, result);
+        }
+
+        private async Task ProbeRamAddress(int address, CancellationToken cancellationToken)
+        {
+            Message request = new Message(new byte[]
+            {
+                Priority.Block, TcmDeviceId, DeviceId.Tool, Mode.GetRam,
+                (byte)(address >> 16), (byte)(address >> 8), (byte)address, 0x01
+            });
+
+            this.vehicle.ClearDeviceMessageQueue();
+            if (!await this.vehicle.SendMessage(request))
+            {
+                logger.AddUserMessage(
+                    string.Format("AL5 mode 0x23 request at 0x{0:X5} could not be sent.", address));
+                return;
+            }
+
+            for (int attempt = 0; attempt < Vehicle.MaxReceiveAttempts; attempt++)
+            {
+                if (cancellationToken.IsCancellationRequested)
+                    return;
+
+                Message message = await this.vehicle.ReceiveMessage();
+                if (message == null)
+                    continue;
+
+                byte[] bytes = message.GetBytes();
+                if (bytes.Length < 5)
+                    continue;
+
+                // Negative response: ... 7F 23 <NRC> (some modules append request data).
+                if (bytes[0] == Priority.Physical0 &&
+                    bytes[1] == DeviceId.Tool &&
+                    bytes[2] == TcmDeviceId &&
+                    bytes[3] == Mode.NegativeResponse &&
+                    bytes[4] == Mode.GetRam)
+                {
+                    logger.AddUserMessage(
+                        string.Format(
+                            "AL5 mode 0x23 at 0x{0:X5} rejected: {1}",
+                            address, BitConverter.ToString(bytes)));
+                    return;
+                }
+
+                // Preserve the entire positive response until the AL5 payload format
+                // is proven.  PCM-family mode 0x23 replies use response mode 0x63.
+                if (bytes[0] == Priority.Physical0 &&
+                    bytes[1] == DeviceId.Tool &&
+                    bytes[2] == TcmDeviceId &&
+                    bytes[3] == (Mode.GetRam + Mode.Response))
+                {
+                    logger.AddUserMessage(
+                        string.Format(
+                            "AL5 mode 0x23 at 0x{0:X5}: {1}",
+                            address, BitConverter.ToString(bytes)));
+                    return;
+                }
+
+                logger.AddDebugMessage("Ignoring unrelated AL5 mode-0x23 message: " + message);
+            }
+
+            logger.AddUserMessage(
+                string.Format("AL5 mode 0x23 at 0x{0:X5}: no response.", address));
         }
 
         private async Task<Response<UInt16>> ReadSecuritySeed(CancellationToken cancellationToken)
