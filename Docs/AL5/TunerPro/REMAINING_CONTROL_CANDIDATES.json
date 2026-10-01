@@ -1,0 +1,427 @@
+{
+  "stock_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6",
+  "native_export_sha256": "fbbd581cd5bd42dcfa1fa874c41ffde23f612b36d23e0043ca648acab2ac614b",
+  "firmware_high_sha256": "492040d9460d53b77dda606b9a89f4254e0680f239093001663f6ed5cf51ba75",
+  "native_export_encoding": "cp1252",
+  "confidence": "explicit packing/scaling hypotheses; no new XDF assignments",
+  "scalar_families": [
+    {
+      "ids": [
+        "D5042",
+        "D5043",
+        "D5044",
+        "D5045"
+      ],
+      "raw_units": [
+        0.25,
+        0.25,
+        0.25,
+        0.25
+      ],
+      "raw_counts": [
+        14628,
+        16000,
+        16000,
+        16000
+      ],
+      "max_abs_errors": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "layout_hypothesis": "consecutive BE16 scalars, no count headers",
+      "start_candidates": [
+        "0x09CFC"
+      ],
+      "status": "candidate only; firmware references or differential identity proof required"
+    },
+    {
+      "ids": [
+        "D5055",
+        "D5056"
+      ],
+      "raw_units": [
+        0.0078125,
+        0.0078125
+      ],
+      "raw_counts": [
+        3712,
+        3968
+      ],
+      "max_abs_errors": [
+        0.0,
+        0.0
+      ],
+      "layout_hypothesis": "consecutive BE16 scalars, no count headers",
+      "start_candidates": [
+        "0x1378C"
+      ],
+      "status": "candidate only; firmware references or differential identity proof required"
+    },
+    {
+      "ids": [
+        "D5057",
+        "D5058"
+      ],
+      "raw_units": [
+        0.125,
+        0.125
+      ],
+      "raw_counts": [
+        7200,
+        8400
+      ],
+      "max_abs_errors": [
+        0.0,
+        0.0
+      ],
+      "layout_hypothesis": "consecutive BE16 scalars, no count headers",
+      "start_candidates": [
+        "0x09CF8",
+        "0x1375C",
+        "0x145E0"
+      ],
+      "status": "candidate only; firmware references or differential identity proof required"
+    },
+    {
+      "ids": [
+        "D5061",
+        "H0103",
+        "H0137"
+      ],
+      "raw_units": [
+        0.0001220703125,
+        0.0001220703125,
+        0.0097089219
+      ],
+      "raw_counts": [
+        22282,
+        33586,
+        27067
+      ],
+      "max_abs_errors": [
+        1.9496750001124497e-06,
+        0.0,
+        0.0
+      ],
+      "layout_hypothesis": "consecutive BE16 scalars, no count headers",
+      "start_candidates": [
+        "0x14B14"
+      ],
+      "status": "candidate only; firmware references or differential identity proof required"
+    }
+  ],
+  "throttle_release": {
+    "tables": [
+      {
+        "id": "D5073",
+        "rows": [
+          0,
+          16,
+          32,
+          48,
+          64,
+          80,
+          96,
+          112,
+          128,
+          144,
+          160,
+          176,
+          192,
+          208,
+          224,
+          240,
+          256
+        ],
+        "columns": [
+          "1st Gear",
+          "2nd Gear",
+          "3rd Gear",
+          "4th Gear",
+          "5th Gear"
+        ],
+        "layout_hypothesis": "five consecutive 0x0011-header BE16 column records",
+        "math_hypothesis": "X*100/65536",
+        "header_candidates": [
+          "0x13950",
+          "0x13A08",
+          "0x13B78",
+          "0x13C30"
+        ],
+        "status": "ambiguous complete values; not promoted"
+      },
+      {
+        "id": "D5074",
+        "rows": [
+          0,
+          16,
+          32,
+          48,
+          64,
+          80,
+          96,
+          112,
+          128,
+          144,
+          160,
+          176,
+          192,
+          208,
+          224,
+          240,
+          256
+        ],
+        "columns": [
+          "1st Gear",
+          "2nd Gear",
+          "3rd Gear",
+          "4th Gear",
+          "5th Gear"
+        ],
+        "layout_hypothesis": "five consecutive 0x0011-header BE16 column records",
+        "math_hypothesis": "X*100/65536",
+        "header_candidates": [
+          "0x13950",
+          "0x13A08",
+          "0x13B78",
+          "0x13C30"
+        ],
+        "status": "ambiguous complete values; not promoted"
+      },
+      {
+        "id": "D5075",
+        "rows": [
+          0,
+          16,
+          32,
+          48,
+          64,
+          80,
+          96,
+          112,
+          128,
+          144,
+          160,
+          176,
+          192,
+          208,
+          224,
+          240,
+          256
+        ],
+        "columns": [
+          "1st Gear",
+          "2nd Gear",
+          "3rd Gear",
+          "4th Gear",
+          "5th Gear"
+        ],
+        "layout_hypothesis": "five consecutive 0x0011-header BE16 column records",
+        "math_hypothesis": "X*100/65536",
+        "header_candidates": [
+          "0x0BC10",
+          "0x0BC34",
+          "0x0BC58",
+          "0x0BC7C",
+          "0x11280",
+          "0x112A4",
+          "0x112C8",
+          "0x112EC",
+          "0x117F0",
+          "0x12BF0",
+          "0x12C14",
+          "0x12C38",
+          "0x12C5C",
+          "0x12C80",
+          "0x12CA4",
+          "0x12CC8",
+          "0x12CEC",
+          "0x12D10",
+          "0x12D34",
+          "0x12D58",
+          "0x12D7C",
+          "0x13AC0"
+        ],
+        "status": "ambiguous complete values; not promoted"
+      }
+    ],
+    "joint_layout_hypothesis": "native mode order with four-byte 4E714E71 separators",
+    "joint_start_candidates": [
+      "0x13950"
+    ],
+    "warning": "A unique joint context does not independently prove mode or gear ordering. Normal and tow/haul native values are identical."
+  },
+  "deferred_other_ids": [
+    "D5053",
+    "D5054",
+    "D5062",
+    "D5063",
+    "D5183",
+    "D5197",
+    "H0105",
+    "H0136"
+  ],
+  "deferral_note": "enum encoding, repeated sentinel values or speedo-field identity unresolved",
+  "scalar_reference_candidates": [
+    {
+      "id_hint": "D5042",
+      "candidate_address": "0x09CFC",
+      "literal_offsets": [
+        "0x423A0",
+        "0x424C2",
+        "0x4271C",
+        "0x42A88",
+        "0x42CE4",
+        "0x42D50"
+      ],
+      "note": "even-aligned literal hits, not exhaustive decoded xrefs; indirect references may exist"
+    },
+    {
+      "id_hint": "D5043",
+      "candidate_address": "0x09CFE",
+      "literal_offsets": [
+        "0x423A8",
+        "0x424CC",
+        "0x42724",
+        "0x42A90",
+        "0x42CEE",
+        "0x42D58"
+      ],
+      "note": "even-aligned literal hits, not exhaustive decoded xrefs; indirect references may exist"
+    },
+    {
+      "id_hint": "D5044",
+      "candidate_address": "0x09D00",
+      "literal_offsets": [
+        "0x423B0",
+        "0x424D6",
+        "0x4272C",
+        "0x42A98",
+        "0x42CF8",
+        "0x42D60"
+      ],
+      "note": "even-aligned literal hits, not exhaustive decoded xrefs; indirect references may exist"
+    },
+    {
+      "id_hint": "D5045",
+      "candidate_address": "0x09D02",
+      "literal_offsets": [],
+      "note": "even-aligned literal hits, not exhaustive decoded xrefs; indirect references may exist"
+    },
+    {
+      "id_hint": "D5055",
+      "candidate_address": "0x1378C",
+      "literal_offsets": [
+        "0x3A012"
+      ],
+      "note": "even-aligned literal hits, not exhaustive decoded xrefs; indirect references may exist"
+    },
+    {
+      "id_hint": "D5056",
+      "candidate_address": "0x1378E",
+      "literal_offsets": [
+        "0x39FFE"
+      ],
+      "note": "even-aligned literal hits, not exhaustive decoded xrefs; indirect references may exist"
+    },
+    {
+      "id_hint": "D5057",
+      "candidate_address": "0x09CF8",
+      "literal_offsets": [
+        "0x42390",
+        "0x424AE",
+        "0x4270C",
+        "0x42A78",
+        "0x42CD0",
+        "0x42D40"
+      ],
+      "note": "even-aligned literal hits, not exhaustive decoded xrefs; indirect references may exist"
+    },
+    {
+      "id_hint": "D5058",
+      "candidate_address": "0x09CFA",
+      "literal_offsets": [
+        "0x42398",
+        "0x424B8",
+        "0x42714",
+        "0x42A80",
+        "0x42CDA",
+        "0x42D48"
+      ],
+      "note": "even-aligned literal hits, not exhaustive decoded xrefs; indirect references may exist"
+    },
+    {
+      "id_hint": "D5057",
+      "candidate_address": "0x1375C",
+      "literal_offsets": [
+        "0xA3E60"
+      ],
+      "note": "even-aligned literal hits, not exhaustive decoded xrefs; indirect references may exist"
+    },
+    {
+      "id_hint": "D5058",
+      "candidate_address": "0x1375E",
+      "literal_offsets": [
+        "0xA3E4C"
+      ],
+      "note": "even-aligned literal hits, not exhaustive decoded xrefs; indirect references may exist"
+    },
+    {
+      "id_hint": "D5057",
+      "candidate_address": "0x145E0",
+      "literal_offsets": [
+        "0xA3E92"
+      ],
+      "note": "even-aligned literal hits, not exhaustive decoded xrefs; indirect references may exist"
+    },
+    {
+      "id_hint": "D5058",
+      "candidate_address": "0x145E2",
+      "literal_offsets": [
+        "0xA3E7E"
+      ],
+      "note": "even-aligned literal hits, not exhaustive decoded xrefs; indirect references may exist"
+    },
+    {
+      "id_hint": "D5061",
+      "candidate_address": "0x14B14",
+      "literal_offsets": [
+        "0x2F43E",
+        "0x2F4F4",
+        "0x38808",
+        "0x4A648",
+        "0x4A6C2",
+        "0x4B2B4",
+        "0x7E750"
+      ],
+      "note": "even-aligned literal hits, not exhaustive decoded xrefs; indirect references may exist"
+    },
+    {
+      "id_hint": "H0103",
+      "candidate_address": "0x14B16",
+      "literal_offsets": [
+        "0x2F418",
+        "0x2F4CE",
+        "0x4A69E",
+        "0x4A7D8",
+        "0x4A880",
+        "0x4AAA0"
+      ],
+      "note": "even-aligned literal hits, not exhaustive decoded xrefs; indirect references may exist"
+    },
+    {
+      "id_hint": "H0137",
+      "candidate_address": "0x14B18",
+      "literal_offsets": [
+        "0x2F41E",
+        "0x2F4D4",
+        "0x4A7C8",
+        "0x4A870",
+        "0x4AA90"
+      ],
+      "note": "even-aligned literal hits, not exhaustive decoded xrefs; indirect references may exist"
+    }
+  ]
+}

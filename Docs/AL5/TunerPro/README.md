@@ -88,3 +88,7 @@ All 242 resolved numeric entries pass the audit. 105 of 127 native IDs are
 represented, including partial/research entries; 22 remain absent. The six WOT
 TCC IDs are complete; the four downshift IDs are partial. New entries remain
 structural mappings without marker proof or TunerPro GUI validation.
+
+See `REMAINING_CONTROLS.md` for narrowed scalar and throttle-release candidates
+and their firmware-reference evidence. Those hypotheses are deliberately not
+added to the v0.7 XDF; representation remains 105/127 native IDs.

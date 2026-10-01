@@ -67,6 +67,9 @@ by native values and remain absent; B/C are mapped independently of adjacent RPM
 labels. Remaining temperature,
 remaining pressure/adaptive/enable and speedo mappings still need evidence.
 The new XDF versions need a TunerPro GUI check; numerical audit is complete.
+`TunerPro/REMAINING_CONTROLS.md` narrows 14 absent definitions to explicit
+scalar/throttle packing candidates and records their firmware references.
+These require identity proof before XDF promotion; coverage has not changed.
 
 Read [CHECKSUM_RECOVERY.md](CHECKSUM_RECOVERY.md) and
 [WRITE_PROTOCOL.md](WRITE_PROTOCOL.md) before extending writer work. Recover the
