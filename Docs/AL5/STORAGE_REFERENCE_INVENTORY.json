@@ -1,0 +1,44 @@
+{
+  "source_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
+  "source_origin": "0x0",
+  "source_bytes": 131072,
+  "provenance": "saved local file; physical/current controller identity not verified",
+  "scope": "Two candidate storage banks, header/marker/hash/context CRC metadata only; no contents exported.",
+  "banks": [
+    {
+      "start": "0x4000",
+      "candidate_bytes": 8192,
+      "bank_sha256": "c28b731634ffd60e28b1d95772ebbadc2e5b61693963eb44b166a6ec2ea0d381",
+      "header_signature_matches": true,
+      "generation_word": 41232,
+      "record_marker": "0xFFAA",
+      "marker_interpretation": "committed",
+      "context_sha256": "99729a300df514fae1212de6315642e774add526e21c271bed1ef28ee6ba49a9",
+      "context_bytes": 2546,
+      "context_crc_stored": "0x7648",
+      "context_crc_computed": "0x7648",
+      "context_crc_matches": true
+    },
+    {
+      "start": "0x6000",
+      "candidate_bytes": 8192,
+      "bank_sha256": "83c5645aec04558e629ef5d9a0a4c7cf8fb42186d14eb1687338bd4a3288670d",
+      "header_signature_matches": true,
+      "generation_word": 41231,
+      "record_marker": "0x0000",
+      "marker_interpretation": "zero marker",
+      "context_sha256": "391335398929e6a5e655ae9e60cb278c380cb041f7effb3d81e297a6736f7aa2",
+      "context_bytes": 2546,
+      "context_crc_stored": "0x8C55",
+      "context_crc_computed": "0x8C55",
+      "context_crc_matches": true
+    }
+  ],
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "physical_geometry_verified": false,
+  "current_physical_backup_verified": false,
+  "preservation_verified": false,
+  "would_send": [],
+  "note": "Matching metadata does not prove recovery, current physical preservation or active-bank selection."
+}

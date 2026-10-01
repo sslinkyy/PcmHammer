@@ -78,6 +78,14 @@ a plan to program the currently installed PPEI calibration.
 
 ## Current boundaries and next work
 
+Storage selection/restore now passes 15 offline cases with synthetic protected
+banks and all destructive calls intercepted. Header failures can enter repair
+even when a committed record exists, and the tested restore routine does not
+check context CRC itself. The saved-bank inventory exports metadata only;
+current physical preservation remains unverified. See
+[storage selection evidence](STORAGE_SELECTION.md). Next trace downstream
+validation and complete update/repair ordering offline.
+
 **Current named XDF: v0.12**, `TunerPro/AL5_15184109_15183960_MARKER_EXTENDED_v0_12.xdf`.
 The completed offline EFILive report resolves 83 marker cases and adds 41 items;
 all 283 numeric native comparisons pass. The subsequent v7 report maps D5053

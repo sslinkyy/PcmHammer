@@ -106,6 +106,13 @@ call and candidate bank starts. Current storage backup and geometry remain
 unverified; a distinct blocker prevents treating calibration-only preservation
 as sufficient. No preparation storage implementation was executed.
 
+The preparation assessment now also hash-links the 15-case storage selector and
+restore emulator and the metadata-only saved-bank inventory. Invalid headers
+can enter repair before a cached/committed record is returned; restore itself
+does not check context CRC. See `STORAGE_SELECTION.md`. All flash calls remain
+trapped, interrupted-update recovery remains false, and the saved editor image
+does not establish current physical preservation.
+
 The report includes a hash-linked preservation assessment from the static
 resident inventory. The inferred 41,000 extra bytes and candidate intervals
 remain explicitly unverified; no current collateral backup is supplied or

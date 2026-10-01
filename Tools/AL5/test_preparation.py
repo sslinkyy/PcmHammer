@@ -18,6 +18,15 @@ class PreparationSafetyTests(unittest.TestCase):
         self.assertFalse(assessment['current_storage_backup_supplied'])
         self.assertFalse(assessment['storage_implementation_executed'])
         self.assertFalse(assessment['calibration_only_backup_establishes_preservation'])
+        selection = assessment['storage_selection_evidence']
+        reference = assessment['saved_storage_reference']
+        for item in (selection, reference):
+            self.assertEqual(sha256((root/item['evidence']).read_bytes()), item['evidence_sha256'])
+        self.assertTrue(selection['offline_cases_pass'])
+        self.assertFalse(selection['flash_implementation_executed'])
+        self.assertFalse(selection['interrupted_update_recovery_verified'])
+        self.assertFalse(reference['current_physical_backup_verified'])
+        self.assertFalse(reference['preservation_verified'])
         self.assertTrue(any('persistent-storage' in blocker for blocker in result['blockers']))
         self.assertIsNone(result['erase_scope'])
         self.assertFalse(result['ready_to_flash'])

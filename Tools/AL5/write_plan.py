@@ -13,11 +13,17 @@ BOOT_SESSION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/BOOT_SES
 APPLICATION_BOOT_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/APPLICATION_BOOT_EMULATION.json'
 AUTHORIZATION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/APPLICATION_AUTHORIZATION_EMULATION.json'
 PREPARATION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/RECEIVE_PREPARATION_EMULATION.json'
+STORAGE_SELECTION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/STORAGE_SELECTION_EMULATION.json'
+STORAGE_REFERENCE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/STORAGE_REFERENCE_INVENTORY.json'
 
 
 def preparation_assessment():
     evidence_bytes = PREPARATION_EVIDENCE.read_bytes()
     evidence = json.loads(evidence_bytes)
+    selection_bytes = STORAGE_SELECTION_EVIDENCE.read_bytes()
+    selection = json.loads(selection_bytes)
+    reference_bytes = STORAGE_REFERENCE_EVIDENCE.read_bytes()
+    reference = json.loads(reference_bytes)
     return {'evidence': 'Docs/AL5/RECEIVE_PREPARATION_EMULATION.json',
             'evidence_sha256': sha256(evidence_bytes),
             'offline_cases_pass': evidence['all_pass'],
@@ -25,6 +31,20 @@ def preparation_assessment():
             'storage_call_entry': '0x226F0',
             'storage_source_argument': '0xFF8140',
             'candidate_storage_bank_starts': ['0x04000', '0x06000'],
+            'storage_selection_evidence': {
+                'evidence': 'Docs/AL5/STORAGE_SELECTION_EMULATION.json',
+                'evidence_sha256': sha256(selection_bytes),
+                'offline_cases_pass': selection['all_pass'],
+                'scope': selection['scope'],
+                'flash_implementation_executed': False,
+                'interrupted_update_recovery_verified': False},
+            'saved_storage_reference': {
+                'evidence': 'Docs/AL5/STORAGE_REFERENCE_INVENTORY.json',
+                'evidence_sha256': sha256(reference_bytes),
+                'source_sha256': reference['source_sha256'],
+                'provenance': reference['provenance'],
+                'current_physical_backup_verified': False,
+                'preservation_verified': False},
             'storage_geometry_verified': False,
             'current_storage_backup_supplied': False,
             'storage_implementation_executed': False,

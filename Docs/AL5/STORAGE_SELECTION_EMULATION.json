@@ -1,0 +1,383 @@
+{
+  "low_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
+  "high_sha256": "492040d9460d53b77dda606b9a89f4254e0680f239093001663f6ed5cf51ba75",
+  "code_sha256": {
+    "0x22250": "d24d9cc3872f35725a82490c6717dc2c1031a1fb9e907dc4810e0bfcc2a9be91",
+    "0x2266c": "e190f20d989cc7cd47936232a3c6fa893f89805830582c6709742c47db5a66da",
+    "0x226f0": "5711c66515715f7a3577128e4cdde4f66fa74f33a7a947175b4f9dd59922755b"
+  },
+  "scope": "Synthetic read-only banks; selector/restore/update callers only; every destructive call stopped before implementation execution.",
+  "context_bytes": 2546,
+  "flash_implementation_executed": false,
+  "live_write_enabled": false,
+  "all_pass": true,
+  "cases": [
+    {
+      "case": "bank1_committed",
+      "synthetic_state": {},
+      "operation": "select",
+      "expected": {
+        "return_d0": "0x4028",
+        "selected_record_state": "0xffaa"
+      },
+      "observed": {
+        "storage_trap": null,
+        "returned": true,
+        "return_d0": "0x4028",
+        "cached_pointer": "0x4028",
+        "selected_record_state": "0xffaa",
+        "restored_context_sha256": "25b63a4976ddcd2d98a6dd632563a9d0eb811f5dbd36e734d25039a2dfd37047",
+        "restored_context_crc_matches": false,
+        "synthetic_banks_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "case": "bank2_committed",
+      "synthetic_state": {
+        "marker1": 0,
+        "marker2": 65450
+      },
+      "operation": "select",
+      "expected": {
+        "return_d0": "0x6028",
+        "selected_record_state": "0xffaa"
+      },
+      "observed": {
+        "storage_trap": null,
+        "returned": true,
+        "return_d0": "0x6028",
+        "cached_pointer": "0x6028",
+        "selected_record_state": "0xffaa",
+        "restored_context_sha256": "25b63a4976ddcd2d98a6dd632563a9d0eb811f5dbd36e734d25039a2dfd37047",
+        "restored_context_crc_matches": false,
+        "synthetic_banks_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "case": "both_committed_prefers_bank1_despite_count",
+      "synthetic_state": {
+        "marker2": 65450,
+        "count1": 1,
+        "count2": 200
+      },
+      "operation": "select",
+      "expected": {
+        "return_d0": "0x4028"
+      },
+      "observed": {
+        "storage_trap": null,
+        "returned": true,
+        "return_d0": "0x4028",
+        "cached_pointer": "0x4028",
+        "selected_record_state": "0xffaa",
+        "restored_context_sha256": "25b63a4976ddcd2d98a6dd632563a9d0eb811f5dbd36e734d25039a2dfd37047",
+        "restored_context_crc_matches": false,
+        "synthetic_banks_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "case": "bank1_pending_precedes_bank2_commit",
+      "synthetic_state": {
+        "marker1": 170,
+        "marker2": 65450
+      },
+      "operation": "select",
+      "expected": {
+        "return_d0": "0x4028",
+        "selected_record_state": "0xaa"
+      },
+      "observed": {
+        "storage_trap": null,
+        "returned": true,
+        "return_d0": "0x4028",
+        "cached_pointer": "0x4028",
+        "selected_record_state": "0xaa",
+        "restored_context_sha256": "25b63a4976ddcd2d98a6dd632563a9d0eb811f5dbd36e734d25039a2dfd37047",
+        "restored_context_crc_matches": false,
+        "synthetic_banks_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "case": "cached_pointer_returns_without_record_validation",
+      "synthetic_state": {
+        "cached": 2129920
+      },
+      "operation": "select",
+      "expected": {
+        "return_d0": "0x208000",
+        "selected_record_state": "0x0"
+      },
+      "observed": {
+        "storage_trap": null,
+        "returned": true,
+        "return_d0": "0x208000",
+        "cached_pointer": "0x208000",
+        "selected_record_state": "0x0",
+        "restored_context_sha256": "25b63a4976ddcd2d98a6dd632563a9d0eb811f5dbd36e734d25039a2dfd37047",
+        "restored_context_crc_matches": false,
+        "synthetic_banks_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "case": "missing_commit_calls_repair",
+      "synthetic_state": {
+        "marker1": 0,
+        "marker2": 0
+      },
+      "operation": "select",
+      "expected": {
+        "returned": false
+      },
+      "observed": {
+        "storage_trap": {
+          "entry": "0x22b18",
+          "arguments": [
+            "0x2087cc",
+            "0x4000"
+          ],
+          "implementation_executed": false
+        },
+        "returned": false,
+        "return_d0": null,
+        "cached_pointer": "0x0",
+        "selected_record_state": "0x0",
+        "restored_context_sha256": "25b63a4976ddcd2d98a6dd632563a9d0eb811f5dbd36e734d25039a2dfd37047",
+        "restored_context_crc_matches": false,
+        "synthetic_banks_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "case": "bank2_pending_not_selected_as_committed",
+      "synthetic_state": {
+        "marker1": 0,
+        "marker2": 170
+      },
+      "operation": "select",
+      "expected": {
+        "returned": false
+      },
+      "observed": {
+        "storage_trap": {
+          "entry": "0x22b18",
+          "arguments": [
+            "0x2087cc",
+            "0x4000"
+          ],
+          "implementation_executed": false
+        },
+        "returned": false,
+        "return_d0": null,
+        "cached_pointer": "0x0",
+        "selected_record_state": "0x0",
+        "restored_context_sha256": "25b63a4976ddcd2d98a6dd632563a9d0eb811f5dbd36e734d25039a2dfd37047",
+        "restored_context_crc_matches": false,
+        "synthetic_banks_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "case": "bad_bank2_header_repair_can_erase_committed_bank1",
+      "synthetic_state": {
+        "bad_header2": true
+      },
+      "operation": "select",
+      "expected": {
+        "returned": false
+      },
+      "observed": {
+        "storage_trap": {
+          "entry": "0x22b18",
+          "arguments": [
+            "0x2087cc",
+            "0x4000"
+          ],
+          "implementation_executed": false
+        },
+        "returned": false,
+        "return_d0": null,
+        "cached_pointer": "0x0",
+        "selected_record_state": "0x0",
+        "restored_context_sha256": "25b63a4976ddcd2d98a6dd632563a9d0eb811f5dbd36e734d25039a2dfd37047",
+        "restored_context_crc_matches": false,
+        "synthetic_banks_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "case": "bad_header_checked_before_cached_pointer",
+      "synthetic_state": {
+        "bad_header1": true,
+        "cached": 24616
+      },
+      "operation": "select",
+      "expected": {
+        "returned": false
+      },
+      "observed": {
+        "storage_trap": {
+          "entry": "0x22b18",
+          "arguments": [
+            "0x2087cc",
+            "0x4000"
+          ],
+          "implementation_executed": false
+        },
+        "returned": false,
+        "return_d0": null,
+        "cached_pointer": "0x6028",
+        "selected_record_state": "0x0",
+        "restored_context_sha256": "25b63a4976ddcd2d98a6dd632563a9d0eb811f5dbd36e734d25039a2dfd37047",
+        "restored_context_crc_matches": false,
+        "synthetic_banks_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "case": "restore_committed_bank1",
+      "synthetic_state": {},
+      "operation": "restore",
+      "expected": {
+        "return_d0": "0x0",
+        "restored_context_crc_matches": true
+      },
+      "observed": {
+        "storage_trap": null,
+        "returned": true,
+        "return_d0": "0x0",
+        "cached_pointer": "0x4028",
+        "selected_record_state": "0xffaa",
+        "restored_context_sha256": "2ec279de55cce31b15fb6ade7a6db32c707ce1db06f2a634ef1b3bc95b2fe80d",
+        "restored_context_crc_matches": true,
+        "synthetic_banks_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "case": "restore_committed_bank2",
+      "synthetic_state": {
+        "marker1": 0,
+        "marker2": 65450
+      },
+      "operation": "restore",
+      "expected": {
+        "return_d0": "0x0",
+        "restored_context_crc_matches": true
+      },
+      "observed": {
+        "storage_trap": null,
+        "returned": true,
+        "return_d0": "0x0",
+        "cached_pointer": "0x6028",
+        "selected_record_state": "0xffaa",
+        "restored_context_sha256": "9d6fc0c98b4b6b325ca7d0361428aa968eb30028a1f6565d7eb9e9ef5d4f7329",
+        "restored_context_crc_matches": true,
+        "synthetic_banks_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "case": "pending_record_not_restored",
+      "synthetic_state": {
+        "marker1": 170
+      },
+      "operation": "restore",
+      "expected": {
+        "return_d0": "0x1"
+      },
+      "observed": {
+        "storage_trap": null,
+        "returned": true,
+        "return_d0": "0x1",
+        "cached_pointer": "0x4028",
+        "selected_record_state": "0xaa",
+        "restored_context_sha256": "25b63a4976ddcd2d98a6dd632563a9d0eb811f5dbd36e734d25039a2dfd37047",
+        "restored_context_crc_matches": false,
+        "synthetic_banks_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "case": "restore_does_not_validate_context_crc",
+      "synthetic_state": {
+        "bad_context_crc": true
+      },
+      "operation": "restore",
+      "expected": {
+        "return_d0": "0x0",
+        "restored_context_crc_matches": false
+      },
+      "observed": {
+        "storage_trap": null,
+        "returned": true,
+        "return_d0": "0x0",
+        "cached_pointer": "0x4028",
+        "selected_record_state": "0xffaa",
+        "restored_context_sha256": "9ab3d657f948ba162935429f106f12dfdd8d3f8cb69a7ba6a2f85952afd47b1b",
+        "restored_context_crc_matches": false,
+        "synthetic_banks_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "case": "update_bank1_active_erases_other_bank",
+      "synthetic_state": {},
+      "operation": "update",
+      "expected": {
+        "returned": false
+      },
+      "observed": {
+        "storage_trap": {
+          "entry": "0x22b18",
+          "arguments": [
+            "0x2087f8",
+            "0x6000"
+          ],
+          "implementation_executed": false
+        },
+        "returned": false,
+        "return_d0": null,
+        "cached_pointer": "0x4028",
+        "selected_record_state": "0xffaa",
+        "restored_context_sha256": "25b63a4976ddcd2d98a6dd632563a9d0eb811f5dbd36e734d25039a2dfd37047",
+        "restored_context_crc_matches": false,
+        "synthetic_banks_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "case": "update_bank2_active_erases_other_bank",
+      "synthetic_state": {
+        "marker1": 0,
+        "marker2": 65450
+      },
+      "operation": "update",
+      "expected": {
+        "returned": false
+      },
+      "observed": {
+        "storage_trap": {
+          "entry": "0x22b18",
+          "arguments": [
+            "0x2087f8",
+            "0x4000"
+          ],
+          "implementation_executed": false
+        },
+        "returned": false,
+        "return_d0": null,
+        "cached_pointer": "0x6028",
+        "selected_record_state": "0xffaa",
+        "restored_context_sha256": "25b63a4976ddcd2d98a6dd632563a9d0eb811f5dbd36e734d25039a2dfd37047",
+        "restored_context_crc_matches": false,
+        "synthetic_banks_unchanged": true
+      },
+      "pass": true
+    }
+  ]
+}
