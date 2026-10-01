@@ -179,13 +179,24 @@ namespace PcmHacking
                         bytes[0] == Priority.Physical0 &&
                         bytes[1] == DeviceId.Tool &&
                         bytes[2] == TcmDeviceId &&
-                        bytes[3] == (Mode.GetRam + Mode.Response) &&
-                        bytes[4] == (byte)(address >> 8) &&
-                        bytes[5] == (byte)address)
+                        bytes[3] == (Mode.GetRam + Mode.Response))
                     {
-                        byte[] data = new byte[4];
-                        Buffer.BlockCopy(bytes, bytes.Length - 4, data, 0, 4);
-                        return new Response<byte[]>(ResponseStatus.Success, data, retries);
+                        bool low16Echo =
+                            bytes[4] == (byte)(address >> 8) &&
+                            bytes[5] == (byte)address;
+
+                        bool full24Echo =
+                            bytes.Length >= 11 &&
+                            bytes[4] == (byte)(address >> 16) &&
+                            bytes[5] == (byte)(address >> 8) &&
+                            bytes[6] == (byte)address;
+
+                        if (low16Echo || full24Echo)
+                        {
+                            byte[] data = new byte[4];
+                            Buffer.BlockCopy(bytes, bytes.Length - 4, data, 0, 4);
+                            return new Response<byte[]>(ResponseStatus.Success, data, retries);
+                        }
                     }
 
                     logger.AddDebugMessage("Ignoring unrelated AL5 Mode-0x23 message: " + message);
