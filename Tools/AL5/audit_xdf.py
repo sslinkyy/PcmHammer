@@ -113,6 +113,12 @@ def audit(xdf, stock, ppei, export):
         result['items'].append(record)
     result['diff_ranges'] = diff_ranges(stock, ppei)
     result['changed_bytes'] = sum(r['length'] for r in result['diff_ranges'])
+    represented = {re.match(r'(D\d+|H\d+)\b', i['title'])[1] for i in result['items']
+                   if re.match(r'(D\d+|H\d+)\b', i['title'])}
+    result['coverage'] = {'native_definition_count': len(native),
+                          'represented_ids': sorted(represented),
+                          'absent_ids': sorted(set(native)-represented),
+                          'note': 'Representation includes partial and research entries; it does not imply full validation.'}
     result['errors'] = errors
     result['status'] = 'pass' if not errors else 'FAIL'
     return result

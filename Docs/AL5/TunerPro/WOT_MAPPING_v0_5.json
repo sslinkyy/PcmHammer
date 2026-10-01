@@ -1,0 +1,232 @@
+{
+  "method": "four 0x06-byte speed records 0x30 bytes before existing verified RPM family",
+  "confidence": "exact structural mapping, not marker-differential verified",
+  "stock_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6",
+  "source_xdf_sha256": "43c948afadd1fe62c355138ee8a92c0ba1bdbf100abd0c36c251d845a371cd90",
+  "added": [
+    {
+      "id": "D5020",
+      "pattern": "A",
+      "address": "0x12558",
+      "raw_counts": [
+        3584,
+        3584
+      ],
+      "expected": [
+        28,
+        28
+      ],
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5021",
+      "pattern": "A",
+      "address": "0x1255E",
+      "raw_counts": [
+        6656,
+        6656
+      ],
+      "expected": [
+        52,
+        52
+      ],
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5022",
+      "pattern": "A",
+      "address": "0x12564",
+      "raw_counts": [
+        9216,
+        9216
+      ],
+      "expected": [
+        72,
+        72
+      ],
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5023",
+      "pattern": "A",
+      "address": "0x1256A",
+      "raw_counts": [
+        13568,
+        13568
+      ],
+      "expected": [
+        106,
+        106
+      ],
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5020",
+      "pattern": "B",
+      "address": "0x126C0",
+      "raw_counts": [
+        3584,
+        3584
+      ],
+      "expected": [
+        28,
+        28
+      ],
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5021",
+      "pattern": "B",
+      "address": "0x126C6",
+      "raw_counts": [
+        7168,
+        7168
+      ],
+      "expected": [
+        56,
+        56
+      ],
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5022",
+      "pattern": "B",
+      "address": "0x126CC",
+      "raw_counts": [
+        9472,
+        9472
+      ],
+      "expected": [
+        74,
+        74
+      ],
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5023",
+      "pattern": "B",
+      "address": "0x126D2",
+      "raw_counts": [
+        13568,
+        13568
+      ],
+      "expected": [
+        106,
+        106
+      ],
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5020",
+      "pattern": "C",
+      "address": "0x12828",
+      "raw_counts": [
+        3584,
+        3584
+      ],
+      "expected": [
+        28,
+        28
+      ],
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5021",
+      "pattern": "C",
+      "address": "0x1282E",
+      "raw_counts": [
+        6656,
+        6656
+      ],
+      "expected": [
+        52,
+        52
+      ],
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5022",
+      "pattern": "C",
+      "address": "0x12834",
+      "raw_counts": [
+        9216,
+        9216
+      ],
+      "expected": [
+        72,
+        72
+      ],
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5023",
+      "pattern": "C",
+      "address": "0x1283A",
+      "raw_counts": [
+        13568,
+        13568
+      ],
+      "expected": [
+        106,
+        106
+      ],
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5020",
+      "pattern": "D",
+      "address": "0x11F70",
+      "raw_counts": [
+        3584,
+        3584
+      ],
+      "expected": [
+        28,
+        28
+      ],
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5021",
+      "pattern": "D",
+      "address": "0x11F76",
+      "raw_counts": [
+        7168,
+        7168
+      ],
+      "expected": [
+        56,
+        56
+      ],
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5022",
+      "pattern": "D",
+      "address": "0x11F7C",
+      "raw_counts": [
+        9728,
+        9728
+      ],
+      "expected": [
+        76,
+        76
+      ],
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5023",
+      "pattern": "D",
+      "address": "0x11F82",
+      "raw_counts": [
+        14080,
+        14080
+      ],
+      "expected": [
+        110,
+        110
+      ],
+      "max_abs_error": 0.0
+    }
+  ]
+}

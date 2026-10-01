@@ -15,8 +15,9 @@ development targets; neither the XDF nor the sheets authorize flashing.
 
 The imported XDF contains an older EFILive save/flash suggestion. That suggestion
 is not applicable to this project: the user has no FlashScan. Follow the current
-handoff instead. Native four-byte checksum synthesis and AL5 programming remain
-unproven. No edited BIN is flash-ready.
+handoff instead. The imported warnings describe the handoff state; subsequent
+offline checksum recovery is recorded in `../CHECKSUM_RECOVERY.md`. AL5
+programming remains unproven. No edited BIN is flash-ready.
 
 Reference calibration BINs and proprietary EFILive objects are deliberately not
 included. Run the tools under `Tools/AL5` with local file paths. Preserve original
@@ -36,3 +37,17 @@ not marker-differential proof. `TCC_MAPPING_v0_4.json` records the evidence.
 The resulting XDF has 173 items; 168 numeric entries pass native comparisons.
 The independent v0.3 audit also passes all 130 resolved numeric entries.
 No TunerPro GUI validation was performed for the new v0.4 entries.
+
+## Structural TCC/WOT v0.5
+
+`AL5_15184109_15183960_STRUCTURAL_TCC_WOT_v0_5.xdf` adds another 16 vectors
+for D5020–D5023 WOT upshift speed. Each two-cell record matches the native export
+and is anchored to the preserved WOT RPM family, with a `0x0002` header and
+`0x06` stride. All 184 resolved numeric entries pass the independent audit.
+
+87 of 127 native definition IDs are represented, including partial/research
+entries; 40 remain absent. D5010/D5015 Pattern G is still missing. WOT downshift
+speed and WOT TCC searches have repeated-value ambiguity; do not promote their
+candidate matches without structural or differential proof. The v0.5 GUI has
+not been checked in TunerPro. See `../CHECKSUM_RECOVERY.md` for the subsequently
+recovered offline checksum; the imported v0.3 warnings are historical.
