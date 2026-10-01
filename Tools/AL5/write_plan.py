@@ -10,17 +10,27 @@ from checksum import checksum_valid
 DEFAULT_TARGETS = Path(__file__).resolve().parents[2] / 'Docs/AL5/TunerPro/AL5_FIRST_VEHICLE_TEST_1-2_MINIMAL_v0_2_TARGETS.csv'
 RESIDENT_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/RESIDENT_FLASH_INVENTORY.json'
 BOOT_SESSION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/BOOT_SESSION_EMULATION.json'
+APPLICATION_BOOT_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/APPLICATION_BOOT_EMULATION.json'
 
 
 def boot_loader_assessment():
     evidence_bytes = BOOT_SESSION_EVIDENCE.read_bytes()
     evidence = json.loads(evidence_bytes)
+    application_bytes = APPLICATION_BOOT_EVIDENCE.read_bytes()
+    application = json.loads(application_bytes)
     return {'evidence': 'Docs/AL5/BOOT_SESSION_EMULATION.json',
             'evidence_sha256': sha256(evidence_bytes),
             'firmware_source_sha256': evidence['low_sha256'],
             'code_sha256': evidence['code_sha256'],
             'scope': evidence['scope'],
             'offline_cases_pass': evidence['all_pass'],
+            'application_transition_evidence': {
+                'evidence': 'Docs/AL5/APPLICATION_BOOT_EMULATION.json',
+                'evidence_sha256': sha256(application_bytes),
+                'offline_cases_pass': application['all_pass'],
+                'scope': application['scope'],
+                'reset_hardware_verified': False,
+                'startup_response_proves_upload_armed': False},
             'application_entry_verified': False,
             'live_session_authorized': False,
             'note': 'Boot arming and RAM-transfer sequences are exercised offline. '

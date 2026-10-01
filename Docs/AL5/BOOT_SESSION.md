@@ -66,7 +66,10 @@ keeping application-entry verification and live-session authorization false.
 Readiness is false, erase/program scope remains unresolved, and all packet
 lists remain empty.
 
-Next trace entry from the current application into this boot path, the external
-0x2E30 helper and flag initialization/lifetime. Exact flash geometry, loader ABI,
+The subsequent `APPLICATION_BOOT_ENTRY.md` traces a candidate application
+service-table/marker route and selected initializer in twelve emulator cases.
+It also establishes that 0x2E30 copies two argument bytes to synthetic registers,
+without establishing their physical meaning. Next resolve full application
+receive/security scheduling, reset behavior and boot initialization gates. Exact flash geometry, loader ABI,
 programming wire path, preservation and recovery remain open. No live session,
 upload, erase or program operation was performed.

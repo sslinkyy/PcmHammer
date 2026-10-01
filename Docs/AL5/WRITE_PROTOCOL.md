@@ -31,8 +31,13 @@ The existing PCM writer cannot be assumed to apply to VPW module `0x18`.
    including arming followed by transfer; see `BOOT_SESSION.md`. The real
    negative-response helper is exercised, but transmit/FIFO/configuration
    helpers and receive cleanup remain modeled.
-   Reachability from the current application, whether flashing requires this
-   loader path, the kernel ABI and safe recovery remain unproven. No live upload
+   A service-table link and extracted application handler now trace a candidate
+   boot-request marker route; twelve emulator cases exercise guards and selected
+   marker/initializer steps. See `APPLICATION_BOOT_ENTRY.md`. The startup
+   0x74/0x44 response leaves upload arming clear, unlike the boot dispatcher
+   response. Physical reset, scheduling/security and full application entry,
+   whether flashing requires this loader path, the kernel ABI and safe recovery
+   remain unproven. No live upload
    is enabled.
 6. **Loader ready → Erased. Partially traced offline; destructive.** A resident
    boot routine has an internal erase selector table and word-program loop;

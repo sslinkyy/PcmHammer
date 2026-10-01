@@ -1,0 +1,676 @@
+{
+  "low_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
+  "high_sha256": "492040d9460d53b77dda606b9a89f4254e0680f239093001663f6ed5cf51ba75",
+  "application_service_table": {
+    "table_address": "0x99a70",
+    "count_address": "0x99af4",
+    "record_bytes": 6,
+    "table_hex": "1000000999e81200000999ee1400000999f41700000999fa190000099a00200000099a06220000099a0c230000099a12270000099a18280000099a1e2a0000099a242c0000099a2a340000099a30360000099a363b0000099a3c3c0000099a423f0000099a486a0000099a4ea00000099a54a10000099a5aa80000099a60ae0000099a66",
+    "entries": [
+      {
+        "service": "0x10",
+        "table_address": "0x99a70",
+        "descriptor": "0x999e8",
+        "descriptor_flags": "9000",
+        "handler": "0xbeaa0"
+      },
+      {
+        "service": "0x12",
+        "table_address": "0x99a76",
+        "descriptor": "0x999ee",
+        "descriptor_flags": "9000",
+        "handler": "0xb02c8"
+      },
+      {
+        "service": "0x14",
+        "table_address": "0x99a7c",
+        "descriptor": "0x999f4",
+        "descriptor_flags": "9000",
+        "handler": "0xb2038"
+      },
+      {
+        "service": "0x17",
+        "table_address": "0x99a82",
+        "descriptor": "0x999fa",
+        "descriptor_flags": "9000",
+        "handler": "0xc2a2c"
+      },
+      {
+        "service": "0x19",
+        "table_address": "0x99a88",
+        "descriptor": "0x99a00",
+        "descriptor_flags": "9000",
+        "handler": "0xb7578"
+      },
+      {
+        "service": "0x20",
+        "table_address": "0x99a8e",
+        "descriptor": "0x99a06",
+        "descriptor_flags": "9000",
+        "handler": "0xc0190"
+      },
+      {
+        "service": "0x22",
+        "table_address": "0x99a94",
+        "descriptor": "0x99a0c",
+        "descriptor_flags": "9000",
+        "handler": "0xc1ac0"
+      },
+      {
+        "service": "0x23",
+        "table_address": "0x99a9a",
+        "descriptor": "0x99a12",
+        "descriptor_flags": "9000",
+        "handler": "0xbfda0"
+      },
+      {
+        "service": "0x27",
+        "table_address": "0x99aa0",
+        "descriptor": "0x99a18",
+        "descriptor_flags": "9000",
+        "handler": "0x9820c"
+      },
+      {
+        "service": "0x28",
+        "table_address": "0x99aa6",
+        "descriptor": "0x99a1e",
+        "descriptor_flags": "9000",
+        "handler": "0xc29b8"
+      },
+      {
+        "service": "0x2a",
+        "table_address": "0x99aac",
+        "descriptor": "0x99a24",
+        "descriptor_flags": "9000",
+        "handler": "0x71044"
+      },
+      {
+        "service": "0x2c",
+        "table_address": "0x99ab2",
+        "descriptor": "0x99a2a",
+        "descriptor_flags": "9000",
+        "handler": "0x8da38"
+      },
+      {
+        "service": "0x34",
+        "table_address": "0x99ab8",
+        "descriptor": "0x99a30",
+        "descriptor_flags": "9000",
+        "handler": "0xbe6d0"
+      },
+      {
+        "service": "0x36",
+        "table_address": "0x99abe",
+        "descriptor": "0x99a36",
+        "descriptor_flags": "9000",
+        "handler": "0xad550"
+      },
+      {
+        "service": "0x3b",
+        "table_address": "0x99ac4",
+        "descriptor": "0x99a3c",
+        "descriptor_flags": "9000",
+        "handler": "0xbdfa4"
+      },
+      {
+        "service": "0x3c",
+        "table_address": "0x99aca",
+        "descriptor": "0x99a42",
+        "descriptor_flags": "9000",
+        "handler": "0xc25fc"
+      },
+      {
+        "service": "0x3f",
+        "table_address": "0x99ad0",
+        "descriptor": "0x99a48",
+        "descriptor_flags": "9000",
+        "handler": "0xc47e8"
+      },
+      {
+        "service": "0x6a",
+        "table_address": "0x99ad6",
+        "descriptor": "0x99a4e",
+        "descriptor_flags": "9000",
+        "handler": "0xb777c"
+      },
+      {
+        "service": "0xa0",
+        "table_address": "0x99adc",
+        "descriptor": "0x99a54",
+        "descriptor_flags": "9000",
+        "handler": "0xc2dc8"
+      },
+      {
+        "service": "0xa1",
+        "table_address": "0x99ae2",
+        "descriptor": "0x99a5a",
+        "descriptor_flags": "9000",
+        "handler": "0xc3c18"
+      },
+      {
+        "service": "0xa8",
+        "table_address": "0x99ae8",
+        "descriptor": "0x99a60",
+        "descriptor_flags": "9000",
+        "handler": "0xc485c"
+      },
+      {
+        "service": "0xae",
+        "table_address": "0x99aee",
+        "descriptor": "0x99a66",
+        "descriptor_flags": "9000",
+        "handler": "0xa6f1c"
+      }
+    ],
+    "boot_request": {
+      "service": "0x34",
+      "table_address": "0x99ab8",
+      "descriptor": "0x99a30",
+      "descriptor_flags": "9000",
+      "handler": "0xbe6d0"
+    },
+    "limits": "Lookup traced statically. Descriptor flags and downstream scheduling/authorization are not fully decoded."
+  },
+  "code_sha256": {
+    "0xbe6d0": "1c020e2368c50b4d9b7fe1287ae11494aede84c1ec166a8008a2f1c34c4e0c73",
+    "0x21d08": "f832fbbf2f61247c97fe4b3e7273d2a79c7c26f0f904e85eb36ab5dc0fdbeec3",
+    "0x8b2": "1d793d395e6b37c4b1a6c75ab0bff0c82040b81442da2ae8d450902e27453e77",
+    "0x3b7c": "1f3fb7775b940061617be8076102ded7938cf1f3bfb3ce39e20b1b5e0a04a1fe",
+    "0x2e30": "ff746ee0c3d56b681e4e0b02708f8f68c3807d7d00efad2712c02283ab76b6c2"
+  },
+  "scope": "Selected application handler and boot route/initializer; reset and intermediate boot startup abstracted. No live reachability proof.",
+  "live_write_enabled": false,
+  "flash_code_loaded": false,
+  "cases": [
+    {
+      "case": "length_rejected",
+      "synthetic_state": {
+        "request_length": 5
+      },
+      "entries": [
+        "0xbe6d0"
+      ],
+      "expected_final": {
+        "marker": "0x0",
+        "negative_helper_calls": [
+          {
+            "buffer": "0x208000",
+            "reason": 18
+          }
+        ]
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [
+            {
+              "buffer": "0x208000",
+              "reason": 18
+            }
+          ],
+          "response_helper_calls": [],
+          "cleanup_helper_calls": 0,
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": null,
+          "marker": "0x0",
+          "interrupt_mask": 0,
+          "upload_armed": 0,
+          "flags_8182_to_818a": "000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "guard_bit_rejected",
+      "synthetic_state": {
+        "guard_bit": true
+      },
+      "entries": [
+        "0xbe6d0"
+      ],
+      "expected_final": {
+        "marker": "0x0",
+        "negative_helper_calls": [
+          {
+            "buffer": "0x208000",
+            "reason": 51
+          }
+        ]
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [
+            {
+              "buffer": "0x208000",
+              "reason": 51
+            }
+          ],
+          "response_helper_calls": [],
+          "cleanup_helper_calls": 0,
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": null,
+          "marker": "0x0",
+          "interrupt_mask": 0,
+          "upload_armed": 0,
+          "flags_8182_to_818a": "000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "helper_above_threshold_rejected",
+      "synthetic_state": {
+        "helper_value": 401
+      },
+      "entries": [
+        "0xbe6d0"
+      ],
+      "expected_final": {
+        "marker": "0x0",
+        "negative_helper_calls": [
+          {
+            "buffer": "0x208000",
+            "reason": 34
+          }
+        ]
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [
+            {
+              "buffer": "0x208000",
+              "reason": 34
+            }
+          ],
+          "response_helper_calls": [],
+          "cleanup_helper_calls": 0,
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": null,
+          "marker": "0x0",
+          "interrupt_mask": 0,
+          "upload_armed": 0,
+          "flags_8182_to_818a": "000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "guard_word_above_threshold_rejected",
+      "synthetic_state": {
+        "guard_word": 1601
+      },
+      "entries": [
+        "0xbe6d0"
+      ],
+      "expected_final": {
+        "marker": "0x0",
+        "negative_helper_calls": [
+          {
+            "buffer": "0x208000",
+            "reason": 34
+          }
+        ]
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [
+            {
+              "buffer": "0x208000",
+              "reason": 34
+            }
+          ],
+          "response_helper_calls": [],
+          "cleanup_helper_calls": 0,
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": null,
+          "marker": "0x0",
+          "interrupt_mask": 0,
+          "upload_armed": 0,
+          "flags_8182_to_818a": "000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "guard_boundaries_accepted",
+      "synthetic_state": {
+        "helper_value": 400,
+        "guard_word": 1600
+      },
+      "entries": [
+        "0xbe6d0"
+      ],
+      "expected_final": {
+        "marker": "0xbfc1",
+        "stop_pc": "0xbe78c",
+        "interrupt_mask": 7,
+        "response_helper_calls": [
+          {
+            "buffer": "0xff8f36",
+            "argument": 85
+          }
+        ]
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [],
+          "response_helper_calls": [
+            {
+              "buffer": "0xff8f36",
+              "argument": 85
+            }
+          ],
+          "cleanup_helper_calls": 1,
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": "0xbe78c",
+          "marker": "0xbfc1",
+          "interrupt_mask": 7,
+          "upload_armed": 0,
+          "flags_8182_to_818a": "000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "application_marker_then_boot_route",
+      "synthetic_state": {},
+      "entries": [
+        "0xbe6d0",
+        "0x8b2"
+      ],
+      "expected_final": {
+        "marker": "0xb094",
+        "stop_pc": "0x97c"
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [],
+          "response_helper_calls": [
+            {
+              "buffer": "0xff8f36",
+              "argument": 85
+            }
+          ],
+          "cleanup_helper_calls": 1,
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": "0xbe78c",
+          "marker": "0xbfc1",
+          "interrupt_mask": 7,
+          "upload_armed": 0,
+          "flags_8182_to_818a": "000000000000000000"
+        },
+        {
+          "negative_helper_calls": [],
+          "response_helper_calls": [],
+          "cleanup_helper_calls": 0,
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": "0x97c",
+          "marker": "0xb094",
+          "interrupt_mask": 0,
+          "upload_armed": 0,
+          "flags_8182_to_818a": "000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "application_route_then_boot_initialization",
+      "synthetic_state": {},
+      "entries": [
+        "0xbe6d0",
+        "0x8b2",
+        "0x3b7c"
+      ],
+      "expected_final": {
+        "marker": "0xb094",
+        "upload_armed": 0,
+        "boot_responses": [
+          "6cf0187444"
+        ],
+        "synthetic_port_writes": [
+          {
+            "address": "0xffe800",
+            "size": 1,
+            "value": 24
+          },
+          {
+            "address": "0xffe801",
+            "size": 1,
+            "value": 2
+          }
+        ]
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [],
+          "response_helper_calls": [
+            {
+              "buffer": "0xff8f36",
+              "argument": 85
+            }
+          ],
+          "cleanup_helper_calls": 1,
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": "0xbe78c",
+          "marker": "0xbfc1",
+          "interrupt_mask": 7,
+          "upload_armed": 0,
+          "flags_8182_to_818a": "000000000000000000"
+        },
+        {
+          "negative_helper_calls": [],
+          "response_helper_calls": [],
+          "cleanup_helper_calls": 0,
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": "0x97c",
+          "marker": "0xb094",
+          "interrupt_mask": 0,
+          "upload_armed": 0,
+          "flags_8182_to_818a": "000000000000000000"
+        },
+        {
+          "negative_helper_calls": [],
+          "response_helper_calls": [],
+          "cleanup_helper_calls": 0,
+          "boot_responses": [
+            "6cf0187444"
+          ],
+          "synthetic_port_writes": [
+            {
+              "address": "0xffe800",
+              "size": 1,
+              "value": 24
+            },
+            {
+              "address": "0xffe801",
+              "size": 1,
+              "value": 2
+            }
+          ],
+          "stop_pc": null,
+          "marker": "0xb094",
+          "interrupt_mask": 0,
+          "upload_armed": 0,
+          "flags_8182_to_818a": "000000000100010000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "normal_boot_init_no_transition_response",
+      "synthetic_state": {},
+      "entries": [
+        "0x3b7c"
+      ],
+      "expected_final": {
+        "marker": "0x0",
+        "upload_armed": 0,
+        "boot_responses": []
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [],
+          "response_helper_calls": [],
+          "cleanup_helper_calls": 0,
+          "boot_responses": [],
+          "synthetic_port_writes": [
+            {
+              "address": "0xffe800",
+              "size": 1,
+              "value": 24
+            },
+            {
+              "address": "0xffe801",
+              "size": 1,
+              "value": 2
+            }
+          ],
+          "stop_pc": null,
+          "marker": "0x0",
+          "interrupt_mask": 0,
+          "upload_armed": 0,
+          "flags_8182_to_818a": "000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "boot_init_clears_previous_arming",
+      "synthetic_state": {
+        "initial_marker": 45204,
+        "initial_upload_armed": true
+      },
+      "entries": [
+        "0x3b7c"
+      ],
+      "expected_final": {
+        "marker": "0xb094",
+        "upload_armed": 0,
+        "boot_responses": [
+          "6cf0187444"
+        ]
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [],
+          "response_helper_calls": [],
+          "cleanup_helper_calls": 0,
+          "boot_responses": [
+            "6cf0187444"
+          ],
+          "synthetic_port_writes": [
+            {
+              "address": "0xffe800",
+              "size": 1,
+              "value": 24
+            },
+            {
+              "address": "0xffe801",
+              "size": 1,
+              "value": 2
+            }
+          ],
+          "stop_pc": null,
+          "marker": "0xb094",
+          "interrupt_mask": 0,
+          "upload_armed": 0,
+          "flags_8182_to_818a": "000000000100010000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "error_marker_route",
+      "synthetic_state": {
+        "initial_marker": 24868
+      },
+      "entries": [
+        "0x8b2"
+      ],
+      "expected_final": {
+        "marker": "0x23cb",
+        "stop_pc": "0x97c"
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [],
+          "response_helper_calls": [],
+          "cleanup_helper_calls": 0,
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": "0x97c",
+          "marker": "0x23cb",
+          "interrupt_mask": 0,
+          "upload_armed": 0,
+          "flags_8182_to_818a": "000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "already_boot_marker_unknown_route",
+      "synthetic_state": {
+        "initial_marker": 45204
+      },
+      "entries": [
+        "0x8b2"
+      ],
+      "expected_final": {
+        "marker": "0xb094",
+        "stop_pc": "0x96e"
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [],
+          "response_helper_calls": [],
+          "cleanup_helper_calls": 0,
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": "0x96e",
+          "marker": "0xb094",
+          "interrupt_mask": 0,
+          "upload_armed": 0,
+          "flags_8182_to_818a": "000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "application_resume_marker",
+      "synthetic_state": {
+        "initial_marker": 12262
+      },
+      "entries": [
+        "0x8b2"
+      ],
+      "expected_final": {
+        "marker": "0x595",
+        "stop_pc": "0x87c"
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [],
+          "response_helper_calls": [],
+          "cleanup_helper_calls": 0,
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": "0x87c",
+          "marker": "0x595",
+          "interrupt_mask": 0,
+          "upload_armed": 0,
+          "flags_8182_to_818a": "000000000000000000"
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "all_pass": true
+}
