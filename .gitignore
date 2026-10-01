@@ -1,6 +1,7 @@
 LocalOnly/
 /Tools/AL5/AL5_TARGETED_DIFFERENTIAL_MAP_*.json
 /Tools/AL5/AL5_HIGH_WORD_DIFFERENTIAL_MAP_*.json
+/Tools/AL5/AL5_ENUM_CHECKSUM_EVIDENCE_*.json
 
 # Local build/packaging output (Apps/build/*, installer)
 /dist/

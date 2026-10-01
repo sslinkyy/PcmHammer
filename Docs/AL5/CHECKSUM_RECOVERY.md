@@ -70,6 +70,14 @@ reproduce the field; see `OFFLINE_EVIDENCE.json` for those specific tests.
 
 ## Limits
 
+The documented `_efiUpdateChecksums(fd)` API is present in the existing saved
+API inventory. A disposable-secondary evidence pass is now prepared in
+`Tools/AL5/AL5_ENUM_CHECKSUM_EVIDENCE_v7.lua`; see
+[instructions](ENUM_CHECKSUM_PASS.md). It captures three controlled numeric
+variants after native finalization and prepares independent comparison with
+our formula. Its EFILive run is pending: no additional checksum match is
+claimed from preparing or simulating this workflow.
+
 The first word has direct firmware evidence and two independent full-segment
 matches. The second-word formula is inferred from the known native fields and
 the whole-segment invariant; its generating routine has not been isolated.

@@ -86,6 +86,12 @@ raw AL5 segment into the existing PCM kernel writer. No AL5 live writer exists.
 
 ## Reproduce
 
+The next prepared evidence pass is
+`Tools/AL5/AL5_ENUM_CHECKSUM_EVIDENCE_v7.lua`: three unsaved native checksum
+variants plus isolated D5053/D5054 text markers. See
+[v7 instructions and limits](ENUM_CHECKSUM_PASS.md). Lua syntax validation
+passes; EFILive execution is pending. D5197 exact option names remain unknown.
+
 The v6 targeted mapper completed its 83-case EFILive pass; the v6.1 H0105
 high-word pass also completed. Reproduce their validation with
 `expand_marker_mappings.py` and `validate_high_word.py`, using explicit local
