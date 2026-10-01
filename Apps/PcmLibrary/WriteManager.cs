@@ -67,6 +67,19 @@ namespace PcmHacking
         /// <returns>True if the write was successful, fales if failed or aborted.</returns>
         public async Task<bool> Write(byte[] image, PcmType forcedPcmType = PcmType.Undefined)
         {
+            // AL5 raw calibration segments must never enter the PCM kernel writer,
+            // including when a user manually forces a PCM type. The AL5
+            // programming protocol is still offline research. Reject before any
+            // vehicle query, security exchange, upload, erase or programming call.
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            if (image.Length == AL5CalibrationReader.Length)
+            {
+                logger.AddUserMessage("AL5 calibration-segment writing is disabled. Use the offline AL5 write-plan tool; the write protocol remains unproven.");
+                return false;
+            }
+
             // Sanity checks.
             PcmType? forcedFileType = forcedPcmType != PcmType.Undefined ? forcedPcmType : (PcmType?)null;
             FileValidator validator = new FileValidator(image, this.logger, forcedFileType);

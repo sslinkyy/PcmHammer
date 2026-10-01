@@ -95,3 +95,19 @@ That combination is a strong calibration-level candidate for the observed pre-sh
 3. Map the remaining `0x10A24` patch.
 4. Build the corrected first test calibration from verified stock rather than layering changes onto PPEI.
 5. Prioritize the 1->2 clutch handoff while retaining torque-management authority.
+
+## Offline continuation after this direct-read milestone
+
+See `Docs/AL5/README.md` for current continuation details. The direct reader,
+probe, and read UI remain unchanged. Supplied XDF v0.3 is preserved; separately
+versioned v0.4/v0.5 add structurally mapped TCC and WOT upshift-speed vectors.
+
+The native field is now reproduced offline as a reflected CRC16 (`0xA001`,
+initial zero) over `0x08000–0x15FD3`, followed by a BE16 sum-compensation word.
+This reproduces both known four-byte fields and all 256 firmware CRC table
+entries. The compensation formula still needs additional native edited-segment
+validation; see `Docs/AL5/CHECKSUM_RECOVERY.md` for evidence and limits.
+
+The AL5 write protocol remains incomplete. A file-only plan emits zero packets,
+and the shared writer rejects raw AL5 segments before transport access. No live
+destructive operation is implemented or authorized.

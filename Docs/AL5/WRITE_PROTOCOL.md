@@ -1,0 +1,78 @@
+# AL5 offline programming state machine
+
+This is an evidence-based reconstruction scaffold. Unknown packet formats are
+deliberately absent. No live erase, program, key, or loader upload was performed.
+The existing PCM writer cannot be assumed to apply to VPW module `0x18`.
+
+## States and transitions
+
+1. **Identify → Context checked. Confirmed read-only requests; raw semantics
+   partly established.** Mode `0x3C` identity queries at VPW 1X work. OS block
+   `0x0A` starts with `00 E7 B0 ED`, with trailing data; block `0x08` contains
+   hardware 15183963, not necessarily the PCM calibration meaning. Do not use
+   the probe's generic trailing-UInt32 helpers as AL5 context proof.
+2. **Context checked → Current backup read. Confirmed.** Mode `0x23` request
+   `6D 18 F0 23 <address24 BE> 01`; response
+   `6C F0 18 63 <address-low16 BE> <four bytes>`. Preserve the working high-address
+   preflight and anchor/BE16 checks. Capture exactly 57,304 bytes; require the
+   caller's expected backup SHA256 in the offline plan.
+3. **Backup read → Candidate checked. Confirmed offline for the current
+   family.** Length, cal ID, gear signature, D5196 header, native CRC16 and sum
+   compensation, source hash, and explicit edit allowlist are checked. The plan's
+   OS/controller values are caller-supplied context, not live identity proof.
+4. **Candidate checked → Programming session/security. Unknown requirement.**
+   Seed read `6C 18 F0 27 01` is confirmed. The pair `9CE5 → BC08` matches
+   algorithm 50. Key transmission, session entry, expiry, lockout and programming
+   authorization were not tested. They remain unknown transitions.
+5. **Session → Loader ready. Unknown.** Whether programming requires a loader,
+   upload address, ABI, size, entry point and acknowledgments are unproven.
+6. **Loader ready → Erased. Unknown/destructive.** Flash geometry, erase scope,
+   service/subfunction bytes, timing, status and interrupted-erase recovery are
+   unproven. The calibration payload bounds are not erase-sector bounds.
+7. **Erased → Programmed. Unknown/destructive.** Block size, framing, address
+   width, sequence counters, packet checksums, acknowledgments, retry idempotency
+   and transfer exit are unproven. No generic GM/PCM packet has been substituted.
+8. **Programmed → Verified. Strongly inferred requirement; programming-session
+   readback behavior unknown.** Exact readback/hash comparison is required.
+   Application-mode direct reads work, but when they become available after
+   programming is unknown.
+9. **Verified → Reset/recovery. Unknown.** Reset command, safe ordering, boot
+   behavior and recovery from loss of power/connection have not been established.
+
+## Existing artifacts inspected
+
+The local EFILive installation provides AL5_R/F/L/W `.obj` and `.bix` files and
+`AL5.pmm`. `OFFLINE_EVIDENCE.json` records each size, SHA256, prefix and short
+printable strings. Objects report version `08.05.89` / date `20260726`. Their
+opaque container payloads have not been decoded into packet/state definitions.
+Names alone do not prove their role or packet formats. No proprietary object or
+firmware BIN is committed or executed.
+
+PCM Hammer's existing `WriteManager` validates a PCM image, establishes hardware
+support/security, and delegates to `CKernelWriter`. The AL5 segment has a
+separate unconditional rejection before vehicle queries, including forced PCM
+types. The file-only Python planner has no transport dependency or execute flag.
+
+## Dry-run contract
+
+`Tools/AL5/write_plan.py` accepts current/candidate files plus explicit current
+SHA256, controller and OS context. It reports native checksum validity, input
+errors, absolute diff ranges and readiness blockers. The initial policy permits
+only the supplied minimal OEM-stock 1→2 target words and a valid checksum field.
+It does not permit arbitrary values at those addresses, the unknown `0x10A24`
+patch, changes to other controls, or an implicit PPEI-to-stock rebase.
+
+`ready_to_flash` and `live_write_enabled` are always false. `would_send`,
+`erase_packets`, and `program_packets` are always empty. Erase scope and program
+block size are null. Exit code 2 means readiness blocked, even if all file checks
+pass. Printing fabricated destructive packets would misrepresent the evidence.
+
+## Next offline work
+
+Recover the local EFILive container format and state definitions, or obtain an
+existing AL5 programming capture from a separate documented source. Trace the
+firmware programming handlers and native flash geometry offline. Establish exact
+packet bytes and acknowledgments before adding a simulated transport. Add fault
+injection for timeouts, duplicate blocks and interrupted programming. Keep live
+execution disabled until checksum corpus, session, erase, programming, readback
+and recovery evidence are all independently adequate.
