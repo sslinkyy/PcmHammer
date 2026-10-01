@@ -1,0 +1,284 @@
+{
+  "stock_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6",
+  "source_xdf_sha256": "99fb0ca4d9fc865e346264300319b3e329f254e20195126cc665a45e3aed6d0c",
+  "method": "whole record-family exact search, 0x24 stride and 0x0011 vector headers",
+  "confidence": "exact structural mapping; not marker-differential verified",
+  "added": [
+    {
+      "id": "D5010",
+      "pattern": "A",
+      "address": "0x130F2",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5011",
+      "pattern": "A",
+      "address": "0x13116",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5012",
+      "pattern": "A",
+      "address": "0x1313A",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5013",
+      "pattern": "A",
+      "address": "0x1315E",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5015",
+      "pattern": "A",
+      "address": "0x13182",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5016",
+      "pattern": "A",
+      "address": "0x131A6",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5017",
+      "pattern": "A",
+      "address": "0x131CA",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5018",
+      "pattern": "A",
+      "address": "0x131EE",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5010",
+      "pattern": "B",
+      "address": "0x132D2",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5011",
+      "pattern": "B",
+      "address": "0x132F6",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5012",
+      "pattern": "B",
+      "address": "0x1331A",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5013",
+      "pattern": "B",
+      "address": "0x1333E",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5015",
+      "pattern": "B",
+      "address": "0x13362",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5016",
+      "pattern": "B",
+      "address": "0x13386",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5017",
+      "pattern": "B",
+      "address": "0x133AA",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5018",
+      "pattern": "B",
+      "address": "0x133CE",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5010",
+      "pattern": "C",
+      "address": "0x134B2",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5011",
+      "pattern": "C",
+      "address": "0x134D6",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5012",
+      "pattern": "C",
+      "address": "0x134FA",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5013",
+      "pattern": "C",
+      "address": "0x1351E",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5015",
+      "pattern": "C",
+      "address": "0x13542",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5016",
+      "pattern": "C",
+      "address": "0x13566",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5017",
+      "pattern": "C",
+      "address": "0x1358A",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5018",
+      "pattern": "C",
+      "address": "0x135AE",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5010",
+      "pattern": "D",
+      "address": "0x12F5A",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5011",
+      "pattern": "D",
+      "address": "0x12F7E",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5012",
+      "pattern": "D",
+      "address": "0x12FA2",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5013",
+      "pattern": "D",
+      "address": "0x12FC6",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5015",
+      "pattern": "D",
+      "address": "0x12FEA",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5016",
+      "pattern": "D",
+      "address": "0x1300E",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5017",
+      "pattern": "D",
+      "address": "0x13032",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5018",
+      "pattern": "D",
+      "address": "0x13056",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5010",
+      "pattern": "E",
+      "address": "0x13212",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5015",
+      "pattern": "E",
+      "address": "0x13236",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5010",
+      "pattern": "F",
+      "address": "0x1307A",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5015",
+      "pattern": "F",
+      "address": "0x1309E",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5010",
+      "pattern": "H",
+      "address": "0x135D2",
+      "cells": 17,
+      "max_abs_error": 0.0
+    },
+    {
+      "id": "D5015",
+      "pattern": "H",
+      "address": "0x135F6",
+      "cells": 17,
+      "max_abs_error": 0.0
+    }
+  ],
+  "deferred": [
+    {
+      "pattern": "G",
+      "reason": "whole family not unique; differential evidence required",
+      "family_matches": [
+        "0x1333E",
+        "0x133F2"
+      ]
+    }
+  ]
+}

@@ -21,3 +21,18 @@ unproven. No edited BIN is flash-ready.
 Reference calibration BINs and proprietary EFILive objects are deliberately not
 included. Run the tools under `Tools/AL5` with local file paths. Preserve original
 v0.3 here; expanded definitions belong in separately versioned files.
+
+## Structural TCC v0.4
+
+`AL5_15184109_15183960_STRUCTURAL_TCC_v0_4.xdf` adds 38 vectors / 646 cells
+across D5010–D5013 and D5015–D5018. A–D are unique complete eight-record
+families; E, F and H are unique apply/release pairs. The two candidate G pairs
+at `0x1333E` and `0x133F2` remain deferred. Pattern names follow the native
+export; their operating-mode semantics have not been proven.
+
+Every included vector matches the native export exactly and has the expected
+`0x0011` header and `0x24` record stride. This establishes structural confidence,
+not marker-differential proof. `TCC_MAPPING_v0_4.json` records the evidence.
+The resulting XDF has 173 items; 168 numeric entries pass native comparisons.
+The independent v0.3 audit also passes all 130 resolved numeric entries.
+No TunerPro GUI validation was performed for the new v0.4 entries.
