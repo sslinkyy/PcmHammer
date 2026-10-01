@@ -59,20 +59,14 @@ a plan to program the currently installed PPEI calibration.
 
 ## Current boundaries and next work
 
-The latest definition is `TunerPro/AL5_15184109_15183960_STRUCTURAL_WOT_TCC_v0_7.xdf`.
-105 of 127 native IDs are represented, including partial/research entries.
-`V0_7_AUDIT.json` lists the 22 absent IDs. D5010/D5015 Pattern G has two possible
-record pairs and remains deferred. WOT downshift Patterns A/D are indistinguishable
-by native values and remain absent; B/C are mapped independently of adjacent RPM
-labels. Remaining temperature,
-remaining pressure/adaptive/enable and speedo mappings still need evidence.
-The new XDF versions need a TunerPro GUI check; numerical audit is complete.
-`TunerPro/REMAINING_CONTROLS.md` narrows 14 absent definitions to explicit
-scalar/throttle packing candidates and records their firmware references.
-These require identity proof before XDF promotion; coverage has not changed.
-The optional v0.8 research supplement adds 25 unassigned raw vectors whose
-firmware selection passes 45 emulator cases. It retains all v0.7 named tables;
-native mode/gear labels remain unproven and ID coverage remains 105/127.
+**Current named XDF: v0.9**, `TunerPro/AL5_15184109_15183960_MARKER_EXTENDED_v0_9.xdf`.
+The completed offline EFILive report resolves 83 marker cases and adds 41 items;
+all 283 numeric native comparisons pass. 124/127 native IDs are represented,
+including partial/research entries. D5053/D5054/D5197 enums remain absent.
+H0105's 32-bit width remains inferred pending a prepared high-word marker test.
+See [v0.9 evidence and next test](TunerPro/MARKER_VALIDATION_v0_9.md).
+TunerPro GUI display checks remain open. The optional v0.8 raw supplement remains separate. Its two flag-dependent
+families still have no native definition identity; keep their raw labels.
 
 Read [CHECKSUM_RECOVERY.md](CHECKSUM_RECOVERY.md) and
 [WRITE_PROTOCOL.md](WRITE_PROTOCOL.md) before extending writer work. Recover the
@@ -87,12 +81,11 @@ raw AL5 segment into the existing PCM kernel writer. No AL5 live writer exists.
 
 ## Reproduce
 
-The next GUI evidence pass is prepared in
-`Tools/AL5/AL5_TARGETED_DIFFERENTIAL_MAPPER_v6.lua`. See
-[targeted mapper instructions](TunerPro/TARGETED_MAPPER.md). It isolates 83
-numeric marker cases, restores the full raw baseline after each, and never
-saves a tune or accesses a vehicle. EFILive execution is still pending; no
-mapping confidence or XDF coverage is increased by preparing this script.
+The v6 targeted mapper completed its 83-case EFILive pass. The next prepared
+GUI evidence pass is `Tools/AL5/AL5_H0105_HIGH_WORD_MAPPER_v6_1.lua`; see
+[v0.9 evidence and instructions](TunerPro/MARKER_VALIDATION_v0_9.md). It tests
+one numeric cell using the same offline engine. No tune save or vehicle access
+is performed. Its execution is pending.
 
 From the repository root, use the scripts in `Tools/AL5`; each accepts explicit
 local paths and has `--help`. Reference files remain outside Git:

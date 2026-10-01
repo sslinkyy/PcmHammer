@@ -107,3 +107,16 @@ The XDF audit passes all 242 previously resolved native comparisons and bounds/
 category/unique-ID checks for the new entries. Their raw words match the local
 stock data; TunerPro GUI validation is pending. Use v0.7 as the named-definition
 baseline. The research supplement and any edited BIN remain offline only.
+
+## Marker extended v0.9 — current named definition
+
+`AL5_15184109_15183960_MARKER_EXTENDED_v0_9.xdf` adds 41 items from the
+successful 83-case offline EFILive report: 16 scalars, 15 throttle-release
+vectors, two Pattern G TCC vectors and eight Pattern A/D downshift vectors.
+All 283 numeric comparisons pass; 124/127 native IDs are represented. The
+three remaining absent IDs are D5053/D5054/D5197 text enums. Existing v0.7
+entries are preserved. H0105's high-word width remains inferred and is
+explicitly labeled; TunerPro GUI display validation remains pending.
+
+See [marker validation and next single-case test](MARKER_VALIDATION_v0_9.md).
+The v0.8 raw supplement remains separate. No edited BIN is flash-ready.

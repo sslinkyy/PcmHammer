@@ -1,5 +1,11 @@
 # Remaining control candidates — no new XDF assignments
 
+Historical candidate ledger below. The subsequent 83-case EFILive marker pass
+resolves the named scalar/throttle identities in v0.9; see
+[marker validation](MARKER_VALIDATION_v0_9.md). Three text enums remain absent,
+and H0105's high word still needs independent width evidence. Earlier candidate
+confidence statements below describe the evidence before that pass.
+
 `search_remaining_controls.py` narrows 14 of the 22 still-absent native IDs.
 It uses the existing native export and anchored stock segment, records scaling
 and packing hypotheses explicitly, and adds even-aligned address-literal hits

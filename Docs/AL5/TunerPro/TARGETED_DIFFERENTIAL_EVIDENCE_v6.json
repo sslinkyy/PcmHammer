@@ -1,0 +1,2785 @@
+{
+  "cases": [
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 40188,
+          "after": 18,
+          "before": 57
+        },
+        {
+          "address": 40189,
+          "after": 192,
+          "before": 36
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "1C2020D012C03E803E80",
+          "before_hex": "1C2020D039243E803E80",
+          "changed_end": 40189,
+          "changed_start": 40188,
+          "context_end": 40193,
+          "context_start": 40184
+        }
+      ],
+      "marker": {
+        "before": 3657,
+        "column": 0,
+        "id": "D5042",
+        "label": "Bidi Control Disable, 3rd Gear",
+        "readback": 1200,
+        "requested": 1200,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 40190,
+          "after": 18,
+          "before": 62
+        },
+        {
+          "address": 40191,
+          "after": 208,
+          "before": 128
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "20D0392412D03E803E80",
+          "before_hex": "20D039243E803E803E80",
+          "changed_end": 40191,
+          "changed_start": 40190,
+          "context_end": 40195,
+          "context_start": 40186
+        }
+      ],
+      "marker": {
+        "before": 4000,
+        "column": 0,
+        "id": "D5043",
+        "label": "Bidi Control Disable, 4th Gear",
+        "readback": 1204,
+        "requested": 1204,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 40192,
+          "after": 18,
+          "before": 62
+        },
+        {
+          "address": 40193,
+          "after": 224,
+          "before": 128
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "39243E8012E03E803E80",
+          "before_hex": "39243E803E803E803E80",
+          "changed_end": 40193,
+          "changed_start": 40192,
+          "context_end": 40197,
+          "context_start": 40188
+        }
+      ],
+      "marker": {
+        "before": 4000,
+        "column": 0,
+        "id": "D5044",
+        "label": "Bidi Control Disable, 5th Gear",
+        "readback": 1208,
+        "requested": 1208,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 40194,
+          "after": 18,
+          "before": 62
+        },
+        {
+          "address": 40195,
+          "after": 240,
+          "before": 128
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "3E803E8012F03E800080",
+          "before_hex": "3E803E803E803E800080",
+          "changed_end": 40195,
+          "changed_start": 40194,
+          "context_end": 40199,
+          "context_start": 40190
+        }
+      ],
+      "marker": {
+        "before": 4000,
+        "column": 0,
+        "id": "D5045",
+        "label": "Bidi Control Disable, 6th Gear",
+        "readback": 1212,
+        "requested": 1212,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 79756,
+          "after": 22,
+          "before": 14
+        },
+        {
+          "address": 79757,
+          "after": 0,
+          "before": 128
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "0000000016000F80E480",
+          "before_hex": "000000000E800F80E480",
+          "changed_end": 79757,
+          "changed_start": 79756,
+          "context_end": 79761,
+          "context_start": 79752
+        }
+      ],
+      "marker": {
+        "before": 29,
+        "column": 0,
+        "id": "D5055",
+        "label": "TCC Enable Min Temp Enable",
+        "readback": 44,
+        "requested": 44,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 79758,
+          "after": 22,
+          "before": 15
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "00000E801680E480E7",
+          "before_hex": "00000E800F80E480E7",
+          "changed_end": 79758,
+          "changed_start": 79758,
+          "context_end": 79762,
+          "context_start": 79754
+        }
+      ],
+      "marker": {
+        "before": 31,
+        "column": 0,
+        "id": "D5056",
+        "label": "TCC Enable Min Temp Disable",
+        "readback": 45,
+        "requested": 45,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 79708,
+          "after": 38,
+          "before": 28
+        },
+        {
+          "address": 79709,
+          "after": 64,
+          "before": 32
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "F000F000264020D00100",
+          "before_hex": "F000F0001C2020D00100",
+          "changed_end": 79709,
+          "changed_start": 79708,
+          "context_end": 79713,
+          "context_start": 79704
+        }
+      ],
+      "marker": {
+        "before": 900,
+        "column": 0,
+        "id": "D5057",
+        "label": "TCC Enable Min RPM Enable",
+        "readback": 1224,
+        "requested": 1224,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 79710,
+          "after": 38,
+          "before": 32
+        },
+        {
+          "address": 79711,
+          "after": 96,
+          "before": 208
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "F0001C20266001000100",
+          "before_hex": "F0001C2020D001000100",
+          "changed_end": 79711,
+          "changed_start": 79710,
+          "context_end": 79715,
+          "context_start": 79706
+        }
+      ],
+      "marker": {
+        "before": 1050,
+        "column": 0,
+        "id": "D5058",
+        "label": "TCC Enable Min RPM Disable",
+        "readback": 1228,
+        "requested": 1228,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 84756,
+          "after": 96,
+          "before": 87
+        },
+        {
+          "address": 84757,
+          "after": 0,
+          "before": 10
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "8FBB20006000833269BB",
+          "before_hex": "8FBB2000570A833269BB",
+          "changed_end": 84757,
+          "changed_start": 84756,
+          "context_end": 84761,
+          "context_start": 84752
+        }
+      ],
+      "marker": {
+        "before": 2.7199726528,
+        "column": 0,
+        "id": "D5061",
+        "label": "Transfer Case Ratio",
+        "readback": 3.0000021504000003,
+        "requested": 3,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 45116,
+          "after": 19,
+          "before": 128
+        },
+        {
+          "address": 45117,
+          "after": 80,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "F8800000135080000000",
+          "before_hex": "F8800000800080000000",
+          "changed_end": 45117,
+          "changed_start": 45116,
+          "context_end": 45121,
+          "context_start": 45112
+        }
+      ],
+      "marker": {
+        "before": -8192,
+        "column": 0,
+        "id": "D5062",
+        "label": "Mod Main Pressure(G-Sol)  High RPM",
+        "readback": 1236,
+        "requested": 1236,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 45118,
+          "after": 19,
+          "before": 128
+        },
+        {
+          "address": 45119,
+          "after": 96,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "00008000136000000000",
+          "before_hex": "00008000800000000000",
+          "changed_end": 45119,
+          "changed_start": 45118,
+          "context_end": 45123,
+          "context_start": 45114
+        }
+      ],
+      "marker": {
+        "before": -8192,
+        "column": 0,
+        "id": "D5063",
+        "label": "Mod Main Pressure (G-Sol) Low RPM",
+        "readback": 1240,
+        "requested": 1240,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 32828,
+          "after": 123,
+          "before": 254
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "000000007BFFFFFF01",
+          "before_hex": "00000000FEFFFFFF01",
+          "changed_end": 32828,
+          "changed_start": 32828,
+          "context_end": 32832,
+          "context_start": 32824
+        }
+      ],
+      "marker": {
+        "before": 254,
+        "column": 0,
+        "id": "D5183",
+        "label": "TCM Locked Counter",
+        "readback": 123,
+        "requested": 123,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 84758,
+          "after": 144,
+          "before": 131
+        },
+        {
+          "address": 84759,
+          "after": 0,
+          "before": 50
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "2000570A900069BB7D00",
+          "before_hex": "2000570A833269BB7D00",
+          "changed_end": 84759,
+          "changed_start": 84758,
+          "context_end": 84763,
+          "context_start": 84754
+        }
+      ],
+      "marker": {
+        "before": 4.099853515625,
+        "column": 0,
+        "id": "H0103",
+        "label": "Final Drive Ratio",
+        "readback": 4.5,
+        "requested": 4.5,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 86758,
+          "after": 18,
+          "before": 15
+        },
+        {
+          "address": 86759,
+          "after": 220,
+          "before": 160
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "1400000012DC01004E71",
+          "before_hex": "140000000FA001004E71",
+          "changed_end": 86759,
+          "changed_start": 86758,
+          "context_end": 86763,
+          "context_start": 86754
+        }
+      ],
+      "marker": {
+        "before": 2485.4839968,
+        "column": 0,
+        "id": "H0105",
+        "label": "ECM Pulses Per {du,count/km=kilometer,count/mile=mile,else=distance traveled}",
+        "readback": 2999.9791841376004,
+        "requested": 3000,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 87616,
+          "after": 56,
+          "before": 53
+        },
+        {
+          "address": 87617,
+          "after": 64,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "0000775C38400CCC570A",
+          "before_hex": "0000775C35000CCC570A",
+          "changed_end": 87617,
+          "changed_start": 87616,
+          "context_end": 87621,
+          "context_start": 87612
+        }
+      ],
+      "marker": {
+        "before": 424,
+        "column": 0,
+        "id": "H0136",
+        "label": "Tire Revolutions Per {du,rev/km=kilometer,rev/mile=mile,else=distance traveled}",
+        "readback": 450,
+        "requested": 450,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 84760,
+          "after": 120,
+          "before": 105
+        },
+        {
+          "address": 84761,
+          "after": 179,
+          "before": 187
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "570A833278B37D007D00",
+          "before_hex": "570A833269BB7D007D00",
+          "changed_end": 84761,
+          "changed_start": 84760,
+          "context_end": 84765,
+          "context_start": 84756
+        }
+      ],
+      "marker": {
+        "before": 262.79138906730003,
+        "column": 0,
+        "id": "H0137",
+        "label": "Vehicle Speed Ratio",
+        "readback": 299.9959777881,
+        "requested": 300,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80762,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80763,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "4E7100118000FFFFFFFF",
+          "before_hex": "4E710011FFFFFFFFFFFF",
+          "changed_end": 80763,
+          "changed_start": 80762,
+          "context_end": 80767,
+          "context_start": 80758
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 0,
+        "id": "D5073",
+        "label": "1st Gear / 0",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80778,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80779,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFFFFFF8000FFFFFFFF",
+          "before_hex": "FFFFFFFFFFFFFFFFFFFF",
+          "changed_end": 80779,
+          "changed_start": 80778,
+          "context_end": 80783,
+          "context_start": 80774
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 0,
+        "id": "D5073",
+        "label": "1st Gear / 128",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80794,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80795,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFFFFFF80000011FFFF",
+          "before_hex": "FFFFFFFFFFFF0011FFFF",
+          "changed_end": 80795,
+          "changed_start": 80794,
+          "context_end": 80799,
+          "context_start": 80790
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 0,
+        "id": "D5073",
+        "label": "1st Gear / 256",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80798,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80799,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFF00118000FFFFFFFF",
+          "before_hex": "FFFF0011FFFFFFFFFFFF",
+          "changed_end": 80799,
+          "changed_start": 80798,
+          "context_end": 80803,
+          "context_start": 80794
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 1,
+        "id": "D5073",
+        "label": "2nd Gear / 0",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80814,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80815,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFFFFFF8000FFFFFFFF",
+          "before_hex": "FFFFFFFFFFFFFFFFFFFF",
+          "changed_end": 80815,
+          "changed_start": 80814,
+          "context_end": 80819,
+          "context_start": 80810
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 1,
+        "id": "D5073",
+        "label": "2nd Gear / 128",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80830,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80831,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFFFFFF80000011FFFF",
+          "before_hex": "FFFFFFFFFFFF0011FFFF",
+          "changed_end": 80831,
+          "changed_start": 80830,
+          "context_end": 80835,
+          "context_start": 80826
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 1,
+        "id": "D5073",
+        "label": "2nd Gear / 256",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80834,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80835,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFF00118000FFFFFFFF",
+          "before_hex": "FFFF0011FFFFFFFFFFFF",
+          "changed_end": 80835,
+          "changed_start": 80834,
+          "context_end": 80839,
+          "context_start": 80830
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 2,
+        "id": "D5073",
+        "label": "3rd Gear / 0",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80850,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80851,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFFFFFF8000FFFFFFFF",
+          "before_hex": "FFFFFFFFFFFFFFFFFFFF",
+          "changed_end": 80851,
+          "changed_start": 80850,
+          "context_end": 80855,
+          "context_start": 80846
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 2,
+        "id": "D5073",
+        "label": "3rd Gear / 128",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80866,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80867,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFFFFFF80000011FFFF",
+          "before_hex": "FFFFFFFFFFFF0011FFFF",
+          "changed_end": 80867,
+          "changed_start": 80866,
+          "context_end": 80871,
+          "context_start": 80862
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 2,
+        "id": "D5073",
+        "label": "3rd Gear / 256",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80870,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80871,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFF00118000FFFFFFFF",
+          "before_hex": "FFFF0011FFFFFFFFFFFF",
+          "changed_end": 80871,
+          "changed_start": 80870,
+          "context_end": 80875,
+          "context_start": 80866
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 3,
+        "id": "D5073",
+        "label": "4th Gear / 0",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80886,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80887,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFFFFFF8000FFFFFFFF",
+          "before_hex": "FFFFFFFFFFFFFFFFFFFF",
+          "changed_end": 80887,
+          "changed_start": 80886,
+          "context_end": 80891,
+          "context_start": 80882
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 3,
+        "id": "D5073",
+        "label": "4th Gear / 128",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80902,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80903,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFFFFFF80000011FFFF",
+          "before_hex": "FFFFFFFFFFFF0011FFFF",
+          "changed_end": 80903,
+          "changed_start": 80902,
+          "context_end": 80907,
+          "context_start": 80898
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 3,
+        "id": "D5073",
+        "label": "4th Gear / 256",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80906,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80907,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFF00118000FFFFFFFF",
+          "before_hex": "FFFF0011FFFFFFFFFFFF",
+          "changed_end": 80907,
+          "changed_start": 80906,
+          "context_end": 80911,
+          "context_start": 80902
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 4,
+        "id": "D5073",
+        "label": "5th Gear / 0",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80922,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80923,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFFFFFF8000FFFFFFFF",
+          "before_hex": "FFFFFFFFFFFFFFFFFFFF",
+          "changed_end": 80923,
+          "changed_start": 80922,
+          "context_end": 80927,
+          "context_start": 80918
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 4,
+        "id": "D5073",
+        "label": "5th Gear / 128",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80938,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80939,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFFFFFF80004E714E71",
+          "before_hex": "FFFFFFFFFFFF4E714E71",
+          "changed_end": 80939,
+          "changed_start": 80938,
+          "context_end": 80943,
+          "context_start": 80934
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 4,
+        "id": "D5073",
+        "label": "5th Gear / 256",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80210,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80211,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "000000118000FFFFFFFF",
+          "before_hex": "00000011FFFFFFFFFFFF",
+          "changed_end": 80211,
+          "changed_start": 80210,
+          "context_end": 80215,
+          "context_start": 80206
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 0,
+        "id": "D5074",
+        "label": "1st Gear / 0",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80226,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80227,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFFFFFF8000FFFFFFFF",
+          "before_hex": "FFFFFFFFFFFFFFFFFFFF",
+          "changed_end": 80227,
+          "changed_start": 80226,
+          "context_end": 80231,
+          "context_start": 80222
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 0,
+        "id": "D5074",
+        "label": "1st Gear / 128",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80242,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80243,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFFFFFF80000011FFFF",
+          "before_hex": "FFFFFFFFFFFF0011FFFF",
+          "changed_end": 80243,
+          "changed_start": 80242,
+          "context_end": 80247,
+          "context_start": 80238
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 0,
+        "id": "D5074",
+        "label": "1st Gear / 256",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80246,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80247,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFF00118000FFFFFFFF",
+          "before_hex": "FFFF0011FFFFFFFFFFFF",
+          "changed_end": 80247,
+          "changed_start": 80246,
+          "context_end": 80251,
+          "context_start": 80242
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 1,
+        "id": "D5074",
+        "label": "2nd Gear / 0",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80262,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80263,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFFFFFF8000FFFFFFFF",
+          "before_hex": "FFFFFFFFFFFFFFFFFFFF",
+          "changed_end": 80263,
+          "changed_start": 80262,
+          "context_end": 80267,
+          "context_start": 80258
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 1,
+        "id": "D5074",
+        "label": "2nd Gear / 128",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80278,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80279,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFFFFFF80000011FFFF",
+          "before_hex": "FFFFFFFFFFFF0011FFFF",
+          "changed_end": 80279,
+          "changed_start": 80278,
+          "context_end": 80283,
+          "context_start": 80274
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 1,
+        "id": "D5074",
+        "label": "2nd Gear / 256",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80282,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80283,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFF00118000FFFFFFFF",
+          "before_hex": "FFFF0011FFFFFFFFFFFF",
+          "changed_end": 80283,
+          "changed_start": 80282,
+          "context_end": 80287,
+          "context_start": 80278
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 2,
+        "id": "D5074",
+        "label": "3rd Gear / 0",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80298,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80299,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFFFFFF8000FFFFFFFF",
+          "before_hex": "FFFFFFFFFFFFFFFFFFFF",
+          "changed_end": 80299,
+          "changed_start": 80298,
+          "context_end": 80303,
+          "context_start": 80294
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 2,
+        "id": "D5074",
+        "label": "3rd Gear / 128",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80314,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80315,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFFFFFF80000011FFFF",
+          "before_hex": "FFFFFFFFFFFF0011FFFF",
+          "changed_end": 80315,
+          "changed_start": 80314,
+          "context_end": 80319,
+          "context_start": 80310
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 2,
+        "id": "D5074",
+        "label": "3rd Gear / 256",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80318,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80319,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFF00118000FFFFFFFF",
+          "before_hex": "FFFF0011FFFFFFFFFFFF",
+          "changed_end": 80319,
+          "changed_start": 80318,
+          "context_end": 80323,
+          "context_start": 80314
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 3,
+        "id": "D5074",
+        "label": "4th Gear / 0",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80334,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80335,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFFFFFF8000FFFFFFFF",
+          "before_hex": "FFFFFFFFFFFFFFFFFFFF",
+          "changed_end": 80335,
+          "changed_start": 80334,
+          "context_end": 80339,
+          "context_start": 80330
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 3,
+        "id": "D5074",
+        "label": "4th Gear / 128",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80350,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80351,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFFFFFF80000011FFFF",
+          "before_hex": "FFFFFFFFFFFF0011FFFF",
+          "changed_end": 80351,
+          "changed_start": 80350,
+          "context_end": 80355,
+          "context_start": 80346
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 3,
+        "id": "D5074",
+        "label": "4th Gear / 256",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80354,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80355,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFF00118000FFFFFFFF",
+          "before_hex": "FFFF0011FFFFFFFFFFFF",
+          "changed_end": 80355,
+          "changed_start": 80354,
+          "context_end": 80359,
+          "context_start": 80350
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 4,
+        "id": "D5074",
+        "label": "5th Gear / 0",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80370,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80371,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFFFFFF8000FFFFFFFF",
+          "before_hex": "FFFFFFFFFFFFFFFFFFFF",
+          "changed_end": 80371,
+          "changed_start": 80370,
+          "context_end": 80375,
+          "context_start": 80366
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 4,
+        "id": "D5074",
+        "label": "5th Gear / 128",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 80386,
+          "after": 128,
+          "before": 255
+        },
+        {
+          "address": 80387,
+          "after": 0,
+          "before": 255
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "FFFFFFFF80004E714E71",
+          "before_hex": "FFFFFFFFFFFF4E714E71",
+          "changed_end": 80387,
+          "changed_start": 80386,
+          "context_end": 80391,
+          "context_start": 80382
+        }
+      ],
+      "marker": {
+        "before": 99.99847412437049,
+        "column": 4,
+        "id": "D5074",
+        "label": "5th Gear / 256",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 80578,
+          "after": 128,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "4E7100118000000000",
+          "before_hex": "4E7100110000000000",
+          "changed_end": 80578,
+          "changed_start": 80578,
+          "context_end": 80582,
+          "context_start": 80574
+        }
+      ],
+      "marker": {
+        "before": 0,
+        "column": 0,
+        "id": "D5075",
+        "label": "1st Gear / 0",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 80594,
+          "after": 128,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "000000008000000000",
+          "before_hex": "000000000000000000",
+          "changed_end": 80594,
+          "changed_start": 80594,
+          "context_end": 80598,
+          "context_start": 80590
+        }
+      ],
+      "marker": {
+        "before": 0,
+        "column": 0,
+        "id": "D5075",
+        "label": "1st Gear / 128",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 80610,
+          "after": 128,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "000000008000001100",
+          "before_hex": "000000000000001100",
+          "changed_end": 80610,
+          "changed_start": 80610,
+          "context_end": 80614,
+          "context_start": 80606
+        }
+      ],
+      "marker": {
+        "before": 0,
+        "column": 0,
+        "id": "D5075",
+        "label": "1st Gear / 256",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 80614,
+          "after": 128,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "000000118000000000",
+          "before_hex": "000000110000000000",
+          "changed_end": 80614,
+          "changed_start": 80614,
+          "context_end": 80618,
+          "context_start": 80610
+        }
+      ],
+      "marker": {
+        "before": 0,
+        "column": 1,
+        "id": "D5075",
+        "label": "2nd Gear / 0",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 80630,
+          "after": 128,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "000000008000000000",
+          "before_hex": "000000000000000000",
+          "changed_end": 80630,
+          "changed_start": 80630,
+          "context_end": 80634,
+          "context_start": 80626
+        }
+      ],
+      "marker": {
+        "before": 0,
+        "column": 1,
+        "id": "D5075",
+        "label": "2nd Gear / 128",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 80646,
+          "after": 128,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "000000008000001100",
+          "before_hex": "000000000000001100",
+          "changed_end": 80646,
+          "changed_start": 80646,
+          "context_end": 80650,
+          "context_start": 80642
+        }
+      ],
+      "marker": {
+        "before": 0,
+        "column": 1,
+        "id": "D5075",
+        "label": "2nd Gear / 256",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 80650,
+          "after": 128,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "000000118000000000",
+          "before_hex": "000000110000000000",
+          "changed_end": 80650,
+          "changed_start": 80650,
+          "context_end": 80654,
+          "context_start": 80646
+        }
+      ],
+      "marker": {
+        "before": 0,
+        "column": 2,
+        "id": "D5075",
+        "label": "3rd Gear / 0",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 80666,
+          "after": 128,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "000000008000000000",
+          "before_hex": "000000000000000000",
+          "changed_end": 80666,
+          "changed_start": 80666,
+          "context_end": 80670,
+          "context_start": 80662
+        }
+      ],
+      "marker": {
+        "before": 0,
+        "column": 2,
+        "id": "D5075",
+        "label": "3rd Gear / 128",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 80682,
+          "after": 128,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "000000008000001100",
+          "before_hex": "000000000000001100",
+          "changed_end": 80682,
+          "changed_start": 80682,
+          "context_end": 80686,
+          "context_start": 80678
+        }
+      ],
+      "marker": {
+        "before": 0,
+        "column": 2,
+        "id": "D5075",
+        "label": "3rd Gear / 256",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 80686,
+          "after": 128,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "000000118000000000",
+          "before_hex": "000000110000000000",
+          "changed_end": 80686,
+          "changed_start": 80686,
+          "context_end": 80690,
+          "context_start": 80682
+        }
+      ],
+      "marker": {
+        "before": 0,
+        "column": 3,
+        "id": "D5075",
+        "label": "4th Gear / 0",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 80702,
+          "after": 128,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "000000008000000000",
+          "before_hex": "000000000000000000",
+          "changed_end": 80702,
+          "changed_start": 80702,
+          "context_end": 80706,
+          "context_start": 80698
+        }
+      ],
+      "marker": {
+        "before": 0,
+        "column": 3,
+        "id": "D5075",
+        "label": "4th Gear / 128",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 80718,
+          "after": 128,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "000000008000001100",
+          "before_hex": "000000000000001100",
+          "changed_end": 80718,
+          "changed_start": 80718,
+          "context_end": 80722,
+          "context_start": 80714
+        }
+      ],
+      "marker": {
+        "before": 0,
+        "column": 3,
+        "id": "D5075",
+        "label": "4th Gear / 256",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 80722,
+          "after": 128,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "000000118000000000",
+          "before_hex": "000000110000000000",
+          "changed_end": 80722,
+          "changed_start": 80722,
+          "context_end": 80726,
+          "context_start": 80718
+        }
+      ],
+      "marker": {
+        "before": 0,
+        "column": 4,
+        "id": "D5075",
+        "label": "5th Gear / 0",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 80738,
+          "after": 128,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "000000008000000000",
+          "before_hex": "000000000000000000",
+          "changed_end": 80738,
+          "changed_start": 80738,
+          "context_end": 80742,
+          "context_start": 80734
+        }
+      ],
+      "marker": {
+        "before": 0,
+        "column": 4,
+        "id": "D5075",
+        "label": "5th Gear / 128",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 80754,
+          "after": 128,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "0000000080004E714E",
+          "before_hex": "0000000000004E714E",
+          "changed_end": 80754,
+          "changed_start": 80754,
+          "context_end": 80758,
+          "context_start": 80750
+        }
+      ],
+      "marker": {
+        "before": 0,
+        "column": 4,
+        "id": "D5075",
+        "label": "5th Gear / 256",
+        "readback": 50.0000000016384,
+        "requested": 50,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 78834,
+          "after": 50,
+          "before": 16
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "130000113200100010",
+          "before_hex": "130000111000100010",
+          "changed_end": 78834,
+          "changed_start": 78834,
+          "context_end": 78838,
+          "context_start": 78830
+        }
+      ],
+      "marker": {
+        "before": 32,
+        "column": 6,
+        "id": "D5010",
+        "label": "Pattern G / 0",
+        "readback": 100,
+        "requested": 100,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 78850,
+          "after": 50,
+          "before": 16
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "100010003200108011",
+          "before_hex": "100010001000108011",
+          "changed_end": 78850,
+          "changed_start": 78850,
+          "context_end": 78854,
+          "context_start": 78846
+        }
+      ],
+      "marker": {
+        "before": 32,
+        "column": 6,
+        "id": "D5010",
+        "label": "Pattern G / 50",
+        "readback": 100,
+        "requested": 100,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 78866,
+          "after": 50,
+          "before": 22
+        },
+        {
+          "address": 78867,
+          "after": 0,
+          "before": 128
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "15001600320000110D00",
+          "before_hex": "15001600168000110D00",
+          "changed_end": 78867,
+          "changed_start": 78866,
+          "context_end": 78871,
+          "context_start": 78862
+        }
+      ],
+      "marker": {
+        "before": 45,
+        "column": 6,
+        "id": "D5010",
+        "label": "Pattern G / 100",
+        "readback": 100,
+        "requested": 100,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 78870,
+          "after": 50,
+          "before": 13
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "1680001132000D000D",
+          "before_hex": "168000110D000D000D",
+          "changed_end": 78870,
+          "changed_start": 78870,
+          "context_end": 78874,
+          "context_start": 78866
+        }
+      ],
+      "marker": {
+        "before": 26,
+        "column": 6,
+        "id": "D5015",
+        "label": "Pattern G / 0",
+        "readback": 100,
+        "requested": 100,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 78886,
+          "after": 50,
+          "before": 13
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "0D000D0032000D000D",
+          "before_hex": "0D000D000D000D000D",
+          "changed_end": 78886,
+          "changed_start": 78886,
+          "context_end": 78890,
+          "context_start": 78882
+        }
+      ],
+      "marker": {
+        "before": 26,
+        "column": 6,
+        "id": "D5015",
+        "label": "Pattern G / 50",
+        "readback": 100,
+        "requested": 100,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 78902,
+          "after": 50,
+          "before": 19
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "120013003200001119",
+          "before_hex": "120013001300001119",
+          "changed_end": 78902,
+          "changed_start": 78902,
+          "context_end": 78906,
+          "context_start": 78898
+        }
+      ],
+      "marker": {
+        "before": 38,
+        "column": 6,
+        "id": "D5015",
+        "label": "Pattern G / 100",
+        "readback": 100,
+        "requested": 100,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 75120,
+          "after": 50,
+          "before": 10
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "3500000232000A0000",
+          "before_hex": "350000020A000A0000",
+          "changed_end": 75120,
+          "changed_start": 75120,
+          "context_end": 75124,
+          "context_start": 75116
+        }
+      ],
+      "marker": {
+        "before": 20,
+        "column": 0,
+        "id": "D5035",
+        "label": "Pattern A / High Value",
+        "readback": 100,
+        "requested": 100,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 75122,
+          "after": 50,
+          "before": 10
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "00020A003200000216",
+          "before_hex": "00020A000A00000216",
+          "changed_end": 75122,
+          "changed_start": 75122,
+          "context_end": 75126,
+          "context_start": 75118
+        }
+      ],
+      "marker": {
+        "before": 20,
+        "column": 0,
+        "id": "D5035",
+        "label": "Pattern A / Low Value",
+        "readback": 100,
+        "requested": 100,
+        "row": 1
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 75840,
+          "after": 50,
+          "before": 10
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "3500000232000A0000",
+          "before_hex": "350000020A000A0000",
+          "changed_end": 75840,
+          "changed_start": 75840,
+          "context_end": 75844,
+          "context_start": 75836
+        }
+      ],
+      "marker": {
+        "before": 20,
+        "column": 3,
+        "id": "D5035",
+        "label": "Pattern D / High Value",
+        "readback": 100,
+        "requested": 100,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 75842,
+          "after": 50,
+          "before": 10
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "00020A003200000216",
+          "before_hex": "00020A000A00000216",
+          "changed_end": 75842,
+          "changed_start": 75842,
+          "context_end": 75846,
+          "context_start": 75838
+        }
+      ],
+      "marker": {
+        "before": 20,
+        "column": 3,
+        "id": "D5035",
+        "label": "Pattern D / Low Value",
+        "readback": 100,
+        "requested": 100,
+        "row": 1
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 75126,
+          "after": 50,
+          "before": 22
+        },
+        {
+          "address": 75127,
+          "after": 0,
+          "before": 128
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "0A000002320016800002",
+          "before_hex": "0A000002168016800002",
+          "changed_end": 75127,
+          "changed_start": 75126,
+          "context_end": 75131,
+          "context_start": 75122
+        }
+      ],
+      "marker": {
+        "before": 45,
+        "column": 0,
+        "id": "D5036",
+        "label": "Pattern A / High Value",
+        "readback": 100,
+        "requested": 100,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 75128,
+          "after": 50,
+          "before": 22
+        },
+        {
+          "address": 75129,
+          "after": 0,
+          "before": 128
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "00021680320000021F00",
+          "before_hex": "00021680168000021F00",
+          "changed_end": 75129,
+          "changed_start": 75128,
+          "context_end": 75133,
+          "context_start": 75124
+        }
+      ],
+      "marker": {
+        "before": 45,
+        "column": 0,
+        "id": "D5036",
+        "label": "Pattern A / Low Value",
+        "readback": 100,
+        "requested": 100,
+        "row": 1
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 75846,
+          "after": 50,
+          "before": 22
+        },
+        {
+          "address": 75847,
+          "after": 0,
+          "before": 128
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "0A000002320016800002",
+          "before_hex": "0A000002168016800002",
+          "changed_end": 75847,
+          "changed_start": 75846,
+          "context_end": 75851,
+          "context_start": 75842
+        }
+      ],
+      "marker": {
+        "before": 45,
+        "column": 3,
+        "id": "D5036",
+        "label": "Pattern D / High Value",
+        "readback": 100,
+        "requested": 100,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 75848,
+          "after": 50,
+          "before": 22
+        },
+        {
+          "address": 75849,
+          "after": 0,
+          "before": 128
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "00021680320000021F00",
+          "before_hex": "00021680168000021F00",
+          "changed_end": 75849,
+          "changed_start": 75848,
+          "context_end": 75853,
+          "context_start": 75844
+        }
+      ],
+      "marker": {
+        "before": 45,
+        "column": 3,
+        "id": "D5036",
+        "label": "Pattern D / Low Value",
+        "readback": 100,
+        "requested": 100,
+        "row": 1
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 75132,
+          "after": 50,
+          "before": 31
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "1680000232001F0000",
+          "before_hex": "168000021F001F0000",
+          "changed_end": 75132,
+          "changed_start": 75132,
+          "context_end": 75136,
+          "context_start": 75128
+        }
+      ],
+      "marker": {
+        "before": 62,
+        "column": 0,
+        "id": "D5037",
+        "label": "Pattern A / High Value",
+        "readback": 100,
+        "requested": 100,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 75134,
+          "after": 50,
+          "before": 31
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "00021F003200000232",
+          "before_hex": "00021F001F00000232",
+          "changed_end": 75134,
+          "changed_start": 75134,
+          "context_end": 75138,
+          "context_start": 75130
+        }
+      ],
+      "marker": {
+        "before": 62,
+        "column": 0,
+        "id": "D5037",
+        "label": "Pattern A / Low Value",
+        "readback": 100,
+        "requested": 100,
+        "row": 1
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 75852,
+          "after": 50,
+          "before": 31
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "1680000232001F0000",
+          "before_hex": "168000021F001F0000",
+          "changed_end": 75852,
+          "changed_start": 75852,
+          "context_end": 75856,
+          "context_start": 75848
+        }
+      ],
+      "marker": {
+        "before": 62,
+        "column": 3,
+        "id": "D5037",
+        "label": "Pattern D / High Value",
+        "readback": 100,
+        "requested": 100,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 75854,
+          "after": 50,
+          "before": 31
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "00021F003200000232",
+          "before_hex": "00021F001F00000232",
+          "changed_end": 75854,
+          "changed_start": 75854,
+          "context_end": 75858,
+          "context_start": 75850
+        }
+      ],
+      "marker": {
+        "before": 62,
+        "column": 3,
+        "id": "D5037",
+        "label": "Pattern D / Low Value",
+        "readback": 100,
+        "requested": 100,
+        "row": 1
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 75138,
+          "after": 61,
+          "before": 50
+        },
+        {
+          "address": 75139,
+          "after": 128,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "1F0000023D8032000002",
+          "before_hex": "1F000002320032000002",
+          "changed_end": 75139,
+          "changed_start": 75138,
+          "context_end": 75143,
+          "context_start": 75134
+        }
+      ],
+      "marker": {
+        "before": 100,
+        "column": 0,
+        "id": "D5038",
+        "label": "Pattern A / High Value",
+        "readback": 123,
+        "requested": 123,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 75140,
+          "after": 61,
+          "before": 50
+        },
+        {
+          "address": 75141,
+          "after": 128,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "000232003D8000026400",
+          "before_hex": "00023200320000026400",
+          "changed_end": 75141,
+          "changed_start": 75140,
+          "context_end": 75145,
+          "context_start": 75136
+        }
+      ],
+      "marker": {
+        "before": 100,
+        "column": 0,
+        "id": "D5038",
+        "label": "Pattern A / Low Value",
+        "readback": 123,
+        "requested": 123,
+        "row": 1
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 75858,
+          "after": 61,
+          "before": 50
+        },
+        {
+          "address": 75859,
+          "after": 128,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "1F0000023D8032000002",
+          "before_hex": "1F000002320032000002",
+          "changed_end": 75859,
+          "changed_start": 75858,
+          "context_end": 75863,
+          "context_start": 75854
+        }
+      ],
+      "marker": {
+        "before": 100,
+        "column": 3,
+        "id": "D5038",
+        "label": "Pattern D / High Value",
+        "readback": 123,
+        "requested": 123,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 75860,
+          "after": 61,
+          "before": 50
+        },
+        {
+          "address": 75861,
+          "after": 128,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "000232003D8000025AA0",
+          "before_hex": "00023200320000025AA0",
+          "changed_end": 75861,
+          "changed_start": 75860,
+          "context_end": 75865,
+          "context_start": 75856
+        }
+      ],
+      "marker": {
+        "before": 100,
+        "column": 3,
+        "id": "D5038",
+        "label": "Pattern D / Low Value",
+        "readback": 123,
+        "requested": 123,
+        "row": 1
+      },
+      "restored": true
+    }
+  ],
+  "checksum_finalized": false,
+  "completed": true,
+  "controller": "AL5",
+  "created_local": "2026-10-01T00:04:49",
+  "flash_ready": false,
+  "gui_descriptor_modified": false,
+  "operating_system": 15184109,
+  "raw_range": {
+    "bytes": 57344,
+    "finish": 90111,
+    "start": 32768
+  },
+  "schema_version": 1,
+  "secondary_closed": true,
+  "secondary_saved": false,
+  "source": "[local stock source path redacted]",
+  "tool": "AL5-targeted-differential-mapper-0.6",
+  "transmission": 15183960,
+  "validation": {
+    "gui_raw_unchanged": true,
+    "raw_coherency_and_restore": true,
+    "secondary_baseline_equals_gui": true
+  },
+  "vehicle_io": false,
+  "original_report_sha256": "560f453ead6a7c47651fbff47717c749983b72992b60d4d08e951a903a232f00",
+  "redaction_note": "Only source path replaced; marker cases and validation fields unchanged."
+}

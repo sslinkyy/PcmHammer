@@ -56,6 +56,21 @@ class TargetedMapperTests(unittest.TestCase):
         self.assertLess(self.text.index('q(_efiCloseFile,fd)'), self.text.index('f:write(json(report)'))
         self.assertIn('checksum_finalized=false,flash_ready=false,completed=false', self.text)
 
+    def test_high_word_followup_uses_same_engine_and_one_numeric_case(self):
+        followup = (ROOT/'Tools/AL5/AL5_H0105_HIGH_WORD_MAPPER_v6_1.lua').read_text()
+        begin = followup.index('local cases = {')
+        end = followup.index('\n}\nprint', begin)
+        self.assertEqual(1, followup[begin:end].count('{id='))
+        self.assertIn('id="H0105",column=0,row=0,expected=2485.4839968,target=100000', followup)
+        self.assertGreater(100000/0.6213709992, 65535)
+        self.assertLess(100000, 162888.0578396981)
+        engine_start = 'verify_identity(GUI_FD,"GUI source")'
+        engine_end = 'local report={'
+        self.assertEqual(self.text[self.text.index(engine_start):self.text.index(engine_end)],
+                         followup[followup.index(engine_start):followup.index(engine_end)])
+        self.assertEqual(self.text[self.text.index('local ok,runerr=pcall'):],
+                         followup[followup.index('local ok,runerr=pcall'):])
+
 
 if __name__ == '__main__':
     unittest.main()

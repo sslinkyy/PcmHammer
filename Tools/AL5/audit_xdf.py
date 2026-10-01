@@ -78,7 +78,7 @@ def audit(xdf, stock, ppei, export):
     errors = []
     if base.get('offset') != str(START) or base.get('subtract') != '1':
         errors.append('XDF base offset mismatch')
-    native = {c['id']: c for c in json.loads(Path(export).read_text())['calibrations']}
+    native = {c['id']: c for c in json.loads(Path(export).read_bytes().decode('cp1252'))['calibrations']}
     result = {'xdf_sha256': sha256(Path(xdf).read_bytes()),
               'native_export_sha256': sha256(Path(export).read_bytes()), 'items': []}
     for name, data in [('stock', stock), ('ppei', ppei)]:

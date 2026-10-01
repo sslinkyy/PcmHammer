@@ -1,0 +1,1004 @@
+{
+  "verified_cases": [
+    {
+      "id": "D5042",
+      "column": 0,
+      "row": 0,
+      "address": "0x09CFC",
+      "bits": 16,
+      "equation": "X/4"
+    },
+    {
+      "id": "D5043",
+      "column": 0,
+      "row": 0,
+      "address": "0x09CFE",
+      "bits": 16,
+      "equation": "X/4"
+    },
+    {
+      "id": "D5044",
+      "column": 0,
+      "row": 0,
+      "address": "0x09D00",
+      "bits": 16,
+      "equation": "X/4"
+    },
+    {
+      "id": "D5045",
+      "column": 0,
+      "row": 0,
+      "address": "0x09D02",
+      "bits": 16,
+      "equation": "X/4"
+    },
+    {
+      "id": "D5055",
+      "column": 0,
+      "row": 0,
+      "address": "0x1378C",
+      "bits": 16,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5056",
+      "column": 0,
+      "row": 0,
+      "address": "0x1378E",
+      "bits": 16,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5057",
+      "column": 0,
+      "row": 0,
+      "address": "0x1375C",
+      "bits": 16,
+      "equation": "X/8"
+    },
+    {
+      "id": "D5058",
+      "column": 0,
+      "row": 0,
+      "address": "0x1375E",
+      "bits": 16,
+      "equation": "X/8"
+    },
+    {
+      "id": "D5061",
+      "column": 0,
+      "row": 0,
+      "address": "0x14B14",
+      "bits": 16,
+      "equation": "X*0.0001220704"
+    },
+    {
+      "id": "D5062",
+      "column": 0,
+      "row": 0,
+      "address": "0x0B03C",
+      "bits": 16,
+      "equation": "X/4"
+    },
+    {
+      "id": "D5063",
+      "column": 0,
+      "row": 0,
+      "address": "0x0B03E",
+      "bits": 16,
+      "equation": "X/4"
+    },
+    {
+      "id": "D5183",
+      "column": 0,
+      "row": 0,
+      "address": "0x0803C",
+      "bits": 8,
+      "equation": "X"
+    },
+    {
+      "id": "H0103",
+      "column": 0,
+      "row": 0,
+      "address": "0x14B16",
+      "bits": 16,
+      "equation": "X/8192"
+    },
+    {
+      "id": "H0105",
+      "column": 0,
+      "row": 0,
+      "address": "0x152E4",
+      "bits": 32,
+      "equation": "X*0.6213709992"
+    },
+    {
+      "id": "H0136",
+      "column": 0,
+      "row": 0,
+      "address": "0x15640",
+      "bits": 16,
+      "equation": "X/32"
+    },
+    {
+      "id": "H0137",
+      "column": 0,
+      "row": 0,
+      "address": "0x14B18",
+      "bits": 16,
+      "equation": "X*0.0097089219"
+    },
+    {
+      "id": "D5073",
+      "column": 0,
+      "row": 0,
+      "address": "0x13B7A",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5073",
+      "column": 0,
+      "row": 8,
+      "address": "0x13B8A",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5073",
+      "column": 0,
+      "row": 16,
+      "address": "0x13B9A",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5073",
+      "column": 1,
+      "row": 0,
+      "address": "0x13B9E",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5073",
+      "column": 1,
+      "row": 8,
+      "address": "0x13BAE",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5073",
+      "column": 1,
+      "row": 16,
+      "address": "0x13BBE",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5073",
+      "column": 2,
+      "row": 0,
+      "address": "0x13BC2",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5073",
+      "column": 2,
+      "row": 8,
+      "address": "0x13BD2",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5073",
+      "column": 2,
+      "row": 16,
+      "address": "0x13BE2",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5073",
+      "column": 3,
+      "row": 0,
+      "address": "0x13BE6",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5073",
+      "column": 3,
+      "row": 8,
+      "address": "0x13BF6",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5073",
+      "column": 3,
+      "row": 16,
+      "address": "0x13C06",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5073",
+      "column": 4,
+      "row": 0,
+      "address": "0x13C0A",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5073",
+      "column": 4,
+      "row": 8,
+      "address": "0x13C1A",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5073",
+      "column": 4,
+      "row": 16,
+      "address": "0x13C2A",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5074",
+      "column": 0,
+      "row": 0,
+      "address": "0x13952",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5074",
+      "column": 0,
+      "row": 8,
+      "address": "0x13962",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5074",
+      "column": 0,
+      "row": 16,
+      "address": "0x13972",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5074",
+      "column": 1,
+      "row": 0,
+      "address": "0x13976",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5074",
+      "column": 1,
+      "row": 8,
+      "address": "0x13986",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5074",
+      "column": 1,
+      "row": 16,
+      "address": "0x13996",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5074",
+      "column": 2,
+      "row": 0,
+      "address": "0x1399A",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5074",
+      "column": 2,
+      "row": 8,
+      "address": "0x139AA",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5074",
+      "column": 2,
+      "row": 16,
+      "address": "0x139BA",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5074",
+      "column": 3,
+      "row": 0,
+      "address": "0x139BE",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5074",
+      "column": 3,
+      "row": 8,
+      "address": "0x139CE",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5074",
+      "column": 3,
+      "row": 16,
+      "address": "0x139DE",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5074",
+      "column": 4,
+      "row": 0,
+      "address": "0x139E2",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5074",
+      "column": 4,
+      "row": 8,
+      "address": "0x139F2",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5074",
+      "column": 4,
+      "row": 16,
+      "address": "0x13A02",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5075",
+      "column": 0,
+      "row": 0,
+      "address": "0x13AC2",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5075",
+      "column": 0,
+      "row": 8,
+      "address": "0x13AD2",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5075",
+      "column": 0,
+      "row": 16,
+      "address": "0x13AE2",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5075",
+      "column": 1,
+      "row": 0,
+      "address": "0x13AE6",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5075",
+      "column": 1,
+      "row": 8,
+      "address": "0x13AF6",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5075",
+      "column": 1,
+      "row": 16,
+      "address": "0x13B06",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5075",
+      "column": 2,
+      "row": 0,
+      "address": "0x13B0A",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5075",
+      "column": 2,
+      "row": 8,
+      "address": "0x13B1A",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5075",
+      "column": 2,
+      "row": 16,
+      "address": "0x13B2A",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5075",
+      "column": 3,
+      "row": 0,
+      "address": "0x13B2E",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5075",
+      "column": 3,
+      "row": 8,
+      "address": "0x13B3E",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5075",
+      "column": 3,
+      "row": 16,
+      "address": "0x13B4E",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5075",
+      "column": 4,
+      "row": 0,
+      "address": "0x13B52",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5075",
+      "column": 4,
+      "row": 8,
+      "address": "0x13B62",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5075",
+      "column": 4,
+      "row": 16,
+      "address": "0x13B72",
+      "bits": 16,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5010",
+      "column": 6,
+      "row": 0,
+      "address": "0x133F2",
+      "bits": 16,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5010",
+      "column": 6,
+      "row": 8,
+      "address": "0x13402",
+      "bits": 16,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5010",
+      "column": 6,
+      "row": 16,
+      "address": "0x13412",
+      "bits": 16,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5015",
+      "column": 6,
+      "row": 0,
+      "address": "0x13416",
+      "bits": 16,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5015",
+      "column": 6,
+      "row": 8,
+      "address": "0x13426",
+      "bits": 16,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5015",
+      "column": 6,
+      "row": 16,
+      "address": "0x13436",
+      "bits": 16,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5035",
+      "column": 0,
+      "row": 0,
+      "address": "0x12570",
+      "bits": 16,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5035",
+      "column": 0,
+      "row": 1,
+      "address": "0x12572",
+      "bits": 16,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5035",
+      "column": 3,
+      "row": 0,
+      "address": "0x12840",
+      "bits": 16,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5035",
+      "column": 3,
+      "row": 1,
+      "address": "0x12842",
+      "bits": 16,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5036",
+      "column": 0,
+      "row": 0,
+      "address": "0x12576",
+      "bits": 16,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5036",
+      "column": 0,
+      "row": 1,
+      "address": "0x12578",
+      "bits": 16,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5036",
+      "column": 3,
+      "row": 0,
+      "address": "0x12846",
+      "bits": 16,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5036",
+      "column": 3,
+      "row": 1,
+      "address": "0x12848",
+      "bits": 16,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5037",
+      "column": 0,
+      "row": 0,
+      "address": "0x1257C",
+      "bits": 16,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5037",
+      "column": 0,
+      "row": 1,
+      "address": "0x1257E",
+      "bits": 16,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5037",
+      "column": 3,
+      "row": 0,
+      "address": "0x1284C",
+      "bits": 16,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5037",
+      "column": 3,
+      "row": 1,
+      "address": "0x1284E",
+      "bits": 16,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5038",
+      "column": 0,
+      "row": 0,
+      "address": "0x12582",
+      "bits": 16,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5038",
+      "column": 0,
+      "row": 1,
+      "address": "0x12584",
+      "bits": 16,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5038",
+      "column": 3,
+      "row": 0,
+      "address": "0x12852",
+      "bits": 16,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5038",
+      "column": 3,
+      "row": 1,
+      "address": "0x12854",
+      "bits": 16,
+      "equation": "X/128"
+    }
+  ],
+  "added": [
+    {
+      "id": "D5042",
+      "column": 0,
+      "address": "0x09CFC",
+      "bits": 16,
+      "cells": 1,
+      "equation": "X/4"
+    },
+    {
+      "id": "D5043",
+      "column": 0,
+      "address": "0x09CFE",
+      "bits": 16,
+      "cells": 1,
+      "equation": "X/4"
+    },
+    {
+      "id": "D5044",
+      "column": 0,
+      "address": "0x09D00",
+      "bits": 16,
+      "cells": 1,
+      "equation": "X/4"
+    },
+    {
+      "id": "D5045",
+      "column": 0,
+      "address": "0x09D02",
+      "bits": 16,
+      "cells": 1,
+      "equation": "X/4"
+    },
+    {
+      "id": "D5055",
+      "column": 0,
+      "address": "0x1378C",
+      "bits": 16,
+      "cells": 1,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5056",
+      "column": 0,
+      "address": "0x1378E",
+      "bits": 16,
+      "cells": 1,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5057",
+      "column": 0,
+      "address": "0x1375C",
+      "bits": 16,
+      "cells": 1,
+      "equation": "X/8"
+    },
+    {
+      "id": "D5058",
+      "column": 0,
+      "address": "0x1375E",
+      "bits": 16,
+      "cells": 1,
+      "equation": "X/8"
+    },
+    {
+      "id": "D5061",
+      "column": 0,
+      "address": "0x14B14",
+      "bits": 16,
+      "cells": 1,
+      "equation": "X*0.0001220704"
+    },
+    {
+      "id": "D5062",
+      "column": 0,
+      "address": "0x0B03C",
+      "bits": 16,
+      "cells": 1,
+      "equation": "X/4"
+    },
+    {
+      "id": "D5063",
+      "column": 0,
+      "address": "0x0B03E",
+      "bits": 16,
+      "cells": 1,
+      "equation": "X/4"
+    },
+    {
+      "id": "D5183",
+      "column": 0,
+      "address": "0x0803C",
+      "bits": 8,
+      "cells": 1,
+      "equation": "X"
+    },
+    {
+      "id": "H0103",
+      "column": 0,
+      "address": "0x14B16",
+      "bits": 16,
+      "cells": 1,
+      "equation": "X/8192"
+    },
+    {
+      "id": "H0105",
+      "column": 0,
+      "address": "0x152E4",
+      "bits": 32,
+      "cells": 1,
+      "equation": "X*0.6213709992"
+    },
+    {
+      "id": "H0136",
+      "column": 0,
+      "address": "0x15640",
+      "bits": 16,
+      "cells": 1,
+      "equation": "X/32"
+    },
+    {
+      "id": "H0137",
+      "column": 0,
+      "address": "0x14B18",
+      "bits": 16,
+      "cells": 1,
+      "equation": "X*0.0097089219"
+    },
+    {
+      "id": "D5073",
+      "column": 0,
+      "address": "0x13B7A",
+      "bits": 16,
+      "cells": 17,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5073",
+      "column": 1,
+      "address": "0x13B9E",
+      "bits": 16,
+      "cells": 17,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5073",
+      "column": 2,
+      "address": "0x13BC2",
+      "bits": 16,
+      "cells": 17,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5073",
+      "column": 3,
+      "address": "0x13BE6",
+      "bits": 16,
+      "cells": 17,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5073",
+      "column": 4,
+      "address": "0x13C0A",
+      "bits": 16,
+      "cells": 17,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5074",
+      "column": 0,
+      "address": "0x13952",
+      "bits": 16,
+      "cells": 17,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5074",
+      "column": 1,
+      "address": "0x13976",
+      "bits": 16,
+      "cells": 17,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5074",
+      "column": 2,
+      "address": "0x1399A",
+      "bits": 16,
+      "cells": 17,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5074",
+      "column": 3,
+      "address": "0x139BE",
+      "bits": 16,
+      "cells": 17,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5074",
+      "column": 4,
+      "address": "0x139E2",
+      "bits": 16,
+      "cells": 17,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5075",
+      "column": 0,
+      "address": "0x13AC2",
+      "bits": 16,
+      "cells": 17,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5075",
+      "column": 1,
+      "address": "0x13AE6",
+      "bits": 16,
+      "cells": 17,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5075",
+      "column": 2,
+      "address": "0x13B0A",
+      "bits": 16,
+      "cells": 17,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5075",
+      "column": 3,
+      "address": "0x13B2E",
+      "bits": 16,
+      "cells": 17,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5075",
+      "column": 4,
+      "address": "0x13B52",
+      "bits": 16,
+      "cells": 17,
+      "equation": "X*100/65536"
+    },
+    {
+      "id": "D5010",
+      "column": 6,
+      "address": "0x133F2",
+      "bits": 16,
+      "cells": 17,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5015",
+      "column": 6,
+      "address": "0x13416",
+      "bits": 16,
+      "cells": 17,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5035",
+      "column": 0,
+      "address": "0x12570",
+      "bits": 16,
+      "cells": 2,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5035",
+      "column": 3,
+      "address": "0x12840",
+      "bits": 16,
+      "cells": 2,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5036",
+      "column": 0,
+      "address": "0x12576",
+      "bits": 16,
+      "cells": 2,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5036",
+      "column": 3,
+      "address": "0x12846",
+      "bits": 16,
+      "cells": 2,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5037",
+      "column": 0,
+      "address": "0x1257C",
+      "bits": 16,
+      "cells": 2,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5037",
+      "column": 3,
+      "address": "0x1284C",
+      "bits": 16,
+      "cells": 2,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5038",
+      "column": 0,
+      "address": "0x12582",
+      "bits": 16,
+      "cells": 2,
+      "equation": "X/128"
+    },
+    {
+      "id": "D5038",
+      "column": 3,
+      "address": "0x12852",
+      "bits": 16,
+      "cells": 2,
+      "equation": "X/128"
+    }
+  ],
+  "H0105_width_status": "BE32 structurally inferred; only low word marker verified",
+  "source_sha256": "1219ac947f68dbf7b9c94dd6a9f56bf8b9983e8a283153593c4449bb3f79b6e6",
+  "stock_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6",
+  "export_sha256": "fbbd581cd5bd42dcfa1fa874c41ffde23f612b36d23e0043ca648acab2ac614b",
+  "report_sha256": "9c245a76d380275b0cab9dce0bece0fa4cf126d2bb6cf7dfc1707850c5c0a107",
+  "cases_sha256": "9b17cfc11cac9f98e1a17dfb8f26a979e68a8271c2053c42e4ab559c1e26822f"
+}

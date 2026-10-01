@@ -52,7 +52,8 @@ erase, program, loader, security-key or tune-save API is called.
 
 ## Validation status
 
-The manifest and script guard checks pass offline. The revised script has not
-yet been executed in EFILive; actual setter behavior, rounding and secondary
-descriptor behavior remain GUI validation requirements. A local Lua test
-runtime could not be obtained, so no Lua execution test is claimed.
+The manifest and script guard checks pass offline. The user subsequently ran
+the script in EFILive and returned a completed 83-case report with every
+restoration check passing. See [v0.9 validation](MARKER_VALIDATION_v0_9.md).
+That actual EFILive run validates the exercised setter/capture/secondary paths;
+there is no separate Lua execution harness test.
