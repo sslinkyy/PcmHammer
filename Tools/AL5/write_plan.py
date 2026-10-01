@@ -21,6 +21,7 @@ PENDING_INITIALIZATION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL
 PENDING_HELPERS_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/PENDING_HELPERS_EMULATION.json'
 STARTUP_CONTEXT_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/STARTUP_CONTEXT_EMULATION.json'
 CONTEXT_PREAMBLE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/CONTEXT_PREAMBLE_EMULATION.json'
+SMALL_RECORD_FAILURE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/SMALL_RECORD_FAILURE_EMULATION.json'
 
 
 def preparation_assessment():
@@ -42,6 +43,8 @@ def preparation_assessment():
     startup = json.loads(startup_bytes)
     preamble_bytes = CONTEXT_PREAMBLE_EVIDENCE.read_bytes()
     preamble = json.loads(preamble_bytes)
+    small_record_bytes = SMALL_RECORD_FAILURE_EVIDENCE.read_bytes()
+    small_record = json.loads(small_record_bytes)
     return {'evidence': 'Docs/AL5/RECEIVE_PREPARATION_EMULATION.json',
             'evidence_sha256': sha256(evidence_bytes),
             'offline_cases_pass': evidence['all_pass'],
@@ -115,6 +118,14 @@ def preparation_assessment():
                 'model_limits': preamble['model_limits'],
                 'context_initializer_has_persistent_writes': True,
                 'complete_startup_verified': False,
+                'physical_recovery_verified': False},
+            'small_record_failure_evidence': {
+                'evidence': 'Docs/AL5/SMALL_RECORD_FAILURE_EMULATION.json',
+                'evidence_sha256': sha256(small_record_bytes),
+                'offline_cases_pass': small_record['all_pass'],
+                'scope': small_record['scope'],
+                'model_limits': small_record['model_limits'],
+                'synthetic_payload_failure_can_leave_committed_erased_payload': small_record['synthetic_payload_failure_can_leave_committed_erased_payload'],
                 'physical_recovery_verified': False},
             'storage_geometry_verified': False,
             'current_storage_backup_supplied': False,

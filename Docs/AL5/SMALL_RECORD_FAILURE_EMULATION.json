@@ -1,0 +1,1037 @@
+{
+  "low_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
+  "high_sha256": "492040d9460d53b77dda606b9a89f4254e0680f239093001663f6ed5cf51ba75",
+  "code_sha256": {
+    "0x5b5e4": "852007529515ee826f3bc26be5c9d384022c63e6d544d0facca14466394d20be",
+    "0x228d8": "ee34e1ab24f701dc1878896ed492bb0108466c2e2d3073bf6183808968ed332b",
+    "0xa9bf0": "355121998ec05285218d210e2cb684eb9f6d33685ea33827bf5d847b7a6e0342",
+    "0xa9cb4": "bed709d1a8447fea2bd73038b0fa267cb8822a55f9244f1abee9a82e950e9a7e",
+    "0xa9d4c": "d879be2bbf0eb69c4e7580cd0730e7ef0e65de880bded126e0531ddc493d171a",
+    "0x5bbdc": "819c51639fcf563914d26439bdd3ae8c8f683c8658c77650ea463cf1f9facaad",
+    "0x5bca4": "a6785c1d58b618b99cf044ca446b81743fa3cf476781aa8b3e86542bde23ab4e",
+    "0x5bd78": "3bca5713301b50c4b56c94f8ce3e0fb9f94b3f3ddb278c657f85a3dea0198307"
+  },
+  "scope": "Real small-record writer/reader with pending parent, erased slots, atomic host writes and no-write failure status 0x20.",
+  "model_limits": "Operation-boundary stops; no partial words, physical status behavior, full initializer reaction, reset execution or transport. Failure status semantics are synthetic.",
+  "cases": [
+    {
+      "index": 0,
+      "interrupt_after_operations": 0,
+      "fail_at": null,
+      "observed": {
+        "writer_returned": false,
+        "attempts": [],
+        "slot_marker": "0xffff",
+        "reader_return_d0": 1,
+        "reader_payload_matches_requested": false,
+        "reader_destination_unchanged": true,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 0,
+      "interrupt_after_operations": 1,
+      "fail_at": null,
+      "observed": {
+        "writer_returned": false,
+        "attempts": [
+          {
+            "destination": "0x4a1c",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xfffe",
+        "reader_return_d0": 2,
+        "reader_payload_matches_requested": false,
+        "reader_destination_unchanged": true,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 0,
+      "interrupt_after_operations": 2,
+      "fail_at": null,
+      "observed": {
+        "writer_returned": false,
+        "attempts": [
+          {
+            "destination": "0x4a1c",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a1e",
+            "bytes": 10,
+            "payload_sha256": "6654161b54048b504dc862520e84f46dfbc727e5df0dd807abc9a437d2dd6490",
+            "word": null,
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xfffe",
+        "reader_return_d0": 2,
+        "reader_payload_matches_requested": false,
+        "reader_destination_unchanged": true,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 0,
+      "interrupt_after_operations": 3,
+      "fail_at": null,
+      "observed": {
+        "writer_returned": false,
+        "attempts": [
+          {
+            "destination": "0x4a1c",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a1e",
+            "bytes": 10,
+            "payload_sha256": "6654161b54048b504dc862520e84f46dfbc727e5df0dd807abc9a437d2dd6490",
+            "word": null,
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a1c",
+            "bytes": 2,
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xffaa",
+        "reader_return_d0": 0,
+        "reader_payload_matches_requested": true,
+        "reader_destination_unchanged": false,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 0,
+      "interrupt_after_operations": null,
+      "fail_at": 1,
+      "observed": {
+        "writer_returned": true,
+        "attempts": [
+          {
+            "destination": "0x4a1c",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x20",
+            "host_mutation_applied": false,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a1e",
+            "bytes": 10,
+            "payload_sha256": "6654161b54048b504dc862520e84f46dfbc727e5df0dd807abc9a437d2dd6490",
+            "word": null,
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a1c",
+            "bytes": 2,
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xffaa",
+        "reader_return_d0": 0,
+        "reader_payload_matches_requested": true,
+        "reader_destination_unchanged": false,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 0,
+      "interrupt_after_operations": null,
+      "fail_at": 2,
+      "observed": {
+        "writer_returned": true,
+        "attempts": [
+          {
+            "destination": "0x4a1c",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a1e",
+            "bytes": 10,
+            "payload_sha256": "6654161b54048b504dc862520e84f46dfbc727e5df0dd807abc9a437d2dd6490",
+            "word": null,
+            "synthetic_status": "0x20",
+            "host_mutation_applied": false,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a1c",
+            "bytes": 2,
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xffaa",
+        "reader_return_d0": 0,
+        "reader_payload_matches_requested": false,
+        "reader_destination_unchanged": false,
+        "reader_copied_erased_payload": true,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 0,
+      "interrupt_after_operations": null,
+      "fail_at": 3,
+      "observed": {
+        "writer_returned": true,
+        "attempts": [
+          {
+            "destination": "0x4a1c",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a1e",
+            "bytes": 10,
+            "payload_sha256": "6654161b54048b504dc862520e84f46dfbc727e5df0dd807abc9a437d2dd6490",
+            "word": null,
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a1c",
+            "bytes": 2,
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "synthetic_status": "0x20",
+            "host_mutation_applied": false,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xfffe",
+        "reader_return_d0": 2,
+        "reader_payload_matches_requested": false,
+        "reader_destination_unchanged": true,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 1,
+      "interrupt_after_operations": 0,
+      "fail_at": null,
+      "observed": {
+        "writer_returned": false,
+        "attempts": [],
+        "slot_marker": "0xffff",
+        "reader_return_d0": 1,
+        "reader_payload_matches_requested": false,
+        "reader_destination_unchanged": true,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 1,
+      "interrupt_after_operations": 1,
+      "fail_at": null,
+      "observed": {
+        "writer_returned": false,
+        "attempts": [
+          {
+            "destination": "0x4a28",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xfffe",
+        "reader_return_d0": 2,
+        "reader_payload_matches_requested": false,
+        "reader_destination_unchanged": true,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 1,
+      "interrupt_after_operations": 2,
+      "fail_at": null,
+      "observed": {
+        "writer_returned": false,
+        "attempts": [
+          {
+            "destination": "0x4a28",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a2a",
+            "bytes": 10,
+            "payload_sha256": "eff9867a92ed5df305de52a7155b2d0d3a36ca776f3e77df70e742d36aeec9c4",
+            "word": null,
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xfffe",
+        "reader_return_d0": 2,
+        "reader_payload_matches_requested": false,
+        "reader_destination_unchanged": true,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 1,
+      "interrupt_after_operations": 3,
+      "fail_at": null,
+      "observed": {
+        "writer_returned": false,
+        "attempts": [
+          {
+            "destination": "0x4a28",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a2a",
+            "bytes": 10,
+            "payload_sha256": "eff9867a92ed5df305de52a7155b2d0d3a36ca776f3e77df70e742d36aeec9c4",
+            "word": null,
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a28",
+            "bytes": 2,
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xffaa",
+        "reader_return_d0": 0,
+        "reader_payload_matches_requested": true,
+        "reader_destination_unchanged": false,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 1,
+      "interrupt_after_operations": null,
+      "fail_at": 1,
+      "observed": {
+        "writer_returned": true,
+        "attempts": [
+          {
+            "destination": "0x4a28",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x20",
+            "host_mutation_applied": false,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a2a",
+            "bytes": 10,
+            "payload_sha256": "eff9867a92ed5df305de52a7155b2d0d3a36ca776f3e77df70e742d36aeec9c4",
+            "word": null,
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a28",
+            "bytes": 2,
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xffaa",
+        "reader_return_d0": 0,
+        "reader_payload_matches_requested": true,
+        "reader_destination_unchanged": false,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 1,
+      "interrupt_after_operations": null,
+      "fail_at": 2,
+      "observed": {
+        "writer_returned": true,
+        "attempts": [
+          {
+            "destination": "0x4a28",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a2a",
+            "bytes": 10,
+            "payload_sha256": "eff9867a92ed5df305de52a7155b2d0d3a36ca776f3e77df70e742d36aeec9c4",
+            "word": null,
+            "synthetic_status": "0x20",
+            "host_mutation_applied": false,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a28",
+            "bytes": 2,
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xffaa",
+        "reader_return_d0": 0,
+        "reader_payload_matches_requested": false,
+        "reader_destination_unchanged": false,
+        "reader_copied_erased_payload": true,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 1,
+      "interrupt_after_operations": null,
+      "fail_at": 3,
+      "observed": {
+        "writer_returned": true,
+        "attempts": [
+          {
+            "destination": "0x4a28",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a2a",
+            "bytes": 10,
+            "payload_sha256": "eff9867a92ed5df305de52a7155b2d0d3a36ca776f3e77df70e742d36aeec9c4",
+            "word": null,
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a28",
+            "bytes": 2,
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "synthetic_status": "0x20",
+            "host_mutation_applied": false,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xfffe",
+        "reader_return_d0": 2,
+        "reader_payload_matches_requested": false,
+        "reader_destination_unchanged": true,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 2,
+      "interrupt_after_operations": 0,
+      "fail_at": null,
+      "observed": {
+        "writer_returned": false,
+        "attempts": [],
+        "slot_marker": "0xffff",
+        "reader_return_d0": 1,
+        "reader_payload_matches_requested": false,
+        "reader_destination_unchanged": true,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 2,
+      "interrupt_after_operations": 1,
+      "fail_at": null,
+      "observed": {
+        "writer_returned": false,
+        "attempts": [
+          {
+            "destination": "0x4a34",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xfffe",
+        "reader_return_d0": 2,
+        "reader_payload_matches_requested": false,
+        "reader_destination_unchanged": true,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 2,
+      "interrupt_after_operations": 2,
+      "fail_at": null,
+      "observed": {
+        "writer_returned": false,
+        "attempts": [
+          {
+            "destination": "0x4a34",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a36",
+            "bytes": 10,
+            "payload_sha256": "956259a212a2914174d780c7cb287e78cef1f2fa1afa1633b7d722f3cdcaff6c",
+            "word": null,
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xfffe",
+        "reader_return_d0": 2,
+        "reader_payload_matches_requested": false,
+        "reader_destination_unchanged": true,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 2,
+      "interrupt_after_operations": 3,
+      "fail_at": null,
+      "observed": {
+        "writer_returned": false,
+        "attempts": [
+          {
+            "destination": "0x4a34",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a36",
+            "bytes": 10,
+            "payload_sha256": "956259a212a2914174d780c7cb287e78cef1f2fa1afa1633b7d722f3cdcaff6c",
+            "word": null,
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a34",
+            "bytes": 2,
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xffaa",
+        "reader_return_d0": 0,
+        "reader_payload_matches_requested": true,
+        "reader_destination_unchanged": false,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 2,
+      "interrupt_after_operations": null,
+      "fail_at": 1,
+      "observed": {
+        "writer_returned": true,
+        "attempts": [
+          {
+            "destination": "0x4a34",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x20",
+            "host_mutation_applied": false,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a36",
+            "bytes": 10,
+            "payload_sha256": "956259a212a2914174d780c7cb287e78cef1f2fa1afa1633b7d722f3cdcaff6c",
+            "word": null,
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a34",
+            "bytes": 2,
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xffaa",
+        "reader_return_d0": 0,
+        "reader_payload_matches_requested": true,
+        "reader_destination_unchanged": false,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 2,
+      "interrupt_after_operations": null,
+      "fail_at": 2,
+      "observed": {
+        "writer_returned": true,
+        "attempts": [
+          {
+            "destination": "0x4a34",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a36",
+            "bytes": 10,
+            "payload_sha256": "956259a212a2914174d780c7cb287e78cef1f2fa1afa1633b7d722f3cdcaff6c",
+            "word": null,
+            "synthetic_status": "0x20",
+            "host_mutation_applied": false,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a34",
+            "bytes": 2,
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xffaa",
+        "reader_return_d0": 0,
+        "reader_payload_matches_requested": false,
+        "reader_destination_unchanged": false,
+        "reader_copied_erased_payload": true,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 2,
+      "interrupt_after_operations": null,
+      "fail_at": 3,
+      "observed": {
+        "writer_returned": true,
+        "attempts": [
+          {
+            "destination": "0x4a34",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a36",
+            "bytes": 10,
+            "payload_sha256": "956259a212a2914174d780c7cb287e78cef1f2fa1afa1633b7d722f3cdcaff6c",
+            "word": null,
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a34",
+            "bytes": 2,
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "synthetic_status": "0x20",
+            "host_mutation_applied": false,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xfffe",
+        "reader_return_d0": 2,
+        "reader_payload_matches_requested": false,
+        "reader_destination_unchanged": true,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 3,
+      "interrupt_after_operations": 0,
+      "fail_at": null,
+      "observed": {
+        "writer_returned": false,
+        "attempts": [],
+        "slot_marker": "0xffff",
+        "reader_return_d0": 1,
+        "reader_payload_matches_requested": false,
+        "reader_destination_unchanged": true,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 3,
+      "interrupt_after_operations": 1,
+      "fail_at": null,
+      "observed": {
+        "writer_returned": false,
+        "attempts": [
+          {
+            "destination": "0x4a40",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xfffe",
+        "reader_return_d0": 2,
+        "reader_payload_matches_requested": false,
+        "reader_destination_unchanged": true,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 3,
+      "interrupt_after_operations": 2,
+      "fail_at": null,
+      "observed": {
+        "writer_returned": false,
+        "attempts": [
+          {
+            "destination": "0x4a40",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a42",
+            "bytes": 10,
+            "payload_sha256": "beae07e20a22bac072f3c8d1c6212f7521f1e83e0da4a231a7d21b9f12e25504",
+            "word": null,
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xfffe",
+        "reader_return_d0": 2,
+        "reader_payload_matches_requested": false,
+        "reader_destination_unchanged": true,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 3,
+      "interrupt_after_operations": 3,
+      "fail_at": null,
+      "observed": {
+        "writer_returned": false,
+        "attempts": [
+          {
+            "destination": "0x4a40",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a42",
+            "bytes": 10,
+            "payload_sha256": "beae07e20a22bac072f3c8d1c6212f7521f1e83e0da4a231a7d21b9f12e25504",
+            "word": null,
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a40",
+            "bytes": 2,
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xffaa",
+        "reader_return_d0": 0,
+        "reader_payload_matches_requested": true,
+        "reader_destination_unchanged": false,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 3,
+      "interrupt_after_operations": null,
+      "fail_at": 1,
+      "observed": {
+        "writer_returned": true,
+        "attempts": [
+          {
+            "destination": "0x4a40",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x20",
+            "host_mutation_applied": false,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a42",
+            "bytes": 10,
+            "payload_sha256": "beae07e20a22bac072f3c8d1c6212f7521f1e83e0da4a231a7d21b9f12e25504",
+            "word": null,
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a40",
+            "bytes": 2,
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xffaa",
+        "reader_return_d0": 0,
+        "reader_payload_matches_requested": true,
+        "reader_destination_unchanged": false,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 3,
+      "interrupt_after_operations": null,
+      "fail_at": 2,
+      "observed": {
+        "writer_returned": true,
+        "attempts": [
+          {
+            "destination": "0x4a40",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a42",
+            "bytes": 10,
+            "payload_sha256": "beae07e20a22bac072f3c8d1c6212f7521f1e83e0da4a231a7d21b9f12e25504",
+            "word": null,
+            "synthetic_status": "0x20",
+            "host_mutation_applied": false,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a40",
+            "bytes": 2,
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xffaa",
+        "reader_return_d0": 0,
+        "reader_payload_matches_requested": false,
+        "reader_destination_unchanged": false,
+        "reader_copied_erased_payload": true,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    },
+    {
+      "index": 3,
+      "interrupt_after_operations": null,
+      "fail_at": 3,
+      "observed": {
+        "writer_returned": true,
+        "attempts": [
+          {
+            "destination": "0x4a40",
+            "bytes": 2,
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a42",
+            "bytes": 10,
+            "payload_sha256": "beae07e20a22bac072f3c8d1c6212f7521f1e83e0da4a231a7d21b9f12e25504",
+            "word": null,
+            "synthetic_status": "0x0",
+            "host_mutation_applied": true,
+            "implementation_executed": false
+          },
+          {
+            "destination": "0x4a40",
+            "bytes": 2,
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "synthetic_status": "0x20",
+            "host_mutation_applied": false,
+            "implementation_executed": false
+          }
+        ],
+        "slot_marker": "0xfffe",
+        "reader_return_d0": 2,
+        "reader_payload_matches_requested": false,
+        "reader_destination_unchanged": true,
+        "reader_copied_erased_payload": false,
+        "only_target_slot_changed": true
+      },
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "synthetic_payload_failure_can_leave_committed_erased_payload": true,
+  "physical_recovery_verified": false,
+  "flash_implementation_executed": false,
+  "ready_to_flash": false,
+  "live_write_enabled": false,
+  "would_send": []
+}

@@ -155,6 +155,14 @@ for a current physical preservation backup. The assessment never populates
 
 ## Next offline work
 
+The context preamble now executes with atomic host models, including nine
+small-record writes and a bounded alternate invocation. See `CONTEXT_PREAMBLE.md`.
+Twenty-eight subsequent small-record interruption/failure cases expose a caller
+that continues to a commit marker after a synthetic no-write payload failure;
+the reader accepts the erased payload. See `SMALL_RECORD_FAILURES.md`. Physical
+failure semantics and full initializer reaction remain unverified. These reports
+are hash-linked by the planner and do not weaken any write gate.
+
 Recover the local EFILive container format and state definitions, or obtain an
 existing AL5 programming capture from a separate documented source. Trace the
 firmware programming handlers and native flash geometry offline. Establish exact
@@ -162,3 +170,41 @@ packet bytes and acknowledgments before adding a simulated transport. Add fault
 injection for timeouts, duplicate blocks and interrupted programming. Keep live
 execution disabled until checksum corpus, session, erase, programming, readback
 and recovery evidence are all independently adequate.
+
+## Staged route to live testing
+
+There is a development path to writing, but no executable AL5 live writer yet.
+Checksum recovery and stock decoding are sufficient to validate a candidate
+offline; they do not supply a programming protocol or safe erase scope.
+
+1. **Read-only live baseline.** Repeat the already proven identity and calibration
+   read using the existing direct reader. Save the exact current BIN and hash;
+   compare repeated reads. A stock CTZ-derived reference remains useful for
+   candidate construction, but it does not replace the current physical backup.
+   Do not expand address probing or send session/key/reset commands merely to
+   obtain more evidence. Reading alone is the presently established live stage.
+2. **Offline protocol closure.** Recover exact session, loader, erase/program,
+   acknowledgment, transfer exit and readback behavior from existing local
+   artifacts or an already recorded, documented AL5 programming capture. Trace
+   physical geometry and every collateral region, including persistent records.
+   Do not create a new destructive capture using the only TCM for research.
+3. **Transport simulation.** Implement replay against evidence-derived packets,
+   with no vehicle adapter attached. Check address bounds, duplicate blocks,
+   retries, timeouts and interruptions. The existing file plan stays blocked
+   until independently supported protocol and preservation gates are satisfied.
+4. **Recoverable bench stage.** Use a compatible spare TCM with a documented
+   bench setup and demonstrated recovery, or first independently establish
+   recovery for the current unit. Obtain current backups for all affected regions
+   using a verified method. A calibration-only backup is insufficient when erase
+   geometry reaches outside calibration. The first destructive trial should
+   restore the unchanged baseline and verify exact affected-region readback;
+   calibration changes come after that succeeds.
+5. **Vehicle calibration stage.** After bench writing and recovery are established,
+   bind the approved candidate to the current backup, validate its checksum and
+   allowlist, program through the verified path and check exact readback before
+   normal vehicle use. Evaluate the minimal calibration only after write integrity
+   and preserved collateral have been verified.
+
+These are development gates, not authorization for live destructive operations.
+No packets, new transport services or hardware actions are enabled by this document.
+The user currently has one installed TCM; work can continue offline without it.

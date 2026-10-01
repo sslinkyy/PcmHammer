@@ -108,8 +108,12 @@ performs seven main-context operations and nine small-record operations, then
 restores the committed context without repeating defaults. Twelve isolated reader
 cases distinguish committed, erased and unclassified slot markers. See
 [context preamble and alternate invocation](CONTEXT_PREAMBLE.md).
-Next trace the earlier alternate-path calls, other small-record states and failure
-ordering; intervening startup and physical recovery remain unverified.
+Twenty-eight small-record interruption/status cases now show an unchecked modeled
+payload failure can leave a committed erased payload accepted by the reader. See
+[small-record failure ordering](SMALL_RECORD_FAILURES.md). Next trace the earlier
+alternate-path calls, other small-record states and full initializer reaction;
+intervening startup and physical recovery remain unverified. The staged route to
+live testing is documented in [the write protocol](WRITE_PROTOCOL.md).
 
 **Current named XDF: v0.12**, `TunerPro/AL5_15184109_15183960_MARKER_EXTENDED_v0_12.xdf`.
 The completed offline EFILive report resolves 83 marker cases and adds 41 items;
