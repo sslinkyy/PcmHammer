@@ -29,6 +29,15 @@ The calibration caller near `0xA96F8–0xA97DA` names start `0x8000` and end
 `0x15FD4`; this supports the payload bounds independently of matching the BINs.
 The disassembly is offline evidence, not executed on a controller.
 
+`Tools/AL5/emulate_crc.py` now executes the actual extracted routine and lookup
+table in an isolated Unicorn M68020 emulator. Twelve cases pass: empty, the
+standard CRC vector, all 256 byte values, deterministic random data, and both
+full 57,300-byte reference payloads, each with seeds zero and `0xFFFF`.
+`CRC_EMULATION_VALIDATION.json` records source/code/table hashes, instruction
+counts and firmware/Python results. Execution is confined to the CRC routine;
+no peripheral or vehicle transport is present. This strengthens the first-word
+implementation evidence without claiming a third native calibration reference.
+
 Stock SHA256 `140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6`:
 CRC `4E35`, payload BE16 sum `E18B`, compensation `D040`, complete field
 **`4E35D040`**. Full-segment sum is zero.
