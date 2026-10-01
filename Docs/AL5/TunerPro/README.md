@@ -7,7 +7,8 @@ Use only a 57,304-byte calibration segment covering TCM addresses
 
 The mapping validation records retain their original confidence. D5100–D5115
 are exact sequence/record-family mappings, not marker-differential proofs.
-D5233 and the raw `0x10A24` entry remain research items as described in the XDF.
+D5233 remains a research item as described in the XDF. The historical raw
+`0x10A24` entry is identified as D5197 by the subsequent v0.11 marker evidence.
 
 The target sheets are the existing minimal 1→2 pressure/volume proposal.
 Timing, RPM, torque authority, TCC and other shifts stay stock. They are offline
@@ -132,7 +133,7 @@ comparisons, with 124/127 native IDs represented. See
 TunerPro GUI validation and the three enum encodings remain open. No edited
 BIN is flash-ready.
 
-## Marker extended v0.10 — current named definition
+## Marker extended v0.10
 
 `AL5_15184109_15183960_MARKER_EXTENDED_v0_10.xdf` adds marker/firmware-confirmed
 D5053 and D5054 byte enums (0 Disable, 1 Enable). All earlier encodings are
@@ -145,3 +146,18 @@ Three independently EFILive-finalized edited fields match our complete checksum
 formula, bringing independently sourced examples to five. Read
 [v0.10 evidence and the final enum pass](ADAPTIVE_ENABLE_v0_10.md). No edited BIN
 is flash-ready while protocol, geometry and recovery remain unresolved.
+
+## Marker extended v0.11 — current named definition
+
+`AL5_15184109_15183960_MARKER_EXTENDED_v0_11.xdf` relabels the existing raw
+0x10A24 entry as marker-confirmed D5197. The four validated hexadecimal byte
+values are 00 All Enabled, 20 Torque Limit Req Disabled, 40 RPM Limit Req
+Disabled, and 60 Torque and RPM Limit Req Disabled. PPEI uses 40, resolving
+the earlier unknown change. Keep stock; the raw constant cannot enforce a
+discrete dropdown and other byte values are unvalidated.
+
+All 127 native IDs are represented, but this includes partial/research entries.
+The improved audit counts 2381 of 2517 unique numeric cells; 136 remaining
+cells are D5000/D5005 Patterns E-H. All 283 numeric entry comparisons pass.
+[Coverage evidence and the next 24-cell pass](D5197_AND_CELL_COVERAGE_v0_11.md)
+describe this distinction. No edited BIN is flash-ready.

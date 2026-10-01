@@ -63,4 +63,5 @@ assignments in v0.10. These are offline results, not live programming evidence.
 D5197's exact dropdown labels were subsequently supplied by the user. A
 separate three-case text mapper v8 is prepared; see
 [v0.10 evidence and final enum instructions](TunerPro/ADAPTIVE_ENABLE_v0_10.md).
-D5197 raw encoding remains unassigned until its report is verified.
+The subsequent v8 report resolves all four raw options at 0x10A24; see
+[D5197 and remaining cell coverage](TunerPro/D5197_AND_CELL_COVERAGE_v0_11.md).

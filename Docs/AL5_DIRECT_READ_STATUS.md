@@ -59,11 +59,15 @@ Strong static mapping from unique stock raw values and adjacency:
 - D5231: 600 RPM -> 2000 RPM at `0x145BE`
 - D5233: Enable -> Disable at `0x145C0`
 
-#### Unmapped patch
+#### D5197 CAN Torque Messages — subsequently marker confirmed
 
 - `0x10A24`: `00 -> 40`
-- This sits in a code-like region containing repeated `4E71` words.
-- Do not assign a calibration ID until marker-differential mapping or disassembly proves it.
+- Three isolated EFILive text markers subsequently identify this byte as D5197.
+- Stock `00` = All Enabled; PPEI `40` = RPM Limit Req Disabled.
+- Alternatives are `20` = Torque Limit Req Disabled and `60` = Torque and RPM
+  Limit Req Disabled. See `Docs/AL5/TunerPro/D5197_AND_CELL_COVERAGE_v0_11.md`.
+- Its earlier code-like surroundings do not override the direct marker evidence.
+  This identifies the option without proving its contribution to shift flare.
 
 #### Checksum field
 
@@ -92,7 +96,8 @@ That combination is a strong calibration-level candidate for the observed pre-sh
 
 1. Keep the AL5 direct-read path strictly read-only.
 2. Preserve the 57,304-byte live calibration segment as a reference.
-3. Map the remaining `0x10A24` patch.
+3. Preserve the confirmed D5197 interpretation at `0x10A24`; map the remaining
+   D5000/D5005 Patterns E-H cells and reconstruct programming offline.
 4. Build the corrected first test calibration from verified stock rather than layering changes onto PPEI.
 5. Prioritize the 1->2 clutch handoff while retaining torque-management authority.
 
@@ -105,8 +110,9 @@ versioned v0.4/v0.5 add structurally mapped TCC and WOT upshift-speed vectors.
 The native field is now reproduced offline as a reflected CRC16 (`0xA001`,
 initial zero) over `0x08000–0x15FD3`, followed by a BE16 sum-compensation word.
 This reproduces both known four-byte fields and all 256 firmware CRC table
-entries. The compensation formula still needs additional native edited-segment
-validation; see `Docs/AL5/CHECKSUM_RECOVERY.md` for evidence and limits.
+entries. Three independently EFILive-finalized edited payloads subsequently
+match both words exactly. See `Docs/AL5/CHECKSUM_RECOVERY.md` for evidence and
+limits; physical controller acceptance and programming remain unproven.
 
 The AL5 write protocol remains incomplete. A file-only plan emits zero packets,
 and the shared writer rejects raw AL5 segments before transport access. No live

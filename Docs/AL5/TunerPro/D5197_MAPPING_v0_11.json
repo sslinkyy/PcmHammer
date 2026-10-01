@@ -1,0 +1,22 @@
+{
+  "id": "D5197",
+  "address": "0x10A24",
+  "bits": 8,
+  "options": {
+    "0": "All Enabled",
+    "32": "Torque Limit Req Disabled",
+    "64": "RPM Limit Req Disabled",
+    "96": "Torque and RPM Limit Req Disabled"
+  },
+  "confidence": "three isolated text markers, exact readback and full raw restoration",
+  "stock_raw": 0,
+  "stock_option": "All Enabled",
+  "ppei_raw": 64,
+  "ppei_option": "RPM Limit Req Disabled",
+  "note": "Two observed disable masks 0x20/0x40; other bits are unassigned. Keep stock for first test.",
+  "flash_ready": false,
+  "source_sha256": "93c17394cbdbed22c6c3bb1920981eda867b9a5f46f02ee8e5a8117b7c7b9cec",
+  "stock_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6",
+  "ppei_sha256": "d0bcce91cea041bcf82317c73708c2289c78064aa542d6a63c12d3d6d78adc3f",
+  "report_sha256": "8b7b0fd0e7e23c703e2de62b32b93d5ae2fd448531b4efbf8ca4f96f20e71c8e"
+}

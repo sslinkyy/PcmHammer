@@ -1,0 +1,247 @@
+{
+  "cases": [
+    {
+      "id": "D5000",
+      "column": 4,
+      "row": 0,
+      "expected": 16,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern E row 0"
+    },
+    {
+      "id": "D5000",
+      "column": 4,
+      "row": 8,
+      "expected": 17,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern E row 8"
+    },
+    {
+      "id": "D5000",
+      "column": 4,
+      "row": 16,
+      "expected": 27,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern E row 16"
+    },
+    {
+      "id": "D5000",
+      "column": 5,
+      "row": 0,
+      "expected": 22,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern F row 0"
+    },
+    {
+      "id": "D5000",
+      "column": 5,
+      "row": 8,
+      "expected": 28,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern F row 8"
+    },
+    {
+      "id": "D5000",
+      "column": 5,
+      "row": 16,
+      "expected": 28,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern F row 16"
+    },
+    {
+      "id": "D5000",
+      "column": 6,
+      "row": 0,
+      "expected": 21,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern G row 0"
+    },
+    {
+      "id": "D5000",
+      "column": 6,
+      "row": 8,
+      "expected": 21,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern G row 8"
+    },
+    {
+      "id": "D5000",
+      "column": 6,
+      "row": 16,
+      "expected": 28,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern G row 16"
+    },
+    {
+      "id": "D5000",
+      "column": 7,
+      "row": 0,
+      "expected": 16,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern H row 0"
+    },
+    {
+      "id": "D5000",
+      "column": 7,
+      "row": 8,
+      "expected": 17,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern H row 8"
+    },
+    {
+      "id": "D5000",
+      "column": 7,
+      "row": 16,
+      "expected": 27,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern H row 16"
+    },
+    {
+      "id": "D5005",
+      "column": 4,
+      "row": 0,
+      "expected": 8.6484375,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern E row 0"
+    },
+    {
+      "id": "D5005",
+      "column": 4,
+      "row": 8,
+      "expected": 8.6484375,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern E row 8"
+    },
+    {
+      "id": "D5005",
+      "column": 4,
+      "row": 16,
+      "expected": 20,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern E row 16"
+    },
+    {
+      "id": "D5005",
+      "column": 5,
+      "row": 0,
+      "expected": 8.6484375,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern F row 0"
+    },
+    {
+      "id": "D5005",
+      "column": 5,
+      "row": 8,
+      "expected": 8.6484375,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern F row 8"
+    },
+    {
+      "id": "D5005",
+      "column": 5,
+      "row": 16,
+      "expected": 20,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern F row 16"
+    },
+    {
+      "id": "D5005",
+      "column": 6,
+      "row": 0,
+      "expected": 8.6484375,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern G row 0"
+    },
+    {
+      "id": "D5005",
+      "column": 6,
+      "row": 8,
+      "expected": 8.6484375,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern G row 8"
+    },
+    {
+      "id": "D5005",
+      "column": 6,
+      "row": 16,
+      "expected": 20,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern G row 16"
+    },
+    {
+      "id": "D5005",
+      "column": 7,
+      "row": 0,
+      "expected": 8.6015625,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern H row 0"
+    },
+    {
+      "id": "D5005",
+      "column": 7,
+      "row": 8,
+      "expected": 8.6015625,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern H row 8"
+    },
+    {
+      "id": "D5005",
+      "column": 7,
+      "row": 16,
+      "expected": 20,
+      "target": 200,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern H row 16"
+    }
+  ],
+  "purpose": "Resolve D5000/D5005 Patterns E-H, 136 remaining numeric cells",
+  "reference_sha256": "fbbd581cd5bd42dcfa1fa874c41ffde23f612b36d23e0043ca648acab2ac614b",
+  "stock_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6"
+}

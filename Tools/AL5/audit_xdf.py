@@ -45,7 +45,7 @@ def decode(item, data):
     return [equation(container.find('MATH').get('equation'), v) for v in values]
 
 
-def expected(item, native):
+def expected(item, native, coordinates=False):
     title = item.findtext('title')
     match = re.match(r'(D\d+|H\d+)\b', title)
     if not match or match[1] not in native:
@@ -55,7 +55,7 @@ def expected(item, native):
     if not all(isinstance(v, (int, float)) for row in cells for v in row):
         return None  # text/enum encoding needs separate evidence
     if len(cells) == 1 and len(cells[0]) == 1:
-        return [cells[0][0]]
+        return [(0,0)] if coordinates else [cells[0][0]]
     pattern = re.search(r'Pattern ([A-H])', title)
     tps = re.search(r' - (\d+)% TPS', title)
     native_column = re.search(r' - Native Column (\d+):', title)
@@ -69,7 +69,7 @@ def expected(item, native):
         col = 0
     else:
         return None
-    return [row[col] for row in cells]
+    return [(r,col) for r in range(len(cells))] if coordinates else [row[col] for row in cells]
 
 
 def audit(xdf, stock, ppei, export):
@@ -92,6 +92,7 @@ def audit(xdf, stock, ppei, export):
             errors.append(f'{name}: BE16 invariant failed')
     categories = {int(c.get('index'), 0)+1 for c in root.findall('XDFHEADER/CATEGORY')}
     ids = set()
+    numeric_seen = {ident:set() for ident in native}
     for item in root:
         if item.tag not in ('XDFCONSTANT', 'XDFTABLE'):
             continue
@@ -113,6 +114,9 @@ def audit(xdf, stock, ppei, export):
                           max_abs_error=error, compared_cells=len(wanted))
             if record['native_comparison'] == 'FAIL':
                 errors.append(f'{title}: native export mismatch')
+            else:
+                ident = re.match(r'(D\d+|H\d+)\b',title)[1]
+                numeric_seen[ident].update(expected(item,native,coordinates=True))
         result['items'].append(record)
     result['diff_ranges'] = diff_ranges(stock, ppei)
     result['changed_bytes'] = sum(r['length'] for r in result['diff_ranges'])
@@ -122,6 +126,14 @@ def audit(xdf, stock, ppei, export):
                           'represented_ids': sorted(represented),
                           'absent_ids': sorted(set(native)-represented),
                           'note': 'Representation includes partial and research entries; it does not imply full validation.'}
+    numeric_wanted = {ident:{(r,col) for r,row in enumerate(c['cells'])
+                            for col,value in enumerate(row) if isinstance(value,(int,float))}
+                      for ident,c in native.items()}
+    missing = {ident:sorted(numeric_wanted[ident]-numeric_seen[ident]) for ident in native
+               if numeric_wanted[ident]-numeric_seen[ident]}
+    result['coverage'].update(native_numeric_cell_count=sum(map(len,numeric_wanted.values())),
+        compared_unique_numeric_cell_count=sum(map(len,numeric_seen.values())),
+        missing_numeric_cells=missing,numeric_coverage_complete=not missing)
     result['errors'] = errors
     result['status'] = 'pass' if not errors else 'FAIL'
     return result

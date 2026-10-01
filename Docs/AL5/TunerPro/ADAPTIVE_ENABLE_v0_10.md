@@ -1,5 +1,9 @@
 # Adaptive enable mappings and checksum milestone — XDF v0.10
 
+Subsequent v8 completed: D5197 is now marker mapped in v0.11. This document
+preserves the v0.10 milestone; current limits and next actions are in
+[D5197 and cell coverage](D5197_AND_CELL_COVERAGE_v0_11.md).
+
 The successful v7 report independently finalized three controlled edited
 payloads in EFILive. Both words match the offline formula for every case:
 `732DAAC8` (D5000), `EBA232B3` (D5120), `7B29A38C` (D5194). All raw restores

@@ -1,0 +1,120 @@
+{
+  "cases": [
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 68132,
+          "after": 32,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "E0004E7120004E7100",
+          "before_hex": "E0004E7100004E7100",
+          "changed_end": 68132,
+          "changed_start": 68132,
+          "context_end": 68136,
+          "context_start": 68128
+        }
+      ],
+      "marker": {
+        "before": "All Enabled",
+        "column": 0,
+        "id": "D5197",
+        "label": "Torque request disabled",
+        "readback": "Torque Limit Req Disabled",
+        "requested": "Torque Limit Req Disabled",
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 68132,
+          "after": 64,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "E0004E7140004E7100",
+          "before_hex": "E0004E7100004E7100",
+          "changed_end": 68132,
+          "changed_start": 68132,
+          "context_end": 68136,
+          "context_start": 68128
+        }
+      ],
+      "marker": {
+        "before": "All Enabled",
+        "column": 0,
+        "id": "D5197",
+        "label": "RPM request disabled",
+        "readback": "RPM Limit Req Disabled",
+        "requested": "RPM Limit Req Disabled",
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 68132,
+          "after": 96,
+          "before": 0
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "E0004E7160004E7100",
+          "before_hex": "E0004E7100004E7100",
+          "changed_end": 68132,
+          "changed_start": 68132,
+          "context_end": 68136,
+          "context_start": 68128
+        }
+      ],
+      "marker": {
+        "before": "All Enabled",
+        "column": 0,
+        "id": "D5197",
+        "label": "Both requests disabled",
+        "readback": "Torque and RPM Limit Req Disabled",
+        "requested": "Torque and RPM Limit Req Disabled",
+        "row": 0
+      },
+      "restored": true
+    }
+  ],
+  "checksum_finalized": false,
+  "completed": true,
+  "controller": "AL5",
+  "created_local": "2026-10-01T04:20:35",
+  "flash_ready": false,
+  "gui_descriptor_modified": false,
+  "operating_system": 15184109,
+  "raw_range": {
+    "bytes": 57344,
+    "finish": 90111,
+    "start": 32768
+  },
+  "schema_version": 1,
+  "secondary_closed": true,
+  "secondary_saved": false,
+  "source": "[local stock source path redacted]",
+  "tool": "AL5-D5197-text-differential-mapper-0.8",
+  "transmission": 15183960,
+  "validation": {
+    "gui_raw_unchanged": true,
+    "raw_coherency_and_restore": true,
+    "secondary_baseline_equals_gui": true
+  },
+  "vehicle_io": false,
+  "original_report_sha256": "749a8243982a8ca66ba59ecfa9fc4222fce31d4d315b4444420224c7cb2272d0",
+  "redaction_note": "Only source path replaced; all markers and validation fields unchanged."
+}

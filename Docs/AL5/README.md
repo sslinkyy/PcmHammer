@@ -60,12 +60,15 @@ a plan to program the currently installed PPEI calibration.
 
 ## Current boundaries and next work
 
-**Current named XDF: v0.10**, `TunerPro/AL5_15184109_15183960_MARKER_EXTENDED_v0_10.xdf`.
+**Current named XDF: v0.11**, `TunerPro/AL5_15184109_15183960_MARKER_EXTENDED_v0_11.xdf`.
 The completed offline EFILive report resolves 83 marker cases and adds 41 items;
 all 283 numeric native comparisons pass. The subsequent v7 report maps D5053
 and D5054 byte enums and independently validates three native edited checksum
-fields. 126/127 native IDs are represented, including partial/research entries;
-D5197 remains absent pending its prepared v8 text-marker pass.
+fields. The completed v8 pass identifies D5197 at 0x10A24 and the old PPEI
+00-to-40 change as RPM Limit Req Disabled. All 127 native IDs are represented,
+including partial/research entries. Numeric coverage remains 2381/2517 cells:
+136 D5000/D5005 Pattern E-H cells still need mapping. See
+[ID versus cell coverage](TunerPro/D5197_AND_CELL_COVERAGE_v0_11.md).
 H0105's completed high-word marker corroborates unsigned BE32 at 0x152E4 with
 the native range and exact readback; v0.9.1 preserves every v0.9 encoding.
 See [marker evidence and GUI checks](TunerPro/MARKER_VALIDATION_v0_9.md).
@@ -89,11 +92,12 @@ raw AL5 segment into the existing PCM kernel writer. No AL5 live writer exists.
 
 ## Reproduce
 
-The v7 enum/checksum pass completed successfully. The next prepared pass is
-`Tools/AL5/AL5_D5197_TEXT_MAPPER_v8.lua`, using three exact dropdown labels
-supplied by the user. See [v0.10 evidence and instructions](TunerPro/ADAPTIVE_ENABLE_v0_10.md).
-Lua syntax validation passes; its EFILive execution is pending. No native raw
-D5197 encoding has been assumed.
+The v7 enum/checksum and v8 final-enum passes completed successfully. The next
+prepared pass is `Tools/AL5/AL5_REMAINING_COLUMNS_MAPPER_v9.lua`, sampling
+24 cells across the eight remaining D5000/D5005 Pattern E-H vectors. See
+[v9 instructions and coverage limits](TunerPro/D5197_AND_CELL_COVERAGE_v0_11.md).
+Its Lua syntax check passes; EFILive execution is pending. Ambiguous stock
+sequence matches are preserved in `TunerPro/REMAINING_COLUMN_CANDIDATES_v9.json`.
 
 The v6 targeted mapper completed its 83-case EFILive pass; the v6.1 H0105
 high-word pass also completed. Reproduce their validation with

@@ -1,5 +1,9 @@
 # Remaining control candidates — no new XDF assignments
 
+Current v0.11 represents all 127 native IDs after identifying D5197. The
+remaining numeric-cell gap is D5000/D5005 Patterns E-H, 136 cells; see
+[current coverage](D5197_AND_CELL_COVERAGE_v0_11.md). The ledger below is historical.
+
 Current v0.10 supersedes this historical ledger: D5053/D5054 are now mapped by
 isolated text markers plus full-byte firmware tests. Only D5197 remains absent;
 its exact labels are supplied and the v8 pass is prepared. See

@@ -71,8 +71,9 @@ types. The file-only Python planner has no transport dependency or execute flag.
 SHA256, controller and OS context. It reports native checksum validity, input
 errors, absolute diff ranges and readiness blockers. The initial policy permits
 only the supplied minimal OEM-stock 1→2 target words and a valid checksum field.
-It does not permit arbitrary values at those addresses, the unknown `0x10A24`
-patch, changes to other controls, or an implicit PPEI-to-stock rebase.
+It does not permit arbitrary values at those addresses, D5197 changes at
+`0x10A24` (now marker-identified), changes to other controls, or an implicit
+PPEI-to-stock rebase. Identifying the enum does not expand the write allowlist.
 
 `ready_to_flash` and `live_write_enabled` are always false. `would_send`,
 `erase_packets`, and `program_packets` are always empty. Erase scope and program
