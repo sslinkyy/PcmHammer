@@ -70,6 +70,9 @@ The new XDF versions need a TunerPro GUI check; numerical audit is complete.
 `TunerPro/REMAINING_CONTROLS.md` narrows 14 absent definitions to explicit
 scalar/throttle packing candidates and records their firmware references.
 These require identity proof before XDF promotion; coverage has not changed.
+The optional v0.8 research supplement adds 25 unassigned raw vectors whose
+firmware selection passes 45 emulator cases. It retains all v0.7 named tables;
+native mode/gear labels remain unproven and ID coverage remains 105/127.
 
 Read [CHECKSUM_RECOVERY.md](CHECKSUM_RECOVERY.md) and
 [WRITE_PROTOCOL.md](WRITE_PROTOCOL.md) before extending writer work. Recover the

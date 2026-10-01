@@ -92,3 +92,18 @@ structural mappings without marker proof or TunerPro GUI validation.
 See `REMAINING_CONTROLS.md` for narrowed scalar and throttle-release candidates
 and their firmware-reference evidence. Those hypotheses are deliberately not
 added to the v0.7 XDF; representation remains 105/127 native IDs.
+
+## Research supplement v0.8
+
+`AL5_15184109_15183960_RESEARCH_SUPPLEMENT_v0_8.xdf` preserves all named v0.7
+tables and adds 25 raw vectors / 425 words from five firmware-selected families.
+Forty-five isolated emulator cases verify mode/flag selection, 36-byte stride,
+indices zero through four and lookup argument/result handling. These entries
+have raw counts and raw-row/selector-index labels in the Research / Raw category.
+Native calibration IDs, physical mode names, gear names and row-axis units are
+unassigned. The supplement does not increase native ID coverage.
+
+The XDF audit passes all 242 previously resolved native comparisons and bounds/
+category/unique-ID checks for the new entries. Their raw words match the local
+stock data; TunerPro GUI validation is pending. Use v0.7 as the named-definition
+baseline. The research supplement and any edited BIN remain offline only.

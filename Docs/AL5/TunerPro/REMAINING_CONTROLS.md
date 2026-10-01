@@ -66,4 +66,49 @@ check the existing differential artifacts for named field markers. For the
 throttle families, trace table pointers/axis selection or obtain an existing
 marker differential. Enum/locked-counter controls, repeated disabled RPM
 sentinels and the remaining speedo fields require separate encoding or identity
-evidence. No speculative entries, raw BIN edits or vehicle operations were made.
+evidence. No native ID assignments, raw BIN edits or vehicle operations were made.
+
+## Subsequent firmware-selection validation
+
+The code at `0x3A83C–0x3A935` now has 45 isolated selection cases. Its mode
+getter reads A5+`0x1C7B`, via wrappers `0x29A60` and `0x8BA60`. The observed
+selection is:
+
+- Mode one chooses `0x13950`, or `0x13A08` when both A5+`0x1226` and the
+  calibration byte at `0x11ACC` are nonzero.
+- Mode two chooses `0x13AC0`.
+- Other modes choose `0x13B78`, or `0x13C30` when both A5+`0x1226` and the
+  calibration byte at `0x11ACD` are nonzero.
+
+Every path adds 36 times the signed byte at A5+`0x2286` to the family header.
+Indices zero through four select five distinct `0x0011`-header vectors per
+family. The emulator injects that index and operating mode, stubs the getter
+and interpolation helper, captures its arguments, and checks its result is
+stored at A5+`0x23C4`. It verifies primary enable gating as well. It does not
+execute interpolation or establish the producer's actual gear/mode names.
+
+This resolves raw table selection while leaving D5073–D5075 identities open.
+The v0.8 research supplement exposes all 25 raw vectors with selector-index
+and raw-row labels, raw integer scaling, and no assigned native IDs or physical
+mode names. It preserves the v0.7 named tables. Coverage remains 105/127 IDs.
+See `THROTTLE_SELECTION_EMULATION.json` and
+`THROTTLE_SELECTION_STATIC_EVIDENCE.json`. The active named definition remains
+v0.7; v0.8 is an optional inspection supplement awaiting GUI validation.
+
+## Runtime-input tracing
+
+The routine at `0xA3898` updates A5+`0x1F04`: in its normal branch it copies
+A5+`0x1F0A`; in another branch it uses the computed A5+`0x1F06` or a fallback
+word at `0x14BA8`, depending on a calibration bit. This narrows the source of
+the temperature-candidate comparison, but the sensor conversion and fault-code
+meaning have not been established. Do not assign physical units from the
+runtime register address alone.
+
+The routine at `0xA3E3A` compares the runtime word A5+`0x1214` with threshold
+pairs `0x1375C/0x1375E` or `0x145E0/0x145E2`. The byte at A5+`0x2D1D` selects
+the latter pair when it equals one; otherwise the former is used. A5+`0x1F14`
+selects the low/high threshold within either pair. Thus two of the three raw
+900/1050 candidate pairs have a shared hysteresis consumer. Their precise
+parameter/mode identity remains unresolved. The third pair near the Bidi
+controls was not selected by this consumer. See
+`TEMPERATURE_RPM_REFERENCE_WINDOWS.json` for exact bounded disassembly.

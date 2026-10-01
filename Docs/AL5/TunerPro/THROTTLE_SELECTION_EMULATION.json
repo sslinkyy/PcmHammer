@@ -1,0 +1,537 @@
+{
+  "source_sha256": "492040d9460d53b77dda606b9a89f4254e0680f239093001663f6ed5cf51ba75",
+  "stock_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6",
+  "routine_sha256": "32b7bd025b23be78ac5a63847c39c4b4ecc5e78e1395e37ce45d8a07f176ddae",
+  "start": "0x3A83C",
+  "end_exclusive": "0x3A936",
+  "scope": "bounded selection code, synthetic context, mode getter and interpolator stubbed",
+  "semantic_limit": "mode/flag and column numbers injected; physical mode names and actual gear-index producer not proven",
+  "cases": [
+    {
+      "mode_injected": 0,
+      "column_index": 0,
+      "flag_1226": 0,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13B78",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 0,
+      "column_index": 0,
+      "flag_1226": 1,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13C30",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 0,
+      "column_index": 1,
+      "flag_1226": 0,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13B9C",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 0,
+      "column_index": 1,
+      "flag_1226": 1,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13C54",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 0,
+      "column_index": 2,
+      "flag_1226": 0,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13BC0",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 0,
+      "column_index": 2,
+      "flag_1226": 1,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13C78",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 0,
+      "column_index": 3,
+      "flag_1226": 0,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13BE4",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 0,
+      "column_index": 3,
+      "flag_1226": 1,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13C9C",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 0,
+      "column_index": 4,
+      "flag_1226": 0,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13C08",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 0,
+      "column_index": 4,
+      "flag_1226": 1,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13CC0",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 1,
+      "column_index": 0,
+      "flag_1226": 0,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13950",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 1,
+      "column_index": 0,
+      "flag_1226": 1,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13A08",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 1,
+      "column_index": 1,
+      "flag_1226": 0,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13974",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 1,
+      "column_index": 1,
+      "flag_1226": 1,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13A2C",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 1,
+      "column_index": 2,
+      "flag_1226": 0,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13998",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 1,
+      "column_index": 2,
+      "flag_1226": 1,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13A50",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 1,
+      "column_index": 3,
+      "flag_1226": 0,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x139BC",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 1,
+      "column_index": 3,
+      "flag_1226": 1,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13A74",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 1,
+      "column_index": 4,
+      "flag_1226": 0,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x139E0",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 1,
+      "column_index": 4,
+      "flag_1226": 1,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13A98",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 2,
+      "column_index": 0,
+      "flag_1226": 0,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13AC0",
+      "raw_values_unique": [
+        0
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 2,
+      "column_index": 0,
+      "flag_1226": 1,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13AC0",
+      "raw_values_unique": [
+        0
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 2,
+      "column_index": 1,
+      "flag_1226": 0,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13AE4",
+      "raw_values_unique": [
+        0
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 2,
+      "column_index": 1,
+      "flag_1226": 1,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13AE4",
+      "raw_values_unique": [
+        0
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 2,
+      "column_index": 2,
+      "flag_1226": 0,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13B08",
+      "raw_values_unique": [
+        0
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 2,
+      "column_index": 2,
+      "flag_1226": 1,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13B08",
+      "raw_values_unique": [
+        0
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 2,
+      "column_index": 3,
+      "flag_1226": 0,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13B2C",
+      "raw_values_unique": [
+        0
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 2,
+      "column_index": 3,
+      "flag_1226": 1,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13B2C",
+      "raw_values_unique": [
+        0
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 2,
+      "column_index": 4,
+      "flag_1226": 0,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13B50",
+      "raw_values_unique": [
+        0
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 2,
+      "column_index": 4,
+      "flag_1226": 1,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13B50",
+      "raw_values_unique": [
+        0
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 3,
+      "column_index": 0,
+      "flag_1226": 0,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13B78",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 3,
+      "column_index": 0,
+      "flag_1226": 1,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13C30",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 3,
+      "column_index": 1,
+      "flag_1226": 0,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13B9C",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 3,
+      "column_index": 1,
+      "flag_1226": 1,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13C54",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 3,
+      "column_index": 2,
+      "flag_1226": 0,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13BC0",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 3,
+      "column_index": 2,
+      "flag_1226": 1,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13C78",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 3,
+      "column_index": 3,
+      "flag_1226": 0,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13BE4",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 3,
+      "column_index": 3,
+      "flag_1226": 1,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13C9C",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 3,
+      "column_index": 4,
+      "flag_1226": 0,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13C08",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 3,
+      "column_index": 4,
+      "flag_1226": 1,
+      "enable_11ACC": 1,
+      "enable_11ACD": 1,
+      "table_header": "0x13CC0",
+      "raw_values_unique": [
+        65535
+      ],
+      "match": true
+    },
+    {
+      "mode_injected": 1,
+      "column_index": 0,
+      "flag_1226": 1,
+      "enable_11ACC": 0,
+      "enable_11ACD": 1,
+      "table_header": "0x13950",
+      "match": true
+    },
+    {
+      "mode_injected": 1,
+      "column_index": 1,
+      "flag_1226": 1,
+      "enable_11ACC": 0,
+      "enable_11ACD": 1,
+      "table_header": "0x13974",
+      "match": true
+    },
+    {
+      "mode_injected": 1,
+      "column_index": 2,
+      "flag_1226": 1,
+      "enable_11ACC": 0,
+      "enable_11ACD": 1,
+      "table_header": "0x13998",
+      "match": true
+    },
+    {
+      "mode_injected": 1,
+      "column_index": 3,
+      "flag_1226": 1,
+      "enable_11ACC": 0,
+      "enable_11ACD": 1,
+      "table_header": "0x139BC",
+      "match": true
+    },
+    {
+      "mode_injected": 1,
+      "column_index": 4,
+      "flag_1226": 1,
+      "enable_11ACC": 0,
+      "enable_11ACD": 1,
+      "table_header": "0x139E0",
+      "match": true
+    }
+  ],
+  "all_match": true
+}
