@@ -1,0 +1,1039 @@
+{
+  "low_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
+  "high_sha256": "492040d9460d53b77dda606b9a89f4254e0680f239093001663f6ed5cf51ba75",
+  "code_sha256": {
+    "0x22250": "d24d9cc3872f35725a82490c6717dc2c1031a1fb9e907dc4810e0bfcc2a9be91",
+    "0x2266c": "e190f20d989cc7cd47936232a3c6fa893f89805830582c6709742c47db5a66da",
+    "0x226f0": "5711c66515715f7a3577128e4cdde4f66fa74f33a7a947175b4f9dd59922755b",
+    "0x5b92e": "b15ba75c1aec253465ff8112d63335e042708cdaf49fb67c8bdb9b9ee0f5bc13",
+    "0xa95d0": "5329265cbf7a1c449efc6a3c17d9f4fd99f28104645a01388b01f40151fac183"
+  },
+  "scope": "Bounded real callers/CRC; storage effects modeled atomically by host hooks. No flash implementation or hardware execution.",
+  "model_limits": "Successful atomic calls only; no partial-word effects, physical erase geometry, timing, status failures or completed repair emulation.",
+  "validation_cases": [
+    {
+      "case": "committed_valid_crc",
+      "observed": {
+        "stop_pc": "0x5b96e",
+        "marker": "0x0",
+        "storage_trap": null,
+        "banks_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "case": "committed_bad_crc",
+      "observed": {
+        "stop_pc": "0x5b96c",
+        "marker": "0x8c9b",
+        "storage_trap": null,
+        "banks_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "case": "pending_bypasses_crc_path",
+      "observed": {
+        "stop_pc": "0x5ba24",
+        "marker": "0x0",
+        "storage_trap": null,
+        "banks_unchanged": true
+      },
+      "pass": true
+    }
+  ],
+  "transaction_cases": [
+    {
+      "active_bank": "0x4000",
+      "interrupt_after_operations": 0,
+      "expected_selected_record": "0x4028",
+      "operations": [],
+      "reboot_selection": {
+        "selected_record": "0x4028",
+        "selected_context_sha256": "2ec279de55cce31b15fb6ade7a6db32c707ce1db06f2a634ef1b3bc95b2fe80d",
+        "storage_trap": null,
+        "banks_unchanged_during_selection": true
+      },
+      "pass": true
+    },
+    {
+      "active_bank": "0x4000",
+      "interrupt_after_operations": 1,
+      "expected_selected_record": null,
+      "operations": [
+        {
+          "entry": "0x22b18",
+          "kind": "synthetic_erase",
+          "destination": "0x6000",
+          "bytes": 8192,
+          "source": null,
+          "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+          "word": null,
+          "implementation_executed": false
+        }
+      ],
+      "reboot_selection": {
+        "selected_record": null,
+        "selected_context_sha256": null,
+        "storage_trap": {
+          "entry": "0x22b18",
+          "arguments": [
+            "0x2087cc",
+            "0x4000"
+          ],
+          "implementation_executed": false
+        },
+        "banks_unchanged_during_selection": true
+      },
+      "pass": true
+    },
+    {
+      "active_bank": "0x4000",
+      "interrupt_after_operations": 2,
+      "expected_selected_record": null,
+      "operations": [
+        {
+          "entry": "0x22b18",
+          "kind": "synthetic_erase",
+          "destination": "0x6000",
+          "bytes": 8192,
+          "source": null,
+          "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22cf0",
+          "kind": "synthetic_tail_copy",
+          "destination": "0x6a4c",
+          "bytes": 5556,
+          "source": "0x4a4c",
+          "payload_sha256": "ccd38044a9d45dc953fb11ba784f389b7a0bb1fd7684f74d424495c3c19d8f97",
+          "word": null,
+          "implementation_executed": false
+        }
+      ],
+      "reboot_selection": {
+        "selected_record": null,
+        "selected_context_sha256": null,
+        "storage_trap": {
+          "entry": "0x22b18",
+          "arguments": [
+            "0x2087cc",
+            "0x4000"
+          ],
+          "implementation_executed": false
+        },
+        "banks_unchanged_during_selection": true
+      },
+      "pass": true
+    },
+    {
+      "active_bank": "0x4000",
+      "interrupt_after_operations": 3,
+      "expected_selected_record": "0x4028",
+      "operations": [
+        {
+          "entry": "0x22b18",
+          "kind": "synthetic_erase",
+          "destination": "0x6000",
+          "bytes": 8192,
+          "source": null,
+          "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22cf0",
+          "kind": "synthetic_tail_copy",
+          "destination": "0x6a4c",
+          "bytes": 5556,
+          "source": "0x4a4c",
+          "payload_sha256": "ccd38044a9d45dc953fb11ba784f389b7a0bb1fd7684f74d424495c3c19d8f97",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x6000",
+          "bytes": 40,
+          "source": "0x2087cc",
+          "payload_sha256": "876f89bcbd85b31c4f7c683982403bb2d49db206d1b0bb566f5b288a3e835fcb",
+          "word": null,
+          "implementation_executed": false
+        }
+      ],
+      "reboot_selection": {
+        "selected_record": "0x4028",
+        "selected_context_sha256": "2ec279de55cce31b15fb6ade7a6db32c707ce1db06f2a634ef1b3bc95b2fe80d",
+        "storage_trap": null,
+        "banks_unchanged_during_selection": true
+      },
+      "pass": true
+    },
+    {
+      "active_bank": "0x4000",
+      "interrupt_after_operations": 4,
+      "expected_selected_record": "0x4028",
+      "operations": [
+        {
+          "entry": "0x22b18",
+          "kind": "synthetic_erase",
+          "destination": "0x6000",
+          "bytes": 8192,
+          "source": null,
+          "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22cf0",
+          "kind": "synthetic_tail_copy",
+          "destination": "0x6a4c",
+          "bytes": 5556,
+          "source": "0x4a4c",
+          "payload_sha256": "ccd38044a9d45dc953fb11ba784f389b7a0bb1fd7684f74d424495c3c19d8f97",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x6000",
+          "bytes": 40,
+          "source": "0x2087cc",
+          "payload_sha256": "876f89bcbd85b31c4f7c683982403bb2d49db206d1b0bb566f5b288a3e835fcb",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x6028",
+          "bytes": 2,
+          "source": "0x2087cc",
+          "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+          "word": "fffe",
+          "implementation_executed": false
+        }
+      ],
+      "reboot_selection": {
+        "selected_record": "0x4028",
+        "selected_context_sha256": "2ec279de55cce31b15fb6ade7a6db32c707ce1db06f2a634ef1b3bc95b2fe80d",
+        "storage_trap": null,
+        "banks_unchanged_during_selection": true
+      },
+      "pass": true
+    },
+    {
+      "active_bank": "0x4000",
+      "interrupt_after_operations": 5,
+      "expected_selected_record": "0x4028",
+      "operations": [
+        {
+          "entry": "0x22b18",
+          "kind": "synthetic_erase",
+          "destination": "0x6000",
+          "bytes": 8192,
+          "source": null,
+          "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22cf0",
+          "kind": "synthetic_tail_copy",
+          "destination": "0x6a4c",
+          "bytes": 5556,
+          "source": "0x4a4c",
+          "payload_sha256": "ccd38044a9d45dc953fb11ba784f389b7a0bb1fd7684f74d424495c3c19d8f97",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x6000",
+          "bytes": 40,
+          "source": "0x2087cc",
+          "payload_sha256": "876f89bcbd85b31c4f7c683982403bb2d49db206d1b0bb566f5b288a3e835fcb",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x6028",
+          "bytes": 2,
+          "source": "0x2087cc",
+          "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+          "word": "fffe",
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x602a",
+          "bytes": 2546,
+          "source": "0xff8140",
+          "payload_sha256": "986ae6df8afa3c99d2b26d9e3f13e9b0ed3071a2e8df7458068ff07ae320b6b5",
+          "word": null,
+          "implementation_executed": false
+        }
+      ],
+      "reboot_selection": {
+        "selected_record": "0x4028",
+        "selected_context_sha256": "2ec279de55cce31b15fb6ade7a6db32c707ce1db06f2a634ef1b3bc95b2fe80d",
+        "storage_trap": null,
+        "banks_unchanged_during_selection": true
+      },
+      "pass": true
+    },
+    {
+      "active_bank": "0x4000",
+      "interrupt_after_operations": 6,
+      "expected_selected_record": "0x4028",
+      "operations": [
+        {
+          "entry": "0x22b18",
+          "kind": "synthetic_erase",
+          "destination": "0x6000",
+          "bytes": 8192,
+          "source": null,
+          "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22cf0",
+          "kind": "synthetic_tail_copy",
+          "destination": "0x6a4c",
+          "bytes": 5556,
+          "source": "0x4a4c",
+          "payload_sha256": "ccd38044a9d45dc953fb11ba784f389b7a0bb1fd7684f74d424495c3c19d8f97",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x6000",
+          "bytes": 40,
+          "source": "0x2087cc",
+          "payload_sha256": "876f89bcbd85b31c4f7c683982403bb2d49db206d1b0bb566f5b288a3e835fcb",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x6028",
+          "bytes": 2,
+          "source": "0x2087cc",
+          "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+          "word": "fffe",
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x602a",
+          "bytes": 2546,
+          "source": "0xff8140",
+          "payload_sha256": "986ae6df8afa3c99d2b26d9e3f13e9b0ed3071a2e8df7458068ff07ae320b6b5",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x6028",
+          "bytes": 2,
+          "source": "0x2087cc",
+          "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+          "word": "ffaa",
+          "implementation_executed": false
+        }
+      ],
+      "reboot_selection": {
+        "selected_record": "0x4028",
+        "selected_context_sha256": "2ec279de55cce31b15fb6ade7a6db32c707ce1db06f2a634ef1b3bc95b2fe80d",
+        "storage_trap": null,
+        "banks_unchanged_during_selection": true
+      },
+      "pass": true
+    },
+    {
+      "active_bank": "0x4000",
+      "interrupt_after_operations": 7,
+      "expected_selected_record": "0x6028",
+      "operations": [
+        {
+          "entry": "0x22b18",
+          "kind": "synthetic_erase",
+          "destination": "0x6000",
+          "bytes": 8192,
+          "source": null,
+          "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22cf0",
+          "kind": "synthetic_tail_copy",
+          "destination": "0x6a4c",
+          "bytes": 5556,
+          "source": "0x4a4c",
+          "payload_sha256": "ccd38044a9d45dc953fb11ba784f389b7a0bb1fd7684f74d424495c3c19d8f97",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x6000",
+          "bytes": 40,
+          "source": "0x2087cc",
+          "payload_sha256": "876f89bcbd85b31c4f7c683982403bb2d49db206d1b0bb566f5b288a3e835fcb",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x6028",
+          "bytes": 2,
+          "source": "0x2087cc",
+          "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+          "word": "fffe",
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x602a",
+          "bytes": 2546,
+          "source": "0xff8140",
+          "payload_sha256": "986ae6df8afa3c99d2b26d9e3f13e9b0ed3071a2e8df7458068ff07ae320b6b5",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x6028",
+          "bytes": 2,
+          "source": "0x2087cc",
+          "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+          "word": "ffaa",
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x4028",
+          "bytes": 2,
+          "source": "0x2087cc",
+          "payload_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "word": "0000",
+          "implementation_executed": false
+        }
+      ],
+      "reboot_selection": {
+        "selected_record": "0x6028",
+        "selected_context_sha256": "986ae6df8afa3c99d2b26d9e3f13e9b0ed3071a2e8df7458068ff07ae320b6b5",
+        "storage_trap": null,
+        "banks_unchanged_during_selection": true
+      },
+      "pass": true
+    },
+    {
+      "active_bank": "0x4000",
+      "interrupt_after_operations": null,
+      "operations": [
+        {
+          "entry": "0x22b18",
+          "kind": "synthetic_erase",
+          "destination": "0x6000",
+          "bytes": 8192,
+          "source": null,
+          "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22cf0",
+          "kind": "synthetic_tail_copy",
+          "destination": "0x6a4c",
+          "bytes": 5556,
+          "source": "0x4a4c",
+          "payload_sha256": "ccd38044a9d45dc953fb11ba784f389b7a0bb1fd7684f74d424495c3c19d8f97",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x6000",
+          "bytes": 40,
+          "source": "0x2087cc",
+          "payload_sha256": "876f89bcbd85b31c4f7c683982403bb2d49db206d1b0bb566f5b288a3e835fcb",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x6028",
+          "bytes": 2,
+          "source": "0x2087cc",
+          "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+          "word": "fffe",
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x602a",
+          "bytes": 2546,
+          "source": "0xff8140",
+          "payload_sha256": "986ae6df8afa3c99d2b26d9e3f13e9b0ed3071a2e8df7458068ff07ae320b6b5",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x6028",
+          "bytes": 2,
+          "source": "0x2087cc",
+          "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+          "word": "ffaa",
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x4028",
+          "bytes": 2,
+          "source": "0x2087cc",
+          "payload_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "word": "0000",
+          "implementation_executed": false
+        }
+      ],
+      "reboot_selection": {
+        "selected_record": "0x6028",
+        "selected_context_sha256": "986ae6df8afa3c99d2b26d9e3f13e9b0ed3071a2e8df7458068ff07ae320b6b5",
+        "storage_trap": null,
+        "banks_unchanged_during_selection": true
+      },
+      "synthetic_preservation": {
+        "tail_matches_old_active_bank": true,
+        "header_metadata_matches_bank_4000": true,
+        "generation_word": 11
+      },
+      "pass": true
+    },
+    {
+      "active_bank": "0x6000",
+      "interrupt_after_operations": 0,
+      "expected_selected_record": "0x6028",
+      "operations": [],
+      "reboot_selection": {
+        "selected_record": "0x6028",
+        "selected_context_sha256": "9d6fc0c98b4b6b325ca7d0361428aa968eb30028a1f6565d7eb9e9ef5d4f7329",
+        "storage_trap": null,
+        "banks_unchanged_during_selection": true
+      },
+      "pass": true
+    },
+    {
+      "active_bank": "0x6000",
+      "interrupt_after_operations": 1,
+      "expected_selected_record": null,
+      "operations": [
+        {
+          "entry": "0x22b18",
+          "kind": "synthetic_erase",
+          "destination": "0x4000",
+          "bytes": 8192,
+          "source": null,
+          "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+          "word": null,
+          "implementation_executed": false
+        }
+      ],
+      "reboot_selection": {
+        "selected_record": null,
+        "selected_context_sha256": null,
+        "storage_trap": {
+          "entry": "0x22b18",
+          "arguments": [
+            "0x2087cc",
+            "0x4000"
+          ],
+          "implementation_executed": false
+        },
+        "banks_unchanged_during_selection": true
+      },
+      "pass": true
+    },
+    {
+      "active_bank": "0x6000",
+      "interrupt_after_operations": 2,
+      "expected_selected_record": null,
+      "operations": [
+        {
+          "entry": "0x22b18",
+          "kind": "synthetic_erase",
+          "destination": "0x4000",
+          "bytes": 8192,
+          "source": null,
+          "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22cf0",
+          "kind": "synthetic_tail_copy",
+          "destination": "0x4a4c",
+          "bytes": 5556,
+          "source": "0x6a4c",
+          "payload_sha256": "dd2dd88c6b6823921ffa8a76faf799d42b1c5be408e7cfab793741c5c25ec958",
+          "word": null,
+          "implementation_executed": false
+        }
+      ],
+      "reboot_selection": {
+        "selected_record": null,
+        "selected_context_sha256": null,
+        "storage_trap": {
+          "entry": "0x22b18",
+          "arguments": [
+            "0x2087cc",
+            "0x4000"
+          ],
+          "implementation_executed": false
+        },
+        "banks_unchanged_during_selection": true
+      },
+      "pass": true
+    },
+    {
+      "active_bank": "0x6000",
+      "interrupt_after_operations": 3,
+      "expected_selected_record": "0x6028",
+      "operations": [
+        {
+          "entry": "0x22b18",
+          "kind": "synthetic_erase",
+          "destination": "0x4000",
+          "bytes": 8192,
+          "source": null,
+          "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22cf0",
+          "kind": "synthetic_tail_copy",
+          "destination": "0x4a4c",
+          "bytes": 5556,
+          "source": "0x6a4c",
+          "payload_sha256": "dd2dd88c6b6823921ffa8a76faf799d42b1c5be408e7cfab793741c5c25ec958",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x4000",
+          "bytes": 40,
+          "source": "0x2087cc",
+          "payload_sha256": "876f89bcbd85b31c4f7c683982403bb2d49db206d1b0bb566f5b288a3e835fcb",
+          "word": null,
+          "implementation_executed": false
+        }
+      ],
+      "reboot_selection": {
+        "selected_record": "0x6028",
+        "selected_context_sha256": "9d6fc0c98b4b6b325ca7d0361428aa968eb30028a1f6565d7eb9e9ef5d4f7329",
+        "storage_trap": null,
+        "banks_unchanged_during_selection": true
+      },
+      "pass": true
+    },
+    {
+      "active_bank": "0x6000",
+      "interrupt_after_operations": 4,
+      "expected_selected_record": "0x6028",
+      "operations": [
+        {
+          "entry": "0x22b18",
+          "kind": "synthetic_erase",
+          "destination": "0x4000",
+          "bytes": 8192,
+          "source": null,
+          "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22cf0",
+          "kind": "synthetic_tail_copy",
+          "destination": "0x4a4c",
+          "bytes": 5556,
+          "source": "0x6a4c",
+          "payload_sha256": "dd2dd88c6b6823921ffa8a76faf799d42b1c5be408e7cfab793741c5c25ec958",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x4000",
+          "bytes": 40,
+          "source": "0x2087cc",
+          "payload_sha256": "876f89bcbd85b31c4f7c683982403bb2d49db206d1b0bb566f5b288a3e835fcb",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x4028",
+          "bytes": 2,
+          "source": "0x2087cc",
+          "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+          "word": "fffe",
+          "implementation_executed": false
+        }
+      ],
+      "reboot_selection": {
+        "selected_record": "0x6028",
+        "selected_context_sha256": "9d6fc0c98b4b6b325ca7d0361428aa968eb30028a1f6565d7eb9e9ef5d4f7329",
+        "storage_trap": null,
+        "banks_unchanged_during_selection": true
+      },
+      "pass": true
+    },
+    {
+      "active_bank": "0x6000",
+      "interrupt_after_operations": 5,
+      "expected_selected_record": "0x6028",
+      "operations": [
+        {
+          "entry": "0x22b18",
+          "kind": "synthetic_erase",
+          "destination": "0x4000",
+          "bytes": 8192,
+          "source": null,
+          "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22cf0",
+          "kind": "synthetic_tail_copy",
+          "destination": "0x4a4c",
+          "bytes": 5556,
+          "source": "0x6a4c",
+          "payload_sha256": "dd2dd88c6b6823921ffa8a76faf799d42b1c5be408e7cfab793741c5c25ec958",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x4000",
+          "bytes": 40,
+          "source": "0x2087cc",
+          "payload_sha256": "876f89bcbd85b31c4f7c683982403bb2d49db206d1b0bb566f5b288a3e835fcb",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x4028",
+          "bytes": 2,
+          "source": "0x2087cc",
+          "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+          "word": "fffe",
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x402a",
+          "bytes": 2546,
+          "source": "0xff8140",
+          "payload_sha256": "986ae6df8afa3c99d2b26d9e3f13e9b0ed3071a2e8df7458068ff07ae320b6b5",
+          "word": null,
+          "implementation_executed": false
+        }
+      ],
+      "reboot_selection": {
+        "selected_record": "0x6028",
+        "selected_context_sha256": "9d6fc0c98b4b6b325ca7d0361428aa968eb30028a1f6565d7eb9e9ef5d4f7329",
+        "storage_trap": null,
+        "banks_unchanged_during_selection": true
+      },
+      "pass": true
+    },
+    {
+      "active_bank": "0x6000",
+      "interrupt_after_operations": 6,
+      "expected_selected_record": "0x4028",
+      "operations": [
+        {
+          "entry": "0x22b18",
+          "kind": "synthetic_erase",
+          "destination": "0x4000",
+          "bytes": 8192,
+          "source": null,
+          "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22cf0",
+          "kind": "synthetic_tail_copy",
+          "destination": "0x4a4c",
+          "bytes": 5556,
+          "source": "0x6a4c",
+          "payload_sha256": "dd2dd88c6b6823921ffa8a76faf799d42b1c5be408e7cfab793741c5c25ec958",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x4000",
+          "bytes": 40,
+          "source": "0x2087cc",
+          "payload_sha256": "876f89bcbd85b31c4f7c683982403bb2d49db206d1b0bb566f5b288a3e835fcb",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x4028",
+          "bytes": 2,
+          "source": "0x2087cc",
+          "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+          "word": "fffe",
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x402a",
+          "bytes": 2546,
+          "source": "0xff8140",
+          "payload_sha256": "986ae6df8afa3c99d2b26d9e3f13e9b0ed3071a2e8df7458068ff07ae320b6b5",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x4028",
+          "bytes": 2,
+          "source": "0x2087cc",
+          "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+          "word": "ffaa",
+          "implementation_executed": false
+        }
+      ],
+      "reboot_selection": {
+        "selected_record": "0x4028",
+        "selected_context_sha256": "986ae6df8afa3c99d2b26d9e3f13e9b0ed3071a2e8df7458068ff07ae320b6b5",
+        "storage_trap": null,
+        "banks_unchanged_during_selection": true
+      },
+      "pass": true
+    },
+    {
+      "active_bank": "0x6000",
+      "interrupt_after_operations": 7,
+      "expected_selected_record": "0x4028",
+      "operations": [
+        {
+          "entry": "0x22b18",
+          "kind": "synthetic_erase",
+          "destination": "0x4000",
+          "bytes": 8192,
+          "source": null,
+          "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22cf0",
+          "kind": "synthetic_tail_copy",
+          "destination": "0x4a4c",
+          "bytes": 5556,
+          "source": "0x6a4c",
+          "payload_sha256": "dd2dd88c6b6823921ffa8a76faf799d42b1c5be408e7cfab793741c5c25ec958",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x4000",
+          "bytes": 40,
+          "source": "0x2087cc",
+          "payload_sha256": "876f89bcbd85b31c4f7c683982403bb2d49db206d1b0bb566f5b288a3e835fcb",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x4028",
+          "bytes": 2,
+          "source": "0x2087cc",
+          "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+          "word": "fffe",
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x402a",
+          "bytes": 2546,
+          "source": "0xff8140",
+          "payload_sha256": "986ae6df8afa3c99d2b26d9e3f13e9b0ed3071a2e8df7458068ff07ae320b6b5",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x4028",
+          "bytes": 2,
+          "source": "0x2087cc",
+          "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+          "word": "ffaa",
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x6028",
+          "bytes": 2,
+          "source": "0x2087cc",
+          "payload_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "word": "0000",
+          "implementation_executed": false
+        }
+      ],
+      "reboot_selection": {
+        "selected_record": "0x4028",
+        "selected_context_sha256": "986ae6df8afa3c99d2b26d9e3f13e9b0ed3071a2e8df7458068ff07ae320b6b5",
+        "storage_trap": null,
+        "banks_unchanged_during_selection": true
+      },
+      "pass": true
+    },
+    {
+      "active_bank": "0x6000",
+      "interrupt_after_operations": null,
+      "operations": [
+        {
+          "entry": "0x22b18",
+          "kind": "synthetic_erase",
+          "destination": "0x4000",
+          "bytes": 8192,
+          "source": null,
+          "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22cf0",
+          "kind": "synthetic_tail_copy",
+          "destination": "0x4a4c",
+          "bytes": 5556,
+          "source": "0x6a4c",
+          "payload_sha256": "dd2dd88c6b6823921ffa8a76faf799d42b1c5be408e7cfab793741c5c25ec958",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x4000",
+          "bytes": 40,
+          "source": "0x2087cc",
+          "payload_sha256": "876f89bcbd85b31c4f7c683982403bb2d49db206d1b0bb566f5b288a3e835fcb",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x4028",
+          "bytes": 2,
+          "source": "0x2087cc",
+          "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+          "word": "fffe",
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x402a",
+          "bytes": 2546,
+          "source": "0xff8140",
+          "payload_sha256": "986ae6df8afa3c99d2b26d9e3f13e9b0ed3071a2e8df7458068ff07ae320b6b5",
+          "word": null,
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x4028",
+          "bytes": 2,
+          "source": "0x2087cc",
+          "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+          "word": "ffaa",
+          "implementation_executed": false
+        },
+        {
+          "entry": "0x22c3c",
+          "kind": "synthetic_program",
+          "destination": "0x6028",
+          "bytes": 2,
+          "source": "0x2087cc",
+          "payload_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+          "word": "0000",
+          "implementation_executed": false
+        }
+      ],
+      "reboot_selection": {
+        "selected_record": "0x4028",
+        "selected_context_sha256": "986ae6df8afa3c99d2b26d9e3f13e9b0ed3071a2e8df7458068ff07ae320b6b5",
+        "storage_trap": null,
+        "banks_unchanged_during_selection": true
+      },
+      "synthetic_preservation": {
+        "tail_matches_old_active_bank": true,
+        "header_metadata_matches_bank_4000": true,
+        "generation_word": 11
+      },
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "flash_implementation_executed": false,
+  "physical_recovery_verified": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "would_send": []
+}

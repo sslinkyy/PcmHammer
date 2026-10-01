@@ -29,7 +29,7 @@ These offsets do not establish physical erase geometry.
   This call is intercepted; repair completion and recovery are unverified.
 - Restore copies a committed context into RAM and returns zero. It also copies
   a committed context with a bad CRC. This routine does not validate the CRC
-  itself; downstream validation remains to be traced. Pending records are not
+  itself; downstream validation is now traced in `STORAGE_RECOVERY.md`. Pending records are not
   copied by the tested restore caller.
 - Updating a selected committed bank first calls erase on the opposite bank:
   selected `0x4000` targets `0x6000`, and selected `0x6000` targets `0x4000`.
@@ -56,8 +56,8 @@ must match the saved evidence. Run `Tools/AL5/storage_inventory.py --source ...
 --output ...` with the existing low image, or an explicitly supplied 0x4000-byte
 two-bank image using `--origin 0x4000`. The inventory has no transport dependency.
 
-Next trace downstream context validation and the complete update/repair marker
-ordering offline. A synthetic storage model and interruption cases may help
-test those transitions, but must remain separate from physical flash geometry,
+The subsequent `STORAGE_RECOVERY.md` traces downstream context validation and
+tests update ordering with synthetic atomic storage hooks. Complete repair and
+failure handling remain open; the model is separate from physical flash geometry,
 timing and recovery claims. Live boot entry, erase/program and experimental
 services remain disabled. The working Mode 0x23 reader is unchanged.

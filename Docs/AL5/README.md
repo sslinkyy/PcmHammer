@@ -83,8 +83,12 @@ banks and all destructive calls intercepted. Header failures can enter repair
 even when a committed record exists, and the tested restore routine does not
 check context CRC itself. The saved-bank inventory exports metadata only;
 current physical preservation remains unverified. See
-[storage selection evidence](STORAGE_SELECTION.md). Next trace downstream
-validation and complete update/repair ordering offline.
+[storage selection evidence](STORAGE_SELECTION.md). Its application caller now
+checks restored CRC and traps a mismatch at marker `0x8C9B`. Three validation
+and eighteen atomic update/interruption cases pass; early interruption enters
+repair despite a surviving committed record. See
+[storage recovery model](STORAGE_RECOVERY.md). Next trace complete repair and
+failure ordering offline; physical recovery remains unverified.
 
 **Current named XDF: v0.12**, `TunerPro/AL5_15184109_15183960_MARKER_EXTENDED_v0_12.xdf`.
 The completed offline EFILive report resolves 83 marker cases and adds 41 items;

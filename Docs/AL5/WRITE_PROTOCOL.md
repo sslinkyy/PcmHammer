@@ -113,6 +113,13 @@ does not check context CRC. See `STORAGE_SELECTION.md`. All flash calls remain
 trapped, interrupted-update recovery remains false, and the saved editor image
 does not establish current physical preservation.
 
+Three downstream CRC-validation and eighteen atomic update/interruption cases
+now pass (`STORAGE_RECOVERY.md`). The application caller rejects bad restored
+CRC with marker `0x8C9B`; early update interruptions reach repair despite an old
+committed record. Host-modeled successful operations do not validate physical
+recovery, error statuses or partial writes. The planner links this evidence by
+hash while keeping all destructive scope/packets disabled.
+
 The report includes a hash-linked preservation assessment from the static
 resident inventory. The inferred 41,000 extra bytes and candidate intervals
 remain explicitly unverified; no current collateral backup is supplied or

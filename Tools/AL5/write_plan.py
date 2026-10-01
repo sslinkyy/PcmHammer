@@ -15,6 +15,7 @@ AUTHORIZATION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/APPLICA
 PREPARATION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/RECEIVE_PREPARATION_EMULATION.json'
 STORAGE_SELECTION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/STORAGE_SELECTION_EMULATION.json'
 STORAGE_REFERENCE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/STORAGE_REFERENCE_INVENTORY.json'
+STORAGE_RECOVERY_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/STORAGE_RECOVERY_EMULATION.json'
 
 
 def preparation_assessment():
@@ -24,6 +25,8 @@ def preparation_assessment():
     selection = json.loads(selection_bytes)
     reference_bytes = STORAGE_REFERENCE_EVIDENCE.read_bytes()
     reference = json.loads(reference_bytes)
+    recovery_bytes = STORAGE_RECOVERY_EVIDENCE.read_bytes()
+    recovery = json.loads(recovery_bytes)
     return {'evidence': 'Docs/AL5/RECEIVE_PREPARATION_EMULATION.json',
             'evidence_sha256': sha256(evidence_bytes),
             'offline_cases_pass': evidence['all_pass'],
@@ -45,6 +48,14 @@ def preparation_assessment():
                 'provenance': reference['provenance'],
                 'current_physical_backup_verified': False,
                 'preservation_verified': False},
+            'storage_recovery_evidence': {
+                'evidence': 'Docs/AL5/STORAGE_RECOVERY_EMULATION.json',
+                'evidence_sha256': sha256(recovery_bytes),
+                'offline_cases_pass': recovery['all_pass'],
+                'scope': recovery['scope'],
+                'model_limits': recovery['model_limits'],
+                'flash_implementation_executed': False,
+                'physical_recovery_verified': False},
             'storage_geometry_verified': False,
             'current_storage_backup_supplied': False,
             'storage_implementation_executed': False,
