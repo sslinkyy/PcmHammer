@@ -49,6 +49,7 @@ class ApplicationBoot:
         self.uc.ctl_set_cpu_model(UC_CPU_M68K_M68020)
         self.uc.mem_map(0, 0x100000)
         data = low+high
+        self.ranges = list(RANGES)
         for a, b in RANGES: self.uc.mem_write(a, data[a:b])
         for a in (0x2CFC, 0x2D1C): self.uc.mem_write(a, data[a:a+1])
         for a in (0xBD89C, 0xC2390, 0xA9D8C, 0x5BAB8, 0x2ED0):
@@ -90,15 +91,16 @@ class ApplicationBoot:
         elif pc in (0xBE78C, 0x97C, 0x96E, 0x87C):
             self.observed['stop_pc'] = hex(pc)
             machine.emu_stop()  # trap reset wait, boot continuation or application jump
-        elif not any(a <= pc < b for a, b in RANGES):
+        elif not any(a <= pc < b for a, b in self.ranges):
             raise RuntimeError(f'execution escaped permitted code at {pc:#x}')
 
-    def run(self, entry):
+    def run(self, entry, arguments=None):
         from unicorn.m68k_const import UC_M68K_REG_SR, UC_M68K_REG_A7, UC_M68K_REG_A5, UC_M68K_REG_PC
         self.observed = {'negative_helper_calls': [], 'response_helper_calls': [],
                          'cleanup_helper_calls': 0, 'boot_responses': [],
                          'synthetic_port_writes': [], 'stop_pc': None}
-        self.uc.mem_write(STACK, RETURN.to_bytes(4, 'big')+BUFFER.to_bytes(4, 'big'))
+        if arguments is None: arguments = BUFFER.to_bytes(4, 'big')
+        self.uc.mem_write(STACK, RETURN.to_bytes(4, 'big')+arguments)
         self.uc.reg_write(UC_M68K_REG_SR, 0x2000)
         self.uc.reg_write(UC_M68K_REG_A7, STACK)
         self.uc.reg_write(UC_M68K_REG_A5, BASE)

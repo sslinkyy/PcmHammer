@@ -11,6 +11,7 @@ DEFAULT_TARGETS = Path(__file__).resolve().parents[2] / 'Docs/AL5/TunerPro/AL5_F
 RESIDENT_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/RESIDENT_FLASH_INVENTORY.json'
 BOOT_SESSION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/BOOT_SESSION_EMULATION.json'
 APPLICATION_BOOT_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/APPLICATION_BOOT_EMULATION.json'
+AUTHORIZATION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/APPLICATION_AUTHORIZATION_EMULATION.json'
 
 
 def boot_loader_assessment():
@@ -18,6 +19,8 @@ def boot_loader_assessment():
     evidence = json.loads(evidence_bytes)
     application_bytes = APPLICATION_BOOT_EVIDENCE.read_bytes()
     application = json.loads(application_bytes)
+    authorization_bytes = AUTHORIZATION_EVIDENCE.read_bytes()
+    authorization = json.loads(authorization_bytes)
     return {'evidence': 'Docs/AL5/BOOT_SESSION_EMULATION.json',
             'evidence_sha256': sha256(evidence_bytes),
             'firmware_source_sha256': evidence['low_sha256'],
@@ -31,6 +34,13 @@ def boot_loader_assessment():
                 'scope': application['scope'],
                 'reset_hardware_verified': False,
                 'startup_response_proves_upload_armed': False},
+            'application_authorization_evidence': {
+                'evidence': 'Docs/AL5/APPLICATION_AUTHORIZATION_EMULATION.json',
+                'evidence_sha256': sha256(authorization_bytes),
+                'offline_cases_pass': authorization['all_pass'],
+                'scope': authorization['scope'],
+                'live_key_submission_verified': False,
+                'lockout_duration_verified': False},
             'application_entry_verified': False,
             'live_session_authorized': False,
             'note': 'Boot arming and RAM-transfer sequences are exercised offline. '

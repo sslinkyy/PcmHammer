@@ -22,8 +22,12 @@ The existing PCM writer cannot be assumed to apply to VPW module `0x18`.
    OS/controller values are caller-supplied context, not live identity proof.
 4. **Candidate checked → Programming session/security. Unknown requirement.**
    Seed read `6C 18 F0 27 01` is confirmed. The pair `9CE5 → BC08` matches
-   algorithm 50. Key transmission, session entry, expiry, lockout and programming
-   authorization were not tested. They remain unknown transitions.
+   an algorithm-50 hypothesis, but the saved selector-zero application uses
+   fixed seed/key words. Twenty offline descriptor/security cases now exercise
+   selected guard clearing and failure-counter transitions; the separate dynamic
+   transform differs for that seed. See `APPLICATION_AUTHORIZATION.md`. Live
+   key transmission, session entry, expiry, lockout duration and programming
+   authorization remain unverified. They remain unknown live transitions.
 5. **Session → Loader ready. Partially reconstructed offline.** The boot
    firmware RAM-transfer handler and its bounds/checksum/status/execute behavior
    have been exercised in an isolated emulator; see `BOOT_RAM_TRANSFER.md`.

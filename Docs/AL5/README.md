@@ -48,6 +48,10 @@ All new reverse engineering and validation were offline.
   through a RAM marker and selected boot initializer. The startup 0x74/0x44
   response leaves upload arming clear. Physical reset and full receive/security
   reachability remain unverified; see `APPLICATION_BOOT_ENTRY.md`.
+- Twenty descriptor/security emulator cases now link the fixed-selector
+  seed/key handler to the boot-request guard. The descriptor is a direct callback;
+  0xA9D8C is a memory-clear helper. Lockout counter units and physical receive/reset
+  remain unverified. See `APPLICATION_AUTHORIZATION.md`. No key sender was added.
 - A resident boot erase/program primitive is statically traced, including its
   RAM copy, selector table and word-program loop. Neighbor-start inference flags
   41,000 bytes outside calibration that could require preservation. Actual

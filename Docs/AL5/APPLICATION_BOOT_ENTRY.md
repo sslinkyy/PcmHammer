@@ -13,7 +13,10 @@ The 0x34 entry at 0x99AB8 points to 0x99A30, whose bytes are
 `90 00 00 0B E6 D0`: flags 0x9000 and handler pointer 0xBE6D0.
 The table lookup at 0xA4BDA uses 0xBA824; subsequent code forwards the
 descriptor to 0xB1970. Descriptor flags, scheduling and authorization in that
-downstream path remain incompletely decoded. Application startup at 0xC5B7A
+downstream path were initially incomplete. `APPLICATION_AUTHORIZATION.md` now
+verifies a direct callback for the saved descriptor and the security guard
+lifecycle in selected offline paths. Full receive/state selection remains open.
+Application startup at 0xC5B7A
 sets A5 to 0xFF8000, supporting the RAM-base interpretation used here.
 
 With a synthetic internal request buffer and injected state, the extracted
@@ -29,8 +32,10 @@ handler establishes these exact guards and effects:
   boundary values pass. Units and upstream physical conditions are unassigned.
 - The accepted path copies buffer byte five to A5+0x223C, prepares state around
   A5+0xF36/0xF56, calls 0xA9D8C with argument 0x55, then calls 0x5BAB8.
-  Those two helpers are stubbed in the experiment; no application wire response
-  or cleanup effect is claimed from their names or arguments.
+  Those two helpers are stubbed in this original experiment; no application wire
+  response or cleanup effect is claimed from their names or arguments. The
+  newer authorization harness executes 0xA9D8C and identifies it as an eleven-byte
+  memory clear for argument 0x55. The historical response-helper label was provisional.
 - The real helper at 0x21D08 sets the interrupt mask to seven. The handler then
   writes 0xBFC1 to A5+0 and spins at 0xBE78C. The spin is trapped. Interrupt
   masking alone is not a reset command; physical watchdog/reset behavior has
@@ -81,8 +86,9 @@ WSL Python/Unicorn runtime and explicit `--low`, `--high`, `--output` paths.
 The planner links the report by hash while retaining false live authorization
 and application-entry verification; all packet lists remain empty.
 
-Next resolve 0xB1970 scheduling/descriptor flags, the guard-bit lifecycle and
-application response helper, then boot initialization gates and reset behavior.
+The subsequent authorization evidence resolves the saved descriptor callback,
+selected seed/key guard transitions and memory-clear helper. Next trace full
+receive/state selection, 0x5BAB8, boot initialization gates and reset behavior.
 Loader ABI, exact erase geometry, collateral preservation, flash wire protocol,
 verification and recovery remain unresolved. The direct reader and live-write
 block are unchanged.
