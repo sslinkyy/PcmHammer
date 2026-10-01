@@ -43,7 +43,8 @@ def layout(ident, col, row):
     raise ValueError('unsupported marker identity/column')
 
 
-def check_evidence(report, cases, stock, native):
+def check_evidence(report, cases, stock, native,
+                   expected_tool='AL5-targeted-differential-mapper-0.6', expected_count=83):
     if validate(stock):
         raise ValueError('invalid stock segment')
     for key in ('completed', 'secondary_closed'):
@@ -56,13 +57,13 @@ def check_evidence(report, cases, stock, native):
         raise ValueError('report contains an error')
     if (report.get('controller'), report.get('operating_system'), report.get('transmission')) != ('AL5', 15184109, 15183960):
         raise ValueError('wrong controller context')
-    if report.get('tool') != 'AL5-targeted-differential-mapper-0.6':
+    if report.get('tool') != expected_tool:
         raise ValueError('unexpected mapper version')
     for key in ('gui_raw_unchanged', 'raw_coherency_and_restore', 'secondary_baseline_equals_gui'):
         if report.get('validation', {}).get(key) is not True:
             raise ValueError('baseline validation missing: '+key)
     expected = {(c['id'], c['column'], c['row']): c for c in cases}
-    if len(expected) != 83 or len(report['cases']) != len(expected):
+    if len(expected) != expected_count or len(report['cases']) != len(expected):
         raise ValueError('missing or duplicate marker cases')
     seen = set()
     verified = []

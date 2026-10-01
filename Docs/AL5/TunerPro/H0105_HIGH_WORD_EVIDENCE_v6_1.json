@@ -1,0 +1,70 @@
+{
+  "cases": [
+    {
+      "changed_byte_count": 3,
+      "changed_bytes": [
+        {
+          "address": 86757,
+          "after": 2,
+          "before": 0
+        },
+        {
+          "address": 86758,
+          "after": 116,
+          "before": 15
+        },
+        {
+          "address": 86759,
+          "after": 166,
+          "before": 160
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "001400000274A601004E71",
+          "before_hex": "00140000000FA001004E71",
+          "changed_end": 86759,
+          "changed_start": 86757,
+          "context_end": 86763,
+          "context_start": 86753
+        }
+      ],
+      "marker": {
+        "before": 2485.4839968,
+        "column": 0,
+        "id": "H0105",
+        "label": "H0105 high-word width test",
+        "readback": 99999.7203852528,
+        "requested": 100000,
+        "row": 0
+      },
+      "restored": true
+    }
+  ],
+  "checksum_finalized": false,
+  "completed": true,
+  "controller": "AL5",
+  "created_local": "2026-10-01T03:05:44",
+  "flash_ready": false,
+  "gui_descriptor_modified": false,
+  "operating_system": 15184109,
+  "raw_range": {
+    "bytes": 57344,
+    "finish": 90111,
+    "start": 32768
+  },
+  "schema_version": 1,
+  "secondary_closed": true,
+  "secondary_saved": false,
+  "source": "[local stock source path redacted]",
+  "tool": "AL5-high-word-differential-mapper-0.6.1",
+  "transmission": 15183960,
+  "validation": {
+    "gui_raw_unchanged": true,
+    "raw_coherency_and_restore": true,
+    "secondary_baseline_equals_gui": true
+  },
+  "vehicle_io": false,
+  "original_report_sha256": "bafc03e598e476be57ae128fc9c0ec591659c4bba6e3346e1c7a34de7a2db696",
+  "redaction_note": "Only source path replaced; marker cases and validation fields unchanged."
+}

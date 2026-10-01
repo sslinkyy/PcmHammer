@@ -59,12 +59,13 @@ a plan to program the currently installed PPEI calibration.
 
 ## Current boundaries and next work
 
-**Current named XDF: v0.9**, `TunerPro/AL5_15184109_15183960_MARKER_EXTENDED_v0_9.xdf`.
+**Current named XDF: v0.9.1**, `TunerPro/AL5_15184109_15183960_MARKER_EXTENDED_v0_9_1.xdf`.
 The completed offline EFILive report resolves 83 marker cases and adds 41 items;
 all 283 numeric native comparisons pass. 124/127 native IDs are represented,
 including partial/research entries. D5053/D5054/D5197 enums remain absent.
-H0105's 32-bit width remains inferred pending a prepared high-word marker test.
-See [v0.9 evidence and next test](TunerPro/MARKER_VALIDATION_v0_9.md).
+H0105's completed high-word marker corroborates unsigned BE32 at 0x152E4 with
+the native range and exact readback; v0.9.1 preserves every v0.9 encoding.
+See [marker evidence and GUI checks](TunerPro/MARKER_VALIDATION_v0_9.md).
 TunerPro GUI display checks remain open. The optional v0.8 raw supplement remains separate. Its two flag-dependent
 families still have no native definition identity; keep their raw labels.
 
@@ -81,11 +82,11 @@ raw AL5 segment into the existing PCM kernel writer. No AL5 live writer exists.
 
 ## Reproduce
 
-The v6 targeted mapper completed its 83-case EFILive pass. The next prepared
-GUI evidence pass is `Tools/AL5/AL5_H0105_HIGH_WORD_MAPPER_v6_1.lua`; see
-[v0.9 evidence and instructions](TunerPro/MARKER_VALIDATION_v0_9.md). It tests
-one numeric cell using the same offline engine. No tune save or vehicle access
-is performed. Its execution is pending.
+The v6 targeted mapper completed its 83-case EFILive pass; the v6.1 H0105
+high-word pass also completed. Reproduce their validation with
+`expand_marker_mappings.py` and `validate_high_word.py`, using explicit local
+stock/native export paths and the redacted reports under `Docs/AL5/TunerPro`.
+TunerPro GUI display checks are pending; no further H0105 marker is needed.
 
 From the repository root, use the scripts in `Tools/AL5`; each accepts explicit
 local paths and has `--help`. Reference files remain outside Git:

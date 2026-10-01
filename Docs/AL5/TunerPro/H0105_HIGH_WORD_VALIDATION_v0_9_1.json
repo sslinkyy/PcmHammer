@@ -1,0 +1,22 @@
+{
+  "id": "H0105",
+  "address": "0x152E4",
+  "bits": 32,
+  "equation": "X*0.6213709992",
+  "units": "count/km",
+  "before_hex": "00000FA0",
+  "after_hex": "000274A6",
+  "before_raw": 4000,
+  "after_raw": 160934,
+  "requested": 100000,
+  "readback": 99999.7203852528,
+  "high_word_changed": true,
+  "confidence": "high-word and low-word marker evidence plus native unsigned BE32 maximum",
+  "limit": "most significant byte remained zero; GUI display not yet checked",
+  "checksum_finalized": false,
+  "flash_ready": false,
+  "source_sha256": "5d5effe612d7a31c8c42ad3306e66cabc75994a7a7d6c7a3f4b86e1dc125da84",
+  "stock_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6",
+  "export_sha256": "fbbd581cd5bd42dcfa1fa874c41ffde23f612b36d23e0043ca648acab2ac614b",
+  "report_sha256": "a9a6d9316c087ae77513ac2fff8c1ee3475f60d911070efbb60c7888f1421376"
+}

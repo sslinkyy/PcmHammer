@@ -108,7 +108,7 @@ category/unique-ID checks for the new entries. Their raw words match the local
 stock data; TunerPro GUI validation is pending. Use v0.7 as the named-definition
 baseline. The research supplement and any edited BIN remain offline only.
 
-## Marker extended v0.9 — current named definition
+## Marker extended v0.9
 
 `AL5_15184109_15183960_MARKER_EXTENDED_v0_9.xdf` adds 41 items from the
 successful 83-case offline EFILive report: 16 scalars, 15 throttle-release
@@ -120,3 +120,14 @@ explicitly labeled; TunerPro GUI display validation remains pending.
 
 See [marker validation and next single-case test](MARKER_VALIDATION_v0_9.md).
 The v0.8 raw supplement remains separate. No edited BIN is flash-ready.
+
+## Marker extended v0.9.1 — current named definition
+
+`AL5_15184109_15183960_MARKER_EXTENDED_v0_9_1.xdf` records the completed H0105
+high-word pass. Raw 4000 changed to 160934 with a nonzero high word and an exact
+native readback match. All v0.9 encodings are preserved; only the confidence
+description and usage warning change. The full audit still passes 283 numeric
+comparisons, with 124/127 native IDs represented. See
+[completed high-word evidence and GUI checks](MARKER_VALIDATION_v0_9.md).
+TunerPro GUI validation and the three enum encodings remain open. No edited
+BIN is flash-ready.

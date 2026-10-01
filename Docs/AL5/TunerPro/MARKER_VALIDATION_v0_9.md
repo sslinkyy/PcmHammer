@@ -56,6 +56,9 @@ this does not prove the meaning of every runtime flag or mode producer.
 
 ## H0105 width limit and next evidence pass
 
+This subsection records the original v0.9 limit. The follow-up below resolves
+the high-word question; no additional H0105 pass is currently required.
+
 H0105's marker changed bytes `0x152E6/0x152E7` only. Its conversion factor
 0.6213709992 reproduces stock and readback. The unsigned BE32 interpretation
 starting at `0x152E4` matches the native hard maximum (4294967295 raw counts)
@@ -73,3 +76,34 @@ is involved. The new one-case script itself is not yet GUI executed.
 
 This report provides no additional native checksum-finalization evidence.
 No BIN was edited or committed. Read code and the live-write block are unchanged.
+
+## Completed high-word pass — v0.9.1
+
+The 2026-10-01 03:05 local EFILive v6.1 report completed its single case,
+restored the entire raw baseline, closed the secondary without saving, and
+reported the GUI raw image unchanged. Requested 100000 count/km changed
+`00000FA0` to `000274A6` at `0x152E4` (raw 4000 → 160934). The changed bytes
+are `0x152E5/0x152E6/0x152E7`; the most significant byte stayed zero. The
+high word changed from zero to two. The fixed factor 0.6213709992 reproduces
+the actual readback 99999.7203852528 count/km. The difference from requested
+value is less than one raw-count unit, consistent with integer quantization.
+
+`validate_high_word.py` checks the full report safety/baseline/restoration
+flags, case identity, all changed bytes and context against stock, native
+stock/readback values, nonzero high word, and the native unsigned 32-bit hard
+maximum. The redacted original is preserved in
+`H0105_HIGH_WORD_EVIDENCE_v6_1.json`; input hashes and results are in
+`H0105_HIGH_WORD_VALIDATION_v0_9_1.json`.
+
+`AL5_15184109_15183960_MARKER_EXTENDED_v0_9_1.xdf` updates H0105's confidence
+description and usage warning only. Every v0.9 data encoding is preserved.
+All 283 numeric comparisons pass across 288 items. Native representation
+remains 124/127; D5053/D5054/D5197 text enums still need encoding evidence.
+TunerPro GUI display verification is the next GUI task. Check H0105 on the
+stock segment displays approximately 2485.484 count/km, H0136 424 rev/km,
+H0103 4.0998535, and H0137 262.791389 rev/km. Keep the native units as labeled;
+no unit conversion or tune editing is needed for this check.
+
+This additional marker does not prove checksum finalization, physical flash
+geometry, recovery or live programming. No vehicle I/O or user BIN edit was
+performed, and the reader/live-write gate remain unchanged.
