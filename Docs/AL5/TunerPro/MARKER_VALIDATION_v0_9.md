@@ -131,3 +131,16 @@ the stock and PPEI audits. TunerPro reports no connected hardware.
 The H0105/H0136 titles visibly contain EFILive `{du,...}` description templates
 instead of resolved prose. The numeric values and explicit units are correct;
 cleaning those titles is a presentation follow-up, not new mapping evidence.
+
+## TunerPro v0.9.1 screenshot — four stock scalar displays
+
+The subsequent user screenshot on 2026-10-01 shows
+`AL5_15184109_15183960_STOCK_REFERENCE_SEGMENT.bin` with the v0.9.1 XDF.
+H0103 displays 4.0999, H0105 2485.4840 count/km, H0136 424.0000 rev/km,
+and H0137 262.7914 rev/km. All match the rounded independent stock decode.
+These four scalar displays are now GUI checked on both stock and PPEI.
+
+Screenshot SHA-256: `636812db9c070dfb239e88b9314016e119b36c3862a8312c535c7e0d2cd6d452`.
+The image remains local and is not committed. Table/axis orientation and
+save/round-trip behavior remain unchecked. No tune edit or vehicle operation
+is inferred from this screenshot.
