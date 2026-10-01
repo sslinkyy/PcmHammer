@@ -27,6 +27,10 @@ All new reverse engineering and validation were offline.
   transport access, even with a forced PCM type. A C# null-vehicle test passes
   all 105 write-type/controller combinations. Ten Python offline safety and
   checksum tests pass.
+- The extracted CRC routine passes twelve isolated M68020 emulator cases.
+  The boot RAM-transfer handler passes thirteen offline boundary/fault cases.
+  Its packet fields, RAM bounds and status codes are documented in
+  `BOOT_RAM_TRANSFER.md`; this does not enable live uploading or programming.
 
 The checksum-corrected existing minimal preview has field `439DCC98` and passes
 the offline plan's file/policy checks. Its plan has seven diff ranges and zero

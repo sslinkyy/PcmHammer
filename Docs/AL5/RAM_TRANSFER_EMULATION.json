@@ -1,0 +1,264 @@
+{
+  "low_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
+  "handler_sha256": "6805cbfcef4d275c678c630a6e9301dc859d1bb76776cf0fd9d8587d12c752fa",
+  "scope": "boot handler in isolated M68020 emulator; synthetic FIFO and state flag. No proof of entry from current live application session. No flash implementation.",
+  "cases": [
+    {
+      "case": "valid_ram_transfer",
+      "expected": {
+        "responses": [
+          "6cf018760073"
+        ]
+      },
+      "observed": {
+        "responses": [
+          "6cf018760073"
+        ],
+        "negative_response_arguments": [],
+        "events_consumed": 13,
+        "flush_calls": 0,
+        "payload_entry_attempted": false,
+        "emulated_ram_prefix": "12345678000000000000000000000000",
+        "emulated_ram_sha256": "97ccc1bde63119679407d23f548b67936408c019db04639afb9292401f00c5a1"
+      },
+      "pass": true
+    },
+    {
+      "case": "odd_address",
+      "expected": {
+        "responses": [
+          "6cf018760074"
+        ]
+      },
+      "observed": {
+        "responses": [
+          "6cf018760074"
+        ],
+        "negative_response_arguments": [],
+        "events_consumed": 6,
+        "flush_calls": 1,
+        "payload_entry_attempted": false,
+        "emulated_ram_prefix": "00000000000000000000000000000000",
+        "emulated_ram_sha256": "fd9243e1ba57263ed469c3bdbd7ade6ec5254e7ed924a9f5737fa44749933cc0"
+      },
+      "pass": true
+    },
+    {
+      "case": "below_ram_window",
+      "expected": {
+        "responses": [
+          "6cf018760074"
+        ]
+      },
+      "observed": {
+        "responses": [
+          "6cf018760074"
+        ],
+        "negative_response_arguments": [],
+        "events_consumed": 6,
+        "flush_calls": 1,
+        "payload_entry_attempted": false,
+        "emulated_ram_prefix": "00000000000000000000000000000000",
+        "emulated_ram_sha256": "fd9243e1ba57263ed469c3bdbd7ade6ec5254e7ed924a9f5737fa44749933cc0"
+      },
+      "pass": true
+    },
+    {
+      "case": "beyond_ram_window",
+      "expected": {
+        "responses": [
+          "6cf018760074"
+        ]
+      },
+      "observed": {
+        "responses": [
+          "6cf018760074"
+        ],
+        "negative_response_arguments": [],
+        "events_consumed": 6,
+        "flush_calls": 1,
+        "payload_entry_attempted": false,
+        "emulated_ram_prefix": "00000000000000000000000000000000",
+        "emulated_ram_sha256": "fd9243e1ba57263ed469c3bdbd7ade6ec5254e7ed924a9f5737fa44749933cc0"
+      },
+      "pass": true
+    },
+    {
+      "case": "range_overrun",
+      "expected": {
+        "responses": [
+          "6cf018760075"
+        ]
+      },
+      "observed": {
+        "responses": [
+          "6cf018760075"
+        ],
+        "negative_response_arguments": [],
+        "events_consumed": 6,
+        "flush_calls": 1,
+        "payload_entry_attempted": false,
+        "emulated_ram_prefix": "00000000000000000000000000000000",
+        "emulated_ram_sha256": "fd9243e1ba57263ed469c3bdbd7ade6ec5254e7ed924a9f5737fa44749933cc0"
+      },
+      "pass": true
+    },
+    {
+      "case": "last_permitted_byte",
+      "expected": {
+        "responses": [
+          "6cf018760073"
+        ]
+      },
+      "observed": {
+        "responses": [
+          "6cf018760073"
+        ],
+        "negative_response_arguments": [],
+        "events_consumed": 10,
+        "flush_calls": 0,
+        "payload_entry_attempted": false,
+        "emulated_ram_prefix": "00000000000000000000000000000000",
+        "emulated_ram_sha256": "4381878495bdf32990eca5d31e3bf64ae0e4aea41429c0ffad661252db0f6f0e"
+      },
+      "pass": true
+    },
+    {
+      "case": "maximum_start_window",
+      "expected": {
+        "responses": [
+          "6cf018760073"
+        ]
+      },
+      "observed": {
+        "responses": [
+          "6cf018760073"
+        ],
+        "negative_response_arguments": [],
+        "events_consumed": 6152,
+        "flush_calls": 0,
+        "payload_entry_attempted": false,
+        "emulated_ram_prefix": "5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a",
+        "emulated_ram_sha256": "156c64a2ea4cafdff5915b7d79f239674dc9a8738d01404ecd40230b56d0f709"
+      },
+      "pass": true
+    },
+    {
+      "case": "empty_payload",
+      "expected": {
+        "responses": [
+          "6cf018760073"
+        ]
+      },
+      "observed": {
+        "responses": [
+          "6cf018760073"
+        ],
+        "negative_response_arguments": [],
+        "events_consumed": 9,
+        "flush_calls": 0,
+        "payload_entry_attempted": false,
+        "emulated_ram_prefix": "00000000000000000000000000000000",
+        "emulated_ram_sha256": "fd9243e1ba57263ed469c3bdbd7ade6ec5254e7ed924a9f5737fa44749933cc0"
+      },
+      "pass": true
+    },
+    {
+      "case": "length_mismatch",
+      "expected": {
+        "responses": [
+          "6cf018760075"
+        ]
+      },
+      "observed": {
+        "responses": [
+          "6cf018760075"
+        ],
+        "negative_response_arguments": [],
+        "events_consumed": 13,
+        "flush_calls": 0,
+        "payload_entry_attempted": false,
+        "emulated_ram_prefix": "12345678020000000000000000000000",
+        "emulated_ram_sha256": "71412f4b3c3b1a24e1d596f52aa521037a3800c221c05aff8b4dd6742a6957c4"
+      },
+      "pass": true
+    },
+    {
+      "case": "bad_checksum",
+      "expected": {
+        "responses": [
+          "6cf018760077"
+        ]
+      },
+      "observed": {
+        "responses": [
+          "6cf018760077"
+        ],
+        "negative_response_arguments": [],
+        "events_consumed": 13,
+        "flush_calls": 0,
+        "payload_entry_attempted": false,
+        "emulated_ram_prefix": "12345678000000000000000000000000",
+        "emulated_ram_sha256": "97ccc1bde63119679407d23f548b67936408c019db04639afb9292401f00c5a1"
+      },
+      "pass": true
+    },
+    {
+      "case": "download_not_armed",
+      "expected": {
+        "negative_response_arguments": [
+          34
+        ]
+      },
+      "observed": {
+        "responses": [],
+        "negative_response_arguments": [
+          34
+        ],
+        "events_consumed": 13,
+        "flush_calls": 0,
+        "payload_entry_attempted": false,
+        "emulated_ram_prefix": "12345678000000000000000000000000",
+        "emulated_ram_sha256": "97ccc1bde63119679407d23f548b67936408c019db04639afb9292401f00c5a1"
+      },
+      "pass": true
+    },
+    {
+      "case": "unsupported_subtype",
+      "expected": {
+        "responses": [
+          "6cf018760176"
+        ]
+      },
+      "observed": {
+        "responses": [
+          "6cf018760176"
+        ],
+        "negative_response_arguments": [],
+        "events_consumed": 13,
+        "flush_calls": 0,
+        "payload_entry_attempted": false,
+        "emulated_ram_prefix": "12345678000000000000000000000000",
+        "emulated_ram_sha256": "97ccc1bde63119679407d23f548b67936408c019db04639afb9292401f00c5a1"
+      },
+      "pass": true
+    },
+    {
+      "case": "execute_subtype_trapped",
+      "expected": {
+        "payload_entry_attempted": true
+      },
+      "observed": {
+        "responses": [],
+        "negative_response_arguments": [],
+        "events_consumed": 13,
+        "flush_calls": 0,
+        "payload_entry_attempted": true,
+        "emulated_ram_prefix": "12345678000000000000000000000000",
+        "emulated_ram_sha256": "97ccc1bde63119679407d23f548b67936408c019db04639afb9292401f00c5a1"
+      },
+      "pass": true
+    }
+  ],
+  "all_pass": true
+}

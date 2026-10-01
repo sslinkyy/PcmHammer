@@ -24,8 +24,12 @@ The existing PCM writer cannot be assumed to apply to VPW module `0x18`.
    Seed read `6C 18 F0 27 01` is confirmed. The pair `9CE5 → BC08` matches
    algorithm 50. Key transmission, session entry, expiry, lockout and programming
    authorization were not tested. They remain unknown transitions.
-5. **Session → Loader ready. Unknown.** Whether programming requires a loader,
-   upload address, ABI, size, entry point and acknowledgments are unproven.
+5. **Session → Loader ready. Partially reconstructed offline.** The boot
+   firmware RAM-transfer handler and its bounds/checksum/status/execute behavior
+   have been exercised in an isolated emulator; see `BOOT_RAM_TRANSFER.md`.
+   Reachability from the current application, whether flashing requires this
+   loader path, the kernel ABI and safe recovery remain unproven. No live upload
+   is enabled.
 6. **Loader ready → Erased. Unknown/destructive.** Flash geometry, erase scope,
    service/subfunction bytes, timing, status and interrupted-erase recovery are
    unproven. The calibration payload bounds are not erase-sector bounds.
