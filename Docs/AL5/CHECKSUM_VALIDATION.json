@@ -1,0 +1,195 @@
+{
+  "references": [
+    {
+      "source": "stock",
+      "sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6",
+      "stored": "4E35D040",
+      "computed": "4E35D040",
+      "valid": true,
+      "be16_sum": 0
+    },
+    {
+      "source": "ppei",
+      "sha256": "d0bcce91cea041bcf82317c73708c2289c78064aa542d6a63c12d3d6d78adc3f",
+      "stored": "DAE2BB2E",
+      "computed": "DAE2BB2E",
+      "valid": true,
+      "be16_sum": 0
+    }
+  ],
+  "firmware_crc_table_matches_all_256_entries": true,
+  "firmware_high_sha256": "492040d9460d53b77dda606b9a89f4254e0680f239093001663f6ed5cf51ba75",
+  "coz": [
+    {
+      "source": "AL5_15184109_15183960_UNENCRYPTED_CAL_ONLY_20260927_022832_001.coz",
+      "source_sha256": "da9b9deeae255572b5460290460f0596ee16e585e84497550c0dfdf3df1e46a4",
+      "segments": []
+    },
+    {
+      "source": "AL5_15184109_15183960_UNENCRYPTED_CAL_ONLY_20260927_023423_001.coz",
+      "source_sha256": "12857e6abc5ff2c6a7430f2de6bd00ab54f08ba56c81d2c7a886d3592a7cb2f3",
+      "segments": []
+    },
+    {
+      "source": "AL5_15184109_15183960_UNENCRYPTED_CAL_ONLY_20260927_024033_001.coz",
+      "source_sha256": "35753e3aac88f0069cb221f1a381d0158f245c43628de88f73fcb518925d55af",
+      "segments": []
+    },
+    {
+      "source": "AL5_15184109_15183960_UNENCRYPTED_CAL_ONLY_20260927_024458_001.coz",
+      "source_sha256": "4ea23a9c0752110d8f4051b5ff49740152d257414e4694ebfc8b69b0b506d61e",
+      "segments": []
+    },
+    {
+      "source": "AL5_D1201_DIFF_BASE_0C68_20260927_030644_001.coz",
+      "source_sha256": "6c5414c83d5c845cda7e66bf0b81e3c2e609ba48be133d4c4428b6d8fd6b97ae",
+      "segments": []
+    },
+    {
+      "source": "AL5_D1201_DIFF_HIGH1_0D68_20260927_030644_001.coz",
+      "source_sha256": "471b094836f1a27ce788036f4c41dfd749ab4a81ce2a512254a9ab24c6df55a6",
+      "segments": []
+    },
+    {
+      "source": "AL5_D1201_DIFF_HIGH2_0E68_20260927_030644_001.coz",
+      "source_sha256": "0eaf715f2bf80337ccf0882b2b49b33b8425ae16261e85f5cf0490df2e5b4969",
+      "segments": []
+    },
+    {
+      "source": "AL5_D1201_DIFF_LOW16_0C78_20260927_030644_001.coz",
+      "source_sha256": "0e98997fbf9eaaca8aac377f0ead29958f4375cbacf7af7f4d78bf5b57e665b2",
+      "segments": []
+    },
+    {
+      "source": "AL5_D1201_DIFF_LOW1_0C69_20260927_030644_001.coz",
+      "source_sha256": "28206e4d425136b76f5bbb4e3f195e1ad7bc79730df1bc2da2a99cb0f18eaafd",
+      "segments": []
+    },
+    {
+      "source": "AL5_D1201_DIFF_LOW2_0C6A_20260927_030644_001.coz",
+      "source_sha256": "19566c0beaa0b6fbfb0a1a52918e193af77b59e249707209c3d49f76c7eea133",
+      "segments": []
+    },
+    {
+      "source": "AL5_D5000_BOUNDARY_A_EARLY_20260927_050328_001.coz",
+      "source_sha256": "e47265c11d51e1ebd56bf410b340200eeee671ef81f025bd17304c38c6b7aa73",
+      "segments": []
+    },
+    {
+      "source": "AL5_D5000_BOUNDARY_A_LATE_20260927_050328_001.coz",
+      "source_sha256": "91d7c4db59933b3c0da65082a2663781c153fc2e8765ac29b5888fbb2d684f31",
+      "segments": []
+    },
+    {
+      "source": "AL5_D5000_BOUNDARY_BASE_20260927_050328_001.coz",
+      "source_sha256": "93b34a1bdbe6b344c78762097286522145555e86b18740b8fffddf596de01a0d",
+      "segments": []
+    },
+    {
+      "source": "AL5_D5000_BOUNDARY_F_EARLY_20260927_050328_001.coz",
+      "source_sha256": "cd1a9596c3782b64e5442811e016955ef3a1240f4cbd0e4102c5e9c8a8c99282",
+      "segments": []
+    },
+    {
+      "source": "AL5_D5000_FBOUNDARY_B03_20260927_051330_001.coz",
+      "source_sha256": "51c73b5ace6985188e3edf98ffe3fd8c9c1feca3152236d99c1b6ff108a39009",
+      "segments": []
+    },
+    {
+      "source": "AL5_D5000_FBOUNDARY_B04_20260927_051330_001.coz",
+      "source_sha256": "1eaac1bb9b263d6157f032c186ce1b2370e8146a3b69e37559feb8ffead3bc27",
+      "segments": []
+    },
+    {
+      "source": "AL5_D5000_FBOUNDARY_B05_20260927_051330_001.coz",
+      "source_sha256": "e8a401cdfd5d85387d810cfced0f454eb19d18a72f61e15c2c969379b2ca16ba",
+      "segments": []
+    },
+    {
+      "source": "AL5_D5000_FBOUNDARY_B06_20260927_051330_001.coz",
+      "source_sha256": "77bf5094578374720b60af78a0ddafd8714cb240df22e20efc8f7c5d29dd02c7",
+      "segments": []
+    },
+    {
+      "source": "AL5_D5000_FBOUNDARY_B07_20260927_051330_001.coz",
+      "source_sha256": "a1714a945c0228c74a41dda9735f426f899f6a7aa5296dc7f1ca41fbfe3729b0",
+      "segments": []
+    },
+    {
+      "source": "AL5_D5000_FBOUNDARY_B08_20260927_051330_001.coz",
+      "source_sha256": "e45394652a2b1cd61ef11454fc98a55b40d8640e42e66fd6474f285c430820a2",
+      "segments": []
+    },
+    {
+      "source": "AL5_D5000_FBOUNDARY_B09_20260927_051330_001.coz",
+      "source_sha256": "45f2e19d46608e741cab412a2553d8c230046a4c36af19de9b930e58d2e64593",
+      "segments": []
+    },
+    {
+      "source": "AL5_D5000_FBOUNDARY_B12_20260927_051330_001.coz",
+      "source_sha256": "f913b426b75fab30eef88adcd175610369f2efbb031743785e2abbb91b855762",
+      "segments": []
+    },
+    {
+      "source": "AL5_D5000_FBOUNDARY_B15_20260927_051330_001.coz",
+      "source_sha256": "cbdddb2bb2b82e3337a580779b27df1acac119372d51101f9e71591a754efd3a",
+      "segments": []
+    },
+    {
+      "source": "AL5_D5000_KNOWN_6000_20260927_034856_001.coz",
+      "source_sha256": "267d6ebb52b0c1ad90b291b43657b1f6a0131da759e1b7e6798ab695c5e8a282",
+      "segments": []
+    },
+    {
+      "source": "AL5_D5000_SPARSE_BASE_20260927_041101_001.coz",
+      "source_sha256": "beed5d1d384c3d48423a26cdd8f430e19acebeadcbefeb01bf4848a70fc62b88",
+      "segments": []
+    },
+    {
+      "source": "AL5_D5000_SPARSE_C0_R0_X01_20260927_041101_001.coz",
+      "source_sha256": "85680d4a1da888179bf69109a9decf28e3d7269ce3bb059e59250455cd87ac92",
+      "segments": []
+    },
+    {
+      "source": "AL5_D5000_SPARSE_C0_R1_X02_20260927_041101_001.coz",
+      "source_sha256": "0caeb414e5779ead17cb3b99e8f5dde9dc177ad3b525daf03330e85defc89d5c",
+      "segments": []
+    },
+    {
+      "source": "AL5_D5000_SPARSE_C1_R0_X04_20260927_041101_001.coz",
+      "source_sha256": "31cd69854409cb672c8da74f05704ef85a30e7f9a2a931e5447b88bc9cfa1412",
+      "segments": []
+    },
+    {
+      "source": "AL5_D5000_SPARSE_C4_R8_X10_20260927_041101_001.coz",
+      "source_sha256": "f560c50aa2064bfd96dee8f5c4b085fe8f0312afbe4916ebb9722b105b37c840",
+      "segments": []
+    },
+    {
+      "source": "AL5_D5000_SPARSE_C7_R16_X08_20260927_041101_001.coz",
+      "source_sha256": "c9176d5add7cf7b8a85f4aa6543b952fea44eebd942bac0b7ecb2de3eaae6fce",
+      "segments": []
+    },
+    {
+      "source": "AL5_D5000_STRUCTURE_BASE_20260927_043954_001.coz",
+      "source_sha256": "542b722c17bbf61c978f9a2189dfa610cc56fcc6a0260a1b7b2e4547a6edc627",
+      "segments": []
+    },
+    {
+      "source": "AL5_D5000_STRUCTURE_HIGH_X0100_20260927_043954_001.coz",
+      "source_sha256": "dcfaac96c050587f24d991e91a21df6c88e8eabcc56a19136ef7d1edbadc8c9a",
+      "segments": []
+    },
+    {
+      "source": "AL5_D5000_STRUCTURE_LOW_X0001_20260927_043954_001.coz",
+      "source_sha256": "42c4373f59c55e4161fca4f04bda314cf9b4cfabbf476904b031ff0bacbb8735",
+      "segments": []
+    },
+    {
+      "source": "AL5_GEAR_RATIO_MARKERS_20260927_033951_001.coz",
+      "source_sha256": "497d641a1886243237366f2ed05d2d2d62128f5b0893aadbbc4d27950a5837d3",
+      "segments": []
+    }
+  ],
+  "note": "COZ search tests standard zlib streams and ID-offset candidates only; no matching segment does not mean the container is corrupt."
+}
