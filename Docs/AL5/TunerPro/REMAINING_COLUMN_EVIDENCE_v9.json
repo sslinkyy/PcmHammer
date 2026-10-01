@@ -1,0 +1,819 @@
+{
+  "cases": [
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 72648,
+          "after": 100,
+          "before": 8
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "310000116400080008",
+          "before_hex": "310000110800080008",
+          "changed_end": 72648,
+          "changed_start": 72648,
+          "context_end": 72652,
+          "context_start": 72644
+        }
+      ],
+      "marker": {
+        "before": 16,
+        "column": 4,
+        "id": "D5000",
+        "label": "Pattern E row 0",
+        "readback": 200,
+        "requested": 200,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 72664,
+          "after": 100,
+          "before": 8
+        },
+        {
+          "address": 72665,
+          "after": 0,
+          "before": 128
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "08000800640009800B00",
+          "before_hex": "08000800088009800B00",
+          "changed_end": 72665,
+          "changed_start": 72664,
+          "context_end": 72669,
+          "context_start": 72660
+        }
+      ],
+      "marker": {
+        "before": 17,
+        "column": 4,
+        "id": "D5000",
+        "label": "Pattern E row 8",
+        "readback": 200,
+        "requested": 200,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 72680,
+          "after": 100,
+          "before": 13
+        },
+        {
+          "address": 72681,
+          "after": 0,
+          "before": 128
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "0D800D80640000110453",
+          "before_hex": "0D800D800D8000110453",
+          "changed_end": 72681,
+          "changed_start": 72680,
+          "context_end": 72685,
+          "context_start": 72676
+        }
+      ],
+      "marker": {
+        "before": 27,
+        "column": 4,
+        "id": "D5000",
+        "label": "Pattern E row 16",
+        "readback": 200,
+        "requested": 200,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 72720,
+          "after": 100,
+          "before": 11
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "0A00001164000B000B",
+          "before_hex": "0A0000110B000B000B",
+          "changed_end": 72720,
+          "changed_start": 72720,
+          "context_end": 72724,
+          "context_start": 72716
+        }
+      ],
+      "marker": {
+        "before": 22,
+        "column": 5,
+        "id": "D5000",
+        "label": "Pattern F row 0",
+        "readback": 200,
+        "requested": 200,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 72736,
+          "after": 100,
+          "before": 14
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "0E000E0064000E000E",
+          "before_hex": "0E000E000E000E000E",
+          "changed_end": 72736,
+          "changed_start": 72736,
+          "context_end": 72740,
+          "context_start": 72732
+        }
+      ],
+      "marker": {
+        "before": 28,
+        "column": 5,
+        "id": "D5000",
+        "label": "Pattern F row 8",
+        "readback": 200,
+        "requested": 200,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 72752,
+          "after": 100,
+          "before": 14
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "0E000E006400001104",
+          "before_hex": "0E000E000E00001104",
+          "changed_end": 72752,
+          "changed_start": 72752,
+          "context_end": 72756,
+          "context_start": 72748
+        }
+      ],
+      "marker": {
+        "before": 28,
+        "column": 5,
+        "id": "D5000",
+        "label": "Pattern F row 16",
+        "readback": 200,
+        "requested": 200,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 72792,
+          "after": 100,
+          "before": 10
+        },
+        {
+          "address": 72793,
+          "after": 0,
+          "before": 128
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "0A00001164000A800A80",
+          "before_hex": "0A0000110A800A800A80",
+          "changed_end": 72793,
+          "changed_start": 72792,
+          "context_end": 72797,
+          "context_start": 72788
+        }
+      ],
+      "marker": {
+        "before": 21,
+        "column": 6,
+        "id": "D5000",
+        "label": "Pattern G row 0",
+        "readback": 200,
+        "requested": 200,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 72808,
+          "after": 100,
+          "before": 10
+        },
+        {
+          "address": 72809,
+          "after": 0,
+          "before": 128
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "0A800A8064000A800B80",
+          "before_hex": "0A800A800A800A800B80",
+          "changed_end": 72809,
+          "changed_start": 72808,
+          "context_end": 72813,
+          "context_start": 72804
+        }
+      ],
+      "marker": {
+        "before": 21,
+        "column": 6,
+        "id": "D5000",
+        "label": "Pattern G row 8",
+        "readback": 200,
+        "requested": 200,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 72824,
+          "after": 100,
+          "before": 14
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "0E000E006400001104",
+          "before_hex": "0E000E000E00001104",
+          "changed_end": 72824,
+          "changed_start": 72824,
+          "context_end": 72828,
+          "context_start": 72820
+        }
+      ],
+      "marker": {
+        "before": 28,
+        "column": 6,
+        "id": "D5000",
+        "label": "Pattern G row 16",
+        "readback": 200,
+        "requested": 200,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 72864,
+          "after": 100,
+          "before": 8
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "0A0000116400080008",
+          "before_hex": "0A0000110800080008",
+          "changed_end": 72864,
+          "changed_start": 72864,
+          "context_end": 72868,
+          "context_start": 72860
+        }
+      ],
+      "marker": {
+        "before": 16,
+        "column": 7,
+        "id": "D5000",
+        "label": "Pattern H row 0",
+        "readback": 200,
+        "requested": 200,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 72880,
+          "after": 100,
+          "before": 8
+        },
+        {
+          "address": 72881,
+          "after": 0,
+          "before": 128
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "08000800640009800B00",
+          "before_hex": "08000800088009800B00",
+          "changed_end": 72881,
+          "changed_start": 72880,
+          "context_end": 72885,
+          "context_start": 72876
+        }
+      ],
+      "marker": {
+        "before": 17,
+        "column": 7,
+        "id": "D5000",
+        "label": "Pattern H row 8",
+        "readback": 200,
+        "requested": 200,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 72896,
+          "after": 100,
+          "before": 13
+        },
+        {
+          "address": 72897,
+          "after": 0,
+          "before": 128
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "0D800D8064000011044D",
+          "before_hex": "0D800D800D800011044D",
+          "changed_end": 72897,
+          "changed_start": 72896,
+          "context_end": 72901,
+          "context_start": 72892
+        }
+      ],
+      "marker": {
+        "before": 27,
+        "column": 7,
+        "id": "D5000",
+        "label": "Pattern H row 16",
+        "readback": 200,
+        "requested": 200,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 72684,
+          "after": 100,
+          "before": 4
+        },
+        {
+          "address": 72685,
+          "after": 0,
+          "before": 83
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "0D800011640004530453",
+          "before_hex": "0D800011045304530453",
+          "changed_end": 72685,
+          "changed_start": 72684,
+          "context_end": 72689,
+          "context_start": 72680
+        }
+      ],
+      "marker": {
+        "before": 8.6484375,
+        "column": 4,
+        "id": "D5005",
+        "label": "Pattern E row 0",
+        "readback": 200,
+        "requested": 200,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 72700,
+          "after": 100,
+          "before": 4
+        },
+        {
+          "address": 72701,
+          "after": 0,
+          "before": 83
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "04530453640004530453",
+          "before_hex": "04530453045304530453",
+          "changed_end": 72701,
+          "changed_start": 72700,
+          "context_end": 72705,
+          "context_start": 72696
+        }
+      ],
+      "marker": {
+        "before": 8.6484375,
+        "column": 4,
+        "id": "D5005",
+        "label": "Pattern E row 8",
+        "readback": 200,
+        "requested": 200,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 72716,
+          "after": 100,
+          "before": 10
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "06000780640000110B",
+          "before_hex": "060007800A0000110B",
+          "changed_end": 72716,
+          "changed_start": 72716,
+          "context_end": 72720,
+          "context_start": 72712
+        }
+      ],
+      "marker": {
+        "before": 20,
+        "column": 4,
+        "id": "D5005",
+        "label": "Pattern E row 16",
+        "readback": 200,
+        "requested": 200,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 72756,
+          "after": 100,
+          "before": 4
+        },
+        {
+          "address": 72757,
+          "after": 0,
+          "before": 83
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "0E000011640004530453",
+          "before_hex": "0E000011045304530453",
+          "changed_end": 72757,
+          "changed_start": 72756,
+          "context_end": 72761,
+          "context_start": 72752
+        }
+      ],
+      "marker": {
+        "before": 8.6484375,
+        "column": 5,
+        "id": "D5005",
+        "label": "Pattern F row 0",
+        "readback": 200,
+        "requested": 200,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 72772,
+          "after": 100,
+          "before": 4
+        },
+        {
+          "address": 72773,
+          "after": 0,
+          "before": 83
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "04530453640004530453",
+          "before_hex": "04530453045304530453",
+          "changed_end": 72773,
+          "changed_start": 72772,
+          "context_end": 72777,
+          "context_start": 72768
+        }
+      ],
+      "marker": {
+        "before": 8.6484375,
+        "column": 5,
+        "id": "D5005",
+        "label": "Pattern F row 8",
+        "readback": 200,
+        "requested": 200,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 72788,
+          "after": 100,
+          "before": 10
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "06000780640000110A",
+          "before_hex": "060007800A0000110A",
+          "changed_end": 72788,
+          "changed_start": 72788,
+          "context_end": 72792,
+          "context_start": 72784
+        }
+      ],
+      "marker": {
+        "before": 20,
+        "column": 5,
+        "id": "D5005",
+        "label": "Pattern F row 16",
+        "readback": 200,
+        "requested": 200,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 72828,
+          "after": 100,
+          "before": 4
+        },
+        {
+          "address": 72829,
+          "after": 0,
+          "before": 83
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "0E000011640004530453",
+          "before_hex": "0E000011045304530453",
+          "changed_end": 72829,
+          "changed_start": 72828,
+          "context_end": 72833,
+          "context_start": 72824
+        }
+      ],
+      "marker": {
+        "before": 8.6484375,
+        "column": 6,
+        "id": "D5005",
+        "label": "Pattern G row 0",
+        "readback": 200,
+        "requested": 200,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 72844,
+          "after": 100,
+          "before": 4
+        },
+        {
+          "address": 72845,
+          "after": 0,
+          "before": 83
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "04530453640004530453",
+          "before_hex": "04530453045304530453",
+          "changed_end": 72845,
+          "changed_start": 72844,
+          "context_end": 72849,
+          "context_start": 72840
+        }
+      ],
+      "marker": {
+        "before": 8.6484375,
+        "column": 6,
+        "id": "D5005",
+        "label": "Pattern G row 8",
+        "readback": 200,
+        "requested": 200,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 72860,
+          "after": 100,
+          "before": 10
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "060007806400001108",
+          "before_hex": "060007800A00001108",
+          "changed_end": 72860,
+          "changed_start": 72860,
+          "context_end": 72864,
+          "context_start": 72856
+        }
+      ],
+      "marker": {
+        "before": 20,
+        "column": 6,
+        "id": "D5005",
+        "label": "Pattern G row 16",
+        "readback": 200,
+        "requested": 200,
+        "row": 16
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 72900,
+          "after": 100,
+          "before": 4
+        },
+        {
+          "address": 72901,
+          "after": 0,
+          "before": 77
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "0D8000116400044D044D",
+          "before_hex": "0D800011044D044D044D",
+          "changed_end": 72901,
+          "changed_start": 72900,
+          "context_end": 72905,
+          "context_start": 72896
+        }
+      ],
+      "marker": {
+        "before": 8.6015625,
+        "column": 7,
+        "id": "D5005",
+        "label": "Pattern H row 0",
+        "readback": 200,
+        "requested": 200,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 2,
+      "changed_bytes": [
+        {
+          "address": 72916,
+          "after": 100,
+          "before": 4
+        },
+        {
+          "address": 72917,
+          "after": 0,
+          "before": 77
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "044D044D640004530453",
+          "before_hex": "044D044D044D04530453",
+          "changed_end": 72917,
+          "changed_start": 72916,
+          "context_end": 72921,
+          "context_start": 72912
+        }
+      ],
+      "marker": {
+        "before": 8.6015625,
+        "column": 7,
+        "id": "D5005",
+        "label": "Pattern H row 8",
+        "readback": 200,
+        "requested": 200,
+        "row": 8
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 72932,
+          "after": 100,
+          "before": 10
+        }
+      ],
+      "diff_ranges": [
+        {
+          "after_hex": "06000780640000027F",
+          "before_hex": "060007800A0000027F",
+          "changed_end": 72932,
+          "changed_start": 72932,
+          "context_end": 72936,
+          "context_start": 72928
+        }
+      ],
+      "marker": {
+        "before": 20,
+        "column": 7,
+        "id": "D5005",
+        "label": "Pattern H row 16",
+        "readback": 200,
+        "requested": 200,
+        "row": 16
+      },
+      "restored": true
+    }
+  ],
+  "checksum_finalized": false,
+  "completed": true,
+  "controller": "AL5",
+  "created_local": "2026-10-01T04:34:24",
+  "flash_ready": false,
+  "gui_descriptor_modified": false,
+  "operating_system": 15184109,
+  "raw_range": {
+    "bytes": 57344,
+    "finish": 90111,
+    "start": 32768
+  },
+  "schema_version": 1,
+  "secondary_closed": true,
+  "secondary_saved": false,
+  "source": "[local stock CTZ path redacted]",
+  "tool": "AL5-remaining-columns-mapper-0.9",
+  "transmission": 15183960,
+  "validation": {
+    "gui_raw_unchanged": true,
+    "raw_coherency_and_restore": true,
+    "secondary_baseline_equals_gui": true
+  },
+  "vehicle_io": false,
+  "original_report_sha256": "cc9e9c84ee076772f1fd1bac4c239ebdd2852704ba09698b18707f3a9fab63e5"
+}

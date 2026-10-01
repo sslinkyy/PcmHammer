@@ -60,15 +60,17 @@ a plan to program the currently installed PPEI calibration.
 
 ## Current boundaries and next work
 
-**Current named XDF: v0.11**, `TunerPro/AL5_15184109_15183960_MARKER_EXTENDED_v0_11.xdf`.
+**Current named XDF: v0.12**, `TunerPro/AL5_15184109_15183960_MARKER_EXTENDED_v0_12.xdf`.
 The completed offline EFILive report resolves 83 marker cases and adds 41 items;
 all 283 numeric native comparisons pass. The subsequent v7 report maps D5053
 and D5054 byte enums and independently validates three native edited checksum
 fields. The completed v8 pass identifies D5197 at 0x10A24 and the old PPEI
 00-to-40 change as RPM Limit Req Disabled. All 127 native IDs are represented,
-including partial/research entries. Numeric coverage remains 2381/2517 cells:
-136 D5000/D5005 Pattern E-H cells still need mapping. See
-[ID versus cell coverage](TunerPro/D5197_AND_CELL_COVERAGE_v0_11.md).
+including research entries with explicit confidence. The completed v9 pass confirms
+eight D5000/D5005 Pattern E-H vectors through 24 isolated markers. All 2517/2517
+unique numeric stock cells now match the native export; 291 numeric entries pass.
+This is full stock decoding coverage, not marker or runtime proof of every cell.
+See [complete numeric coverage](TunerPro/NUMERIC_COVERAGE_v0_12.md).
 H0105's completed high-word marker corroborates unsigned BE32 at 0x152E4 with
 the native range and exact readback; v0.9.1 preserves every v0.9 encoding.
 See [marker evidence and GUI checks](TunerPro/MARKER_VALIDATION_v0_9.md).
@@ -92,12 +94,13 @@ raw AL5 segment into the existing PCM kernel writer. No AL5 live writer exists.
 
 ## Reproduce
 
-The v7 enum/checksum and v8 final-enum passes completed successfully. The next
-prepared pass is `Tools/AL5/AL5_REMAINING_COLUMNS_MAPPER_v9.lua`, sampling
-24 cells across the eight remaining D5000/D5005 Pattern E-H vectors. See
-[v9 instructions and coverage limits](TunerPro/D5197_AND_CELL_COVERAGE_v0_11.md).
-Its Lua syntax check passes; EFILive execution is pending. Ambiguous stock
-sequence matches are preserved in `TunerPro/REMAINING_COLUMN_CANDIDATES_v9.json`.
+The v7 enum/checksum, v8 final-enum and v9 remaining-column passes completed.
+Reproduce v0.12 with `Tools/AL5/expand_remaining_columns.py` followed by
+`audit_xdf.py`, supplying explicit local stock/export/PPEI paths. The redacted
+v9 evidence, original-report hash, mapping manifest and audit are under
+`Docs/AL5/TunerPro`. No additional numeric marker pass is required to close
+stock decoding coverage. New-vector GUI checks remain pending. Ambiguous
+pre-marker searches remain preserved in `REMAINING_COLUMN_CANDIDATES_v9.json`.
 
 The v6 targeted mapper completed its 83-case EFILive pass; the v6.1 H0105
 high-word pass also completed. Reproduce their validation with

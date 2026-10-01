@@ -97,7 +97,9 @@ That combination is a strong calibration-level candidate for the observed pre-sh
 1. Keep the AL5 direct-read path strictly read-only.
 2. Preserve the 57,304-byte live calibration segment as a reference.
 3. Preserve the confirmed D5197 interpretation at `0x10A24`; map the remaining
-   D5000/D5005 Patterns E-H cells and reconstruct programming offline.
+   D5000/D5005 Patterns E-H evidence and reconstruct programming offline.
+   XDF v0.12 now matches all 2517 numeric stock cells; see
+   `Docs/AL5/TunerPro/NUMERIC_COVERAGE_v0_12.md`.
 4. Build the corrected first test calibration from verified stock rather than layering changes onto PPEI.
 5. Prioritize the 1->2 clutch handoff while retaining torque-management authority.
 
