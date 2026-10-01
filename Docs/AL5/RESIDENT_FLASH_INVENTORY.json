@@ -1,0 +1,157 @@
+{
+  "source_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
+  "routine_address": "0x02A58",
+  "routine_sha256": "fc886abcdc0f9e7fa918a71f80c9c465b70196be0597a3660c9a0976e4f2efc2",
+  "copy_address": "0x02C90",
+  "copied_to": "0xFF8500",
+  "copied_bytes": 568,
+  "selector_table_address": "0x02A88",
+  "dispatch_index_scale": 2,
+  "selector_table_hex": "01fc002a0032003800400048005000580060006800700078008000880090009800a000a800b0",
+  "selectors": [
+    {
+      "selector": 0,
+      "branch": "0x02C84",
+      "accepted": false
+    },
+    {
+      "selector": 1,
+      "branch": "0x02AB2",
+      "accepted": true,
+      "start": "0x04000"
+    },
+    {
+      "selector": 2,
+      "branch": "0x02ABA",
+      "accepted": true,
+      "start": "0x06000"
+    },
+    {
+      "selector": 3,
+      "branch": "0x02AC0",
+      "accepted": true,
+      "start": "0x08000"
+    },
+    {
+      "selector": 4,
+      "branch": "0x02AC8",
+      "accepted": true,
+      "start": "0x10000"
+    },
+    {
+      "selector": 5,
+      "branch": "0x02AD0",
+      "accepted": true,
+      "start": "0x20000"
+    },
+    {
+      "selector": 6,
+      "branch": "0x02AD8",
+      "accepted": true,
+      "start": "0x30000"
+    },
+    {
+      "selector": 7,
+      "branch": "0x02AE0",
+      "accepted": true,
+      "start": "0x40000"
+    },
+    {
+      "selector": 8,
+      "branch": "0x02AE8",
+      "accepted": true,
+      "start": "0x50000"
+    },
+    {
+      "selector": 9,
+      "branch": "0x02AF0",
+      "accepted": true,
+      "start": "0x60000"
+    },
+    {
+      "selector": 10,
+      "branch": "0x02AF8",
+      "accepted": true,
+      "start": "0x70000"
+    },
+    {
+      "selector": 11,
+      "branch": "0x02B00",
+      "accepted": true,
+      "start": "0x80000"
+    },
+    {
+      "selector": 12,
+      "branch": "0x02B08",
+      "accepted": true,
+      "start": "0x90000"
+    },
+    {
+      "selector": 13,
+      "branch": "0x02B10",
+      "accepted": true,
+      "start": "0xA0000"
+    },
+    {
+      "selector": 14,
+      "branch": "0x02B18",
+      "accepted": true,
+      "start": "0xB0000"
+    },
+    {
+      "selector": 15,
+      "branch": "0x02B20",
+      "accepted": true,
+      "start": "0xC0000"
+    },
+    {
+      "selector": 16,
+      "branch": "0x02B28",
+      "accepted": true,
+      "start": "0xD0000"
+    },
+    {
+      "selector": 17,
+      "branch": "0x02B30",
+      "accepted": true,
+      "start": "0xE0000"
+    },
+    {
+      "selector": 18,
+      "branch": "0x02B38",
+      "accepted": true,
+      "start": "0xF0000"
+    }
+  ],
+  "candidate_calibration_intervals": [
+    {
+      "selector": 3,
+      "start": "0x08000",
+      "end_exclusive_inferred": "0x10000",
+      "calibration_bytes": 32768,
+      "outside_calibration_bytes": 0
+    },
+    {
+      "selector": 4,
+      "start": "0x10000",
+      "end_exclusive_inferred": "0x20000",
+      "calibration_bytes": 24536,
+      "outside_calibration_bytes": 41000
+    }
+  ],
+  "geometry_confidence": "neighbor-start inference only; hardware sector ends unverified",
+  "program_count_field_bytes": 1,
+  "program_unit_bytes": 2,
+  "program_count_warning": "odd counts advance in words and can write one extra byte; zero-count return is uninitialized",
+  "readiness_blockers": [
+    "exact hardware geometry",
+    "diagnostic wire-to-primitive path",
+    "session/security",
+    "full collateral backup and preservation policy",
+    "timeout/recovery",
+    "independent native checksum compensation evidence"
+  ],
+  "ready_to_flash": false,
+  "live_write_enabled": false,
+  "would_send": []
+}

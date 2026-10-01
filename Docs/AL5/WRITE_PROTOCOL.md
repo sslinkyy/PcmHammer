@@ -30,10 +30,16 @@ The existing PCM writer cannot be assumed to apply to VPW module `0x18`.
    Reachability from the current application, whether flashing requires this
    loader path, the kernel ABI and safe recovery remain unproven. No live upload
    is enabled.
-6. **Loader ready → Erased. Unknown/destructive.** Flash geometry, erase scope,
+6. **Loader ready → Erased. Partially traced offline; destructive.** A resident
+   boot routine has an internal erase selector table and word-program loop;
+   see `RESIDENT_FLASH_PRIMITIVE.md`. Its wire/session path is still unknown.
+   Adjacent selector starts suggest an erase span extending beyond calibration,
+   which requires a separate preservation policy. Exact flash geometry, erase scope,
    service/subfunction bytes, timing, status and interrupted-erase recovery are
    unproven. The calibration payload bounds are not erase-sector bounds.
-7. **Erased → Programmed. Unknown/destructive.** Block size, framing, address
+7. **Erased → Programmed. Internal primitive traced; wire path unknown/destructive.**
+   The internal byte count and word stride are not a transport block-size proof.
+   Block size, framing, address
    width, sequence counters, packet checksums, acknowledgments, retry idempotency
    and transfer exit are unproven. No generic GM/PCM packet has been substituted.
 8. **Programmed → Verified. Strongly inferred requirement; programming-session

@@ -35,6 +35,11 @@ All new reverse engineering and validation were offline.
   The boot RAM-transfer handler passes thirteen offline boundary/fault cases.
   Its packet fields, RAM bounds and status codes are documented in
   `BOOT_RAM_TRANSFER.md`; this does not enable live uploading or programming.
+- A resident boot erase/program primitive is statically traced, including its
+  RAM copy, selector table and word-program loop. Neighbor-start inference flags
+  41,000 bytes outside calibration that could require preservation. Actual
+  geometry and the wire/session path remain unverified; see
+  `RESIDENT_FLASH_PRIMITIVE.md`. Its inventory emits zero packets.
 
 The checksum-corrected existing minimal preview has field `439DCC98` and passes
 the offline plan's file/policy checks. Its plan has seven diff ranges and zero
@@ -56,8 +61,9 @@ The new XDF versions need a TunerPro GUI check; numerical audit is complete.
 Read [CHECKSUM_RECOVERY.md](CHECKSUM_RECOVERY.md) and
 [WRITE_PROTOCOL.md](WRITE_PROTOCOL.md) before extending writer work. Recover the
 EFILive object/container state definitions and controller flash geometry offline.
-Session/key, loader, erase, block programming, readback timing and recovery are
-still unknown. No destructive packets have been invented or sent.
+Session/key, loader requirements, exact erase geometry, diagnostic programming
+path, readback timing and recovery are still unproven. No destructive packets
+have been invented or sent.
 
 The only TCM remains protected: no live erase/program, experimental loader
 upload or unknown destructive service. A normal UI write action cannot route a
@@ -87,6 +93,7 @@ warnings remain. Run the tests:
 ```powershell
 python -m unittest discover -s Tools/AL5 -p test_offline.py -v
 python -m unittest discover -s Tools/AL5 -p test_family_search.py -v
+python -m unittest discover -s Tools/AL5 -p test_flash_inventory.py -v
 & '<Visual Studio MSBuild.exe>' Tools/AL5/GateTest.csproj /v:minimal /nologo
 & .\LocalOnly\AL5GateTest\AL5GateTest.exe
 ```
