@@ -38,6 +38,23 @@ counts and firmware/Python results. Execution is confined to the CRC routine;
 no peripheral or vehicle transport is present. This strengthens the first-word
 implementation evidence without claiming a third native calibration reference.
 
+The boot image also contains a general BE16 summation routine at
+`0xA08–0xA73`. It accepts A0=start, A1=address of the final word (inclusive),
+and A2=continuation. It uses an unrolled 32-word loop, sums modulo 65536 into
+D4, and records the result at `0xFF8006`. `emulate_word_sum.py` executes only
+this routine with watchdog/status addresses backed by synthetic memory.
+All nineteen cases agree with Python: short ranges across 64-byte loop
+boundaries, overflow, both complete reference segments and a changed payload
+bit in each. Native sums are zero for stock/PPEI and `0x0100` after those bit
+changes. See `WORD_SUM_EMULATION.json` and `WORD_SUM_STATIC_EVIDENCE.json`.
+
+The known callers at `0x7C8` and near `0x806` validate boot and application
+ranges, respectively. The application caller obtains bounds from `0x20400`
+and `0x20404`; the existing high dump contains `0x20000` and `0xC5F92` there.
+This is firmware evidence for the BE16 sum implementation, **not** a traced
+calibration acceptance path or compensation generator. The recovered second
+calibration word still relies on the two native fields and their invariant.
+
 Stock SHA256 `140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6`:
 CRC `4E35`, payload BE16 sum `E18B`, compensation `D040`, complete field
 **`4E35D040`**. Full-segment sum is zero.

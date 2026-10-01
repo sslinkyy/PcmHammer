@@ -32,6 +32,9 @@ All new reverse engineering and validation were offline.
   all 105 write-type/controller combinations. Eighteen Python safety,
   checksum, record-family and flash-inventory tests pass.
 - The extracted CRC routine passes twelve isolated M68020 emulator cases.
+  The native boot BE16 sum routine passes nineteen isolated cases, including
+  stock/PPEI and changed payloads. Its known boot/application callers do not
+  establish a calibration compensation generator.
   The boot RAM-transfer handler passes thirteen offline boundary/fault cases.
   Its packet fields, RAM bounds and status codes are documented in
   `BOOT_RAM_TRANSFER.md`; this does not enable live uploading or programming.

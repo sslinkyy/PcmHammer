@@ -1,0 +1,182 @@
+{
+  "source_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
+  "routine_sha256": "4452e2046a98660a5864fb243d38e084ba206e3446108ce17b69c95ddbc2b0c8",
+  "routine_address": "0x00A08",
+  "end_argument": "inclusive address of final BE16 word",
+  "scope": "isolated sum code; watchdog/status addresses are synthetic memory, not peripherals",
+  "limit": "Known callers check boot and application ranges; calibration caller/generator not proven",
+  "cases": [
+    {
+      "case": "random_2",
+      "length": 2,
+      "sha256": "3178da34b53da83a6ae50519972af268cafd9cc8fa1997a51ece618d53c292c3",
+      "firmware_result": "E1FD",
+      "python_result": "E1FD",
+      "instructions": 14,
+      "match": true
+    },
+    {
+      "case": "random_4",
+      "length": 4,
+      "sha256": "46a79f1ce492770aeff9ec67fe8072cbcadec7d6a1d41fe92e2e4d11fe5bb510",
+      "firmware_result": "14A4",
+      "python_result": "14A4",
+      "instructions": 15,
+      "match": true
+    },
+    {
+      "case": "random_6",
+      "length": 6,
+      "sha256": "17ac4126ac40631a4ed3aaf8ae9dc245eabdd0a448e0986781d24ccc4d51d7de",
+      "firmware_result": "14B4",
+      "python_result": "14B4",
+      "instructions": 16,
+      "match": true
+    },
+    {
+      "case": "random_30",
+      "length": 30,
+      "sha256": "55ec8de0806121be2464c898bf37106ca33c866a19479e63df1ae0a33517f098",
+      "firmware_result": "015F",
+      "python_result": "015F",
+      "instructions": 28,
+      "match": true
+    },
+    {
+      "case": "random_32",
+      "length": 32,
+      "sha256": "7b5d476fcbbcca749f889a9aa09779ae23e79793105c2b78bdd30c41b039d1f2",
+      "firmware_result": "2D00",
+      "python_result": "2D00",
+      "instructions": 29,
+      "match": true
+    },
+    {
+      "case": "random_34",
+      "length": 34,
+      "sha256": "56b4d5ba6e469c0169a8715d90d449585ea060a0dc50f4187e936ff3e14410bd",
+      "firmware_result": "260F",
+      "python_result": "260F",
+      "instructions": 30,
+      "match": true
+    },
+    {
+      "case": "random_60",
+      "length": 60,
+      "sha256": "edb1996f41b668f26fcfee411501c8e838ee9001804ba21cd60c9a2d2fc45d0b",
+      "firmware_result": "E12D",
+      "python_result": "E12D",
+      "instructions": 43,
+      "match": true
+    },
+    {
+      "case": "random_62",
+      "length": 62,
+      "sha256": "30fe9f80353d689d2fbfebaacab2590cf03ea38d8fbc6f8bf79094a031035502",
+      "firmware_result": "5356",
+      "python_result": "5356",
+      "instructions": 44,
+      "match": true
+    },
+    {
+      "case": "random_64",
+      "length": 64,
+      "sha256": "1049197ae2170111ad811e199ed71ef2bff6a9383415697afa029ddb866b1872",
+      "firmware_result": "8940",
+      "python_result": "8940",
+      "instructions": 45,
+      "match": true
+    },
+    {
+      "case": "random_66",
+      "length": 66,
+      "sha256": "166657627cc87d071b99dffa3856867f19958bf34d470a1ce96447d9a99e1a10",
+      "firmware_result": "A38B",
+      "python_result": "A38B",
+      "instructions": 50,
+      "match": true
+    },
+    {
+      "case": "random_126",
+      "length": 126,
+      "sha256": "81b9ed25e48d6be7ecf77239784932ad44143421dd244d41d3d8d7ab7a9603d1",
+      "firmware_result": "2F7D",
+      "python_result": "2F7D",
+      "instructions": 80,
+      "match": true
+    },
+    {
+      "case": "random_128",
+      "length": 128,
+      "sha256": "94f94ae9930062cb652240b406aaae25112e7cf46e9b4df75adf16450588e219",
+      "firmware_result": "4889",
+      "python_result": "4889",
+      "instructions": 81,
+      "match": true
+    },
+    {
+      "case": "random_130",
+      "length": 130,
+      "sha256": "8ffc193b3b9095bc0d827f258fb194dcb1bb9ac225e416e01a75ccb1f9925a46",
+      "firmware_result": "48B9",
+      "python_result": "48B9",
+      "instructions": 86,
+      "match": true
+    },
+    {
+      "case": "random_4096",
+      "length": 4096,
+      "sha256": "3b49859cbc855fb0893ed9c63c281cb14e4fa0bdb8aa85c1ecd7af323a86b47e",
+      "firmware_result": "277C",
+      "python_result": "277C",
+      "instructions": 2313,
+      "match": true
+    },
+    {
+      "case": "overflow_words",
+      "length": 130,
+      "sha256": "e7d832bb69df53e6f74c26238b8f020e5c51ad9c18dc8c6f9f6fa9350662f7f3",
+      "firmware_result": "FFBF",
+      "python_result": "FFBF",
+      "instructions": 86,
+      "match": true
+    },
+    {
+      "case": "stock",
+      "length": 57304,
+      "sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6",
+      "firmware_result": "0000",
+      "python_result": "0000",
+      "instructions": 32245,
+      "match": true
+    },
+    {
+      "case": "stock_payload_bit_changed",
+      "length": 57304,
+      "sha256": "f10ef112575419bec614878959a8fb62cb878db5fdaf9fbcb924025f37a9e770",
+      "firmware_result": "0100",
+      "python_result": "0100",
+      "instructions": 32245,
+      "match": true
+    },
+    {
+      "case": "ppei",
+      "length": 57304,
+      "sha256": "d0bcce91cea041bcf82317c73708c2289c78064aa542d6a63c12d3d6d78adc3f",
+      "firmware_result": "0000",
+      "python_result": "0000",
+      "instructions": 32245,
+      "match": true
+    },
+    {
+      "case": "ppei_payload_bit_changed",
+      "length": 57304,
+      "sha256": "643f51b20d271fe754f4e0dcce516819da23fdd7fb8af53d8dc4c272734e35e0",
+      "firmware_result": "0100",
+      "python_result": "0100",
+      "instructions": 32245,
+      "match": true
+    }
+  ],
+  "all_match": true
+}
