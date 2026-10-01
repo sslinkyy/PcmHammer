@@ -1,0 +1,242 @@
+{
+  "baseline_checksum": "4E35D040",
+  "checksum_cases": [
+    {
+      "checksum_finalization_called": true,
+      "finalized_changed_bytes": [
+        {
+          "address": 72973,
+          "after": 128,
+          "before": 0
+        },
+        {
+          "address": 90068,
+          "after": 115,
+          "before": 78
+        },
+        {
+          "address": 90069,
+          "after": 45,
+          "before": 53
+        },
+        {
+          "address": 90070,
+          "after": 170,
+          "before": 208
+        },
+        {
+          "address": 90071,
+          "after": 200,
+          "before": 64
+        }
+      ],
+      "finalized_checksum": "732DAAC8",
+      "marked_changed_bytes": [
+        {
+          "address": 72973,
+          "after": 128,
+          "before": 0
+        }
+      ],
+      "marked_checksum": "4E35D040",
+      "marker": {
+        "before": 16,
+        "column": 0,
+        "id": "D5000",
+        "label": "checksum_payload_variant",
+        "readback": 17,
+        "requested": 17,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "checksum_finalization_called": true,
+      "finalized_changed_bytes": [
+        {
+          "address": 33339,
+          "after": 224,
+          "before": 192
+        },
+        {
+          "address": 90068,
+          "after": 235,
+          "before": 78
+        },
+        {
+          "address": 90069,
+          "after": 162,
+          "before": 53
+        },
+        {
+          "address": 90070,
+          "after": 50,
+          "before": 208
+        },
+        {
+          "address": 90071,
+          "after": 179,
+          "before": 64
+        }
+      ],
+      "finalized_checksum": "EBA232B3",
+      "marked_changed_bytes": [
+        {
+          "address": 33339,
+          "after": 224,
+          "before": 192
+        }
+      ],
+      "marked_checksum": "4E35D040",
+      "marker": {
+        "before": 14,
+        "column": 0,
+        "id": "D5120",
+        "label": "checksum_payload_variant",
+        "readback": 15,
+        "requested": 15,
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "checksum_finalization_called": true,
+      "finalized_changed_bytes": [
+        {
+          "address": 88547,
+          "after": 0,
+          "before": 64
+        },
+        {
+          "address": 90068,
+          "after": 123,
+          "before": 78
+        },
+        {
+          "address": 90069,
+          "after": 41,
+          "before": 53
+        },
+        {
+          "address": 90070,
+          "after": 163,
+          "before": 208
+        },
+        {
+          "address": 90071,
+          "after": 140,
+          "before": 64
+        }
+      ],
+      "finalized_checksum": "7B29A38C",
+      "marked_changed_bytes": [
+        {
+          "address": 88547,
+          "after": 0,
+          "before": 64
+        }
+      ],
+      "marked_checksum": "4E35D040",
+      "marker": {
+        "before": 89,
+        "column": 0,
+        "id": "D5194",
+        "label": "checksum_payload_variant",
+        "readback": 88,
+        "requested": 88,
+        "row": 0
+      },
+      "restored": true
+    }
+  ],
+  "checksum_evidence_status": "pending independent offline verification",
+  "completed": true,
+  "controller": "AL5",
+  "created_local": "2026-10-01T04:05:13",
+  "enum_cases": [
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 63148,
+          "after": 0,
+          "before": 1
+        }
+      ],
+      "checksum_update_called": false,
+      "diff_ranges": [
+        {
+          "after_hex": "010004B00000003200",
+          "before_hex": "010004B00100003200",
+          "changed_end": 63148,
+          "changed_start": 63148,
+          "context_end": 63152,
+          "context_start": 63144
+        }
+      ],
+      "marker": {
+        "before": "Enable",
+        "column": 0,
+        "id": "D5053",
+        "label": "text_enum_marker",
+        "readback": "Disable",
+        "requested": "Disable",
+        "row": 0
+      },
+      "restored": true
+    },
+    {
+      "changed_byte_count": 1,
+      "changed_bytes": [
+        {
+          "address": 52466,
+          "after": 0,
+          "before": 1
+        }
+      ],
+      "checksum_update_called": false,
+      "diff_ranges": [
+        {
+          "after_hex": "000001000000000003",
+          "before_hex": "000001000100000003",
+          "changed_end": 52466,
+          "changed_start": 52466,
+          "context_end": 52470,
+          "context_start": 52462
+        }
+      ],
+      "marker": {
+        "before": "Enable",
+        "column": 0,
+        "id": "D5054",
+        "label": "text_enum_marker",
+        "readback": "Disable",
+        "requested": "Disable",
+        "row": 0
+      },
+      "restored": true
+    }
+  ],
+  "flash_ready": false,
+  "gui_descriptor_modified": false,
+  "operating_system": 15184109,
+  "raw_range": {
+    "bytes": 57344,
+    "finish": 90111,
+    "start": 32768
+  },
+  "schema_version": 1,
+  "secondary_closed": true,
+  "secondary_saved": false,
+  "source": "[local stock source path redacted]",
+  "tool": "AL5-offline-enum-checksum-evidence-0.7",
+  "transmission": 15183960,
+  "validation": {
+    "gui_raw_unchanged": true,
+    "native_stock_finalization_preserves_baseline": true,
+    "secondary_baseline_equals_gui": true
+  },
+  "vehicle_io": false,
+  "original_report_sha256": "f789cfcbf2fc8909617275d6fbe1d4d524d69713bd8618a587401db082b122d3",
+  "redaction_note": "Only source path replaced; marker, checksum and validation fields unchanged."
+}

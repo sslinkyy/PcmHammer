@@ -1,5 +1,10 @@
 # Offline enum and independent checksum evidence pass v7
 
+**Completed:** the successful 2026-10-01 report confirms three native checksum
+matches and both text markers. See `ENUM_CHECKSUM_VALIDATION_v7.json`,
+`CHECKSUM_RECOVERY.md`, and `TunerPro/ADAPTIVE_ENABLE_MAPPING_v0_10.json`.
+The instructions below describe the reproducible pass; no repeat run is needed.
+
 `Tools/AL5/AL5_ENUM_CHECKSUM_EVIDENCE_v7.lua` uses the existing successful raw
 capture/secondary-descriptor engine. Run it in EFILive V8 F9 → Scripting with
 the same unchanged stock CTZ and existing read-only AL5RAW CAX8 views. No
@@ -51,11 +56,11 @@ candidates until their field width/bit ownership is reviewed.
 
 This can supply additional independently finalized native checksum examples
 if AL5 raw views expose the updater's changes. It does not prove controller
-acceptance, physical flash geometry or recovery. At preparation time it has
-passed syntax validation but has not been executed in EFILive; no new checksum
-or enum mapping result is claimed.
+acceptance, physical flash geometry or recovery. The subsequent EFILive pass
+completed; the verifier and saved-firmware byte tests support the two enum
+assignments in v0.10. These are offline results, not live programming evidence.
 
-D5197 remains deferred: the existing stock export says `All Enabled`, but its
-other exact option labels are not documented by the saved metadata. Its GUI
-dropdown labels or EFILive's Copy as Lua Source output are needed before a
-targeted text marker is prepared. This pass does not guess those alternatives.
+D5197's exact dropdown labels were subsequently supplied by the user. A
+separate three-case text mapper v8 is prepared; see
+[v0.10 evidence and final enum instructions](TunerPro/ADAPTIVE_ENABLE_v0_10.md).
+D5197 raw encoding remains unassigned until its report is verified.

@@ -1,5 +1,10 @@
 # Remaining control candidates — no new XDF assignments
 
+Current v0.10 supersedes this historical ledger: D5053/D5054 are now mapped by
+isolated text markers plus full-byte firmware tests. Only D5197 remains absent;
+its exact labels are supplied and the v8 pass is prepared. See
+[current evidence](ADAPTIVE_ENABLE_v0_10.md).
+
 Historical candidate ledger below. The subsequent 83-case EFILive marker pass
 resolves the named scalar/throttle identities in v0.9; see
 [marker validation](MARKER_VALIDATION_v0_9.md). Three text enums remain absent,

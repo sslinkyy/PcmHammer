@@ -1,0 +1,55 @@
+{
+  "stock_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6",
+  "checksum_variants": [
+    {
+      "id": "D5000",
+      "candidate_sha256": "4f0785ad1843ed249227d6c42a048c5b9d99dc175ea80ff4d4626e77ac348118",
+      "native_finalized_field": "732DAAC8",
+      "computed_field": "732DAAC8",
+      "match": true
+    },
+    {
+      "id": "D5120",
+      "candidate_sha256": "2c90a40e02d630ee442c49dc9dcf8681d192ac10279f5ddfcfc744eed32454fc",
+      "native_finalized_field": "EBA232B3",
+      "computed_field": "EBA232B3",
+      "match": true
+    },
+    {
+      "id": "D5194",
+      "candidate_sha256": "606a8e555a5d62ba4f088869a3dc55ff848863d4cf6af171e4fd7b7c7c45edd8",
+      "native_finalized_field": "7B29A38C",
+      "computed_field": "7B29A38C",
+      "match": true
+    }
+  ],
+  "enum_candidates": [
+    {
+      "id": "D5053",
+      "changed_bytes": [
+        {
+          "address": 63148,
+          "after": 0,
+          "before": 1
+        }
+      ],
+      "note": "Named text differential only; field width/bit ownership needs review before XDF assignment."
+    },
+    {
+      "id": "D5054",
+      "changed_bytes": [
+        {
+          "address": 52466,
+          "after": 0,
+          "before": 1
+        }
+      ],
+      "note": "Named text differential only; field width/bit ownership needs review before XDF assignment."
+    }
+  ],
+  "flash_ready": false,
+  "vehicle_io": false,
+  "all_checksums_match": true,
+  "status": "pass",
+  "report_sha256": "d30872c09bbdf0a2231a006035400e76003ba051f783cd71fd6517f72eb638a1"
+}

@@ -1,0 +1,57 @@
+{
+  "added": [
+    {
+      "id": "D5053",
+      "address": "0x0F6AC",
+      "bits": 8,
+      "labels": {
+        "0": "Disable",
+        "1": "Enable"
+      },
+      "consumer": "0x730BC",
+      "confidence": "isolated text marker plus full-byte firmware consumer"
+    },
+    {
+      "id": "D5054",
+      "address": "0x0CCF2",
+      "bits": 8,
+      "labels": {
+        "0": "Disable",
+        "1": "Enable"
+      },
+      "consumer": "0x72FFA",
+      "confidence": "isolated text marker plus full-byte firmware consumer"
+    }
+  ],
+  "native_checksum_variants": [
+    {
+      "id": "D5000",
+      "candidate_sha256": "4f0785ad1843ed249227d6c42a048c5b9d99dc175ea80ff4d4626e77ac348118",
+      "native_finalized_field": "732DAAC8",
+      "computed_field": "732DAAC8",
+      "match": true
+    },
+    {
+      "id": "D5120",
+      "candidate_sha256": "2c90a40e02d630ee442c49dc9dcf8681d192ac10279f5ddfcfc744eed32454fc",
+      "native_finalized_field": "EBA232B3",
+      "computed_field": "EBA232B3",
+      "match": true
+    },
+    {
+      "id": "D5194",
+      "candidate_sha256": "606a8e555a5d62ba4f088869a3dc55ff848863d4cf6af171e4fd7b7c7c45edd8",
+      "native_finalized_field": "7B29A38C",
+      "computed_field": "7B29A38C",
+      "match": true
+    }
+  ],
+  "flash_ready": false,
+  "gui_validation": "new enum entries pending",
+  "source_sha256": "9cdefd5e311849f7eda0afff0fd663a6820f0a6ad963e3585229938fd8beba07",
+  "stock_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6",
+  "export_sha256": "fbbd581cd5bd42dcfa1fa874c41ffde23f612b36d23e0043ca648acab2ac614b",
+  "report_sha256": "d30872c09bbdf0a2231a006035400e76003ba051f783cd71fd6517f72eb638a1",
+  "references_sha256": "b3fbcbd3be80a47c93f6e396138056de895149b1cd24695f12752826d930ade6",
+  "high_sha256": "492040d9460d53b77dda606b9a89f4254e0680f239093001663f6ed5cf51ba75"
+}

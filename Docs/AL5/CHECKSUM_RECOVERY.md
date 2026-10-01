@@ -1,7 +1,8 @@
 # Native calibration checksum — OS 15184109 / calibration 15183960
 
-The four bytes at `0x15FD4–0x15FD7` have been reproduced offline from both
-independent stock and live-read PPEI segments. They are two BE16 words:
+The four bytes at `0x15FD4–0x15FD7` have been reproduced offline from stock,
+live-read PPEI and three independently EFILive-finalized edited payloads.
+They are two BE16 words:
 
 1. At `0x15FD4`: reflected CRC16 of bytes `0x08000–0x15FD3`, polynomial
    `0xA001` (normal representation `0x8005`), initial value zero, no final XOR.
@@ -71,16 +72,17 @@ reproduce the field; see `OFFLINE_EVIDENCE.json` for those specific tests.
 ## Limits
 
 The documented `_efiUpdateChecksums(fd)` API is present in the existing saved
-API inventory. A disposable-secondary evidence pass is now prepared in
+API inventory. The disposable-secondary evidence pass completed in
 `Tools/AL5/AL5_ENUM_CHECKSUM_EVIDENCE_v7.lua`; see
 [instructions](ENUM_CHECKSUM_PASS.md). It captures three controlled numeric
-variants after native finalization and prepares independent comparison with
-our formula. Its EFILive run is pending: no additional checksum match is
-claimed from preparing or simulating this workflow.
+variants after native finalization. Every field matches our formula exactly;
+see the independent native-edit validation below.
 
-The first word has direct firmware evidence and two independent full-segment
-matches. The second-word formula is inferred from the known native fields and
-the whole-segment invariant; its generating routine has not been isolated.
+The first word has direct firmware evidence and five independently sourced
+examples. The second-word formula is empirically validated by the three native
+finalizations beyond the original two fields and invariant. Its generating
+firmware/object routine has not been isolated; controller acceptance of these
+three edited payloads has not been tested.
 34 existing COZ files were examined for standard zlib-contained segments; no
 additional complete segment was extracted by that limited method. This does
 not establish anything about those containers' validity. Additional valid
@@ -90,3 +92,28 @@ Scope is this OS/calibration family. Do not generalize it to every AL5 OS or
 to whole flash images. Offline checksum correctness does not establish erase
 geometry, programming protocol, recovery, or successful controller acceptance.
 No candidate is flash-ready while those remain unknown.
+
+## Independent native-edit validation - completed v7 pass
+
+The 2026-10-01 EFILive v7 report completed three numeric variants and two text
+enum markers. Stock finalization preserved the captured baseline. For each
+numeric edit, the native checksum updater on the unsaved secondary descriptor
+generated a new field. Restoration and re-finalization returned the entire
+captured range to baseline after each case. The GUI remained unchanged, the
+secondary closed without saving, and no vehicle I/O occurred.
+
+- D5000 row zero, 16 to 17 km/h: native/computed field `732DAAC8`.
+- D5120, 14 to 15 cm3: native/computed field `EBA232B3`.
+- D5194, 89 to 88%: native/computed field `7B29A38C`.
+
+`verify_enum_checksum_pass.py` reconstructs each exact payload from known stock
+bytes and all captured differences, checks the isolated edit, rejects other
+payload changes, and compares both generated words. All three match. The source
+path is redacted in `ENUM_CHECKSUM_EVIDENCE_v7.json`; validation fields and
+reconstructed segment SHA-256 hashes are in `ENUM_CHECKSUM_VALIDATION_v7.json`.
+No synthesized field was substituted into the native evidence.
+
+Complete four-byte offline synthesis now matches stock, PPEI and three native
+editor-finalized variants for this OS/calibration family. This is an offline
+generation milestone, not evidence of erase scope, write framing, physical
+recovery or live acceptance.

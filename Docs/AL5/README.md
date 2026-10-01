@@ -22,8 +22,9 @@ All new reverse engineering and validation were offline.
 - v0.7 adds 32 vectors / 64 cells: complete WOT TCC mode families and partial
   WOT downshift families. All 242 resolved numeric entries pass the audit.
 - Offline checksum generation reproduces stock `4E35D040` and PPEI `DAE2BB2E`.
-  The CRC lookup table matches all 256 firmware entries. Additional edited
-  native-segment validation and the second-word generator trace remain open.
+  The CRC lookup table matches all 256 firmware entries. Three independently
+  EFILive-finalized edits now reproduce `732DAAC8`, `EBA232B3` and `7B29A38C`.
+  The second-word generator trace and live acceptance remain unproven.
 - The file-only dry-run planner validates context, exact sizes, anchors, source
   hash, native checksum, diff ranges and the minimal target policy. It always
   blocks readiness and produces zero packets.
@@ -59,10 +60,12 @@ a plan to program the currently installed PPEI calibration.
 
 ## Current boundaries and next work
 
-**Current named XDF: v0.9.1**, `TunerPro/AL5_15184109_15183960_MARKER_EXTENDED_v0_9_1.xdf`.
+**Current named XDF: v0.10**, `TunerPro/AL5_15184109_15183960_MARKER_EXTENDED_v0_10.xdf`.
 The completed offline EFILive report resolves 83 marker cases and adds 41 items;
-all 283 numeric native comparisons pass. 124/127 native IDs are represented,
-including partial/research entries. D5053/D5054/D5197 enums remain absent.
+all 283 numeric native comparisons pass. The subsequent v7 report maps D5053
+and D5054 byte enums and independently validates three native edited checksum
+fields. 126/127 native IDs are represented, including partial/research entries;
+D5197 remains absent pending its prepared v8 text-marker pass.
 H0105's completed high-word marker corroborates unsigned BE32 at 0x152E4 with
 the native range and exact readback; v0.9.1 preserves every v0.9 encoding.
 See [marker evidence and GUI checks](TunerPro/MARKER_VALIDATION_v0_9.md).
@@ -86,11 +89,11 @@ raw AL5 segment into the existing PCM kernel writer. No AL5 live writer exists.
 
 ## Reproduce
 
-The next prepared evidence pass is
-`Tools/AL5/AL5_ENUM_CHECKSUM_EVIDENCE_v7.lua`: three unsaved native checksum
-variants plus isolated D5053/D5054 text markers. See
-[v7 instructions and limits](ENUM_CHECKSUM_PASS.md). Lua syntax validation
-passes; EFILive execution is pending. D5197 exact option names remain unknown.
+The v7 enum/checksum pass completed successfully. The next prepared pass is
+`Tools/AL5/AL5_D5197_TEXT_MAPPER_v8.lua`, using three exact dropdown labels
+supplied by the user. See [v0.10 evidence and instructions](TunerPro/ADAPTIVE_ENABLE_v0_10.md).
+Lua syntax validation passes; its EFILive execution is pending. No native raw
+D5197 encoding has been assumed.
 
 The v6 targeted mapper completed its 83-case EFILive pass; the v6.1 H0105
 high-word pass also completed. Reproduce their validation with

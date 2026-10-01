@@ -121,7 +121,7 @@ explicitly labeled; TunerPro GUI display validation remains pending.
 See [marker validation and next single-case test](MARKER_VALIDATION_v0_9.md).
 The v0.8 raw supplement remains separate. No edited BIN is flash-ready.
 
-## Marker extended v0.9.1 — current named definition
+## Marker extended v0.9.1
 
 `AL5_15184109_15183960_MARKER_EXTENDED_v0_9_1.xdf` records the completed H0105
 high-word pass. Raw 4000 changed to 160934 with a nonzero high word and an exact
@@ -131,3 +131,17 @@ comparisons, with 124/127 native IDs represented. See
 [completed high-word evidence and GUI checks](MARKER_VALIDATION_v0_9.md).
 TunerPro GUI validation and the three enum encodings remain open. No edited
 BIN is flash-ready.
+
+## Marker extended v0.10 — current named definition
+
+`AL5_15184109_15183960_MARKER_EXTENDED_v0_10.xdf` adds marker/firmware-confirmed
+D5053 and D5054 byte enums (0 Disable, 1 Enable). All earlier encodings are
+preserved. The H0105/H0136 titles now use readable kilometer labels instead of
+EFILive unit templates. 126/127 native IDs are represented; only D5197 remains
+absent. All 283 numeric comparisons pass; the two new text enums have separate
+marker checks. Their new GUI displays are pending.
+
+Three independently EFILive-finalized edited fields match our complete checksum
+formula, bringing independently sourced examples to five. Read
+[v0.10 evidence and the final enum pass](ADAPTIVE_ENABLE_v0_10.md). No edited BIN
+is flash-ready while protocol, geometry and recovery remain unresolved.

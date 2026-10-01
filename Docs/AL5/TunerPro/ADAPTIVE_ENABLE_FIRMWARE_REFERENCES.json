@@ -1,0 +1,84 @@
+{
+  "low_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
+  "high_sha256": "492040d9460d53b77dda606b9a89f4254e0680f239093001663f6ed5cf51ba75",
+  "windows": [
+    {
+      "start": "0x72FF8",
+      "end_exclusive": "0x7300C",
+      "instructions": [
+        {
+          "address": "0x72FF8",
+          "bytes": "660e",
+          "mnemonic": "bne.b",
+          "operands": "$73008"
+        },
+        {
+          "address": "0x72FFA",
+          "bytes": "4a390000ccf2",
+          "mnemonic": "tst.b",
+          "operands": "$ccf2.l"
+        },
+        {
+          "address": "0x73000",
+          "bytes": "6606",
+          "mnemonic": "bne.b",
+          "operands": "$73008"
+        },
+        {
+          "address": "0x73002",
+          "bytes": "002d00402cce",
+          "mnemonic": "ori.b",
+          "operands": "#$40, $2cce(a5)"
+        },
+        {
+          "address": "0x73008",
+          "bytes": "4a2d2e27",
+          "mnemonic": "tst.b",
+          "operands": "$2e27(a5)"
+        }
+      ]
+    },
+    {
+      "start": "0x730BA",
+      "end_exclusive": "0x730D0",
+      "instructions": [
+        {
+          "address": "0x730BA",
+          "bytes": "2f03",
+          "mnemonic": "move.l",
+          "operands": "d3, -(a7)"
+        },
+        {
+          "address": "0x730BC",
+          "bytes": "4a390000f6ac",
+          "mnemonic": "tst.b",
+          "operands": "$f6ac.l"
+        },
+        {
+          "address": "0x730C2",
+          "bytes": "6606",
+          "mnemonic": "bne.b",
+          "operands": "$730ca"
+        },
+        {
+          "address": "0x730C4",
+          "bytes": "002d00402cce",
+          "mnemonic": "ori.b",
+          "operands": "#$40, $2cce(a5)"
+        },
+        {
+          "address": "0x730CA",
+          "bytes": "4a2d2e5a",
+          "mnemonic": "tst.b",
+          "operands": "$2e5a(a5)"
+        },
+        {
+          "address": "0x730CE",
+          "bytes": "6712",
+          "mnemonic": "beq.b",
+          "operands": "$730e2"
+        }
+      ]
+    }
+  ]
+}
