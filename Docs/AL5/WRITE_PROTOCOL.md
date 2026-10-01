@@ -140,6 +140,12 @@ bytes, so they cannot waive initialization or preservation requirements. See
 `PENDING_HELPERS.md`. Startup RAM provenance and physical persistence remain
 unverified; the file-only plan continues to emit zero packets.
 
+Two subsequent startup-clear cases reproduce the signed `MOVEQ` clear bounds
+and identical cold pending contexts from different RAM fills. Static startup
+code directly calls the context routine after intervening initializers. See
+`STARTUP_CONTEXT.md`. Those initializers and four context preamble helpers are
+omitted, so full startup, physical persistence and recovery remain false.
+
 The report includes a hash-linked preservation assessment from the static
 resident inventory. The inferred 41,000 extra bytes and candidate intervals
 remain explicitly unverified; no current collateral backup is supplied or

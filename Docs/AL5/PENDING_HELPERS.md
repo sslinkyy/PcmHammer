@@ -80,8 +80,10 @@ The dry-run report hash-links this evidence while keeping complete context
 initialization, physical persistence and recovery false. No packets are emitted
 and the working Mode 0x23 reader is unchanged.
 
-Next trace preceding startup RAM clearing and the actual invocation path into
-the pending caller. Establish the provenance of untouched bytes and retained
-bits before treating context reconstruction as complete. Physical erase geometry,
+The subsequent `STARTUP_CONTEXT.md` executes the real cold RAM clear and links
+the startup/context invocation statically. Bounded cold contexts now converge
+between fills, while intervening startup and preamble effects remain omitted.
+Next trace those effects and distinguish the other invocation path before
+treating context reconstruction as complete. Physical erase geometry,
 programming transport and hardware recovery remain separate unresolved work.
 No live destructive command or experimental service is enabled or performed.

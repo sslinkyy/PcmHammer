@@ -1,0 +1,312 @@
+{
+  "low_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
+  "high_sha256": "492040d9460d53b77dda606b9a89f4254e0680f239093001663f6ed5cf51ba75",
+  "code_sha256": {
+    "0xbe478": "032d80df99e3490c3dd6b1955ded9311a468277502d1d09e49a479a88868cabe",
+    "0x5b8ec": "eea55ee672dc95ae1cc4554663268d150eae3c45c365bc2033842a25a6ef9a39"
+  },
+  "scope": "Real startup copy/clear, linked context caller with four preamble helpers bypassed, real pending defaults; separate preparation and atomic host storage model.",
+  "model_limits": "No physical startup/MMIO execution; intervening startup and context preamble effects omitted. No automatic startup commit or full recovery proof.",
+  "cases": [
+    {
+      "synthetic_initial_ram_fill": "0xa5",
+      "observed": {
+        "startup_clear": {
+          "start": "0xff8140",
+          "end_exclusive": "0xffb7b0",
+          "bytes": 13936,
+          "observed_unique_bytes_written": 13936,
+          "region_all_zero": true,
+          "context_all_zero": true,
+          "after_region_probe_unchanged": true,
+          "global_prefix_matches_rom": true,
+          "watchdog_write_count": 144,
+          "watchdog_values_only_55_aa": true
+        },
+        "preamble_helpers_bypassed": [
+          "0x5b5e4",
+          "0x5b6e4",
+          "0x5b7ec",
+          "0x228d8"
+        ],
+        "remaining_helpers_executed": [
+          "0x55298",
+          "0xbaed4",
+          "0x67bc8",
+          "0x590a0",
+          "0x5d894",
+          "0xc4538",
+          "0x60ae8",
+          "0x90e48",
+          "0xa44d0",
+          "0xa4228",
+          "0xc5938",
+          "0x622f4"
+        ],
+        "stop_pc": "0x5baa6",
+        "context_sha256": "bb42c010b63a5b50614658384b272650d59314d94268c5fb608ec154d410d27d",
+        "stored_crc_before_preparation": "0x0",
+        "computed_crc_before_preparation": "0x80d0",
+        "selector_after_clear": 0,
+        "banks_unchanged": true
+      },
+      "separate_preparation_and_modeled_commit": {
+        "preparation_subsystem_calls_bypassed": [
+          "0x984ec",
+          "0x94878",
+          "0x602f4",
+          "0xc2290",
+          "0x90d50",
+          "0xae5dc",
+          "0xaed38",
+          "0xaff38",
+          "0xa8938",
+          "0xa8a18"
+        ],
+        "intercepted_storage_call": {
+          "entry": "0x226f0",
+          "source": "0xff8140"
+        },
+        "prepared_context_sha256": "08810ac5e051f1e9af7ffae5933b84b1317de76538cf03e2c8ac8bc77ee21c65",
+        "prepared_context_crc_matches": true,
+        "prepared_crc_word": "0x80d0",
+        "modeled_commit_operations": [
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x6000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22cf0",
+            "kind": "synthetic_tail_copy",
+            "destination": "0x6a4c",
+            "bytes": 5556,
+            "source": "0x4a4c",
+            "payload_sha256": "315781df3f06a80ec16e8023440c70ea3c69a7adcc7609d79ef3dbd2021b2d5a",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6000",
+            "bytes": 40,
+            "source": "0x2087cc",
+            "payload_sha256": "cf917e8b9505d3966b16b7230e8ea8275416d2b2b7569e02764c53cf721169dd",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6028",
+            "bytes": 2,
+            "source": "0x2087cc",
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x602a",
+            "bytes": 2546,
+            "source": "0xff8140",
+            "payload_sha256": "08810ac5e051f1e9af7ffae5933b84b1317de76538cf03e2c8ac8bc77ee21c65",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6028",
+            "bytes": 2,
+            "source": "0x2087cc",
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4028",
+            "bytes": 2,
+            "source": "0x2087cc",
+            "payload_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+            "word": "0000",
+            "implementation_executed": false
+          }
+        ],
+        "modeled_reboot_selection": {
+          "selected_record": "0x6028",
+          "selected_context_sha256": "08810ac5e051f1e9af7ffae5933b84b1317de76538cf03e2c8ac8bc77ee21c65",
+          "storage_trap": null,
+          "banks_unchanged_during_selection": true
+        },
+        "modeled_committed_context_matches_prepared": true,
+        "real_storage_implementation_executed": false
+      },
+      "pass": true
+    },
+    {
+      "synthetic_initial_ram_fill": "0x5a",
+      "observed": {
+        "startup_clear": {
+          "start": "0xff8140",
+          "end_exclusive": "0xffb7b0",
+          "bytes": 13936,
+          "observed_unique_bytes_written": 13936,
+          "region_all_zero": true,
+          "context_all_zero": true,
+          "after_region_probe_unchanged": true,
+          "global_prefix_matches_rom": true,
+          "watchdog_write_count": 144,
+          "watchdog_values_only_55_aa": true
+        },
+        "preamble_helpers_bypassed": [
+          "0x5b5e4",
+          "0x5b6e4",
+          "0x5b7ec",
+          "0x228d8"
+        ],
+        "remaining_helpers_executed": [
+          "0x55298",
+          "0xbaed4",
+          "0x67bc8",
+          "0x590a0",
+          "0x5d894",
+          "0xc4538",
+          "0x60ae8",
+          "0x90e48",
+          "0xa44d0",
+          "0xa4228",
+          "0xc5938",
+          "0x622f4"
+        ],
+        "stop_pc": "0x5baa6",
+        "context_sha256": "bb42c010b63a5b50614658384b272650d59314d94268c5fb608ec154d410d27d",
+        "stored_crc_before_preparation": "0x0",
+        "computed_crc_before_preparation": "0x80d0",
+        "selector_after_clear": 0,
+        "banks_unchanged": true
+      },
+      "separate_preparation_and_modeled_commit": {
+        "preparation_subsystem_calls_bypassed": [
+          "0x984ec",
+          "0x94878",
+          "0x602f4",
+          "0xc2290",
+          "0x90d50",
+          "0xae5dc",
+          "0xaed38",
+          "0xaff38",
+          "0xa8938",
+          "0xa8a18"
+        ],
+        "intercepted_storage_call": {
+          "entry": "0x226f0",
+          "source": "0xff8140"
+        },
+        "prepared_context_sha256": "08810ac5e051f1e9af7ffae5933b84b1317de76538cf03e2c8ac8bc77ee21c65",
+        "prepared_context_crc_matches": true,
+        "prepared_crc_word": "0x80d0",
+        "modeled_commit_operations": [
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x6000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22cf0",
+            "kind": "synthetic_tail_copy",
+            "destination": "0x6a4c",
+            "bytes": 5556,
+            "source": "0x4a4c",
+            "payload_sha256": "315781df3f06a80ec16e8023440c70ea3c69a7adcc7609d79ef3dbd2021b2d5a",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6000",
+            "bytes": 40,
+            "source": "0x2087cc",
+            "payload_sha256": "cf917e8b9505d3966b16b7230e8ea8275416d2b2b7569e02764c53cf721169dd",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6028",
+            "bytes": 2,
+            "source": "0x2087cc",
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x602a",
+            "bytes": 2546,
+            "source": "0xff8140",
+            "payload_sha256": "08810ac5e051f1e9af7ffae5933b84b1317de76538cf03e2c8ac8bc77ee21c65",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6028",
+            "bytes": 2,
+            "source": "0x2087cc",
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4028",
+            "bytes": 2,
+            "source": "0x2087cc",
+            "payload_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+            "word": "0000",
+            "implementation_executed": false
+          }
+        ],
+        "modeled_reboot_selection": {
+          "selected_record": "0x6028",
+          "selected_context_sha256": "08810ac5e051f1e9af7ffae5933b84b1317de76538cf03e2c8ac8bc77ee21c65",
+          "storage_trap": null,
+          "banks_unchanged_during_selection": true
+        },
+        "modeled_committed_context_matches_prepared": true,
+        "real_storage_implementation_executed": false
+      },
+      "pass": true
+    }
+  ],
+  "cold_context_independent_of_initial_fill": true,
+  "prepared_context_independent_of_initial_fill": true,
+  "all_pass": true,
+  "complete_startup_verified": false,
+  "physical_recovery_verified": false,
+  "context_persistence_verified": false,
+  "flash_implementation_executed": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "would_send": []
+}

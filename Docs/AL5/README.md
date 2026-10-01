@@ -98,7 +98,11 @@ all twelve remaining helpers: 2137 bytes are touched, but 500 bytes remain
 sentinel-dependent, including 91 read-modify-write bytes. Separate preparation
 produces matching CRCs and atomic modeled commits without resolving that
 dependency. See [remaining helpers and CRC linkage](PENDING_HELPERS.md).
-Next trace preceding startup RAM clearing and invocation; physical recovery remains unverified.
+Two startup-clear cases now reproduce zeroing `0xFF8140–0xFFB7AF` and make the
+bounded cold pending contexts independent of their initial fills. Static code
+links startup to the context caller, but intervening startup and four preamble
+helpers are omitted. See [startup context provenance](STARTUP_CONTEXT.md).
+Next trace those omitted effects and the second invocation path; physical recovery remains unverified.
 
 **Current named XDF: v0.12**, `TunerPro/AL5_15184109_15183960_MARKER_EXTENDED_v0_12.xdf`.
 The completed offline EFILive report resolves 83 marker cases and adds 41 items;

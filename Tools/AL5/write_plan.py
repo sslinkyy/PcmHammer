@@ -19,6 +19,7 @@ STORAGE_RECOVERY_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/STOR
 STORAGE_REPAIR_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/STORAGE_REPAIR_EMULATION.json'
 PENDING_INITIALIZATION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/PENDING_INITIALIZATION_EMULATION.json'
 PENDING_HELPERS_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/PENDING_HELPERS_EMULATION.json'
+STARTUP_CONTEXT_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/STARTUP_CONTEXT_EMULATION.json'
 
 
 def preparation_assessment():
@@ -36,6 +37,8 @@ def preparation_assessment():
     initialization = json.loads(initialization_bytes)
     helpers_bytes = PENDING_HELPERS_EVIDENCE.read_bytes()
     helpers = json.loads(helpers_bytes)
+    startup_bytes = STARTUP_CONTEXT_EVIDENCE.read_bytes()
+    startup = json.loads(startup_bytes)
     return {'evidence': 'Docs/AL5/RECEIVE_PREPARATION_EMULATION.json',
             'evidence_sha256': sha256(evidence_bytes),
             'offline_cases_pass': evidence['all_pass'],
@@ -89,6 +92,16 @@ def preparation_assessment():
                 'scope': helpers['scope'],
                 'model_limits': helpers['model_limits'],
                 'complete_context_initialization_verified': False,
+                'context_persistence_verified': False,
+                'physical_recovery_verified': False},
+            'startup_context_evidence': {
+                'evidence': 'Docs/AL5/STARTUP_CONTEXT_EMULATION.json',
+                'evidence_sha256': sha256(startup_bytes),
+                'offline_cases_pass': startup['all_pass'],
+                'scope': startup['scope'],
+                'model_limits': startup['model_limits'],
+                'cold_context_independent_of_initial_fill': startup['cold_context_independent_of_initial_fill'],
+                'complete_startup_verified': False,
                 'context_persistence_verified': False,
                 'physical_recovery_verified': False},
             'storage_geometry_verified': False,
