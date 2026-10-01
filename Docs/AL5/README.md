@@ -66,7 +66,9 @@ including partial/research entries. D5053/D5054/D5197 enums remain absent.
 H0105's completed high-word marker corroborates unsigned BE32 at 0x152E4 with
 the native range and exact readback; v0.9.1 preserves every v0.9 encoding.
 See [marker evidence and GUI checks](TunerPro/MARKER_VALIDATION_v0_9.md).
-TunerPro GUI display checks remain open. The optional v0.8 raw supplement remains separate. Its two flag-dependent
+Four v0.9.1 scalar displays (H0105/H0136/H0103/H0137) are now screenshot-checked
+on the PPEI BIN. Stock GUI and table/axis checks remain open. The optional v0.8
+raw supplement remains separate. Its two flag-dependent
 families still have no native definition identity; keep their raw labels.
 
 Read [CHECKSUM_RECOVERY.md](CHECKSUM_RECOVERY.md) and

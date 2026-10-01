@@ -107,3 +107,27 @@ no unit conversion or tune editing is needed for this check.
 This additional marker does not prove checksum finalization, physical flash
 geometry, recovery or live programming. No vehicle I/O or user BIN edit was
 performed, and the reader/live-write gate remain unchanged.
+
+## TunerPro v0.9.1 screenshot — four PPEI scalar displays
+
+The user supplied a TunerPro RT screenshot on 2026-10-01. Its title bar shows
+`Direct Read PPEI AL5 Performance Tune.bin` with the v0.9.1 XDF. The following
+visible values agree with the independent PPEI decode, rounded to four decimals:
+
+Screenshot SHA-256: `9fe488c3ee6115ad3f90510aea1e9868845db1982f071561f5e75262e44b2bf9`.
+The image remains local and is not committed.
+
+- H0105: 2485.4840 count/km.
+- H0136: 424.0000 rev/km.
+- H0103: 4.0999.
+- H0137: 262.7914 rev/km.
+
+This confirms these four scalar displays on the PPEI file. The stock BIN was
+not shown; its separate GUI check remains pending. No table windows, table
+orientation, axes, save/round-trip behavior or other scalar displays were
+validated by this screenshot. The underlying four values are identical in
+the stock and PPEI audits. TunerPro reports no connected hardware.
+
+The H0105/H0136 titles visibly contain EFILive `{du,...}` description templates
+instead of resolved prose. The numeric values and explicit units are correct;
+cleaning those titles is a presentation follow-up, not new mapping evidence.
