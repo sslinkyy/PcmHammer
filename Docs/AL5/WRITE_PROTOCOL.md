@@ -127,6 +127,12 @@ early update interruptions. See `STORAGE_REPAIR.md`. Hash-linked repair evidence
 keeps physical recovery and surviving-commit safety false; it does not establish
 a programming transport or authorize any live operation.
 
+Six bounded pending-initialization cases execute real default helpers without
+storage writes. They rebuild 2020 context bytes before the next initializer,
+leaving 526 bytes, including the CRC word, untouched in the sentinel model. See
+`PENDING_INITIALIZATION.md`. The planner links this partial evidence while
+keeping complete context initialization and physical recovery unverified.
+
 The report includes a hash-linked preservation assessment from the static
 resident inventory. The inferred 41,000 extra bytes and candidate intervals
 remain explicitly unverified; no current collateral backup is supplied or

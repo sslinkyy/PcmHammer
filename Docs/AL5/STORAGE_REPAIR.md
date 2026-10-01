@@ -77,7 +77,8 @@ partial operations, failed-erase contents, timing and reset/recovery remain
 unverified. The dry-run planner links this report by hash, keeps recovery and
 readiness false, and emits no packets. The working Mode 0x23 reader is unchanged.
 
-Next trace pending-record initialization and distinguish which context fields
-are restored, reset or rebuilt. Extend partial-operation/error models only from
+The subsequent `PENDING_INITIALIZATION.md` traces the first default helpers,
+rebuilding 2020 context bytes while leaving 526 untouched before `0x55298`.
+Next trace remaining initialization and CRC/commit production. Extend partial-operation/error models only from
 firmware evidence, and continue resolving physical geometry/preservation and
 the programming transport offline. No live destructive operation is enabled.

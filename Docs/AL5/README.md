@@ -90,8 +90,11 @@ repair despite a surviving committed record. See
 [storage recovery model](STORAGE_RECOVERY.md). Nineteen subsequent repair/error
 cases reproduce rebuilding both banks as pending/inactive, losing both contexts
 in the atomic model, and wrapper error marker `0x6124`. See
-[storage repair evidence](STORAGE_REPAIR.md). Next trace pending-record
-initialization; physical recovery remains unverified.
+[storage repair evidence](STORAGE_REPAIR.md). Six bounded pending-initialization
+cases now rebuild 2020 of 2546 context bytes before helper `0x55298`, leaving
+526 bytes (including CRC) untouched in synthetic RAM. See
+[pending initialization](PENDING_INITIALIZATION.md). Next trace the remaining
+initializers and context CRC/commit production; physical recovery remains unverified.
 
 **Current named XDF: v0.12**, `TunerPro/AL5_15184109_15183960_MARKER_EXTENDED_v0_12.xdf`.
 The completed offline EFILive report resolves 83 marker cases and adds 41 items;

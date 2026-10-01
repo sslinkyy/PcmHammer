@@ -17,6 +17,7 @@ STORAGE_SELECTION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/STO
 STORAGE_REFERENCE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/STORAGE_REFERENCE_INVENTORY.json'
 STORAGE_RECOVERY_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/STORAGE_RECOVERY_EMULATION.json'
 STORAGE_REPAIR_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/STORAGE_REPAIR_EMULATION.json'
+PENDING_INITIALIZATION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/PENDING_INITIALIZATION_EMULATION.json'
 
 
 def preparation_assessment():
@@ -30,6 +31,8 @@ def preparation_assessment():
     recovery = json.loads(recovery_bytes)
     repair_bytes = STORAGE_REPAIR_EVIDENCE.read_bytes()
     repair = json.loads(repair_bytes)
+    initialization_bytes = PENDING_INITIALIZATION_EVIDENCE.read_bytes()
+    initialization = json.loads(initialization_bytes)
     return {'evidence': 'Docs/AL5/RECEIVE_PREPARATION_EMULATION.json',
             'evidence_sha256': sha256(evidence_bytes),
             'offline_cases_pass': evidence['all_pass'],
@@ -68,6 +71,14 @@ def preparation_assessment():
                 'flash_implementation_executed': False,
                 'physical_recovery_verified': False,
                 'surviving_commit_establishes_safe_repair': False},
+            'pending_initialization_evidence': {
+                'evidence': 'Docs/AL5/PENDING_INITIALIZATION_EMULATION.json',
+                'evidence_sha256': sha256(initialization_bytes),
+                'offline_cases_pass': initialization['all_pass'],
+                'scope': initialization['scope'],
+                'model_limits': initialization['model_limits'],
+                'complete_context_initialization_verified': False,
+                'physical_recovery_verified': False},
             'storage_geometry_verified': False,
             'current_storage_backup_supplied': False,
             'storage_implementation_executed': False,
