@@ -95,6 +95,9 @@ namespace PcmHacking
         /// <summary>Read-only AL5 identity probe at VPW module 0x18.</summary>
         private ToolStripMenuItem al5ReadOnlyProbeToolStripMenuItem;
 
+        /// <summary>Direct read-only AL5 calibration-segment reader.</summary>
+        private ToolStripMenuItem al5ReadCalibrationToolStripMenuItem;
+
         /// <summary>
         /// Initializes a new instance of the main window.
         /// </summary>
@@ -130,6 +133,15 @@ namespace PcmHacking
             this.al5ReadOnlyProbeToolStripMenuItem.Click +=
                 new EventHandler(this.al5ReadOnlyProbeToolStripMenuItem_Click);
             this.menuItemTools.DropDownItems.Add(this.al5ReadOnlyProbeToolStripMenuItem);
+
+            this.al5ReadCalibrationToolStripMenuItem = new ToolStripMenuItem();
+            this.al5ReadCalibrationToolStripMenuItem.Name = "al5ReadCalibrationToolStripMenuItem";
+            this.al5ReadCalibrationToolStripMenuItem.Text = "AL5 Read Calibration (Mode 0x23)...";
+            this.al5ReadCalibrationToolStripMenuItem.ToolTipText =
+                "Read-only direct dump of AL5 calibration memory 0x08000-0x15FD7 using stock Mode 0x23.";
+            this.al5ReadCalibrationToolStripMenuItem.Click +=
+                new EventHandler(this.al5ReadCalibrationToolStripMenuItem_Click);
+            this.menuItemTools.DropDownItems.Add(this.al5ReadCalibrationToolStripMenuItem);
         }
 
         /// <summary>
@@ -1536,6 +1548,64 @@ namespace PcmHacking
             catch (Exception exception)
             {
                 this.AddUserMessage("AL5 read-only probe failed: " + exception.Message);
+                this.AddDebugMessage(exception.ToString());
+            }
+            finally
+            {
+                this.cancelButton.Enabled = false;
+                this.cancellationTokenSource = null;
+                this.EnableUserInput();
+            }
+        }
+
+        private async void al5ReadCalibrationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.Vehicle == null || BackgroundWorker.IsAlive)
+                return;
+
+            DialogResult confirmation = MessageBox.Show(
+                "This reads only the AL5 calibration segment 0x08000-0x15FD7 using the stock Mode 0x23 memory-read service. " +
+                "It does not send a security key, upload code, erase, flash, or write memory. " +
+                "At VPW 1X the read may take several minutes. Continue?",
+                "AL5 Read Calibration",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Information);
+
+            if (confirmation != DialogResult.Yes)
+                return;
+
+            try
+            {
+                this.DisableUserInput();
+                this.cancelButton.Enabled = true;
+                this.cancellationTokenSource = new CancellationTokenSource();
+
+                AL5CalibrationReader reader = new AL5CalibrationReader(this.Vehicle, this);
+                Response<byte[]> response =
+                    await reader.ReadCalibration(this.cancellationTokenSource.Token);
+
+                this.AddUserMessage("AL5 calibration read result: " + response.Status);
+
+                if ((response.Status == ResponseStatus.Success ||
+                     response.Status == ResponseStatus.Unverified) &&
+                    response.Value != null &&
+                    response.Value.Length == AL5CalibrationReader.Length)
+                {
+                    string? path = this.ShowSaveAsDialog();
+                    if (!string.IsNullOrWhiteSpace(path))
+                    {
+                        File.WriteAllBytes(path, response.Value);
+                        this.AddUserMessage("AL5 calibration saved: " + path);
+                    }
+                    else
+                    {
+                        this.AddUserMessage("AL5 calibration read completed but was not saved.");
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                this.AddUserMessage("AL5 calibration read failed: " + exception.Message);
                 this.AddDebugMessage(exception.ToString());
             }
             finally
