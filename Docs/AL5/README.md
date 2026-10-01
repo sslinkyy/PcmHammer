@@ -52,6 +52,11 @@ All new reverse engineering and validation were offline.
   seed/key handler to the boot-request guard. The descriptor is a direct callback;
   0xA9D8C is a memory-clear helper. Lockout counter units and physical receive/reset
   remain unverified. See `APPLICATION_AUTHORIZATION.md`. No key sender was added.
+- Thirteen receive/preparation emulator cases now derive header classification
+  and execute the preparation caller with every storage/subsystem call intercepted.
+  Static tracing reaches flash updates at candidate banks 0x4000/0x6000 before
+  boot entry. Storage preservation is a separate dry-run blocker; see
+  `RECEIVE_PREPARATION.md`. No storage implementation was executed.
 - A resident boot erase/program primitive is statically traced, including its
   RAM copy, selector table and word-program loop. Neighbor-start inference flags
   41,000 bytes outside calibration that could require preservation. Actual

@@ -86,6 +86,8 @@ The dry-run planner links this evidence by hash; live key submission and lockout
 duration remain explicitly unverified. Live-session authorization, application
 entry verification and write readiness remain false; packet lists stay empty.
 
-Next trace 0x5BAB8 and the actual receive/state lifecycle, then reset/boot gates
-and response timing. Exact flash geometry, loader ABI, preservation, programming
+The subsequent `RECEIVE_PREPARATION.md` executes the selected classifier and
+0x5BAB8 caller while intercepting all storage/subsystem implementations. Boot
+preparation reaches persistent flash-update calls outside calibration. Next
+resolve the receive-buffer lifecycle, storage recovery and reset/boot timing. Exact flash geometry, loader ABI, preservation, programming
 wire path and recovery remain unresolved. The direct reader is unchanged.

@@ -28,7 +28,11 @@ The existing PCM writer cannot be assumed to apply to VPW module `0x18`.
    transform differs for that seed. See `APPLICATION_AUTHORIZATION.md`. Live
    key transmission, session entry, expiry, lockout duration and programming
    authorization remain unverified. They remain unknown live transitions.
-5. **Session → Loader ready. Partially reconstructed offline.** The boot
+5. **Session → Loader ready. Partially reconstructed offline.** Application
+   preparation reaches a persistent flash-storage update caller referencing
+   0x4000/0x6000; boot entry is not established to be free of storage side effects.
+   Thirteen isolated receive/preparation cases intercept that caller before
+   execution; see `RECEIVE_PREPARATION.md`. The boot
    firmware RAM-transfer handler and its bounds/checksum/status/execute behavior
    have been exercised in an isolated emulator; see `BOOT_RAM_TRANSFER.md`.
    The boot dispatcher now sets upload arming in 25 stateful emulator cases,
@@ -96,6 +100,11 @@ pass. Printing fabricated destructive packets would misrepresent the evidence.
 The report also links the boot-session emulator evidence by SHA256. Passing
 offline boot cases does not authorize a live session or verify application
 entry; both remain explicitly false. No executable packet plan is generated.
+
+A separate hash-linked preparation assessment records the intercepted storage
+call and candidate bank starts. Current storage backup and geometry remain
+unverified; a distinct blocker prevents treating calibration-only preservation
+as sufficient. No preparation storage implementation was executed.
 
 The report includes a hash-linked preservation assessment from the static
 resident inventory. The inferred 41,000 extra bytes and candidate intervals

@@ -1,0 +1,846 @@
+{
+  "low_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
+  "high_sha256": "492040d9460d53b77dda606b9a89f4254e0680f239093001663f6ed5cf51ba75",
+  "extra_code_sha256": {
+    "0xc1034": "3408b5fda27888e08b507ab6fa8f2c2e592b00fadcef76bd6272407cf6dab39e",
+    "0x5bab8": "ba051213c503a53c955217dcae3c6d7ef1f826e5e9234414d9b7c902ba47e840",
+    "0x21d18": "3917f98a47f01798aae00662560a4fc63feafa65b44ef2cb761a8c08172bf226",
+    "0xa95d0": "5329265cbf7a1c449efc6a3c17d9f4fd99f28104645a01388b01f40151fac183"
+  },
+  "classifier_table_hex": "00030000010201",
+  "scope": "Selected receive classifier and preparation caller; storage/subsystem routines stubbed before execution. Full receive lifecycle/reset not emulated.",
+  "live_write_enabled": false,
+  "flash_code_loaded": false,
+  "storage_implementation_executed": false,
+  "cases": [
+    {
+      "case": "classifier_bits_0",
+      "synthetic_state": {},
+      "steps": [
+        {
+          "method": "classify",
+          "inputs": {
+            "priority": 108,
+            "destination": 24,
+            "service": 52
+          }
+        }
+      ],
+      "expected_final": {
+        "receive_state": 0,
+        "storage_calls": []
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [],
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": null,
+          "marker": "0x0",
+          "interrupt_mask": 0,
+          "memory_clear_helper_calls": [],
+          "handler_entries": [],
+          "guard_flags": "0x0",
+          "lockout_counter": 0,
+          "security_result_record": "00000000",
+          "security_result_payload": null,
+          "clear_region": "00000000000000000000000000",
+          "preparation_entry_count": 0,
+          "receive_state": 0,
+          "subsystem_calls": [],
+          "storage_calls": [],
+          "watchdog_writes": [],
+          "context_crc_word": "0x0",
+          "expected_context_crc": "0xa4e6"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "classifier_bits_1",
+      "synthetic_state": {},
+      "steps": [
+        {
+          "method": "classify",
+          "inputs": {
+            "priority": 108,
+            "destination": 24,
+            "service": 116
+          }
+        }
+      ],
+      "expected_final": {
+        "receive_state": 3,
+        "storage_calls": []
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [],
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": null,
+          "marker": "0x0",
+          "interrupt_mask": 0,
+          "memory_clear_helper_calls": [],
+          "handler_entries": [],
+          "guard_flags": "0x0",
+          "lockout_counter": 0,
+          "security_result_record": "00000000",
+          "security_result_payload": null,
+          "clear_region": "00000000000000000000000000",
+          "preparation_entry_count": 0,
+          "receive_state": 3,
+          "subsystem_calls": [],
+          "storage_calls": [],
+          "watchdog_writes": [],
+          "context_crc_word": "0x0",
+          "expected_context_crc": "0xa4e6"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "classifier_bits_2",
+      "synthetic_state": {},
+      "steps": [
+        {
+          "method": "classify",
+          "inputs": {
+            "priority": 108,
+            "destination": 25,
+            "service": 52
+          }
+        }
+      ],
+      "expected_final": {
+        "receive_state": 0,
+        "storage_calls": []
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [],
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": null,
+          "marker": "0x0",
+          "interrupt_mask": 0,
+          "memory_clear_helper_calls": [],
+          "handler_entries": [],
+          "guard_flags": "0x0",
+          "lockout_counter": 0,
+          "security_result_record": "00000000",
+          "security_result_payload": null,
+          "clear_region": "00000000000000000000000000",
+          "preparation_entry_count": 0,
+          "receive_state": 0,
+          "subsystem_calls": [],
+          "storage_calls": [],
+          "watchdog_writes": [],
+          "context_crc_word": "0x0",
+          "expected_context_crc": "0xa4e6"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "classifier_bits_3",
+      "synthetic_state": {},
+      "steps": [
+        {
+          "method": "classify",
+          "inputs": {
+            "priority": 108,
+            "destination": 25,
+            "service": 116
+          }
+        }
+      ],
+      "expected_final": {
+        "receive_state": 0,
+        "storage_calls": []
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [],
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": null,
+          "marker": "0x0",
+          "interrupt_mask": 0,
+          "memory_clear_helper_calls": [],
+          "handler_entries": [],
+          "guard_flags": "0x0",
+          "lockout_counter": 0,
+          "security_result_record": "00000000",
+          "security_result_payload": null,
+          "clear_region": "00000000000000000000000000",
+          "preparation_entry_count": 0,
+          "receive_state": 0,
+          "subsystem_calls": [],
+          "storage_calls": [],
+          "watchdog_writes": [],
+          "context_crc_word": "0x0",
+          "expected_context_crc": "0xa4e6"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "classifier_bits_4",
+      "synthetic_state": {},
+      "steps": [
+        {
+          "method": "classify",
+          "inputs": {
+            "priority": 109,
+            "destination": 24,
+            "service": 52
+          }
+        }
+      ],
+      "expected_final": {
+        "receive_state": 1,
+        "storage_calls": []
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [],
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": null,
+          "marker": "0x0",
+          "interrupt_mask": 0,
+          "memory_clear_helper_calls": [],
+          "handler_entries": [],
+          "guard_flags": "0x0",
+          "lockout_counter": 0,
+          "security_result_record": "00000000",
+          "security_result_payload": null,
+          "clear_region": "00000000000000000000000000",
+          "preparation_entry_count": 0,
+          "receive_state": 1,
+          "subsystem_calls": [],
+          "storage_calls": [],
+          "watchdog_writes": [],
+          "context_crc_word": "0x0",
+          "expected_context_crc": "0xa4e6"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "classifier_bits_5",
+      "synthetic_state": {},
+      "steps": [
+        {
+          "method": "classify",
+          "inputs": {
+            "priority": 109,
+            "destination": 24,
+            "service": 116
+          }
+        }
+      ],
+      "expected_final": {
+        "receive_state": 2,
+        "storage_calls": []
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [],
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": null,
+          "marker": "0x0",
+          "interrupt_mask": 0,
+          "memory_clear_helper_calls": [],
+          "handler_entries": [],
+          "guard_flags": "0x0",
+          "lockout_counter": 0,
+          "security_result_record": "00000000",
+          "security_result_payload": null,
+          "clear_region": "00000000000000000000000000",
+          "preparation_entry_count": 0,
+          "receive_state": 2,
+          "subsystem_calls": [],
+          "storage_calls": [],
+          "watchdog_writes": [],
+          "context_crc_word": "0x0",
+          "expected_context_crc": "0xa4e6"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "classifier_bits_6",
+      "synthetic_state": {},
+      "steps": [
+        {
+          "method": "classify",
+          "inputs": {
+            "priority": 109,
+            "destination": 25,
+            "service": 52
+          }
+        }
+      ],
+      "expected_final": {
+        "receive_state": 1,
+        "storage_calls": []
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [],
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": null,
+          "marker": "0x0",
+          "interrupt_mask": 0,
+          "memory_clear_helper_calls": [],
+          "handler_entries": [],
+          "guard_flags": "0x0",
+          "lockout_counter": 0,
+          "security_result_record": "00000000",
+          "security_result_payload": null,
+          "clear_region": "00000000000000000000000000",
+          "preparation_entry_count": 0,
+          "receive_state": 1,
+          "subsystem_calls": [],
+          "storage_calls": [],
+          "watchdog_writes": [],
+          "context_crc_word": "0x0",
+          "expected_context_crc": "0xa4e6"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "classifier_bits_7",
+      "synthetic_state": {},
+      "steps": [
+        {
+          "method": "classify",
+          "inputs": {
+            "priority": 109,
+            "destination": 25,
+            "service": 116
+          }
+        }
+      ],
+      "expected_final": {
+        "receive_state": 3,
+        "storage_calls": []
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [],
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": null,
+          "marker": "0x0",
+          "interrupt_mask": 0,
+          "memory_clear_helper_calls": [],
+          "handler_entries": [],
+          "guard_flags": "0x0",
+          "lockout_counter": 0,
+          "security_result_record": "00000000",
+          "security_result_payload": null,
+          "clear_region": "00000000000000000000000000",
+          "preparation_entry_count": 0,
+          "receive_state": 3,
+          "subsystem_calls": [],
+          "storage_calls": [],
+          "watchdog_writes": [],
+          "context_crc_word": "0x0",
+          "expected_context_crc": "0xa4e6"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "receive_offset",
+      "synthetic_state": {
+        "offset": 8
+      },
+      "steps": [
+        {
+          "method": "classify",
+          "inputs": {}
+        }
+      ],
+      "expected_final": {
+        "receive_state": 1,
+        "storage_calls": []
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [],
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": null,
+          "marker": "0x0",
+          "interrupt_mask": 0,
+          "memory_clear_helper_calls": [],
+          "handler_entries": [],
+          "guard_flags": "0x0",
+          "lockout_counter": 0,
+          "security_result_record": "00000000",
+          "security_result_payload": null,
+          "clear_region": "00000000000000000000000000",
+          "preparation_entry_count": 0,
+          "receive_state": 1,
+          "subsystem_calls": [],
+          "storage_calls": [],
+          "watchdog_writes": [],
+          "context_crc_word": "0x0",
+          "expected_context_crc": "0xa4e6"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "classified_boot_request_prepares_storage",
+      "synthetic_state": {},
+      "steps": [
+        {
+          "method": "classify",
+          "inputs": {}
+        },
+        {
+          "method": "descriptor",
+          "inputs": {}
+        }
+      ],
+      "expected_final": {
+        "receive_state": 1,
+        "marker": "0xbfc1",
+        "stop_pc": "0xbe78c",
+        "interrupt_mask": 7,
+        "storage_calls": [
+          {
+            "entry": "0x226f0",
+            "source_argument": "0xff8140",
+            "interrupt_mask": 7,
+            "implementation_executed": false,
+            "return_is_stubbed": true
+          }
+        ]
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [],
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": null,
+          "marker": "0x0",
+          "interrupt_mask": 0,
+          "memory_clear_helper_calls": [],
+          "handler_entries": [],
+          "guard_flags": "0x0",
+          "lockout_counter": 0,
+          "security_result_record": "00000000",
+          "security_result_payload": null,
+          "clear_region": "00000000000000000000000000",
+          "preparation_entry_count": 0,
+          "receive_state": 1,
+          "subsystem_calls": [],
+          "storage_calls": [],
+          "watchdog_writes": [],
+          "context_crc_word": "0x0",
+          "expected_context_crc": "0xa4e6"
+        },
+        {
+          "negative_helper_calls": [],
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": "0xbe78c",
+          "marker": "0xbfc1",
+          "interrupt_mask": 7,
+          "memory_clear_helper_calls": [
+            {
+              "buffer": "0xff8f36",
+              "argument": 85
+            }
+          ],
+          "handler_entries": [
+            "0xff8eb6"
+          ],
+          "guard_flags": "0x0",
+          "lockout_counter": 0,
+          "security_result_record": "00000000",
+          "security_result_payload": null,
+          "clear_region": "0000000000000000000000a5a5",
+          "preparation_entry_count": 1,
+          "receive_state": 1,
+          "subsystem_calls": [
+            "0x984ec",
+            "0x94878",
+            "0x602f4",
+            "0xc2290",
+            "0x90d50",
+            "0xae5dc",
+            "0xaed38",
+            "0xaff38",
+            "0xa8938",
+            "0xa8a18",
+            "0x226f0"
+          ],
+          "storage_calls": [
+            {
+              "entry": "0x226f0",
+              "source_argument": "0xff8140",
+              "interrupt_mask": 7,
+              "implementation_executed": false,
+              "return_is_stubbed": true
+            }
+          ],
+          "watchdog_writes": [
+            {
+              "size": 2,
+              "value": 85
+            },
+            {
+              "size": 2,
+              "value": 170
+            }
+          ],
+          "context_crc_word": "0xa4e6",
+          "expected_context_crc": "0xa4e6"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "locked_classified_request_no_preparation",
+      "synthetic_state": {
+        "guard_flags": 32
+      },
+      "steps": [
+        {
+          "method": "classify",
+          "inputs": {}
+        },
+        {
+          "method": "descriptor",
+          "inputs": {}
+        }
+      ],
+      "expected_final": {
+        "receive_state": 1,
+        "marker": "0x0",
+        "storage_calls": [],
+        "subsystem_calls": []
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [],
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": null,
+          "marker": "0x0",
+          "interrupt_mask": 0,
+          "memory_clear_helper_calls": [],
+          "handler_entries": [],
+          "guard_flags": "0x20",
+          "lockout_counter": 0,
+          "security_result_record": "00000000",
+          "security_result_payload": null,
+          "clear_region": "00000000000000000000000000",
+          "preparation_entry_count": 0,
+          "receive_state": 1,
+          "subsystem_calls": [],
+          "storage_calls": [],
+          "watchdog_writes": [],
+          "context_crc_word": "0x0",
+          "expected_context_crc": "0xa4e6"
+        },
+        {
+          "negative_helper_calls": [
+            {
+              "buffer": "0xff8eb6",
+              "reason": 51
+            }
+          ],
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": null,
+          "marker": "0x0",
+          "interrupt_mask": 0,
+          "memory_clear_helper_calls": [],
+          "handler_entries": [
+            "0xff8eb6"
+          ],
+          "guard_flags": "0x20",
+          "lockout_counter": 0,
+          "security_result_record": "00000000",
+          "security_result_payload": null,
+          "clear_region": "a5a5a5a5a5a5a5a5a5a5a5a5a5",
+          "preparation_entry_count": 0,
+          "receive_state": 1,
+          "subsystem_calls": [],
+          "storage_calls": [],
+          "watchdog_writes": [],
+          "context_crc_word": "0x0",
+          "expected_context_crc": "0xa4e6"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "unlocked_classified_request_prepares_storage",
+      "synthetic_state": {
+        "guard_flags": 32
+      },
+      "steps": [
+        {
+          "method": "seed",
+          "inputs": {}
+        },
+        {
+          "method": "key",
+          "inputs": {}
+        },
+        {
+          "method": "classify",
+          "inputs": {}
+        },
+        {
+          "method": "descriptor",
+          "inputs": {}
+        }
+      ],
+      "expected_final": {
+        "guard_flags": "0x40",
+        "marker": "0xbfc1",
+        "storage_calls": [
+          {
+            "entry": "0x226f0",
+            "source_argument": "0xff8140",
+            "interrupt_mask": 7,
+            "implementation_executed": false,
+            "return_is_stubbed": true
+          }
+        ]
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [],
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": null,
+          "marker": "0x0",
+          "interrupt_mask": 0,
+          "memory_clear_helper_calls": [],
+          "handler_entries": [],
+          "guard_flags": "0x60",
+          "lockout_counter": 0,
+          "security_result_record": "03019ce5",
+          "security_result_payload": "019ce5",
+          "clear_region": "00000000000000000008000000",
+          "preparation_entry_count": 0,
+          "receive_state": 0,
+          "subsystem_calls": [],
+          "storage_calls": [],
+          "watchdog_writes": [],
+          "context_crc_word": "0x0",
+          "expected_context_crc": "0xa4e6"
+        },
+        {
+          "negative_helper_calls": [],
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": null,
+          "marker": "0x0",
+          "interrupt_mask": 0,
+          "memory_clear_helper_calls": [],
+          "handler_entries": [],
+          "guard_flags": "0x40",
+          "lockout_counter": 0,
+          "security_result_record": "020234e5",
+          "security_result_payload": "0234",
+          "clear_region": "00000000000000000008000000",
+          "preparation_entry_count": 0,
+          "receive_state": 0,
+          "subsystem_calls": [],
+          "storage_calls": [],
+          "watchdog_writes": [],
+          "context_crc_word": "0x0",
+          "expected_context_crc": "0xa4e6"
+        },
+        {
+          "negative_helper_calls": [],
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": null,
+          "marker": "0x0",
+          "interrupt_mask": 0,
+          "memory_clear_helper_calls": [],
+          "handler_entries": [],
+          "guard_flags": "0x40",
+          "lockout_counter": 0,
+          "security_result_record": "020234e5",
+          "security_result_payload": "0234",
+          "clear_region": "00000000000000000008000000",
+          "preparation_entry_count": 0,
+          "receive_state": 1,
+          "subsystem_calls": [],
+          "storage_calls": [],
+          "watchdog_writes": [],
+          "context_crc_word": "0x0",
+          "expected_context_crc": "0xa4e6"
+        },
+        {
+          "negative_helper_calls": [],
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": "0xbe78c",
+          "marker": "0xbfc1",
+          "interrupt_mask": 7,
+          "memory_clear_helper_calls": [
+            {
+              "buffer": "0xff8f36",
+              "argument": 85
+            }
+          ],
+          "handler_entries": [
+            "0xff8eb6"
+          ],
+          "guard_flags": "0x40",
+          "lockout_counter": 0,
+          "security_result_record": "020234e5",
+          "security_result_payload": "0234",
+          "clear_region": "0000000000000000000000a5a5",
+          "preparation_entry_count": 1,
+          "receive_state": 1,
+          "subsystem_calls": [
+            "0x984ec",
+            "0x94878",
+            "0x602f4",
+            "0xc2290",
+            "0x90d50",
+            "0xae5dc",
+            "0xaed38",
+            "0xaff38",
+            "0xa8938",
+            "0xa8a18",
+            "0x226f0"
+          ],
+          "storage_calls": [
+            {
+              "entry": "0x226f0",
+              "source_argument": "0xff8140",
+              "interrupt_mask": 7,
+              "implementation_executed": false,
+              "return_is_stubbed": true
+            }
+          ],
+          "watchdog_writes": [
+            {
+              "size": 2,
+              "value": 85
+            },
+            {
+              "size": 2,
+              "value": 170
+            }
+          ],
+          "context_crc_word": "0xa4e6",
+          "expected_context_crc": "0xa4e6"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "preparation_restores_interrupt_mask",
+      "synthetic_state": {},
+      "steps": [
+        {
+          "method": "prepare_only",
+          "inputs": {}
+        }
+      ],
+      "expected_final": {
+        "interrupt_mask": 0,
+        "marker": "0x0",
+        "subsystem_calls": [
+          "0x984ec",
+          "0x94878",
+          "0x602f4",
+          "0xc2290",
+          "0x90d50",
+          "0xae5dc",
+          "0xaed38",
+          "0xaff38",
+          "0xa8938",
+          "0xa8a18",
+          "0x226f0"
+        ],
+        "watchdog_writes": [
+          {
+            "size": 2,
+            "value": 85
+          },
+          {
+            "size": 2,
+            "value": 170
+          }
+        ]
+      },
+      "observed_steps": [
+        {
+          "negative_helper_calls": [],
+          "boot_responses": [],
+          "synthetic_port_writes": [],
+          "stop_pc": null,
+          "marker": "0x0",
+          "interrupt_mask": 0,
+          "memory_clear_helper_calls": [],
+          "handler_entries": [],
+          "guard_flags": "0x0",
+          "lockout_counter": 0,
+          "security_result_record": "00000000",
+          "security_result_payload": null,
+          "clear_region": "00000000000000000000000000",
+          "preparation_entry_count": 1,
+          "receive_state": 0,
+          "subsystem_calls": [
+            "0x984ec",
+            "0x94878",
+            "0x602f4",
+            "0xc2290",
+            "0x90d50",
+            "0xae5dc",
+            "0xaed38",
+            "0xaff38",
+            "0xa8938",
+            "0xa8a18",
+            "0x226f0"
+          ],
+          "storage_calls": [
+            {
+              "entry": "0x226f0",
+              "source_argument": "0xff8140",
+              "interrupt_mask": 7,
+              "implementation_executed": false,
+              "return_is_stubbed": true
+            }
+          ],
+          "watchdog_writes": [
+            {
+              "size": 2,
+              "value": 85
+            },
+            {
+              "size": 2,
+              "value": 170
+            }
+          ],
+          "context_crc_word": "0xa4e6",
+          "expected_context_crc": "0xa4e6"
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "all_pass": true
+}

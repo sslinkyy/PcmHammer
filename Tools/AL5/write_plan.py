@@ -12,6 +12,26 @@ RESIDENT_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/RESIDENT_FLA
 BOOT_SESSION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/BOOT_SESSION_EMULATION.json'
 APPLICATION_BOOT_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/APPLICATION_BOOT_EMULATION.json'
 AUTHORIZATION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/APPLICATION_AUTHORIZATION_EMULATION.json'
+PREPARATION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/RECEIVE_PREPARATION_EMULATION.json'
+
+
+def preparation_assessment():
+    evidence_bytes = PREPARATION_EVIDENCE.read_bytes()
+    evidence = json.loads(evidence_bytes)
+    return {'evidence': 'Docs/AL5/RECEIVE_PREPARATION_EMULATION.json',
+            'evidence_sha256': sha256(evidence_bytes),
+            'offline_cases_pass': evidence['all_pass'],
+            'scope': evidence['scope'],
+            'storage_call_entry': '0x226F0',
+            'storage_source_argument': '0xFF8140',
+            'candidate_storage_bank_starts': ['0x04000', '0x06000'],
+            'storage_geometry_verified': False,
+            'current_storage_backup_supplied': False,
+            'storage_implementation_executed': False,
+            'calibration_only_backup_establishes_preservation': False,
+            'note': 'Application boot preparation reaches a flash-storage caller. '
+                    'Its storage implementation was intercepted, not executed. '
+                    'Bank starts are static evidence, not executable erase scope.'}
 
 
 def boot_loader_assessment():
@@ -107,9 +127,11 @@ def plan(current, candidate, expected_hash, controller, os_id):
             'native_checksum_valid': {'current': checksum_valid(current), 'candidate': checksum_valid(candidate)},
             'blockers': ['AL5 session/loader/erase/program/verify/recovery protocol is unresolved.',
                          'Exact erase geometry and current collateral backup/preservation are unverified.',
+                         'Application boot preparation can reach persistent-storage updates outside the calibration; preservation is unresolved.',
                          'Live AL5 writing is unconditionally disabled.'],
             'preservation_assessment': preservation_assessment(),
             'boot_loader_assessment': boot_loader_assessment(),
+            'boot_preparation_assessment': preparation_assessment(),
             'diff_ranges': ranges,
             'requested_calibration_range': {'start': '0x08000', 'end_inclusive': '0x15FD7'},
             'erase_scope': None, 'program_block_size': None,
