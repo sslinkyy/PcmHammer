@@ -17,6 +17,8 @@ All new reverse engineering and validation were offline.
 - v0.4 adds 38 TCC vectors / 646 cells with exact structural confidence.
   v0.5 adds 16 WOT upshift-speed vectors / 32 cells. All 184 resolved numeric
   v0.5 entries pass. Confidence is explicit; no new marker proof is claimed.
+- v0.6 adds 26 vectors / 228 cells across eight WOT threshold, TCC duty and
+  TCC on-ramp definitions. All 210 resolved numeric entries pass the audit.
 - Offline checksum generation reproduces stock `4E35D040` and PPEI `DAE2BB2E`.
   The CRC lookup table matches all 256 firmware entries. Additional edited
   native-segment validation and the second-word generator trace remain open.
@@ -40,10 +42,10 @@ a plan to program the currently installed PPEI calibration.
 
 ## Current boundaries and next work
 
-The latest definition is `TunerPro/AL5_15184109_15183960_STRUCTURAL_TCC_WOT_v0_5.xdf`.
-87 of 127 native IDs are represented, including partial/research entries.
-`V0_5_AUDIT.json` lists the 40 absent IDs. D5010/D5015 Pattern G has two possible
-record pairs and remains deferred. WOT downshift speed, WOT TCC, temperature,
+The latest definition is `TunerPro/AL5_15184109_15183960_STRUCTURAL_EXTENDED_v0_6.xdf`.
+95 of 127 native IDs are represented, including partial/research entries.
+`V0_6_AUDIT.json` lists the 32 absent IDs. D5010/D5015 Pattern G has two possible
+record pairs and remains deferred. WOT downshift speed, WOT TCC, remaining temperature,
 remaining pressure/adaptive/enable and speedo mappings still need evidence.
 The new XDF versions need a TunerPro GUI check; numerical audit is complete.
 

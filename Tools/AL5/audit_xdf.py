@@ -58,7 +58,10 @@ def expected(item, native):
         return [cells[0][0]]
     pattern = re.search(r'Pattern ([A-H])', title)
     tps = re.search(r' - (\d+)% TPS', title)
-    if pattern:
+    native_column = re.search(r' - Native Column (\d+):', title)
+    if native_column:
+        col = int(native_column[1])
+    elif pattern:
         col = ord(pattern[1]) - ord('A')
     elif tps:
         col = [0, 20, 40, 50, 60, 70, 80, 90, 100].index(int(tps[1]))

@@ -51,3 +51,18 @@ speed and WOT TCC searches have repeated-value ambiguity; do not promote their
 candidate matches without structural or differential proof. The v0.5 GUI has
 not been checked in TunerPro. See `../CHECKSUM_RECOVERY.md` for the subsequently
 recovered offline checksum; the imported v0.3 warnings are historical.
+
+## Structural extended v0.6
+
+`AL5_15184109_15183960_STRUCTURAL_EXTENDED_v0_6.xdf` adds 26 vectors / 228 cells
+across D5030–D5034 (WOT temperature and thresholds), D5070/D5071 (minimum and
+maximum TCC duty cycle), and D5072 (TCC on-ramp rate). Each complete BE16
+column-major table has one match in the stock segment and the expected preceding
+dimension header. Separate column vectors retain the native export orientation.
+`EXTENDED_MAPPING_v0_6.json` records addresses, scaling and source hashes.
+
+All 210 resolved numeric entries pass the native comparison audit. 95 of 127
+native IDs are represented, including partial/research entries; 32 remain absent.
+Pattern G remains unresolved. These additions have exact structural confidence;
+marker-differential proof, axis semantics beyond the export labels, and TunerPro
+GUI validation remain open. No edited BIN is flash-ready.
