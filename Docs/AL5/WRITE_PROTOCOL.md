@@ -32,7 +32,9 @@ The existing PCM writer cannot be assumed to apply to VPW module `0x18`.
    is enabled.
 6. **Loader ready → Erased. Partially traced offline; destructive.** A resident
    boot routine has an internal erase selector table and word-program loop;
-   see `RESIDENT_FLASH_PRIMITIVE.md`. Its wire/session path is still unknown.
+   see `RESIDENT_FLASH_PRIMITIVE.md`. The CAN-style internal caller is exercised
+   with all flash calls trapped; see `RESIDENT_COMMAND_DISPATCH.md`. Its physical
+   wire/session path and relationship to VPW programming are still unknown.
    Adjacent selector starts suggest an erase span extending beyond calibration,
    which requires a separate preservation policy. Exact flash geometry, erase scope,
    service/subfunction bytes, timing, status and interrupted-erase recovery are

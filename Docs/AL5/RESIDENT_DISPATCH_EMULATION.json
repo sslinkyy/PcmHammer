@@ -1,0 +1,473 @@
+{
+  "source_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
+  "dispatcher_sha256": "fc25461273eac7b45e07efa34ddd91c5066571a4b1210ca13669505677d041e6",
+  "dispatcher_address": "0x019C8",
+  "scope": "isolated dispatcher; synthetic memory-buffer inputs; flash and send stubs",
+  "transport_warning": "Internal identifier/control representation; not a live CAN or VPW packet builder",
+  "all_pass": true,
+  "cases": [
+    {
+      "flash_calls": [
+        {
+          "operation": 0,
+          "selector": 3,
+          "count": 0,
+          "destination": "0x000000",
+          "data_hex": "",
+          "primitive_executed": false
+        }
+      ],
+      "responses": [
+        {
+          "internal_frame_hex": "1200077fc018000000001200000000000000",
+          "data_hex": "1200"
+        }
+      ],
+      "instructions": 190,
+      "memory_mode": 0,
+      "stored_address": "00000000",
+      "ram_probe_hex": "00000000",
+      "ready_to_flash": false,
+      "live_write_enabled": false,
+      "case": "erase_selector_3_trapped",
+      "input_hex": "1203",
+      "injected_length": 2,
+      "expected_flash_calls": 1,
+      "checks": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "pass_case": true
+    },
+    {
+      "flash_calls": [
+        {
+          "operation": 1,
+          "selector": 0,
+          "count": 2,
+          "destination": "0x008000",
+          "data_hex": "1234",
+          "primitive_executed": false
+        }
+      ],
+      "responses": [
+        {
+          "internal_frame_hex": "1500077fc018000000002200800000000000",
+          "data_hex": "2200800000"
+        }
+      ],
+      "instructions": 244,
+      "memory_mode": 0,
+      "stored_address": "00008000",
+      "ram_probe_hex": "00000000",
+      "ready_to_flash": false,
+      "live_write_enabled": false,
+      "case": "program_2_bytes_trapped",
+      "input_hex": "220080001234",
+      "injected_length": 6,
+      "expected_flash_calls": 1,
+      "checks": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "pass_case": true
+    },
+    {
+      "flash_calls": [
+        {
+          "operation": 1,
+          "selector": 0,
+          "count": 4,
+          "destination": "0x010000",
+          "data_hex": "12345678",
+          "primitive_executed": false
+        }
+      ],
+      "responses": [],
+      "instructions": 140,
+      "memory_mode": 0,
+      "stored_address": "00010000",
+      "ram_probe_hex": "00000000",
+      "ready_to_flash": false,
+      "live_write_enabled": false,
+      "case": "program_4_bytes_trapped",
+      "input_hex": "2301000012345678",
+      "injected_length": 8,
+      "expected_flash_calls": 1,
+      "checks": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "pass_case": true
+    },
+    {
+      "flash_calls": [],
+      "responses": [
+        {
+          "internal_frame_hex": "1500077fc018000000002200800002000000",
+          "data_hex": "2200800002"
+        }
+      ],
+      "instructions": 214,
+      "memory_mode": 0,
+      "stored_address": "00008000",
+      "ram_probe_hex": "00000000",
+      "ready_to_flash": false,
+      "live_write_enabled": false,
+      "case": "program_odd_count_rejected",
+      "input_hex": "2200800012",
+      "injected_length": 5,
+      "expected_flash_calls": 0,
+      "checks": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "pass_case": true
+    },
+    {
+      "flash_calls": [],
+      "responses": [
+        {
+          "internal_frame_hex": "1500077fc018000000002200200002000000",
+          "data_hex": "2200200002"
+        }
+      ],
+      "instructions": 221,
+      "memory_mode": 0,
+      "stored_address": "00002000",
+      "ram_probe_hex": "00000000",
+      "ready_to_flash": false,
+      "live_write_enabled": false,
+      "case": "program_below_4000_rejected",
+      "input_hex": "220020001234",
+      "injected_length": 6,
+      "expected_flash_calls": 0,
+      "checks": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "pass_case": true
+    },
+    {
+      "flash_calls": [],
+      "responses": [
+        {
+          "internal_frame_hex": "1500077fc018000000002200800102000000",
+          "data_hex": "2200800102"
+        }
+      ],
+      "instructions": 219,
+      "memory_mode": 0,
+      "stored_address": "00008001",
+      "ram_probe_hex": "00000000",
+      "ready_to_flash": false,
+      "live_write_enabled": false,
+      "case": "program_odd_address_rejected",
+      "input_hex": "220080011234",
+      "injected_length": 6,
+      "expected_flash_calls": 0,
+      "checks": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "pass_case": true
+    },
+    {
+      "flash_calls": [],
+      "responses": [],
+      "instructions": 123,
+      "memory_mode": 0,
+      "stored_address": "000ffffe",
+      "ram_probe_hex": "00000000",
+      "ready_to_flash": false,
+      "live_write_enabled": false,
+      "case": "program_crosses_flash_limit_rejected",
+      "input_hex": "230ffffe12345678",
+      "injected_length": 8,
+      "expected_flash_calls": 0,
+      "checks": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "pass_case": true
+    },
+    {
+      "flash_calls": [],
+      "responses": [],
+      "instructions": 13,
+      "memory_mode": 0,
+      "stored_address": "00000000",
+      "ram_probe_hex": "00000000",
+      "ready_to_flash": false,
+      "live_write_enabled": false,
+      "case": "wrong_message_type_ignored",
+      "input_hex": "1203",
+      "injected_length": 2,
+      "expected_flash_calls": 0,
+      "checks": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "pass_case": true
+    },
+    {
+      "flash_calls": [],
+      "responses": [],
+      "instructions": 27,
+      "memory_mode": 0,
+      "stored_address": "00000000",
+      "ram_probe_hex": "00000000",
+      "ready_to_flash": false,
+      "live_write_enabled": false,
+      "case": "wrong_identifier_ignored",
+      "input_hex": "1203",
+      "injected_length": 2,
+      "expected_flash_calls": 0,
+      "checks": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "pass_case": true
+    },
+    {
+      "flash_calls": [],
+      "responses": [],
+      "instructions": 106,
+      "memory_mode": 0,
+      "stored_address": "00008000",
+      "ram_probe_hex": "00000000",
+      "ready_to_flash": false,
+      "live_write_enabled": false,
+      "case": "zero_data_program_no_flash",
+      "input_hex": "23008000",
+      "injected_length": 4,
+      "expected_flash_calls": 0,
+      "checks": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "pass_case": true
+    },
+    {
+      "flash_calls": [
+        {
+          "operation": 1,
+          "selector": 0,
+          "count": 2,
+          "destination": "0x008000",
+          "data_hex": "1234",
+          "primitive_executed": false
+        }
+      ],
+      "responses": [
+        {
+          "internal_frame_hex": "1500077fc018000000002200800001000000",
+          "data_hex": "2200800001"
+        }
+      ],
+      "instructions": 244,
+      "memory_mode": 0,
+      "stored_address": "00008000",
+      "ram_probe_hex": "00000000",
+      "ready_to_flash": false,
+      "live_write_enabled": false,
+      "case": "program_failure_status_stub",
+      "input_hex": "220080001234",
+      "injected_length": 6,
+      "expected_flash_calls": 1,
+      "checks": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "pass_case": true
+    },
+    {
+      "flash_calls": [
+        {
+          "operation": 0,
+          "selector": 3,
+          "count": 0,
+          "destination": "0x000000",
+          "data_hex": "",
+          "primitive_executed": false
+        }
+      ],
+      "responses": [
+        {
+          "internal_frame_hex": "1200077fc018000000001200000000000000",
+          "data_hex": "1200"
+        }
+      ],
+      "instructions": 190,
+      "memory_mode": 0,
+      "stored_address": "00000000",
+      "ram_probe_hex": "00000000",
+      "ready_to_flash": false,
+      "live_write_enabled": false,
+      "case": "erase_short_length_uses_staged_selector",
+      "input_hex": "1203",
+      "injected_length": 1,
+      "expected_flash_calls": 1,
+      "checks": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "pass_case": true
+    },
+    {
+      "flash_calls": [
+        {
+          "operation": 1,
+          "selector": 0,
+          "count": 252,
+          "destination": "0x008000",
+          "data_hex": "123400000000000000300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "primitive_executed": false
+        }
+      ],
+      "responses": [
+        {
+          "internal_frame_hex": "1500077fc018000000002200800000000000",
+          "data_hex": "2200800000"
+        }
+      ],
+      "instructions": 244,
+      "memory_mode": 0,
+      "stored_address": "00008000",
+      "ram_probe_hex": "00000000",
+      "ready_to_flash": false,
+      "live_write_enabled": false,
+      "case": "program_length_underflow_trapped",
+      "input_hex": "220080001234",
+      "injected_length": 0,
+      "expected_flash_calls": 1,
+      "checks": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "pass_case": true
+    },
+    {
+      "flash_calls": [],
+      "responses": [
+        {
+          "internal_frame_hex": "1500077fc0180000000022ff900000000000",
+          "data_hex": "22ff900000"
+        }
+      ],
+      "instructions": 253,
+      "memory_mode": 1,
+      "stored_address": "00ff9000",
+      "ram_probe_hex": "12345678",
+      "ready_to_flash": false,
+      "live_write_enabled": false,
+      "case": "ram_copy_no_flash",
+      "input_hex": "22ff900012345678",
+      "injected_length": 8,
+      "expected_flash_calls": 0,
+      "checks": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "pass_case": true
+    },
+    {
+      "flash_calls": [],
+      "responses": [
+        {
+          "internal_frame_hex": "1500077fc0180000000022ff800002000000",
+          "data_hex": "22ff800002"
+        }
+      ],
+      "instructions": 210,
+      "memory_mode": 1,
+      "stored_address": "00ff8000",
+      "ram_probe_hex": "00000000",
+      "ready_to_flash": false,
+      "live_write_enabled": false,
+      "case": "ram_below_loader_range_rejected",
+      "input_hex": "22ff80001234",
+      "injected_length": 6,
+      "expected_flash_calls": 0,
+      "checks": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "pass_case": true
+    },
+    {
+      "flash_calls": [
+        {
+          "operation": 1,
+          "selector": 0,
+          "count": 2,
+          "destination": "0x008000",
+          "data_hex": "1234",
+          "primitive_executed": false
+        }
+      ],
+      "responses": [
+        {
+          "internal_frame_hex": "1500077fc818000000002200800000000000",
+          "data_hex": "2200800000"
+        }
+      ],
+      "instructions": 246,
+      "memory_mode": 0,
+      "stored_address": "00008000",
+      "ram_probe_hex": "00000000",
+      "ready_to_flash": false,
+      "live_write_enabled": false,
+      "case": "alternate_identifier_accepted",
+      "input_hex": "220080001234",
+      "injected_length": 6,
+      "expected_flash_calls": 1,
+      "checks": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "pass_case": true
+    }
+  ]
+}

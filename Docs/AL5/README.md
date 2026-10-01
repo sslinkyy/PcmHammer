@@ -40,6 +40,10 @@ All new reverse engineering and validation were offline.
   41,000 bytes outside calibration that could require preservation. Actual
   geometry and the wire/session path remain unverified; see
   `RESIDENT_FLASH_PRIMITIVE.md`. Its inventory emits zero packets.
+- The CAN-style resident caller passes sixteen isolated emulator cases with
+  every flash call trapped before primitive execution. Arguments, status data,
+  RAM mode, alignment/range checks and malformed-length behavior are recorded
+  in `RESIDENT_COMMAND_DISPATCH.md`. This does not establish a live CAN writer.
 
 The checksum-corrected existing minimal preview has field `439DCC98` and passes
 the offline plan's file/policy checks. Its plan has seven diff ranges and zero

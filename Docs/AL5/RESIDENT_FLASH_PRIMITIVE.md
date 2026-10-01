@@ -4,7 +4,8 @@ The saved low editor dump contains a routine at `0x2A58–0x2C8F`, copied by
 `0x2C90` to `0xFF8500` (0x238 bytes). Initialization at `0x13D0` installs that
 RAM address in `0xFF814C`; the routine at `0x19C8` checks/reinstalls it. Indirect
 calls through that pointer appear at `0x1B64`, `0x1F34` and `0x21F4`.
-These are internal code/ABI observations, not diagnostic packet definitions.
+The caller now has isolated dispatcher evidence; see `RESIDENT_COMMAND_DISPATCH.md`.
+These are internal code/ABI observations, not live diagnostic packet definitions.
 No flash primitive has been executed, including in an emulator.
 
 `RESIDENT_FLASH_STATIC_EVIDENCE.json` records bounded disassembly and source
