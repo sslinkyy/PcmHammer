@@ -1,0 +1,843 @@
+{
+  "schema_version": 1,
+  "reference_sha256": "fbbd581cd5bd42dcfa1fa874c41ffde23f612b36d23e0043ca648acab2ac614b",
+  "original_mapper_sha256": "19e3ae5f608bcf19c132df7861d86c23bf8e36bda2634f71d1521ff730193140",
+  "cases": [
+    {
+      "id": "D5042",
+      "column": 0,
+      "row": 0,
+      "expected": 3657,
+      "target": 1200,
+      "columns": 1,
+      "rows": 1,
+      "label": "Bidi Control Disable, 3rd Gear"
+    },
+    {
+      "id": "D5043",
+      "column": 0,
+      "row": 0,
+      "expected": 4000,
+      "target": 1204,
+      "columns": 1,
+      "rows": 1,
+      "label": "Bidi Control Disable, 4th Gear"
+    },
+    {
+      "id": "D5044",
+      "column": 0,
+      "row": 0,
+      "expected": 4000,
+      "target": 1208,
+      "columns": 1,
+      "rows": 1,
+      "label": "Bidi Control Disable, 5th Gear"
+    },
+    {
+      "id": "D5045",
+      "column": 0,
+      "row": 0,
+      "expected": 4000,
+      "target": 1212,
+      "columns": 1,
+      "rows": 1,
+      "label": "Bidi Control Disable, 6th Gear"
+    },
+    {
+      "id": "D5055",
+      "column": 0,
+      "row": 0,
+      "expected": 29,
+      "target": 44,
+      "columns": 1,
+      "rows": 1,
+      "label": "TCC Enable Min Temp Enable"
+    },
+    {
+      "id": "D5056",
+      "column": 0,
+      "row": 0,
+      "expected": 31,
+      "target": 45,
+      "columns": 1,
+      "rows": 1,
+      "label": "TCC Enable Min Temp Disable"
+    },
+    {
+      "id": "D5057",
+      "column": 0,
+      "row": 0,
+      "expected": 900,
+      "target": 1224,
+      "columns": 1,
+      "rows": 1,
+      "label": "TCC Enable Min RPM Enable"
+    },
+    {
+      "id": "D5058",
+      "column": 0,
+      "row": 0,
+      "expected": 1050,
+      "target": 1228,
+      "columns": 1,
+      "rows": 1,
+      "label": "TCC Enable Min RPM Disable"
+    },
+    {
+      "id": "D5061",
+      "column": 0,
+      "row": 0,
+      "expected": 2.7199726528,
+      "target": 3,
+      "columns": 1,
+      "rows": 1,
+      "label": "Transfer Case Ratio"
+    },
+    {
+      "id": "D5062",
+      "column": 0,
+      "row": 0,
+      "expected": -8192,
+      "target": 1236,
+      "columns": 1,
+      "rows": 1,
+      "label": "Mod Main Pressure(G-Sol)  High RPM"
+    },
+    {
+      "id": "D5063",
+      "column": 0,
+      "row": 0,
+      "expected": -8192,
+      "target": 1240,
+      "columns": 1,
+      "rows": 1,
+      "label": "Mod Main Pressure (G-Sol) Low RPM"
+    },
+    {
+      "id": "D5183",
+      "column": 0,
+      "row": 0,
+      "expected": 254,
+      "target": 123,
+      "columns": 1,
+      "rows": 1,
+      "label": "TCM Locked Counter"
+    },
+    {
+      "id": "H0103",
+      "column": 0,
+      "row": 0,
+      "expected": 4.099853515625,
+      "target": 4.5,
+      "columns": 1,
+      "rows": 1,
+      "label": "Final Drive Ratio"
+    },
+    {
+      "id": "H0105",
+      "column": 0,
+      "row": 0,
+      "expected": 2485.4839968,
+      "target": 3000,
+      "columns": 1,
+      "rows": 1,
+      "label": "ECM Pulses Per {du,count/km=kilometer,count/mile=mile,else=distance traveled}"
+    },
+    {
+      "id": "H0136",
+      "column": 0,
+      "row": 0,
+      "expected": 424,
+      "target": 450,
+      "columns": 1,
+      "rows": 1,
+      "label": "Tire Revolutions Per {du,rev/km=kilometer,rev/mile=mile,else=distance traveled}"
+    },
+    {
+      "id": "H0137",
+      "column": 0,
+      "row": 0,
+      "expected": 262.79138906730003,
+      "target": 300,
+      "columns": 1,
+      "rows": 1,
+      "label": "Vehicle Speed Ratio"
+    },
+    {
+      "id": "D5073",
+      "column": 0,
+      "row": 0,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "1st Gear / 0"
+    },
+    {
+      "id": "D5073",
+      "column": 0,
+      "row": 8,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "1st Gear / 128"
+    },
+    {
+      "id": "D5073",
+      "column": 0,
+      "row": 16,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "1st Gear / 256"
+    },
+    {
+      "id": "D5073",
+      "column": 1,
+      "row": 0,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "2nd Gear / 0"
+    },
+    {
+      "id": "D5073",
+      "column": 1,
+      "row": 8,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "2nd Gear / 128"
+    },
+    {
+      "id": "D5073",
+      "column": 1,
+      "row": 16,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "2nd Gear / 256"
+    },
+    {
+      "id": "D5073",
+      "column": 2,
+      "row": 0,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "3rd Gear / 0"
+    },
+    {
+      "id": "D5073",
+      "column": 2,
+      "row": 8,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "3rd Gear / 128"
+    },
+    {
+      "id": "D5073",
+      "column": 2,
+      "row": 16,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "3rd Gear / 256"
+    },
+    {
+      "id": "D5073",
+      "column": 3,
+      "row": 0,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "4th Gear / 0"
+    },
+    {
+      "id": "D5073",
+      "column": 3,
+      "row": 8,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "4th Gear / 128"
+    },
+    {
+      "id": "D5073",
+      "column": 3,
+      "row": 16,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "4th Gear / 256"
+    },
+    {
+      "id": "D5073",
+      "column": 4,
+      "row": 0,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "5th Gear / 0"
+    },
+    {
+      "id": "D5073",
+      "column": 4,
+      "row": 8,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "5th Gear / 128"
+    },
+    {
+      "id": "D5073",
+      "column": 4,
+      "row": 16,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "5th Gear / 256"
+    },
+    {
+      "id": "D5074",
+      "column": 0,
+      "row": 0,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "1st Gear / 0"
+    },
+    {
+      "id": "D5074",
+      "column": 0,
+      "row": 8,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "1st Gear / 128"
+    },
+    {
+      "id": "D5074",
+      "column": 0,
+      "row": 16,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "1st Gear / 256"
+    },
+    {
+      "id": "D5074",
+      "column": 1,
+      "row": 0,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "2nd Gear / 0"
+    },
+    {
+      "id": "D5074",
+      "column": 1,
+      "row": 8,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "2nd Gear / 128"
+    },
+    {
+      "id": "D5074",
+      "column": 1,
+      "row": 16,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "2nd Gear / 256"
+    },
+    {
+      "id": "D5074",
+      "column": 2,
+      "row": 0,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "3rd Gear / 0"
+    },
+    {
+      "id": "D5074",
+      "column": 2,
+      "row": 8,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "3rd Gear / 128"
+    },
+    {
+      "id": "D5074",
+      "column": 2,
+      "row": 16,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "3rd Gear / 256"
+    },
+    {
+      "id": "D5074",
+      "column": 3,
+      "row": 0,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "4th Gear / 0"
+    },
+    {
+      "id": "D5074",
+      "column": 3,
+      "row": 8,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "4th Gear / 128"
+    },
+    {
+      "id": "D5074",
+      "column": 3,
+      "row": 16,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "4th Gear / 256"
+    },
+    {
+      "id": "D5074",
+      "column": 4,
+      "row": 0,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "5th Gear / 0"
+    },
+    {
+      "id": "D5074",
+      "column": 4,
+      "row": 8,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "5th Gear / 128"
+    },
+    {
+      "id": "D5074",
+      "column": 4,
+      "row": 16,
+      "expected": 99.99847412437049,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "5th Gear / 256"
+    },
+    {
+      "id": "D5075",
+      "column": 0,
+      "row": 0,
+      "expected": 0,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "1st Gear / 0"
+    },
+    {
+      "id": "D5075",
+      "column": 0,
+      "row": 8,
+      "expected": 0,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "1st Gear / 128"
+    },
+    {
+      "id": "D5075",
+      "column": 0,
+      "row": 16,
+      "expected": 0,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "1st Gear / 256"
+    },
+    {
+      "id": "D5075",
+      "column": 1,
+      "row": 0,
+      "expected": 0,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "2nd Gear / 0"
+    },
+    {
+      "id": "D5075",
+      "column": 1,
+      "row": 8,
+      "expected": 0,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "2nd Gear / 128"
+    },
+    {
+      "id": "D5075",
+      "column": 1,
+      "row": 16,
+      "expected": 0,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "2nd Gear / 256"
+    },
+    {
+      "id": "D5075",
+      "column": 2,
+      "row": 0,
+      "expected": 0,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "3rd Gear / 0"
+    },
+    {
+      "id": "D5075",
+      "column": 2,
+      "row": 8,
+      "expected": 0,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "3rd Gear / 128"
+    },
+    {
+      "id": "D5075",
+      "column": 2,
+      "row": 16,
+      "expected": 0,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "3rd Gear / 256"
+    },
+    {
+      "id": "D5075",
+      "column": 3,
+      "row": 0,
+      "expected": 0,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "4th Gear / 0"
+    },
+    {
+      "id": "D5075",
+      "column": 3,
+      "row": 8,
+      "expected": 0,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "4th Gear / 128"
+    },
+    {
+      "id": "D5075",
+      "column": 3,
+      "row": 16,
+      "expected": 0,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "4th Gear / 256"
+    },
+    {
+      "id": "D5075",
+      "column": 4,
+      "row": 0,
+      "expected": 0,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "5th Gear / 0"
+    },
+    {
+      "id": "D5075",
+      "column": 4,
+      "row": 8,
+      "expected": 0,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "5th Gear / 128"
+    },
+    {
+      "id": "D5075",
+      "column": 4,
+      "row": 16,
+      "expected": 0,
+      "target": 50,
+      "columns": 5,
+      "rows": 17,
+      "label": "5th Gear / 256"
+    },
+    {
+      "id": "D5010",
+      "column": 6,
+      "row": 0,
+      "expected": 32,
+      "target": 100,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern G / 0"
+    },
+    {
+      "id": "D5010",
+      "column": 6,
+      "row": 8,
+      "expected": 32,
+      "target": 100,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern G / 50"
+    },
+    {
+      "id": "D5010",
+      "column": 6,
+      "row": 16,
+      "expected": 45,
+      "target": 100,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern G / 100"
+    },
+    {
+      "id": "D5015",
+      "column": 6,
+      "row": 0,
+      "expected": 26,
+      "target": 100,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern G / 0"
+    },
+    {
+      "id": "D5015",
+      "column": 6,
+      "row": 8,
+      "expected": 26,
+      "target": 100,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern G / 50"
+    },
+    {
+      "id": "D5015",
+      "column": 6,
+      "row": 16,
+      "expected": 38,
+      "target": 100,
+      "columns": 8,
+      "rows": 17,
+      "label": "Pattern G / 100"
+    },
+    {
+      "id": "D5035",
+      "column": 0,
+      "row": 0,
+      "expected": 20,
+      "target": 100,
+      "columns": 4,
+      "rows": 2,
+      "label": "Pattern A / High Value"
+    },
+    {
+      "id": "D5035",
+      "column": 0,
+      "row": 1,
+      "expected": 20,
+      "target": 100,
+      "columns": 4,
+      "rows": 2,
+      "label": "Pattern A / Low Value"
+    },
+    {
+      "id": "D5035",
+      "column": 3,
+      "row": 0,
+      "expected": 20,
+      "target": 100,
+      "columns": 4,
+      "rows": 2,
+      "label": "Pattern D / High Value"
+    },
+    {
+      "id": "D5035",
+      "column": 3,
+      "row": 1,
+      "expected": 20,
+      "target": 100,
+      "columns": 4,
+      "rows": 2,
+      "label": "Pattern D / Low Value"
+    },
+    {
+      "id": "D5036",
+      "column": 0,
+      "row": 0,
+      "expected": 45,
+      "target": 100,
+      "columns": 4,
+      "rows": 2,
+      "label": "Pattern A / High Value"
+    },
+    {
+      "id": "D5036",
+      "column": 0,
+      "row": 1,
+      "expected": 45,
+      "target": 100,
+      "columns": 4,
+      "rows": 2,
+      "label": "Pattern A / Low Value"
+    },
+    {
+      "id": "D5036",
+      "column": 3,
+      "row": 0,
+      "expected": 45,
+      "target": 100,
+      "columns": 4,
+      "rows": 2,
+      "label": "Pattern D / High Value"
+    },
+    {
+      "id": "D5036",
+      "column": 3,
+      "row": 1,
+      "expected": 45,
+      "target": 100,
+      "columns": 4,
+      "rows": 2,
+      "label": "Pattern D / Low Value"
+    },
+    {
+      "id": "D5037",
+      "column": 0,
+      "row": 0,
+      "expected": 62,
+      "target": 100,
+      "columns": 4,
+      "rows": 2,
+      "label": "Pattern A / High Value"
+    },
+    {
+      "id": "D5037",
+      "column": 0,
+      "row": 1,
+      "expected": 62,
+      "target": 100,
+      "columns": 4,
+      "rows": 2,
+      "label": "Pattern A / Low Value"
+    },
+    {
+      "id": "D5037",
+      "column": 3,
+      "row": 0,
+      "expected": 62,
+      "target": 100,
+      "columns": 4,
+      "rows": 2,
+      "label": "Pattern D / High Value"
+    },
+    {
+      "id": "D5037",
+      "column": 3,
+      "row": 1,
+      "expected": 62,
+      "target": 100,
+      "columns": 4,
+      "rows": 2,
+      "label": "Pattern D / Low Value"
+    },
+    {
+      "id": "D5038",
+      "column": 0,
+      "row": 0,
+      "expected": 100,
+      "target": 123,
+      "columns": 4,
+      "rows": 2,
+      "label": "Pattern A / High Value"
+    },
+    {
+      "id": "D5038",
+      "column": 0,
+      "row": 1,
+      "expected": 100,
+      "target": 123,
+      "columns": 4,
+      "rows": 2,
+      "label": "Pattern A / Low Value"
+    },
+    {
+      "id": "D5038",
+      "column": 3,
+      "row": 0,
+      "expected": 100,
+      "target": 123,
+      "columns": 4,
+      "rows": 2,
+      "label": "Pattern D / High Value"
+    },
+    {
+      "id": "D5038",
+      "column": 3,
+      "row": 1,
+      "expected": 100,
+      "target": 123,
+      "columns": 4,
+      "rows": 2,
+      "label": "Pattern D / Low Value"
+    }
+  ],
+  "skipped_ids": [
+    "D5053",
+    "D5054",
+    "D5197"
+  ],
+  "skip_reason": "Text enums require separately proven API setter representation; no guessed numeric/text enum markers."
+}

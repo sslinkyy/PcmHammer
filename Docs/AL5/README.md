@@ -87,6 +87,13 @@ raw AL5 segment into the existing PCM kernel writer. No AL5 live writer exists.
 
 ## Reproduce
 
+The next GUI evidence pass is prepared in
+`Tools/AL5/AL5_TARGETED_DIFFERENTIAL_MAPPER_v6.lua`. See
+[targeted mapper instructions](TunerPro/TARGETED_MAPPER.md). It isolates 83
+numeric marker cases, restores the full raw baseline after each, and never
+saves a tune or accesses a vehicle. EFILive execution is still pending; no
+mapping confidence or XDF coverage is increased by preparing this script.
+
 From the repository root, use the scripts in `Tools/AL5`; each accepts explicit
 local paths and has `--help`. Reference files remain outside Git:
 
