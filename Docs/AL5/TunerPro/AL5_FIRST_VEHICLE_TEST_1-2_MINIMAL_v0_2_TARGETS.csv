@@ -1,0 +1,17 @@
+ID,Description,TCM_Address,Segment_Offset,Stock,Target,Units,Raw_Before,Raw_Target,Mapping_Confidence
+D5048,1-2 TAP Pattern A @ 0% torque,0x0821C,0x021C,80.0,90,kPa,0x0280,0x02D0,marker-differential verified
+D5048,1-2 TAP Pattern A @ 50% torque,0x0821E,0x021E,210.0,240,kPa,0x0690,0x0780,marker-differential verified
+D5048,1-2 TAP Pattern A @ 100% torque,0x08220,0x0220,415.0,475,kPa,0x0CF8,0x0ED8,marker-differential verified
+D5048,1-2 TAP Pattern B @ 0% torque,0x08214,0x0214,80.0,90,kPa,0x0280,0x02D0,marker-differential verified
+D5048,1-2 TAP Pattern B @ 50% torque,0x08216,0x0216,210.0,240,kPa,0x0690,0x0780,marker-differential verified
+D5048,1-2 TAP Pattern B @ 100% torque,0x08218,0x0218,415.0,475,kPa,0x0CF8,0x0ED8,marker-differential verified
+D5048,1-2 TAP Pattern C @ 0% torque,0x0822C,0x022C,80.0,90,kPa,0x0280,0x02D0,marker-differential verified
+D5048,1-2 TAP Pattern C @ 50% torque,0x0822E,0x022E,230.0,265,kPa,0x0730,0x0848,marker-differential verified
+D5048,1-2 TAP Pattern C @ 100% torque,0x08230,0x0230,410.0,470,kPa,0x0CD0,0x0EB0,marker-differential verified
+D5048,1-2 TAP Pattern D @ 0% torque,0x08224,0x0224,80.0,90,kPa,0x0280,0x02D0,marker-differential verified
+D5048,1-2 TAP Pattern D @ 50% torque,0x08226,0x0226,230.0,265,kPa,0x0730,0x0848,marker-differential verified
+D5048,1-2 TAP Pattern D @ 100% torque,0x08228,0x0228,410.0,470,kPa,0x0CD0,0x0EB0,marker-differential verified
+D5120,1-2 TAV,0x0823A,0x023A,14.0,16,cm3,0x01C0,0x0200,marker-differential verified
+D5121,1-2 TAV Tow/Haul,0x08238,0x0238,14.0,16,cm3,0x01C0,0x0200,marker-differential verified
+D5130,1-2 off-going pressure,0x08234,0x0234,105.0,120,kPa,0x0348,0x03C0,marker-differential verified
+D5131,1-2 off-going pressure Tow/Haul,0x08236,0x0236,105.0,120,kPa,0x0348,0x03C0,marker-differential verified
