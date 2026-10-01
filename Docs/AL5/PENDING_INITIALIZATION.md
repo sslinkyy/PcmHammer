@@ -68,8 +68,10 @@ The file-only plan hash-links this partial evidence while keeping complete
 initialization, physical recovery and write readiness false. Packet lists remain
 empty. The working Mode 0x23 reader is unchanged.
 
-Next trace `0x55298` and the remaining pending-path helpers to close write
-coverage and establish when the context CRC and persistent commit are produced.
+The subsequent `PENDING_HELPERS.md` executes all twelve remaining helpers and
+links separate preparation CRC generation to an atomic modeled commit. It
+still finds sentinel-dependent bytes/bits. Next trace preceding startup RAM
+clearing and the actual pending-caller invocation.
 Address/constant observations must remain separate from parameter meanings and
 physical recovery claims. No live erase/program, loader or experimental service
 is enabled or performed.

@@ -133,6 +133,13 @@ leaving 526 bytes, including the CRC word, untouched in the sentinel model. See
 `PENDING_INITIALIZATION.md`. The planner links this partial evidence while
 keeping complete context initialization and physical recovery unverified.
 
+Four subsequent cases execute all twelve remaining pending helpers and link
+separate boot-preparation CRC generation to atomic modeled persistence.
+Correct CRCs and modeled commits coexist with 500 sentinel-dependent context
+bytes, so they cannot waive initialization or preservation requirements. See
+`PENDING_HELPERS.md`. Startup RAM provenance and physical persistence remain
+unverified; the file-only plan continues to emit zero packets.
+
 The report includes a hash-linked preservation assessment from the static
 resident inventory. The inferred 41,000 extra bytes and candidate intervals
 remain explicitly unverified; no current collateral backup is supplied or
