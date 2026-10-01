@@ -84,6 +84,7 @@ class Remaining(Initialization):
         for a in (0x4000, 0x6000): update.uc.mem_write(a, bytes(self.uc.mem_read(a, 0x2000)))
         update.uc.mem_write(START, prepared)
         banks = update.update()
+        self.modeled_banks = banks
         selected = reboot(self.low, self.high, banks)
         matched = selected['selected_record'] == '0x6028' and selected['selected_context_sha256'] == sha256(prepared)
         return {'preparation_subsystem_calls_bypassed': self.preparation_calls[:-1],

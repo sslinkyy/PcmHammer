@@ -20,6 +20,7 @@ STORAGE_REPAIR_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/STORAG
 PENDING_INITIALIZATION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/PENDING_INITIALIZATION_EMULATION.json'
 PENDING_HELPERS_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/PENDING_HELPERS_EMULATION.json'
 STARTUP_CONTEXT_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/STARTUP_CONTEXT_EMULATION.json'
+CONTEXT_PREAMBLE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/CONTEXT_PREAMBLE_EMULATION.json'
 
 
 def preparation_assessment():
@@ -39,6 +40,8 @@ def preparation_assessment():
     helpers = json.loads(helpers_bytes)
     startup_bytes = STARTUP_CONTEXT_EVIDENCE.read_bytes()
     startup = json.loads(startup_bytes)
+    preamble_bytes = CONTEXT_PREAMBLE_EVIDENCE.read_bytes()
+    preamble = json.loads(preamble_bytes)
     return {'evidence': 'Docs/AL5/RECEIVE_PREPARATION_EMULATION.json',
             'evidence_sha256': sha256(evidence_bytes),
             'offline_cases_pass': evidence['all_pass'],
@@ -103,6 +106,15 @@ def preparation_assessment():
                 'cold_context_independent_of_initial_fill': startup['cold_context_independent_of_initial_fill'],
                 'complete_startup_verified': False,
                 'context_persistence_verified': False,
+                'physical_recovery_verified': False},
+            'context_preamble_evidence': {
+                'evidence': 'Docs/AL5/CONTEXT_PREAMBLE_EMULATION.json',
+                'evidence_sha256': sha256(preamble_bytes),
+                'offline_cases_pass': preamble['all_pass'],
+                'scope': preamble['scope'],
+                'model_limits': preamble['model_limits'],
+                'context_initializer_has_persistent_writes': True,
+                'complete_startup_verified': False,
                 'physical_recovery_verified': False},
             'storage_geometry_verified': False,
             'current_storage_backup_supplied': False,
@@ -206,7 +218,7 @@ def plan(current, candidate, expected_hash, controller, os_id):
             'native_checksum_valid': {'current': checksum_valid(current), 'candidate': checksum_valid(candidate)},
             'blockers': ['AL5 session/loader/erase/program/verify/recovery protocol is unresolved.',
                          'Exact erase geometry and current collateral backup/preservation are unverified.',
-                         'Application boot preparation can reach persistent-storage updates outside the calibration; preservation is unresolved.',
+        'Application boot preparation and context initialization can reach persistent-storage updates outside the calibration; preservation is unresolved.',
                          'Live AL5 writing is unconditionally disabled.'],
             'preservation_assessment': preservation_assessment(),
             'boot_loader_assessment': boot_loader_assessment(),

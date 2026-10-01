@@ -1,0 +1,1075 @@
+{
+  "low_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
+  "high_sha256": "492040d9460d53b77dda606b9a89f4254e0680f239093001663f6ed5cf51ba75",
+  "code_sha256": {
+    "0x5b5e4": "852007529515ee826f3bc26be5c9d384022c63e6d544d0facca14466394d20be",
+    "0x228d8": "ee34e1ab24f701dc1878896ed492bb0108466c2e2d3073bf6183808968ed332b",
+    "0xa9bf0": "355121998ec05285218d210e2cb684eb9f6d33685ea33827bf5d847b7a6e0342",
+    "0xa9cb4": "bed709d1a8447fea2bd73038b0fa267cb8822a55f9244f1abee9a82e950e9a7e",
+    "0xa9d4c": "d879be2bbf0eb69c4e7580cd0730e7ef0e65de880bded126e0531ddc493d171a",
+    "0x5bbdc": "819c51639fcf563914d26439bdd3ae8c8f683c8658c77650ea463cf1f9facaad",
+    "0x5bca4": "a6785c1d58b618b99cf044ca446b81743fa3cf476781aa8b3e86542bde23ab4e",
+    "0x5bd78": "3bca5713301b50c4b56c94f8ce3e0fb9f94b3f3ddb278c657f85a3dea0198307",
+    "0x79112": "92ceeaf0885cd306e6718118d47fffa258a77a335d924566b0dac34ee083bd51",
+    "0x22b0c": "09ecd93c33a3a62bd4db8d21d189fc1af27306504b8155fa701b6302647ded0c",
+    "0xc5d50": "e27f85ad465ba1a686b7f069068784cfdc67ed3f486a8e54d222d87f26f90692"
+  },
+  "scope": "Four real preamble/metadata helpers and bounded warm invocation; all storage effects atomic host models. Read-only slot-marker cases also exercised. No flash implementation execution.",
+  "model_limits": "Two pending cold cases and bounded warm path starting at 0x79112; earlier warm-path and startup calls, subsystem effects, other record states, partial programming and hardware omitted.",
+  "cases": [
+    {
+      "synthetic_initial_fill": "0xa5",
+      "cold_context": {
+        "startup_clear": {
+          "start": "0xff8140",
+          "end_exclusive": "0xffb7b0",
+          "bytes": 13936,
+          "observed_unique_bytes_written": 13936,
+          "region_all_zero": true,
+          "context_all_zero": true,
+          "after_region_probe_unchanged": true,
+          "global_prefix_matches_rom": true,
+          "watchdog_write_count": 144,
+          "watchdog_values_only_55_aa": true
+        },
+        "preamble_helpers_bypassed": [],
+        "remaining_helpers_executed": [
+          "0x55298",
+          "0xbaed4",
+          "0x67bc8",
+          "0x590a0",
+          "0x5d894",
+          "0xc4538",
+          "0x60ae8",
+          "0x90e48",
+          "0xa44d0",
+          "0xa4228",
+          "0xc5938",
+          "0x622f4"
+        ],
+        "stop_pc": "0x5baa6",
+        "context_sha256": "bb42c010b63a5b50614658384b272650d59314d94268c5fb608ec154d410d27d",
+        "stored_crc_before_preparation": "0x0",
+        "computed_crc_before_preparation": "0x80d0",
+        "selector_after_clear": 0,
+        "banks_unchanged": false
+      },
+      "metadata": {
+        "read_calls": [
+          {
+            "index": 0,
+            "destination": "0xff9418"
+          },
+          {
+            "index": 1,
+            "destination": "0xff9422"
+          },
+          {
+            "index": 3,
+            "destination": "0xff942c"
+          },
+          {
+            "index": 2,
+            "destination": "0xff9436"
+          }
+        ],
+        "read_results": [
+          {
+            "index": 0,
+            "destination": "0xff9418",
+            "return_d0": 1
+          },
+          {
+            "index": 1,
+            "destination": "0xff9422",
+            "return_d0": 1
+          },
+          {
+            "index": 3,
+            "destination": "0xff942c",
+            "return_d0": 1
+          },
+          {
+            "index": 2,
+            "destination": "0xff9436",
+            "return_d0": 1
+          }
+        ],
+        "modeled_program_operations": [
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4a1c",
+            "bytes": 2,
+            "source": "0x2087cc",
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4a1e",
+            "bytes": 10,
+            "source": "0xff9418",
+            "payload_sha256": "5c0a3d1c2c857202fc733bcb8f5c1fb1b1b4a99aed2d617993225e6773ee3f7a",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4a1c",
+            "bytes": 2,
+            "source": "0x2087cc",
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4a28",
+            "bytes": 2,
+            "source": "0x2087c8",
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4a2a",
+            "bytes": 10,
+            "source": "0xff9422",
+            "payload_sha256": "5e6ed6a54dc152789cf6fa45a4019f324c48fd09290edb6864784ee7b6c19b0f",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4a28",
+            "bytes": 2,
+            "source": "0x2087c8",
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4a40",
+            "bytes": 2,
+            "source": "0x2087cc",
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4a42",
+            "bytes": 10,
+            "source": "0xff942c",
+            "payload_sha256": "5c0a3d1c2c857202fc733bcb8f5c1fb1b1b4a99aed2d617993225e6773ee3f7a",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4a40",
+            "bytes": 2,
+            "source": "0x2087cc",
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "implementation_executed": false
+          }
+        ],
+        "changed_bank1_offsets": [
+          "0xa1d",
+          "0xa1e",
+          "0xa29",
+          "0xa2f",
+          "0xa41",
+          "0xa42"
+        ],
+        "changed_bank2_bytes": 0,
+        "only_expected_small_records_changed": true,
+        "new_bank_slots_erased_after_separate_main_update": true
+      },
+      "separate_preparation_and_modeled_commit": {
+        "preparation_subsystem_calls_bypassed": [
+          "0x984ec",
+          "0x94878",
+          "0x602f4",
+          "0xc2290",
+          "0x90d50",
+          "0xae5dc",
+          "0xaed38",
+          "0xaff38",
+          "0xa8938",
+          "0xa8a18"
+        ],
+        "intercepted_storage_call": {
+          "entry": "0x226f0",
+          "source": "0xff8140"
+        },
+        "prepared_context_sha256": "08810ac5e051f1e9af7ffae5933b84b1317de76538cf03e2c8ac8bc77ee21c65",
+        "prepared_context_crc_matches": true,
+        "prepared_crc_word": "0x80d0",
+        "modeled_commit_operations": [
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x6000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22cf0",
+            "kind": "synthetic_tail_copy",
+            "destination": "0x6a4c",
+            "bytes": 5556,
+            "source": "0x4a4c",
+            "payload_sha256": "315781df3f06a80ec16e8023440c70ea3c69a7adcc7609d79ef3dbd2021b2d5a",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6000",
+            "bytes": 40,
+            "source": "0x2087cc",
+            "payload_sha256": "cf917e8b9505d3966b16b7230e8ea8275416d2b2b7569e02764c53cf721169dd",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6028",
+            "bytes": 2,
+            "source": "0x2087cc",
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x602a",
+            "bytes": 2546,
+            "source": "0xff8140",
+            "payload_sha256": "08810ac5e051f1e9af7ffae5933b84b1317de76538cf03e2c8ac8bc77ee21c65",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6028",
+            "bytes": 2,
+            "source": "0x2087cc",
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4028",
+            "bytes": 2,
+            "source": "0x2087cc",
+            "payload_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+            "word": "0000",
+            "implementation_executed": false
+          }
+        ],
+        "modeled_reboot_selection": {
+          "selected_record": "0x6028",
+          "selected_context_sha256": "08810ac5e051f1e9af7ffae5933b84b1317de76538cf03e2c8ac8bc77ee21c65",
+          "storage_trap": null,
+          "banks_unchanged_during_selection": true
+        },
+        "modeled_committed_context_matches_prepared": true,
+        "real_storage_implementation_executed": false
+      },
+      "warm_reentry": {
+        "stop_pc": "0x5baa6",
+        "modeled_storage_operations": [
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x6000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22cf0",
+            "kind": "synthetic_tail_copy",
+            "destination": "0x6a4c",
+            "bytes": 5556,
+            "source": "0x4a4c",
+            "payload_sha256": "315781df3f06a80ec16e8023440c70ea3c69a7adcc7609d79ef3dbd2021b2d5a",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6000",
+            "bytes": 40,
+            "source": "0x2087b0",
+            "payload_sha256": "cf917e8b9505d3966b16b7230e8ea8275416d2b2b7569e02764c53cf721169dd",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6028",
+            "bytes": 2,
+            "source": "0x2087b0",
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x602a",
+            "bytes": 2546,
+            "source": "0xff8140",
+            "payload_sha256": "08810ac5e051f1e9af7ffae5933b84b1317de76538cf03e2c8ac8bc77ee21c65",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6028",
+            "bytes": 2,
+            "source": "0x2087b0",
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4028",
+            "bytes": 2,
+            "source": "0x2087b0",
+            "payload_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+            "word": "0000",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6a1c",
+            "bytes": 2,
+            "source": "0x2087c8",
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6a1e",
+            "bytes": 10,
+            "source": "0xff9418",
+            "payload_sha256": "5c0a3d1c2c857202fc733bcb8f5c1fb1b1b4a99aed2d617993225e6773ee3f7a",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6a1c",
+            "bytes": 2,
+            "source": "0x2087c8",
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6a28",
+            "bytes": 2,
+            "source": "0x2087c4",
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6a2a",
+            "bytes": 10,
+            "source": "0xff9422",
+            "payload_sha256": "5e6ed6a54dc152789cf6fa45a4019f324c48fd09290edb6864784ee7b6c19b0f",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6a28",
+            "bytes": 2,
+            "source": "0x2087c4",
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6a40",
+            "bytes": 2,
+            "source": "0x2087c8",
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6a42",
+            "bytes": 10,
+            "source": "0xff942c",
+            "payload_sha256": "5c0a3d1c2c857202fc733bcb8f5c1fb1b1b4a99aed2d617993225e6773ee3f7a",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6a40",
+            "bytes": 2,
+            "source": "0x2087c8",
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "implementation_executed": false
+          }
+        ],
+        "additional_default_helpers": 0,
+        "context_sha256": "08810ac5e051f1e9af7ffae5933b84b1317de76538cf03e2c8ac8bc77ee21c65",
+        "main_bank2_committed": true,
+        "old_main_bank1_inactive": true,
+        "metadata_slots_rewritten_in_bank2": true,
+        "real_flash_implementation_executed": false
+      },
+      "pass": true
+    },
+    {
+      "synthetic_initial_fill": "0x5a",
+      "cold_context": {
+        "startup_clear": {
+          "start": "0xff8140",
+          "end_exclusive": "0xffb7b0",
+          "bytes": 13936,
+          "observed_unique_bytes_written": 13936,
+          "region_all_zero": true,
+          "context_all_zero": true,
+          "after_region_probe_unchanged": true,
+          "global_prefix_matches_rom": true,
+          "watchdog_write_count": 144,
+          "watchdog_values_only_55_aa": true
+        },
+        "preamble_helpers_bypassed": [],
+        "remaining_helpers_executed": [
+          "0x55298",
+          "0xbaed4",
+          "0x67bc8",
+          "0x590a0",
+          "0x5d894",
+          "0xc4538",
+          "0x60ae8",
+          "0x90e48",
+          "0xa44d0",
+          "0xa4228",
+          "0xc5938",
+          "0x622f4"
+        ],
+        "stop_pc": "0x5baa6",
+        "context_sha256": "bb42c010b63a5b50614658384b272650d59314d94268c5fb608ec154d410d27d",
+        "stored_crc_before_preparation": "0x0",
+        "computed_crc_before_preparation": "0x80d0",
+        "selector_after_clear": 0,
+        "banks_unchanged": false
+      },
+      "metadata": {
+        "read_calls": [
+          {
+            "index": 0,
+            "destination": "0xff9418"
+          },
+          {
+            "index": 1,
+            "destination": "0xff9422"
+          },
+          {
+            "index": 3,
+            "destination": "0xff942c"
+          },
+          {
+            "index": 2,
+            "destination": "0xff9436"
+          }
+        ],
+        "read_results": [
+          {
+            "index": 0,
+            "destination": "0xff9418",
+            "return_d0": 1
+          },
+          {
+            "index": 1,
+            "destination": "0xff9422",
+            "return_d0": 1
+          },
+          {
+            "index": 3,
+            "destination": "0xff942c",
+            "return_d0": 1
+          },
+          {
+            "index": 2,
+            "destination": "0xff9436",
+            "return_d0": 1
+          }
+        ],
+        "modeled_program_operations": [
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4a1c",
+            "bytes": 2,
+            "source": "0x2087cc",
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4a1e",
+            "bytes": 10,
+            "source": "0xff9418",
+            "payload_sha256": "5c0a3d1c2c857202fc733bcb8f5c1fb1b1b4a99aed2d617993225e6773ee3f7a",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4a1c",
+            "bytes": 2,
+            "source": "0x2087cc",
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4a28",
+            "bytes": 2,
+            "source": "0x2087c8",
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4a2a",
+            "bytes": 10,
+            "source": "0xff9422",
+            "payload_sha256": "5e6ed6a54dc152789cf6fa45a4019f324c48fd09290edb6864784ee7b6c19b0f",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4a28",
+            "bytes": 2,
+            "source": "0x2087c8",
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4a40",
+            "bytes": 2,
+            "source": "0x2087cc",
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4a42",
+            "bytes": 10,
+            "source": "0xff942c",
+            "payload_sha256": "5c0a3d1c2c857202fc733bcb8f5c1fb1b1b4a99aed2d617993225e6773ee3f7a",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4a40",
+            "bytes": 2,
+            "source": "0x2087cc",
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "implementation_executed": false
+          }
+        ],
+        "changed_bank1_offsets": [
+          "0xa1d",
+          "0xa1e",
+          "0xa29",
+          "0xa2f",
+          "0xa41",
+          "0xa42"
+        ],
+        "changed_bank2_bytes": 0,
+        "only_expected_small_records_changed": true,
+        "new_bank_slots_erased_after_separate_main_update": true
+      },
+      "separate_preparation_and_modeled_commit": {
+        "preparation_subsystem_calls_bypassed": [
+          "0x984ec",
+          "0x94878",
+          "0x602f4",
+          "0xc2290",
+          "0x90d50",
+          "0xae5dc",
+          "0xaed38",
+          "0xaff38",
+          "0xa8938",
+          "0xa8a18"
+        ],
+        "intercepted_storage_call": {
+          "entry": "0x226f0",
+          "source": "0xff8140"
+        },
+        "prepared_context_sha256": "08810ac5e051f1e9af7ffae5933b84b1317de76538cf03e2c8ac8bc77ee21c65",
+        "prepared_context_crc_matches": true,
+        "prepared_crc_word": "0x80d0",
+        "modeled_commit_operations": [
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x6000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22cf0",
+            "kind": "synthetic_tail_copy",
+            "destination": "0x6a4c",
+            "bytes": 5556,
+            "source": "0x4a4c",
+            "payload_sha256": "315781df3f06a80ec16e8023440c70ea3c69a7adcc7609d79ef3dbd2021b2d5a",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6000",
+            "bytes": 40,
+            "source": "0x2087cc",
+            "payload_sha256": "cf917e8b9505d3966b16b7230e8ea8275416d2b2b7569e02764c53cf721169dd",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6028",
+            "bytes": 2,
+            "source": "0x2087cc",
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x602a",
+            "bytes": 2546,
+            "source": "0xff8140",
+            "payload_sha256": "08810ac5e051f1e9af7ffae5933b84b1317de76538cf03e2c8ac8bc77ee21c65",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6028",
+            "bytes": 2,
+            "source": "0x2087cc",
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4028",
+            "bytes": 2,
+            "source": "0x2087cc",
+            "payload_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+            "word": "0000",
+            "implementation_executed": false
+          }
+        ],
+        "modeled_reboot_selection": {
+          "selected_record": "0x6028",
+          "selected_context_sha256": "08810ac5e051f1e9af7ffae5933b84b1317de76538cf03e2c8ac8bc77ee21c65",
+          "storage_trap": null,
+          "banks_unchanged_during_selection": true
+        },
+        "modeled_committed_context_matches_prepared": true,
+        "real_storage_implementation_executed": false
+      },
+      "warm_reentry": {
+        "stop_pc": "0x5baa6",
+        "modeled_storage_operations": [
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x6000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22cf0",
+            "kind": "synthetic_tail_copy",
+            "destination": "0x6a4c",
+            "bytes": 5556,
+            "source": "0x4a4c",
+            "payload_sha256": "315781df3f06a80ec16e8023440c70ea3c69a7adcc7609d79ef3dbd2021b2d5a",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6000",
+            "bytes": 40,
+            "source": "0x2087b0",
+            "payload_sha256": "cf917e8b9505d3966b16b7230e8ea8275416d2b2b7569e02764c53cf721169dd",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6028",
+            "bytes": 2,
+            "source": "0x2087b0",
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x602a",
+            "bytes": 2546,
+            "source": "0xff8140",
+            "payload_sha256": "08810ac5e051f1e9af7ffae5933b84b1317de76538cf03e2c8ac8bc77ee21c65",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6028",
+            "bytes": 2,
+            "source": "0x2087b0",
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4028",
+            "bytes": 2,
+            "source": "0x2087b0",
+            "payload_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+            "word": "0000",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6a1c",
+            "bytes": 2,
+            "source": "0x2087c8",
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6a1e",
+            "bytes": 10,
+            "source": "0xff9418",
+            "payload_sha256": "5c0a3d1c2c857202fc733bcb8f5c1fb1b1b4a99aed2d617993225e6773ee3f7a",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6a1c",
+            "bytes": 2,
+            "source": "0x2087c8",
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6a28",
+            "bytes": 2,
+            "source": "0x2087c4",
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6a2a",
+            "bytes": 10,
+            "source": "0xff9422",
+            "payload_sha256": "5e6ed6a54dc152789cf6fa45a4019f324c48fd09290edb6864784ee7b6c19b0f",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6a28",
+            "bytes": 2,
+            "source": "0x2087c4",
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6a40",
+            "bytes": 2,
+            "source": "0x2087c8",
+            "payload_sha256": "b3d510ef04275ca8e698e5b3cbb0ece3949ef9252f0cdc839e9ee347409a2209",
+            "word": "fffe",
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6a42",
+            "bytes": 10,
+            "source": "0xff942c",
+            "payload_sha256": "5c0a3d1c2c857202fc733bcb8f5c1fb1b1b4a99aed2d617993225e6773ee3f7a",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6a40",
+            "bytes": 2,
+            "source": "0x2087c8",
+            "payload_sha256": "c7dc13d149fef7f69149393f733cdd90c05287e8f33fa7760d0941f0c349fbcd",
+            "word": "ffaa",
+            "implementation_executed": false
+          }
+        ],
+        "additional_default_helpers": 0,
+        "context_sha256": "08810ac5e051f1e9af7ffae5933b84b1317de76538cf03e2c8ac8bc77ee21c65",
+        "main_bank2_committed": true,
+        "old_main_bank1_inactive": true,
+        "metadata_slots_rewritten_in_bank2": true,
+        "real_flash_implementation_executed": false
+      },
+      "pass": true
+    }
+  ],
+  "record_reader_cases": [
+    {
+      "index": 0,
+      "synthetic_record_marker": "0xffff",
+      "observed": {
+        "return_d0": 1,
+        "copied_payload_matches": false,
+        "destination_unchanged": true,
+        "bank_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "index": 0,
+      "synthetic_record_marker": "0xffaa",
+      "observed": {
+        "return_d0": 0,
+        "copied_payload_matches": true,
+        "destination_unchanged": false,
+        "bank_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "index": 0,
+      "synthetic_record_marker": "0x0",
+      "observed": {
+        "return_d0": 2,
+        "copied_payload_matches": false,
+        "destination_unchanged": true,
+        "bank_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "index": 1,
+      "synthetic_record_marker": "0xffff",
+      "observed": {
+        "return_d0": 1,
+        "copied_payload_matches": false,
+        "destination_unchanged": true,
+        "bank_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "index": 1,
+      "synthetic_record_marker": "0xffaa",
+      "observed": {
+        "return_d0": 0,
+        "copied_payload_matches": true,
+        "destination_unchanged": false,
+        "bank_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "index": 1,
+      "synthetic_record_marker": "0x0",
+      "observed": {
+        "return_d0": 2,
+        "copied_payload_matches": false,
+        "destination_unchanged": true,
+        "bank_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "index": 2,
+      "synthetic_record_marker": "0xffff",
+      "observed": {
+        "return_d0": 1,
+        "copied_payload_matches": false,
+        "destination_unchanged": true,
+        "bank_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "index": 2,
+      "synthetic_record_marker": "0xffaa",
+      "observed": {
+        "return_d0": 0,
+        "copied_payload_matches": true,
+        "destination_unchanged": false,
+        "bank_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "index": 2,
+      "synthetic_record_marker": "0x0",
+      "observed": {
+        "return_d0": 2,
+        "copied_payload_matches": false,
+        "destination_unchanged": true,
+        "bank_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "index": 3,
+      "synthetic_record_marker": "0xffff",
+      "observed": {
+        "return_d0": 1,
+        "copied_payload_matches": false,
+        "destination_unchanged": true,
+        "bank_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "index": 3,
+      "synthetic_record_marker": "0xffaa",
+      "observed": {
+        "return_d0": 0,
+        "copied_payload_matches": true,
+        "destination_unchanged": false,
+        "bank_unchanged": true
+      },
+      "pass": true
+    },
+    {
+      "index": 3,
+      "synthetic_record_marker": "0x0",
+      "observed": {
+        "return_d0": 2,
+        "copied_payload_matches": false,
+        "destination_unchanged": true,
+        "bank_unchanged": true
+      },
+      "pass": true
+    }
+  ],
+  "cold_context_independent_of_fill": true,
+  "all_pass": true,
+  "complete_startup_verified": false,
+  "physical_recovery_verified": false,
+  "flash_implementation_executed": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "would_send": []
+}

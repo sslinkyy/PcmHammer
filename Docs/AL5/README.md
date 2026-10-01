@@ -102,7 +102,14 @@ Two startup-clear cases now reproduce zeroing `0xFF8140–0xFFB7AF` and make the
 bounded cold pending contexts independent of their initial fills. Static code
 links startup to the context caller, but intervening startup and four preamble
 helpers are omitted. See [startup context provenance](STARTUP_CONTEXT.md).
-Next trace those omitted effects and the second invocation path; physical recovery remains unverified.
+The four preamble helpers now execute with atomic host storage models. Two cold
+cases perform nine small-record program operations; a bounded alternate invocation
+performs seven main-context operations and nine small-record operations, then
+restores the committed context without repeating defaults. Twelve isolated reader
+cases distinguish committed, erased and unclassified slot markers. See
+[context preamble and alternate invocation](CONTEXT_PREAMBLE.md).
+Next trace the earlier alternate-path calls, other small-record states and failure
+ordering; intervening startup and physical recovery remain unverified.
 
 **Current named XDF: v0.12**, `TunerPro/AL5_15184109_15183960_MARKER_EXTENDED_v0_12.xdf`.
 The completed offline EFILive report resolves 83 marker cases and adds 41 items;
