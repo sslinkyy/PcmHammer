@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "scope": "Saved-file metadata and narrow compression probes only; no device or EFILive executable used.",
+  "limits": "High entropy does not prove encryption. No decoded packet records, timing, erase/program acknowledgments or completion evidence. Filename W does not prove a successful write.",
+  "traces": [
+    {
+      "source_name": "20260917_151435_AL5_W.htx",
+      "source_sha256": "c63a4b8556edaf74ed671ef63d61cdb7d433face38c6e682f5edae4a50bd1304",
+      "bytes": 41994,
+      "filename_context": {
+        "date": "20260917",
+        "time": "151435",
+        "controller": "AL5",
+        "mode": "W",
+        "provenance": "Filename only, not decoded content."
+      },
+      "entropy_bits_per_byte": 7.995193,
+      "ascii_text_fraction": 0.384317,
+      "prefix_4_sha256": "2a6fc9e5d99af05e71ab9d495cc24e08920db3f147433d478b77a9d1187e5e11",
+      "literal_known_read_request_header_hits": 0,
+      "literal_known_read_response_header_hits": 0,
+      "bounded_zlib_probe": {
+        "header_window_bytes": 256,
+        "output_limit_bytes": 1048576,
+        "candidate_headers_tested": 229,
+        "complete_streams": [],
+        "scope": "Zlib only, offsets 0..255, fixed byte rotation and XOR; no packet interpretation."
+      },
+      "container_decoded": false,
+      "packet_sequence_verified": false,
+      "operation_outcome": null,
+      "programming_payload_verified": false
+    },
+    {
+      "source_name": "20260917_152044_AL5_W.htx",
+      "source_sha256": "85887d279593408458afe1390151d1dc1467a3de5d347503f77680100ed04469",
+      "bytes": 39894,
+      "filename_context": {
+        "date": "20260917",
+        "time": "152044",
+        "controller": "AL5",
+        "mode": "W",
+        "provenance": "Filename only, not decoded content."
+      },
+      "entropy_bits_per_byte": 7.995374,
+      "ascii_text_fraction": 0.380634,
+      "prefix_4_sha256": "2a6fc9e5d99af05e71ab9d495cc24e08920db3f147433d478b77a9d1187e5e11",
+      "literal_known_read_request_header_hits": 0,
+      "literal_known_read_response_header_hits": 0,
+      "bounded_zlib_probe": {
+        "header_window_bytes": 256,
+        "output_limit_bytes": 1048576,
+        "candidate_headers_tested": 225,
+        "complete_streams": [],
+        "scope": "Zlib only, offsets 0..255, fixed byte rotation and XOR; no packet interpretation."
+      },
+      "container_decoded": false,
+      "packet_sequence_verified": false,
+      "operation_outcome": null,
+      "programming_payload_verified": false
+    },
+    {
+      "source_name": "20260917_152205_AL5_W.htx",
+      "source_sha256": "8ee51aed10ccdd5b76fa238d5c4c7e8c848f9db96508b5dc21391e9e3a8de75a",
+      "bytes": 41694,
+      "filename_context": {
+        "date": "20260917",
+        "time": "152205",
+        "controller": "AL5",
+        "mode": "W",
+        "provenance": "Filename only, not decoded content."
+      },
+      "entropy_bits_per_byte": 7.994774,
+      "ascii_text_fraction": 0.388161,
+      "prefix_4_sha256": "2a6fc9e5d99af05e71ab9d495cc24e08920db3f147433d478b77a9d1187e5e11",
+      "literal_known_read_request_header_hits": 0,
+      "literal_known_read_response_header_hits": 0,
+      "bounded_zlib_probe": {
+        "header_window_bytes": 256,
+        "output_limit_bytes": 1048576,
+        "candidate_headers_tested": 222,
+        "complete_streams": [],
+        "scope": "Zlib only, offsets 0..255, fixed byte rotation and XOR; no packet interpretation."
+      },
+      "container_decoded": false,
+      "packet_sequence_verified": false,
+      "operation_outcome": null,
+      "programming_payload_verified": false
+    },
+    {
+      "source_name": "20260917_205638_AL5_W.htx",
+      "source_sha256": "61ccb8cd085202f8154174a83df82f51d35e27a522bebbc090d328bb9a05adea",
+      "bytes": 41682,
+      "filename_context": {
+        "date": "20260917",
+        "time": "205638",
+        "controller": "AL5",
+        "mode": "W",
+        "provenance": "Filename only, not decoded content."
+      },
+      "entropy_bits_per_byte": 7.994489,
+      "ascii_text_fraction": 0.380668,
+      "prefix_4_sha256": "2a6fc9e5d99af05e71ab9d495cc24e08920db3f147433d478b77a9d1187e5e11",
+      "literal_known_read_request_header_hits": 0,
+      "literal_known_read_response_header_hits": 0,
+      "bounded_zlib_probe": {
+        "header_window_bytes": 256,
+        "output_limit_bytes": 1048576,
+        "candidate_headers_tested": 217,
+        "complete_streams": [],
+        "scope": "Zlib only, offsets 0..255, fixed byte rotation and XOR; no packet interpretation."
+      },
+      "container_decoded": false,
+      "packet_sequence_verified": false,
+      "operation_outcome": null,
+      "programming_payload_verified": false
+    },
+    {
+      "source_name": "20260917_210157_AL5_W.htx",
+      "source_sha256": "751e3d2e1a3458ee37fc6231622435fe9cafde4333ee31c711f5138b167ce314",
+      "bytes": 41657,
+      "filename_context": {
+        "date": "20260917",
+        "time": "210157",
+        "controller": "AL5",
+        "mode": "W",
+        "provenance": "Filename only, not decoded content."
+      },
+      "entropy_bits_per_byte": 7.99399,
+      "ascii_text_fraction": 0.383297,
+      "prefix_4_sha256": "2a6fc9e5d99af05e71ab9d495cc24e08920db3f147433d478b77a9d1187e5e11",
+      "literal_known_read_request_header_hits": 0,
+      "literal_known_read_response_header_hits": 0,
+      "bounded_zlib_probe": {
+        "header_window_bytes": 256,
+        "output_limit_bytes": 1048576,
+        "candidate_headers_tested": 224,
+        "complete_streams": [],
+        "scope": "Zlib only, offsets 0..255, fixed byte rotation and XOR; no packet interpretation."
+      },
+      "container_decoded": false,
+      "packet_sequence_verified": false,
+      "operation_outcome": null,
+      "programming_payload_verified": false
+    },
+    {
+      "source_name": "20260930_145928_AL5_R.htx",
+      "source_sha256": "c34fbdf2cf91c799ab56eaf2813b9c39f02c32a6e2f337629426527843df6a47",
+      "bytes": 407283,
+      "filename_context": {
+        "date": "20260930",
+        "time": "145928",
+        "controller": "AL5",
+        "mode": "R",
+        "provenance": "Filename only, not decoded content."
+      },
+      "entropy_bits_per_byte": 7.997739,
+      "ascii_text_fraction": 0.377674,
+      "prefix_4_sha256": "2a6fc9e5d99af05e71ab9d495cc24e08920db3f147433d478b77a9d1187e5e11",
+      "literal_known_read_request_header_hits": 0,
+      "literal_known_read_response_header_hits": 0,
+      "bounded_zlib_probe": {
+        "header_window_bytes": 256,
+        "output_limit_bytes": 1048576,
+        "candidate_headers_tested": 222,
+        "complete_streams": [],
+        "scope": "Zlib only, offsets 0..255, fixed byte rotation and XOR; no packet interpretation."
+      },
+      "container_decoded": false,
+      "packet_sequence_verified": false,
+      "operation_outcome": null,
+      "programming_payload_verified": false
+    }
+  ],
+  "trace_count": 6,
+  "same_first_four_bytes_by_hash": true,
+  "format_decoding_verified": false,
+  "programming_transport_verified": false,
+  "ready_to_flash": false,
+  "live_write_enabled": false,
+  "would_send": []
+}

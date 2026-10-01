@@ -22,6 +22,17 @@ PENDING_HELPERS_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/PENDI
 STARTUP_CONTEXT_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/STARTUP_CONTEXT_EMULATION.json'
 CONTEXT_PREAMBLE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/CONTEXT_PREAMBLE_EMULATION.json'
 SMALL_RECORD_FAILURE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/SMALL_RECORD_FAILURE_EMULATION.json'
+TRACE_INVENTORY_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/EFILIVE_TRACE_INVENTORY.json'
+
+
+def trace_assessment():
+    data=TRACE_INVENTORY_EVIDENCE.read_bytes()
+    report=json.loads(data)
+    return {'evidence':'Docs/AL5/EFILIVE_TRACE_INVENTORY.json',
+            'evidence_sha256':sha256(data),'trace_count':report['trace_count'],
+            'scope':report['scope'],'limits':report['limits'],
+            'format_decoding_verified':False,'programming_transport_verified':False,
+            'flash_outcomes_verified':False}
 
 
 def preparation_assessment():
@@ -234,6 +245,7 @@ def plan(current, candidate, expected_hash, controller, os_id):
             'preservation_assessment': preservation_assessment(),
             'boot_loader_assessment': boot_loader_assessment(),
             'boot_preparation_assessment': preparation_assessment(),
+            'existing_trace_assessment': trace_assessment(),
             'diff_ranges': ranges,
             'requested_calibration_range': {'start': '0x08000', 'end_inclusive': '0x15FD7'},
             'erase_scope': None, 'program_block_size': None,

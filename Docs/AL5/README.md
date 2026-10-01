@@ -114,6 +114,10 @@ payload failure can leave a committed erased payload accepted by the reader. See
 alternate-path calls, other small-record states and full initializer reaction;
 intervening startup and physical recovery remain unverified. The staged route to
 live testing is documented in [the write protocol](WRITE_PROTOCOL.md).
+Five pre-existing AL5 write traces and one read comparison now have a redacted
+metadata inventory. Their binary containers remain undecoded, so neither packet
+sequences nor successful writes are established. Prioritize recovering their
+format before collecting new traffic; see [existing traces](EFILIVE_TRACES.md).
 
 **Current named XDF: v0.12**, `TunerPro/AL5_15184109_15183960_MARKER_EXTENDED_v0_12.xdf`.
 The completed offline EFILive report resolves 83 marker cases and adds 41 items;

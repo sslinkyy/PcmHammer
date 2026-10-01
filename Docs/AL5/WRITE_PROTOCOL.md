@@ -171,6 +171,12 @@ injection for timeouts, duplicate blocks and interrupted programming. Keep live
 execution disabled until checksum corpus, session, erase, programming, readback
 and recovery evidence are all independently adequate.
 
+Five existing AL5 write trace containers and one read comparison have now been
+inventoried offline. Common bounded zlib/byte-transform probes did not decode
+them; packet sequences and flash outcomes remain unknown. See `EFILIVE_TRACES.md`.
+The planner hash-links this evidence without generating packets. Prioritize
+decoding these existing traces before creating any new programming capture.
+
 ## Staged route to live testing
 
 There is a development path to writing, but no executable AL5 live writer yet.
