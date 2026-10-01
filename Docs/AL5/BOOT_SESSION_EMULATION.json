@@ -1,0 +1,967 @@
+{
+  "low_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
+  "code_sha256": {
+    "dispatcher": "30f4e26263dbf718054a713f5728cceb4c21f7f763141d8724d1619c79d9c133",
+    "transfer": "6805cbfcef4d275c678c630a6e9301dc859d1bb76776cf0fd9d8587d12c752fa",
+    "negative_helper": "479dc4b76332bcdea62598af54fda7dc330efb694107e62ffee44a63ecbe2bf0"
+  },
+  "scope": "Extracted boot code only; synthetic RAM/FIFO and stubbed send/configuration helpers. No live application entry proof.",
+  "live_write_enabled": false,
+  "flash_code_loaded": false,
+  "cases": [
+    {
+      "case": "arm_without_seed",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6d18f034"
+          }
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 1,
+        "responses": [
+          "6df0187444"
+        ]
+      },
+      "observed_steps": [
+        {
+          "responses": [
+            "6df0187444"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000101000100",
+          "upload_armed": 1,
+          "ram_prefix": "00000000000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "arm_global_destination",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6d fef0 34"
+          }
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 1,
+        "responses": [
+          "6df0187444"
+        ]
+      },
+      "observed_steps": [
+        {
+          "responses": [
+            "6df0187444"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000101000100",
+          "upload_armed": 1,
+          "ram_prefix": "00000000000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "arm_wrong_length",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6d18f03400"
+          }
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 0,
+        "responses": [
+          "6cf0187f340012"
+        ]
+      },
+      "observed_steps": [
+        {
+          "responses": [
+            "6cf0187f340012"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000000000000",
+          "upload_armed": 0,
+          "ram_prefix": "00000000000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "arm_wrong_destination",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6d19f034"
+          }
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 0,
+        "responses": []
+      },
+      "observed_steps": [
+        {
+          "responses": [],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000000000000",
+          "upload_armed": 0,
+          "ram_prefix": "00000000000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "arm_bad_priority_flag",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6918f034"
+          }
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 0,
+        "responses": []
+      },
+      "observed_steps": [
+        {
+          "responses": [],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000000000000",
+          "upload_armed": 0,
+          "ram_prefix": "00000000000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "arm_receive_error",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6d18f034",
+            "status": 16
+          }
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 0,
+        "responses": []
+      },
+      "observed_steps": [
+        {
+          "responses": [],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000000000000",
+          "upload_armed": 0,
+          "ram_prefix": "00000000000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "arm_receive_status_bit3",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6d18f034",
+            "status": 8
+          }
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 0,
+        "responses": []
+      },
+      "observed_steps": [
+        {
+          "responses": [],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000000000000",
+          "upload_armed": 0,
+          "ram_prefix": "00000000000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "seed_zero_boot_only",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6d18f02701"
+          }
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 0,
+        "responses": [
+          "6df01867010000"
+        ]
+      },
+      "observed_steps": [
+        {
+          "responses": [
+            "6df01867010000"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000001000100",
+          "upload_armed": 0,
+          "ram_prefix": "00000000000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "key_subfunction_rejected",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6d18f027021234"
+          }
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 0,
+        "responses": [
+          "6cf0187f2702123422"
+        ]
+      },
+      "observed_steps": [
+        {
+          "responses": [
+            "6cf0187f2702123422"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000000000000",
+          "upload_armed": 0,
+          "ram_prefix": "00000000000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "seed_wrong_length",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6d18f02701",
+            "declared_length": 4
+          }
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 0,
+        "responses": [
+          "6cf0187f2712"
+        ]
+      },
+      "observed_steps": [
+        {
+          "responses": [
+            "6cf0187f2712"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000000000000",
+          "upload_armed": 0,
+          "ram_prefix": "00000000000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "unsupported_service",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6d18f035"
+          }
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 0,
+        "responses": [
+          "6cf0187f3511"
+        ]
+      },
+      "observed_steps": [
+        {
+          "responses": [
+            "6cf0187f3511"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000000000000",
+          "upload_armed": 0,
+          "ram_prefix": "00000000000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "response_service_ignored",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6d18f074"
+          }
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 0,
+        "responses": []
+      },
+      "observed_steps": [
+        {
+          "responses": [],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000000000000",
+          "upload_armed": 0,
+          "ram_prefix": "00000000000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "communication_control_global",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6dfef02800"
+          }
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 0,
+        "responses": [
+          "6df0186800"
+        ]
+      },
+      "observed_steps": [
+        {
+          "responses": [
+            "6df0186800"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000001000100",
+          "upload_armed": 0,
+          "ram_prefix": "00000000000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "communication_control_local_rejected",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6d18f02800"
+          }
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 0,
+        "responses": [
+          "6cf0187f280012"
+        ]
+      },
+      "observed_steps": [
+        {
+          "responses": [
+            "6cf0187f280012"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000000000000",
+          "upload_armed": 0,
+          "ram_prefix": "00000000000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "unarmed_transfer",
+      "steps": [
+        {
+          "method": "transfer",
+          "input": {}
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 0,
+        "responses": [
+          "6cf0187f36000004ff9022"
+        ],
+        "ram_prefix": "12345678000000000000000000000000"
+      },
+      "observed_steps": [
+        {
+          "responses": [
+            "6cf0187f36000004ff9022"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 13,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000000000000",
+          "upload_armed": 0,
+          "ram_prefix": "12345678000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "arm_then_transfer",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6d18f034"
+          }
+        },
+        {
+          "method": "transfer",
+          "input": {}
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 1,
+        "responses": [
+          "6cf018760073"
+        ],
+        "ram_prefix": "12345678000000000000000000000000"
+      },
+      "observed_steps": [
+        {
+          "responses": [
+            "6df0187444"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000101000100",
+          "upload_armed": 1,
+          "ram_prefix": "00000000000000000000000000000000"
+        },
+        {
+          "responses": [
+            "6cf018760073"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 13,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000101000100",
+          "upload_armed": 1,
+          "ram_prefix": "12345678000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "arm_duplicate_transfer",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6d18f034"
+          }
+        },
+        {
+          "method": "transfer",
+          "input": {}
+        },
+        {
+          "method": "transfer",
+          "input": {}
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 1,
+        "responses": [
+          "6cf018760073"
+        ],
+        "ram_prefix": "12345678000000000000000000000000"
+      },
+      "observed_steps": [
+        {
+          "responses": [
+            "6df0187444"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000101000100",
+          "upload_armed": 1,
+          "ram_prefix": "00000000000000000000000000000000"
+        },
+        {
+          "responses": [
+            "6cf018760073"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 13,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000101000100",
+          "upload_armed": 1,
+          "ram_prefix": "12345678000000000000000000000000"
+        },
+        {
+          "responses": [
+            "6cf018760073"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 13,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000101000100",
+          "upload_armed": 1,
+          "ram_prefix": "12345678000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "bad_checksum_retains_arming",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6d18f034"
+          }
+        },
+        {
+          "method": "transfer",
+          "input": {
+            "corrupt_checksum": true
+          }
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 1,
+        "responses": [
+          "6cf018760077"
+        ],
+        "ram_prefix": "12345678000000000000000000000000"
+      },
+      "observed_steps": [
+        {
+          "responses": [
+            "6df0187444"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000101000100",
+          "upload_armed": 1,
+          "ram_prefix": "00000000000000000000000000000000"
+        },
+        {
+          "responses": [
+            "6cf018760077"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 13,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000101000100",
+          "upload_armed": 1,
+          "ram_prefix": "12345678000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "checksum_failure_then_valid_retry",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6d18f034"
+          }
+        },
+        {
+          "method": "transfer",
+          "input": {
+            "corrupt_checksum": true
+          }
+        },
+        {
+          "method": "transfer",
+          "input": {}
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 1,
+        "responses": [
+          "6cf018760073"
+        ],
+        "ram_prefix": "12345678000000000000000000000000"
+      },
+      "observed_steps": [
+        {
+          "responses": [
+            "6df0187444"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000101000100",
+          "upload_armed": 1,
+          "ram_prefix": "00000000000000000000000000000000"
+        },
+        {
+          "responses": [
+            "6cf018760077"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 13,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000101000100",
+          "upload_armed": 1,
+          "ram_prefix": "12345678000000000000000000000000"
+        },
+        {
+          "responses": [
+            "6cf018760073"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 13,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000101000100",
+          "upload_armed": 1,
+          "ram_prefix": "12345678000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "uploaded_execution_trapped",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6d18f034"
+          }
+        },
+        {
+          "method": "transfer",
+          "input": {
+            "subtype": 128
+          }
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 1,
+        "uploaded_execution_trapped": true,
+        "responses": []
+      },
+      "observed_steps": [
+        {
+          "responses": [
+            "6df0187444"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000101000100",
+          "upload_armed": 1,
+          "ram_prefix": "00000000000000000000000000000000"
+        },
+        {
+          "responses": [],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 13,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": true,
+          "flags_8183_to_8189": "00000101000100",
+          "upload_armed": 1,
+          "ram_prefix": "12345678000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "bad_arm_length_does_not_clear_previous_arm",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6d18f034"
+          }
+        },
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6d18f03400"
+          }
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 1,
+        "responses": [
+          "6cf0187f340012"
+        ]
+      },
+      "observed_steps": [
+        {
+          "responses": [
+            "6df0187444"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000101000100",
+          "upload_armed": 1,
+          "ram_prefix": "00000000000000000000000000000000"
+        },
+        {
+          "responses": [
+            "6cf0187f340012"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000101000100",
+          "upload_armed": 1,
+          "ram_prefix": "00000000000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "service_3f_does_not_disarm",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6d18f034"
+          }
+        },
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6d18f03f"
+          }
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 1,
+        "responses": []
+      },
+      "observed_steps": [
+        {
+          "responses": [
+            "6df0187444"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000101000100",
+          "upload_armed": 1,
+          "ram_prefix": "00000000000000000000000000000000"
+        },
+        {
+          "responses": [],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000101000100",
+          "upload_armed": 1,
+          "ram_prefix": "00000000000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "a1_without_a0_rejected",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6dfef0a1"
+          }
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 0,
+        "responses": [
+          "6cf0187fa122"
+        ]
+      },
+      "observed_steps": [
+        {
+          "responses": [
+            "6cf0187fa122"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "00000000000000",
+          "upload_armed": 0,
+          "ram_prefix": "00000000000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "a0_sets_separate_flag",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6dfef0a0"
+          }
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 0,
+        "responses": [
+          "6df018e0aa"
+        ]
+      },
+      "observed_steps": [
+        {
+          "responses": [
+            "6df018e0aa"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "01000001000100",
+          "upload_armed": 0,
+          "ram_prefix": "00000000000000000000000000000000"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "a0_then_a1_external_helper_trapped",
+      "steps": [
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6dfef0a0"
+          }
+        },
+        {
+          "method": "dispatch",
+          "input": {
+            "staged": "6dfef0a1"
+          }
+        }
+      ],
+      "expected_final": {
+        "upload_armed": 0,
+        "responses": [],
+        "external_helper_arguments": [
+          "1003"
+        ],
+        "flags_8183_to_8189": "01010001000100"
+      },
+      "observed_steps": [
+        {
+          "responses": [
+            "6df018e0aa"
+          ],
+          "external_helper_arguments": [],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "01000001000100",
+          "upload_armed": 0,
+          "ram_prefix": "00000000000000000000000000000000"
+        },
+        {
+          "responses": [],
+          "external_helper_arguments": [
+            "1003"
+          ],
+          "fifo_events_consumed": 0,
+          "flush_calls": 0,
+          "uploaded_execution_trapped": false,
+          "flags_8183_to_8189": "01010001000100",
+          "upload_armed": 0,
+          "ram_prefix": "00000000000000000000000000000000"
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "all_pass": true
+}

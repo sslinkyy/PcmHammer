@@ -27,6 +27,10 @@ The existing PCM writer cannot be assumed to apply to VPW module `0x18`.
 5. **Session → Loader ready. Partially reconstructed offline.** The boot
    firmware RAM-transfer handler and its bounds/checksum/status/execute behavior
    have been exercised in an isolated emulator; see `BOOT_RAM_TRANSFER.md`.
+   The boot dispatcher now sets upload arming in 25 stateful emulator cases,
+   including arming followed by transfer; see `BOOT_SESSION.md`. The real
+   negative-response helper is exercised, but transmit/FIFO/configuration
+   helpers and receive cleanup remain modeled.
    Reachability from the current application, whether flashing requires this
    loader path, the kernel ABI and safe recovery remain unproven. No live upload
    is enabled.
@@ -79,6 +83,10 @@ PPEI-to-stock rebase. Identifying the enum does not expand the write allowlist.
 `erase_packets`, and `program_packets` are always empty. Erase scope and program
 block size are null. Exit code 2 means readiness blocked, even if all file checks
 pass. Printing fabricated destructive packets would misrepresent the evidence.
+
+The report also links the boot-session emulator evidence by SHA256. Passing
+offline boot cases does not authorize a live session or verify application
+entry; both remain explicitly false. No executable packet plan is generated.
 
 The report includes a hash-linked preservation assessment from the static
 resident inventory. The inferred 41,000 extra bytes and candidate intervals

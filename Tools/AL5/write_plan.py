@@ -9,6 +9,22 @@ from checksum import checksum_valid
 
 DEFAULT_TARGETS = Path(__file__).resolve().parents[2] / 'Docs/AL5/TunerPro/AL5_FIRST_VEHICLE_TEST_1-2_MINIMAL_v0_2_TARGETS.csv'
 RESIDENT_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/RESIDENT_FLASH_INVENTORY.json'
+BOOT_SESSION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/BOOT_SESSION_EMULATION.json'
+
+
+def boot_loader_assessment():
+    evidence_bytes = BOOT_SESSION_EVIDENCE.read_bytes()
+    evidence = json.loads(evidence_bytes)
+    return {'evidence': 'Docs/AL5/BOOT_SESSION_EMULATION.json',
+            'evidence_sha256': sha256(evidence_bytes),
+            'firmware_source_sha256': evidence['low_sha256'],
+            'code_sha256': evidence['code_sha256'],
+            'scope': evidence['scope'],
+            'offline_cases_pass': evidence['all_pass'],
+            'application_entry_verified': False,
+            'live_session_authorized': False,
+            'note': 'Boot arming and RAM-transfer sequences are exercised offline. '
+                    'They do not prove entry from the running application or a flash protocol.'}
 
 
 def preservation_assessment():
@@ -73,6 +89,7 @@ def plan(current, candidate, expected_hash, controller, os_id):
                          'Exact erase geometry and current collateral backup/preservation are unverified.',
                          'Live AL5 writing is unconditionally disabled.'],
             'preservation_assessment': preservation_assessment(),
+            'boot_loader_assessment': boot_loader_assessment(),
             'diff_ranges': ranges,
             'requested_calibration_range': {'start': '0x08000', 'end_inclusive': '0x15FD7'},
             'erase_scope': None, 'program_block_size': None,

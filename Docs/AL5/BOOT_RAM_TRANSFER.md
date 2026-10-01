@@ -12,8 +12,10 @@ The dispatcher checks destination `0x18` (with a distinct global `0xFE` path),
 header flags and frame length. It branches on service `0x27`, `0x28`, `0x34`,
 `0x3C`, `0x3F`, `0xA0` and `0xA1`. The `0x34` branch at `0x35FA` requires
 four wire bytes, prepares response service `0x74` plus byte `0x44`, and sets
-the byte at `0xFF8185` to one. This is static evidence for an upload-arming
-transition; it has not been exercised on hardware or emulated end-to-end.
+the byte at `0xFF8185` to one. This transition is now exercised in the isolated
+boot dispatcher, followed by RAM transfer with retained state; see
+`BOOT_SESSION.md`. Full receive hardware and application-to-boot entry remain
+unproven, and no hardware upload was performed.
 
 The `0x27` branch in this boot path prepares seed zero for subfunction one.
 That differs from the live application's observed seed `0x9CE5`. Do not replace
@@ -56,8 +58,9 @@ responses observed from the extracted firmware are:
 - subtype one: `6C F0 18 76 01 76`.
 
 With upload-arming state clear, the handler calls its negative-response helper
-with `0x22`; the helper is stubbed in these tests, so the resulting wire frame
-is not claimed. Subtype `0x80` attempts a call to the uploaded start address
+with `0x22`; the helper is stubbed in these original tests. The newer boot
+session harness executes that helper and records its request-byte echo and
+reason in the logical send buffer; physical transmission remains untested. Subtype `0x80` attempts a call to the uploaded start address
 after the end-of-frame checks. The emulator stops at that entry without
 executing any uploaded bytes. No execute-capable production builder was added.
 

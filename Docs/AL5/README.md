@@ -39,6 +39,11 @@ All new reverse engineering and validation were offline.
   The boot RAM-transfer handler passes thirteen offline boundary/fault cases.
   Its packet fields, RAM bounds and status codes are documented in
   `BOOT_RAM_TRANSFER.md`; this does not enable live uploading or programming.
+- Twenty-five stateful boot-dispatch/transfer emulator cases now verify upload
+  arming, input guards, negative-response echoes and retained RAM/arming state.
+  The receive cleanup and hardware helpers remain modeled; application-to-boot
+  entry remains unproven. See `BOOT_SESSION.md`. The planner links this evidence
+  without enabling live session access or emitting packets.
 - A resident boot erase/program primitive is statically traced, including its
   RAM copy, selector table and word-program loop. Neighbor-start inference flags
   41,000 bytes outside calibration that could require preservation. Actual

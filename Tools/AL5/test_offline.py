@@ -44,6 +44,20 @@ class OfflineSafetyTests(unittest.TestCase):
         self.assertTrue(any('SHA256' in e for e in report['input_errors']))
         self.assertTrue(any('context' in e for e in report['input_errors']))
 
+    def test_boot_emulation_evidence_cannot_enable_live_session_or_packets(self):
+        data = fixture()
+        report = plan(data, data, sha256(data), 'AL5', 15184109)
+        boot = report['boot_loader_assessment']
+        self.assertTrue(boot['offline_cases_pass'])
+        evidence = Path(__file__).resolve().parents[2]/boot['evidence']
+        self.assertEqual(sha256(evidence.read_bytes()), boot['evidence_sha256'])
+        self.assertFalse(boot['application_entry_verified'])
+        self.assertFalse(boot['live_session_authorized'])
+        self.assertFalse(report['ready_to_flash'])
+        self.assertIsNone(report['program_block_size'])
+        for key in ('would_send', 'erase_packets', 'program_packets'):
+            self.assertEqual([], report[key])
+
     def test_collateral_inference_never_becomes_executable_erase_scope(self):
         data = fixture()
         report = plan(data, data, sha256(data), 'AL5', 15184109)
