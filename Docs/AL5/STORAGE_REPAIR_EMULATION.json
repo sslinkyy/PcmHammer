@@ -1,0 +1,1207 @@
+{
+  "low_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
+  "high_sha256": "492040d9460d53b77dda606b9a89f4254e0680f239093001663f6ed5cf51ba75",
+  "code_sha256": {
+    "0x22250": "d24d9cc3872f35725a82490c6717dc2c1031a1fb9e907dc4810e0bfcc2a9be91",
+    "0x2266c": "e190f20d989cc7cd47936232a3c6fa893f89805830582c6709742c47db5a66da",
+    "0x226f0": "5711c66515715f7a3577128e4cdde4f66fa74f33a7a947175b4f9dd59922755b",
+    "0x22cae": "92454c7e358a9c3ee87926a61b25ffc1fd6e2e78ed6d81a896f261ae11c7961e",
+    "0x22da8": "92454c7e358a9c3ee87926a61b25ffc1fd6e2e78ed6d81a896f261ae11c7961e"
+  },
+  "scope": "Real selector repair caller with successful atomic synthetic bank operations; bounded program/copy error branches with synthetic status. No flash implementation execution.",
+  "model_limits": "Bank spans assumed; no failed-erase contents, partial programming, timing or physical reset/recovery simulation. Status-mask helper bypassed in wrapper error slices.",
+  "repair_cases": [
+    {
+      "case": "bad_bank2_header_with_committed_bank1",
+      "inputs": {
+        "bad_header2": true
+      },
+      "observed": {
+        "operations": [
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x4000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "127fd7451adfe53b3b69c4fc880ab98a78f3b89870fc631ece9f4bf162ed1c2b",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x6000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "aebecb7991516004be88336006e73f2b7d6b667142469e2cd6f4057ed7765aef",
+            "word": null,
+            "implementation_executed": false
+          }
+        ],
+        "returned": true,
+        "selected_record": "0x4028",
+        "selected_state": "0xaa",
+        "bank_metadata": [
+          {
+            "start": "0x4000",
+            "generation_word": 11,
+            "record_marker": "00aa",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "7eefceb9006f3f6bd036aac2d25d0d474c78cc70fc1536b32ae7d351ae534863"
+          },
+          {
+            "start": "0x6000",
+            "generation_word": 12,
+            "record_marker": "0000",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "3dbd75bda8f15f846d4e6978885ea59ffd82814ea9ac7606c8378688958d9479"
+          }
+        ],
+        "reboot_selection": {
+          "selected_record": "0x4028",
+          "selected_context_sha256": "dd38513e582fd11f1b3c472c02776d9d75c6bf672e285e4b65861d3f87131ed5",
+          "storage_trap": null,
+          "banks_unchanged_during_selection": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "case": "bad_bank1_header",
+      "inputs": {
+        "bad_header1": true
+      },
+      "observed": {
+        "operations": [
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x4000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "127fd7451adfe53b3b69c4fc880ab98a78f3b89870fc631ece9f4bf162ed1c2b",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x6000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "aebecb7991516004be88336006e73f2b7d6b667142469e2cd6f4057ed7765aef",
+            "word": null,
+            "implementation_executed": false
+          }
+        ],
+        "returned": true,
+        "selected_record": "0x4028",
+        "selected_state": "0xaa",
+        "bank_metadata": [
+          {
+            "start": "0x4000",
+            "generation_word": 11,
+            "record_marker": "00aa",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "7eefceb9006f3f6bd036aac2d25d0d474c78cc70fc1536b32ae7d351ae534863"
+          },
+          {
+            "start": "0x6000",
+            "generation_word": 12,
+            "record_marker": "0000",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "3dbd75bda8f15f846d4e6978885ea59ffd82814ea9ac7606c8378688958d9479"
+          }
+        ],
+        "reboot_selection": {
+          "selected_record": "0x4028",
+          "selected_context_sha256": "dd38513e582fd11f1b3c472c02776d9d75c6bf672e285e4b65861d3f87131ed5",
+          "storage_trap": null,
+          "banks_unchanged_during_selection": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "case": "both_valid_headers_no_commits",
+      "inputs": {
+        "missing_commit": true
+      },
+      "observed": {
+        "operations": [
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x4000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "127fd7451adfe53b3b69c4fc880ab98a78f3b89870fc631ece9f4bf162ed1c2b",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x6000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "aebecb7991516004be88336006e73f2b7d6b667142469e2cd6f4057ed7765aef",
+            "word": null,
+            "implementation_executed": false
+          }
+        ],
+        "returned": true,
+        "selected_record": "0x4028",
+        "selected_state": "0xaa",
+        "bank_metadata": [
+          {
+            "start": "0x4000",
+            "generation_word": 11,
+            "record_marker": "00aa",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "7eefceb9006f3f6bd036aac2d25d0d474c78cc70fc1536b32ae7d351ae534863"
+          },
+          {
+            "start": "0x6000",
+            "generation_word": 12,
+            "record_marker": "0000",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "3dbd75bda8f15f846d4e6978885ea59ffd82814ea9ac7606c8378688958d9479"
+          }
+        ],
+        "reboot_selection": {
+          "selected_record": "0x4028",
+          "selected_context_sha256": "dd38513e582fd11f1b3c472c02776d9d75c6bf672e285e4b65861d3f87131ed5",
+          "storage_trap": null,
+          "banks_unchanged_during_selection": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "case": "erased_generation_normalized",
+      "inputs": {
+        "missing_commit": true,
+        "count1": 65535,
+        "count2": 65535
+      },
+      "observed": {
+        "operations": [
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x4000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "12fb8de5f055dc94dd07edbc63f4ea9334b0de4a532078ef9c3fcc5dc99221ed",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x6000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "cee4fee920ff5d7f6425ee639d3bd32138bf91635d36ffac27f52e2d477446c7",
+            "word": null,
+            "implementation_executed": false
+          }
+        ],
+        "returned": true,
+        "selected_record": "0x4028",
+        "selected_state": "0xaa",
+        "bank_metadata": [
+          {
+            "start": "0x4000",
+            "generation_word": 1,
+            "record_marker": "00aa",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "d8e7549ec4c7a15c0fa29ece0c6a6609d0f5b3a3cd46086d0868651f73e76091"
+          },
+          {
+            "start": "0x6000",
+            "generation_word": 2,
+            "record_marker": "0000",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "447bf2775c4b049b1da89f337cb5c2e3e2e22fd4b221bc23d6f7a9a37bab9a48"
+          }
+        ],
+        "reboot_selection": {
+          "selected_record": "0x4028",
+          "selected_context_sha256": "dd38513e582fd11f1b3c472c02776d9d75c6bf672e285e4b65861d3f87131ed5",
+          "storage_trap": null,
+          "banks_unchanged_during_selection": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "case": "generation_wrap",
+      "inputs": {
+        "missing_commit": true,
+        "count1": 65534,
+        "count2": 65534
+      },
+      "observed": {
+        "operations": [
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x4000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "cc6f3e42771f4a01ecd12390c0e6018d6824ab4905c6633e2d6e131013dfb930",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x6000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "5fb17954450fffb6428eabcd1187699f64ce29382c8ab6ca8ce393c6f330f780",
+            "word": null,
+            "implementation_executed": false
+          }
+        ],
+        "returned": true,
+        "selected_record": "0x4028",
+        "selected_state": "0xaa",
+        "bank_metadata": [
+          {
+            "start": "0x4000",
+            "generation_word": 65535,
+            "record_marker": "00aa",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "94b151ed186b8b312ecc6a1f25f20c4098c19aef346b20fd909a5ee1af69beed"
+          },
+          {
+            "start": "0x6000",
+            "generation_word": 0,
+            "record_marker": "0000",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "29b21c887b11c4556a118db42885081b29ec590cfeaf81a7eb0bef30aa5bfaba"
+          }
+        ],
+        "reboot_selection": {
+          "selected_record": "0x4028",
+          "selected_context_sha256": "dd38513e582fd11f1b3c472c02776d9d75c6bf672e285e4b65861d3f87131ed5",
+          "storage_trap": null,
+          "banks_unchanged_during_selection": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "case": "erase_error_status_returned_after_atomic_erase",
+      "inputs": {
+        "missing_commit": true,
+        "erase_status": 8192
+      },
+      "observed": {
+        "operations": [
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x4000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x2000"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "127fd7451adfe53b3b69c4fc880ab98a78f3b89870fc631ece9f4bf162ed1c2b",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x6000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x2000"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "aebecb7991516004be88336006e73f2b7d6b667142469e2cd6f4057ed7765aef",
+            "word": null,
+            "implementation_executed": false
+          }
+        ],
+        "returned": true,
+        "selected_record": "0x4028",
+        "selected_state": "0xaa",
+        "bank_metadata": [
+          {
+            "start": "0x4000",
+            "generation_word": 11,
+            "record_marker": "00aa",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "7eefceb9006f3f6bd036aac2d25d0d474c78cc70fc1536b32ae7d351ae534863"
+          },
+          {
+            "start": "0x6000",
+            "generation_word": 12,
+            "record_marker": "0000",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "3dbd75bda8f15f846d4e6978885ea59ffd82814ea9ac7606c8378688958d9479"
+          }
+        ],
+        "reboot_selection": {
+          "selected_record": "0x4028",
+          "selected_context_sha256": "dd38513e582fd11f1b3c472c02776d9d75c6bf672e285e4b65861d3f87131ed5",
+          "storage_trap": null,
+          "banks_unchanged_during_selection": true
+        }
+      },
+      "pass": true
+    }
+  ],
+  "interruption_cases": [
+    {
+      "interrupt_after_operations": 0,
+      "observed": {
+        "operations": [],
+        "returned": false,
+        "selected_record": null,
+        "selected_state": "0x0",
+        "bank_metadata": [
+          {
+            "start": "0x4000",
+            "generation_word": 10,
+            "record_marker": "0000",
+            "context_erased": false,
+            "tail_erased": false,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "dbdd3d1a4d22d5006fda08f7872e3d110b5fcb7feb947421dd43dc261ef000df"
+          },
+          {
+            "start": "0x6000",
+            "generation_word": 9,
+            "record_marker": "0000",
+            "context_erased": false,
+            "tail_erased": false,
+            "header_metadata_matches_original_bank1": false,
+            "bank_sha256": "726ab44539e305be02bb7a99b2ce80e0bb0c77f91d010562eb2baee9bd9b32cf"
+          }
+        ],
+        "reboot_selection": {
+          "selected_record": null,
+          "selected_context_sha256": null,
+          "storage_trap": {
+            "entry": "0x22b18",
+            "arguments": [
+              "0x2087cc",
+              "0x4000"
+            ],
+            "implementation_executed": false
+          },
+          "banks_unchanged_during_selection": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "interrupt_after_operations": 1,
+      "observed": {
+        "operations": [
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x4000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          }
+        ],
+        "returned": false,
+        "selected_record": null,
+        "selected_state": "0x0",
+        "bank_metadata": [
+          {
+            "start": "0x4000",
+            "generation_word": 65535,
+            "record_marker": "ffff",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": false,
+            "bank_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f"
+          },
+          {
+            "start": "0x6000",
+            "generation_word": 9,
+            "record_marker": "0000",
+            "context_erased": false,
+            "tail_erased": false,
+            "header_metadata_matches_original_bank1": false,
+            "bank_sha256": "726ab44539e305be02bb7a99b2ce80e0bb0c77f91d010562eb2baee9bd9b32cf"
+          }
+        ],
+        "reboot_selection": {
+          "selected_record": null,
+          "selected_context_sha256": null,
+          "storage_trap": {
+            "entry": "0x22b18",
+            "arguments": [
+              "0x2087cc",
+              "0x4000"
+            ],
+            "implementation_executed": false
+          },
+          "banks_unchanged_during_selection": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "interrupt_after_operations": 2,
+      "observed": {
+        "operations": [
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x4000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "127fd7451adfe53b3b69c4fc880ab98a78f3b89870fc631ece9f4bf162ed1c2b",
+            "word": null,
+            "implementation_executed": false
+          }
+        ],
+        "returned": false,
+        "selected_record": null,
+        "selected_state": "0x0",
+        "bank_metadata": [
+          {
+            "start": "0x4000",
+            "generation_word": 11,
+            "record_marker": "00aa",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "7eefceb9006f3f6bd036aac2d25d0d474c78cc70fc1536b32ae7d351ae534863"
+          },
+          {
+            "start": "0x6000",
+            "generation_word": 9,
+            "record_marker": "0000",
+            "context_erased": false,
+            "tail_erased": false,
+            "header_metadata_matches_original_bank1": false,
+            "bank_sha256": "726ab44539e305be02bb7a99b2ce80e0bb0c77f91d010562eb2baee9bd9b32cf"
+          }
+        ],
+        "reboot_selection": {
+          "selected_record": "0x4028",
+          "selected_context_sha256": "dd38513e582fd11f1b3c472c02776d9d75c6bf672e285e4b65861d3f87131ed5",
+          "storage_trap": null,
+          "banks_unchanged_during_selection": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "interrupt_after_operations": 3,
+      "observed": {
+        "operations": [
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x4000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "127fd7451adfe53b3b69c4fc880ab98a78f3b89870fc631ece9f4bf162ed1c2b",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x6000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          }
+        ],
+        "returned": false,
+        "selected_record": null,
+        "selected_state": "0xaa",
+        "bank_metadata": [
+          {
+            "start": "0x4000",
+            "generation_word": 11,
+            "record_marker": "00aa",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "7eefceb9006f3f6bd036aac2d25d0d474c78cc70fc1536b32ae7d351ae534863"
+          },
+          {
+            "start": "0x6000",
+            "generation_word": 65535,
+            "record_marker": "ffff",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": false,
+            "bank_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f"
+          }
+        ],
+        "reboot_selection": {
+          "selected_record": null,
+          "selected_context_sha256": null,
+          "storage_trap": {
+            "entry": "0x22b18",
+            "arguments": [
+              "0x2087cc",
+              "0x4000"
+            ],
+            "implementation_executed": false
+          },
+          "banks_unchanged_during_selection": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "interrupt_after_operations": 4,
+      "observed": {
+        "operations": [
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x4000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "127fd7451adfe53b3b69c4fc880ab98a78f3b89870fc631ece9f4bf162ed1c2b",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x6000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "aebecb7991516004be88336006e73f2b7d6b667142469e2cd6f4057ed7765aef",
+            "word": null,
+            "implementation_executed": false
+          }
+        ],
+        "returned": false,
+        "selected_record": null,
+        "selected_state": "0xaa",
+        "bank_metadata": [
+          {
+            "start": "0x4000",
+            "generation_word": 11,
+            "record_marker": "00aa",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "7eefceb9006f3f6bd036aac2d25d0d474c78cc70fc1536b32ae7d351ae534863"
+          },
+          {
+            "start": "0x6000",
+            "generation_word": 12,
+            "record_marker": "0000",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "3dbd75bda8f15f846d4e6978885ea59ffd82814ea9ac7606c8378688958d9479"
+          }
+        ],
+        "reboot_selection": {
+          "selected_record": "0x4028",
+          "selected_context_sha256": "dd38513e582fd11f1b3c472c02776d9d75c6bf672e285e4b65861d3f87131ed5",
+          "storage_trap": null,
+          "banks_unchanged_during_selection": true
+        }
+      },
+      "pass": true
+    }
+  ],
+  "interrupted_update_repair_cases": [
+    {
+      "active_bank_before_update": "0x4000",
+      "update_interrupted_after_operations": 1,
+      "observed": {
+        "operations": [
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x4000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "127fd7451adfe53b3b69c4fc880ab98a78f3b89870fc631ece9f4bf162ed1c2b",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x6000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "aebecb7991516004be88336006e73f2b7d6b667142469e2cd6f4057ed7765aef",
+            "word": null,
+            "implementation_executed": false
+          }
+        ],
+        "returned": true,
+        "selected_record": "0x4028",
+        "selected_state": "0xaa",
+        "bank_metadata": [
+          {
+            "start": "0x4000",
+            "generation_word": 11,
+            "record_marker": "00aa",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "7eefceb9006f3f6bd036aac2d25d0d474c78cc70fc1536b32ae7d351ae534863"
+          },
+          {
+            "start": "0x6000",
+            "generation_word": 12,
+            "record_marker": "0000",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "3dbd75bda8f15f846d4e6978885ea59ffd82814ea9ac7606c8378688958d9479"
+          }
+        ],
+        "reboot_selection": {
+          "selected_record": "0x4028",
+          "selected_context_sha256": "dd38513e582fd11f1b3c472c02776d9d75c6bf672e285e4b65861d3f87131ed5",
+          "storage_trap": null,
+          "banks_unchanged_during_selection": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "active_bank_before_update": "0x4000",
+      "update_interrupted_after_operations": 2,
+      "observed": {
+        "operations": [
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x4000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "127fd7451adfe53b3b69c4fc880ab98a78f3b89870fc631ece9f4bf162ed1c2b",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x6000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "aebecb7991516004be88336006e73f2b7d6b667142469e2cd6f4057ed7765aef",
+            "word": null,
+            "implementation_executed": false
+          }
+        ],
+        "returned": true,
+        "selected_record": "0x4028",
+        "selected_state": "0xaa",
+        "bank_metadata": [
+          {
+            "start": "0x4000",
+            "generation_word": 11,
+            "record_marker": "00aa",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "7eefceb9006f3f6bd036aac2d25d0d474c78cc70fc1536b32ae7d351ae534863"
+          },
+          {
+            "start": "0x6000",
+            "generation_word": 12,
+            "record_marker": "0000",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "3dbd75bda8f15f846d4e6978885ea59ffd82814ea9ac7606c8378688958d9479"
+          }
+        ],
+        "reboot_selection": {
+          "selected_record": "0x4028",
+          "selected_context_sha256": "dd38513e582fd11f1b3c472c02776d9d75c6bf672e285e4b65861d3f87131ed5",
+          "storage_trap": null,
+          "banks_unchanged_during_selection": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "active_bank_before_update": "0x6000",
+      "update_interrupted_after_operations": 1,
+      "observed": {
+        "operations": [
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x4000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "92e1ba6a0acbda4eb7d51a912f5c9ac8eb78668f1e4e8a66688650538f39d1bd",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x6000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "bc74ddfeb9980ddd2f5fce8dc811bff364c95288caaa65947f2877ee42b5a9c7",
+            "word": null,
+            "implementation_executed": false
+          }
+        ],
+        "returned": true,
+        "selected_record": "0x4028",
+        "selected_state": "0xaa",
+        "bank_metadata": [
+          {
+            "start": "0x4000",
+            "generation_word": 10,
+            "record_marker": "00aa",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "24558c4d0ed11229c0d99407493d6202a543f175d7e0e208f786465fd2cfe4f2"
+          },
+          {
+            "start": "0x6000",
+            "generation_word": 11,
+            "record_marker": "0000",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "82283a08769efe70a593506a7859ff563cfc03f204c0420c0fd35ecd504c3541"
+          }
+        ],
+        "reboot_selection": {
+          "selected_record": "0x4028",
+          "selected_context_sha256": "dd38513e582fd11f1b3c472c02776d9d75c6bf672e285e4b65861d3f87131ed5",
+          "storage_trap": null,
+          "banks_unchanged_during_selection": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "active_bank_before_update": "0x6000",
+      "update_interrupted_after_operations": 2,
+      "observed": {
+        "operations": [
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x4000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x4000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "92e1ba6a0acbda4eb7d51a912f5c9ac8eb78668f1e4e8a66688650538f39d1bd",
+            "word": null,
+            "implementation_executed": false
+          },
+          {
+            "entry": "0x22b18",
+            "kind": "synthetic_erase",
+            "destination": "0x6000",
+            "bytes": 8192,
+            "source": null,
+            "payload_sha256": "7d2c7ac4888bfd75cd5f56e8d61f69595121183afc81556c876732fd3782c62f",
+            "word": null,
+            "implementation_executed": false,
+            "returned_status": "0x0"
+          },
+          {
+            "entry": "0x22c3c",
+            "kind": "synthetic_program",
+            "destination": "0x6000",
+            "bytes": 42,
+            "source": "0x2087d0",
+            "payload_sha256": "bc74ddfeb9980ddd2f5fce8dc811bff364c95288caaa65947f2877ee42b5a9c7",
+            "word": null,
+            "implementation_executed": false
+          }
+        ],
+        "returned": true,
+        "selected_record": "0x4028",
+        "selected_state": "0xaa",
+        "bank_metadata": [
+          {
+            "start": "0x4000",
+            "generation_word": 10,
+            "record_marker": "00aa",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "24558c4d0ed11229c0d99407493d6202a543f175d7e0e208f786465fd2cfe4f2"
+          },
+          {
+            "start": "0x6000",
+            "generation_word": 11,
+            "record_marker": "0000",
+            "context_erased": true,
+            "tail_erased": true,
+            "header_metadata_matches_original_bank1": true,
+            "bank_sha256": "82283a08769efe70a593506a7859ff563cfc03f204c0420c0fd35ecd504c3541"
+          }
+        ],
+        "reboot_selection": {
+          "selected_record": "0x4028",
+          "selected_context_sha256": "dd38513e582fd11f1b3c472c02776d9d75c6bf672e285e4b65861d3f87131ed5",
+          "storage_trap": null,
+          "banks_unchanged_during_selection": true
+        }
+      },
+      "pass": true
+    }
+  ],
+  "wrapper_error_cases": [
+    {
+      "entry": "0x22cae",
+      "synthetic_status_byte": "0x0",
+      "observed": {
+        "stop_pc": "0x22cc4",
+        "marker": "0x0"
+      },
+      "expected": {
+        "stop_pc": "0x22cc4",
+        "marker": "0x0"
+      },
+      "pass": true
+    },
+    {
+      "entry": "0x22cae",
+      "synthetic_status_byte": "0x20",
+      "observed": {
+        "stop_pc": "0x22cc2",
+        "marker": "0x6124"
+      },
+      "expected": {
+        "stop_pc": "0x22cc2",
+        "marker": "0x6124"
+      },
+      "pass": true
+    },
+    {
+      "entry": "0x22da8",
+      "synthetic_status_byte": "0x0",
+      "observed": {
+        "stop_pc": "0x22dbe",
+        "marker": "0x0"
+      },
+      "expected": {
+        "stop_pc": "0x22dbe",
+        "marker": "0x0"
+      },
+      "pass": true
+    },
+    {
+      "entry": "0x22da8",
+      "synthetic_status_byte": "0x20",
+      "observed": {
+        "stop_pc": "0x22dbc",
+        "marker": "0x6124"
+      },
+      "expected": {
+        "stop_pc": "0x22dbc",
+        "marker": "0x6124"
+      },
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "flash_implementation_executed": false,
+  "physical_recovery_verified": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "would_send": []
+}

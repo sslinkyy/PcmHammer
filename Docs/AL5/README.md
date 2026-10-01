@@ -87,8 +87,11 @@ current physical preservation remains unverified. See
 checks restored CRC and traps a mismatch at marker `0x8C9B`. Three validation
 and eighteen atomic update/interruption cases pass; early interruption enters
 repair despite a surviving committed record. See
-[storage recovery model](STORAGE_RECOVERY.md). Next trace complete repair and
-failure ordering offline; physical recovery remains unverified.
+[storage recovery model](STORAGE_RECOVERY.md). Nineteen subsequent repair/error
+cases reproduce rebuilding both banks as pending/inactive, losing both contexts
+in the atomic model, and wrapper error marker `0x6124`. See
+[storage repair evidence](STORAGE_REPAIR.md). Next trace pending-record
+initialization; physical recovery remains unverified.
 
 **Current named XDF: v0.12**, `TunerPro/AL5_15184109_15183960_MARKER_EXTENDED_v0_12.xdf`.
 The completed offline EFILive report resolves 83 marker cases and adds 41 items;

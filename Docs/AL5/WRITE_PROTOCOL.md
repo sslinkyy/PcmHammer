@@ -120,6 +120,13 @@ committed record. Host-modeled successful operations do not validate physical
 recovery, error statuses or partial writes. The planner links this evidence by
 hash while keeping all destructive scope/packets disabled.
 
+Nineteen repair/error cases subsequently exercise rebuilding both banks as
+pending/inactive records and bounded program/copy failure marker `0x6124`.
+The model does not preserve either context through repair, including after
+early update interruptions. See `STORAGE_REPAIR.md`. Hash-linked repair evidence
+keeps physical recovery and surviving-commit safety false; it does not establish
+a programming transport or authorize any live operation.
+
 The report includes a hash-linked preservation assessment from the static
 resident inventory. The inferred 41,000 extra bytes and candidate intervals
 remain explicitly unverified; no current collateral backup is supplied or

@@ -57,7 +57,9 @@ selector with a fresh RAM/cache state; every repair call is trapped.
   direction. Both complete modeled transactions also return and clear the cache.
 
 These results rule out assuming that a surviving committed record alone makes
-an interrupted update safe. The full repair path remains a material gap.
+an interrupted update safe. The subsequent `STORAGE_REPAIR.md` traces the repair
+caller through successful atomic operations: it rebuilds pending/inactive
+records without preserving either context. Physical recovery remains unverified.
 
 ## Evidence and next work
 
@@ -69,7 +71,8 @@ existing WSL Unicorn environment; exact saved firmware hashes are required.
 
 The file-only planner hash-links this evidence, explicitly labels the atomic
 model limits, and keeps physical recovery and readiness false with zero packets.
-Next trace complete repair ordering and its failure branches offline, then add
+Repair ordering and bounded wrapper-error branches are now exercised in
+`STORAGE_REPAIR.md`. Next trace pending-record initialization and add
 partial-operation fault models only where firmware evidence supports them.
 The existing Mode 0x23 reader is unchanged; no live destructive operation is
 enabled or performed.
