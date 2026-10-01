@@ -144,3 +144,24 @@ Screenshot SHA-256: `636812db9c070dfb239e88b9314016e119b36c3862a8312c535c7e0d2cd
 The image remains local and is not committed. Table/axis orientation and
 save/round-trip behavior remain unchecked. No tune edit or vehicle operation
 is inferred from this screenshot.
+
+## TunerPro v0.9.1 screenshot — D5073 Normal / 1st Gear on stock
+
+The next user screenshot on 2026-10-01 shows the stock reference BIN and
+v0.9.1 XDF with D5073 Normal, Native Column 0: 1st Gear selected. All 17 rows
+are visible in order: 0,16,32,48,64,80,96,112,128,144,160,176,192,208,224,240,256.
+Every cell displays 99.998, matching the independent decoded value
+99.99847412109375 rounded to three decimals. The status bar reports a 17x1
+table, offset 13B7A, and 16-bit cells, matching the XDF/native mapping.
+
+Screenshot SHA-256: `dbd90a6fed1054375299612958fb7fe8ea081a6c69fc95998d5d8e75533f74b7`.
+The image remains local and is not committed. This confirms rendering of one
+named column's row labels, values and dimensions; it does not GUI validate
+other gear columns/modes or save/round-trip behavior. Labels remain the native
+export labels; no new physical row-axis unit is inferred from 0..256.
+
+The requested scalar and first table GUI spot checks are complete. Next offline
+work remains enum encoding for D5053/D5054/D5197, independent native checksum
+finalization evidence, and write-protocol/erase-geometry/recovery reconstruction.
+No additional screenshot of these same checked fields is required. Live writes
+remain blocked, and this screenshot supplies no programming evidence.

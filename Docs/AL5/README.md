@@ -67,7 +67,9 @@ H0105's completed high-word marker corroborates unsigned BE32 at 0x152E4 with
 the native range and exact readback; v0.9.1 preserves every v0.9 encoding.
 See [marker evidence and GUI checks](TunerPro/MARKER_VALIDATION_v0_9.md).
 Four v0.9.1 scalar displays (H0105/H0136/H0103/H0137) are now screenshot-checked
-on both the stock and PPEI BINs. Table/axis checks remain open. The optional v0.8
+on both the stock and PPEI BINs. D5073 Normal/1st Gear is also screenshot-checked
+on stock: 17 rows, native labels 0..256, 99.998 displayed throughout, address
+0x13B7A and 16-bit cells. Other table/axis checks remain open. The optional v0.8
 raw supplement remains separate. Its two flag-dependent
 families still have no native definition identity; keep their raw labels.
 
