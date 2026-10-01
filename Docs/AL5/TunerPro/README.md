@@ -66,3 +66,25 @@ native IDs are represented, including partial/research entries; 32 remain absent
 Pattern G remains unresolved. These additions have exact structural confidence;
 marker-differential proof, axis semantics beyond the export labels, and TunerPro
 GUI validation remain open. No edited BIN is flash-ready.
+
+## Structural WOT/TCC v0.7
+
+`AL5_15184109_15183960_STRUCTURAL_WOT_TCC_v0_7.xdf` adds 32 vectors / 64 cells.
+D5064–D5069 now include the complete WOT TCC apply/release families for normal,
+tow/haul and 4WD Lo. The eight-record family for each mode has a unique match,
+including all gear columns, `0x0002` headers and `0x06` stride.
+D5035–D5038 include only downshift Patterns B and C, whose four-record families
+are unique. Patterns A and D have identical native values and two matches;
+neither has been assigned. `REMAINING_FAMILY_CANDIDATES.json` retains every
+tested layout and its matches, including unsuccessful interleaved TCC layouts.
+
+Downshift native Pattern B matches the records next to the preserved RPM
+Pattern D address; downshift C matches those next to RPM Pattern B. A/D match
+the records next to RPM A/C. Therefore adjacency alone cannot propagate the RPM
+labels to downshift records. The new labels follow each native definition's
+complete values; their controller mode semantics are still unproven.
+
+All 242 resolved numeric entries pass the audit. 105 of 127 native IDs are
+represented, including partial/research entries; 22 remain absent. The six WOT
+TCC IDs are complete; the four downshift IDs are partial. New entries remain
+structural mappings without marker proof or TunerPro GUI validation.

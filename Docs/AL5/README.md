@@ -19,6 +19,8 @@ All new reverse engineering and validation were offline.
   v0.5 entries pass. Confidence is explicit; no new marker proof is claimed.
 - v0.6 adds 26 vectors / 228 cells across eight WOT threshold, TCC duty and
   TCC on-ramp definitions. All 210 resolved numeric entries pass the audit.
+- v0.7 adds 32 vectors / 64 cells: complete WOT TCC mode families and partial
+  WOT downshift families. All 242 resolved numeric entries pass the audit.
 - Offline checksum generation reproduces stock `4E35D040` and PPEI `DAE2BB2E`.
   The CRC lookup table matches all 256 firmware entries. Additional edited
   native-segment validation and the second-word generator trace remain open.
@@ -42,10 +44,12 @@ a plan to program the currently installed PPEI calibration.
 
 ## Current boundaries and next work
 
-The latest definition is `TunerPro/AL5_15184109_15183960_STRUCTURAL_EXTENDED_v0_6.xdf`.
-95 of 127 native IDs are represented, including partial/research entries.
-`V0_6_AUDIT.json` lists the 32 absent IDs. D5010/D5015 Pattern G has two possible
-record pairs and remains deferred. WOT downshift speed, WOT TCC, remaining temperature,
+The latest definition is `TunerPro/AL5_15184109_15183960_STRUCTURAL_WOT_TCC_v0_7.xdf`.
+105 of 127 native IDs are represented, including partial/research entries.
+`V0_7_AUDIT.json` lists the 22 absent IDs. D5010/D5015 Pattern G has two possible
+record pairs and remains deferred. WOT downshift Patterns A/D are indistinguishable
+by native values and remain absent; B/C are mapped independently of adjacent RPM
+labels. Remaining temperature,
 remaining pressure/adaptive/enable and speedo mappings still need evidence.
 The new XDF versions need a TunerPro GUI check; numerical audit is complete.
 
@@ -82,6 +86,7 @@ warnings remain. Run the tests:
 
 ```powershell
 python -m unittest discover -s Tools/AL5 -p test_offline.py -v
+python -m unittest discover -s Tools/AL5 -p test_family_search.py -v
 & '<Visual Studio MSBuild.exe>' Tools/AL5/GateTest.csproj /v:minimal /nologo
 & .\LocalOnly\AL5GateTest\AL5GateTest.exe
 ```

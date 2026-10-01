@@ -1,0 +1,350 @@
+{
+  "stock_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6",
+  "native_export_sha256": "fbbd581cd5bd42dcfa1fa874c41ffde23f612b36d23e0043ca648acab2ac614b",
+  "confidence": "search candidates only; identity and neighboring record context require review",
+  "native_export_encoding": "cp1252",
+  "families": [
+    {
+      "family": "WOT downshift",
+      "native_column": 0,
+      "label": "Pattern A",
+      "ids": [
+        "D5035",
+        "D5036",
+        "D5037",
+        "D5038"
+      ],
+      "layout": "four consecutive header/BE16 speed records",
+      "header_addresses": [
+        "0x1256E",
+        "0x1283E"
+      ],
+      "status": "ambiguous or absent"
+    },
+    {
+      "family": "WOT downshift",
+      "native_column": 1,
+      "label": "Pattern B",
+      "ids": [
+        "D5035",
+        "D5036",
+        "D5037",
+        "D5038"
+      ],
+      "layout": "four consecutive header/BE16 speed records",
+      "header_addresses": [
+        "0x11F86"
+      ],
+      "status": "unique family candidate"
+    },
+    {
+      "family": "WOT downshift",
+      "native_column": 2,
+      "label": "Pattern C",
+      "ids": [
+        "D5035",
+        "D5036",
+        "D5037",
+        "D5038"
+      ],
+      "layout": "four consecutive header/BE16 speed records",
+      "header_addresses": [
+        "0x126D6"
+      ],
+      "status": "unique family candidate"
+    },
+    {
+      "family": "WOT downshift",
+      "native_column": 3,
+      "label": "Pattern D",
+      "ids": [
+        "D5035",
+        "D5036",
+        "D5037",
+        "D5038"
+      ],
+      "layout": "four consecutive header/BE16 speed records",
+      "header_addresses": [
+        "0x1256E",
+        "0x1283E"
+      ],
+      "status": "ambiguous or absent"
+    },
+    {
+      "family": "WOT TCC",
+      "ids": [
+        "D5064",
+        "D5067"
+      ],
+      "label": "TCC WOT Apply (Normal)",
+      "layout": "apply gears then release gears",
+      "record_order": [
+        {
+          "id": "D5064",
+          "column": 0
+        },
+        {
+          "id": "D5064",
+          "column": 1
+        },
+        {
+          "id": "D5064",
+          "column": 2
+        },
+        {
+          "id": "D5064",
+          "column": 3
+        },
+        {
+          "id": "D5067",
+          "column": 0
+        },
+        {
+          "id": "D5067",
+          "column": 1
+        },
+        {
+          "id": "D5067",
+          "column": 2
+        },
+        {
+          "id": "D5067",
+          "column": 3
+        }
+      ],
+      "header_addresses": [
+        "0x130C0"
+      ],
+      "status": "unique family candidate"
+    },
+    {
+      "family": "WOT TCC",
+      "ids": [
+        "D5064",
+        "D5067"
+      ],
+      "label": "TCC WOT Apply (Normal)",
+      "layout": "interleaved apply/release",
+      "record_order": [
+        {
+          "id": "D5064",
+          "column": 0
+        },
+        {
+          "id": "D5067",
+          "column": 0
+        },
+        {
+          "id": "D5064",
+          "column": 1
+        },
+        {
+          "id": "D5067",
+          "column": 1
+        },
+        {
+          "id": "D5064",
+          "column": 2
+        },
+        {
+          "id": "D5067",
+          "column": 2
+        },
+        {
+          "id": "D5064",
+          "column": 3
+        },
+        {
+          "id": "D5067",
+          "column": 3
+        }
+      ],
+      "header_addresses": [],
+      "status": "ambiguous or absent"
+    },
+    {
+      "family": "WOT TCC",
+      "ids": [
+        "D5065",
+        "D5068"
+      ],
+      "label": "TCC WOT Apply (Tow/Haul)",
+      "layout": "apply gears then release gears",
+      "record_order": [
+        {
+          "id": "D5065",
+          "column": 0
+        },
+        {
+          "id": "D5065",
+          "column": 1
+        },
+        {
+          "id": "D5065",
+          "column": 2
+        },
+        {
+          "id": "D5065",
+          "column": 3
+        },
+        {
+          "id": "D5068",
+          "column": 0
+        },
+        {
+          "id": "D5068",
+          "column": 1
+        },
+        {
+          "id": "D5068",
+          "column": 2
+        },
+        {
+          "id": "D5068",
+          "column": 3
+        }
+      ],
+      "header_addresses": [
+        "0x132A0"
+      ],
+      "status": "unique family candidate"
+    },
+    {
+      "family": "WOT TCC",
+      "ids": [
+        "D5065",
+        "D5068"
+      ],
+      "label": "TCC WOT Apply (Tow/Haul)",
+      "layout": "interleaved apply/release",
+      "record_order": [
+        {
+          "id": "D5065",
+          "column": 0
+        },
+        {
+          "id": "D5068",
+          "column": 0
+        },
+        {
+          "id": "D5065",
+          "column": 1
+        },
+        {
+          "id": "D5068",
+          "column": 1
+        },
+        {
+          "id": "D5065",
+          "column": 2
+        },
+        {
+          "id": "D5068",
+          "column": 2
+        },
+        {
+          "id": "D5065",
+          "column": 3
+        },
+        {
+          "id": "D5068",
+          "column": 3
+        }
+      ],
+      "header_addresses": [],
+      "status": "ambiguous or absent"
+    },
+    {
+      "family": "WOT TCC",
+      "ids": [
+        "D5066",
+        "D5069"
+      ],
+      "label": "TCC WOT Apply (4WD Lo)",
+      "layout": "apply gears then release gears",
+      "record_order": [
+        {
+          "id": "D5066",
+          "column": 0
+        },
+        {
+          "id": "D5066",
+          "column": 1
+        },
+        {
+          "id": "D5066",
+          "column": 2
+        },
+        {
+          "id": "D5066",
+          "column": 3
+        },
+        {
+          "id": "D5069",
+          "column": 0
+        },
+        {
+          "id": "D5069",
+          "column": 1
+        },
+        {
+          "id": "D5069",
+          "column": 2
+        },
+        {
+          "id": "D5069",
+          "column": 3
+        }
+      ],
+      "header_addresses": [
+        "0x13480"
+      ],
+      "status": "unique family candidate"
+    },
+    {
+      "family": "WOT TCC",
+      "ids": [
+        "D5066",
+        "D5069"
+      ],
+      "label": "TCC WOT Apply (4WD Lo)",
+      "layout": "interleaved apply/release",
+      "record_order": [
+        {
+          "id": "D5066",
+          "column": 0
+        },
+        {
+          "id": "D5069",
+          "column": 0
+        },
+        {
+          "id": "D5066",
+          "column": 1
+        },
+        {
+          "id": "D5069",
+          "column": 1
+        },
+        {
+          "id": "D5066",
+          "column": 2
+        },
+        {
+          "id": "D5069",
+          "column": 2
+        },
+        {
+          "id": "D5066",
+          "column": 3
+        },
+        {
+          "id": "D5069",
+          "column": 3
+        }
+      ],
+      "header_addresses": [],
+      "status": "ambiguous or absent"
+    }
+  ]
+}

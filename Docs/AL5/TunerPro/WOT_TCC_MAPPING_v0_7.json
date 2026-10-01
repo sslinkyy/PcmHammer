@@ -1,0 +1,435 @@
+{
+  "stock_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6",
+  "native_export_sha256": "fbbd581cd5bd42dcfa1fa874c41ffde23f612b36d23e0043ca648acab2ac614b",
+  "source_xdf_sha256": "31cae7f3525a2bfceb9943d98a0068b1cbfe1e581f0c32efc6ab6d2ed465a537",
+  "confidence": "unique complete header/BE16 record-family match; not marker-differential verified",
+  "added": [
+    {
+      "id": "D5035",
+      "column": 1,
+      "address": "0x11F88",
+      "family_header": "0x11F86",
+      "layout": "four consecutive header/BE16 speed records",
+      "cells": 2
+    },
+    {
+      "id": "D5036",
+      "column": 1,
+      "address": "0x11F8E",
+      "family_header": "0x11F86",
+      "layout": "four consecutive header/BE16 speed records",
+      "cells": 2
+    },
+    {
+      "id": "D5037",
+      "column": 1,
+      "address": "0x11F94",
+      "family_header": "0x11F86",
+      "layout": "four consecutive header/BE16 speed records",
+      "cells": 2
+    },
+    {
+      "id": "D5038",
+      "column": 1,
+      "address": "0x11F9A",
+      "family_header": "0x11F86",
+      "layout": "four consecutive header/BE16 speed records",
+      "cells": 2
+    },
+    {
+      "id": "D5035",
+      "column": 2,
+      "address": "0x126D8",
+      "family_header": "0x126D6",
+      "layout": "four consecutive header/BE16 speed records",
+      "cells": 2
+    },
+    {
+      "id": "D5036",
+      "column": 2,
+      "address": "0x126DE",
+      "family_header": "0x126D6",
+      "layout": "four consecutive header/BE16 speed records",
+      "cells": 2
+    },
+    {
+      "id": "D5037",
+      "column": 2,
+      "address": "0x126E4",
+      "family_header": "0x126D6",
+      "layout": "four consecutive header/BE16 speed records",
+      "cells": 2
+    },
+    {
+      "id": "D5038",
+      "column": 2,
+      "address": "0x126EA",
+      "family_header": "0x126D6",
+      "layout": "four consecutive header/BE16 speed records",
+      "cells": 2
+    },
+    {
+      "id": "D5064",
+      "column": 0,
+      "address": "0x130C2",
+      "family_header": "0x130C0",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    },
+    {
+      "id": "D5064",
+      "column": 1,
+      "address": "0x130C8",
+      "family_header": "0x130C0",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    },
+    {
+      "id": "D5064",
+      "column": 2,
+      "address": "0x130CE",
+      "family_header": "0x130C0",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    },
+    {
+      "id": "D5064",
+      "column": 3,
+      "address": "0x130D4",
+      "family_header": "0x130C0",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    },
+    {
+      "id": "D5067",
+      "column": 0,
+      "address": "0x130DA",
+      "family_header": "0x130C0",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    },
+    {
+      "id": "D5067",
+      "column": 1,
+      "address": "0x130E0",
+      "family_header": "0x130C0",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    },
+    {
+      "id": "D5067",
+      "column": 2,
+      "address": "0x130E6",
+      "family_header": "0x130C0",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    },
+    {
+      "id": "D5067",
+      "column": 3,
+      "address": "0x130EC",
+      "family_header": "0x130C0",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    },
+    {
+      "id": "D5065",
+      "column": 0,
+      "address": "0x132A2",
+      "family_header": "0x132A0",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    },
+    {
+      "id": "D5065",
+      "column": 1,
+      "address": "0x132A8",
+      "family_header": "0x132A0",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    },
+    {
+      "id": "D5065",
+      "column": 2,
+      "address": "0x132AE",
+      "family_header": "0x132A0",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    },
+    {
+      "id": "D5065",
+      "column": 3,
+      "address": "0x132B4",
+      "family_header": "0x132A0",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    },
+    {
+      "id": "D5068",
+      "column": 0,
+      "address": "0x132BA",
+      "family_header": "0x132A0",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    },
+    {
+      "id": "D5068",
+      "column": 1,
+      "address": "0x132C0",
+      "family_header": "0x132A0",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    },
+    {
+      "id": "D5068",
+      "column": 2,
+      "address": "0x132C6",
+      "family_header": "0x132A0",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    },
+    {
+      "id": "D5068",
+      "column": 3,
+      "address": "0x132CC",
+      "family_header": "0x132A0",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    },
+    {
+      "id": "D5066",
+      "column": 0,
+      "address": "0x13482",
+      "family_header": "0x13480",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    },
+    {
+      "id": "D5066",
+      "column": 1,
+      "address": "0x13488",
+      "family_header": "0x13480",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    },
+    {
+      "id": "D5066",
+      "column": 2,
+      "address": "0x1348E",
+      "family_header": "0x13480",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    },
+    {
+      "id": "D5066",
+      "column": 3,
+      "address": "0x13494",
+      "family_header": "0x13480",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    },
+    {
+      "id": "D5069",
+      "column": 0,
+      "address": "0x1349A",
+      "family_header": "0x13480",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    },
+    {
+      "id": "D5069",
+      "column": 1,
+      "address": "0x134A0",
+      "family_header": "0x13480",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    },
+    {
+      "id": "D5069",
+      "column": 2,
+      "address": "0x134A6",
+      "family_header": "0x13480",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    },
+    {
+      "id": "D5069",
+      "column": 3,
+      "address": "0x134AC",
+      "family_header": "0x13480",
+      "layout": "apply gears then release gears",
+      "cells": 2
+    }
+  ],
+  "deferred": [
+    {
+      "family": "WOT downshift",
+      "native_column": 0,
+      "label": "Pattern A",
+      "ids": [
+        "D5035",
+        "D5036",
+        "D5037",
+        "D5038"
+      ],
+      "layout": "four consecutive header/BE16 speed records",
+      "header_addresses": [
+        "0x1256E",
+        "0x1283E"
+      ],
+      "status": "ambiguous or absent"
+    },
+    {
+      "family": "WOT downshift",
+      "native_column": 3,
+      "label": "Pattern D",
+      "ids": [
+        "D5035",
+        "D5036",
+        "D5037",
+        "D5038"
+      ],
+      "layout": "four consecutive header/BE16 speed records",
+      "header_addresses": [
+        "0x1256E",
+        "0x1283E"
+      ],
+      "status": "ambiguous or absent"
+    },
+    {
+      "family": "WOT TCC",
+      "ids": [
+        "D5064",
+        "D5067"
+      ],
+      "label": "TCC WOT Apply (Normal)",
+      "layout": "interleaved apply/release",
+      "record_order": [
+        {
+          "id": "D5064",
+          "column": 0
+        },
+        {
+          "id": "D5067",
+          "column": 0
+        },
+        {
+          "id": "D5064",
+          "column": 1
+        },
+        {
+          "id": "D5067",
+          "column": 1
+        },
+        {
+          "id": "D5064",
+          "column": 2
+        },
+        {
+          "id": "D5067",
+          "column": 2
+        },
+        {
+          "id": "D5064",
+          "column": 3
+        },
+        {
+          "id": "D5067",
+          "column": 3
+        }
+      ],
+      "header_addresses": [],
+      "status": "ambiguous or absent"
+    },
+    {
+      "family": "WOT TCC",
+      "ids": [
+        "D5065",
+        "D5068"
+      ],
+      "label": "TCC WOT Apply (Tow/Haul)",
+      "layout": "interleaved apply/release",
+      "record_order": [
+        {
+          "id": "D5065",
+          "column": 0
+        },
+        {
+          "id": "D5068",
+          "column": 0
+        },
+        {
+          "id": "D5065",
+          "column": 1
+        },
+        {
+          "id": "D5068",
+          "column": 1
+        },
+        {
+          "id": "D5065",
+          "column": 2
+        },
+        {
+          "id": "D5068",
+          "column": 2
+        },
+        {
+          "id": "D5065",
+          "column": 3
+        },
+        {
+          "id": "D5068",
+          "column": 3
+        }
+      ],
+      "header_addresses": [],
+      "status": "ambiguous or absent"
+    },
+    {
+      "family": "WOT TCC",
+      "ids": [
+        "D5066",
+        "D5069"
+      ],
+      "label": "TCC WOT Apply (4WD Lo)",
+      "layout": "interleaved apply/release",
+      "record_order": [
+        {
+          "id": "D5066",
+          "column": 0
+        },
+        {
+          "id": "D5069",
+          "column": 0
+        },
+        {
+          "id": "D5066",
+          "column": 1
+        },
+        {
+          "id": "D5069",
+          "column": 1
+        },
+        {
+          "id": "D5066",
+          "column": 2
+        },
+        {
+          "id": "D5069",
+          "column": 2
+        },
+        {
+          "id": "D5066",
+          "column": 3
+        },
+        {
+          "id": "D5069",
+          "column": 3
+        }
+      ],
+      "header_addresses": [],
+      "status": "ambiguous or absent"
+    }
+  ]
+}

@@ -1,0 +1,6961 @@
+{
+  "xdf_sha256": "1219ac947f68dbf7b9c94dd6a9f56bf8b9983e8a283153593c4449bb3f79b6e6",
+  "native_export_sha256": "fbbd581cd5bd42dcfa1fa874c41ffde23f612b36d23e0043ca648acab2ac614b",
+  "items": [
+    {
+      "title": "READ ME - AL5 segment/XDF usage",
+      "stock": null,
+      "ppei": null,
+      "native_comparison": "not_numeric_or_not_resolved"
+    },
+    {
+      "title": "Transmission Calibration ID (15183960 expected)",
+      "stock": [
+        15183960
+      ],
+      "ppei": [
+        15183960
+      ],
+      "native_comparison": "not_numeric_or_not_resolved"
+    },
+    {
+      "title": "Segment checksum field (raw 32-bit, DO NOT EDIT)",
+      "stock": [
+        1312149568
+      ],
+      "ppei": [
+        3672292142
+      ],
+      "native_comparison": "not_numeric_or_not_resolved"
+    },
+    {
+      "title": "D1205 Reverse Gear Ratio",
+      "stock": [
+        4.4912109375
+      ],
+      "ppei": [
+        4.4912109375
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D1201 1st Gear Ratio",
+      "stock": [
+        3.1015625
+      ],
+      "ppei": [
+        3.1015625
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D1202 2nd Gear Ratio",
+      "stock": [
+        1.810546875
+      ],
+      "ppei": [
+        1.810546875
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D1203 3rd Gear Ratio",
+      "stock": [
+        1.40625
+      ],
+      "ppei": [
+        1.40625
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D1204 4th Gear Ratio",
+      "stock": [
+        1.0
+      ],
+      "ppei": [
+        1.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D1220 5th Gear Ratio",
+      "stock": [
+        0.7119140625
+      ],
+      "ppei": [
+        0.7119140625
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5000 Part Throttle 1->2 Shift Speed - Pattern A",
+      "stock": [
+        16.0,
+        16.0,
+        16.0,
+        16.0,
+        16.0,
+        16.0,
+        16.0,
+        16.0,
+        17.0,
+        21.0,
+        23.0,
+        25.0,
+        26.0,
+        27.0,
+        27.0,
+        27.0,
+        27.0
+      ],
+      "ppei": [
+        16.0,
+        16.0,
+        16.0,
+        16.0,
+        16.0,
+        16.0,
+        16.0,
+        16.0,
+        17.0,
+        21.0,
+        23.0,
+        25.0,
+        26.0,
+        27.0,
+        27.0,
+        27.0,
+        27.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5001 Part Throttle 2->3 Shift Speed - Pattern A",
+      "stock": [
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        30.0,
+        32.0,
+        35.0,
+        38.0,
+        41.0,
+        46.0,
+        49.0,
+        51.0,
+        52.0,
+        52.0
+      ],
+      "ppei": [
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        30.0,
+        32.0,
+        35.0,
+        38.0,
+        41.0,
+        46.0,
+        49.0,
+        51.0,
+        52.0,
+        52.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5002 Part Throttle 3->4 Shift Speed - Pattern A",
+      "stock": [
+        39.0,
+        39.0,
+        39.0,
+        39.0,
+        39.0,
+        39.0,
+        39.0,
+        40.0,
+        41.5,
+        45.0,
+        49.0,
+        52.0,
+        61.0,
+        66.0,
+        70.0,
+        72.0,
+        72.0
+      ],
+      "ppei": [
+        39.0,
+        39.0,
+        39.0,
+        39.0,
+        39.0,
+        39.0,
+        39.0,
+        40.0,
+        41.5,
+        45.0,
+        49.0,
+        52.0,
+        61.0,
+        66.0,
+        70.0,
+        72.0,
+        72.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5003 Part Throttle 4->5 Shift Speed - Pattern A",
+      "stock": [
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        56.0,
+        59.0,
+        62.0,
+        67.0,
+        79.0,
+        94.0,
+        102.0,
+        105.0,
+        106.0,
+        106.0
+      ],
+      "ppei": [
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        55.0,
+        56.0,
+        59.0,
+        62.0,
+        67.0,
+        79.0,
+        94.0,
+        102.0,
+        105.0,
+        106.0,
+        106.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5005 Part Throttle 2->1 Shift Speed - Pattern A",
+      "stock": [
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        9.0,
+        10.0,
+        12.0,
+        15.0,
+        20.0
+      ],
+      "ppei": [
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        9.0,
+        10.0,
+        12.0,
+        15.0,
+        20.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5006 Part Throttle 3->2 Shift Speed - Pattern A",
+      "stock": [
+        26.0,
+        22.0,
+        22.0,
+        22.0,
+        22.0,
+        22.0,
+        22.0,
+        22.0,
+        22.0,
+        22.0,
+        22.0,
+        24.0,
+        27.0,
+        32.0,
+        37.0,
+        41.0,
+        45.0
+      ],
+      "ppei": [
+        26.0,
+        22.0,
+        22.0,
+        22.0,
+        22.0,
+        22.0,
+        22.0,
+        22.0,
+        22.0,
+        22.0,
+        22.0,
+        24.0,
+        27.0,
+        32.0,
+        37.0,
+        41.0,
+        45.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5007 Part Throttle 4->3 Shift Speed - Pattern A",
+      "stock": [
+        36.0,
+        34.0,
+        34.0,
+        34.0,
+        34.0,
+        34.0,
+        34.0,
+        34.0,
+        34.0,
+        34.0,
+        36.0,
+        39.0,
+        43.0,
+        48.0,
+        53.0,
+        57.0,
+        60.0
+      ],
+      "ppei": [
+        36.0,
+        34.0,
+        34.0,
+        34.0,
+        34.0,
+        34.0,
+        34.0,
+        34.0,
+        34.0,
+        34.0,
+        36.0,
+        39.0,
+        43.0,
+        48.0,
+        53.0,
+        57.0,
+        60.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5008 Part Throttle 5->4 Shift Speed - Pattern A",
+      "stock": [
+        48.0,
+        47.0,
+        47.0,
+        47.0,
+        47.0,
+        47.0,
+        47.0,
+        47.0,
+        47.0,
+        49.0,
+        52.0,
+        57.0,
+        64.0,
+        68.0,
+        70.0,
+        80.0,
+        100.0
+      ],
+      "ppei": [
+        48.0,
+        47.0,
+        47.0,
+        47.0,
+        47.0,
+        47.0,
+        47.0,
+        47.0,
+        47.0,
+        49.0,
+        52.0,
+        57.0,
+        64.0,
+        68.0,
+        70.0,
+        80.0,
+        100.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5000 Part Throttle 1->2 Shift Speed - Pattern B",
+      "stock": [
+        21.0,
+        21.0,
+        21.0,
+        21.0,
+        21.0,
+        21.0,
+        21.0,
+        21.0,
+        21.0,
+        21.0,
+        23.0,
+        26.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0
+      ],
+      "ppei": [
+        21.0,
+        21.0,
+        21.0,
+        21.0,
+        21.0,
+        21.0,
+        21.0,
+        21.0,
+        21.0,
+        21.0,
+        23.0,
+        26.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5001 Part Throttle 2->3 Shift Speed - Pattern B",
+      "stock": [
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        46.0,
+        49.0,
+        51.0,
+        52.0,
+        53.0,
+        54.0,
+        56.0
+      ],
+      "ppei": [
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        46.0,
+        49.0,
+        51.0,
+        52.0,
+        53.0,
+        54.0,
+        56.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5002 Part Throttle 3->4 Shift Speed - Pattern B",
+      "stock": [
+        58.0,
+        58.0,
+        58.0,
+        58.0,
+        58.0,
+        58.0,
+        58.0,
+        58.0,
+        58.0,
+        60.0,
+        62.0,
+        64.0,
+        67.0,
+        69.0,
+        71.0,
+        73.0,
+        74.0
+      ],
+      "ppei": [
+        58.0,
+        58.0,
+        58.0,
+        58.0,
+        58.0,
+        58.0,
+        58.0,
+        58.0,
+        58.0,
+        60.0,
+        62.0,
+        64.0,
+        67.0,
+        69.0,
+        71.0,
+        73.0,
+        74.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5003 Part Throttle 4->5 Shift Speed - Pattern B",
+      "stock": [
+        83.5,
+        83.5,
+        83.5,
+        83.5,
+        83.5,
+        83.5,
+        83.5,
+        83.5,
+        83.5,
+        83.5,
+        83.5,
+        83.5,
+        94.0,
+        103.5,
+        105.6015625,
+        106.0,
+        106.0
+      ],
+      "ppei": [
+        83.5,
+        83.5,
+        83.5,
+        83.5,
+        83.5,
+        83.5,
+        83.5,
+        83.5,
+        83.5,
+        83.5,
+        83.5,
+        83.5,
+        94.0,
+        103.5,
+        105.6015625,
+        106.0,
+        106.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5005 Part Throttle 2->1 Shift Speed - Pattern B",
+      "stock": [
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        9.0,
+        10.0,
+        12.0,
+        15.0,
+        20.0
+      ],
+      "ppei": [
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        9.0,
+        10.0,
+        12.0,
+        15.0,
+        20.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5006 Part Throttle 3->2 Shift Speed - Pattern B",
+      "stock": [
+        38.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        36.0,
+        38.0,
+        42.0,
+        45.0,
+        49.0
+      ],
+      "ppei": [
+        38.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        36.0,
+        38.0,
+        42.0,
+        45.0,
+        49.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5007 Part Throttle 4->3 Shift Speed - Pattern B",
+      "stock": [
+        54.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        52.0,
+        54.0,
+        56.0,
+        64.0,
+        67.0
+      ],
+      "ppei": [
+        54.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        52.0,
+        54.0,
+        56.0,
+        64.0,
+        67.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5008 Part Throttle 5->4 Shift Speed - Pattern B",
+      "stock": [
+        73.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        69.0,
+        71.0,
+        80.5,
+        100.0
+      ],
+      "ppei": [
+        73.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        69.0,
+        71.0,
+        80.5,
+        100.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5000 Part Throttle 1->2 Shift Speed - Pattern C",
+      "stock": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        21.0,
+        23.0,
+        25.0,
+        26.0,
+        27.0,
+        27.0,
+        27.0,
+        27.0
+      ],
+      "ppei": [
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        18.0,
+        21.0,
+        23.0,
+        25.0,
+        26.0,
+        27.0,
+        27.0,
+        27.0,
+        27.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5001 Part Throttle 2->3 Shift Speed - Pattern C",
+      "stock": [
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        41.0,
+        46.0,
+        49.0,
+        51.0,
+        52.0,
+        52.0
+      ],
+      "ppei": [
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        41.0,
+        46.0,
+        49.0,
+        51.0,
+        52.0,
+        52.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5002 Part Throttle 3->4 Shift Speed - Pattern C",
+      "stock": [
+        48.0,
+        48.0,
+        48.0,
+        48.0,
+        48.0,
+        48.0,
+        48.0,
+        48.0,
+        48.0,
+        48.0,
+        49.0,
+        52.0,
+        61.0,
+        66.0,
+        70.0,
+        72.0,
+        72.0
+      ],
+      "ppei": [
+        48.0,
+        48.0,
+        48.0,
+        48.0,
+        48.0,
+        48.0,
+        48.0,
+        48.0,
+        48.0,
+        48.0,
+        49.0,
+        52.0,
+        61.0,
+        66.0,
+        70.0,
+        72.0,
+        72.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5003 Part Throttle 4->5 Shift Speed - Pattern C",
+      "stock": [
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        79.0,
+        94.0,
+        102.0,
+        105.0,
+        106.0,
+        106.0
+      ],
+      "ppei": [
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        79.0,
+        94.0,
+        102.0,
+        105.0,
+        106.0,
+        106.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5005 Part Throttle 2->1 Shift Speed - Pattern C",
+      "stock": [
+        8.6015625,
+        8.6015625,
+        8.6015625,
+        8.6015625,
+        8.6015625,
+        8.6015625,
+        8.6015625,
+        8.6015625,
+        8.6015625,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        9.0,
+        10.0,
+        12.0,
+        15.0,
+        20.0
+      ],
+      "ppei": [
+        8.6015625,
+        8.6015625,
+        8.6015625,
+        8.6015625,
+        8.6015625,
+        8.6015625,
+        8.6015625,
+        8.6015625,
+        8.6015625,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        9.0,
+        10.0,
+        12.0,
+        15.0,
+        20.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5006 Part Throttle 3->2 Shift Speed - Pattern C",
+      "stock": [
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        27.0,
+        32.0,
+        37.0,
+        41.0,
+        45.0
+      ],
+      "ppei": [
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        27.0,
+        32.0,
+        37.0,
+        41.0,
+        45.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5007 Part Throttle 4->3 Shift Speed - Pattern C",
+      "stock": [
+        37.0,
+        37.0,
+        37.0,
+        37.0,
+        37.0,
+        37.0,
+        37.0,
+        37.0,
+        37.0,
+        37.0,
+        37.0,
+        39.0,
+        43.0,
+        48.0,
+        53.0,
+        57.0,
+        60.0
+      ],
+      "ppei": [
+        37.0,
+        37.0,
+        37.0,
+        37.0,
+        37.0,
+        37.0,
+        37.0,
+        37.0,
+        37.0,
+        37.0,
+        37.0,
+        39.0,
+        43.0,
+        48.0,
+        53.0,
+        57.0,
+        60.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5008 Part Throttle 5->4 Shift Speed - Pattern C",
+      "stock": [
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        52.0,
+        57.0,
+        64.0,
+        68.0,
+        70.0,
+        80.0,
+        100.0
+      ],
+      "ppei": [
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        52.0,
+        57.0,
+        64.0,
+        68.0,
+        70.0,
+        80.0,
+        100.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5000 Part Throttle 1->2 Shift Speed - Pattern D",
+      "stock": [
+        21.0,
+        21.0,
+        21.0,
+        21.0,
+        21.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0
+      ],
+      "ppei": [
+        21.0,
+        21.0,
+        21.0,
+        21.0,
+        21.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5001 Part Throttle 2->3 Shift Speed - Pattern D",
+      "stock": [
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        54.0,
+        54.0,
+        54.0,
+        54.0,
+        54.0,
+        54.0,
+        54.0,
+        54.0,
+        54.0,
+        54.0,
+        54.0,
+        56.0
+      ],
+      "ppei": [
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        44.0,
+        54.0,
+        54.0,
+        54.0,
+        54.0,
+        54.0,
+        54.0,
+        54.0,
+        54.0,
+        54.0,
+        54.0,
+        54.0,
+        56.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5002 Part Throttle 3->4 Shift Speed - Pattern D",
+      "stock": [
+        58.0,
+        58.0,
+        58.0,
+        58.0,
+        58.0,
+        76.0,
+        76.0,
+        76.0,
+        76.0,
+        76.0,
+        76.0,
+        76.0,
+        76.0,
+        76.0,
+        76.0,
+        76.0,
+        76.0
+      ],
+      "ppei": [
+        58.0,
+        58.0,
+        58.0,
+        58.0,
+        58.0,
+        76.0,
+        76.0,
+        76.0,
+        76.0,
+        76.0,
+        76.0,
+        76.0,
+        76.0,
+        76.0,
+        76.0,
+        76.0,
+        76.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5003 Part Throttle 4->5 Shift Speed - Pattern D",
+      "stock": [
+        88.0,
+        88.0,
+        88.0,
+        88.0,
+        88.0,
+        110.0,
+        110.0,
+        110.0,
+        110.0,
+        110.0,
+        110.0,
+        110.0,
+        110.0,
+        110.0,
+        110.0,
+        110.0,
+        110.0
+      ],
+      "ppei": [
+        88.0,
+        88.0,
+        88.0,
+        88.0,
+        88.0,
+        110.0,
+        110.0,
+        110.0,
+        110.0,
+        110.0,
+        110.0,
+        110.0,
+        110.0,
+        110.0,
+        110.0,
+        110.0,
+        110.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5005 Part Throttle 2->1 Shift Speed - Pattern D",
+      "stock": [
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        9.0,
+        10.0,
+        12.0,
+        15.0,
+        20.0
+      ],
+      "ppei": [
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        8.6484375,
+        9.0,
+        10.0,
+        12.0,
+        15.0,
+        20.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5006 Part Throttle 3->2 Shift Speed - Pattern D",
+      "stock": [
+        38.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        39.0,
+        43.0,
+        46.0,
+        46.0,
+        46.0
+      ],
+      "ppei": [
+        38.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        35.0,
+        39.0,
+        43.0,
+        46.0,
+        46.0,
+        46.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5007 Part Throttle 4->3 Shift Speed - Pattern D",
+      "stock": [
+        54.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        55.0,
+        59.0,
+        64.0,
+        64.0
+      ],
+      "ppei": [
+        54.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        51.0,
+        55.0,
+        59.0,
+        64.0,
+        64.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5008 Part Throttle 5->4 Shift Speed - Pattern D",
+      "stock": [
+        73.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        75.0,
+        82.0,
+        90.0,
+        90.0
+      ],
+      "ppei": [
+        73.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        75.0,
+        82.0,
+        90.0,
+        90.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5025 WOT 1->2 Shift RPM - Pattern A",
+      "stock": [
+        3200.0,
+        3200.0
+      ],
+      "ppei": [
+        3450.0,
+        3450.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5026 WOT 2->3 Shift RPM - Pattern A",
+      "stock": [
+        3200.0,
+        3200.0
+      ],
+      "ppei": [
+        3450.0,
+        3450.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5027 WOT 3->4 Shift RPM - Pattern A",
+      "stock": [
+        3250.0,
+        3250.0
+      ],
+      "ppei": [
+        3450.0,
+        3450.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5028 WOT 4->5 Shift RPM - Pattern A",
+      "stock": [
+        3260.0,
+        3260.0
+      ],
+      "ppei": [
+        3450.0,
+        3450.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5025 WOT 1->2 Shift RPM - Pattern B",
+      "stock": [
+        3200.0,
+        3200.0
+      ],
+      "ppei": [
+        3450.0,
+        3450.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5026 WOT 2->3 Shift RPM - Pattern B",
+      "stock": [
+        3200.0,
+        3200.0
+      ],
+      "ppei": [
+        3450.0,
+        3450.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5027 WOT 3->4 Shift RPM - Pattern B",
+      "stock": [
+        3250.0,
+        3250.0
+      ],
+      "ppei": [
+        3450.0,
+        3450.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5028 WOT 4->5 Shift RPM - Pattern B",
+      "stock": [
+        3260.0,
+        3260.0
+      ],
+      "ppei": [
+        3450.0,
+        3450.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5025 WOT 1->2 Shift RPM - Pattern C",
+      "stock": [
+        2900.0,
+        2900.0
+      ],
+      "ppei": [
+        3450.0,
+        3450.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5026 WOT 2->3 Shift RPM - Pattern C",
+      "stock": [
+        3000.0,
+        3000.0
+      ],
+      "ppei": [
+        3450.0,
+        3450.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5027 WOT 3->4 Shift RPM - Pattern C",
+      "stock": [
+        3100.0,
+        3100.0
+      ],
+      "ppei": [
+        3450.0,
+        3450.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5028 WOT 4->5 Shift RPM - Pattern C",
+      "stock": [
+        3200.0,
+        3200.0
+      ],
+      "ppei": [
+        3450.0,
+        3450.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5025 WOT 1->2 Shift RPM - Pattern D",
+      "stock": [
+        3200.0,
+        3200.0
+      ],
+      "ppei": [
+        3450.0,
+        3450.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5026 WOT 2->3 Shift RPM - Pattern D",
+      "stock": [
+        3200.0,
+        3200.0
+      ],
+      "ppei": [
+        3450.0,
+        3450.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5027 WOT 3->4 Shift RPM - Pattern D",
+      "stock": [
+        3200.0,
+        3200.0
+      ],
+      "ppei": [
+        3450.0,
+        3450.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5028 WOT 4->5 Shift RPM - Pattern D",
+      "stock": [
+        3275.0,
+        3275.0
+      ],
+      "ppei": [
+        3450.0,
+        3450.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5048 1-2 Shift TAP Presets - Pattern A",
+      "stock": [
+        80.0,
+        210.0,
+        415.0
+      ],
+      "ppei": [
+        80.0,
+        210.0,
+        415.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 3
+    },
+    {
+      "title": "D5048 1-2 Shift TAP Presets - Pattern B",
+      "stock": [
+        80.0,
+        210.0,
+        415.0
+      ],
+      "ppei": [
+        80.0,
+        210.0,
+        415.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 3
+    },
+    {
+      "title": "D5048 1-2 Shift TAP Presets - Pattern C",
+      "stock": [
+        80.0,
+        230.0,
+        410.0
+      ],
+      "ppei": [
+        80.0,
+        230.0,
+        410.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 3
+    },
+    {
+      "title": "D5048 1-2 Shift TAP Presets - Pattern D",
+      "stock": [
+        80.0,
+        230.0,
+        410.0
+      ],
+      "ppei": [
+        80.0,
+        230.0,
+        410.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 3
+    },
+    {
+      "title": "D5049 2-3 Shift TAP Presets - Pattern A",
+      "stock": [
+        115.0,
+        225.0,
+        330.0
+      ],
+      "ppei": [
+        115.0,
+        225.0,
+        330.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 3
+    },
+    {
+      "title": "D5049 2-3 Shift TAP Presets - Pattern B",
+      "stock": [
+        115.0,
+        225.0,
+        330.0
+      ],
+      "ppei": [
+        115.0,
+        225.0,
+        330.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 3
+    },
+    {
+      "title": "D5049 2-3 Shift TAP Presets - Pattern C",
+      "stock": [
+        130.0,
+        230.0,
+        335.0
+      ],
+      "ppei": [
+        130.0,
+        230.0,
+        335.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 3
+    },
+    {
+      "title": "D5049 2-3 Shift TAP Presets - Pattern D",
+      "stock": [
+        130.0,
+        230.0,
+        335.0
+      ],
+      "ppei": [
+        130.0,
+        230.0,
+        335.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 3
+    },
+    {
+      "title": "D5050 3-4 Shift TAP Presets - Pattern A",
+      "stock": [
+        210.0,
+        430.0,
+        650.0
+      ],
+      "ppei": [
+        210.0,
+        430.0,
+        650.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 3
+    },
+    {
+      "title": "D5050 3-4 Shift TAP Presets - Pattern B",
+      "stock": [
+        210.0,
+        430.0,
+        650.0
+      ],
+      "ppei": [
+        210.0,
+        430.0,
+        650.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 3
+    },
+    {
+      "title": "D5050 3-4 Shift TAP Presets - Pattern C",
+      "stock": [
+        210.0,
+        430.0,
+        650.0
+      ],
+      "ppei": [
+        210.0,
+        430.0,
+        650.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 3
+    },
+    {
+      "title": "D5050 3-4 Shift TAP Presets - Pattern D",
+      "stock": [
+        210.0,
+        430.0,
+        650.0
+      ],
+      "ppei": [
+        210.0,
+        430.0,
+        650.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 3
+    },
+    {
+      "title": "D5051 4-5 Shift TAP Presets - Pattern A",
+      "stock": [
+        125.0,
+        200.0,
+        310.0
+      ],
+      "ppei": [
+        125.0,
+        200.0,
+        310.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 3
+    },
+    {
+      "title": "D5051 4-5 Shift TAP Presets - Pattern B",
+      "stock": [
+        125.0,
+        200.0,
+        310.0
+      ],
+      "ppei": [
+        125.0,
+        200.0,
+        310.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 3
+    },
+    {
+      "title": "D5051 4-5 Shift TAP Presets - Pattern C",
+      "stock": [
+        125.0,
+        200.0,
+        310.0
+      ],
+      "ppei": [
+        125.0,
+        200.0,
+        310.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 3
+    },
+    {
+      "title": "D5051 4-5 Shift TAP Presets - Pattern D",
+      "stock": [
+        125.0,
+        200.0,
+        310.0
+      ],
+      "ppei": [
+        125.0,
+        200.0,
+        310.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 3
+    },
+    {
+      "title": "D5120 1-2 Shift TAV Preset",
+      "stock": [
+        14.0
+      ],
+      "ppei": [
+        14.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5121 1-2 Shift TAV Preset Tow/Haul",
+      "stock": [
+        14.0
+      ],
+      "ppei": [
+        14.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5130 1-2 Part Throttle Off-Going Pressure",
+      "stock": [
+        105.0
+      ],
+      "ppei": [
+        105.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5131 1-2 Part Throttle Off-Going Pressure Tow/Haul",
+      "stock": [
+        105.0
+      ],
+      "ppei": [
+        105.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5122 2-3 Shift TAV Preset",
+      "stock": [
+        13.0
+      ],
+      "ppei": [
+        13.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5123 2-3 Shift TAV Preset Tow/Haul",
+      "stock": [
+        13.0
+      ],
+      "ppei": [
+        13.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5132 2-3 Part Throttle Off-Going Pressure",
+      "stock": [
+        115.0
+      ],
+      "ppei": [
+        115.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5133 2-3 Part Throttle Off-Going Pressure Tow/Haul",
+      "stock": [
+        115.0
+      ],
+      "ppei": [
+        115.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5124 3-4 Shift TAV Preset",
+      "stock": [
+        25.0
+      ],
+      "ppei": [
+        25.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5125 3-4 Shift TAV Preset Tow/Haul",
+      "stock": [
+        25.0
+      ],
+      "ppei": [
+        25.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5134 3-4 Part Throttle Off-Going Pressure",
+      "stock": [
+        130.0
+      ],
+      "ppei": [
+        130.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5135 3-4 Part Throttle Off-Going Pressure Tow/Haul",
+      "stock": [
+        130.0
+      ],
+      "ppei": [
+        130.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5126 4-5 Shift TAV Preset",
+      "stock": [
+        10.0
+      ],
+      "ppei": [
+        10.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5127 4-5 Shift TAV Preset Tow/Haul",
+      "stock": [
+        6.0
+      ],
+      "ppei": [
+        6.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5136 4-5 Part Throttle Off-Going Pressure",
+      "stock": [
+        120.0
+      ],
+      "ppei": [
+        120.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5137 4-5 Part Throttle Off-Going Pressure Tow/Haul",
+      "stock": [
+        120.0
+      ],
+      "ppei": [
+        120.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5080 Base Desired 1->2 Shift Time",
+      "stock": [
+        650.390625
+      ],
+      "ppei": [
+        650.390625
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0003329999999550637,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5081 Base Desired 1->2 Shift Time, With TRQ Red",
+      "stock": [
+        650.390625
+      ],
+      "ppei": [
+        650.390625
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0003329999999550637,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5082 Base Desired 1->2 Shift Time, Tow/Haul",
+      "stock": [
+        650.390625
+      ],
+      "ppei": [
+        650.390625
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0003329999999550637,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5083 Base Desired 1->2 Shift Time, Tow/Haul, With TRQ Red",
+      "stock": [
+        650.390625
+      ],
+      "ppei": [
+        650.390625
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0003329999999550637,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5084 Base Desired 2->3 Shift Time",
+      "stock": [
+        400.390625
+      ],
+      "ppei": [
+        400.390625
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.00020499999999401552,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5085 Base Desired 2->3 Shift Time, With TRQ Red",
+      "stock": [
+        400.390625
+      ],
+      "ppei": [
+        400.390625
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.00020499999999401552,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5086 Base Desired 2->3 Shift Time, Tow/Haul",
+      "stock": [
+        400.390625
+      ],
+      "ppei": [
+        400.390625
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.00020499999999401552,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5087 Base Desired 2->3 Shift Time, Tow/Haul, With TRQ Red",
+      "stock": [
+        400.390625
+      ],
+      "ppei": [
+        400.390625
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.00020499999999401552,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5088 Base Desired 3->4 Shift Time",
+      "stock": [
+        500.0
+      ],
+      "ppei": [
+        500.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.00025599999997893974,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5089 Base Desired 3->4 Shift Time, With TRQ Red",
+      "stock": [
+        500.0
+      ],
+      "ppei": [
+        500.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.00025599999997893974,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5090 Base Desired 3->4 Shift Time, Tow/Haul",
+      "stock": [
+        500.0
+      ],
+      "ppei": [
+        500.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.00025599999997893974,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5091 Base Desired 3->4 Shift Time, Tow/Haul, With TRQ Red",
+      "stock": [
+        500.0
+      ],
+      "ppei": [
+        500.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.00025599999997893974,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5092 Base Desired 4->5 Shift Time",
+      "stock": [
+        500.0
+      ],
+      "ppei": [
+        500.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.00025599999997893974,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5093 Base Desired 4->5 Shift Time, With TRQ Red",
+      "stock": [
+        500.0
+      ],
+      "ppei": [
+        500.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.00025599999997893974,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5094 Base Desired 4->5 Shift Time, Tow/Haul",
+      "stock": [
+        650.390625
+      ],
+      "ppei": [
+        650.390625
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0003329999999550637,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5095 Base Desired 4->5 Shift Time, Tow/Haul, With TRQ Red",
+      "stock": [
+        650.390625
+      ],
+      "ppei": [
+        650.390625
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0003329999999550637,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5194 Maximum Torque Reduction Request",
+      "stock": [
+        89.0
+      ],
+      "ppei": [
+        89.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5195 Minimum Torque Reduction Request",
+      "stock": [
+        12.0
+      ],
+      "ppei": [
+        12.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5196 Torque Limits - 0% TPS",
+      "stock": [
+        0,
+        -28,
+        -52,
+        -58,
+        -63,
+        -68,
+        -72,
+        -84,
+        -88,
+        -96,
+        -103,
+        -114,
+        -129,
+        -140,
+        -156,
+        -161,
+        -161
+      ],
+      "ppei": [
+        0,
+        -28,
+        -52,
+        -58,
+        -63,
+        -68,
+        -72,
+        -84,
+        -88,
+        -96,
+        -103,
+        -114,
+        -129,
+        -140,
+        -156,
+        -156,
+        -156
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5196 Torque Limits - 20% TPS",
+      "stock": [
+        0,
+        97,
+        148,
+        118,
+        97,
+        85,
+        64,
+        59,
+        42,
+        14,
+        -15,
+        -65,
+        -129,
+        -140,
+        -156,
+        -161,
+        -161
+      ],
+      "ppei": [
+        0,
+        97,
+        148,
+        118,
+        97,
+        85,
+        64,
+        59,
+        42,
+        14,
+        -15,
+        -65,
+        -129,
+        -140,
+        -156,
+        -156,
+        -156
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5196 Torque Limits - 40% TPS",
+      "stock": [
+        0,
+        171,
+        287,
+        271,
+        256,
+        221,
+        198,
+        171,
+        173,
+        168,
+        163,
+        120,
+        83,
+        47,
+        -59,
+        -119,
+        -161
+      ],
+      "ppei": [
+        0,
+        171,
+        287,
+        271,
+        256,
+        221,
+        198,
+        171,
+        173,
+        168,
+        163,
+        120,
+        83,
+        47,
+        -59,
+        -59,
+        -59
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5196 Torque Limits - 50% TPS",
+      "stock": [
+        0,
+        180,
+        335,
+        366,
+        347,
+        338,
+        321,
+        300,
+        298,
+        279,
+        271,
+        226,
+        185,
+        144,
+        16,
+        -76,
+        -161
+      ],
+      "ppei": [
+        0,
+        180,
+        335,
+        366,
+        347,
+        338,
+        321,
+        300,
+        298,
+        279,
+        271,
+        226,
+        185,
+        144,
+        16,
+        16,
+        16
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5196 Torque Limits - 60% TPS",
+      "stock": [
+        0,
+        180,
+        335,
+        440,
+        442,
+        437,
+        448,
+        431,
+        409,
+        394,
+        364,
+        348,
+        318,
+        221,
+        51,
+        -55,
+        -161
+      ],
+      "ppei": [
+        0,
+        180,
+        335,
+        440,
+        442,
+        437,
+        448,
+        431,
+        409,
+        394,
+        364,
+        348,
+        318,
+        221,
+        51,
+        51,
+        51
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5196 Torque Limits - 70% TPS",
+      "stock": [
+        0,
+        180,
+        335,
+        479,
+        498,
+        517,
+        530,
+        539,
+        524,
+        504,
+        470,
+        432,
+        386,
+        334,
+        136,
+        -35,
+        -161
+      ],
+      "ppei": [
+        0,
+        180,
+        335,
+        479,
+        498,
+        517,
+        530,
+        539,
+        524,
+        504,
+        470,
+        432,
+        386,
+        334,
+        136,
+        136,
+        136
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5196 Torque Limits - 80% TPS",
+      "stock": [
+        0,
+        180,
+        335,
+        479,
+        498,
+        594,
+        625,
+        643,
+        631,
+        610,
+        576,
+        524,
+        476,
+        426,
+        281,
+        5,
+        -161
+      ],
+      "ppei": [
+        0,
+        180,
+        335,
+        479,
+        498,
+        594,
+        625,
+        643,
+        631,
+        610,
+        576,
+        524,
+        476,
+        426,
+        281,
+        281,
+        281
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5196 Torque Limits - 90% TPS",
+      "stock": [
+        0,
+        180,
+        335,
+        479,
+        498,
+        594,
+        650,
+        689,
+        688,
+        695,
+        669,
+        612,
+        563,
+        512,
+        403,
+        45,
+        -161
+      ],
+      "ppei": [
+        0,
+        180,
+        335,
+        479,
+        498,
+        594,
+        650,
+        689,
+        688,
+        695,
+        669,
+        612,
+        563,
+        512,
+        403,
+        403,
+        403
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5196 Torque Limits - 100% TPS",
+      "stock": [
+        0,
+        180,
+        335,
+        479,
+        498,
+        594,
+        650,
+        712,
+        712,
+        723,
+        712,
+        703,
+        712,
+        712,
+        626,
+        45,
+        -161
+      ],
+      "ppei": [
+        0,
+        180,
+        335,
+        479,
+        498,
+        594,
+        650,
+        712,
+        712,
+        723,
+        712,
+        703,
+        712,
+        712,
+        626,
+        626,
+        626
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5231 TCC Apply Slip Inhibit",
+      "stock": [
+        600.0
+      ],
+      "ppei": [
+        2000.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 1
+    },
+    {
+      "title": "D5233 TCC Apply Slip Inhibit Option (0=Disable, 1=Enable)",
+      "stock": [
+        1
+      ],
+      "ppei": [
+        0
+      ],
+      "native_comparison": "not_numeric_or_not_resolved"
+    },
+    {
+      "title": "PPEI unknown code-like byte patch @ 0x10A24 (research only)",
+      "stock": [
+        0
+      ],
+      "ppei": [
+        64
+      ],
+      "native_comparison": "not_numeric_or_not_resolved"
+    },
+    {
+      "title": "D5100 Desired 1->2 Shift Time Throttle Adjust",
+      "stock": [
+        99.609375,
+        89.84375,
+        80.078125,
+        70.3125,
+        59.5703125,
+        49.8046875,
+        0.0,
+        -49.8046875,
+        -99.609375,
+        -200.1953125,
+        -214.84375,
+        -230.46875,
+        -245.1171875,
+        -259.765625,
+        -275.390625,
+        -290.0390625,
+        -299.8046875
+      ],
+      "ppei": [
+        99.609375,
+        89.84375,
+        80.078125,
+        70.3125,
+        59.5703125,
+        49.8046875,
+        0.0,
+        -49.8046875,
+        -99.609375,
+        -200.1953125,
+        -214.84375,
+        -230.46875,
+        -245.1171875,
+        -259.765625,
+        -275.390625,
+        -290.0390625,
+        -299.8046875
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0001535000000103537,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5101 Desired 1->2 Shift Time Throttle Adjust, With TRQ Red",
+      "stock": [
+        99.609375,
+        89.84375,
+        80.078125,
+        70.3125,
+        59.5703125,
+        49.8046875,
+        0.0,
+        -49.8046875,
+        -99.609375,
+        -200.1953125,
+        -214.84375,
+        -230.46875,
+        -245.1171875,
+        -259.765625,
+        -275.390625,
+        -290.0390625,
+        -299.8046875
+      ],
+      "ppei": [
+        99.609375,
+        89.84375,
+        80.078125,
+        70.3125,
+        59.5703125,
+        49.8046875,
+        0.0,
+        -49.8046875,
+        -99.609375,
+        -200.1953125,
+        -214.84375,
+        -230.46875,
+        -245.1171875,
+        -259.765625,
+        -275.390625,
+        -290.0390625,
+        -299.8046875
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0001535000000103537,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5102 Desired 1->2 Shift Time Throttle Adjust, T/H Mode",
+      "stock": [
+        99.609375,
+        89.84375,
+        80.078125,
+        70.3125,
+        59.5703125,
+        49.8046875,
+        0.0,
+        -49.8046875,
+        -99.609375,
+        -200.1953125,
+        -214.84375,
+        -230.46875,
+        -245.1171875,
+        -259.765625,
+        -275.390625,
+        -290.0390625,
+        -299.8046875
+      ],
+      "ppei": [
+        99.609375,
+        89.84375,
+        80.078125,
+        70.3125,
+        59.5703125,
+        49.8046875,
+        0.0,
+        -49.8046875,
+        -99.609375,
+        -200.1953125,
+        -214.84375,
+        -230.46875,
+        -245.1171875,
+        -259.765625,
+        -275.390625,
+        -290.0390625,
+        -299.8046875
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0001535000000103537,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5103 Desired 1->2 Shift Time Throttle Adjust, T/H Mode, With TRQ Red",
+      "stock": [
+        99.609375,
+        89.84375,
+        80.078125,
+        70.3125,
+        59.5703125,
+        49.8046875,
+        0.0,
+        -49.8046875,
+        -99.609375,
+        -200.1953125,
+        -214.84375,
+        -230.46875,
+        -245.1171875,
+        -259.765625,
+        -275.390625,
+        -290.0390625,
+        -299.8046875
+      ],
+      "ppei": [
+        99.609375,
+        89.84375,
+        80.078125,
+        70.3125,
+        59.5703125,
+        49.8046875,
+        0.0,
+        -49.8046875,
+        -99.609375,
+        -200.1953125,
+        -214.84375,
+        -230.46875,
+        -245.1171875,
+        -259.765625,
+        -275.390625,
+        -290.0390625,
+        -299.8046875
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0001535000000103537,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5104 Desired 2->3 Shift Time Throttle Adjust",
+      "stock": [
+        -99.609375,
+        -99.609375,
+        -49.8046875,
+        0.0,
+        99.609375,
+        99.609375,
+        99.609375,
+        99.609375,
+        75.1953125,
+        49.8046875,
+        0.0,
+        -49.8046875,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375
+      ],
+      "ppei": [
+        -99.609375,
+        -99.609375,
+        -49.8046875,
+        0.0,
+        99.609375,
+        99.609375,
+        99.609375,
+        99.609375,
+        75.1953125,
+        49.8046875,
+        0.0,
+        -49.8046875,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 5.099999999913507e-05,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5105 Desired 2->3 Shift Time Throttle Adjust, With TRQ Red",
+      "stock": [
+        -99.609375,
+        -99.609375,
+        -49.8046875,
+        0.0,
+        99.609375,
+        99.609375,
+        99.609375,
+        99.609375,
+        75.1953125,
+        49.8046875,
+        0.0,
+        -49.8046875,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375
+      ],
+      "ppei": [
+        -99.609375,
+        -99.609375,
+        -49.8046875,
+        0.0,
+        99.609375,
+        99.609375,
+        99.609375,
+        99.609375,
+        75.1953125,
+        49.8046875,
+        0.0,
+        -49.8046875,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 5.099999999913507e-05,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5106 Desired 2->3 Shift Time Throttle Adjust, T/H Mode",
+      "stock": [
+        150.390625,
+        125.0,
+        99.609375,
+        75.1953125,
+        49.8046875,
+        25.390625,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -49.8046875,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375
+      ],
+      "ppei": [
+        150.390625,
+        125.0,
+        99.609375,
+        75.1953125,
+        49.8046875,
+        25.390625,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -49.8046875,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 7.700000000454565e-05,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5107 Desired 2->3 Shift Time Throttle Adjust, T/H Mode, With TRQ Red",
+      "stock": [
+        150.390625,
+        125.0,
+        99.609375,
+        75.1953125,
+        49.8046875,
+        25.390625,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -49.8046875,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375
+      ],
+      "ppei": [
+        150.390625,
+        125.0,
+        99.609375,
+        75.1953125,
+        49.8046875,
+        25.390625,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -49.8046875,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 7.700000000454565e-05,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5108 Desired 3->4 Shift Time Throttle Adjust",
+      "stock": [
+        -200.1953125,
+        -150.390625,
+        -99.609375,
+        -49.8046875,
+        0.0,
+        0.0,
+        -25.390625,
+        -49.8046875,
+        -75.1953125,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -75.1953125,
+        -49.8046875,
+        -25.390625,
+        0.0,
+        0.0
+      ],
+      "ppei": [
+        -200.1953125,
+        -150.390625,
+        -99.609375,
+        -49.8046875,
+        0.0,
+        0.0,
+        -25.390625,
+        -49.8046875,
+        -75.1953125,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -75.1953125,
+        -49.8046875,
+        -25.390625,
+        0.0,
+        0.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.00010249999999700776,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5109 Desired 3->4 Shift Time Throttle Adjust, With TRQ Red",
+      "stock": [
+        -200.1953125,
+        -150.390625,
+        -99.609375,
+        -49.8046875,
+        0.0,
+        0.0,
+        -25.390625,
+        -49.8046875,
+        -75.1953125,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -75.1953125,
+        -49.8046875,
+        -25.390625,
+        0.0,
+        0.0
+      ],
+      "ppei": [
+        -200.1953125,
+        -150.390625,
+        -99.609375,
+        -49.8046875,
+        0.0,
+        0.0,
+        -25.390625,
+        -49.8046875,
+        -75.1953125,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -75.1953125,
+        -49.8046875,
+        -25.390625,
+        0.0,
+        0.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.00010249999999700776,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5110 Desired 3->4 Shift Time Throttle Adjust, T/H Mode",
+      "stock": [
+        200.1953125,
+        200.1953125,
+        174.8046875,
+        162.109375,
+        150.390625,
+        137.6953125,
+        125.0,
+        112.3046875,
+        99.609375,
+        75.1953125,
+        49.8046875,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ppei": [
+        200.1953125,
+        200.1953125,
+        174.8046875,
+        162.109375,
+        150.390625,
+        137.6953125,
+        125.0,
+        112.3046875,
+        99.609375,
+        75.1953125,
+        49.8046875,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.00010249999999700776,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5111 Desired 3->4 Shift Time Throttle Adjust, T/H Mode, With TRQ Red",
+      "stock": [
+        200.1953125,
+        187.5,
+        174.8046875,
+        162.109375,
+        150.390625,
+        137.6953125,
+        125.0,
+        112.3046875,
+        99.609375,
+        75.1953125,
+        49.8046875,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ppei": [
+        200.1953125,
+        187.5,
+        174.8046875,
+        162.109375,
+        150.390625,
+        137.6953125,
+        125.0,
+        112.3046875,
+        99.609375,
+        75.1953125,
+        49.8046875,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.00010249999999700776,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5112 Desired 4->5 Shift Time Throttle Adjust",
+      "stock": [
+        -200.1953125,
+        -200.1953125,
+        -200.1953125,
+        -174.8046875,
+        -150.390625,
+        -125.0,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -49.8046875,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ppei": [
+        -200.1953125,
+        -200.1953125,
+        -200.1953125,
+        -174.8046875,
+        -150.390625,
+        -125.0,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -49.8046875,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.00010249999999700776,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5113 Desired 4->5 Shift Time Throttle Adjust, With TRQ Red",
+      "stock": [
+        -200.1953125,
+        -200.1953125,
+        -200.1953125,
+        -174.8046875,
+        -150.390625,
+        -125.0,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -49.8046875,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ppei": [
+        -200.1953125,
+        -200.1953125,
+        -200.1953125,
+        -174.8046875,
+        -150.390625,
+        -125.0,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -99.609375,
+        -49.8046875,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.00010249999999700776,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5114 Desired 4->5 Shift Time Throttle Adjust, T/H Mode",
+      "stock": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -25.390625,
+        -49.8046875,
+        -75.1953125,
+        -99.609375,
+        -125.0,
+        -150.390625,
+        -150.390625,
+        -150.390625,
+        -150.390625,
+        -150.390625,
+        -150.390625,
+        -150.390625
+      ],
+      "ppei": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -25.390625,
+        -49.8046875,
+        -75.1953125,
+        -99.609375,
+        -125.0,
+        -150.390625,
+        -150.390625,
+        -150.390625,
+        -150.390625,
+        -150.390625,
+        -150.390625,
+        -150.390625
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 7.700000000454565e-05,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5115 Desired 4->5 Shift Time Throttle Adjust, T/H Mode, With TRQ Red",
+      "stock": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -25.390625,
+        -49.8046875,
+        -75.1953125,
+        -99.609375,
+        -125.0,
+        -150.390625,
+        -150.390625,
+        -150.390625,
+        -150.390625,
+        -150.390625,
+        -150.390625,
+        -150.390625
+      ],
+      "ppei": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -25.390625,
+        -49.8046875,
+        -75.1953125,
+        -99.609375,
+        -125.0,
+        -150.390625,
+        -150.390625,
+        -150.390625,
+        -150.390625,
+        -150.390625,
+        -150.390625,
+        -150.390625
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 7.700000000454565e-05,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5010 TCC Apply Speeds - Second Gear - Pattern A",
+      "stock": [
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0
+      ],
+      "ppei": [
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5011 TCC Apply Speeds - Third Gear - Pattern A",
+      "stock": [
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        65.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0
+      ],
+      "ppei": [
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        65.0,
+        60.0,
+        60.0,
+        60.0,
+        60.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5012 TCC Apply Speeds - Fourth Gear - Pattern A",
+      "stock": [
+        72.0,
+        72.0,
+        72.0,
+        72.0,
+        72.0,
+        72.0,
+        72.0,
+        72.0,
+        76.0,
+        76.0,
+        76.0,
+        72.0,
+        72.0,
+        77.0,
+        82.0,
+        82.0,
+        82.0
+      ],
+      "ppei": [
+        72.0,
+        72.0,
+        72.0,
+        72.0,
+        72.0,
+        72.0,
+        72.0,
+        72.0,
+        76.0,
+        76.0,
+        76.0,
+        72.0,
+        72.0,
+        77.0,
+        82.0,
+        82.0,
+        82.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5013 TCC Apply Speeds - Fifth Gear - Pattern A",
+      "stock": [
+        72.0,
+        72.0,
+        72.0,
+        72.0,
+        72.0,
+        72.0,
+        72.0,
+        72.0,
+        76.0,
+        80.5,
+        83.5,
+        85.0,
+        85.0,
+        85.0,
+        85.0,
+        85.0,
+        85.0
+      ],
+      "ppei": [
+        72.0,
+        72.0,
+        72.0,
+        72.0,
+        72.0,
+        72.0,
+        72.0,
+        72.0,
+        76.0,
+        80.5,
+        83.5,
+        85.0,
+        85.0,
+        85.0,
+        85.0,
+        85.0,
+        85.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5015 TCC Release Speeds - Second Gear - Pattern A",
+      "stock": [
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5016 TCC Release Speeds - Third Gear - Pattern A",
+      "stock": [
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5017 TCC Release Speeds - Fourth Gear - Pattern A",
+      "stock": [
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5018 TCC Release Speeds - Fifth Gear - Pattern A",
+      "stock": [
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        54.0,
+        72.0,
+        78.0,
+        79.0,
+        79.0,
+        79.0,
+        79.0
+      ],
+      "ppei": [
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        68.0,
+        54.0,
+        72.0,
+        78.0,
+        79.0,
+        79.0,
+        79.0,
+        79.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5010 TCC Apply Speeds - Second Gear - Pattern B",
+      "stock": [
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        33.0,
+        34.0,
+        36.0,
+        38.0,
+        40.0,
+        42.0,
+        44.0,
+        45.0
+      ],
+      "ppei": [
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        33.0,
+        34.0,
+        36.0,
+        38.0,
+        40.0,
+        42.0,
+        44.0,
+        45.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5011 TCC Apply Speeds - Third Gear - Pattern B",
+      "stock": [
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        33.0,
+        34.0,
+        36.0,
+        38.0,
+        40.0,
+        42.0,
+        44.0,
+        45.0
+      ],
+      "ppei": [
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        33.0,
+        34.0,
+        36.0,
+        38.0,
+        40.0,
+        42.0,
+        44.0,
+        45.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5012 TCC Apply Speeds - Fourth Gear - Pattern B",
+      "stock": [
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        33.0,
+        34.0,
+        36.0,
+        38.0,
+        40.0,
+        42.0,
+        44.0,
+        45.0
+      ],
+      "ppei": [
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        33.0,
+        34.0,
+        36.0,
+        38.0,
+        40.0,
+        42.0,
+        44.0,
+        45.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5013 TCC Apply Speeds - Fifth Gear - Pattern B",
+      "stock": [
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        33.0,
+        34.0,
+        36.0,
+        38.0,
+        40.0,
+        42.0,
+        44.0,
+        45.0
+      ],
+      "ppei": [
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        32.0,
+        33.0,
+        34.0,
+        36.0,
+        38.0,
+        40.0,
+        42.0,
+        44.0,
+        45.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5015 TCC Release Speeds - Second Gear - Pattern B",
+      "stock": [
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        29.0,
+        36.0,
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        29.0,
+        36.0,
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5016 TCC Release Speeds - Third Gear - Pattern B",
+      "stock": [
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        29.0,
+        36.0,
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        29.0,
+        36.0,
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5017 TCC Release Speeds - Fourth Gear - Pattern B",
+      "stock": [
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        29.0,
+        36.0,
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        29.0,
+        36.0,
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5018 TCC Release Speeds - Fifth Gear - Pattern B",
+      "stock": [
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        29.0,
+        36.0,
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        29.0,
+        36.0,
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5010 TCC Apply Speeds - Second Gear - Pattern C",
+      "stock": [
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        32.0,
+        35.0,
+        38.0,
+        40.0,
+        41.0,
+        41.0
+      ],
+      "ppei": [
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        32.0,
+        35.0,
+        38.0,
+        40.0,
+        41.0,
+        41.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5011 TCC Apply Speeds - Third Gear - Pattern C",
+      "stock": [
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        32.0,
+        35.0,
+        38.0,
+        40.0,
+        41.0,
+        41.0
+      ],
+      "ppei": [
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        32.0,
+        35.0,
+        38.0,
+        40.0,
+        41.0,
+        41.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5012 TCC Apply Speeds - Fourth Gear - Pattern C",
+      "stock": [
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        32.0,
+        35.0,
+        38.0,
+        40.0,
+        41.0,
+        41.0
+      ],
+      "ppei": [
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        32.0,
+        35.0,
+        38.0,
+        40.0,
+        41.0,
+        41.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5013 TCC Apply Speeds - Fifth Gear - Pattern C",
+      "stock": [
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        32.0,
+        35.0,
+        38.0,
+        40.0,
+        41.0,
+        41.0
+      ],
+      "ppei": [
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        31.0,
+        32.0,
+        35.0,
+        38.0,
+        40.0,
+        41.0,
+        41.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5015 TCC Release Speeds - Second Gear - Pattern C",
+      "stock": [
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        29.0,
+        36.0,
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        29.0,
+        36.0,
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5016 TCC Release Speeds - Third Gear - Pattern C",
+      "stock": [
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        29.0,
+        36.0,
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        29.0,
+        36.0,
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5017 TCC Release Speeds - Fourth Gear - Pattern C",
+      "stock": [
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        29.0,
+        36.0,
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        29.0,
+        36.0,
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5018 TCC Release Speeds - Fifth Gear - Pattern C",
+      "stock": [
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        29.0,
+        36.0,
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        28.0,
+        29.0,
+        36.0,
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5010 TCC Apply Speeds - Second Gear - Pattern D",
+      "stock": [
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        34.0,
+        36.0,
+        38.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0
+      ],
+      "ppei": [
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        34.0,
+        36.0,
+        38.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5011 TCC Apply Speeds - Third Gear - Pattern D",
+      "stock": [
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        34.0,
+        36.0,
+        38.0,
+        40.0,
+        42.0,
+        44.0,
+        45.0,
+        45.0,
+        45.0,
+        45.0,
+        45.0,
+        45.0
+      ],
+      "ppei": [
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        34.0,
+        36.0,
+        38.0,
+        40.0,
+        42.0,
+        44.0,
+        45.0,
+        45.0,
+        45.0,
+        45.0,
+        45.0,
+        45.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5012 TCC Apply Speeds - Fourth Gear - Pattern D",
+      "stock": [
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        34.0,
+        36.0,
+        38.0,
+        40.0,
+        42.0,
+        44.0,
+        45.0,
+        45.0,
+        45.0,
+        45.0,
+        45.0,
+        45.0
+      ],
+      "ppei": [
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        34.0,
+        36.0,
+        38.0,
+        40.0,
+        42.0,
+        44.0,
+        45.0,
+        45.0,
+        45.0,
+        45.0,
+        45.0,
+        45.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5013 TCC Apply Speeds - Fifth Gear - Pattern D",
+      "stock": [
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        34.0,
+        36.0,
+        38.0,
+        40.0,
+        42.0,
+        44.0,
+        45.0,
+        45.0,
+        45.0,
+        45.0,
+        45.0,
+        45.0
+      ],
+      "ppei": [
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        34.0,
+        36.0,
+        38.0,
+        40.0,
+        42.0,
+        44.0,
+        45.0,
+        45.0,
+        45.0,
+        45.0,
+        45.0,
+        45.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5015 TCC Release Speeds - Second Gear - Pattern D",
+      "stock": [
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0
+      ],
+      "ppei": [
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5016 TCC Release Speeds - Third Gear - Pattern D",
+      "stock": [
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0
+      ],
+      "ppei": [
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5017 TCC Release Speeds - Fourth Gear - Pattern D",
+      "stock": [
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0
+      ],
+      "ppei": [
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5018 TCC Release Speeds - Fifth Gear - Pattern D",
+      "stock": [
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0
+      ],
+      "ppei": [
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5010 TCC Apply Speeds - Second Gear - Pattern E",
+      "stock": [
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0
+      ],
+      "ppei": [
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0,
+        255.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5015 TCC Release Speeds - Second Gear - Pattern E",
+      "stock": [
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5010 TCC Apply Speeds - Second Gear - Pattern F",
+      "stock": [
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        34.0,
+        36.0,
+        38.0,
+        40.0,
+        42.0,
+        44.0,
+        45.0,
+        45.0,
+        45.0
+      ],
+      "ppei": [
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        33.0,
+        34.0,
+        36.0,
+        38.0,
+        40.0,
+        42.0,
+        44.0,
+        45.0,
+        45.0,
+        45.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5015 TCC Release Speeds - Second Gear - Pattern F",
+      "stock": [
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0
+      ],
+      "ppei": [
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5010 TCC Apply Speeds - Second Gear - Pattern H",
+      "stock": [
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        32.0,
+        35.0,
+        38.0,
+        40.0,
+        41.0,
+        41.0
+      ],
+      "ppei": [
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        29.0,
+        32.0,
+        35.0,
+        38.0,
+        40.0,
+        41.0,
+        41.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5015 TCC Release Speeds - Second Gear - Pattern H",
+      "stock": [
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        29.0,
+        36.0,
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        26.0,
+        29.0,
+        36.0,
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5020 WOT 1->2 Shift (Speed) - Pattern A",
+      "stock": [
+        28.0,
+        28.0
+      ],
+      "ppei": [
+        28.0,
+        28.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5021 WOT 2->3 Shift (Speed) - Pattern A",
+      "stock": [
+        52.0,
+        52.0
+      ],
+      "ppei": [
+        52.0,
+        52.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5022 WOT 3->4 Shift (Speed) - Pattern A",
+      "stock": [
+        72.0,
+        72.0
+      ],
+      "ppei": [
+        72.0,
+        72.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5023 WOT 4->5 Shift (Speed) - Pattern A",
+      "stock": [
+        106.0,
+        106.0
+      ],
+      "ppei": [
+        106.0,
+        106.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5020 WOT 1->2 Shift (Speed) - Pattern B",
+      "stock": [
+        28.0,
+        28.0
+      ],
+      "ppei": [
+        28.0,
+        28.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5021 WOT 2->3 Shift (Speed) - Pattern B",
+      "stock": [
+        56.0,
+        56.0
+      ],
+      "ppei": [
+        56.0,
+        56.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5022 WOT 3->4 Shift (Speed) - Pattern B",
+      "stock": [
+        74.0,
+        74.0
+      ],
+      "ppei": [
+        74.0,
+        74.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5023 WOT 4->5 Shift (Speed) - Pattern B",
+      "stock": [
+        106.0,
+        106.0
+      ],
+      "ppei": [
+        106.0,
+        106.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5020 WOT 1->2 Shift (Speed) - Pattern C",
+      "stock": [
+        28.0,
+        28.0
+      ],
+      "ppei": [
+        28.0,
+        28.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5021 WOT 2->3 Shift (Speed) - Pattern C",
+      "stock": [
+        52.0,
+        52.0
+      ],
+      "ppei": [
+        52.0,
+        52.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5022 WOT 3->4 Shift (Speed) - Pattern C",
+      "stock": [
+        72.0,
+        72.0
+      ],
+      "ppei": [
+        72.0,
+        72.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5023 WOT 4->5 Shift (Speed) - Pattern C",
+      "stock": [
+        106.0,
+        106.0
+      ],
+      "ppei": [
+        106.0,
+        106.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5020 WOT 1->2 Shift (Speed) - Pattern D",
+      "stock": [
+        28.0,
+        28.0
+      ],
+      "ppei": [
+        28.0,
+        28.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5021 WOT 2->3 Shift (Speed) - Pattern D",
+      "stock": [
+        56.0,
+        56.0
+      ],
+      "ppei": [
+        56.0,
+        56.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5022 WOT 3->4 Shift (Speed) - Pattern D",
+      "stock": [
+        76.0,
+        76.0
+      ],
+      "ppei": [
+        76.0,
+        76.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5023 WOT 4->5 Shift (Speed) - Pattern D",
+      "stock": [
+        110.0,
+        110.0
+      ],
+      "ppei": [
+        110.0,
+        110.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5030 WOT Temperature Adjust - Native Column 0: Value",
+      "stock": [
+        -40.0,
+        0.0,
+        60.0
+      ],
+      "ppei": [
+        -40.0,
+        0.0,
+        60.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 3
+    },
+    {
+      "title": "D5031 WOT Threshold Upper - Native Column 0: Value",
+      "stock": [
+        97.0001220703125,
+        97.0001220703125,
+        97.0001220703125
+      ],
+      "ppei": [
+        97.0001220703125,
+        97.0001220703125,
+        97.0001220703125
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 3.1784992415850866e-09,
+      "compared_cells": 3
+    },
+    {
+      "title": "D5032 WOT Threshold Lower - Native Column 0: Value",
+      "stock": [
+        94.000244140625,
+        94.000244140625,
+        94.000244140625
+      ],
+      "ppei": [
+        94.000244140625,
+        94.000244140625,
+        94.000244140625
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 3.0802027595200343e-09,
+      "compared_cells": 3
+    },
+    {
+      "title": "D5033 WOT Threshold 4WD Upper - Native Column 0: Value",
+      "stock": [
+        75.0,
+        75.0,
+        75.0
+      ],
+      "ppei": [
+        75.0,
+        75.0,
+        75.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 2.457596792737604e-09,
+      "compared_cells": 3
+    },
+    {
+      "title": "D5034 WOT Threshold 4WD Lower - Native Column 0: Value",
+      "stock": [
+        69.99969482421875,
+        69.99969482421875,
+        69.99969482421875
+      ],
+      "ppei": [
+        69.99969482421875,
+        69.99969482421875,
+        69.99969482421875
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 2.293745637871325e-09,
+      "compared_cells": 3
+    },
+    {
+      "title": "D5070 TCC Minimum Duty Cycle - Native Column 0: 0",
+      "stock": [
+        7.9986572265625,
+        7.9986572265625,
+        12.5,
+        20.001220703125,
+        23.49853515625,
+        25.0,
+        25.0,
+        25.0,
+        25.0
+      ],
+      "ppei": [
+        7.9986572265625,
+        7.9986572265625,
+        12.5,
+        20.001220703125,
+        23.49853515625,
+        25.0,
+        25.0,
+        25.0,
+        25.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 1.0240000136718663e-07,
+      "compared_cells": 9
+    },
+    {
+      "title": "D5070 TCC Minimum Duty Cycle - Native Column 1: 15",
+      "stock": [
+        7.9986572265625,
+        7.9986572265625,
+        12.5,
+        20.001220703125,
+        23.49853515625,
+        25.0,
+        25.0,
+        25.0,
+        25.0
+      ],
+      "ppei": [
+        7.9986572265625,
+        7.9986572265625,
+        12.5,
+        20.001220703125,
+        23.49853515625,
+        25.0,
+        25.0,
+        25.0,
+        25.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 1.0240000136718663e-07,
+      "compared_cells": 9
+    },
+    {
+      "title": "D5070 TCC Minimum Duty Cycle - Native Column 2: 35",
+      "stock": [
+        7.9986572265625,
+        7.9986572265625,
+        12.5,
+        20.001220703125,
+        23.49853515625,
+        25.0,
+        25.0,
+        25.0,
+        25.0
+      ],
+      "ppei": [
+        7.9986572265625,
+        7.9986572265625,
+        12.5,
+        20.001220703125,
+        23.49853515625,
+        25.0,
+        25.0,
+        25.0,
+        25.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 1.0240000136718663e-07,
+      "compared_cells": 9
+    },
+    {
+      "title": "D5070 TCC Minimum Duty Cycle - Native Column 3: 50",
+      "stock": [
+        7.9986572265625,
+        7.9986572265625,
+        12.5,
+        20.001220703125,
+        23.49853515625,
+        25.0,
+        25.0,
+        25.0,
+        25.0
+      ],
+      "ppei": [
+        7.9986572265625,
+        7.9986572265625,
+        12.5,
+        20.001220703125,
+        23.49853515625,
+        25.0,
+        25.0,
+        25.0,
+        25.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 1.0240000136718663e-07,
+      "compared_cells": 9
+    },
+    {
+      "title": "D5070 TCC Minimum Duty Cycle - Native Column 4: 65",
+      "stock": [
+        7.9986572265625,
+        7.9986572265625,
+        12.5,
+        20.001220703125,
+        23.49853515625,
+        25.0,
+        25.0,
+        25.0,
+        25.0
+      ],
+      "ppei": [
+        7.9986572265625,
+        7.9986572265625,
+        12.5,
+        20.001220703125,
+        23.49853515625,
+        25.0,
+        25.0,
+        25.0,
+        25.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 1.0240000136718663e-07,
+      "compared_cells": 9
+    },
+    {
+      "title": "D5070 TCC Minimum Duty Cycle - Native Column 5: 80",
+      "stock": [
+        7.9986572265625,
+        7.9986572265625,
+        12.5,
+        20.001220703125,
+        23.49853515625,
+        25.0,
+        25.0,
+        25.0,
+        25.0
+      ],
+      "ppei": [
+        7.9986572265625,
+        7.9986572265625,
+        12.5,
+        20.001220703125,
+        23.49853515625,
+        25.0,
+        25.0,
+        25.0,
+        25.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 1.0240000136718663e-07,
+      "compared_cells": 9
+    },
+    {
+      "title": "D5070 TCC Minimum Duty Cycle - Native Column 6: 100",
+      "stock": [
+        7.9986572265625,
+        7.9986572265625,
+        12.5,
+        20.001220703125,
+        23.49853515625,
+        25.0,
+        25.0,
+        25.0,
+        25.0
+      ],
+      "ppei": [
+        7.9986572265625,
+        7.9986572265625,
+        12.5,
+        20.001220703125,
+        23.49853515625,
+        25.0,
+        25.0,
+        25.0,
+        25.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 1.0240000136718663e-07,
+      "compared_cells": 9
+    },
+    {
+      "title": "D5070 TCC Minimum Duty Cycle - Native Column 7: 115",
+      "stock": [
+        7.9986572265625,
+        7.9986572265625,
+        12.5,
+        20.001220703125,
+        23.49853515625,
+        25.0,
+        25.0,
+        25.0,
+        25.0
+      ],
+      "ppei": [
+        7.9986572265625,
+        7.9986572265625,
+        12.5,
+        20.001220703125,
+        23.49853515625,
+        25.0,
+        25.0,
+        25.0,
+        25.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 1.0240000136718663e-07,
+      "compared_cells": 9
+    },
+    {
+      "title": "D5070 TCC Minimum Duty Cycle - Native Column 8: 135",
+      "stock": [
+        1.9989013671875,
+        4.0008544921875,
+        7.9986572265625,
+        11.99951171875,
+        17.999267578125,
+        25.0,
+        32.501220703125,
+        39.9993896484375,
+        45.001220703125
+      ],
+      "ppei": [
+        1.9989013671875,
+        4.0008544921875,
+        7.9986572265625,
+        11.99951171875,
+        17.999267578125,
+        25.0,
+        32.501220703125,
+        39.9993896484375,
+        45.001220703125
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 1.8432500326071022e-07,
+      "compared_cells": 9
+    },
+    {
+      "title": "D5071 TCC Maximum Duty Cycle - Native Column 0: 0",
+      "stock": [
+        95.9991455078125,
+        95.9991455078125,
+        96.4996337890625,
+        97.2991943359375,
+        97.7996826171875,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125
+      ],
+      "ppei": [
+        95.9991455078125,
+        95.9991455078125,
+        96.4996337890625,
+        97.2991943359375,
+        97.7996826171875,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 4.014125067897112e-07,
+      "compared_cells": 9
+    },
+    {
+      "title": "D5071 TCC Maximum Duty Cycle - Native Column 1: 15",
+      "stock": [
+        95.9991455078125,
+        95.9991455078125,
+        96.4996337890625,
+        97.2991943359375,
+        97.7996826171875,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125
+      ],
+      "ppei": [
+        95.9991455078125,
+        95.9991455078125,
+        96.4996337890625,
+        97.2991943359375,
+        97.7996826171875,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 4.014125067897112e-07,
+      "compared_cells": 9
+    },
+    {
+      "title": "D5071 TCC Maximum Duty Cycle - Native Column 2: 35",
+      "stock": [
+        95.9991455078125,
+        95.9991455078125,
+        96.4996337890625,
+        97.2991943359375,
+        97.7996826171875,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125
+      ],
+      "ppei": [
+        95.9991455078125,
+        95.9991455078125,
+        96.4996337890625,
+        97.2991943359375,
+        97.7996826171875,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 4.014125067897112e-07,
+      "compared_cells": 9
+    },
+    {
+      "title": "D5071 TCC Maximum Duty Cycle - Native Column 3: 50",
+      "stock": [
+        95.9991455078125,
+        95.9991455078125,
+        96.4996337890625,
+        97.2991943359375,
+        97.7996826171875,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125
+      ],
+      "ppei": [
+        95.9991455078125,
+        95.9991455078125,
+        96.4996337890625,
+        97.2991943359375,
+        97.7996826171875,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 4.014125067897112e-07,
+      "compared_cells": 9
+    },
+    {
+      "title": "D5071 TCC Maximum Duty Cycle - Native Column 4: 65",
+      "stock": [
+        95.9991455078125,
+        95.9991455078125,
+        96.4996337890625,
+        97.2991943359375,
+        97.7996826171875,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125
+      ],
+      "ppei": [
+        95.9991455078125,
+        95.9991455078125,
+        96.4996337890625,
+        97.2991943359375,
+        97.7996826171875,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 4.014125067897112e-07,
+      "compared_cells": 9
+    },
+    {
+      "title": "D5071 TCC Maximum Duty Cycle - Native Column 5: 80",
+      "stock": [
+        95.9991455078125,
+        95.9991455078125,
+        96.4996337890625,
+        97.2991943359375,
+        97.7996826171875,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125
+      ],
+      "ppei": [
+        95.9991455078125,
+        95.9991455078125,
+        96.4996337890625,
+        97.2991943359375,
+        97.7996826171875,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 4.014125067897112e-07,
+      "compared_cells": 9
+    },
+    {
+      "title": "D5071 TCC Maximum Duty Cycle - Native Column 6: 100",
+      "stock": [
+        95.9991455078125,
+        95.9991455078125,
+        96.4996337890625,
+        97.2991943359375,
+        97.7996826171875,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125
+      ],
+      "ppei": [
+        95.9991455078125,
+        95.9991455078125,
+        96.4996337890625,
+        97.2991943359375,
+        97.7996826171875,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 4.014125067897112e-07,
+      "compared_cells": 9
+    },
+    {
+      "title": "D5071 TCC Maximum Duty Cycle - Native Column 7: 115",
+      "stock": [
+        95.9991455078125,
+        95.9991455078125,
+        96.4996337890625,
+        97.2991943359375,
+        97.7996826171875,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125
+      ],
+      "ppei": [
+        95.9991455078125,
+        95.9991455078125,
+        96.4996337890625,
+        97.2991943359375,
+        97.7996826171875,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 4.014125067897112e-07,
+      "compared_cells": 9
+    },
+    {
+      "title": "D5071 TCC Maximum Duty Cycle - Native Column 8: 135",
+      "stock": [
+        95.9991455078125,
+        95.9991455078125,
+        96.4996337890625,
+        97.2991943359375,
+        97.7996826171875,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125
+      ],
+      "ppei": [
+        95.9991455078125,
+        95.9991455078125,
+        96.4996337890625,
+        97.2991943359375,
+        97.7996826171875,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125,
+        98.0010986328125
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 4.014125067897112e-07,
+      "compared_cells": 9
+    },
+    {
+      "title": "D5072 TCC On Ramp Rate - Native Column 0: 200",
+      "stock": [
+        100.0,
+        70.0,
+        70.0,
+        100.0,
+        100.0,
+        100.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0
+      ],
+      "ppei": [
+        100.0,
+        70.0,
+        70.0,
+        100.0,
+        100.0,
+        100.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5072 TCC On Ramp Rate - Native Column 1: 400",
+      "stock": [
+        100.0,
+        70.0,
+        70.0,
+        175.0,
+        150.0,
+        125.0,
+        90.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        70.0,
+        75.0,
+        75.0,
+        100.0,
+        100.0
+      ],
+      "ppei": [
+        100.0,
+        70.0,
+        70.0,
+        175.0,
+        150.0,
+        125.0,
+        90.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        70.0,
+        75.0,
+        75.0,
+        100.0,
+        100.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5072 TCC On Ramp Rate - Native Column 2: 600",
+      "stock": [
+        100.0,
+        70.0,
+        70.0,
+        250.0,
+        175.0,
+        175.0,
+        150.0,
+        75.0,
+        75.0,
+        75.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        125.0,
+        150.0,
+        150.0
+      ],
+      "ppei": [
+        100.0,
+        70.0,
+        70.0,
+        250.0,
+        175.0,
+        175.0,
+        150.0,
+        75.0,
+        75.0,
+        75.0,
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        125.0,
+        150.0,
+        150.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 17
+    },
+    {
+      "title": "D5035 WOT 2->1 Shift (Speed) - Native Column 1: Pattern B",
+      "stock": [
+        20.0,
+        20.0
+      ],
+      "ppei": [
+        20.0,
+        20.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5036 WOT 3->2 Shift (Speed) - Native Column 1: Pattern B",
+      "stock": [
+        49.0,
+        49.0
+      ],
+      "ppei": [
+        49.0,
+        49.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5037 WOT 4->3 Shift (Speed) - Native Column 1: Pattern B",
+      "stock": [
+        67.0,
+        67.0
+      ],
+      "ppei": [
+        67.0,
+        67.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5038 WOT 5->4 Shift (Speed) - Native Column 1: Pattern B",
+      "stock": [
+        103.0,
+        103.0
+      ],
+      "ppei": [
+        103.0,
+        103.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5035 WOT 2->1 Shift (Speed) - Native Column 2: Pattern C",
+      "stock": [
+        20.0,
+        20.0
+      ],
+      "ppei": [
+        20.0,
+        20.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5036 WOT 3->2 Shift (Speed) - Native Column 2: Pattern C",
+      "stock": [
+        49.0,
+        49.0
+      ],
+      "ppei": [
+        49.0,
+        49.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5037 WOT 4->3 Shift (Speed) - Native Column 2: Pattern C",
+      "stock": [
+        67.0,
+        67.0
+      ],
+      "ppei": [
+        67.0,
+        67.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5038 WOT 5->4 Shift (Speed) - Native Column 2: Pattern C",
+      "stock": [
+        100.0,
+        100.0
+      ],
+      "ppei": [
+        100.0,
+        100.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5064 TCC WOT Apply (Normal) - Native Column 0: 2nd Gear",
+      "stock": [
+        45.0,
+        45.0
+      ],
+      "ppei": [
+        45.0,
+        45.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5064 TCC WOT Apply (Normal) - Native Column 1: 3rd Gear",
+      "stock": [
+        60.0,
+        60.0
+      ],
+      "ppei": [
+        60.0,
+        60.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5064 TCC WOT Apply (Normal) - Native Column 2: 4th Gear",
+      "stock": [
+        76.0,
+        76.0
+      ],
+      "ppei": [
+        76.0,
+        76.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5064 TCC WOT Apply (Normal) - Native Column 3: 5th Gear",
+      "stock": [
+        85.0,
+        85.0
+      ],
+      "ppei": [
+        85.0,
+        85.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5067 TCC WOT Release (Normal) - Native Column 0: 2nd Gear",
+      "stock": [
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5067 TCC WOT Release (Normal) - Native Column 1: 3rd Gear",
+      "stock": [
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5067 TCC WOT Release (Normal) - Native Column 2: 4th Gear",
+      "stock": [
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5067 TCC WOT Release (Normal) - Native Column 3: 5th Gear",
+      "stock": [
+        79.0,
+        79.0
+      ],
+      "ppei": [
+        79.0,
+        79.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5065 TCC WOT Apply (Tow/Haul) - Native Column 0: 2nd Gear",
+      "stock": [
+        45.0,
+        45.0
+      ],
+      "ppei": [
+        45.0,
+        45.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5065 TCC WOT Apply (Tow/Haul) - Native Column 1: 3rd Gear",
+      "stock": [
+        45.0,
+        45.0
+      ],
+      "ppei": [
+        45.0,
+        45.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5065 TCC WOT Apply (Tow/Haul) - Native Column 2: 4th Gear",
+      "stock": [
+        45.0,
+        45.0
+      ],
+      "ppei": [
+        45.0,
+        45.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5065 TCC WOT Apply (Tow/Haul) - Native Column 3: 5th Gear",
+      "stock": [
+        45.0,
+        45.0
+      ],
+      "ppei": [
+        45.0,
+        45.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5068 TCC WOT Release (Tow/Haul) - Native Column 0: 2nd Gear",
+      "stock": [
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5068 TCC WOT Release (Tow/Haul) - Native Column 1: 3rd Gear",
+      "stock": [
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5068 TCC WOT Release (Tow/Haul) - Native Column 2: 4th Gear",
+      "stock": [
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5068 TCC WOT Release (Tow/Haul) - Native Column 3: 5th Gear",
+      "stock": [
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5066 TCC WOT Apply (4WD Lo) - Native Column 0: 2nd Gear",
+      "stock": [
+        41.0,
+        41.0
+      ],
+      "ppei": [
+        41.0,
+        41.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5066 TCC WOT Apply (4WD Lo) - Native Column 1: 3rd Gear",
+      "stock": [
+        41.0,
+        41.0
+      ],
+      "ppei": [
+        41.0,
+        41.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5066 TCC WOT Apply (4WD Lo) - Native Column 2: 4th Gear",
+      "stock": [
+        41.0,
+        41.0
+      ],
+      "ppei": [
+        41.0,
+        41.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5066 TCC WOT Apply (4WD Lo) - Native Column 3: 5th Gear",
+      "stock": [
+        41.0,
+        41.0
+      ],
+      "ppei": [
+        41.0,
+        41.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5069 TCC WOT Release (4WD Lo) - Native Column 0: 2nd Gear",
+      "stock": [
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5069 TCC WOT Release (4WD Lo) - Native Column 1: 3rd Gear",
+      "stock": [
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5069 TCC WOT Release (4WD Lo) - Native Column 2: 4th Gear",
+      "stock": [
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    },
+    {
+      "title": "D5069 TCC WOT Release (4WD Lo) - Native Column 3: 5th Gear",
+      "stock": [
+        38.0,
+        38.0
+      ],
+      "ppei": [
+        38.0,
+        38.0
+      ],
+      "native_comparison": "pass",
+      "max_abs_error": 0.0,
+      "compared_cells": 2
+    }
+  ],
+  "stock": {
+    "sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6",
+    "length": 57304,
+    "be16_sum": "0x0000",
+    "native_field": "4E35D040"
+  },
+  "ppei": {
+    "sha256": "d0bcce91cea041bcf82317c73708c2289c78064aa542d6a63c12d3d6d78adc3f",
+    "length": 57304,
+    "be16_sum": "0x0000",
+    "native_field": "DAE2BB2E"
+  },
+  "diff_ranges": [
+    {
+      "start": "0x10A24",
+      "end_inclusive": "0x10A24",
+      "length": 1,
+      "before": "00",
+      "after": "40"
+    },
+    {
+      "start": "0x11FA0",
+      "end_inclusive": "0x11FA3",
+      "length": 4,
+      "before": "64006400",
+      "after": "6bd06bd0"
+    },
+    {
+      "start": "0x11FA6",
+      "end_inclusive": "0x11FA9",
+      "length": 4,
+      "before": "64006400",
+      "after": "6bd06bd0"
+    },
+    {
+      "start": "0x11FAC",
+      "end_inclusive": "0x11FAF",
+      "length": 4,
+      "before": "64006400",
+      "after": "6bd06bd0"
+    },
+    {
+      "start": "0x11FB2",
+      "end_inclusive": "0x11FB5",
+      "length": 4,
+      "before": "66586658",
+      "after": "6bd06bd0"
+    },
+    {
+      "start": "0x12588",
+      "end_inclusive": "0x1258B",
+      "length": 4,
+      "before": "64006400",
+      "after": "6bd06bd0"
+    },
+    {
+      "start": "0x1258E",
+      "end_inclusive": "0x12591",
+      "length": 4,
+      "before": "64006400",
+      "after": "6bd06bd0"
+    },
+    {
+      "start": "0x12594",
+      "end_inclusive": "0x12597",
+      "length": 4,
+      "before": "65906590",
+      "after": "6bd06bd0"
+    },
+    {
+      "start": "0x1259A",
+      "end_inclusive": "0x1259D",
+      "length": 4,
+      "before": "65e065e0",
+      "after": "6bd06bd0"
+    },
+    {
+      "start": "0x126F0",
+      "end_inclusive": "0x126F3",
+      "length": 4,
+      "before": "64006400",
+      "after": "6bd06bd0"
+    },
+    {
+      "start": "0x126F6",
+      "end_inclusive": "0x126F9",
+      "length": 4,
+      "before": "64006400",
+      "after": "6bd06bd0"
+    },
+    {
+      "start": "0x126FC",
+      "end_inclusive": "0x126FF",
+      "length": 4,
+      "before": "65906590",
+      "after": "6bd06bd0"
+    },
+    {
+      "start": "0x12702",
+      "end_inclusive": "0x12705",
+      "length": 4,
+      "before": "65e065e0",
+      "after": "6bd06bd0"
+    },
+    {
+      "start": "0x12858",
+      "end_inclusive": "0x1285B",
+      "length": 4,
+      "before": "5aa05aa0",
+      "after": "6bd06bd0"
+    },
+    {
+      "start": "0x1285E",
+      "end_inclusive": "0x12861",
+      "length": 4,
+      "before": "5dc05dc0",
+      "after": "6bd06bd0"
+    },
+    {
+      "start": "0x12864",
+      "end_inclusive": "0x12867",
+      "length": 4,
+      "before": "60e060e0",
+      "after": "6bd06bd0"
+    },
+    {
+      "start": "0x1286A",
+      "end_inclusive": "0x1286D",
+      "length": 4,
+      "before": "64006400",
+      "after": "6bd06bd0"
+    },
+    {
+      "start": "0x145BE",
+      "end_inclusive": "0x145C0",
+      "length": 3,
+      "before": "12c001",
+      "after": "3e8000"
+    },
+    {
+      "start": "0x158CB",
+      "end_inclusive": "0x158CB",
+      "length": 1,
+      "before": "5f",
+      "after": "64"
+    },
+    {
+      "start": "0x158CD",
+      "end_inclusive": "0x158CD",
+      "length": 1,
+      "before": "5f",
+      "after": "64"
+    },
+    {
+      "start": "0x158ED",
+      "end_inclusive": "0x158ED",
+      "length": 1,
+      "before": "5f",
+      "after": "64"
+    },
+    {
+      "start": "0x158EF",
+      "end_inclusive": "0x158EF",
+      "length": 1,
+      "before": "5f",
+      "after": "64"
+    },
+    {
+      "start": "0x1590F",
+      "end_inclusive": "0x1590F",
+      "length": 1,
+      "before": "89",
+      "after": "c5"
+    },
+    {
+      "start": "0x15911",
+      "end_inclusive": "0x15911",
+      "length": 1,
+      "before": "5f",
+      "after": "c5"
+    },
+    {
+      "start": "0x15930",
+      "end_inclusive": "0x15933",
+      "length": 4,
+      "before": "ffb4ff5f",
+      "after": "00100010"
+    },
+    {
+      "start": "0x15952",
+      "end_inclusive": "0x15955",
+      "length": 4,
+      "before": "ffc9ff5f",
+      "after": "00330033"
+    },
+    {
+      "start": "0x15974",
+      "end_inclusive": "0x15977",
+      "length": 4,
+      "before": "ffddff5f",
+      "after": "00880088"
+    },
+    {
+      "start": "0x15996",
+      "end_inclusive": "0x15999",
+      "length": 4,
+      "before": "0005ff5f",
+      "after": "01190119"
+    },
+    {
+      "start": "0x159B8",
+      "end_inclusive": "0x159BB",
+      "length": 4,
+      "before": "002dff5f",
+      "after": "01930193"
+    },
+    {
+      "start": "0x159DA",
+      "end_inclusive": "0x159DD",
+      "length": 4,
+      "before": "002dff5f",
+      "after": "02720272"
+    },
+    {
+      "start": "0x15FD4",
+      "end_inclusive": "0x15FD7",
+      "length": 4,
+      "before": "4e35d040",
+      "after": "dae2bb2e"
+    }
+  ],
+  "changed_bytes": 102,
+  "coverage": {
+    "native_definition_count": 127,
+    "represented_ids": [
+      "D1201",
+      "D1202",
+      "D1203",
+      "D1204",
+      "D1205",
+      "D1220",
+      "D5000",
+      "D5001",
+      "D5002",
+      "D5003",
+      "D5005",
+      "D5006",
+      "D5007",
+      "D5008",
+      "D5010",
+      "D5011",
+      "D5012",
+      "D5013",
+      "D5015",
+      "D5016",
+      "D5017",
+      "D5018",
+      "D5020",
+      "D5021",
+      "D5022",
+      "D5023",
+      "D5025",
+      "D5026",
+      "D5027",
+      "D5028",
+      "D5030",
+      "D5031",
+      "D5032",
+      "D5033",
+      "D5034",
+      "D5035",
+      "D5036",
+      "D5037",
+      "D5038",
+      "D5048",
+      "D5049",
+      "D5050",
+      "D5051",
+      "D5064",
+      "D5065",
+      "D5066",
+      "D5067",
+      "D5068",
+      "D5069",
+      "D5070",
+      "D5071",
+      "D5072",
+      "D5080",
+      "D5081",
+      "D5082",
+      "D5083",
+      "D5084",
+      "D5085",
+      "D5086",
+      "D5087",
+      "D5088",
+      "D5089",
+      "D5090",
+      "D5091",
+      "D5092",
+      "D5093",
+      "D5094",
+      "D5095",
+      "D5100",
+      "D5101",
+      "D5102",
+      "D5103",
+      "D5104",
+      "D5105",
+      "D5106",
+      "D5107",
+      "D5108",
+      "D5109",
+      "D5110",
+      "D5111",
+      "D5112",
+      "D5113",
+      "D5114",
+      "D5115",
+      "D5120",
+      "D5121",
+      "D5122",
+      "D5123",
+      "D5124",
+      "D5125",
+      "D5126",
+      "D5127",
+      "D5130",
+      "D5131",
+      "D5132",
+      "D5133",
+      "D5134",
+      "D5135",
+      "D5136",
+      "D5137",
+      "D5194",
+      "D5195",
+      "D5196",
+      "D5231",
+      "D5233"
+    ],
+    "absent_ids": [
+      "D5042",
+      "D5043",
+      "D5044",
+      "D5045",
+      "D5053",
+      "D5054",
+      "D5055",
+      "D5056",
+      "D5057",
+      "D5058",
+      "D5061",
+      "D5062",
+      "D5063",
+      "D5073",
+      "D5074",
+      "D5075",
+      "D5183",
+      "D5197",
+      "H0103",
+      "H0105",
+      "H0136",
+      "H0137"
+    ],
+    "note": "Representation includes partial and research entries; it does not imply full validation."
+  },
+  "errors": [],
+  "status": "pass"
+}
