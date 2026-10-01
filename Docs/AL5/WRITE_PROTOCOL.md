@@ -79,6 +79,13 @@ patch, changes to other controls, or an implicit PPEI-to-stock rebase.
 block size are null. Exit code 2 means readiness blocked, even if all file checks
 pass. Printing fabricated destructive packets would misrepresent the evidence.
 
+The report includes a hash-linked preservation assessment from the static
+resident inventory. The inferred 41,000 extra bytes and candidate intervals
+remain explicitly unverified; no current collateral backup is supplied or
+validated by this calibration-only tool. Saved editor dumps cannot substitute
+for a current physical preservation backup. The assessment never populates
+`erase_scope` or enables any packet generation.
+
 ## Next offline work
 
 Recover the local EFILive container format and state definitions, or obtain an

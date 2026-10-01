@@ -8,6 +8,23 @@ from al5_segment import START, END, LENGTH, CHECKSUM, validate, sha256, word_sum
 from checksum import checksum_valid
 
 DEFAULT_TARGETS = Path(__file__).resolve().parents[2] / 'Docs/AL5/TunerPro/AL5_FIRST_VEHICLE_TEST_1-2_MINIMAL_v0_2_TARGETS.csv'
+RESIDENT_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/RESIDENT_FLASH_INVENTORY.json'
+
+
+def preservation_assessment():
+    evidence_bytes = RESIDENT_EVIDENCE.read_bytes()
+    evidence = json.loads(evidence_bytes)
+    intervals = evidence['candidate_calibration_intervals']
+    return {'evidence': 'Docs/AL5/RESIDENT_FLASH_INVENTORY.json',
+            'evidence_sha256': sha256(evidence_bytes),
+            'firmware_source_sha256': evidence['source_sha256'],
+            'confidence': evidence['geometry_confidence'],
+            'candidate_intervals': intervals,
+            'outside_calibration_bytes_inferred': sum(i['outside_calibration_bytes'] for i in intervals),
+            'current_collateral_backup_supplied': False,
+            'preservation_verified': False,
+            'note': 'Saved editor evidence is not a current physical backup. '
+                    'These inferred intervals must not become executable erase scope.'}
 
 
 def plan(current, candidate, expected_hash, controller, os_id):
@@ -53,7 +70,9 @@ def plan(current, candidate, expected_hash, controller, os_id):
             'input_errors': sorted(set(errors)),
             'native_checksum_valid': {'current': checksum_valid(current), 'candidate': checksum_valid(candidate)},
             'blockers': ['AL5 session/loader/erase/program/verify/recovery protocol is unresolved.',
+                         'Exact erase geometry and current collateral backup/preservation are unverified.',
                          'Live AL5 writing is unconditionally disabled.'],
+            'preservation_assessment': preservation_assessment(),
             'diff_ranges': ranges,
             'requested_calibration_range': {'start': '0x08000', 'end_inclusive': '0x15FD7'},
             'erase_scope': None, 'program_block_size': None,

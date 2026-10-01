@@ -29,8 +29,8 @@ All new reverse engineering and validation were offline.
   blocks readiness and produces zero packets.
 - PcmHammer's shared write entry point rejects a 57,304-byte AL5 segment before
   transport access, even with a forced PCM type. A C# null-vehicle test passes
-  all 105 write-type/controller combinations. Ten Python offline safety and
-  checksum tests pass.
+  all 105 write-type/controller combinations. Eighteen Python safety,
+  checksum, record-family and flash-inventory tests pass.
 - The extracted CRC routine passes twelve isolated M68020 emulator cases.
   The boot RAM-transfer handler passes thirteen offline boundary/fault cases.
   Its packet fields, RAM bounds and status codes are documented in
@@ -44,6 +44,9 @@ All new reverse engineering and validation were offline.
   every flash call trapped before primitive execution. Arguments, status data,
   RAM mode, alignment/range checks and malformed-length behavior are recorded
   in `RESIDENT_COMMAND_DISPATCH.md`. This does not establish a live CAN writer.
+- The main file-only plan includes hash-linked inferred collateral intervals
+  and an explicit unverified preservation blocker. Executable erase scope
+  remains null; readiness remains false and all packet lists remain empty.
 
 The checksum-corrected existing minimal preview has field `439DCC98` and passes
 the offline plan's file/policy checks. Its plan has seven diff ranges and zero

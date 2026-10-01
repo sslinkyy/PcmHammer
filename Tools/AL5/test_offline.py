@@ -1,5 +1,10 @@
 """Run with python -m unittest discover -s Tools/AL5 -p test_offline.py."""
 import unittest
+import json
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
 from al5_segment import START, LENGTH, ANCHORS, sha256, validate, diff_ranges, word_sum
 from write_plan import plan
 from checksum import native_field, crc16, checksum_valid
@@ -38,6 +43,35 @@ class OfflineSafetyTests(unittest.TestCase):
         report = plan(data, data, '0'*64, 'E54', 1)
         self.assertTrue(any('SHA256' in e for e in report['input_errors']))
         self.assertTrue(any('context' in e for e in report['input_errors']))
+
+    def test_collateral_inference_never_becomes_executable_erase_scope(self):
+        data = fixture()
+        report = plan(data, data, sha256(data), 'AL5', 15184109)
+        preservation = report['preservation_assessment']
+        self.assertEqual(41000, preservation['outside_calibration_bytes_inferred'])
+        self.assertIn('unverified', preservation['confidence'])
+        self.assertFalse(preservation['preservation_verified'])
+        self.assertFalse(preservation['current_collateral_backup_supplied'])
+        self.assertIsNone(report['erase_scope'])
+        self.assertFalse(report['ready_to_flash'])
+        self.assertEqual([], report['erase_packets'])
+        self.assertTrue(any('collateral' in b for b in report['blockers']))
+
+    def test_cli_valid_input_still_returns_blocked_exit_code(self):
+        data = fixture()
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory)/'current.bin'
+            path.write_bytes(data)
+            result = subprocess.run([sys.executable, str(Path(__file__).with_name('write_plan.py')),
+                '--current', str(path), '--candidate', str(path),
+                '--expected-current-sha256', sha256(data), '--controller', 'AL5',
+                '--os-id', '15184109'], capture_output=True, text=True, check=False)
+        self.assertEqual(2, result.returncode, result.stderr)
+        report = json.loads(result.stdout)
+        self.assertEqual([], report['input_errors'])
+        self.assertFalse(report['ready_to_flash'])
+        self.assertEqual([], report['would_send'])
+        self.assertFalse(report['preservation_assessment']['preservation_verified'])
 
     def test_unknown_code_and_checksum_edits_rejected(self):
         data = fixture()
