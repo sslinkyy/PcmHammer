@@ -1,0 +1,165 @@
+{
+  "scope": "Every binary record in supplied saved W traces inventoried; known wrappers accept module/global/tester address variants. Unsupported records scanned for diagnostic signatures only.",
+  "limits": "Complete container framing is not complete bus capture. Unframed signatures are not messages; checksum, missing traffic, programming outcomes and recovery remain unverified. No private text, loader or raw payload exported.",
+  "generator_sha256": "49e2df583de66ff7e11aa190d3f5139371f0d0686addcefa029e5207635578f4",
+  "trace_count": 5,
+  "traces": [
+    {
+      "source_name": "20260917_151435_AL5_W.htx",
+      "source_sha256": "c63a4b8556edaf74ed671ef63d61cdb7d433face38c6e682f5edae4a50bd1304",
+      "record_count": 224,
+      "binary_records": 170,
+      "supported_wrapper_records": 170,
+      "unsupported_wrapper_records": 0,
+      "binary_wrapper_counts": {
+        "channel=1,command=0154,subtype=2": 49,
+        "channel=2,command=0152,subtype=2": 121
+      },
+      "framed_service_counts": {
+        "6c18f027": 2,
+        "6c18f034": 2,
+        "6c18f03c": 10,
+        "6cf01860": 2,
+        "6cf01867": 2,
+        "6cf01868": 1,
+        "6cf01874": 2,
+        "6cf0187c": 9,
+        "6cf018e0": 1,
+        "6cfef014": 1,
+        "6cfef020": 2,
+        "6cfef028": 1,
+        "6cfef0a0": 1,
+        "6cfef0a1": 1,
+        "6d18f036:0x80": 1
+      },
+      "framed_destructive_request_counts": {},
+      "framed_mode76_status_counts": {},
+      "unsupported_record_signature_hits": {},
+      "complete_programming_exchange_verified": false,
+      "operation_outcome": null
+    },
+    {
+      "source_name": "20260917_152044_AL5_W.htx",
+      "source_sha256": "85887d279593408458afe1390151d1dc1467a3de5d347503f77680100ed04469",
+      "record_count": 187,
+      "binary_records": 101,
+      "supported_wrapper_records": 101,
+      "unsupported_wrapper_records": 0,
+      "binary_wrapper_counts": {
+        "channel=1,command=0154,subtype=2": 43,
+        "channel=2,command=0152,subtype=2": 58
+      },
+      "framed_service_counts": {
+        "6c18f027": 3,
+        "6c18f03c": 9,
+        "6cfef014": 1,
+        "6cfef020": 2
+      },
+      "framed_destructive_request_counts": {},
+      "framed_mode76_status_counts": {},
+      "unsupported_record_signature_hits": {},
+      "complete_programming_exchange_verified": false,
+      "operation_outcome": null
+    },
+    {
+      "source_name": "20260917_152205_AL5_W.htx",
+      "source_sha256": "8ee51aed10ccdd5b76fa238d5c4c7e8c848f9db96508b5dc21391e9e3a8de75a",
+      "record_count": 204,
+      "binary_records": 147,
+      "supported_wrapper_records": 147,
+      "unsupported_wrapper_records": 0,
+      "binary_wrapper_counts": {
+        "channel=1,command=0154,subtype=2": 47,
+        "channel=2,command=0152,subtype=2": 100
+      },
+      "framed_service_counts": {
+        "6c18f027": 2,
+        "6c18f034": 2,
+        "6c18f03c": 10,
+        "6cf01854": 1,
+        "6cf01860": 2,
+        "6cf01867": 2,
+        "6cf01868": 1,
+        "6cf01874": 2,
+        "6cf0187c": 9,
+        "6cfef014": 1,
+        "6cfef020": 2,
+        "6cfef028": 1,
+        "6d18f036:0x80": 1
+      },
+      "framed_destructive_request_counts": {},
+      "framed_mode76_status_counts": {},
+      "unsupported_record_signature_hits": {},
+      "complete_programming_exchange_verified": false,
+      "operation_outcome": null
+    },
+    {
+      "source_name": "20260917_205638_AL5_W.htx",
+      "source_sha256": "61ccb8cd085202f8154174a83df82f51d35e27a522bebbc090d328bb9a05adea",
+      "record_count": 203,
+      "binary_records": 146,
+      "supported_wrapper_records": 146,
+      "unsupported_wrapper_records": 0,
+      "binary_wrapper_counts": {
+        "channel=1,command=0154,subtype=2": 47,
+        "channel=2,command=0152,subtype=2": 99
+      },
+      "framed_service_counts": {
+        "6c18f027": 2,
+        "6c18f034": 2,
+        "6c18f03c": 10,
+        "6cf01860": 2,
+        "6cf01867": 2,
+        "6cf01868": 1,
+        "6cf01874": 2,
+        "6cf0187c": 9,
+        "6cfef014": 1,
+        "6cfef020": 2,
+        "6cfef028": 1,
+        "6d18f036:0x80": 1
+      },
+      "framed_destructive_request_counts": {},
+      "framed_mode76_status_counts": {},
+      "unsupported_record_signature_hits": {},
+      "complete_programming_exchange_verified": false,
+      "operation_outcome": null
+    },
+    {
+      "source_name": "20260917_210157_AL5_W.htx",
+      "source_sha256": "751e3d2e1a3458ee37fc6231622435fe9cafde4333ee31c711f5138b167ce314",
+      "record_count": 202,
+      "binary_records": 145,
+      "supported_wrapper_records": 145,
+      "unsupported_wrapper_records": 0,
+      "binary_wrapper_counts": {
+        "channel=1,command=0154,subtype=2": 47,
+        "channel=2,command=0152,subtype=2": 98
+      },
+      "framed_service_counts": {
+        "6c18f027": 2,
+        "6c18f034": 2,
+        "6c18f03c": 10,
+        "6cf01860": 2,
+        "6cf01867": 2,
+        "6cf01868": 1,
+        "6cf01874": 2,
+        "6cf0187c": 9,
+        "6cfef014": 1,
+        "6cfef020": 2,
+        "6cfef028": 1,
+        "6d18f036:0x80": 1
+      },
+      "framed_destructive_request_counts": {},
+      "framed_mode76_status_counts": {},
+      "unsupported_record_signature_hits": {},
+      "complete_programming_exchange_verified": false,
+      "operation_outcome": null
+    }
+  ],
+  "complete_programming_exchange_verified": false,
+  "physical_transport_verified": false,
+  "ready_to_flash": false,
+  "live_write_enabled": false,
+  "erase_scope": null,
+  "would_send": []
+}

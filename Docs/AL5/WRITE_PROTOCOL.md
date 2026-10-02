@@ -194,6 +194,12 @@ flash completion and recovery remain unproven.
 
 ## Staged route to live testing
 
+`TRACE_WRAPPER_AUDIT.md` now accounts for all 709 binary records in the five
+saved W containers, including broader module/global/tester address variants.
+No unsupported binary wrapper or framed destructive request/Mode `76` response
+is observed. Complete physical exchange and flash outcome remain unverified;
+the existing files do not close the acknowledgment replay's evidence gap.
+
 `OFFLINE_ACKNOWLEDGMENT_REPLAY.md` now checks supplied block-event ordering,
 headers/statuses, exact block readbacks and a complete final snapshot. A success
 status cannot advance the model without readback. Identical statuses carry no

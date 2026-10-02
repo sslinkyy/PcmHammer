@@ -32,6 +32,7 @@ LOADER_PROGRAM_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER
 LOADER_SENDER_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_SENDER_EMULATION.json'
 LOADER_RECEIVE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_RECEIVE_EMULATION.json'
 LOADER_STALE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_STALE_BUFFER_EMULATION.json'
+TRACE_WRAPPER_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/TRACE_WRAPPER_AUDIT.json'
 
 
 def trace_assessment():
@@ -53,7 +54,18 @@ def trace_assessment():
     receive=json.loads(receive_data)
     stale_data=LOADER_STALE_EVIDENCE.read_bytes()
     stale=json.loads(stale_data)
-    return {'loader_stale_buffer_assessment': {
+    wrapper_data=TRACE_WRAPPER_EVIDENCE.read_bytes()
+    wrapper=json.loads(wrapper_data)
+    return {'complete_trace_wrapper_audit': {
+                'evidence': 'Docs/AL5/TRACE_WRAPPER_AUDIT.json',
+                'evidence_sha256': sha256(wrapper_data),
+                'trace_count': wrapper['trace_count'],
+                'binary_records': sum(t['binary_records'] for t in wrapper['traces']),
+                'unsupported_wrapper_records': sum(t['unsupported_wrapper_records'] for t in wrapper['traces']),
+                'complete_programming_exchange_verified': False,
+                'physical_transport_verified': False,
+                'scope': wrapper['scope'], 'limits': wrapper['limits']},
+            'loader_stale_buffer_assessment': {
                 'evidence': 'Docs/AL5/LOADER_STALE_BUFFER_EMULATION.json',
                 'evidence_sha256': sha256(stale_data),
                 'offline_cases_pass': stale['all_pass'],
