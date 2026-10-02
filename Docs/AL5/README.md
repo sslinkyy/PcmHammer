@@ -194,6 +194,10 @@ local EFILive Config/AL5*.obj, *.bix, AL5.pmm
 `OFFLINE_PRESERVATION_MANIFEST.md` binds calibration and optional collateral/bank
 artifacts by explicit hashes while physical provenance/preservation stay unverified.
 
+`FIFO_CANDIDATE_COMPARISON.md` compares saved register accesses with manufacturer
+documentation. Transmit controls match a candidate, but literal receive scenarios
+expose unresolved completion ordering; MCU/FIFO identity remains unverified.
+
 `TRACE_WRAPPER_AUDIT.md` accounts for all 709 binary records in the five saved
 write traces; they still do not establish a complete programming exchange.
 

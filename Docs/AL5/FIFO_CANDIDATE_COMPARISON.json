@@ -1,0 +1,94 @@
+{
+  "scope": "Saved startup/loader comparison and bounded hypothetical FIFO events only.",
+  "payload_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
+  "generator_sha256": "8b175ee79f15531e7ee80d755fafe4455bae5d62ff3f2853b0a5fb5188239db5",
+  "startup_evidence_sha256": "c7091df9f1a368f44d6ef41f79506fc820a89c3f9894cda3f576b1e3490e242d",
+  "loader_static_evidence_sha256": "200b831ba6e5da203acaf96f6e64a8b5df251a1232e755b72ce44cfedf5a311f",
+  "sources": [
+    {
+      "url": "https://datasheet4u.com/pdf-down/M/C/6/MC68HC58_Motorola.pdf",
+      "sections": "4.2 parallel interface; 5.1 commands; 5.3 status; 5.4 completion"
+    },
+    {
+      "url": "https://www.nxp.com/docs/en/user-guide/MC68336376UMD.pdf",
+      "sections": "D.2.19 CSBAR; D.2.21 CSOR"
+    }
+  ],
+  "conditional_sim_window": {
+    "start": "0xffe800",
+    "end_exclusive": "0xfff000",
+    "bytes": 2048,
+    "mode": 1,
+    "byte": 2,
+    "read_write": 3,
+    "strobe": 0,
+    "dsack": 0,
+    "space": 2,
+    "ipl": 0,
+    "avec": 0
+  },
+  "transmit_candidate_matches": {
+    "first": "0x14",
+    "middle": "0x04",
+    "last": "0x0c",
+    "busy_mask": "0x03",
+    "exit_control": "0x40"
+  },
+  "completion_masks": {
+    "error_or_overrun": "0xc0",
+    "transmitter_involved": "0x30"
+  },
+  "receive_comparison": {
+    "synthetic_control": {
+      "stop": "dispatcher_trap",
+      "events_consumed": 6,
+      "buffer_bytes_written": 5,
+      "maximum_frame_bytes": 5,
+      "dispatch_boundaries": 1,
+      "discard_reads": 0,
+      "completion_flags": [
+        0
+      ],
+      "counter_seeds_applied": [],
+      "buffer_overrun_attempted": false,
+      "watchdog_calls_trapped": 6,
+      "mmio_instructions_executed": 0,
+      "reset_instruction_executed": false,
+      "remaining_frame_budget": 254,
+      "saved_frame_prefix_sha256": "812540170b59024f8f757738cc3a94732280f8d1eb4c384a2e1342fa77f51957"
+    },
+    "isolated_literal_candidate": {
+      "stop": "read_after_supplied_completion"
+    },
+    "following_frame_literal_candidate": {
+      "stop": "receive_boundary",
+      "events_consumed": 7,
+      "buffer_bytes_written": 6,
+      "maximum_frame_bytes": 6,
+      "dispatch_boundaries": 0,
+      "discard_reads": 0,
+      "completion_flags": [
+        109
+      ],
+      "counter_seeds_applied": [],
+      "buffer_overrun_attempted": false,
+      "watchdog_calls_trapped": 6,
+      "mmio_instructions_executed": 0,
+      "reset_instruction_executed": false,
+      "remaining_frame_budget": 255,
+      "saved_frame_prefix_sha256": "b1980dcae20520aee0f981b8126ac5866e42103921aa6bd70e6bad1a9834595c"
+    },
+    "completion_order_resolved": false
+  },
+  "limits": "Not chip identification. CS timing, status latching, bus width, address aliasing and fitted hardware remain unknown. Existing synthetic receive cases are software branch evidence only; the literal candidate does not establish a physical firmware defect.",
+  "physical_fifo_contract_verified": false,
+  "physical_address_aliasing_verified": false,
+  "physical_mcu_identified": false,
+  "physical_fifo_identified": false,
+  "ready_to_flash": false,
+  "live_write_enabled": false,
+  "erase_scope": null,
+  "would_send": [],
+  "erase_packets": [],
+  "program_packets": []
+}

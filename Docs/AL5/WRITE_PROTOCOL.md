@@ -256,6 +256,9 @@ source, address coordinates and limits. Physical chip identity and current
 collateral backup remain unverified; this evidence does not open any write gate.
 
 There is a development path to writing, but no executable AL5 live writer yet.
+`FIFO_CANDIDATE_COMPARISON.md` records an unresolved receive-completion ordering
+comparison with a manufacturer candidate. Passing synthetic receive cases do
+not establish that candidate's physical FIFO contract or identify the fitted chip.
 Checksum recovery and stock decoding are sufficient to validate a candidate
 offline; they do not supply a programming protocol or safe erase scope.
 

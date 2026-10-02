@@ -46,6 +46,11 @@ firmware observations, not an identified controller datasheet contract.
 
 ## Reproduction and next work
 
+`FIFO_CANDIDATE_COMPARISON.md` now records a manufacturer comparison. The existing
+synthetic status-five last-payload event differs from that candidate's completion
+at-head definition. Its branch results remain valid software observations; they
+must not be treated as physical FIFO qualification.
+
 Run `Tools/AL5/emulate_loader_receive.py --loader <private-captured-loader>
 --output <report>` in the existing WSL Unicorn environment. Metadata, counts and
 hashes are exported; raw loader bytes and complete packets are not.

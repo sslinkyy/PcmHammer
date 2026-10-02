@@ -33,6 +33,7 @@ LOADER_SENDER_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_
 LOADER_RECEIVE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_RECEIVE_EMULATION.json'
 LOADER_STALE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_STALE_BUFFER_EMULATION.json'
 TRACE_WRAPPER_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/TRACE_WRAPPER_AUDIT.json'
+FIFO_CANDIDATE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/FIFO_CANDIDATE_COMPARISON.json'
 
 
 def trace_assessment():
@@ -56,7 +57,17 @@ def trace_assessment():
     stale=json.loads(stale_data)
     wrapper_data=TRACE_WRAPPER_EVIDENCE.read_bytes()
     wrapper=json.loads(wrapper_data)
-    return {'complete_trace_wrapper_audit': {
+    fifo_data=FIFO_CANDIDATE_EVIDENCE.read_bytes()
+    fifo=json.loads(fifo_data)
+    return {'fifo_candidate_assessment': {
+                'evidence': 'Docs/AL5/FIFO_CANDIDATE_COMPARISON.json',
+                'evidence_sha256': sha256(fifo_data),
+                'conditional_sim_window': fifo['conditional_sim_window'],
+                'completion_order_resolved': False,
+                'physical_fifo_contract_verified': False,
+                'physical_address_aliasing_verified': False,
+                'scope': fifo['scope'], 'limits': fifo['limits']},
+            'complete_trace_wrapper_audit': {
                 'evidence': 'Docs/AL5/TRACE_WRAPPER_AUDIT.json',
                 'evidence_sha256': sha256(wrapper_data),
                 'trace_count': wrapper['trace_count'],
