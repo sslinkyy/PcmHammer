@@ -26,6 +26,7 @@ TRACE_INVENTORY_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/EFILI
 TRACE_DECODE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/EFILIVE_TRACE_DECODE.json'
 CAPTURED_TRANSFER_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/CAPTURED_RAM_TRANSFER.json'
 LOADER_REQUEST_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/CAPTURED_LOADER_REQUESTS.json'
+LOADER_GEOMETRY_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_GEOMETRY_FINALIZATION.json'
 
 
 def trace_assessment():
@@ -211,6 +212,8 @@ def boot_loader_assessment():
 def preservation_assessment():
     evidence_bytes = RESIDENT_EVIDENCE.read_bytes()
     evidence = json.loads(evidence_bytes)
+    geometry_bytes = LOADER_GEOMETRY_EVIDENCE.read_bytes()
+    geometry = json.loads(geometry_bytes)
     intervals = evidence['candidate_calibration_intervals']
     return {'evidence': 'Docs/AL5/RESIDENT_FLASH_INVENTORY.json',
             'evidence_sha256': sha256(evidence_bytes),
@@ -218,6 +221,14 @@ def preservation_assessment():
             'confidence': evidence['geometry_confidence'],
             'candidate_intervals': intervals,
             'outside_calibration_bytes_inferred': sum(i['outside_calibration_bytes'] for i in intervals),
+            'datasheet_finalization_evidence': {
+                'evidence': 'Docs/AL5/LOADER_GEOMETRY_FINALIZATION.json',
+                'evidence_sha256': sha256(geometry_bytes),
+                'saved_image_finalization': geometry['finalization'],
+                'conditional_geometry': geometry['conditional_geometry'],
+                'physical_chip_identity_verified': False,
+                'physical_sector_geometry_verified': False,
+                'current_collateral_backup_verified': False},
             'current_collateral_backup_supplied': False,
             'preservation_verified': False,
             'note': 'Saved editor evidence is not a current physical backup. '

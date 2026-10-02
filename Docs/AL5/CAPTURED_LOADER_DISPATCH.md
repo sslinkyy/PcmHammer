@@ -20,7 +20,8 @@ and source `0xF0`/`0xF1`. Service `0x36` routes on subtype:
   word-program call. A positive status is not sufficient to identify a flash write.
 - `0xFF` uses pointers from `0x20046`, checks a BE16 sum including a stored final
   word, then programs `0x4AFC` at `0x1FFFE`. Its meaning beyond this static sequence
-  remains unresolved; do not substitute the calibration checksum contract for it.
+  is now bounded by the saved pointer table to the calibration range. This sum
+  check does not recompute the native CRC; see `LOADER_GEOMETRY_FINALIZATION.md`.
 
 The flash-ID routine checks words `0x0001` and `0x2258` through a command-mode
 sequence, without proving the currently installed chip's identity. The erase
@@ -51,8 +52,9 @@ The trace filename cannot establish successful programming.
 Synthetic tests check detection of global-address destructive commands. Saved
 evidence tests link static hashes and key instruction observations to the report.
 
-Next establish chip/sector geometry from independently supported evidence, trace
-the finalize pointers and image bounds, and build a model of the loader parser
+Saved finalize pointers and conditional AMD sector geometry are now documented
+in `LOADER_GEOMETRY_FINALIZATION.md`; physical chip identity remains unverified.
+Next build a model of the loader parser
 with flash/MMIO calls trapped. Do not replay these commands or upload the loader.
 The planner links this evidence but keeps erase scope null, readiness false and
 all packet lists empty. The direct reader remains unchanged.

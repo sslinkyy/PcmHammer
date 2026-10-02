@@ -191,6 +191,10 @@ AL5_RAW_20000_FFFFF_20260927_184345_001.bin
 local EFILive Config/AL5*.obj, *.bix, AL5.pmm
 ```
 
+`LOADER_GEOMETRY_FINALIZATION.md` records the saved calibration finalize range
+and conditional AMD bottom-boot sector mapping. The planner hash-links its JSON
+without enabling writes or claiming physical chip/backup verification.
+
 The baseline build used Visual Studio's `MSBuild.exe` on
 `Apps/UI/WindowsForms/PcmHammer/PcmHammer.csproj`, with `/restore`,
 `/p:RestorePackagesConfig=true`, `/p:SolutionDir=<absolute repo>/Apps/`,

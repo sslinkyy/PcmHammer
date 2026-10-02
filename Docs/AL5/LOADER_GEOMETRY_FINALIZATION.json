@@ -1,0 +1,59 @@
+{
+  "scope": "Saved-image pointer/checksum observations plus conditional published sector geometry; no live identification or flash action.",
+  "static_evidence": "Docs/AL5/CAPTURED_LOADER_STATIC.json",
+  "static_evidence_sha256": "200b831ba6e5da203acaf96f6e64a8b5df251a1232e755b72ce44cfedf5a311f",
+  "source_low_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
+  "source_high_sha256": "492040d9460d53b77dda606b9a89f4254e0680f239093001663f6ed5cf51ba75",
+  "finalization": {
+    "pointer_table": "0x20046",
+    "start": "0x8000",
+    "inclusive_last_byte": "0x15fd7",
+    "final_word_address": "0x15fd6",
+    "bytes": 57304,
+    "image_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6",
+    "be16_sum": "0x0",
+    "sum_guard_matches": true,
+    "native_checksum_valid_in_saved_image": true,
+    "loader_recomputes_native_crc": false,
+    "completion_marker_address": "0x1fffe",
+    "saved_marker_word": "4afc",
+    "marker_proves_current_controller_state": false
+  },
+  "conditional_geometry": {
+    "datasheet_url": "https://www.batronix.com/files/Datenblaetter/29__/AM29F800B.pdf",
+    "datasheet_author": "AMD",
+    "document": "Am29F800B 21504E5, November 2, 2006; Table 3 and Table 9",
+    "manufacturer_word": "0x0001",
+    "device_word": "0x2258",
+    "candidate": "Am29F800BB bottom boot, x16 word interface mapped to CPU byte addresses",
+    "sectors": [
+      {
+        "start": "0x8000",
+        "end_exclusive": "0x10000",
+        "bytes": 32768,
+        "calibration_bytes": 32768,
+        "outside_calibration_bytes": 0
+      },
+      {
+        "start": "0x10000",
+        "end_exclusive": "0x20000",
+        "bytes": 65536,
+        "calibration_bytes": 24536,
+        "outside_calibration_bytes": 41000
+      }
+    ],
+    "total_bytes": 98304,
+    "outside_calibration_bytes": 41000,
+    "collateral_start": "0x15fd8",
+    "collateral_end_exclusive": "0x20000",
+    "saved_collateral_sha256": "c188440dc59f25a378b976cf2aa0b6eed3b3bc087c811acbc041249930ae5ea7",
+    "physical_chip_identity_verified": false,
+    "physical_sector_geometry_verified": false,
+    "current_collateral_backup_verified": false
+  },
+  "limits": "Datasheet corroboration is conditional on the actual chip and mapping. Saved editor data is not a current backup. Finalize sum does not prove native CRC, programming completion or recovery.",
+  "ready_to_flash": false,
+  "live_write_enabled": false,
+  "erase_scope": null,
+  "would_send": []
+}

@@ -194,6 +194,13 @@ flash completion and recovery remain unproven.
 
 ## Staged route to live testing
 
+The saved finalize pointers resolve to the exact 57,304-byte calibration range.
+The loader checks its BE16 sum but does not recompute the native CRC. Published
+AMD ID/sector tables corroborate a conditional 98,304-byte erase span with
+41,000 bytes outside calibration. See `LOADER_GEOMETRY_FINALIZATION.md` for the
+source, address coordinates and limits. Physical chip identity and current
+collateral backup remain unverified; this evidence does not open any write gate.
+
 There is a development path to writing, but no executable AL5 live writer yet.
 Checksum recovery and stock decoding are sufficient to validate a candidate
 offline; they do not supply a programming protocol or safe erase scope.
