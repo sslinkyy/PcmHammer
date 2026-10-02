@@ -337,6 +337,13 @@ def plan(current, candidate, expected_hash, controller, os_id):
                          'Exact erase geometry and current collateral backup/preservation are unverified.',
         'Application boot preparation and context initialization can reach persistent-storage updates outside the calibration; preservation is unresolved.',
                          'Live AL5 writing is unconditionally disabled.'],
+            'offline_host_validation': {
+                'implementation': 'Tools/AL5/host_validation.py',
+                'implementation_sha256': sha256((Path(__file__).parent / 'host_validation.py').read_bytes()),
+                'scope': 'Supplied-byte inspection and logical RAM edits with batch preflight; no packet builder or I/O.',
+                'physical_transport_verified': False,
+                'physical_block_size_verified': False,
+                'automatic_retry_allowed': False},
             'preservation_assessment': preservation_assessment(),
             'boot_loader_assessment': boot_loader_assessment(),
             'boot_preparation_assessment': preparation_assessment(),

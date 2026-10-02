@@ -194,6 +194,12 @@ flash completion and recovery remain unproven.
 
 ## Staged route to live testing
 
+`OFFLINE_HOST_VALIDATION.md` now supplies complete-frame, even-length, alignment
+and calibration-range checks, plus whole-batch preflight and conservative fault
+outcomes on logical RAM. Malformed later blocks prevent all edits; duplicate or
+overlapping blocks cannot trigger automatic retry. Physical block size, transport,
+flash behavior and acknowledgments remain unverified, with no executable packets.
+
 Eight stale-buffer cases now show synthetic short frames reusing old service or
 subtype bytes to reach erase, finalize, block-parser and exit routes. A frame
 rejected by completion flags can leave bytes for a later short frame. See

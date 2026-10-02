@@ -191,6 +191,9 @@ AL5_RAW_20000_FFFFF_20260927_184345_001.bin
 local EFILive Config/AL5*.obj, *.bix, AL5.pmm
 ```
 
+`OFFLINE_HOST_VALIDATION.md` describes supplied-byte inspection and logical batch
+preflight, with no packet constructor, adapter or executable erase scope.
+
 `LOADER_STALE_BUFFER_EMULATION.md` records eight short-frame and stale-buffer
 dispatch cases with every destructive handler trapped.
 
