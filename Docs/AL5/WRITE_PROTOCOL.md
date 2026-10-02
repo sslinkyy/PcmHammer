@@ -194,6 +194,12 @@ flash completion and recovery remain unproven.
 
 ## Staged route to live testing
 
+Eleven receive-loop cases establish seeded timeout branches, flag-mask rejection,
+absence of an observed pre-dispatch length guard, and priority-dependent budget
+refresh. See `LOADER_RECEIVE_EMULATION.md`. The explicit write trap is a model
+limit, not a physical RAM boundary. FIFO semantics and elapsed time remain
+unverified; all destructive paths and MMIO are trapped.
+
 Ten sender/exit cases now bound software header/status construction and synthetic
 FIFO busy timeout. Both tested finalize tails reach the reset trap after status
 transmission; these tails bypass verification/programming. See

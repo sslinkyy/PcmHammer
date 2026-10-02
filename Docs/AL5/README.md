@@ -191,6 +191,9 @@ AL5_RAW_20000_FFFFF_20260927_184345_001.bin
 local EFILive Config/AL5*.obj, *.bix, AL5.pmm
 ```
 
+`LOADER_RECEIVE_EMULATION.md` records eleven receive-loop cases, including seeded
+timeout boundaries, a model write limit and priority-dependent budget refresh.
+
 `LOADER_SENDER_EMULATION.md` records ten sender/exit cases with MMIO intercepted,
 including busy timeout/restart, header construction and reset-tail traps.
 

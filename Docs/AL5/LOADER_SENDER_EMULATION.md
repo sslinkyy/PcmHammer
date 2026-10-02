@@ -62,7 +62,8 @@ the report while keeping transport/reset/recovery verification false, readiness
 false, erase scope null and packet lists empty. The C# reader and write rejection
 are unchanged.
 
-Next identify the FIFO controller/register contract from saved firmware/hardware
-evidence, bound receive-loop timeout/restart behavior, and connect those results
+`LOADER_RECEIVE_EMULATION.md` now bounds receive-loop branches and budget refresh
+using synthetic events and seeded timeout counters. Next identify the FIFO
+controller/register contract from saved firmware/hardware evidence and connect those results
 to complete saved session captures if available. Physical mapping, collateral
 preservation, flash timing and demonstrated recovery remain separate blockers.

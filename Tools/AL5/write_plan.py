@@ -30,6 +30,7 @@ LOADER_GEOMETRY_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADE
 LOADER_PARSER_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_PARSER_EMULATION.json'
 LOADER_PROGRAM_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_PROGRAM_EMULATION.json'
 LOADER_SENDER_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_SENDER_EMULATION.json'
+LOADER_RECEIVE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_RECEIVE_EMULATION.json'
 
 
 def trace_assessment():
@@ -47,7 +48,17 @@ def trace_assessment():
     program=json.loads(program_data)
     sender_data=LOADER_SENDER_EVIDENCE.read_bytes()
     sender=json.loads(sender_data)
-    return {'loader_sender_assessment': {
+    receive_data=LOADER_RECEIVE_EVIDENCE.read_bytes()
+    receive=json.loads(receive_data)
+    return {'loader_receive_assessment': {
+                'evidence': 'Docs/AL5/LOADER_RECEIVE_EMULATION.json',
+                'evidence_sha256': sha256(receive_data),
+                'offline_cases_pass': receive['all_pass'],
+                'case_count': len(receive['cases']),
+                'physical_fifo_contract_verified': False,
+                'physical_timeout_verified': False,
+                'scope': receive['scope'], 'limits': receive['limits']},
+            'loader_sender_assessment': {
                 'evidence': 'Docs/AL5/LOADER_SENDER_EMULATION.json',
                 'evidence_sha256': sha256(sender_data),
                 'offline_cases_pass': sender['all_pass'],
