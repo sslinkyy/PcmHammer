@@ -54,7 +54,9 @@ The planner hash-links the report while keeping physical FIFO and timeout
 verification false, readiness false, erase scope null and packet lists empty.
 The working direct reader and unconditional C# write rejection are unchanged.
 
-Next identify the actual FIFO controller and register/error-bit contract from
+`LOADER_STALE_BUFFER_EMULATION.md` now follows short synthetic frames through
+the dispatch prefix with destructive handlers trapped. Next identify the actual
+FIFO controller and register/error-bit contract from
 independent hardware or saved firmware evidence. Connect receive and sender
 observations to a complete session capture if one already exists. Explicitly
 bound the actual RAM receive region and stale-buffer behavior before any future

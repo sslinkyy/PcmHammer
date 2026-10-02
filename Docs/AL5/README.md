@@ -191,6 +191,9 @@ AL5_RAW_20000_FFFFF_20260927_184345_001.bin
 local EFILive Config/AL5*.obj, *.bix, AL5.pmm
 ```
 
+`LOADER_STALE_BUFFER_EMULATION.md` records eight short-frame and stale-buffer
+dispatch cases with every destructive handler trapped.
+
 `LOADER_RECEIVE_EMULATION.md` records eleven receive-loop cases, including seeded
 timeout boundaries, a model write limit and priority-dependent budget refresh.
 

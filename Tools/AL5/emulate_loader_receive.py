@@ -13,7 +13,7 @@ def frame_events(body=b'\x6d\x18\xf0\x3c\x05', flags=0):
 
 
 def experiment(code, events, *, buffer_limit=16, frame_budget=255,
-               counter_seed=None, repeat_dispatch=False):
+               counter_seed=None, repeat_dispatch=False, stale_prefix=b'', trace_dispatch=False):
     if sha256(code) != EXPECTED_SHA:
         raise ValueError('captured loader hash mismatch')
     from unicorn import Uc, UC_ARCH_M68K, UC_MODE_BIG_ENDIAN, UC_HOOK_CODE, UC_HOOK_MEM_WRITE, UC_HOOK_MEM_READ
@@ -28,6 +28,8 @@ def experiment(code, events, *, buffer_limit=16, frame_budget=255,
     for stub in (0xFF960C, 0xFF95EE):
         uc.mem_write(stub, b'\x4e\x75')
     uc.mem_write(0xFFFF9A72, bytes([frame_budget]))
+    if stale_prefix:
+        uc.mem_write(RX, stale_prefix)
     uc.reg_write(UC_M68K_REG_SR, 0x2700)
     uc.reg_write(UC_M68K_REG_A7, STACK)
     result = {'stop': None, 'events_consumed': 0, 'buffer_bytes_written': 0,
@@ -59,12 +61,17 @@ def experiment(code, events, *, buffer_limit=16, frame_budget=255,
         elif pc == 0xFF9236:
             result['stop'] = 'shared_exit_trap'; machine.emu_stop()
         elif pc == 0xFF90BE:
-            if not repeat_dispatch:
+            if not repeat_dispatch and not trace_dispatch:
                 result['dispatch_boundaries'] += 1
                 result['stop'] = 'dispatcher_trap'; machine.emu_stop()
         elif pc == 0xFF90D8 and repeat_dispatch:
             result['dispatch_boundaries'] += 1
             machine.reg_write(UC_M68K_REG_PC, 0xFF903A)
+        elif trace_dispatch and pc in (0xFF9130, 0xFF91D6, 0xFF9252,
+                                       0xFF9286, 0xFF929A, 0xFF92A6, 0xFF92B2, 0xFF92C2, 0xFF931C):
+            result['stop'] = {0xFF9130: 'block_parser_trap', 0xFF91D6: 'finalize_route_trap',
+                              0xFF9252: 'erase_route_trap'}.get(pc, 'mode3c_handler_trap')
+            machine.emu_stop()
         elif pc == 0xFF9048:
             frame_bytes = 0
         elif pc in (0xFF9056, 0xFF907C, 0xFF9092):
@@ -97,11 +104,13 @@ def experiment(code, events, *, buffer_limit=16, frame_budget=255,
                 raise RuntimeError('bounded synthetic receive budget exhausted')
         elif pc == 0xFF95EE:
             pass
-        elif not 0xFF9032 <= pc < 0xFF90D8:
+        elif not (0xFF9032 <= pc < (0xFF9130 if trace_dispatch else 0xFF90D8) or
+                  trace_dispatch and 0xFF925A <= pc <= 0xFF9282):
             raise RuntimeError(f'escaped receive loop at {pc:#x}')
 
     def store_hook(machine, access, addr, size, value, _):
-        if not (STACK - 16 <= addr and addr + size <= STACK or addr == 0xFFFF9A72 and size == 1):
+        if not (STACK - 16 <= addr and addr + size <= STACK or addr == 0xFFFF9A72 and size == 1 or
+                trace_dispatch and size == 1 and addr in (0xFFFF9A78, 0xFFFF9A79)):
             raise RuntimeError(f'unexpected instruction store at {addr:#x}')
 
     def read_hook(machine, access, addr, size, value, _):

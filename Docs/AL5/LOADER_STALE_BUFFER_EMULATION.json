@@ -1,0 +1,210 @@
+{
+  "payload_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
+  "generator_sha256": "35c0fcae8df503d51e3be6055c954fd229c49655c8b0ccb0580cf691342fba37",
+  "receive_generator_sha256": "67bbc8ccbeb56220f19e611af44a03da0566fb1d3ef6c1e2ff16b378dc3c7b8d",
+  "static_evidence_sha256": "200b831ba6e5da203acaf96f6e64a8b5df251a1232e755b72ce44cfedf5a311f",
+  "address_observations": {
+    "load_address": "0xFF9000",
+    "payload_bytes": 1590,
+    "receive_effective_address": "0xffff9aa0",
+    "initial_stack_address": "0xffa7fe",
+    "conditional_receive_low24": "0xff9aa0",
+    "distance_to_initial_stack_if_low24_aliases": 3422,
+    "physical_aliasing_verified": false,
+    "physical_receive_capacity_verified": false
+  },
+  "scope": "Synthetic short completed frames with modeled zero completion flags and stale RAM. Saved priority/service/subtype dispatch instructions execute; every command handler and shared exit is trapped.",
+  "limits": "Physical FIFO may impose additional length/CRC constraints. No flash/reset/session operation executes. Conditional low24 address arithmetic is not proof of physical RAM mapping or safe capacity; emulator address regions remain separate.",
+  "cases": [
+    {
+      "case": "short_clean_buffer",
+      "expected_stop": "receive_boundary",
+      "observed": {
+        "stop": "receive_boundary",
+        "events_consumed": 3,
+        "buffer_bytes_written": 2,
+        "maximum_frame_bytes": 2,
+        "dispatch_boundaries": 0,
+        "discard_reads": 0,
+        "completion_flags": [
+          0
+        ],
+        "counter_seeds_applied": [],
+        "buffer_overrun_attempted": false,
+        "watchdog_calls_trapped": 3,
+        "mmio_instructions_executed": 0,
+        "reset_instruction_executed": false,
+        "remaining_frame_budget": 255,
+        "saved_frame_prefix_sha256": "662ee47aed79304e60d4249e2e660d3e5e3cf14f9f3764d497e6658f36297cb3"
+      },
+      "pass": true
+    },
+    {
+      "case": "two_bytes_stale_erase",
+      "expected_stop": "erase_route_trap",
+      "observed": {
+        "stop": "erase_route_trap",
+        "events_consumed": 3,
+        "buffer_bytes_written": 2,
+        "maximum_frame_bytes": 2,
+        "dispatch_boundaries": 0,
+        "discard_reads": 0,
+        "completion_flags": [
+          0
+        ],
+        "counter_seeds_applied": [],
+        "buffer_overrun_attempted": false,
+        "watchdog_calls_trapped": 3,
+        "mmio_instructions_executed": 0,
+        "reset_instruction_executed": false,
+        "remaining_frame_budget": 255,
+        "saved_frame_prefix_sha256": "662ee47aed79304e60d4249e2e660d3e5e3cf14f9f3764d497e6658f36297cb3"
+      },
+      "pass": true
+    },
+    {
+      "case": "three_bytes_stale_erase",
+      "expected_stop": "erase_route_trap",
+      "observed": {
+        "stop": "erase_route_trap",
+        "events_consumed": 4,
+        "buffer_bytes_written": 3,
+        "maximum_frame_bytes": 3,
+        "dispatch_boundaries": 0,
+        "discard_reads": 0,
+        "completion_flags": [
+          0
+        ],
+        "counter_seeds_applied": [],
+        "buffer_overrun_attempted": false,
+        "watchdog_calls_trapped": 4,
+        "mmio_instructions_executed": 0,
+        "reset_instruction_executed": false,
+        "remaining_frame_budget": 255,
+        "saved_frame_prefix_sha256": "2abccc3e82bebe44c0cc6f4109d692ed51e9279991539b61506ef3e4276dad31"
+      },
+      "pass": true
+    },
+    {
+      "case": "four_bytes_stale_erase",
+      "expected_stop": "erase_route_trap",
+      "observed": {
+        "stop": "erase_route_trap",
+        "events_consumed": 5,
+        "buffer_bytes_written": 4,
+        "maximum_frame_bytes": 4,
+        "dispatch_boundaries": 0,
+        "discard_reads": 0,
+        "completion_flags": [
+          0
+        ],
+        "counter_seeds_applied": [],
+        "buffer_overrun_attempted": false,
+        "watchdog_calls_trapped": 5,
+        "mmio_instructions_executed": 0,
+        "reset_instruction_executed": false,
+        "remaining_frame_budget": 255,
+        "saved_frame_prefix_sha256": "9082b566a2884357fcc19b87d0619dc790bc80f75e2cb6dc42e74e4393ae25af"
+      },
+      "pass": true
+    },
+    {
+      "case": "two_bytes_stale_finalize",
+      "expected_stop": "finalize_route_trap",
+      "observed": {
+        "stop": "finalize_route_trap",
+        "events_consumed": 3,
+        "buffer_bytes_written": 2,
+        "maximum_frame_bytes": 2,
+        "dispatch_boundaries": 0,
+        "discard_reads": 0,
+        "completion_flags": [
+          0
+        ],
+        "counter_seeds_applied": [],
+        "buffer_overrun_attempted": false,
+        "watchdog_calls_trapped": 3,
+        "mmio_instructions_executed": 0,
+        "reset_instruction_executed": false,
+        "remaining_frame_budget": 255,
+        "saved_frame_prefix_sha256": "662ee47aed79304e60d4249e2e660d3e5e3cf14f9f3764d497e6658f36297cb3"
+      },
+      "pass": true
+    },
+    {
+      "case": "two_bytes_stale_block",
+      "expected_stop": "block_parser_trap",
+      "observed": {
+        "stop": "block_parser_trap",
+        "events_consumed": 3,
+        "buffer_bytes_written": 2,
+        "maximum_frame_bytes": 2,
+        "dispatch_boundaries": 0,
+        "discard_reads": 0,
+        "completion_flags": [
+          0
+        ],
+        "counter_seeds_applied": [],
+        "buffer_overrun_attempted": false,
+        "watchdog_calls_trapped": 3,
+        "mmio_instructions_executed": 0,
+        "reset_instruction_executed": false,
+        "remaining_frame_budget": 255,
+        "saved_frame_prefix_sha256": "662ee47aed79304e60d4249e2e660d3e5e3cf14f9f3764d497e6658f36297cb3"
+      },
+      "pass": true
+    },
+    {
+      "case": "two_bytes_stale_exit",
+      "expected_stop": "shared_exit_trap",
+      "observed": {
+        "stop": "shared_exit_trap",
+        "events_consumed": 3,
+        "buffer_bytes_written": 2,
+        "maximum_frame_bytes": 2,
+        "dispatch_boundaries": 0,
+        "discard_reads": 0,
+        "completion_flags": [
+          0
+        ],
+        "counter_seeds_applied": [],
+        "buffer_overrun_attempted": false,
+        "watchdog_calls_trapped": 3,
+        "mmio_instructions_executed": 0,
+        "reset_instruction_executed": false,
+        "remaining_frame_budget": 255,
+        "saved_frame_prefix_sha256": "662ee47aed79304e60d4249e2e660d3e5e3cf14f9f3764d497e6658f36297cb3"
+      },
+      "pass": true
+    },
+    {
+      "case": "rejected_frame_leaves_erase_tail",
+      "expected_stop": "erase_route_trap",
+      "observed": {
+        "stop": "erase_route_trap",
+        "events_consumed": 9,
+        "buffer_bytes_written": 7,
+        "maximum_frame_bytes": 5,
+        "dispatch_boundaries": 0,
+        "discard_reads": 0,
+        "completion_flags": [
+          64,
+          0
+        ],
+        "counter_seeds_applied": [],
+        "buffer_overrun_attempted": false,
+        "watchdog_calls_trapped": 8,
+        "mmio_instructions_executed": 0,
+        "reset_instruction_executed": false,
+        "remaining_frame_budget": 255,
+        "saved_frame_prefix_sha256": "c7028839f0e60af21a3c0b1f5572e8dfa4868f6329e8cfd629dac7efc090a8ad"
+      },
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "ready_to_flash": false,
+  "live_write_enabled": false,
+  "erase_scope": null,
+  "would_send": []
+}

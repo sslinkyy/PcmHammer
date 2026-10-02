@@ -194,6 +194,13 @@ flash completion and recovery remain unproven.
 
 ## Staged route to live testing
 
+Eight stale-buffer cases now show synthetic short frames reusing old service or
+subtype bytes to reach erase, finalize, block-parser and exit routes. A frame
+rejected by completion flags can leave bytes for a later short frame. See
+`LOADER_STALE_BUFFER_EMULATION.md`. The physical FIFO's short-frame acceptance,
+RAM aliasing and receive capacity remain unverified. Host length validation is
+required; these routes do not authorize a live transaction.
+
 Eleven receive-loop cases establish seeded timeout branches, flag-mask rejection,
 absence of an observed pre-dispatch length guard, and priority-dependent budget
 refresh. See `LOADER_RECEIVE_EMULATION.md`. The explicit write trap is a model

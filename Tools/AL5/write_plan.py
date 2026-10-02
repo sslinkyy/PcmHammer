@@ -31,6 +31,7 @@ LOADER_PARSER_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_
 LOADER_PROGRAM_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_PROGRAM_EMULATION.json'
 LOADER_SENDER_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_SENDER_EMULATION.json'
 LOADER_RECEIVE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_RECEIVE_EMULATION.json'
+LOADER_STALE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_STALE_BUFFER_EMULATION.json'
 
 
 def trace_assessment():
@@ -50,7 +51,18 @@ def trace_assessment():
     sender=json.loads(sender_data)
     receive_data=LOADER_RECEIVE_EVIDENCE.read_bytes()
     receive=json.loads(receive_data)
-    return {'loader_receive_assessment': {
+    stale_data=LOADER_STALE_EVIDENCE.read_bytes()
+    stale=json.loads(stale_data)
+    return {'loader_stale_buffer_assessment': {
+                'evidence': 'Docs/AL5/LOADER_STALE_BUFFER_EMULATION.json',
+                'evidence_sha256': sha256(stale_data),
+                'offline_cases_pass': stale['all_pass'],
+                'case_count': len(stale['cases']),
+                'physical_short_frame_acceptance_verified': False,
+                'physical_receive_capacity_verified': False,
+                'physical_address_aliasing_verified': False,
+                'scope': stale['scope'], 'limits': stale['limits']},
+            'loader_receive_assessment': {
                 'evidence': 'Docs/AL5/LOADER_RECEIVE_EMULATION.json',
                 'evidence_sha256': sha256(receive_data),
                 'offline_cases_pass': receive['all_pass'],

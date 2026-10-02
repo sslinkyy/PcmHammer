@@ -1,6 +1,6 @@
 {
   "payload_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
-  "generator_sha256": "aebbcb33717ecd151cd5457cc1638e1f474f7ed6c12f946817f9adb38f377af0",
+  "generator_sha256": "67bbc8ccbeb56220f19e611af44a03da0566fb1d3ef6c1e2ff16b378dc3c7b8d",
   "scope": "Actual receive-loop branches with synthetic register events, explicit buffer limit and dispatch/exit traps. Timeout cases seed counters near their compare boundary.",
   "limits": "No physical FIFO/CRC semantics or elapsed timeout. Repeated-frame tests execute only the dispatcher priority prefix, then substitute return to the receive loop. The 16-byte trap is a model boundary, not a measured hardware buffer size.",
   "cases": [
