@@ -194,6 +194,12 @@ flash completion and recovery remain unproven.
 
 ## Staged route to live testing
 
+Fourteen bounded captured-parser emulator cases expose zero-count overreads,
+odd source words spanning checksum bytes, and acceptance of unaligned or
+below-calibration destinations before the first flash-command trap. See
+`LOADER_PARSER_EMULATION.md`. Flash/MMIO calls remain trapped. These findings
+establish host-validation requirements, not physical programming or wire responses.
+
 The saved finalize pointers resolve to the exact 57,304-byte calibration range.
 The loader checks its BE16 sum but does not recompute the native CRC. Published
 AMD ID/sector tables corroborate a conditional 98,304-byte erase span with

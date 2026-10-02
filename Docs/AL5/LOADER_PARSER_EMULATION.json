@@ -1,0 +1,273 @@
+{
+  "payload_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
+  "generator_sha256": "62ba7801849fc51361c0dfab2b8b85063a3e590eda1b78d14329fb125c10416c",
+  "scope": "Captured parser in isolated M68020 emulator with synthetic RAM frames; flash and hardware calls trapped.",
+  "limits": "No physical transport, flash semantics or complete receive-loop emulation. Trapped overreads establish attempted reads, not physical outcomes. Word loop after first command remains unexecuted.",
+  "cases": [
+    {
+      "case": "valid_even",
+      "expected": {
+        "stop": "flash_command_trap"
+      },
+      "observed": {
+        "stop": "flash_command_trap",
+        "status_arguments": [],
+        "watchdog_calls_trapped": 2,
+        "flash_commands_executed": 0,
+        "frame_overread_attempted": false,
+        "program_source_overlaps_checksum": false,
+        "word_program_entry": {
+          "destination": "0x8000",
+          "remaining_bytes": 2
+        }
+      },
+      "pass": true
+    },
+    {
+      "case": "zero_count",
+      "expected": {
+        "stop": "frame_read_trap",
+        "frame_overread_attempted": true
+      },
+      "observed": {
+        "stop": "frame_read_trap",
+        "status_arguments": [],
+        "watchdog_calls_trapped": 3,
+        "flash_commands_executed": 0,
+        "frame_overread_attempted": true,
+        "program_source_overlaps_checksum": false,
+        "word_program_entry": null
+      },
+      "pass": true
+    },
+    {
+      "case": "odd_count_one",
+      "expected": {
+        "stop": "flash_command_trap",
+        "program_source_overlaps_checksum": true
+      },
+      "observed": {
+        "stop": "flash_command_trap",
+        "status_arguments": [],
+        "watchdog_calls_trapped": 1,
+        "flash_commands_executed": 0,
+        "frame_overread_attempted": false,
+        "program_source_overlaps_checksum": true,
+        "word_program_entry": {
+          "destination": "0x8000",
+          "remaining_bytes": 1
+        }
+      },
+      "pass": true
+    },
+    {
+      "case": "odd_destination",
+      "expected": {
+        "stop": "flash_command_trap"
+      },
+      "observed": {
+        "stop": "flash_command_trap",
+        "status_arguments": [],
+        "watchdog_calls_trapped": 2,
+        "flash_commands_executed": 0,
+        "frame_overread_attempted": false,
+        "program_source_overlaps_checksum": false,
+        "word_program_entry": {
+          "destination": "0x8001",
+          "remaining_bytes": 2
+        }
+      },
+      "pass": true
+    },
+    {
+      "case": "below_calibration",
+      "expected": {
+        "stop": "flash_command_trap"
+      },
+      "observed": {
+        "stop": "flash_command_trap",
+        "status_arguments": [],
+        "watchdog_calls_trapped": 2,
+        "flash_commands_executed": 0,
+        "frame_overread_attempted": false,
+        "program_source_overlaps_checksum": false,
+        "word_program_entry": {
+          "destination": "0x4000",
+          "remaining_bytes": 2
+        }
+      },
+      "pass": true
+    },
+    {
+      "case": "zero_destination",
+      "expected": {
+        "stop": "flash_command_trap"
+      },
+      "observed": {
+        "stop": "flash_command_trap",
+        "status_arguments": [],
+        "watchdog_calls_trapped": 2,
+        "flash_commands_executed": 0,
+        "frame_overread_attempted": false,
+        "program_source_overlaps_checksum": false,
+        "word_program_entry": {
+          "destination": "0x0",
+          "remaining_bytes": 2
+        }
+      },
+      "pass": true
+    },
+    {
+      "case": "upper_bound",
+      "expected": {
+        "stop": "flash_reset_trap",
+        "program_error_bits": 128
+      },
+      "observed": {
+        "stop": "flash_reset_trap",
+        "status_arguments": [],
+        "watchdog_calls_trapped": 2,
+        "flash_commands_executed": 0,
+        "frame_overread_attempted": false,
+        "program_source_overlaps_checksum": false,
+        "word_program_entry": {
+          "destination": "0xffffe",
+          "remaining_bytes": 2
+        },
+        "program_error_bits": 128
+      },
+      "pass": true
+    },
+    {
+      "case": "below_upper_bound",
+      "expected": {
+        "stop": "flash_command_trap"
+      },
+      "observed": {
+        "stop": "flash_command_trap",
+        "status_arguments": [],
+        "watchdog_calls_trapped": 2,
+        "flash_commands_executed": 0,
+        "frame_overread_attempted": false,
+        "program_source_overlaps_checksum": false,
+        "word_program_entry": {
+          "destination": "0xffffd",
+          "remaining_bytes": 2
+        }
+      },
+      "pass": true
+    },
+    {
+      "case": "short_payload",
+      "expected": {
+        "stop": "frame_read_trap",
+        "frame_overread_attempted": true
+      },
+      "observed": {
+        "stop": "frame_read_trap",
+        "status_arguments": [],
+        "watchdog_calls_trapped": 4,
+        "flash_commands_executed": 0,
+        "frame_overread_attempted": true,
+        "program_source_overlaps_checksum": false,
+        "word_program_entry": null
+      },
+      "pass": true
+    },
+    {
+      "case": "bad_sum",
+      "expected": {
+        "stop": "receive_loop_boundary",
+        "status_arguments": [
+          119
+        ]
+      },
+      "observed": {
+        "stop": "receive_loop_boundary",
+        "status_arguments": [
+          119
+        ],
+        "watchdog_calls_trapped": 2,
+        "flash_commands_executed": 0,
+        "frame_overread_attempted": false,
+        "program_source_overlaps_checksum": false,
+        "word_program_entry": null
+      },
+      "pass": true
+    },
+    {
+      "case": "delay_subtype",
+      "expected": {
+        "stop": "receive_loop_boundary",
+        "status_arguments": [
+          115
+        ]
+      },
+      "observed": {
+        "stop": "receive_loop_boundary",
+        "status_arguments": [
+          115
+        ],
+        "watchdog_calls_trapped": 2,
+        "flash_commands_executed": 0,
+        "frame_overread_attempted": false,
+        "program_source_overlaps_checksum": false,
+        "word_program_entry": null
+      },
+      "pass": true
+    },
+    {
+      "case": "wrong_destination",
+      "expected": {
+        "stop": "receive_loop_boundary"
+      },
+      "observed": {
+        "stop": "receive_loop_boundary",
+        "status_arguments": [],
+        "watchdog_calls_trapped": 0,
+        "flash_commands_executed": 0,
+        "frame_overread_attempted": false,
+        "program_source_overlaps_checksum": false,
+        "word_program_entry": null
+      },
+      "pass": true
+    },
+    {
+      "case": "erase_subtype",
+      "expected": {
+        "stop": "other_service_trap"
+      },
+      "observed": {
+        "stop": "other_service_trap",
+        "status_arguments": [],
+        "watchdog_calls_trapped": 0,
+        "flash_commands_executed": 0,
+        "frame_overread_attempted": false,
+        "program_source_overlaps_checksum": false,
+        "word_program_entry": null
+      },
+      "pass": true
+    },
+    {
+      "case": "finalize_subtype",
+      "expected": {
+        "stop": "other_service_trap"
+      },
+      "observed": {
+        "stop": "other_service_trap",
+        "status_arguments": [],
+        "watchdog_calls_trapped": 0,
+        "flash_commands_executed": 0,
+        "frame_overread_attempted": false,
+        "program_source_overlaps_checksum": false,
+        "word_program_entry": null
+      },
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "ready_to_flash": false,
+  "live_write_enabled": false,
+  "erase_scope": null,
+  "would_send": []
+}

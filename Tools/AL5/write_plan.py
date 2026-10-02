@@ -27,6 +27,7 @@ TRACE_DECODE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/EFILIVE_
 CAPTURED_TRANSFER_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/CAPTURED_RAM_TRANSFER.json'
 LOADER_REQUEST_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/CAPTURED_LOADER_REQUESTS.json'
 LOADER_GEOMETRY_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_GEOMETRY_FINALIZATION.json'
+LOADER_PARSER_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_PARSER_EMULATION.json'
 
 
 def trace_assessment():
@@ -38,7 +39,16 @@ def trace_assessment():
     transfer=json.loads(transfer_data)
     loader_data=LOADER_REQUEST_EVIDENCE.read_bytes()
     loader=json.loads(loader_data)
-    return {'evidence':'Docs/AL5/EFILIVE_TRACE_INVENTORY.json',
+    parser_data=LOADER_PARSER_EVIDENCE.read_bytes()
+    parser=json.loads(parser_data)
+    return {'loader_parser_assessment': {
+                'evidence': 'Docs/AL5/LOADER_PARSER_EMULATION.json',
+                'evidence_sha256': sha256(parser_data),
+                'offline_cases_pass': parser['all_pass'],
+                'case_count': len(parser['cases']),
+                'physical_programming_verified': False,
+                'scope': parser['scope'], 'limits': parser['limits']},
+            'evidence':'Docs/AL5/EFILIVE_TRACE_INVENTORY.json',
             'evidence_sha256':sha256(data),'trace_count':report['trace_count'],
             'scope':report['scope'],'limits':report['limits'],
             'format_decoding_verified':decoded['saved_container_format_decoded'],

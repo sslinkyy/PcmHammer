@@ -27,8 +27,9 @@ The flash-ID routine checks words `0x0001` and `0x2258` through a command-mode
 sequence, without proving the currently installed chip's identity. The erase
 routine polls a toggling bit and an error bit. The bulk program path has an upper
 address comparison at `0xFFFFE`; no lower-address or alignment guard appears in
-that routine. The zero/odd-length cases and malformed receive buffers still need
-bounded fault analysis. Static command addresses are not physical sector sizes.
+that routine. Zero/odd-length and malformed-buffer cases now have bounded
+observations in `LOADER_PARSER_EMULATION.md`; later word iterations remain
+unexecuted. Static command addresses are not physical sector sizes.
 
 The status builder at `0xFF9518` sets service `0x76`, a zero byte and a status
 byte. Word-program failure and address-bound branches map to status values through

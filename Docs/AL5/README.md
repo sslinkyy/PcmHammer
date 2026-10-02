@@ -191,6 +191,9 @@ AL5_RAW_20000_FFFFF_20260927_184345_001.bin
 local EFILive Config/AL5*.obj, *.bix, AL5.pmm
 ```
 
+`LOADER_PARSER_EMULATION.md` records fourteen bounded captured-parser fault cases,
+with flash/MMIO calls trapped and all live-write gates closed.
+
 `LOADER_GEOMETRY_FINALIZATION.md` records the saved calibration finalize range
 and conditional AMD bottom-boot sector mapping. The planner hash-links its JSON
 without enabling writes or claiming physical chip/backup verification.
