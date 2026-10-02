@@ -1,0 +1,449 @@
+{
+  "payload_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
+  "generator_sha256": "0c945fe392900724623547e7b7f328738fc02a383b1a92de4224776b4c9750fe",
+  "scope": "Captured sender and bounded exit tails with synthetic FIFO readiness. Every MMIO instruction skipped; watchdog/delay stubbed and reset/restart trapped.",
+  "limits": "FIFO bytes are software observations, not complete physical frames. Controller CRC/checksum, arbitration, timing and successful reset/recovery remain unverified. Finalize tail cases bypass all verification and marker programming.",
+  "reset_mmio_address": "0xffff8000",
+  "physical_reset_verified": false,
+  "cases": [
+    {
+      "case": "status_ready",
+      "expected_stop": "return",
+      "observed": {
+        "stop": "return",
+        "ready_reads": 6,
+        "watchdog_calls_trapped": 6,
+        "delay_calls_trapped": 0,
+        "reset_instruction_executed": false,
+        "mmio_instructions_executed": 0,
+        "source_overread_attempted": false,
+        "control_writes_modeled": [
+          20,
+          4,
+          4,
+          4,
+          4,
+          12
+        ],
+        "exit_control_data_values": [],
+        "fifo_groups": [
+          {
+            "bytes": 6,
+            "sha256": "f4dda855710c20e0660ca6cc06c1e7e8a1f5a21237e4bda3ac2343199c0e82cd",
+            "final_control": 12,
+            "header": {
+              "priority": 109,
+              "destination": 240,
+              "source": 24
+            },
+            "body_bytes": 3,
+            "status_body": {
+              "service": 118,
+              "subtype": 0,
+              "status": 115
+            }
+          }
+        ]
+      },
+      "expected": {
+        "stop": "return"
+      },
+      "pass": true
+    },
+    {
+      "case": "priority_6c_source_f1",
+      "expected_stop": "return",
+      "observed": {
+        "stop": "return",
+        "ready_reads": 6,
+        "watchdog_calls_trapped": 6,
+        "delay_calls_trapped": 0,
+        "reset_instruction_executed": false,
+        "mmio_instructions_executed": 0,
+        "source_overread_attempted": false,
+        "control_writes_modeled": [
+          20,
+          4,
+          4,
+          4,
+          4,
+          12
+        ],
+        "exit_control_data_values": [],
+        "fifo_groups": [
+          {
+            "bytes": 6,
+            "sha256": "6c0000175464f696a930357437629c1c63d7f7776c539bd1796d9c672c7f788c",
+            "final_control": 12,
+            "header": {
+              "priority": 108,
+              "destination": 241,
+              "source": 24
+            },
+            "body_bytes": 3,
+            "status_body": {
+              "service": 118,
+              "subtype": 0,
+              "status": 115
+            }
+          }
+        ]
+      },
+      "expected": {
+        "stop": "return"
+      },
+      "pass": true
+    },
+    {
+      "case": "delayed_ready",
+      "expected_stop": "return",
+      "observed": {
+        "stop": "return",
+        "ready_reads": 11,
+        "watchdog_calls_trapped": 11,
+        "delay_calls_trapped": 0,
+        "reset_instruction_executed": false,
+        "mmio_instructions_executed": 0,
+        "source_overread_attempted": false,
+        "control_writes_modeled": [
+          20,
+          4,
+          4,
+          4,
+          4,
+          12
+        ],
+        "exit_control_data_values": [],
+        "fifo_groups": [
+          {
+            "bytes": 6,
+            "sha256": "f4dda855710c20e0660ca6cc06c1e7e8a1f5a21237e4bda3ac2343199c0e82cd",
+            "final_control": 12,
+            "header": {
+              "priority": 109,
+              "destination": 240,
+              "source": 24
+            },
+            "body_bytes": 3,
+            "status_body": {
+              "service": 118,
+              "subtype": 0,
+              "status": 115
+            }
+          }
+        ]
+      },
+      "expected": {
+        "stop": "return"
+      },
+      "pass": true
+    },
+    {
+      "case": "always_busy",
+      "expected_stop": "loader_restart_trap",
+      "observed": {
+        "stop": "loader_restart_trap",
+        "ready_reads": 4095,
+        "watchdog_calls_trapped": 4096,
+        "delay_calls_trapped": 0,
+        "reset_instruction_executed": false,
+        "mmio_instructions_executed": 0,
+        "source_overread_attempted": false,
+        "control_writes_modeled": [
+          20
+        ],
+        "exit_control_data_values": [],
+        "fifo_groups": [
+          {
+            "bytes": 1,
+            "sha256": "62c66a7a5dd70c3146618063c344e531e6d4b59e379808443ce962b3abd63c5a",
+            "final_control": 20
+          }
+        ]
+      },
+      "expected": {
+        "stop": "loader_restart_trap",
+        "ready_reads": 4095,
+        "watchdog_calls_trapped": 4096
+      },
+      "pass": true
+    },
+    {
+      "case": "cleanup_broadcasts",
+      "expected_stop": "return",
+      "observed": {
+        "stop": "return",
+        "ready_reads": 8,
+        "watchdog_calls_trapped": 11,
+        "delay_calls_trapped": 0,
+        "reset_instruction_executed": false,
+        "mmio_instructions_executed": 0,
+        "source_overread_attempted": false,
+        "control_writes_modeled": [
+          20,
+          4,
+          4,
+          12,
+          20,
+          4,
+          4,
+          12
+        ],
+        "exit_control_data_values": [],
+        "fifo_groups": [
+          {
+            "bytes": 4,
+            "sha256": "74c3716572d12617e262114190fabeccc4371404b3052f1ec363ee29c18492b3",
+            "final_control": 12,
+            "header": {
+              "priority": 140,
+              "destination": 254,
+              "source": 240
+            },
+            "body_bytes": 1
+          },
+          {
+            "bytes": 4,
+            "sha256": "67b7198b9e2df23db31289be6c41c52e45ed1d10ebf01888033f8047b8e3dc9b",
+            "final_control": 12,
+            "header": {
+              "priority": 108,
+              "destination": 254,
+              "source": 241
+            },
+            "body_bytes": 1
+          }
+        ]
+      },
+      "expected": {
+        "stop": "return"
+      },
+      "pass": true
+    },
+    {
+      "case": "length_zero",
+      "expected_stop": "body_read_trap",
+      "observed": {
+        "stop": "body_read_trap",
+        "ready_reads": 6,
+        "watchdog_calls_trapped": 6,
+        "delay_calls_trapped": 0,
+        "reset_instruction_executed": false,
+        "mmio_instructions_executed": 0,
+        "source_overread_attempted": true,
+        "control_writes_modeled": [
+          20,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "exit_control_data_values": [],
+        "fifo_groups": [
+          {
+            "bytes": 6,
+            "sha256": "f4dda855710c20e0660ca6cc06c1e7e8a1f5a21237e4bda3ac2343199c0e82cd",
+            "final_control": 4,
+            "header": {
+              "priority": 109,
+              "destination": 240,
+              "source": 24
+            },
+            "body_bytes": 3,
+            "status_body": {
+              "service": 118,
+              "subtype": 0,
+              "status": 115
+            }
+          }
+        ]
+      },
+      "expected": {
+        "stop": "body_read_trap",
+        "source_overread_attempted": true
+      },
+      "pass": true
+    },
+    {
+      "case": "length_one",
+      "expected_stop": "body_read_trap",
+      "observed": {
+        "stop": "body_read_trap",
+        "ready_reads": 6,
+        "watchdog_calls_trapped": 6,
+        "delay_calls_trapped": 0,
+        "reset_instruction_executed": false,
+        "mmio_instructions_executed": 0,
+        "source_overread_attempted": true,
+        "control_writes_modeled": [
+          20,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "exit_control_data_values": [],
+        "fifo_groups": [
+          {
+            "bytes": 6,
+            "sha256": "f4dda855710c20e0660ca6cc06c1e7e8a1f5a21237e4bda3ac2343199c0e82cd",
+            "final_control": 4,
+            "header": {
+              "priority": 109,
+              "destination": 240,
+              "source": 24
+            },
+            "body_bytes": 3,
+            "status_body": {
+              "service": 118,
+              "subtype": 0,
+              "status": 115
+            }
+          }
+        ]
+      },
+      "expected": {
+        "stop": "body_read_trap",
+        "source_overread_attempted": true
+      },
+      "pass": true
+    },
+    {
+      "case": "exit_request",
+      "expected_stop": "hardware_reset_trap",
+      "observed": {
+        "stop": "hardware_reset_trap",
+        "ready_reads": 0,
+        "watchdog_calls_trapped": 0,
+        "delay_calls_trapped": 2,
+        "reset_instruction_executed": false,
+        "mmio_instructions_executed": 0,
+        "source_overread_attempted": false,
+        "control_writes_modeled": [
+          64
+        ],
+        "exit_control_data_values": [
+          0
+        ],
+        "fifo_groups": []
+      },
+      "expected": {
+        "stop": "hardware_reset_trap",
+        "delay_calls_trapped": 2,
+        "exit_control_data_values": [
+          0
+        ]
+      },
+      "pass": true
+    },
+    {
+      "case": "finalize_success_tail",
+      "expected_stop": "hardware_reset_trap",
+      "observed": {
+        "stop": "hardware_reset_trap",
+        "ready_reads": 6,
+        "watchdog_calls_trapped": 6,
+        "delay_calls_trapped": 2,
+        "reset_instruction_executed": false,
+        "mmio_instructions_executed": 0,
+        "source_overread_attempted": false,
+        "control_writes_modeled": [
+          20,
+          4,
+          4,
+          4,
+          4,
+          12,
+          64
+        ],
+        "exit_control_data_values": [
+          0
+        ],
+        "fifo_groups": [
+          {
+            "bytes": 6,
+            "sha256": "1ab2ba00dc2534f219eb665fdb876fe6f93e8ffaa0aaf1e6d6cce4e22f375689",
+            "final_control": 12,
+            "header": {
+              "priority": 109,
+              "destination": 240,
+              "source": 24
+            },
+            "body_bytes": 3,
+            "status_body": {
+              "service": 118,
+              "subtype": 0,
+              "status": 134
+            }
+          }
+        ]
+      },
+      "expected": {
+        "stop": "hardware_reset_trap",
+        "delay_calls_trapped": 2,
+        "exit_control_data_values": [
+          0
+        ]
+      },
+      "pass": true
+    },
+    {
+      "case": "finalize_failure_tail",
+      "expected_stop": "hardware_reset_trap",
+      "observed": {
+        "stop": "hardware_reset_trap",
+        "ready_reads": 6,
+        "watchdog_calls_trapped": 6,
+        "delay_calls_trapped": 2,
+        "reset_instruction_executed": false,
+        "mmio_instructions_executed": 0,
+        "source_overread_attempted": false,
+        "control_writes_modeled": [
+          20,
+          4,
+          4,
+          4,
+          4,
+          12,
+          64
+        ],
+        "exit_control_data_values": [
+          0
+        ],
+        "fifo_groups": [
+          {
+            "bytes": 6,
+            "sha256": "c76c7876b0674050ed931a5c2c40e91cbe946d3ebd6b7a8917fb8e20846042ba",
+            "final_control": 12,
+            "header": {
+              "priority": 109,
+              "destination": 240,
+              "source": 24
+            },
+            "body_bytes": 3,
+            "status_body": {
+              "service": 118,
+              "subtype": 0,
+              "status": 255
+            }
+          }
+        ]
+      },
+      "expected": {
+        "stop": "hardware_reset_trap",
+        "delay_calls_trapped": 2,
+        "exit_control_data_values": [
+          0
+        ]
+      },
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "ready_to_flash": false,
+  "live_write_enabled": false,
+  "erase_scope": null,
+  "would_send": []
+}

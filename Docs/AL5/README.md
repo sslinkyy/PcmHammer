@@ -191,6 +191,9 @@ AL5_RAW_20000_FFFFF_20260927_184345_001.bin
 local EFILive Config/AL5*.obj, *.bix, AL5.pmm
 ```
 
+`LOADER_SENDER_EMULATION.md` records ten sender/exit cases with MMIO intercepted,
+including busy timeout/restart, header construction and reset-tail traps.
+
 `LOADER_PROGRAM_EMULATION.md` records eight word-loop and response-body cases
 with synthetic readback, skipped command/reset stores and hardware sender stubs.
 

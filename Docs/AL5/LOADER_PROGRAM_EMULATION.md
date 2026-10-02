@@ -53,8 +53,9 @@ Run `Tools/AL5/emulate_loader_program.py --loader <private-captured-loader>
 metadata only. The planner hash-links it while keeping physical programming and
 wire verification false, readiness false, erase scope null and packet lists empty.
 
-Next trace sender/header/checksum construction and complete receive/session exit
-behavior from saved evidence. Add delayed readback and interrupted-word cases
+`LOADER_SENDER_EMULATION.md` now bounds sender/header construction and selected
+exit paths with MMIO intercepted; physical framing/checksum remain unverified.
+Next bound the complete receive/session loop. Add delayed readback and interrupted-word cases
 when a defensible flash model is available. Physical chip mapping, collateral
 preservation and demonstrated recovery remain unresolved. The existing C#
 direct reader and unconditional AL5 write rejection are unchanged.

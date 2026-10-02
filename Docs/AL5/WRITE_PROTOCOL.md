@@ -194,6 +194,12 @@ flash completion and recovery remain unproven.
 
 ## Staged route to live testing
 
+Ten sender/exit cases now bound software header/status construction and synthetic
+FIFO busy timeout. Both tested finalize tails reach the reset trap after status
+transmission; these tails bypass verification/programming. See
+`LOADER_SENDER_EMULATION.md`. Physical framing, CRC/checksum, reset and recovery
+remain unverified; this progress does not open a live-write gate.
+
 Eight word-loop emulator cases now establish bounded counter wrap, partial-update
 error paths and response-body construction under synthetic readback. See
 `LOADER_PROGRAM_EMULATION.md`. These do not verify flash semantics, elapsed time
