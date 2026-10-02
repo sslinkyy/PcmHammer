@@ -198,6 +198,10 @@ artifacts by explicit hashes while physical provenance/preservation stay unverif
 documentation. Transmit controls match a candidate, but literal receive scenarios
 expose unresolved completion ordering; MCU/FIFO identity remains unverified.
 
+`AUTOCAL_DEVICE_TRACES.md` inventories the two supplied EFX device files separately
+from the PC HTX traces. Their bodies remain undecoded; no missing-traffic or flash
+outcome conclusion is drawn from failed bounded probes.
+
 `TRACE_WRAPPER_AUDIT.md` accounts for all 709 binary records in the five saved
 write traces; they still do not establish a complete programming exchange.
 

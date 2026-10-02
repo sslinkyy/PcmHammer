@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "scope": "Metadata and bounded saved-file probes only. No device or EFILive executable opened.",
+  "limits": "V03VPW is an observed signature, not decoded AL5 identity. Entropy does not prove encryption. Probe failure does not prove absent traffic. No framing, timestamps, direction, payload, acknowledgment or flash outcome is decoded.",
+  "generator_sha256": "c71141895a528339337262df8e3c9bc7daec733770772f584dc5088614d56a20",
+  "encryption_context": {
+    "user_reports_efilive_encryption": true,
+    "algorithm_independently_verified": false
+  },
+  "trace_count": 2,
+  "unique_file_hashes": 2,
+  "traces": [
+    {
+      "source_name": "USR_0057.efx",
+      "source_sha256": "ed8532af111bc9cd8e9b3c985fb7a4f7c1b514ce073d9fc169d3c7aa0028eb9e",
+      "bytes": 44571,
+      "observed_signature": "V03VPW",
+      "entropy_bits_per_byte": 7.996627,
+      "htx_decoder_accepts": false,
+      "bounded_rotation_xor_zlib_probe": {
+        "header_window_bytes": 256,
+        "output_limit_bytes": 1048576,
+        "candidate_headers_tested": 266,
+        "complete_streams": [],
+        "scope": "Zlib only, offsets 0..255, fixed byte rotation and XOR; no packet interpretation."
+      },
+      "bounded_existing_htx_transform_offset_probe": {
+        "offset_window_bytes": 256,
+        "output_limit_bytes": 1048576,
+        "complete_streams": []
+      },
+      "unframed_header_signature_hits": {
+        "6c18f0": 0,
+        "6d18f0": 0,
+        "6cf018": 0,
+        "6c18f1": 0,
+        "6d18f1": 0,
+        "6cf118": 0
+      },
+      "signature_hits_are_packet_evidence": false,
+      "device_record_framing_verified": false,
+      "controller_identity_verified": false,
+      "operation_outcome": null
+    },
+    {
+      "source_name": "USR_0059.efx",
+      "source_sha256": "c8b554e689bedbac25f6814739064c43648bd034831d2d119c486dc0d8984e58",
+      "bytes": 44571,
+      "observed_signature": "V03VPW",
+      "entropy_bits_per_byte": 7.99606,
+      "htx_decoder_accepts": false,
+      "bounded_rotation_xor_zlib_probe": {
+        "header_window_bytes": 256,
+        "output_limit_bytes": 1048576,
+        "candidate_headers_tested": 250,
+        "complete_streams": [],
+        "scope": "Zlib only, offsets 0..255, fixed byte rotation and XOR; no packet interpretation."
+      },
+      "bounded_existing_htx_transform_offset_probe": {
+        "offset_window_bytes": 256,
+        "output_limit_bytes": 1048576,
+        "complete_streams": []
+      },
+      "unframed_header_signature_hits": {
+        "6c18f0": 0,
+        "6d18f0": 0,
+        "6cf018": 0,
+        "6c18f1": 0,
+        "6d18f1": 0,
+        "6cf118": 0
+      },
+      "signature_hits_are_packet_evidence": false,
+      "device_record_framing_verified": false,
+      "controller_identity_verified": false,
+      "operation_outcome": null
+    }
+  ],
+  "format_decoding_verified": false,
+  "complete_programming_exchange_verified": false,
+  "physical_transport_verified": false,
+  "recovery_verified": false,
+  "ready_to_flash": false,
+  "live_write_enabled": false,
+  "erase_scope": null,
+  "would_send": [],
+  "erase_packets": [],
+  "program_packets": []
+}

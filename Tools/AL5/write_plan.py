@@ -34,6 +34,7 @@ LOADER_RECEIVE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER
 LOADER_STALE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_STALE_BUFFER_EMULATION.json'
 TRACE_WRAPPER_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/TRACE_WRAPPER_AUDIT.json'
 FIFO_CANDIDATE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/FIFO_CANDIDATE_COMPARISON.json'
+DEVICE_TRACE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/AUTOCAL_DEVICE_TRACE_INVENTORY.json'
 
 
 def trace_assessment():
@@ -59,7 +60,16 @@ def trace_assessment():
     wrapper=json.loads(wrapper_data)
     fifo_data=FIFO_CANDIDATE_EVIDENCE.read_bytes()
     fifo=json.loads(fifo_data)
-    return {'fifo_candidate_assessment': {
+    device_data=DEVICE_TRACE_EVIDENCE.read_bytes()
+    device=json.loads(device_data)
+    return {'autocal_device_trace_assessment': {
+                'evidence': 'Docs/AL5/AUTOCAL_DEVICE_TRACE_INVENTORY.json',
+                'evidence_sha256': sha256(device_data),
+                'trace_count': device['trace_count'],
+                'format_decoding_verified': False,
+                'complete_programming_exchange_verified': False,
+                'scope': device['scope'], 'limits': device['limits']},
+            'fifo_candidate_assessment': {
                 'evidence': 'Docs/AL5/FIFO_CANDIDATE_COMPARISON.json',
                 'evidence_sha256': sha256(fifo_data),
                 'conditional_sim_window': fifo['conditional_sim_window'],
