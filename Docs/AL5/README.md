@@ -191,6 +191,9 @@ AL5_RAW_20000_FFFFF_20260927_184345_001.bin
 local EFILive Config/AL5*.obj, *.bix, AL5.pmm
 ```
 
+`OFFLINE_ACKNOWLEDGMENT_REPLAY.md` describes supplied-event ordering with mandatory
+block readbacks and final snapshot, while physical correlation stays unverified.
+
 `OFFLINE_HOST_VALIDATION.md` describes supplied-byte inspection and logical batch
 preflight, with no packet constructor, adapter or executable erase scope.
 

@@ -194,6 +194,12 @@ flash completion and recovery remain unproven.
 
 ## Staged route to live testing
 
+`OFFLINE_ACKNOWLEDGMENT_REPLAY.md` now checks supplied block-event ordering,
+headers/statuses, exact block readbacks and a complete final snapshot. A success
+status cannot advance the model without readback. Identical statuses carry no
+verified block sequence identity; stale-response correlation remains unresolved.
+Session entry, erase, exit and physical transport are not implemented by this model.
+
 `OFFLINE_HOST_VALIDATION.md` now supplies complete-frame, even-length, alignment
 and calibration-range checks, plus whole-batch preflight and conservative fault
 outcomes on logical RAM. Malformed later blocks prevent all edits; duplicate or
