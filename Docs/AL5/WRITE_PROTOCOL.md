@@ -185,6 +185,12 @@ boot handler's RAM-transfer contract. Four write traces contain the same 1590-by
 execute-request loader at 0xFF9000; only its bounded entry has been statically
 inspected. See `CAPTURED_RAM_TRANSFER.md`. Calibration programming semantics,
 physical execution and recovery are still unverified, and no live builder exists.
+The captured loader's static dispatcher now maps subtype 0xEE to erase calls at
+0x8000/0x10000, subtype 0x00 to word programming, and subtype 0xFF to a sum check
+and marker write. No corresponding destructive requests are observed in the
+supported host wrappers of the saved write traces. See `CAPTURED_LOADER_DISPATCH.md`.
+The ID comparison does not verify physical geometry, and capture completeness,
+flash completion and recovery remain unproven.
 
 ## Staged route to live testing
 

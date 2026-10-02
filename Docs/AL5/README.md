@@ -125,6 +125,11 @@ at 0xFF9000, subtype 0x80 (execute in the offline handler). Its bounded entry is
 inspected statically only; flash commands and completion remain unresolved. See
 [captured RAM-loader comparison](CAPTURED_RAM_TRANSFER.md). Trace its dispatcher
 and flash calls next, without uploading or executing it.
+Static dispatch now identifies erase/program/finalize routes and an ID gate in
+that loader. No matching destructive commands appear under the supported wrapper
+interpretation of the five saved write traces; capture completeness remains
+unknown. See [captured loader dispatcher](CAPTURED_LOADER_DISPATCH.md). Physical
+geometry, finalize image bounds and fault behavior are the next gaps.
 
 **Current named XDF: v0.12**, `TunerPro/AL5_15184109_15183960_MARKER_EXTENDED_v0_12.xdf`.
 The completed offline EFILive report resolves 83 marker cases and adds 41 items;
