@@ -24,6 +24,7 @@ CONTEXT_PREAMBLE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/CONT
 SMALL_RECORD_FAILURE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/SMALL_RECORD_FAILURE_EMULATION.json'
 TRACE_INVENTORY_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/EFILIVE_TRACE_INVENTORY.json'
 TRACE_DECODE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/EFILIVE_TRACE_DECODE.json'
+CAPTURED_TRANSFER_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/CAPTURED_RAM_TRANSFER.json'
 
 
 def trace_assessment():
@@ -31,6 +32,8 @@ def trace_assessment():
     report=json.loads(data)
     decoded_data=TRACE_DECODE_EVIDENCE.read_bytes()
     decoded=json.loads(decoded_data)
+    transfer_data=CAPTURED_TRANSFER_EVIDENCE.read_bytes()
+    transfer=json.loads(transfer_data)
     return {'evidence':'Docs/AL5/EFILIVE_TRACE_INVENTORY.json',
             'evidence_sha256':sha256(data),'trace_count':report['trace_count'],
             'scope':report['scope'],'limits':report['limits'],
@@ -42,6 +45,12 @@ def trace_assessment():
                 'scope':decoded['scope'],'limits':decoded['limits'],
                 'erase_program_protocol_verified':False},
             'programming_transport_verified':False,
+            'captured_ram_transfer':{
+                'evidence':'Docs/AL5/CAPTURED_RAM_TRANSFER.json',
+                'evidence_sha256':sha256(transfer_data),
+                'transfer_count':transfer['transfer_count'],
+                'all_captured_contracts_match':transfer['all_captured_contracts_match'],
+                'loader_execution_verified':False,'calibration_programming_verified':False},
             'flash_outcomes_verified':False}
 
 

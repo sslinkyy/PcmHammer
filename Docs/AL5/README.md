@@ -119,6 +119,12 @@ analysis decodes all 17 saved AL5 containers and frames every record. Four write
 traces expose Mode 0x34/0x36 traffic, but programming completion is unverified.
 Next compare the captured payloads/responses with the offline loader analysis;
 see [trace decoding](TRACE_DECODE.md). No new flash is needed for this work.
+All 16 captured RAM-transfer candidates now match the offline boot handler's
+length, range and checksum contract. Four write traces share a 1590-byte loader
+at 0xFF9000, subtype 0x80 (execute in the offline handler). Its bounded entry is
+inspected statically only; flash commands and completion remain unresolved. See
+[captured RAM-loader comparison](CAPTURED_RAM_TRANSFER.md). Trace its dispatcher
+and flash calls next, without uploading or executing it.
 
 **Current named XDF: v0.12**, `TunerPro/AL5_15184109_15183960_MARKER_EXTENDED_v0_12.xdf`.
 The completed offline EFILive report resolves 83 marker cases and adds 41 items;

@@ -180,6 +180,11 @@ Mode 0x34/0x36 candidates, but erase/program semantics and completion remain
 unknown. See `TRACE_DECODE.md`. The planner hash-links this progress without
 generating packets. Prioritize captured payload/response comparison with the
 offline loader before creating any new programming capture.
+The captured comparison now matches all 16 Mode 0x36 candidates to the saved
+boot handler's RAM-transfer contract. Four write traces contain the same 1590-byte
+execute-request loader at 0xFF9000; only its bounded entry has been statically
+inspected. See `CAPTURED_RAM_TRANSFER.md`. Calibration programming semantics,
+physical execution and recovery are still unverified, and no live builder exists.
 
 ## Staged route to live testing
 
