@@ -194,6 +194,12 @@ flash completion and recovery remain unproven.
 
 ## Staged route to live testing
 
+`OFFLINE_PRESERVATION_MANIFEST.md` now pins baseline/candidate hashes and reports
+missing conditional collateral and persistent-bank files. Complete file coverage
+does not verify current backups or preservation. The finalization marker lies
+inside collateral and has unresolved permitted-change handling; executable erase
+scope and packet lists remain empty.
+
 `TRACE_WRAPPER_AUDIT.md` now accounts for all 709 binary records in the five
 saved W containers, including broader module/global/tester address variants.
 No unsupported binary wrapper or framed destructive request/Mode `76` response

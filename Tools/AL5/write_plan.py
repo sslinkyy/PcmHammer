@@ -349,6 +349,13 @@ def plan(current, candidate, expected_hash, controller, os_id):
                          'Exact erase geometry and current collateral backup/preservation are unverified.',
         'Application boot preparation and context initialization can reach persistent-storage updates outside the calibration; preservation is unresolved.',
                          'Live AL5 writing is unconditionally disabled.'],
+            'offline_preservation_manifest': {
+                'implementation': 'Tools/AL5/preservation_manifest.py',
+                'implementation_sha256': sha256((Path(__file__).parent / 'preservation_manifest.py').read_bytes()),
+                'scope': 'Pins current/candidate files and optional conditional collateral/persistent-bank artifacts by caller-supplied hashes.',
+                'current_backups_verified': False,
+                'physical_preservation_verified': False,
+                'physical_recovery_verified': False},
             'offline_acknowledgment_replay': {
                 'implementation': 'Tools/AL5/replay_acknowledgments.py',
                 'implementation_sha256': sha256((Path(__file__).parent / 'replay_acknowledgments.py').read_bytes()),

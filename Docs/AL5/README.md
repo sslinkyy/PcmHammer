@@ -191,6 +191,9 @@ AL5_RAW_20000_FFFFF_20260927_184345_001.bin
 local EFILive Config/AL5*.obj, *.bix, AL5.pmm
 ```
 
+`OFFLINE_PRESERVATION_MANIFEST.md` binds calibration and optional collateral/bank
+artifacts by explicit hashes while physical provenance/preservation stay unverified.
+
 `TRACE_WRAPPER_AUDIT.md` accounts for all 709 binary records in the five saved
 write traces; they still do not establish a complete programming exchange.
 
