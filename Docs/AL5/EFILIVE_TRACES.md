@@ -1,5 +1,10 @@
 # Existing AL5 trace containers
 
+This initial inventory is historical. Subsequent static stream analysis decoded
+all 17 existing AL5 files; see [saved-container decoding](TRACE_DECODE.md).
+The narrow probe results below remain valid, but the actual transform also uses
+an additive byte step. Programming completion remains unverified.
+
 Five September 17 AL5 calibration-write trace files already exist in the user's
 local EFILive V8 Trace folder. A September 30 AL5 read trace provides a larger
 format comparison. Their originals remain outside Git; the

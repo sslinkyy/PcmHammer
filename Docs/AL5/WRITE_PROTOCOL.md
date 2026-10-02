@@ -173,9 +173,13 @@ and recovery evidence are all independently adequate.
 
 Five existing AL5 write trace containers and one read comparison have now been
 inventoried offline. Common bounded zlib/byte-transform probes did not decode
-them; packet sequences and flash outcomes remain unknown. See `EFILIVE_TRACES.md`.
-The planner hash-links this evidence without generating packets. Prioritize
-decoding these existing traces before creating any new programming capture.
+them; that historical result is preserved in `EFILIVE_TRACES.md`. Subsequent
+static stream analysis recovers an additive/rotate/XOR transform and decodes all
+17 saved AL5 containers with complete record framing. Four write traces contain
+Mode 0x34/0x36 candidates, but erase/program semantics and completion remain
+unknown. See `TRACE_DECODE.md`. The planner hash-links this progress without
+generating packets. Prioritize captured payload/response comparison with the
+offline loader before creating any new programming capture.
 
 ## Staged route to live testing
 

@@ -23,15 +23,25 @@ STARTUP_CONTEXT_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/START
 CONTEXT_PREAMBLE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/CONTEXT_PREAMBLE_EMULATION.json'
 SMALL_RECORD_FAILURE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/SMALL_RECORD_FAILURE_EMULATION.json'
 TRACE_INVENTORY_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/EFILIVE_TRACE_INVENTORY.json'
+TRACE_DECODE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/EFILIVE_TRACE_DECODE.json'
 
 
 def trace_assessment():
     data=TRACE_INVENTORY_EVIDENCE.read_bytes()
     report=json.loads(data)
+    decoded_data=TRACE_DECODE_EVIDENCE.read_bytes()
+    decoded=json.loads(decoded_data)
     return {'evidence':'Docs/AL5/EFILIVE_TRACE_INVENTORY.json',
             'evidence_sha256':sha256(data),'trace_count':report['trace_count'],
             'scope':report['scope'],'limits':report['limits'],
-            'format_decoding_verified':False,'programming_transport_verified':False,
+            'format_decoding_verified':decoded['saved_container_format_decoded'],
+            'saved_container_decode':{
+                'evidence':'Docs/AL5/EFILIVE_TRACE_DECODE.json',
+                'evidence_sha256':sha256(decoded_data),'trace_count':decoded['trace_count'],
+                'saved_container_format_decoded':decoded['saved_container_format_decoded'],
+                'scope':decoded['scope'],'limits':decoded['limits'],
+                'erase_program_protocol_verified':False},
+            'programming_transport_verified':False,
             'flash_outcomes_verified':False}
 
 

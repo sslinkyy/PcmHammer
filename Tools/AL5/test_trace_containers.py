@@ -51,7 +51,7 @@ class TraceContainerTests(unittest.TestCase):
         for trace in report['traces']:
             self.assertEqual([],trace['bounded_zlib_probe']['complete_streams'])
             self.assertIsNone(trace['operation_outcome'])
-        self.assertFalse(evidence['format_decoding_verified'])
+        self.assertTrue(evidence['format_decoding_verified'])
         self.assertFalse(evidence['programming_transport_verified'])
         self.assertFalse(result['ready_to_flash'])
         self.assertFalse(result['live_write_enabled'])
