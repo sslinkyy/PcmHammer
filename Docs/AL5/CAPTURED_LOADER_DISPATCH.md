@@ -28,8 +28,10 @@ sequence, without proving the currently installed chip's identity. The erase
 routine polls a toggling bit and an error bit. The bulk program path has an upper
 address comparison at `0xFFFFE`; no lower-address or alignment guard appears in
 that routine. Zero/odd-length and malformed-buffer cases now have bounded
-observations in `LOADER_PARSER_EMULATION.md`; later word iterations remain
-unexecuted. Static command addresses are not physical sector sizes.
+observations in `LOADER_PARSER_EMULATION.md`; later word iterations and error
+paths now execute with synthetic readback in `LOADER_PROGRAM_EMULATION.md`.
+Flash command/reset stores remain skipped. Static command addresses are not
+physical sector sizes.
 
 The status builder at `0xFF9518` sets service `0x76`, a zero byte and a status
 byte. Word-program failure and address-bound branches map to status values through

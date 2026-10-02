@@ -28,6 +28,7 @@ CAPTURED_TRANSFER_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/CAP
 LOADER_REQUEST_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/CAPTURED_LOADER_REQUESTS.json'
 LOADER_GEOMETRY_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_GEOMETRY_FINALIZATION.json'
 LOADER_PARSER_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_PARSER_EMULATION.json'
+LOADER_PROGRAM_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_PROGRAM_EMULATION.json'
 
 
 def trace_assessment():
@@ -41,7 +42,17 @@ def trace_assessment():
     loader=json.loads(loader_data)
     parser_data=LOADER_PARSER_EVIDENCE.read_bytes()
     parser=json.loads(parser_data)
-    return {'loader_parser_assessment': {
+    program_data=LOADER_PROGRAM_EVIDENCE.read_bytes()
+    program=json.loads(program_data)
+    return {'loader_word_loop_assessment': {
+                'evidence': 'Docs/AL5/LOADER_PROGRAM_EMULATION.json',
+                'evidence_sha256': sha256(program_data),
+                'offline_cases_pass': program['all_pass'],
+                'case_count': len(program['cases']),
+                'physical_programming_verified': False,
+                'wire_acknowledgments_verified': False,
+                'scope': program['scope'], 'limits': program['limits']},
+            'loader_parser_assessment': {
                 'evidence': 'Docs/AL5/LOADER_PARSER_EMULATION.json',
                 'evidence_sha256': sha256(parser_data),
                 'offline_cases_pass': parser['all_pass'],

@@ -1,0 +1,306 @@
+{
+  "payload_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
+  "generator_sha256": "5b58760a23112c5e21ad09866e8c8130f6ab2489274faf3fa32538a32f98511c",
+  "scope": "Real captured loop/poll/error/status instructions, synthetic immediate-match or permanent-mismatch flash backing. All command/reset stores skipped and hardware sender stubbed.",
+  "limits": "No physical flash, timing, transport, recovery or erase model. Zero word count enters the routine directly and bypasses parser. Response body construction is exercised, not wire transmission.",
+  "cases": [
+    {
+      "case": "two_words_success",
+      "expected": {
+        "stop": "receive_boundary",
+        "statuses": [
+          115
+        ],
+        "word_count": 2
+      },
+      "observed": {
+        "stop": "receive_boundary",
+        "modeled_words": [
+          {
+            "address": "0x8000",
+            "remaining_bytes": 4,
+            "readback_matches": true
+          },
+          {
+            "address": "0x8002",
+            "remaining_bytes": 2,
+            "readback_matches": true
+          }
+        ],
+        "responses": [
+          {
+            "service": 118,
+            "subtype": 0,
+            "status": 115
+          }
+        ],
+        "loop_counts": [
+          4,
+          2
+        ],
+        "poll_reads": 2,
+        "reset_sequences_trapped": 1,
+        "source_overread_attempted": false,
+        "checksum_source_words": 0,
+        "flash_command_instructions_executed": 0
+      },
+      "pass": true
+    },
+    {
+      "case": "first_word_failure",
+      "expected": {
+        "stop": "receive_boundary",
+        "statuses": [
+          248
+        ],
+        "word_count": 1
+      },
+      "observed": {
+        "stop": "receive_boundary",
+        "modeled_words": [
+          {
+            "address": "0x8000",
+            "remaining_bytes": 4,
+            "readback_matches": false
+          }
+        ],
+        "responses": [
+          {
+            "service": 118,
+            "subtype": 0,
+            "status": 248
+          }
+        ],
+        "loop_counts": [
+          4
+        ],
+        "poll_reads": 12290,
+        "reset_sequences_trapped": 1,
+        "source_overread_attempted": false,
+        "checksum_source_words": 0,
+        "flash_command_instructions_executed": 0
+      },
+      "pass": true
+    },
+    {
+      "case": "second_word_failure",
+      "expected": {
+        "stop": "receive_boundary",
+        "statuses": [
+          248
+        ],
+        "word_count": 2
+      },
+      "observed": {
+        "stop": "receive_boundary",
+        "modeled_words": [
+          {
+            "address": "0x8000",
+            "remaining_bytes": 4,
+            "readback_matches": true
+          },
+          {
+            "address": "0x8002",
+            "remaining_bytes": 2,
+            "readback_matches": false
+          }
+        ],
+        "responses": [
+          {
+            "service": 118,
+            "subtype": 0,
+            "status": 248
+          }
+        ],
+        "loop_counts": [
+          4,
+          2
+        ],
+        "poll_reads": 12291,
+        "reset_sequences_trapped": 1,
+        "source_overread_attempted": false,
+        "checksum_source_words": 0,
+        "flash_command_instructions_executed": 0
+      },
+      "pass": true
+    },
+    {
+      "case": "upper_bound_rejected",
+      "expected": {
+        "stop": "receive_boundary",
+        "statuses": [
+          116
+        ],
+        "word_count": 0
+      },
+      "observed": {
+        "stop": "receive_boundary",
+        "modeled_words": [],
+        "responses": [
+          {
+            "service": 118,
+            "subtype": 0,
+            "status": 116
+          }
+        ],
+        "loop_counts": [
+          4
+        ],
+        "poll_reads": 0,
+        "reset_sequences_trapped": 1,
+        "source_overread_attempted": false,
+        "checksum_source_words": 0,
+        "flash_command_instructions_executed": 0
+      },
+      "pass": true
+    },
+    {
+      "case": "later_upper_bound",
+      "expected": {
+        "stop": "receive_boundary",
+        "statuses": [
+          116
+        ],
+        "word_count": 1
+      },
+      "observed": {
+        "stop": "receive_boundary",
+        "modeled_words": [
+          {
+            "address": "0xffffc",
+            "remaining_bytes": 4,
+            "readback_matches": true
+          }
+        ],
+        "responses": [
+          {
+            "service": 118,
+            "subtype": 0,
+            "status": 116
+          }
+        ],
+        "loop_counts": [
+          4,
+          2
+        ],
+        "poll_reads": 1,
+        "reset_sequences_trapped": 1,
+        "source_overread_attempted": false,
+        "checksum_source_words": 0,
+        "flash_command_instructions_executed": 0
+      },
+      "pass": true
+    },
+    {
+      "case": "odd_count",
+      "expected": {
+        "stop": "source_read_trap",
+        "statuses": [],
+        "word_count": 1
+      },
+      "observed": {
+        "stop": "source_read_trap",
+        "modeled_words": [
+          {
+            "address": "0x8000",
+            "remaining_bytes": 1,
+            "readback_matches": true
+          }
+        ],
+        "responses": [],
+        "loop_counts": [
+          1,
+          65535
+        ],
+        "poll_reads": 1,
+        "reset_sequences_trapped": 0,
+        "source_overread_attempted": true,
+        "checksum_source_words": 1,
+        "flash_command_instructions_executed": 0
+      },
+      "pass": true
+    },
+    {
+      "case": "zero_word_count_direct",
+      "expected": {
+        "stop": "source_read_trap",
+        "statuses": [],
+        "word_count": 2
+      },
+      "observed": {
+        "stop": "source_read_trap",
+        "modeled_words": [
+          {
+            "address": "0x8000",
+            "remaining_bytes": 0,
+            "readback_matches": true
+          },
+          {
+            "address": "0x8002",
+            "remaining_bytes": 65534,
+            "readback_matches": true
+          }
+        ],
+        "responses": [],
+        "loop_counts": [
+          0,
+          65534,
+          65532
+        ],
+        "poll_reads": 2,
+        "reset_sequences_trapped": 0,
+        "source_overread_attempted": true,
+        "checksum_source_words": 0,
+        "flash_command_instructions_executed": 0
+      },
+      "pass": true
+    },
+    {
+      "case": "below_calibration",
+      "expected": {
+        "stop": "receive_boundary",
+        "statuses": [
+          115
+        ],
+        "word_count": 2
+      },
+      "observed": {
+        "stop": "receive_boundary",
+        "modeled_words": [
+          {
+            "address": "0x4000",
+            "remaining_bytes": 4,
+            "readback_matches": true
+          },
+          {
+            "address": "0x4002",
+            "remaining_bytes": 2,
+            "readback_matches": true
+          }
+        ],
+        "responses": [
+          {
+            "service": 118,
+            "subtype": 0,
+            "status": 115
+          }
+        ],
+        "loop_counts": [
+          4,
+          2
+        ],
+        "poll_reads": 2,
+        "reset_sequences_trapped": 1,
+        "source_overread_attempted": false,
+        "checksum_source_words": 0,
+        "flash_command_instructions_executed": 0
+      },
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "ready_to_flash": false,
+  "live_write_enabled": false,
+  "erase_scope": null,
+  "would_send": []
+}

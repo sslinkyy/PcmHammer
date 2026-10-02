@@ -43,7 +43,7 @@ validation must reject zero/odd lengths, unaligned or out-of-scope addresses,
 and frame/count mismatches before constructing a transaction. Do not rely on
 this loader to impose those limits.
 
-Next bound later word-loop count/address behavior with a flash model and examine
-failure propagation and response construction. Physical identity, collateral
+`LOADER_PROGRAM_EMULATION.md` now bounds later word-loop count/address behavior
+and failure/response-body paths with synthetic readback. Physical identity, collateral
 preservation, complete session evidence and demonstrated recovery remain
 separate blockers. The working Mode 0x23 reader is unchanged.

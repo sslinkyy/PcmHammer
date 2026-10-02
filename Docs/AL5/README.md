@@ -191,6 +191,9 @@ AL5_RAW_20000_FFFFF_20260927_184345_001.bin
 local EFILive Config/AL5*.obj, *.bix, AL5.pmm
 ```
 
+`LOADER_PROGRAM_EMULATION.md` records eight word-loop and response-body cases
+with synthetic readback, skipped command/reset stores and hardware sender stubs.
+
 `LOADER_PARSER_EMULATION.md` records fourteen bounded captured-parser fault cases,
 with flash/MMIO calls trapped and all live-write gates closed.
 

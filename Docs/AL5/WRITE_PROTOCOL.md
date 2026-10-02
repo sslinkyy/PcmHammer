@@ -194,6 +194,11 @@ flash completion and recovery remain unproven.
 
 ## Staged route to live testing
 
+Eight word-loop emulator cases now establish bounded counter wrap, partial-update
+error paths and response-body construction under synthetic readback. See
+`LOADER_PROGRAM_EMULATION.md`. These do not verify flash semantics, elapsed time
+or wire acknowledgments; command/reset stores are skipped and the sender stubbed.
+
 Fourteen bounded captured-parser emulator cases expose zero-count overreads,
 odd source words spanning checksum bytes, and acceptance of unaligned or
 below-calibration destinations before the first flash-command trap. See
