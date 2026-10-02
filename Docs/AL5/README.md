@@ -5,6 +5,10 @@ Continued from `d335b6efd5362bcb9c3f57e3f56647b16ba16df5` on
 The existing direct reader, identity probe and their UI code were preserved.
 All new reverse engineering and validation were offline.
 
+The next truck session is specified in [the read-only vehicle session plan](READ_ONLY_VEHICLE_SESSION_PLAN.md).
+The existing direct calibration reader is available now; passive capture and a
+narrow identity-only path require separate preparation and verification.
+
 ## Verified progress
 
 - Baseline and updated WinForms PcmHammer builds pass using installed Visual
