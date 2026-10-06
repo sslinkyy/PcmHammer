@@ -9,6 +9,10 @@ The next truck session is specified in [the read-only vehicle session plan](READ
 The existing direct calibration reader is available now; passive capture and a
 narrow identity-only path require separate preparation and verification.
 
+[Public-source research dated 2026-10-06](ONLINE_RESEARCH_20261006.md) records
+AL5-specific vendor programming/recovery guidance, conditional hardware leads
+and the limits of later-generation teardown information.
+
 ## Verified progress
 
 - Baseline and updated WinForms PcmHammer builds pass using installed Visual
