@@ -21,6 +21,11 @@ current physical backup.
 
 ## Conditional manufacturer geometry
 
+Update 2026-10-10: [owner-supplied physical photographs](PHYSICAL_HARDWARE_20261010.md)
+now identify Am29F800BB in the truck's module. The CPU mapping, bus width,
+protection state and preservation assumptions below remain unverified; the
+photographs do not turn this report into an executable erase plan.
+
 The [AMD Am29F800B datasheet](https://www.batronix.com/files/Datenblaetter/29__/AM29F800B.pdf),
 document 21504E5 dated November 2, 2006, Table 9 associates manufacturer `0x01`
 and word device ID `0x2258` with the bottom-boot part. Table 3 places byte-address

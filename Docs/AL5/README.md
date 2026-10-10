@@ -13,6 +13,11 @@ narrow identity-only path require separate preparation and verification.
 AL5-specific vendor programming/recovery guidance, conditional hardware leads
 and the limits of later-generation teardown information.
 
+[Owner-supplied truck-module photographs recorded 2026-10-10](PHYSICAL_HARDWARE_20261010.md)
+identify AMD Am29F800BB flash and exterior numbers 15183963 / 29537441.
+The speed/package suffix is provisional; processor identity, CPU mapping and
+chip-level backup/recovery remain unverified. No write gate is changed.
+
 ## Verified progress
 
 - Baseline and updated WinForms PcmHammer builds pass using installed Visual
