@@ -18,8 +18,11 @@ photographs are not added to Git.
   coating and viewing angle make that suffix provisional. Confirm the complete
   marking before selecting a replacement or programmer profile.
 - The package appears consistent with the manufacturer's 44-pin SO option.
-  The large adjacent square IC's marking is not readable; processor model,
-  peripheral identification and debug-pad assignments remain unknown.
+  Later owner closeups make the large adjacent square IC's `09360403` marking
+  readable. The smaller apparent `H83W` / `UC0E4024` markings remain tentative.
+  No manufacturer cross-reference has identified its processor model;
+  peripheral identification and debug-pad assignments remain unknown. See
+  [processor and debug-interface research](PROCESSOR_DEBUG_RESEARCH_20261010.md).
 
 ## Relationship to offline evidence
 

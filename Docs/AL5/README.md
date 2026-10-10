@@ -18,6 +18,11 @@ identify AMD Am29F800BB flash and exterior numbers 15183963 / 29537441.
 The speed/package suffix is provisional; processor identity, CPU mapping and
 chip-level backup/recovery remain unverified. No write gate is changed.
 
+[Processor/debug research](PROCESSOR_DEBUG_RESEARCH_20261010.md) records the
+new readable `09360403` marking, provisional smaller codes and manufacturer
+CPU32 debug references. MCU identity and the board's pad assignments remain
+unresolved; a generic BDM header pinout is not a connection diagram for AL5.
+
 ## Verified progress
 
 - Baseline and updated WinForms PcmHammer builds pass using installed Visual
