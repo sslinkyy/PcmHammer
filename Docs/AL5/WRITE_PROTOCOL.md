@@ -315,3 +315,5 @@ Host callbacks: [static callback tracing and supplied-buffer CRC inspection](EFI
 [Reconstructed VM programming and recovery flow](VM_PROGRAMMING_FLOW.md): static instruction listing, broader programming bounds, attempt-counter branches, and separate error/stop paths. Full VM semantics and physical recovery remain unverified; the planner keeps live writes disabled.
 
 [VM retry and failure tracing](VM_RETRY_FAILURE.md): flag0x20 stored-zero semantics, per-block attempt counters, receive-drain cleanup, and recovery limits. Live writes and automatic retry authorization remain disabled.
+
+[Host callback result and cleanup tracing](VM_CALLBACK_RESULTS.md): selector0A is transport cleanup, while0B/0D route send/receive with separate exception status. Physical programming, preservation and interrupted-flash recovery remain unverified.

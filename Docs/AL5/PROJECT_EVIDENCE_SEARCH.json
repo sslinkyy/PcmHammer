@@ -1,0 +1,719 @@
+{
+  "schema_version": 1,
+  "root": "C:\\Codex Projects\\Car Tuning",
+  "enumerated_files": 23506,
+  "enumeration": "rg --files --hidden excluding .git and node_modules; no content search of other arbitrary extensions.",
+  "loose_named_trace_paths": [],
+  "archives": [
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\2002_LB7_Duramax.rar",
+      "bytes": 642119,
+      "member_inventory": "unsupported format, not examined"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_v0_12_and_Scalar_Batch_8.zip",
+      "bytes": 6490119,
+      "member_count": 393,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\UniversalPatcher-Full.Zip",
+      "bytes": 21860240,
+      "member_count": 481,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\AL5_15184109_Reference_v0_2.zip",
+      "bytes": 67611,
+      "member_count": 13,
+      "selected_count": 2,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\alistock.lowrpmshiftfinal3.zip",
+      "bytes": 737530,
+      "member_count": 1,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\B0720_First_Cell_Scalar_Test.zip",
+      "bytes": 22318,
+      "member_count": 2,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\AL5_PPEI_RAW_COMPARE_v1.zip",
+      "bytes": 5065,
+      "member_count": 2,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_Post_M_Guarded_Editor_and_N.zip",
+      "bytes": 14293224,
+      "member_count": 718,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\alistock.tun.zip",
+      "bytes": 735627,
+      "member_count": 1,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_15189044_Scalar_Marker_Batch_2.zip",
+      "bytes": 429945,
+      "member_count": 7,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_Batch6_Findings_and_Scalar_Batch7.zip",
+      "bytes": 2207113,
+      "member_count": 61,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_AB_Results_and_Storage_Validation_AC.zip",
+      "bytes": 2150596,
+      "member_count": 36,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_B0749_Isolated_Marker_Test.zip",
+      "bytes": 145710,
+      "member_count": 5,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_AD_Checksum_Validation.zip",
+      "bytes": 338182,
+      "member_count": 9,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_15189044_Array_Batch_1.zip",
+      "bytes": 861392,
+      "member_count": 23,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_AA_Results_and_Native_Localization_AB.zip",
+      "bytes": 3495021,
+      "member_count": 40,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_EFILive_AD_Exporter_Fix_v1_1.zip",
+      "bytes": 13231,
+      "member_count": 8,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_Combined_Offline_AF.zip",
+      "bytes": 176141,
+      "member_count": 7,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_B0750_Isolated_Marker_Test.zip",
+      "bytes": 145805,
+      "member_count": 5,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_Native_Checksums_All_Five_Trial.zip",
+      "bytes": 202412,
+      "member_count": 7,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_Guarded_Checksum_v0_1.zip",
+      "bytes": 557375,
+      "member_count": 19,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_Post_P_and_Localization_Q.zip",
+      "bytes": 15515283,
+      "member_count": 697,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_Table_Editor_Comparison_AE.zip",
+      "bytes": 327732,
+      "member_count": 21,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_Post_S_and_Localization_T.zip",
+      "bytes": 18034909,
+      "member_count": 754,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_Post_T_Quarantine_and_Localization_U.zip",
+      "bytes": 18205695,
+      "member_count": 775,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_Post_U_Results_and_Localization_V.zip",
+      "bytes": 19899362,
+      "member_count": 799,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_Post_X_Results_and_Raw_Baseline_Y.zip",
+      "bytes": 25231174,
+      "member_count": 878,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_Remaining_Mapping_Plan.zip",
+      "bytes": 19596,
+      "member_count": 5,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_Random_Native_Comparison.zip",
+      "bytes": 8063,
+      "member_count": 3,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_v0_11_and_Scalar_Batch_6.zip",
+      "bytes": 4568122,
+      "member_count": 321,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\PcmHammer_E54_RAM_Survey_Bench_v0_1.zip",
+      "bytes": 835898,
+      "member_count": 29,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\PcmHammer_E54_RAM_Canary_Bench_v0_1.zip",
+      "bytes": 846240,
+      "member_count": 29,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\lb7stock.tun.zip",
+      "bytes": 302016,
+      "member_count": 1,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\iMob_WINDOW_Observer_v0_0_8_BENCH_ONLY.zip",
+      "bytes": 147888,
+      "member_count": 6,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\iMob_TRANSITION_Observer_v0_0_9_BENCH_ONLY (1).zip",
+      "bytes": 148517,
+      "member_count": 6,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\iMob_Racing_E54_v0_16_4_Credits.zip",
+      "bytes": 25072,
+      "member_count": 5,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\iMob_QADC_Config_Observer_v0_0_6_Bench.zip",
+      "bytes": 148302,
+      "member_count": 6,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\iMob_Observer_0_0_13_Bench_Package.zip",
+      "bytes": 147853,
+      "member_count": 5,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\iMob_Observer_0_0_12_Bench_Package.zip",
+      "bytes": 147801,
+      "member_count": 5,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\iMob_Observer_0_0_11_Bench_Package.zip",
+      "bytes": 147453,
+      "member_count": 5,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\iMob_Observer_005_Bench_Package.zip",
+      "bytes": 166724,
+      "member_count": 17,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_v0_10_and_Scalar_Batch_5.zip",
+      "bytes": 4459021,
+      "member_count": 270,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\iMob_MultiMap_XDF_Editor_Test_v0_1.zip",
+      "bytes": 196543,
+      "member_count": 11,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\iMob_INTERVAL_Observer_v0_0_10_BENCH_ONLY.zip",
+      "bytes": 150415,
+      "member_count": 7,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\iMob_CHANNEL12_Observer_v0_0_7_BENCH_ONLY.zip",
+      "bytes": 148575,
+      "member_count": 6,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\iMob_15189044_Runtime_Heartbeat_v0_0_4_BENCH_PACKAGE.zip",
+      "bytes": 168221,
+      "member_count": 17,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\iMob_15189044_Post_Init_Boot_Marker_v0_0_3_BENCH_PACKAGE.zip",
+      "bytes": 168930,
+      "member_count": 27,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_Z_Results_and_Native_Localization_AA.zip",
+      "bytes": 528670,
+      "member_count": 31,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\iMob_15189044_Post_Init_Boot_Marker_v0_0_3_BENCH_PACKAGE\\artifacts\\PostInit_003_RAM_REPEAT.zip",
+      "bytes": 143410,
+      "member_count": 2,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\iMob_15189044_BOOT_HEARTBEAT_v0_0_2_BENCH_PACKAGE.zip",
+      "bytes": 146676,
+      "member_count": 6,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\03904405 DSP5\\iMob_Racing_E54_Project_Recovery_2026-09-21.zip",
+      "bytes": 22618797,
+      "member_count": 85,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_TunerPro_Checksum_Load_Fix_1.zip",
+      "bytes": 57991,
+      "member_count": 6,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_TunerPro_Automatic_Checksums_Trial_1.zip",
+      "bytes": 192784,
+      "member_count": 8,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_Y_Results_and_Control_Edit_Z.zip",
+      "bytes": 422180,
+      "member_count": 30,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer-AL5-ReadOnly.zip",
+      "bytes": 858606,
+      "member_count": 26,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer-AL5-ReadOnly-v4-Real4X.zip",
+      "bytes": 859222,
+      "member_count": 26,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer-AL5-ReadOnly-v3-4X.zip",
+      "bytes": 859146,
+      "member_count": 26,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer-AL5-ReadOnly-v2.zip",
+      "bytes": 858820,
+      "member_count": 26,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_v0_16_Candidate_and_Editor_Roundtrip_AD.zip",
+      "bytes": 1795159,
+      "member_count": 39,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer-AL5-ReadOnly-592bb2d.zip",
+      "bytes": 859956,
+      "member_count": 26,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_Post_O_and_Localization_P.zip",
+      "bytes": 17114076,
+      "member_count": 803,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_v0_15_Post_L_and_Localization_M.zip",
+      "bytes": 12643524,
+      "member_count": 637,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_Post_Q_and_Localization_R.zip",
+      "bytes": 15409761,
+      "member_count": 715,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_v0_16_Candidate_and_Editor_Roundtrip_AD (1).zip",
+      "bytes": 1803014,
+      "member_count": 43,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\LB7_Offline_Mapping_Probes_v0_1.zip",
+      "bytes": 855975,
+      "member_count": 10,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\LB7_ColumnMajor_Patch_Review.zip",
+      "bytes": 242178,
+      "member_count": 6,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_Post_R_and_Localization_S.zip",
+      "bytes": 17315776,
+      "member_count": 744,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\LB7_Calibration_Viewer_v1_0_bundle.zip",
+      "bytes": 77225,
+      "member_count": 13,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\LB7_Definition_v0_7.zip",
+      "bytes": 1084828,
+      "member_count": 117,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\LB7_Definition_v0_6.zip",
+      "bytes": 975148,
+      "member_count": 96,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\LB7_Definition_v0_5.zip",
+      "bytes": 867158,
+      "member_count": 76,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\LB7_Definition_v0_4.zip",
+      "bytes": 677821,
+      "member_count": 60,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\LB7_DSP5_SAC45_LBZ_reg.zip",
+      "bytes": 291048,
+      "member_count": 1,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\LB7_Definition_v0_8.zip",
+      "bytes": 1707095,
+      "member_count": 147,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\LB7_EFILive_15189044_catalogue_bundle.zip",
+      "bytes": 45108,
+      "member_count": 13,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\AL5_CRITICAL_CONTROLS_MAPPER_v3.zip",
+      "bytes": 5146,
+      "member_count": 2,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_v0_15_and_Scalar_Batch_11.zip",
+      "bytes": 11135808,
+      "member_count": 569,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\AL5_PACKING_MAPPER_v4.zip",
+      "bytes": 4848,
+      "member_count": 2,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\AL5_ONE_SHOT_DIFFERENTIAL_MAPPER_v5_1.zip",
+      "bytes": 7092,
+      "member_count": 2,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\AL5_ONE_SHOT_DIFFERENTIAL_MAPPER_v5.zip",
+      "bytes": 7406,
+      "member_count": 2,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\AL5_D500x_VECTOR_MAPPER_v2.zip",
+      "bytes": 4336,
+      "member_count": 2,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\AL5_D500x_RAW_MAPPER.zip",
+      "bytes": 4745,
+      "member_count": 2,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\AL5_VALIDITY_COARSE_PROBE.zip",
+      "bytes": 4114,
+      "member_count": 3,
+      "selected_count": 1,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\AL5_RAW_DUMP_20000_FFFFF.zip",
+      "bytes": 4883,
+      "member_count": 3,
+      "selected_count": 1,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_Post_W_Results_and_Localization_X.zip",
+      "bytes": 24082213,
+      "member_count": 851,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\AL5_RAW_DUMP_00000_1FFFF.zip",
+      "bytes": 2910,
+      "member_count": 2,
+      "selected_count": 1,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\Research Write-up and Evidence\\E54_Research_Reproduction.zip",
+      "bytes": 30362238,
+      "member_count": 59,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\AL5_RAW_00000_1FFFF_PROBE.zip",
+      "bytes": 4965,
+      "member_count": 3,
+      "selected_count": 1,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\AL5_VERIFIED_MAP_AND_MULTI_TUNE_COMPARE.zip",
+      "bytes": 7821,
+      "member_count": 4,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_v0_15_Post_K_and_Localization_L.zip",
+      "bytes": 11849960,
+      "member_count": 594,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\LB7_Scalar_Research_Batch_1.zip",
+      "bytes": 546017,
+      "member_count": 23,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_Post_N_and_Localization_O.zip",
+      "bytes": 15089240,
+      "member_count": 756,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_v0_14_and_Scalar_Batch_10.zip",
+      "bytes": 9655015,
+      "member_count": 498,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\private_builds\\iMob_CF1_BASE_ONLY_SPARE_BENCH_2026-09-28.zip",
+      "bytes": 154832,
+      "member_count": 4,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_Post_V_Results_and_Localization_W.zip",
+      "bytes": 21595433,
+      "member_count": 824,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\E54_v0_13_and_Scalar_Batch_9.zip",
+      "bytes": 8234642,
+      "member_count": 443,
+      "selected_count": 0,
+      "member_inventory": "complete ZIP central-directory inventory; member payloads not executed or extracted"
+    }
+  ],
+  "selected_archive_members": [
+    {
+      "archive_path": "C:\\Codex Projects\\Car Tuning\\AL5_15184109_Reference_v0_2.zip",
+      "member": "AL5_15184109_Reference_v0_2/SHA256SUMS.txt",
+      "bytes": 1184,
+      "compressed_bytes": 687
+    },
+    {
+      "archive_path": "C:\\Codex Projects\\Car Tuning\\AL5_15184109_Reference_v0_2.zip",
+      "member": "AL5_15184109_Reference_v0_2/validation/test_results.txt",
+      "bytes": 99,
+      "compressed_bytes": 34
+    },
+    {
+      "archive_path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\AL5_VALIDITY_COARSE_PROBE.zip",
+      "member": "README_AL5_VALIDITY_COARSE.txt",
+      "bytes": 1067,
+      "compressed_bytes": 647
+    },
+    {
+      "archive_path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\AL5_RAW_DUMP_20000_FFFFF.zip",
+      "member": "README_AL5_RAW_20000_FFFFF.txt",
+      "bytes": 618,
+      "compressed_bytes": 391
+    },
+    {
+      "archive_path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\AL5_RAW_DUMP_00000_1FFFF.zip",
+      "member": "README_DUMP_AL5_RAW_00000_1FFFF.txt",
+      "bytes": 571,
+      "compressed_bytes": 361
+    },
+    {
+      "archive_path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\AL5_RAW_00000_1FFFF_PROBE.zip",
+      "member": "README_AL5_RAW_00000_1FFFF.txt",
+      "bytes": 1098,
+      "compressed_bytes": 643
+    }
+  ],
+  "errors": [],
+  "limits": "Filename/ZIP-directory search does not prove absence of differently named captures or recoverability. No live operations."
+}

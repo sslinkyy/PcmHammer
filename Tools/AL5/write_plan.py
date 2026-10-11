@@ -81,7 +81,21 @@ def trace_assessment():
     flow = json.loads(flow_bytes)
     dispatch_bytes = (Path(__file__).resolve().parents[2] / 'Docs/AL5/EFILIVE_VM_DISPATCH.json').read_bytes()
     retry_bytes = (Path(__file__).resolve().parents[2] / 'Docs/AL5/VM_RETRY_FAILURE_AUDIT.json').read_bytes()
-    return {'vm_retry_failure_assessment': {
+    callback_result_bytes = (Path(__file__).resolve().parents[2] / 'Docs/AL5/VM_CALLBACK_RESULT_REPLAY.json').read_bytes()
+    cleanup_bytes = (Path(__file__).resolve().parents[2] / 'Docs/AL5/VM_CALLBACK10_STATIC.json').read_bytes()
+    callback_outcome_bytes = (Path(__file__).resolve().parents[2] / 'Docs/AL5/VM_CALLBACK_OUTCOMES_STATIC.json').read_bytes()
+    return {'vm_callback_result_assessment': {
+                'evidence': 'Docs/AL5/VM_CALLBACK_RESULT_REPLAY.json',
+                'evidence_sha256': sha256(callback_result_bytes),
+                'cleanup_evidence_sha256': sha256(cleanup_bytes),
+                'callback_outcome_evidence_sha256': sha256(callback_outcome_bytes),
+                'implementation': 'Tools/AL5/replay_vm_callback_results.py',
+                'implementation_sha256': sha256((Path(__file__).parent / 'replay_vm_callback_results.py').read_bytes()),
+                'host_transport_cleanup_statically_linked': True,
+                'controller_recovery_verified': False,
+                'physical_acknowledgment_verified': False,
+                'automatic_retry_allowed': False},
+            'vm_retry_failure_assessment': {
                 'evidence': 'Docs/AL5/VM_RETRY_FAILURE_AUDIT.json',
                 'evidence_sha256': sha256(retry_bytes),
                 'implementation': 'Tools/AL5/audit_vm_retries.py',

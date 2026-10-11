@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "provenance": "Synthetic supplied callback facts for isolated branches, not recorded execution.",
+  "cases": [
+    {
+      "id": "typed_exception",
+      "classification_profile": "mode1_selector1",
+      "callback_return": -1,
+      "exception_status": 257,
+      "payload_hex": "",
+      "destination_capacity": 4096,
+      "flags_before": 65535
+    },
+    {
+      "id": "zero_unknown_status",
+      "classification_profile": "mode1_selector1",
+      "callback_return": 0,
+      "exception_status": null,
+      "payload_hex": "",
+      "destination_capacity": 4096,
+      "flags_before": 65535
+    },
+    {
+      "id": "negative_signature",
+      "classification_profile": "mode1_selector1",
+      "callback_return": 6,
+      "exception_status": null,
+      "payload_hex": "6c f0 fe 7f 36 78",
+      "destination_capacity": 4096,
+      "flags_before": 65535
+    },
+    {
+      "id": "positive_signature",
+      "classification_profile": "mode1_selector1",
+      "callback_return": 6,
+      "exception_status": null,
+      "payload_hex": "6c f0 fe 76 00 73",
+      "destination_capacity": 4096,
+      "flags_before": 65535
+    },
+    {
+      "id": "truncated_negative",
+      "classification_profile": "mode1_selector1",
+      "callback_return": 6,
+      "exception_status": null,
+      "payload_hex": "6c f0 fe 7f 36 78",
+      "destination_capacity": 5,
+      "flags_before": 65535
+    }
+  ]
+}

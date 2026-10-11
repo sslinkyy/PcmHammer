@@ -74,3 +74,5 @@ profiles, and emits exclusive JSON output with isolated counter models. Unknown
 or changed profiles fail closed. The offline planner links the audit; automatic
 retry authorization and live writes remain false, erase scope remains unset,
 and all packet lists remain empty. Existing E54 and AL5 Mode 0x23 paths are preserved.
+
+[Host callback result and cleanup tracing](VM_CALLBACK_RESULTS.md): selector0A is transport cleanup, while0B/0D route send/receive with separate exception status. Physical programming, preservation and interrupted-flash recovery remain unverified.
