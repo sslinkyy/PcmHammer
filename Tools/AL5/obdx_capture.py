@@ -263,56 +263,61 @@ class Session:
 
     def configure_listener(self, speed):
         # capture() has verified OFF before saving the original settings.
-        self.request(0x31, [1, 1], echo=True)
+        self.set_checked(0x31, [1, 1])
         for p in ([0, 0, 0], [1, 0, 0], [2, 0, 0, 0],
                   [3, 0, 0, 0], [4, 0, 0, 0, 0]):
-            self.request(0x33, p, echo=True)
-        self.request(0x33, [6, 0 if speed == '1x' else 1], echo=True)
-        self.request(0x33, [7, 1], echo=True)
-        self.request(0x33, [8, 1], echo=True)
+            self.set_checked(0x33, p)
+        self.set_checked(0x33, [6, 0 if speed == '1x' else 1])
+        self.set_checked(0x33, [7, 1])
+        self.set_checked(0x33, [8, 1])
         if self.decoder.buffer:
             raise ProtocolError('Pending bytes before timestamp layout change')
-        self.request(0x24, [3, 1], echo=True)
+        self.set_checked(0x24, [3, 1])
         self.decoder.timestamps = True
         self.request(0x31, [2, 2], echo=True)
         if self.request(0x31, [2])['payload_hex'] != '0202':
             raise ProtocolError('LISTEN ONLY readback failed')
 
-    def probe_settings(self):
+    def set_checked(self, command, payload):
+        self.request(command, payload, echo=True)
+        observed = self.request(command, [payload[0]])['payload_hex']
+        if observed != bytes(payload).hex():
+            raise ProtocolError('Adapter setting readback mismatch: command %02x payload %s observed %s'
+                                % (command, bytes(payload).hex(), observed))
+        return observed
+
+    def probe_settings(self, labels=None):
         """Check adapter-local setters with network OFF; restore exact values."""
         identity = self.inspect()
         for command, sub, size, label in SETTINGS:
-            if label not in ('timestamps', 'speed', 'crc_display'):
+            if labels is not None and label not in labels:
                 continue
             original = bytes.fromhex(identity[label])
-            if len(original) != size or original[1] not in (0, 1):
+            if len(original) != size or original[-1] not in (0, 1):
                 raise ProtocolError('Unknown setting shape; local probe blocked')
-            alternate = bytes([sub, 1 - original[1]])
+            # Change only the Boolean flag; preserve filter IDs/ranges/masks.
+            alternate = original[:-1] + bytes([1 - original[-1]])
             if self.request(0x31, [2])['payload_hex'] != '0200':
                 raise ProtocolError('Network is not OFF; local probe blocked')
             try:
-                self.request(command, alternate, echo=True)
-                observed = self.request(command, [sub])['payload_hex']
-                if observed != alternate.hex():
-                    raise ProtocolError('Adapter setting readback mismatch')
+                observed = self.set_checked(command, alternate)
                 self.emit({'kind': 'local_setting_probe', 'label': label,
                            'original_hex': original.hex(), 'observed_hex': observed,
                            'vehicle_network_enabled': False})
             finally:
-                self.request(command, original, echo=True)
-                if self.request(command, [sub])['payload_hex'] != original.hex():
-                    raise ProtocolError('Local probe setting restoration failed')
+                self.set_checked(command, original)
                 if self.request(0x31, [2])['payload_hex'] != '0200':
                     self.request(0x31, [2, 0], echo=True)
                     raise ProtocolError('Unexpected network state during local probe')
         return {'firmware': identity.get('firmware'), 'network_state': '0200',
-                'local_settings_verified': ['timestamps', 'speed', 'crc_display'],
+                'local_settings_verified': [label for _, _, _, label in SETTINGS
+                                            if labels is None or label in labels],
                 'live_receive_verified': False}
 
     def capture(self, speed, seconds):
         saved = []
         try:
-            self.request(0x31, [2, 0], echo=True)
+            self.set_checked(0x31, [2, 0])
             # Preserve each exact filter and CRC policy, not inferred defaults.
             for command, sub, size, label in SETTINGS:
                 p = bytes.fromhex(self.request(command, [sub])['payload_hex'])
@@ -335,7 +340,7 @@ class Session:
         finally:
             # Required even if listener setup failed or Ctrl+C cancelled capture.
             try:
-                self.request(0x31, [2, 0], echo=True)
+                self.set_checked(0x31, [2, 0])
                 self.emit({'kind': 'cleanup', 'network_off_acknowledged': True})
             except BaseException as error:
                 self.emit({'kind': 'cleanup', 'network_off_acknowledged': False,
@@ -344,7 +349,7 @@ class Session:
             self.decoder.finish()
             try:
                 for command, p in saved:
-                    self.request(command, p, echo=True)
+                    self.set_checked(command, p)
                     if command == 0x24:
                         self.decoder.timestamps = bool(p[1])
                 self.emit({'kind': 'settings_restored', 'success': True})
@@ -446,6 +451,9 @@ def main():
         p.add_argument('--api', choices=('elm', 'dvi'), default='elm',
                        help='Known current adapter API; no automatic reset/fallback')
         p.add_argument('--output', type=Path, required=True)
+        if mode == 'probe':
+            p.add_argument('--setting', action='append', choices=[s[3] for s in SETTINGS],
+                           help='Probe only selected settings; default is all settings')
         if mode == 'capture':
             p.add_argument('--speed', choices=('1x', '4x'), required=True)
             p.add_argument('--seconds', type=float, default=60)
@@ -498,7 +506,7 @@ def main():
                     if args.mode == 'inspect':
                         print(json.dumps(session.inspect(), indent=2))
                     elif args.mode == 'probe':
-                        print(json.dumps(session.probe_settings(), indent=2))
+                        print(json.dumps(session.probe_settings(args.setting), indent=2))
                     else:
                         session.capture(args.speed, args.seconds)
                 finally:

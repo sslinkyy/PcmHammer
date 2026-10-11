@@ -20,16 +20,18 @@ OFF and checking readback. This also disables a network left enabled by another
 application. API selection may leave the adapter in DVI mode. Close other serial
 applications before opening the tool; it opens the selected COM port exclusively.
 
-Capture first requests OFF, selects VPW, disables all five header filters,
+Capture first requests OFF and verifies readback, selects VPW, disables all five header filters,
 selects the caller's fixed 1x/4x speed, enables CRC validation/CRC display and
 device timestamps, then requests **LISTEN ONLY (2)** and verifies its readback.
-It requests OFF on completion, cancellation, or configuration failure. A failed
+Each configuration change requires both an echo acknowledgment and a separate
+matching status query before listening is enabled. It requests OFF and verifies
+readback on completion, cancellation, or configuration failure. A failed
 cleanup acknowledgment is recorded as an unknown adapter state and is an error,
 never a successful cleanup. Do not retry after such a failure without inspecting
 the adapter state. Software guards do not independently prove physical silence.
 After verified network OFF, capture restores the recorded timestamp, all five
 VPW header filters, CRC-validation policy, CRC-display and speed settings, with
-checked acknowledgments. Restoration failure is an error. This protects the
+checked acknowledgments and status queries. Restoration failure is an error. This protects the
 existing reader's expected frame layout and preserves nondefault adapter filters.
 Network ON is never restored. Selecting VPW remains the capture protocol choice.
 
@@ -107,10 +109,13 @@ This follows the documented setting semantics; it is not physical timestamp
 verification or automatic VPW speed tracking. Missing source results remain
 explicitly unknown, and replay success never establishes capture completeness.
 
-`probe` verifies network OFF before changing timestamp, speed and CRC-display
-settings. It checks each alternate-value readback, restores the saved value and
+`probe` verifies network OFF before changing each selected adapter setting's
+Boolean flag. It preserves filter IDs/ranges/masks, checks each alternate-value
+readback, restores the saved value and
 rechecks network OFF. It neither enables reception nor selects LISTEN ONLY.
 It tests configuration round trips, not actual 1x/4x reception or physical silence.
+Use repeatable `--setting <name>` arguments to check only named settings; omit
+them to check all nine settings. A mismatch stops the probe after restoration.
 
 ## Connected-device observations, 2026-10-11 UTC
 
@@ -148,3 +153,36 @@ sent and no setting changed. The failed attempt and replay output remain under
 Actual listen-only reception, rate/overflow behavior, speed transitions and
 programming/recovery capture remain unverified. No speed-follow heuristic was
 added on the basis of incomplete vendor documentation.
+
+## Reconnected GT: real adapter-local checks
+
+The same COM9 USB device reappeared. Its response to ELM identification was again
+the checksum-valid DVI error `7f0241013c`; subsequent explicit DVI identification
+confirmed GT firmware 1.0.2.0. Network OFF was verified before setting changes.
+
+Real alternate-value/readback/restoration checks passed for eight settings:
+timestamp enablement, destination filter enablement, source filter enablement,
+destination range enablement, source range enablement, 1x/4x speed selection,
+CRC validation and CRC display. These observations establish adapter settings
+only. They do not establish frame reception at either speed or physical silence.
+
+The mask-filter check **failed**: setting `0400ff0000` received an echo with that
+payload, but a separate GET returned `0400ff0001`. The original `0400ff0001` was
+restored and read back; network remained `0200` (OFF). This could be a setter or
+query implementation issue; the evidence does not identify which. No alternative
+mask values or firmware updates were tried.
+
+Capture now fails before requesting LISTEN ONLY when this discrepancy occurs.
+The previous echo-only configuration checks were insufficient to establish filter
+state. All capture settings and restorations now use separate matching readbacks.
+An offline test reproduces the observed echo/GET disagreement and proves no
+LISTEN ONLY command is issued. Twenty-four offline tests pass.
+
+Original reconnected probe/replay records remain in `LocalOnly/OBDXCapture/`.
+The complete probe stops at the mask discrepancy, preserving earlier successful
+checks; CRC validation was checked independently afterward with `--setting
+crc_validation`. Logs and replay retain the failed outcome instead of converting
+it into a successful capture. No vehicle messages, reception enablement, reset,
+firmware update, speed change in a controller or programming was performed.
+The [bounded local-check report](OBDX_LOCAL_CHECKS_20261011.json) pins the source
+log SHA256 values and outgoing-command audits without publishing device serials.

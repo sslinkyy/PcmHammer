@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "device_name": "OBDX Pro GT",
+  "firmware": "1.0.2.0",
+  "hardware": "1.0.0.0",
+  "verified_adapter_local_settings": [
+    "crc_display",
+    "crc_validation",
+    "from_filter",
+    "from_range_filter",
+    "speed",
+    "timestamps",
+    "to_filter",
+    "to_range_filter"
+  ],
+  "unresolved_setting": "mask_filter",
+  "mask_set_echo_payload": "0400ff0000",
+  "mask_query_payload": "0400ff0001",
+  "receive_mode_enabled": false,
+  "live_receive_verified": false,
+  "speed_transition_capture_verified": false,
+  "physical_silence_independently_verified": false,
+  "evidence": [
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\OBDXCapture\\GT_RECONNECTED_DVI_PROBE_20261011.jsonl",
+      "sha256": "ff60a05c5651ba8482ad2f810318a22d10102295042721bbf6dee2b0a5ef14d1",
+      "recorded_tool_sha256": "b5589a0edb9415cc2d001a789e6719f061fcd2fb1a74585f12fca665e867b30e",
+      "adapter_tx_count": 39,
+      "vehicle_send_commands": 0,
+      "network_set_values": [
+        0
+      ],
+      "final_network_readback": "0200",
+      "reported_settings_match_original": {
+        "timestamps": true,
+        "to_filter": true,
+        "from_filter": true,
+        "to_range_filter": true,
+        "from_range_filter": true,
+        "mask_filter": true,
+        "speed": true,
+        "crc_validation": true,
+        "crc_display": true
+      },
+      "passed_probes": [
+        "timestamps",
+        "speed",
+        "crc_display"
+      ],
+      "recorded_result": {
+        "capture_completeness": "not established",
+        "kind": "result",
+        "success": true
+      }
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\OBDXCapture\\GT_RECONNECTED_FULL_LOCAL_PROBE_20261011.jsonl",
+      "sha256": "d5d734f631141f48c4af82d79e2a3fbe0e813e66ad006852906ae94fd285df2f",
+      "recorded_tool_sha256": "199230204ca0e1aba169b61be2bdaaedcfd3cec738dac248bc026e74fabd0f94",
+      "adapter_tx_count": 57,
+      "vehicle_send_commands": 0,
+      "network_set_values": [
+        0
+      ],
+      "final_network_readback": "0200",
+      "reported_settings_match_original": {
+        "timestamps": true,
+        "to_filter": true,
+        "from_filter": true,
+        "to_range_filter": true,
+        "from_range_filter": true,
+        "mask_filter": true,
+        "speed": true,
+        "crc_validation": true,
+        "crc_display": true
+      },
+      "passed_probes": [
+        "timestamps",
+        "to_filter",
+        "from_filter",
+        "to_range_filter",
+        "from_range_filter"
+      ],
+      "recorded_result": {
+        "capture_completeness": "not established",
+        "error": "Adapter setting readback mismatch",
+        "kind": "result",
+        "success": false
+      }
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\OBDXCapture\\GT_RECONNECTED_CRC_PROBE_20261011.jsonl",
+      "sha256": "a629f07b5c64fa9fb7ae1fd128cc4ed68015ab990ca4ce214a25bb2ed86b1970",
+      "recorded_tool_sha256": "90a23c1e4991928f3c491c481cf340955fdb70cd00c2e461050b593332c72d79",
+      "adapter_tx_count": 27,
+      "vehicle_send_commands": 0,
+      "network_set_values": [
+        0
+      ],
+      "final_network_readback": "0200",
+      "reported_settings_match_original": {
+        "timestamps": true,
+        "to_filter": true,
+        "from_filter": true,
+        "to_range_filter": true,
+        "from_range_filter": true,
+        "mask_filter": true,
+        "speed": true,
+        "crc_validation": true,
+        "crc_display": true
+      },
+      "passed_probes": [
+        "crc_validation"
+      ],
+      "recorded_result": {
+        "capture_completeness": "not established",
+        "kind": "result",
+        "success": true
+      }
+    }
+  ],
+  "report_tool_sha256": "d3fc69fbb1d65f13da38bcd3657ff13bcec378391149342cd6f301452d5ae894"
+}

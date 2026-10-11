@@ -21,6 +21,8 @@ class FakePort:
         self.replies = []
         self.state = 0
         self.reject_listen = False
+        self.selected_protocol = b'\x01\x01'
+        self.stuck_mask = False
         self.settings = {(cmd, sub): bytes([sub]) + bytes(size - 1)
                          for cmd, sub, size, _ in c.SETTINGS}
 
@@ -42,6 +44,11 @@ class FakePort:
                       2: b'\x00\x01', 3: b'OBDX Pro GT', 4: bytes(range(12)),
                       5: b'\x02\x00', 6: b'\x01'}
             p += values[p[0]]
+        elif command == 0x31 and p[0] == 1:
+            if len(p) == 2:
+                self.selected_protocol = p
+            else:
+                p = self.selected_protocol
         elif command == 0x31 and p[0] == 2:
             if len(p) == 2:
                 self.state = p[1]
@@ -53,7 +60,8 @@ class FakePort:
             if len(p) == 1:
                 p = self.settings[command, p[0]]
             else:
-                self.settings[command, p[0]] = p
+                if not (self.stuck_mask and command == 0x33 and p[0] == 4):
+                    self.settings[command, p[0]] = p
         elif len(p) == 1:
             p += b'\x00'
         self.replies.append(c.packet(command + 0x10, p))
@@ -119,9 +127,11 @@ class CaptureTests(unittest.TestCase):
             self.assertEqual(states, [0, 2, 0])
             self.assertTrue(any(e.get('network_off_acknowledged') for e in events))
             self.assertFalse(session.decoder.timestamps)
-            self.assertEqual(port.writes[-len(c.SETTINGS):],
-                             [c.packet(cmd, bytes([sub]) + bytes(size - 1))
-                              for cmd, sub, size, _ in c.SETTINGS])
+            expected = []
+            for cmd, sub, size, _ in c.SETTINGS:
+                expected.extend([c.packet(cmd, bytes([sub]) + bytes(size - 1)),
+                                 c.packet(cmd, [sub])])
+            self.assertEqual(port.writes[-len(expected):], expected)
 
     def test_wrong_listen_ack_fails_and_turns_network_off(self):
         port = FakePort()
@@ -188,9 +198,32 @@ class CaptureTests(unittest.TestCase):
         session.connect('dvi')
         result = session.probe_settings()
         self.assertFalse(result['live_receive_verified'])
+        self.assertEqual(result['local_settings_verified'],
+                         [label for _, _, _, label in c.SETTINGS])
         self.assertEqual(original, port.settings)
         self.assertFalse(any(wire[:3] == b'\x31\x02\x02' and wire[3] != 0
                              for wire in port.writes))
+
+    def test_echo_only_mask_ack_cannot_enable_listener(self):
+        port = FakePort()
+        port.stuck_mask = True
+        port.settings[0x33, 4] = b'\x04\x00\xff\x00\x01'
+        session = c.Session(port, lambda _: None)
+        session.connect('dvi')
+        with self.assertRaisesRegex(c.ProtocolError, 'readback mismatch'):
+            session.capture('1x', 0)
+        self.assertEqual(port.state, 0)
+        self.assertNotIn(c.packet(0x31, [2, 2]), port.writes)
+        self.assertEqual(port.settings[0x33, 4], b'\x04\x00\xff\x00\x01')
+
+    def test_selected_probe_does_not_mutate_other_settings(self):
+        port = FakePort()
+        session = c.Session(port, lambda _: None)
+        session.connect('dvi')
+        result = session.probe_settings(['crc_validation'])
+        self.assertEqual(result['local_settings_verified'], ['crc_validation'])
+        mutations = [w for w in port.writes if w[0] in (0x24, 0x33) and w[1] > 1]
+        self.assertEqual(mutations, [c.packet(0x33, [7, 1]), c.packet(0x33, [7, 0])])
 
     def test_replay_tracks_timestamp_changes_within_one_chunk(self):
         rows = [{'kind': 'transport', 'api': 'dvi'},
