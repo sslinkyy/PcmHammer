@@ -67,7 +67,7 @@ py -3.13 obdx_capture.py replay --input saved_capture.jsonl --output speed_repla
 py -3.13 -m unittest -v test_obdx_capture test_obdx_speed
 ```
 
-Thirty-nine offline tests pass. Speed-specific coverage includes independent
+Forty-five offline tests pass. Speed-specific coverage includes independent
 readbacks, acknowledgments without GET, mismatched readbacks, incomplete and
 overlapping requests, CRC ambiguity, refusal context, unrelated traffic,
 fragmented/coalesced packets, partial facts and replay through the public CLI
@@ -87,3 +87,36 @@ Before live speed following could be enabled, independent evidence must establis
 the actual EFILive transition sequence, logger behavior at both rates, switching
 latency, loss/overflow reporting and return-to-1x behavior. No deliberate flash
 interruption or speculative bus negotiation belongs in that validation.
+
+## Delayed replies and incomplete evidence
+
+Overlapping speed requests or an adapter error while awaiting a speed reply make correlation
+unusable for the rest of that log. DVI speed replies have no request identifier;
+a later apparently fresh GET cannot distinguish a delayed older reply. The tool
+does not invent a timeout or assume that a particular reply drained the queue.
+Unknown speed-status formats also retain this uncertainty. A separate recording
+is required for new correlation context; that alone does not prove hardware
+queues were cleared.
+
+A begin candidate consumes its permission context. Repeated begin commands do
+not reuse earlier grants. Network-state changes and reported OFF clear that
+context; network bytes delivered while reported OFF remain raw facts and a stale
+or contradictory-evidence risk, rather than new negotiation context.
+
+Replay writes its final summary even when JSON, framing or EOF validation fails.
+Earlier verified packets and observed readbacks stay in the output, while final
+adapter certainty is invalidated. The summary records examined bytes/lines,
+`examined_sha256`, remaining undecoded DVI bytes, the error and `replay_complete`.
+`input_sha256` is populated only when EOF was reached; otherwise it is null.
+A truncated DVI packet at EOF can therefore have a full source hash while replay
+remains failed. This separates source coverage from successful interpretation.
+
+Missing or failed terminal source results invalidate final speed certainty.
+Records after a terminal source result fail replay instead of letting an earlier
+success marker qualify a different or incomplete stream. None of these checks
+claims packet-loss measurement or physical transition success.
+
+The [follow-up replay report](OBDX_SPEED_REPLAY_CHECKS_20261011.json) pins the
+updated analyzer and replay implementation. The original GT local probe still
+replays as 1x/4x/1x adapter configuration, with zero vehicle packets and no gap
+risks; its entire source was examined and its terminal result preserved.

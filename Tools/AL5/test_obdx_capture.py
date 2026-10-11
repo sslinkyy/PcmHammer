@@ -306,7 +306,7 @@ class CaptureTests(unittest.TestCase):
             events = []
             c.replay_jsonl(source, events.append)
             self.assertEqual(events[-1]['network_frames'], 1)
-            self.assertEqual(events[-2]['source_line_end'], 5)
+            self.assertEqual(next(r for r in events if r['kind'] == 'network')['source_line_end'], 5)
 
     def test_replay_keeps_verified_frame_before_later_corruption(self):
         raw = network(b'abc') + b'\x08\x01\x01\x00'

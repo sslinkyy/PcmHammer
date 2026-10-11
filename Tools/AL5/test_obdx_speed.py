@@ -1,4 +1,5 @@
 import json
+import hashlib
 from pathlib import Path
 import tempfile
 import unittest
@@ -150,6 +151,103 @@ class SpeedTests(unittest.TestCase):
         count = len(events)
         self.assertEqual(first, speed.summary())
         self.assertEqual(count, len(events))
+
+    def test_late_reply_after_overlap_cannot_confirm_fresh_request(self):
+        speed, _ = self.make()
+        speed.outgoing(0x33, [6], 1)
+        speed.outgoing(0x33, [6], 2)
+        self.rx(speed, 0x43, [6, 1], 3)
+        speed.outgoing(0x33, [6], 4)
+        self.rx(speed, 0x43, [6, 0], 5)  # potentially delayed response to request 1/2
+        self.assertIsNone(speed.adapter_speed)
+        self.assertFalse(speed.summary()['speed_response_correlation_usable'])
+        self.assertNotIn('adapter_speed_readback', speed.events)
+
+    def test_begin_consumes_negotiation_and_off_clears_stale_frames(self):
+        speed, events = self.make()
+        self.rx(speed, 0x43, [8, 0])
+        self.rx(speed, 8, [0x6C, 0xFE, 0xF0, 0xA0])
+        self.rx(speed, 8, [0x6C, 0xF0, 0x18, 0xE0])
+        for _ in range(2):
+            self.rx(speed, 8, [0x6C, 0xFE, 0xF0, 0xA1])
+        begins = [r for r in events if r.get('event') == 'begin_high_speed_candidate']
+        self.assertTrue(begins[0]['permission_context_seen'])
+        self.assertFalse(begins[1]['permission_context_seen'])
+        self.assertEqual(begins[1]['permission_sources'], [])
+        self.rx(speed, 0x41, [2, 0])
+        self.rx(speed, 8, [0x6C, 0xFE, 0xF0, 0xA0])
+        self.assertIsNone(speed.prepare_tool)
+        self.assertIn('network_frame_while_reported_off', speed.risks)
+
+    def test_failed_replay_keeps_prefix_and_coverage_without_full_hash(self):
+        rows = [{'kind': 'transport', 'api': 'dvi'},
+                {'kind': 'serial_rx', 'raw_hex': (network(b'abc') + b'\x08\x01\x01\x00').hex()},
+                {'kind': 'result', 'success': True}]
+        with tempfile.TemporaryDirectory() as root:
+            source = Path(root) / 'capture.jsonl'
+            lines = [(json.dumps(r) + '\n').encode() for r in rows]
+            source.write_bytes(b''.join(lines))
+            events = []
+            with self.assertRaises(c.ProtocolError):
+                c.replay_jsonl(source, events.append)
+            self.assertEqual(next(r for r in events if r['kind'] == 'network')['payload_hex'], '616263')
+            summary = events[-1]
+            self.assertEqual(summary['kind'], 'replay_summary')
+            self.assertFalse(summary['replay_complete'])
+            self.assertFalse(summary['source_fully_read'])
+            self.assertIsNone(summary['input_sha256'])
+            self.assertEqual(summary['examined_sha256'], hashlib.sha256(b''.join(lines[:2])).hexdigest())
+            self.assertEqual(summary['examined_lines'], 2)
+            self.assertEqual(summary['undecoded_dvi_hex'], '08010100')
+
+    def test_truncated_stream_at_eof_has_full_input_hash_and_failure_summary(self):
+        rows = [{'kind': 'transport', 'api': 'dvi'},
+                {'kind': 'serial_rx', 'raw_hex': '0803'},
+                {'kind': 'result', 'success': True}]
+        with tempfile.TemporaryDirectory() as root:
+            source, output = Path(root) / 'capture.jsonl', Path(root) / 'result.jsonl'
+            source.write_bytes(''.join(json.dumps(r) + '\n' for r in rows).encode())
+            with patch('sys.argv', ['obdx_capture.py', 'replay', '--input', str(source),
+                                   '--output', str(output)]), patch.object(c, 'WindowsSerial') as port:
+                with self.assertRaises(c.ProtocolError):
+                    c.main()
+                port.assert_not_called()
+            events = [json.loads(line) for line in output.read_text().splitlines()]
+            summary = next(r for r in events if r['kind'] == 'replay_summary')
+            self.assertTrue(summary['source_fully_read'])
+            self.assertFalse(summary['replay_complete'])
+            self.assertEqual(summary['input_sha256'], hashlib.sha256(source.read_bytes()).hexdigest())
+            self.assertFalse(events[-1]['success'])
+
+    def test_missing_or_failed_source_result_invalidates_final_speed_only(self):
+        base = [{'kind': 'transport', 'api': 'dvi'},
+                {'kind': 'adapter_tx', 'raw_hex': c.packet(0x33, [6]).hex()},
+                {'kind': 'serial_rx', 'raw_hex': c.packet(0x43, [6, 1]).hex()}]
+        for tail, reason in (([], 'source_result_missing'),
+                             ([{'kind': 'result', 'success': False}], 'source_reported_failure')):
+            with tempfile.TemporaryDirectory() as root:
+                source = Path(root) / 'capture.jsonl'
+                source.write_bytes(''.join(json.dumps(r) + '\n' for r in base + tail).encode())
+                events = []
+                c.replay_jsonl(source, events.append)
+                observed = next(r for r in events if r.get('event') == 'adapter_speed_readback')
+                self.assertEqual(observed['reported_speed'], '4x')
+                summary = events[-1]['speed_analysis']
+                self.assertIsNone(summary['final_adapter_speed_readback'])
+                self.assertIn(reason, summary['gap_risk_counts'])
+
+    def test_early_success_marker_cannot_qualify_later_records(self):
+        rows = [{'kind': 'transport', 'api': 'dvi'},
+                {'kind': 'result', 'success': True},
+                {'kind': 'serial_rx', 'raw_hex': c.packet(0x43, [6, 1]).hex()}]
+        with tempfile.TemporaryDirectory() as root:
+            source = Path(root) / 'capture.jsonl'
+            source.write_bytes(''.join(json.dumps(r) + '\n' for r in rows).encode())
+            events = []
+            with self.assertRaisesRegex(c.ProtocolError, 'terminal source result'):
+                c.replay_jsonl(source, events.append)
+            self.assertFalse(events[-1]['replay_complete'])
+            self.assertIsNone(events[-1]['speed_analysis']['final_adapter_speed_readback'])
 
     def test_replay_correlates_split_reply_and_preserves_source(self):
         status = c.packet(0x43, [6, 0])

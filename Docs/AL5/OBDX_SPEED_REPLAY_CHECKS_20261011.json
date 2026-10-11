@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "scope": "offline replay of saved network-OFF adapter-local checks",
+  "source_replay_path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\OBDXCapture\\GT_SPEED_COVERAGE_REPLAY_20261011.jsonl",
+  "source_replay_sha256": "250916dedad157788e0d222681cdd4e3ec1d565154dd6ab933c1140b7d780607",
+  "replay_implementation_sha256": "40e074ea899fdf32c4a180f10ef80261dbd963cbe06dcb1094d94ddcea818c08",
+  "adapter_readbacks": [
+    "1x",
+    "4x",
+    "1x"
+  ],
+  "replay_summary": {
+    "adapter_errors": 0,
+    "adapter_frames": 39,
+    "capture_completeness": "not established",
+    "error": null,
+    "error_type": null,
+    "examined_bytes": 11667,
+    "examined_lines": 124,
+    "examined_sha256": "ff60a05c5651ba8482ad2f810318a22d10102295042721bbf6dee2b0a5ef14d1",
+    "input_path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\OBDXCapture\\GT_RECONNECTED_DVI_PROBE_20261011.jsonl",
+    "input_sha256": "ff60a05c5651ba8482ad2f810318a22d10102295042721bbf6dee2b0a5ef14d1",
+    "kind": "replay_summary",
+    "network_frames": 0,
+    "outgoing_guard_violations": 0,
+    "replay_complete": true,
+    "serial_chunks": 39,
+    "source_fully_read": true,
+    "source_reported_failure": false,
+    "source_result_seen": true,
+    "speed_analysis": {
+      "actual_bus_speed": "unknown",
+      "automatic_speed_tracking": false,
+      "event_counts": {
+        "adapter_speed_readback": 3,
+        "adapter_speed_set_acknowledged": 2,
+        "adapter_speed_set_requested": 2
+      },
+      "final_adapter_speed_readback": "1x",
+      "gap_risk_counts": {},
+      "speed_response_correlation_usable": true,
+      "transition_continuity_proven": false
+    },
+    "speed_analysis_source_sha256": "9cf5737e4a57f51f5c97933c812e4742b2e5ada5e3258464bab0713e29a9bcce",
+    "timestamp_byte_order": "unknown",
+    "undecoded_dvi_hex": ""
+  },
+  "hardware_access_this_run": false,
+  "live_speed_following_enabled": false
+}

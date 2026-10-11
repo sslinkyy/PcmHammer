@@ -21,6 +21,26 @@ class SpeedEvidence:
         self.events = {}
         self.risks = {}
         self.finished = False
+        self.correlation_usable = True
+
+    def clear_negotiation(self):
+        self.prepare_tool = self.prepare_target = None
+        self.grants.clear()
+        self.refusals.clear()
+
+    def discontinuity(self, reason, source_line):
+        if self.pending is not None:
+            self.risk('unfinished_speed_request_at_discontinuity', source_line,
+                      request_source_line=self.pending['source_line'])
+        if self.set_target is not None:
+            self.risk('speed_set_without_readback_at_discontinuity', source_line,
+                      requested_speed=self.set_target)
+        self.risk(reason, source_line)
+        self.pending = None
+        self.set_target = None
+        self.adapter_speed = None
+        self.correlation_usable = False
+        self.clear_negotiation()
 
     def event(self, name, source_line, **facts):
         self.events[name] = self.events.get(name, 0) + 1
@@ -41,9 +61,11 @@ class SpeedEvidence:
         ambiguous = self.pending is not None
         if ambiguous:
             self.risk('overlapping_speed_requests', source_line)
+            self.correlation_usable = False
+            self.adapter_speed = None
         action = 'get' if len(p) == 1 else 'set'
         self.pending = {'action': action, 'source_line': source_line,
-                        'payload': p, 'ambiguous': ambiguous}
+                        'payload': p, 'ambiguous': ambiguous or not self.correlation_usable}
         if action == 'set':
             self.set_target = '4x' if p[1] else '1x'
             self.adapter_speed = None  # settings may change before readback
@@ -56,13 +78,18 @@ class SpeedEvidence:
         command = row['command']
         p = bytes.fromhex(row['payload_hex'])
         if command == 0x41 and len(p) == 2 and p[0] == 2 and p[1] <= 2:
-            self.network_state = ('off', 'on', 'listen_only')[p[1]]
+            state = ('off', 'on', 'listen_only')[p[1]]
+            if state != self.network_state or state == 'off':
+                self.clear_negotiation()
+            self.network_state = state
         if command == 0x43 and len(p) == 2 and p[0] == 8 and p[1] <= 1:
             self.crc_display = bool(p[1])
         if command == 0x7F and self.pending is not None:
             self.risk('adapter_error_while_speed_request_pending', line, raw_payload_hex=p.hex())
             self.pending = None
             self.adapter_speed = None
+            self.correlation_usable = False
+            self.clear_negotiation()
         if command == 0x43 and p[:1] == b'\x06':
             self.speed_status(p, line)
         if row['kind'] == 'network':
@@ -73,6 +100,7 @@ class SpeedEvidence:
             self.adapter_speed = None
             self.pending = None
             self.risk('unknown_speed_status', line, raw_payload_hex=p.hex())
+            self.correlation_usable = False
             return
         reported = '4x' if p[1] else '1x'
         pending, self.pending = self.pending, None
@@ -102,6 +130,8 @@ class SpeedEvidence:
     def network_packet(self, payload, line):
         if self.network_state == 'off':
             self.risk('network_frame_while_reported_off', line)
+            self.clear_negotiation()
+            return  # bytes may be stale; do not build current negotiation context
         if self.crc_display is None:
             # A fourth byte could be a CRC on a three-byte header, not a service.
             if len(payload) >= 4 and payload[3] in (0xA0, 0xA1, 0xE0, 0x75, 0x7F):
@@ -131,6 +161,7 @@ class SpeedEvidence:
                     self.risk('begin_without_adapter_4x_readback', line)
                 if context and self.refusals:
                     self.risk('begin_after_refusal_candidate', line)
+                self.clear_negotiation()  # a later begin must not reuse old permissions
             return
         if not 0xF0 <= destination <= 0xFD or source > 0xEF:
             return
@@ -156,5 +187,6 @@ class SpeedEvidence:
             self.finished = True
         return {'event_counts': dict(self.events), 'gap_risk_counts': dict(self.risks),
                 'final_adapter_speed_readback': self.adapter_speed,
+                'speed_response_correlation_usable': self.correlation_usable,
                 'actual_bus_speed': 'unknown', 'automatic_speed_tracking': False,
                 'transition_continuity_proven': False}

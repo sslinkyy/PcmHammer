@@ -408,82 +408,109 @@ def replay_jsonl(path, emit, timestamps=False):
     api = None
     switching = False
     elm = bytearray()
-    with path.open('rb') as stream:
-        for line_number, line in enumerate(stream, 1):
-            digest.update(line)
-            row = json.loads(line)
-            if not isinstance(row, dict):
-                raise ProtocolError('JSONL record must be an object')
-            kind = row.get('kind')
-            if kind == 'transport':
-                if api is not None or row.get('api') not in ('elm', 'dvi'):
-                    raise ProtocolError('Expected exactly one known transport API')
-                api = row['api']
-            elif kind == 'adapter_tx':
-                wire = bytes.fromhex(row['raw_hex'])
-                if api == 'elm':
-                    allowed = wire in (b'AT@1\r', b'DXDP1\r')
-                    switching = wire == b'DXDP1\r'
-                    elm.clear()
-                elif api == 'dvi':
-                    allowed = (len(wire) >= 3 and len(wire) == wire[1] + 3
-                               and sum(wire) & 255 == 255
-                               and permitted(wire[0], wire[2:-1]))
-                else:
-                    raise ProtocolError('Outgoing bytes precede known API')
-                counts['outgoing_guard_violations'] += not allowed
-                if api == 'dvi' and len(wire) >= 3 and len(wire) == wire[1] + 3 and sum(wire) & 255 == 255:
-                    speed.outgoing(wire[0], wire[2:-1], line_number)
-                emit({'kind': 'recorded_tx_audit', 'source_line': line_number,
-                      'raw_hex': wire.hex(), 'allowed_by_capture_guard': allowed})
-            elif kind == 'serial_rx':
-                if api is None:
-                    raise ProtocolError('Receive bytes precede known API')
-                raw = bytes.fromhex(row['raw_hex'])
-                counts['serial_chunks'] += 1
-                if api == 'elm':
-                    elm.extend(raw)
-                    if len(elm) > 65536:
-                        raise ProtocolError('ELM replay response exceeds identification bound')
-                    emit({'kind': 'recorded_elm_rx', 'source_line': line_number,
-                          'raw_hex': raw.hex()})
-                    if b'>' in elm and switching:
-                        prompt = elm.index(b'>')
-                        text = bytes(elm[:prompt]).decode('ascii', errors='strict')
-                        lines = [s.strip() for s in text.splitlines()
-                                 if s.strip() and s.strip() != 'DXDP1']
-                        if lines != ['OK']:
-                            raise ProtocolError('Recorded DVI switch was not acknowledged')
-                        api, switching = 'dvi', False
-                        raw = bytes(elm[prompt + 1:])
+    source_fully_read = replay_complete = False
+    examined_bytes = examined_lines = 0
+    failure = None
+    failure_type = None
+    try:
+        with path.open('rb') as stream:
+            for line_number, line in enumerate(stream, 1):
+                digest.update(line)
+                examined_bytes += len(line)
+                examined_lines = line_number
+                row = json.loads(line)
+                if not isinstance(row, dict):
+                    raise ProtocolError('JSONL record must be an object')
+                if counts['source_result_seen']:
+                    raise ProtocolError('Records follow the terminal source result')
+                kind = row.get('kind')
+                if kind == 'transport':
+                    if api is not None or row.get('api') not in ('elm', 'dvi'):
+                        raise ProtocolError('Expected exactly one known transport API')
+                    api = row['api']
+                elif kind == 'adapter_tx':
+                    wire = bytes.fromhex(row['raw_hex'])
+                    if api == 'elm':
+                        allowed = wire in (b'AT@1\r', b'DXDP1\r')
+                        switching = wire == b'DXDP1\r'
+                        elm.clear()
+                    elif api == 'dvi':
+                        allowed = (len(wire) >= 3 and len(wire) == wire[1] + 3
+                                   and sum(wire) & 255 == 255
+                                   and permitted(wire[0], wire[2:-1]))
                     else:
-                        continue
-                for decoded in decoder.iter_feed(raw):
-                    decoded['source_line_end'] = line_number
-                    decoded['host_monotonic_ns_at_chunk_end'] = row.get('host_monotonic_ns')
-                    emit(decoded)
-                    speed.received(decoded)
-                    counts['network_frames' if decoded['kind'] == 'network'
-                           else 'adapter_frames'] += 1
-                    counts['adapter_errors'] += decoded['command'] == 0x7F
-            elif kind == 'result':
-                if not isinstance(row.get('success'), bool):
-                    raise ProtocolError('Source result has no boolean success')
-                counts['source_reported_failure'] |= not row['success']
-                counts['source_result_seen'] = True
-                emit({'kind': 'source_result', 'source_line': line_number,
-                      'record': row})
-            # Decoded source rows are intentionally not replay inputs.
-    if api is None:
-        raise ProtocolError('No transport declaration in source JSONL')
-    decoder.finish()
-    speed_summary = speed.summary()
-    emit({'kind': 'replay_summary', 'input_path': str(path.resolve()),
-          'input_sha256': digest.hexdigest(), **counts,
-          'capture_completeness': 'not established',
-          'timestamp_byte_order': 'unknown', 'speed_analysis': speed_summary,
-          'speed_analysis_source_sha256': hashlib.sha256(
-              Path(__file__).with_name('obdx_speed.py').read_bytes()).hexdigest()})
+                        raise ProtocolError('Outgoing bytes precede known API')
+                    counts['outgoing_guard_violations'] += not allowed
+                    if api == 'dvi' and len(wire) >= 3 and len(wire) == wire[1] + 3 and sum(wire) & 255 == 255:
+                        speed.outgoing(wire[0], wire[2:-1], line_number)
+                    emit({'kind': 'recorded_tx_audit', 'source_line': line_number,
+                          'raw_hex': wire.hex(), 'allowed_by_capture_guard': allowed})
+                elif kind == 'serial_rx':
+                    if api is None:
+                        raise ProtocolError('Receive bytes precede known API')
+                    raw = bytes.fromhex(row['raw_hex'])
+                    counts['serial_chunks'] += 1
+                    if api == 'elm':
+                        elm.extend(raw)
+                        if len(elm) > 65536:
+                            raise ProtocolError('ELM replay response exceeds identification bound')
+                        emit({'kind': 'recorded_elm_rx', 'source_line': line_number,
+                              'raw_hex': raw.hex()})
+                        if b'>' in elm and switching:
+                            prompt = elm.index(b'>')
+                            text = bytes(elm[:prompt]).decode('ascii', errors='strict')
+                            lines = [s.strip() for s in text.splitlines()
+                                     if s.strip() and s.strip() != 'DXDP1']
+                            if lines != ['OK']:
+                                raise ProtocolError('Recorded DVI switch was not acknowledged')
+                            api, switching = 'dvi', False
+                            raw = bytes(elm[prompt + 1:])
+                        else:
+                            continue
+                    for decoded in decoder.iter_feed(raw):
+                        decoded['source_line_end'] = line_number
+                        decoded['host_monotonic_ns_at_chunk_end'] = row.get('host_monotonic_ns')
+                        emit(decoded)
+                        speed.received(decoded)
+                        counts['network_frames' if decoded['kind'] == 'network'
+                               else 'adapter_frames'] += 1
+                        counts['adapter_errors'] += decoded['command'] == 0x7F
+                elif kind == 'result':
+                    if not isinstance(row.get('success'), bool):
+                        raise ProtocolError('Source result has no boolean success')
+                    counts['source_reported_failure'] |= not row['success']
+                    counts['source_result_seen'] = True
+                    emit({'kind': 'source_result', 'source_line': line_number,
+                          'record': row})
+                # Decoded source rows are intentionally not replay inputs.
+        source_fully_read = True
+        if api is None:
+            raise ProtocolError('No transport declaration in source JSONL')
+        decoder.finish()
+        replay_complete = True
+    except BaseException as error:
+        failure = str(error)
+        failure_type = type(error).__name__
+        speed.discontinuity('replay_parse_failed', examined_lines or None)
+        raise
+    finally:
+        if replay_complete and not counts['source_result_seen']:
+            speed.discontinuity('source_result_missing', examined_lines or None)
+        elif replay_complete and counts['source_reported_failure']:
+            speed.discontinuity('source_reported_failure', examined_lines or None)
+        speed_summary = speed.summary()
+        emit({'kind': 'replay_summary', 'input_path': str(path.resolve()),
+              'input_sha256': digest.hexdigest() if source_fully_read else None,
+              'examined_sha256': digest.hexdigest(), 'source_fully_read': source_fully_read,
+              'examined_bytes': examined_bytes, 'examined_lines': examined_lines,
+              'replay_complete': replay_complete, 'error': failure, **counts,
+              'error_type': failure_type,
+              'undecoded_dvi_hex': bytes(decoder.buffer).hex(),
+              'capture_completeness': 'not established',
+              'timestamp_byte_order': 'unknown', 'speed_analysis': speed_summary,
+              'speed_analysis_source_sha256': hashlib.sha256(
+                  Path(__file__).with_name('obdx_speed.py').read_bytes()).hexdigest()})
+
 
 
 def main():
