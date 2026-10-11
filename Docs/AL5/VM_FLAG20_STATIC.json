@@ -1,0 +1,2066 @@
+{
+  "schema_version": 1,
+  "scope": "Static VM flag0x20 producers and retry branch; no target or VM execution, IPC or hardware.",
+  "source": {
+    "path": "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll",
+    "sha256": "132832f80d7e5b642033fafc35df4ff3c0f3b19371081d23eacf696c4019ac00",
+    "bytes": 156016,
+    "preferred_image_base": "0x400000"
+  },
+  "mapping_provenance": "pefile PE section RVA-to-file-offset mapping; dumpbin /disasm:nobytes. No executable bytes exported.",
+  "arithmetic_table": {
+    "source": {
+      "va": "0x404bb8",
+      "rva": "0x4bb8",
+      "file_offset": "0x41b8",
+      "section": ".text"
+    },
+    "entries": [
+      {
+        "opcode": "0x11",
+        "route_va": "0x404bf0"
+      },
+      {
+        "opcode": "0x12",
+        "route_va": "0x404c17"
+      },
+      {
+        "opcode": "0x13",
+        "route_va": "0x404c3e"
+      },
+      {
+        "opcode": "0x14",
+        "route_va": "0x404c66"
+      },
+      {
+        "opcode": "0x15",
+        "route_va": "0x404c91"
+      },
+      {
+        "opcode": "0x16",
+        "route_va": "0x404cb8"
+      },
+      {
+        "opcode": "0x17",
+        "route_va": "0x404cdf"
+      },
+      {
+        "opcode": "0x18",
+        "route_va": "0x404db0"
+      },
+      {
+        "opcode": "0x19",
+        "route_va": "0x404d06"
+      },
+      {
+        "opcode": "0x1a",
+        "route_va": "0x404d46"
+      },
+      {
+        "opcode": "0x1b",
+        "route_va": "0x404db0"
+      },
+      {
+        "opcode": "0x1c",
+        "route_va": "0x404db0"
+      },
+      {
+        "opcode": "0x1d",
+        "route_va": "0x404d86"
+      },
+      {
+        "opcode": "0x1e",
+        "route_va": "0x404d9c"
+      }
+    ]
+  },
+  "observation": {
+    "flag_word_va": "0x42757c",
+    "flag_mask": "0x20",
+    "setter_helper_va": "0x4049d0",
+    "zero_helper_predicate": "32-bit argument == 0 sets bit0x20; argument !=0 clears it; other flag bits preserved.",
+    "opcode12": "Read second scalar then first scalar; perform 32-bit modular second-first at404C30; write result to second through404B30; common epilogue404DB0 re-reads second through404AF8 then passes it to4049D0 at404DBD.",
+    "opcode11": "Same common epilogue, 32-bit modular second+first at404C08.",
+    "widths": {
+      "B1": {
+        "read": "unsigned8",
+        "write": "low8",
+        "zero_check": "zero-extended stored8==0"
+      },
+      "B2": {
+        "read": "signed16 extended to32",
+        "write": "low16",
+        "zero_check": "sign-extended stored16==0"
+      },
+      "B4": {
+        "read": "32bits",
+        "write": "low32",
+        "zero_check": "stored32==0"
+      },
+      "other_resolved_tags": {
+        "read": "returns0",
+        "write": "no scalar payload write",
+        "zero_check": "readback0 sets bit20"
+      }
+    },
+    "borrow": "No CPU carry/borrow capture in traced opcode12 handler or common epilogue; bit20 derives from stored scalar zero, not borrow.",
+    "comparison_flags": "Arithmetic11/12 and scalar writer do not modify VM comparison flags0x0E in traced paths. Native processor flags are distinct from memory VM flags.",
+    "branch_profiles": [
+      {
+        "opcode": "0x47",
+        "kind": "conditional_branch",
+        "native_route_va": "0x403abe",
+        "descriptor_count": 1,
+        "condition": {
+          "flags_global_va": "0x42757c",
+          "mask": "0x20",
+          "branch_when_masked_bits_nonzero": true
+        },
+        "target": "data_base0x435618 + sign_extended_LE16(first_operand_pointer+2)",
+        "fallthrough": "PC already advanced over opcode and first descriptor"
+      },
+      {
+        "opcode": "0x48",
+        "kind": "conditional_branch",
+        "native_route_va": "0x403ae5",
+        "descriptor_count": 1,
+        "condition": {
+          "flags_global_va": "0x42757c",
+          "mask": "0x20",
+          "branch_when_masked_bits_nonzero": false
+        },
+        "target": "data_base0x435618 + sign_extended_LE16(first_operand_pointer+2)",
+        "fallthrough": "PC already advanced over opcode and first descriptor"
+      }
+    ],
+    "retry_derivation": "If opcode48 follows opcode12 with no intervening VM flag modifier, branch is taken iff second operand stored result is nonzero. This does not prove timeout, controller acceptance, retry success, or recovery."
+  },
+  "other_producers": {
+    "zero_helper_calls": [
+      {
+        "site": {
+          "va": "0x404dbd",
+          "rva": "0x4dbd",
+          "file_offset": "0x43bd",
+          "section": ".text"
+        },
+        "instruction": "call        004049D0"
+      },
+      {
+        "site": {
+          "va": "0x405681",
+          "rva": "0x5681",
+          "file_offset": "0x4c81",
+          "section": ".text"
+        },
+        "instruction": "call        004049D0"
+      },
+      {
+        "site": {
+          "va": "0x405b7f",
+          "rva": "0x5b7f",
+          "file_offset": "0x517f",
+          "section": ".text"
+        },
+        "instruction": "call        004049D0"
+      },
+      {
+        "site": {
+          "va": "0x405f96",
+          "rva": "0x5f96",
+          "file_offset": "0x5596",
+          "section": ".text"
+        },
+        "instruction": "call        004049D0"
+      }
+    ],
+    "literal_bit20_writes": [
+      {
+        "site": {
+          "va": "0x4049d9",
+          "rva": "0x49d9",
+          "file_offset": "0x3fd9",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x4049e3",
+          "rva": "0x49e3",
+          "file_offset": "0x3fe3",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FFDFh"
+      },
+      {
+        "site": {
+          "va": "0x4062c8",
+          "rva": "0x62c8",
+          "file_offset": "0x58c8",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FFDFh"
+      },
+      {
+        "site": {
+          "va": "0x406327",
+          "rva": "0x6327",
+          "file_offset": "0x5927",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x406387",
+          "rva": "0x6387",
+          "file_offset": "0x5987",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x4098b7",
+          "rva": "0x98b7",
+          "file_offset": "0x8eb7",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x4098cf",
+          "rva": "0x98cf",
+          "file_offset": "0x8ecf",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x4099fe",
+          "rva": "0x99fe",
+          "file_offset": "0x8ffe",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FFDFh"
+      },
+      {
+        "site": {
+          "va": "0x409a10",
+          "rva": "0x9a10",
+          "file_offset": "0x9010",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FFDFh"
+      },
+      {
+        "site": {
+          "va": "0x409a4a",
+          "rva": "0x9a4a",
+          "file_offset": "0x904a",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x409a54",
+          "rva": "0x9a54",
+          "file_offset": "0x9054",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FFDFh"
+      },
+      {
+        "site": {
+          "va": "0x409a8d",
+          "rva": "0x9a8d",
+          "file_offset": "0x908d",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x409a9f",
+          "rva": "0x9a9f",
+          "file_offset": "0x909f",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x409b5e",
+          "rva": "0x9b5e",
+          "file_offset": "0x915e",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FFDFh"
+      },
+      {
+        "site": {
+          "va": "0x409d16",
+          "rva": "0x9d16",
+          "file_offset": "0x9316",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x409d59",
+          "rva": "0x9d59",
+          "file_offset": "0x9359",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x409ed5",
+          "rva": "0x9ed5",
+          "file_offset": "0x94d5",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x409f08",
+          "rva": "0x9f08",
+          "file_offset": "0x9508",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x40a26c",
+          "rva": "0xa26c",
+          "file_offset": "0x986c",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      }
+    ],
+    "dynamic_masks": "408C28 sets or clears low-byte-selected VM flag bits for82/83; mask20 therefore may modify bit20. Other whole-word writes and dynamically constructed masks remain listed as references without a complete dataflow proof.",
+    "all_dumpbin_flag_word_references": [
+      {
+        "site": {
+          "va": "0x401440",
+          "rva": "0x1440",
+          "file_offset": "0xa40",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF7Fh"
+      },
+      {
+        "site": {
+          "va": "0x402fa5",
+          "rva": "0x2fa5",
+          "file_offset": "0x25a5",
+          "section": ".text"
+        },
+        "instruction": "mov         word ptr ds:[0042757Ch],0"
+      },
+      {
+        "site": {
+          "va": "0x4034ea",
+          "rva": "0x34ea",
+          "file_offset": "0x2aea",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],80h"
+      },
+      {
+        "site": {
+          "va": "0x4039ab",
+          "rva": "0x39ab",
+          "file_offset": "0x2fab",
+          "section": ".text"
+        },
+        "instruction": "test        byte ptr ds:[0042757Ch],1"
+      },
+      {
+        "site": {
+          "va": "0x4039d2",
+          "rva": "0x39d2",
+          "file_offset": "0x2fd2",
+          "section": ".text"
+        },
+        "instruction": "test        byte ptr ds:[0042757Ch],2"
+      },
+      {
+        "site": {
+          "va": "0x4039f9",
+          "rva": "0x39f9",
+          "file_offset": "0x2ff9",
+          "section": ".text"
+        },
+        "instruction": "test        byte ptr ds:[0042757Ch],6"
+      },
+      {
+        "site": {
+          "va": "0x403a21",
+          "rva": "0x3a21",
+          "file_offset": "0x3021",
+          "section": ".text"
+        },
+        "instruction": "test        byte ptr ds:[0042757Ch],4"
+      },
+      {
+        "site": {
+          "va": "0x403a48",
+          "rva": "0x3a48",
+          "file_offset": "0x3048",
+          "section": ".text"
+        },
+        "instruction": "test        byte ptr ds:[0042757Ch],4"
+      },
+      {
+        "site": {
+          "va": "0x403a6f",
+          "rva": "0x3a6f",
+          "file_offset": "0x306f",
+          "section": ".text"
+        },
+        "instruction": "test        byte ptr ds:[0042757Ch],8"
+      },
+      {
+        "site": {
+          "va": "0x403a97",
+          "rva": "0x3a97",
+          "file_offset": "0x3097",
+          "section": ".text"
+        },
+        "instruction": "test        byte ptr ds:[0042757Ch],0Ch"
+      },
+      {
+        "site": {
+          "va": "0x403abe",
+          "rva": "0x3abe",
+          "file_offset": "0x30be",
+          "section": ".text"
+        },
+        "instruction": "test        byte ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x403ae5",
+          "rva": "0x3ae5",
+          "file_offset": "0x30e5",
+          "section": ".text"
+        },
+        "instruction": "test        byte ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x403b0d",
+          "rva": "0x3b0d",
+          "file_offset": "0x310d",
+          "section": ".text"
+        },
+        "instruction": "test        byte ptr ds:[0042757Ch],10h"
+      },
+      {
+        "site": {
+          "va": "0x403b34",
+          "rva": "0x3b34",
+          "file_offset": "0x3134",
+          "section": ".text"
+        },
+        "instruction": "test        byte ptr ds:[0042757Ch],80h"
+      },
+      {
+        "site": {
+          "va": "0x403b5b",
+          "rva": "0x3b5b",
+          "file_offset": "0x315b",
+          "section": ".text"
+        },
+        "instruction": "test        byte ptr ds:[0042757Ch],81h"
+      },
+      {
+        "site": {
+          "va": "0x4049b9",
+          "rva": "0x49b9",
+          "file_offset": "0x3fb9",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],4"
+      },
+      {
+        "site": {
+          "va": "0x4049c3",
+          "rva": "0x49c3",
+          "file_offset": "0x3fc3",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FFFBh"
+      },
+      {
+        "site": {
+          "va": "0x4049d9",
+          "rva": "0x49d9",
+          "file_offset": "0x3fd9",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x4049e3",
+          "rva": "0x49e3",
+          "file_offset": "0x3fe3",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FFDFh"
+      },
+      {
+        "site": {
+          "va": "0x4049f6",
+          "rva": "0x49f6",
+          "file_offset": "0x3ff6",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FFF1h"
+      },
+      {
+        "site": {
+          "va": "0x404a03",
+          "rva": "0x4a03",
+          "file_offset": "0x4003",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],4"
+      },
+      {
+        "site": {
+          "va": "0x404a11",
+          "rva": "0x4a11",
+          "file_offset": "0x4011",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],2"
+      },
+      {
+        "site": {
+          "va": "0x404a1b",
+          "rva": "0x4a1b",
+          "file_offset": "0x401b",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],8"
+      },
+      {
+        "site": {
+          "va": "0x404a32",
+          "rva": "0x4a32",
+          "file_offset": "0x4032",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF7Eh"
+      },
+      {
+        "site": {
+          "va": "0x404a7f",
+          "rva": "0x4a7f",
+          "file_offset": "0x407f",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],1"
+      },
+      {
+        "site": {
+          "va": "0x404a9e",
+          "rva": "0x4a9e",
+          "file_offset": "0x409e",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],1"
+      },
+      {
+        "site": {
+          "va": "0x404ab8",
+          "rva": "0x4ab8",
+          "file_offset": "0x40b8",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],1"
+      },
+      {
+        "site": {
+          "va": "0x404ad2",
+          "rva": "0x4ad2",
+          "file_offset": "0x40d2",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],1"
+      },
+      {
+        "site": {
+          "va": "0x4058cc",
+          "rva": "0x58cc",
+          "file_offset": "0x4ecc",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FFF1h"
+      },
+      {
+        "site": {
+          "va": "0x4058ff",
+          "rva": "0x58ff",
+          "file_offset": "0x4eff",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],2"
+      },
+      {
+        "site": {
+          "va": "0x405909",
+          "rva": "0x5909",
+          "file_offset": "0x4f09",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],8"
+      },
+      {
+        "site": {
+          "va": "0x405928",
+          "rva": "0x5928",
+          "file_offset": "0x4f28",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],2"
+      },
+      {
+        "site": {
+          "va": "0x405932",
+          "rva": "0x5932",
+          "file_offset": "0x4f32",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],8"
+      },
+      {
+        "site": {
+          "va": "0x405942",
+          "rva": "0x5942",
+          "file_offset": "0x4f42",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],4"
+      },
+      {
+        "site": {
+          "va": "0x405950",
+          "rva": "0x5950",
+          "file_offset": "0x4f50",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FFFBh"
+      },
+      {
+        "site": {
+          "va": "0x405999",
+          "rva": "0x5999",
+          "file_offset": "0x4f99",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],4"
+      },
+      {
+        "site": {
+          "va": "0x405ae3",
+          "rva": "0x5ae3",
+          "file_offset": "0x50e3",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],10h"
+      },
+      {
+        "site": {
+          "va": "0x405aed",
+          "rva": "0x5aed",
+          "file_offset": "0x50ed",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FFEFh"
+      },
+      {
+        "site": {
+          "va": "0x405c2b",
+          "rva": "0x5c2b",
+          "file_offset": "0x522b",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],10h"
+      },
+      {
+        "site": {
+          "va": "0x405c35",
+          "rva": "0x5c35",
+          "file_offset": "0x5235",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FFEFh"
+      },
+      {
+        "site": {
+          "va": "0x405dae",
+          "rva": "0x5dae",
+          "file_offset": "0x53ae",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FFFBh"
+      },
+      {
+        "site": {
+          "va": "0x405f1b",
+          "rva": "0x5f1b",
+          "file_offset": "0x551b",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],4"
+      },
+      {
+        "site": {
+          "va": "0x4062c8",
+          "rva": "0x62c8",
+          "file_offset": "0x58c8",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FFDFh"
+      },
+      {
+        "site": {
+          "va": "0x406327",
+          "rva": "0x6327",
+          "file_offset": "0x5927",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x40633a",
+          "rva": "0x633a",
+          "file_offset": "0x593a",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FFDDh"
+      },
+      {
+        "site": {
+          "va": "0x406369",
+          "rva": "0x6369",
+          "file_offset": "0x5969",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],2"
+      },
+      {
+        "site": {
+          "va": "0x406387",
+          "rva": "0x6387",
+          "file_offset": "0x5987",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x4064c4",
+          "rva": "0x64c4",
+          "file_offset": "0x5ac4",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF7Fh"
+      },
+      {
+        "site": {
+          "va": "0x406718",
+          "rva": "0x6718",
+          "file_offset": "0x5d18",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF7Fh"
+      },
+      {
+        "site": {
+          "va": "0x4067b4",
+          "rva": "0x67b4",
+          "file_offset": "0x5db4",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF7Fh"
+      },
+      {
+        "site": {
+          "va": "0x406ad0",
+          "rva": "0x6ad0",
+          "file_offset": "0x60d0",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF7Fh"
+      },
+      {
+        "site": {
+          "va": "0x406b30",
+          "rva": "0x6b30",
+          "file_offset": "0x6130",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF5Fh"
+      },
+      {
+        "site": {
+          "va": "0x406e78",
+          "rva": "0x6e78",
+          "file_offset": "0x6478",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF7Fh"
+      },
+      {
+        "site": {
+          "va": "0x406e8c",
+          "rva": "0x6e8c",
+          "file_offset": "0x648c",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF7Fh"
+      },
+      {
+        "site": {
+          "va": "0x406ec4",
+          "rva": "0x6ec4",
+          "file_offset": "0x64c4",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF7Eh"
+      },
+      {
+        "site": {
+          "va": "0x407018",
+          "rva": "0x7018",
+          "file_offset": "0x6618",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF7Eh"
+      },
+      {
+        "site": {
+          "va": "0x407158",
+          "rva": "0x7158",
+          "file_offset": "0x6758",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF5Eh"
+      },
+      {
+        "site": {
+          "va": "0x40720e",
+          "rva": "0x720e",
+          "file_offset": "0x680e",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF7Fh"
+      },
+      {
+        "site": {
+          "va": "0x407350",
+          "rva": "0x7350",
+          "file_offset": "0x6950",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF7Eh"
+      },
+      {
+        "site": {
+          "va": "0x4073c4",
+          "rva": "0x73c4",
+          "file_offset": "0x69c4",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF7Eh"
+      },
+      {
+        "site": {
+          "va": "0x407404",
+          "rva": "0x7404",
+          "file_offset": "0x6a04",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF7Fh"
+      },
+      {
+        "site": {
+          "va": "0x407533",
+          "rva": "0x7533",
+          "file_offset": "0x6b33",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF7Fh"
+      },
+      {
+        "site": {
+          "va": "0x407600",
+          "rva": "0x7600",
+          "file_offset": "0x6c00",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF7Fh"
+      },
+      {
+        "site": {
+          "va": "0x4079d3",
+          "rva": "0x79d3",
+          "file_offset": "0x6fd3",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF7Fh"
+      },
+      {
+        "site": {
+          "va": "0x407f78",
+          "rva": "0x7f78",
+          "file_offset": "0x7578",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF7Fh"
+      },
+      {
+        "site": {
+          "va": "0x4088d4",
+          "rva": "0x88d4",
+          "file_offset": "0x7ed4",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FFF5h"
+      },
+      {
+        "site": {
+          "va": "0x4088ef",
+          "rva": "0x88ef",
+          "file_offset": "0x7eef",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],2"
+      },
+      {
+        "site": {
+          "va": "0x4088ff",
+          "rva": "0x88ff",
+          "file_offset": "0x7eff",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],8"
+      },
+      {
+        "site": {
+          "va": "0x408958",
+          "rva": "0x8958",
+          "file_offset": "0x7f58",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],2"
+      },
+      {
+        "site": {
+          "va": "0x4089a2",
+          "rva": "0x89a2",
+          "file_offset": "0x7fa2",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF5Dh"
+      },
+      {
+        "site": {
+          "va": "0x4089bb",
+          "rva": "0x89bb",
+          "file_offset": "0x7fbb",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],2"
+      },
+      {
+        "site": {
+          "va": "0x408a53",
+          "rva": "0x8a53",
+          "file_offset": "0x8053",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF7Eh"
+      },
+      {
+        "site": {
+          "va": "0x408c46",
+          "rva": "0x8c46",
+          "file_offset": "0x8246",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],cx"
+      },
+      {
+        "site": {
+          "va": "0x408c56",
+          "rva": "0x8c56",
+          "file_offset": "0x8256",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],dx"
+      },
+      {
+        "site": {
+          "va": "0x408e0c",
+          "rva": "0x8e0c",
+          "file_offset": "0x840c",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FFFBh"
+      },
+      {
+        "site": {
+          "va": "0x408e49",
+          "rva": "0x8e49",
+          "file_offset": "0x8449",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],4"
+      },
+      {
+        "site": {
+          "va": "0x408e85",
+          "rva": "0x8e85",
+          "file_offset": "0x8485",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF7Fh"
+      },
+      {
+        "site": {
+          "va": "0x409499",
+          "rva": "0x9499",
+          "file_offset": "0x8a99",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],80h"
+      },
+      {
+        "site": {
+          "va": "0x409549",
+          "rva": "0x9549",
+          "file_offset": "0x8b49",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],8"
+      },
+      {
+        "site": {
+          "va": "0x4095b3",
+          "rva": "0x95b3",
+          "file_offset": "0x8bb3",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],80h"
+      },
+      {
+        "site": {
+          "va": "0x409770",
+          "rva": "0x9770",
+          "file_offset": "0x8d70",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FFDDh"
+      },
+      {
+        "site": {
+          "va": "0x4098b7",
+          "rva": "0x98b7",
+          "file_offset": "0x8eb7",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x4098cf",
+          "rva": "0x98cf",
+          "file_offset": "0x8ecf",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x4099fe",
+          "rva": "0x99fe",
+          "file_offset": "0x8ffe",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FFDFh"
+      },
+      {
+        "site": {
+          "va": "0x409a10",
+          "rva": "0x9a10",
+          "file_offset": "0x9010",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FFDFh"
+      },
+      {
+        "site": {
+          "va": "0x409a4a",
+          "rva": "0x9a4a",
+          "file_offset": "0x904a",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x409a54",
+          "rva": "0x9a54",
+          "file_offset": "0x9054",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FFDFh"
+      },
+      {
+        "site": {
+          "va": "0x409a8d",
+          "rva": "0x9a8d",
+          "file_offset": "0x908d",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x409a9f",
+          "rva": "0x9a9f",
+          "file_offset": "0x909f",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x409b5e",
+          "rva": "0x9b5e",
+          "file_offset": "0x915e",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FFDFh"
+      },
+      {
+        "site": {
+          "va": "0x409c10",
+          "rva": "0x9c10",
+          "file_offset": "0x9210",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF4Fh"
+      },
+      {
+        "site": {
+          "va": "0x409d16",
+          "rva": "0x9d16",
+          "file_offset": "0x9316",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x409d59",
+          "rva": "0x9d59",
+          "file_offset": "0x9359",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x409e2b",
+          "rva": "0x9e2b",
+          "file_offset": "0x942b",
+          "section": ".text"
+        },
+        "instruction": "test        byte ptr ds:[0042757Ch],10h"
+      },
+      {
+        "site": {
+          "va": "0x409e4b",
+          "rva": "0x9e4b",
+          "file_offset": "0x944b",
+          "section": ".text"
+        },
+        "instruction": "test        byte ptr ds:[0042757Ch],10h"
+      },
+      {
+        "site": {
+          "va": "0x409e6c",
+          "rva": "0x9e6c",
+          "file_offset": "0x946c",
+          "section": ".text"
+        },
+        "instruction": "test        byte ptr ds:[0042757Ch],10h"
+      },
+      {
+        "site": {
+          "va": "0x409ea3",
+          "rva": "0x9ea3",
+          "file_offset": "0x94a3",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF5Fh"
+      },
+      {
+        "site": {
+          "va": "0x409ed5",
+          "rva": "0x9ed5",
+          "file_offset": "0x94d5",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x409f08",
+          "rva": "0x9f08",
+          "file_offset": "0x9508",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x409fad",
+          "rva": "0x9fad",
+          "file_offset": "0x95ad",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF7Fh"
+      },
+      {
+        "site": {
+          "va": "0x40a112",
+          "rva": "0xa112",
+          "file_offset": "0x9712",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF4Fh"
+      },
+      {
+        "site": {
+          "va": "0x40a16d",
+          "rva": "0xa16d",
+          "file_offset": "0x976d",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],10h"
+      },
+      {
+        "site": {
+          "va": "0x40a1f4",
+          "rva": "0xa1f4",
+          "file_offset": "0x97f4",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],10h"
+      },
+      {
+        "site": {
+          "va": "0x40a26c",
+          "rva": "0xa26c",
+          "file_offset": "0x986c",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],20h"
+      },
+      {
+        "site": {
+          "va": "0x40a27c",
+          "rva": "0xa27c",
+          "file_offset": "0x987c",
+          "section": ".text"
+        },
+        "instruction": "and         word ptr ds:[0042757Ch],0FF7Fh"
+      },
+      {
+        "site": {
+          "va": "0x40a2e4",
+          "rva": "0xa2e4",
+          "file_offset": "0x98e4",
+          "section": ".text"
+        },
+        "instruction": "or          word ptr ds:[0042757Ch],10h"
+      },
+      {
+        "site": {
+          "va": "0x40b506",
+          "rva": "0xb506",
+          "file_offset": "0xab06",
+          "section": ".text"
+        },
+        "instruction": "mov         cx,word ptr ds:[0042757Ch]"
+      }
+    ],
+    "coverage_limit": "Text disassembly reference inventory is lexical and may miss alternate instruction boundaries, indirect accesses, or externally mutable global memory. No assertion of exhaustive producers or reachability."
+  },
+  "bounded_disassembly": [
+    {
+      "role": "arithmetic_dispatch",
+      "start": {
+        "va": "0x404b9c",
+        "rva": "0x4b9c",
+        "file_offset": "0x419c",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x404bb1",
+        "rva": "0x4bb1",
+        "file_offset": "0x41b1",
+        "section": ".text"
+      },
+      "disassembly": [
+        "00404B9C: push        ebp",
+        "00404B9D: mov         ebp,esp",
+        "00404B9F: push        ebx",
+        "00404BA0: push        esi",
+        "00404BA1: movzx       eax,word ptr [ebp+8]",
+        "00404BA5: add         eax,0FFFFFFEFh",
+        "00404BA8: cmp         eax,0Dh",
+        "00404BAB: ja          00404DB0",
+        "00404BB1: jmp         dword ptr [eax*4+00404BB8h]"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "add_subtract",
+      "start": {
+        "va": "0x404bf0",
+        "rva": "0x4bf0",
+        "file_offset": "0x41f0",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x404c39",
+        "rva": "0x4c39",
+        "file_offset": "0x4239",
+        "section": ".text"
+      },
+      "disassembly": [
+        "00404BF0: mov         ebx,dword ptr ds:[0042A61Ch]",
+        "00404BF6: push        ebx",
+        "00404BF7: call        00404AF8",
+        "00404BFC: mov         esi,eax",
+        "00404BFE: mov         eax,dword ptr ds:[0042A618h]",
+        "00404C03: push        eax",
+        "00404C04: call        00404AF8",
+        "00404C09: add         esi,eax",
+        "00404C0B: push        esi",
+        "00404C0C: push        ebx",
+        "00404C0D: call        00404B30",
+        "00404C12: jmp         00404DB0",
+        "00404C17: mov         ebx,dword ptr ds:[0042A61Ch]",
+        "00404C1D: push        ebx",
+        "00404C1E: call        00404AF8",
+        "00404C23: mov         esi,eax",
+        "00404C25: mov         eax,dword ptr ds:[0042A618h]",
+        "00404C2A: push        eax",
+        "00404C2B: call        00404AF8",
+        "00404C30: sub         esi,eax",
+        "00404C32: push        esi",
+        "00404C33: push        ebx",
+        "00404C34: call        00404B30",
+        "00404C39: jmp         00404DB0"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "arithmetic_readback_epilogue",
+      "start": {
+        "va": "0x404db0",
+        "rva": "0x4db0",
+        "file_offset": "0x43b0",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x404dc5",
+        "rva": "0x4dc5",
+        "file_offset": "0x43c5",
+        "section": ".text"
+      },
+      "disassembly": [
+        "00404DB0: mov         edx,dword ptr ds:[0042A61Ch]",
+        "00404DB6: push        edx",
+        "00404DB7: call        00404AF8",
+        "00404DBC: push        eax",
+        "00404DBD: call        004049D0",
+        "00404DC2: pop         esi",
+        "00404DC3: pop         ebx",
+        "00404DC4: pop         ebp",
+        "00404DC5: ret         4"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "scalar_reader",
+      "start": {
+        "va": "0x404af8",
+        "rva": "0x4af8",
+        "file_offset": "0x40f8",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x404b2b",
+        "rva": "0x4b2b",
+        "file_offset": "0x412b",
+        "section": ".text"
+      },
+      "disassembly": [
+        "00404AF8: push        ebp",
+        "00404AF9: mov         ebp,esp",
+        "00404AFB: mov         eax,dword ptr [ebp+8]",
+        "00404AFE: mov         dx,word ptr [eax]",
+        "00404B01: sub         dx,0B1h",
+        "00404B06: je          00404B15",
+        "00404B08: dec         dx",
+        "00404B0B: je          00404B1B",
+        "00404B0D: sub         dx,2",
+        "00404B11: je          00404B23",
+        "00404B13: jmp         00404B28",
+        "00404B15: movzx       eax,byte ptr [eax+2]",
+        "00404B19: jmp         00404B2A",
+        "00404B1B: movsx       ecx,word ptr [eax+2]",
+        "00404B1F: mov         eax,ecx",
+        "00404B21: jmp         00404B2A",
+        "00404B23: mov         eax,dword ptr [eax+2]",
+        "00404B26: jmp         00404B2A",
+        "00404B28: xor         eax,eax",
+        "00404B2A: pop         ebp",
+        "00404B2B: ret         4"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "scalar_writer",
+      "start": {
+        "va": "0x404b30",
+        "rva": "0x4b30",
+        "file_offset": "0x4130",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x404b6b",
+        "rva": "0x4b6b",
+        "file_offset": "0x416b",
+        "section": ".text"
+      },
+      "disassembly": [
+        "00404B30: push        ebp",
+        "00404B31: mov         ebp,esp",
+        "00404B33: mov         eax,dword ptr [ebp+8]",
+        "00404B36: mov         dx,word ptr [eax]",
+        "00404B39: sub         dx,0B1h",
+        "00404B3E: je          00404B4D",
+        "00404B40: dec         dx",
+        "00404B43: je          00404B55",
+        "00404B45: sub         dx,2",
+        "00404B49: je          00404B5F",
+        "00404B4B: jmp         00404B65",
+        "00404B4D: mov         cl,byte ptr [ebp+0Ch]",
+        "00404B50: mov         byte ptr [eax+2],cl",
+        "00404B53: jmp         00404B65",
+        "00404B55: mov         dx,word ptr [ebp+0Ch]",
+        "00404B59: mov         word ptr [eax+2],dx",
+        "00404B5D: jmp         00404B65",
+        "00404B5F: mov         ecx,dword ptr [ebp+0Ch]",
+        "00404B62: mov         dword ptr [eax+2],ecx",
+        "00404B65: mov         dword ptr ds:[00427580h],eax",
+        "00404B6A: pop         ebp",
+        "00404B6B: ret         8"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "zero_flag_helper",
+      "start": {
+        "va": "0x4049d0",
+        "rva": "0x49d0",
+        "file_offset": "0x3fd0",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x4049ed",
+        "rva": "0x49ed",
+        "file_offset": "0x3fed",
+        "section": ".text"
+      },
+      "disassembly": [
+        "004049D0: push        ebp",
+        "004049D1: mov         ebp,esp",
+        "004049D3: cmp         dword ptr [ebp+8],0",
+        "004049D7: jne         004049E3",
+        "004049D9: or          word ptr ds:[0042757Ch],20h",
+        "004049E1: jmp         004049EC",
+        "004049E3: and         word ptr ds:[0042757Ch],0FFDFh",
+        "004049EC: pop         ebp",
+        "004049ED: ret         4"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "zero_flag_branches",
+      "start": {
+        "va": "0x403abe",
+        "rva": "0x3abe",
+        "file_offset": "0x30be",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x403b07",
+        "rva": "0x3b07",
+        "file_offset": "0x3107",
+        "section": ".text"
+      },
+      "disassembly": [
+        "00403ABE: test        byte ptr ds:[0042757Ch],20h",
+        "00403AC5: je          0040449D",
+        "00403ACB: mov         ecx,dword ptr ds:[0042A618h]",
+        "00403AD1: movsx       eax,word ptr [ecx+2]",
+        "00403AD5: add         eax,435618h",
+        "00403ADB: mov         dword ptr ds:[00427534h],eax",
+        "00403AE0: jmp         0040449D",
+        "00403AE5: test        byte ptr ds:[0042757Ch],20h",
+        "00403AEC: jne         0040449D",
+        "00403AF2: mov         edx,dword ptr ds:[0042A618h]",
+        "00403AF8: movsx       ecx,word ptr [edx+2]",
+        "00403AFC: add         ecx,435618h",
+        "00403B02: mov         dword ptr ds:[00427534h],ecx"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "dynamic_flag_mask_helper",
+      "start": {
+        "va": "0x408c28",
+        "rva": "0x8c28",
+        "file_offset": "0x8228",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x408c6b",
+        "rva": "0x8c6b",
+        "file_offset": "0x826b",
+        "section": ".text"
+      },
+      "disassembly": [
+        "00408C28: push        ebp",
+        "00408C29: mov         ebp,esp",
+        "00408C2B: mov         eax,dword ptr ds:[0042A618h]",
+        "00408C30: push        eax",
+        "00408C31: call        00404AF8",
+        "00408C36: movzx       edx,word ptr [ebp+8]",
+        "00408C3A: cmp         edx,82h",
+        "00408C40: jne         00408C4F",
+        "00408C42: xor         ecx,ecx",
+        "00408C44: mov         cl,al",
+        "00408C46: or          word ptr ds:[0042757Ch],cx",
+        "00408C4D: jmp         00408C6A",
+        "00408C4F: xor         edx,edx",
+        "00408C51: mov         dl,al",
+        "00408C53: not         dx",
+        "00408C56: and         word ptr ds:[0042757Ch],dx",
+        "00408C5D: test        al,1",
+        "00408C5F: je          00408C6A",
+        "00408C61: mov         word ptr ds:[00427644h],0",
+        "00408C6A: pop         ebp",
+        "00408C6B: ret         4"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "other_zero_helper_caller_40565c",
+      "start": {
+        "va": "0x40565c",
+        "rva": "0x565c",
+        "file_offset": "0x4c5c",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x405696",
+        "rva": "0x5696",
+        "file_offset": "0x4c96",
+        "section": ".text"
+      },
+      "disassembly": [
+        "0040565C: push        ebx",
+        "0040565D: push        esi",
+        "0040565E: mov         eax,dword ptr ds:[0042A618h]",
+        "00405663: push        eax",
+        "00405664: call        00404AF8",
+        "00405669: push        eax",
+        "0040566A: call        0040ABEC",
+        "0040566F: pop         ecx",
+        "00405670: mov         ebx,eax",
+        "00405672: mov         esi,ebx",
+        "00405674: push        esi",
+        "00405675: mov         eax,dword ptr ds:[0042A61Ch]",
+        "0040567A: push        eax",
+        "0040567B: call        00404B30",
+        "00405680: push        esi",
+        "00405681: call        004049D0",
+        "00405686: mov         edx,dword ptr ds:[0042A61Ch]",
+        "0040568C: mov         dword ptr ds:[00427580h],edx",
+        "00405692: pop         esi",
+        "00405693: pop         ebx",
+        "00405694: ret",
+        "00405695: nop",
+        "00405696: nop"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "copy_zero_helper_tail",
+      "start": {
+        "va": "0x405b68",
+        "rva": "0x5b68",
+        "file_offset": "0x5168",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x405b89",
+        "rva": "0x5b89",
+        "file_offset": "0x5189",
+        "section": ".text"
+      },
+      "disassembly": [
+        "00405B68: mov         dword ptr ds:[00427580h],esi",
+        "00405B6E: movzx       eax,word ptr [esi]",
+        "00405B71: cmp         eax,0B0h",
+        "00405B76: je          00405B84",
+        "00405B78: push        esi",
+        "00405B79: call        00404AF8",
+        "00405B7E: push        eax",
+        "00405B7F: call        004049D0",
+        "00405B84: pop         edi",
+        "00405B85: pop         esi",
+        "00405B86: pop         ebx",
+        "00405B87: pop         ecx",
+        "00405B88: pop         ebp",
+        "00405B89: ret         0Ch"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "other_zero_helper_caller_405f6c",
+      "start": {
+        "va": "0x405f6c",
+        "rva": "0x5f6c",
+        "file_offset": "0x556c",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x405f9c",
+        "rva": "0x5f9c",
+        "file_offset": "0x559c",
+        "section": ".text"
+      },
+      "disassembly": [
+        "00405F6C: push        ebx",
+        "00405F6D: mov         eax,dword ptr ds:[0042A618h]",
+        "00405F72: movsx       edx,word ptr [eax+4]",
+        "00405F76: push        edx",
+        "00405F77: mov         ecx,dword ptr ds:[0042A61Ch]",
+        "00405F7D: push        ecx",
+        "00405F7E: call        00404B30",
+        "00405F83: mov         ebx,dword ptr ds:[0042A61Ch]",
+        "00405F89: mov         dword ptr ds:[00427580h],ebx",
+        "00405F8F: push        ebx",
+        "00405F90: call        00404AF8",
+        "00405F95: push        eax",
+        "00405F96: call        004049D0",
+        "00405F9B: pop         ebx",
+        "00405F9C: ret"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "other_string_flag_writers",
+      "start": {
+        "va": "0x4062c8",
+        "rva": "0x62c8",
+        "file_offset": "0x58c8",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x406390",
+        "rva": "0x6390",
+        "file_offset": "0x5990",
+        "section": ".text"
+      },
+      "disassembly": [
+        "004062C8: and         word ptr ds:[0042757Ch],0FFDFh",
+        "004062D1: push        ebx",
+        "004062D2: mov         eax,dword ptr ds:[0042A618h]",
+        "004062D7: xor         ebx,ebx",
+        "004062D9: add         eax,6",
+        "004062DC: xor         edx,edx",
+        "004062DE: jmp         00406314",
+        "004062E0: xor         ecx,ecx",
+        "004062E2: mov         cl,byte ptr [eax]",
+        "004062E4: cmp         ecx,30h",
+        "004062E7: jl          00406300",
+        "004062E9: xor         ecx,ecx",
+        "004062EB: mov         cl,byte ptr [eax]",
+        "004062ED: cmp         ecx,39h",
+        "004062F0: jle         004062F7",
+        "004062F2: cmp         ecx,41h",
+        "004062F5: jl          00406300",
+        "004062F7: xor         ecx,ecx",
+        "004062F9: mov         cl,byte ptr [eax]",
+        "004062FB: cmp         ecx,5Ah",
+        "004062FE: jle         00406303",
+        "00406300: mov         byte ptr [eax],30h",
+        "00406303: cmp         edx,3",
+        "00406306: jl          00406312",
+        "00406308: xor         ecx,ecx",
+        "0040630A: mov         cl,byte ptr [eax]",
+        "0040630C: cmp         ecx,30h",
+        "0040630F: jne         00406312",
+        "00406311: inc         ebx",
+        "00406312: inc         edx",
+        "00406313: inc         eax",
+        "00406314: mov         ecx,dword ptr ds:[0042A618h]",
+        "0040631A: movsx       ecx,word ptr [ecx+4]",
+        "0040631E: cmp         edx,ecx",
+        "00406320: jl          004062E0",
+        "00406322: cmp         ebx,9",
+        "00406325: jl          0040632F",
+        "00406327: or          word ptr ds:[0042757Ch],20h",
+        "0040632F: pop         ebx",
+        "00406330: ret",
+        "00406331: nop",
+        "00406332: nop",
+        "00406333: nop",
+        "00406334: push        ebx",
+        "00406335: mov         ebx,42A618h",
+        "0040633A: and         word ptr ds:[0042757Ch],0FFDDh",
+        "00406343: mov         eax,dword ptr [ebx]",
+        "00406345: movsx       ecx,word ptr [eax+4]",
+        "00406349: add         ecx,eax",
+        "0040634B: add         ecx,6",
+        "0040634E: mov         word ptr [eax+4],0",
+        "00406354: add         eax,6",
+        "00406357: cmp         ecx,eax",
+        "00406359: jbe         0040637E",
+        "0040635B: xor         edx,edx",
+        "0040635D: mov         dl,byte ptr [eax]",
+        "0040635F: cmp         edx,20h",
+        "00406362: jl          00406369",
+        "00406364: cmp         edx,7Eh",
+        "00406367: jle         00406373",
+        "00406369: or          word ptr ds:[0042757Ch],2",
+        "00406371: jmp         0040637E",
+        "00406373: mov         edx,dword ptr [ebx]",
+        "00406375: inc         word ptr [edx+4]",
+        "00406379: inc         eax",
+        "0040637A: cmp         ecx,eax",
+        "0040637C: ja          0040635B",
+        "0040637E: mov         eax,dword ptr [ebx]",
+        "00406380: cmp         word ptr [eax+4],0",
+        "00406385: jne         0040638F",
+        "00406387: or          word ptr ds:[0042757Ch],20h",
+        "0040638F: pop         ebx",
+        "00406390: ret"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "other_literal_flag20_writer_0x4098b7",
+      "start": {
+        "va": "0x4098b7",
+        "rva": "0x98b7",
+        "file_offset": "0x8eb7",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x4098b7",
+        "rva": "0x98b7",
+        "file_offset": "0x8eb7",
+        "section": ".text"
+      },
+      "disassembly": [
+        "004098B7: or          word ptr ds:[0042757Ch],20h"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "other_literal_flag20_writer_0x4098cf",
+      "start": {
+        "va": "0x4098cf",
+        "rva": "0x98cf",
+        "file_offset": "0x8ecf",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x4098cf",
+        "rva": "0x98cf",
+        "file_offset": "0x8ecf",
+        "section": ".text"
+      },
+      "disassembly": [
+        "004098CF: or          word ptr ds:[0042757Ch],20h"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "other_literal_flag20_writer_0x4099fe",
+      "start": {
+        "va": "0x4099fe",
+        "rva": "0x99fe",
+        "file_offset": "0x8ffe",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x4099fe",
+        "rva": "0x99fe",
+        "file_offset": "0x8ffe",
+        "section": ".text"
+      },
+      "disassembly": [
+        "004099FE: and         word ptr ds:[0042757Ch],0FFDFh"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "other_literal_flag20_writer_0x409a10",
+      "start": {
+        "va": "0x409a10",
+        "rva": "0x9a10",
+        "file_offset": "0x9010",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x409a10",
+        "rva": "0x9a10",
+        "file_offset": "0x9010",
+        "section": ".text"
+      },
+      "disassembly": [
+        "00409A10: and         word ptr ds:[0042757Ch],0FFDFh"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "other_literal_flag20_writer_0x409a4a",
+      "start": {
+        "va": "0x409a4a",
+        "rva": "0x9a4a",
+        "file_offset": "0x904a",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x409a4a",
+        "rva": "0x9a4a",
+        "file_offset": "0x904a",
+        "section": ".text"
+      },
+      "disassembly": [
+        "00409A4A: or          word ptr ds:[0042757Ch],20h"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "other_literal_flag20_writer_0x409a54",
+      "start": {
+        "va": "0x409a54",
+        "rva": "0x9a54",
+        "file_offset": "0x9054",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x409a54",
+        "rva": "0x9a54",
+        "file_offset": "0x9054",
+        "section": ".text"
+      },
+      "disassembly": [
+        "00409A54: and         word ptr ds:[0042757Ch],0FFDFh"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "other_literal_flag20_writer_0x409a8d",
+      "start": {
+        "va": "0x409a8d",
+        "rva": "0x9a8d",
+        "file_offset": "0x908d",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x409a8d",
+        "rva": "0x9a8d",
+        "file_offset": "0x908d",
+        "section": ".text"
+      },
+      "disassembly": [
+        "00409A8D: or          word ptr ds:[0042757Ch],20h"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "other_literal_flag20_writer_0x409a9f",
+      "start": {
+        "va": "0x409a9f",
+        "rva": "0x9a9f",
+        "file_offset": "0x909f",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x409a9f",
+        "rva": "0x9a9f",
+        "file_offset": "0x909f",
+        "section": ".text"
+      },
+      "disassembly": [
+        "00409A9F: or          word ptr ds:[0042757Ch],20h"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "other_literal_flag20_writer_0x409b5e",
+      "start": {
+        "va": "0x409b5e",
+        "rva": "0x9b5e",
+        "file_offset": "0x915e",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x409b5e",
+        "rva": "0x9b5e",
+        "file_offset": "0x915e",
+        "section": ".text"
+      },
+      "disassembly": [
+        "00409B5E: and         word ptr ds:[0042757Ch],0FFDFh"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "other_literal_flag20_writer_0x409d16",
+      "start": {
+        "va": "0x409d16",
+        "rva": "0x9d16",
+        "file_offset": "0x9316",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x409d16",
+        "rva": "0x9d16",
+        "file_offset": "0x9316",
+        "section": ".text"
+      },
+      "disassembly": [
+        "00409D16: or          word ptr ds:[0042757Ch],20h"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "other_literal_flag20_writer_0x409d59",
+      "start": {
+        "va": "0x409d59",
+        "rva": "0x9d59",
+        "file_offset": "0x9359",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x409d59",
+        "rva": "0x9d59",
+        "file_offset": "0x9359",
+        "section": ".text"
+      },
+      "disassembly": [
+        "00409D59: or          word ptr ds:[0042757Ch],20h"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "other_literal_flag20_writer_0x409ed5",
+      "start": {
+        "va": "0x409ed5",
+        "rva": "0x9ed5",
+        "file_offset": "0x94d5",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x409ed5",
+        "rva": "0x9ed5",
+        "file_offset": "0x94d5",
+        "section": ".text"
+      },
+      "disassembly": [
+        "00409ED5: or          word ptr ds:[0042757Ch],20h"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "other_literal_flag20_writer_0x409f08",
+      "start": {
+        "va": "0x409f08",
+        "rva": "0x9f08",
+        "file_offset": "0x9508",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x409f08",
+        "rva": "0x9f08",
+        "file_offset": "0x9508",
+        "section": ".text"
+      },
+      "disassembly": [
+        "00409F08: or          word ptr ds:[0042757Ch],20h"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    },
+    {
+      "role": "other_literal_flag20_writer_0x40a26c",
+      "start": {
+        "va": "0x40a26c",
+        "rva": "0xa26c",
+        "file_offset": "0x986c",
+        "section": ".text"
+      },
+      "last_instruction": {
+        "va": "0x40a26c",
+        "rva": "0xa26c",
+        "file_offset": "0x986c",
+        "section": ".text"
+      },
+      "disassembly": [
+        "0040A26C: or          word ptr ds:[0042757Ch],20h"
+      ],
+      "limits": "Bounded static no-byte disassembly. Full final instruction decoded with lookahead then address filtered."
+    }
+  ],
+  "unknowns": [
+    "No complete interpreter effect model or abstract execution performed.",
+    "Other flag20 writer helpers beyond bounded observations are not assigned meanings.",
+    "Flag state can change on intervening instructions; retry derivation requires adjacent-path state linkage.",
+    "No physical write, erase, controller recovery, checksum or acknowledgment is proved."
+  ],
+  "write_protocol_verified": false,
+  "physical_recovery_verified": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "would_send": []
+}

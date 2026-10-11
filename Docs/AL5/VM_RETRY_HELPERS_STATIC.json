@@ -1,0 +1,1491 @@
+{
+  "schema_version": 1,
+  "source": {
+    "path": "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll",
+    "sha256": "132832f80d7e5b642033fafc35df4ff3c0f3b19371081d23eacf696c4019ac00",
+    "bytes": 156016
+  },
+  "scope": "Bounded static disassembly of VM send/receive and retry-helper flag handling; no target or VM execution, callbacks or hardware.",
+  "provenance": "dumpbin /disasm:nobytes with16-byte lookahead; retained instruction starts in declared windows only.",
+  "callback_boundary": "Global0x4398a0 external callback; transport effects/physical outcomes not established.",
+  "selected_semantics": {
+    "opcode60": "4038d7..4038f7 calls406ec4(first descriptor,0). Clears flags0x81, copies B0 current length bytes to internal buffer and invokes callback selector0x0b (8a00,8b00 or8b11).",
+    "opcode61": "4040b1..4040dc reads third scalar timeout then calls406f90/406fc0(first descriptor,timeout,0). Clears flags0x81 and resets second scalar length. Calls selector0x0d, clamps copied bytes to B0 capacity, writes full callback length separately, then invokes404a28.",
+    "receive_status": "404a28 clears0x81. Nonzero supplied status calls4034d4, setting0x80. Positive framing cases can set0x01 for selected negative-response signatures; mode1 selector1 tests buffer byte3==7f. Payload bounds/transport identity unproven.",
+    "opcode64": "407338 invokes callback selector0x0a with other fields zero apart from timeout0x64. Callback purpose and physical effect unresolved.",
+    "opcode80": "40390f uses raw signed descriptor word+2; positive values call4188f0. Delay inferred from prior helper naming; wall-clock behavior unobserved.",
+    "opcode83": "408c28 masks low8 scalar bits out of flags; selected bit0 also clears word427644."
+  },
+  "windows": [
+    {
+      "start_va": "0x4038d7",
+      "end_exclusive_va": "0x40392f",
+      "instructions": [
+        {
+          "va": "0x4038d7",
+          "assembly": "cmp         dword ptr ds:[0041957Ch],1"
+        },
+        {
+          "va": "0x4038de",
+          "assembly": "jne         004038E9"
+        },
+        {
+          "va": "0x4038e0",
+          "assembly": "mov         ax,511h"
+        },
+        {
+          "va": "0x4038e4",
+          "assembly": "jmp         004044A1"
+        },
+        {
+          "va": "0x4038e9",
+          "assembly": "push        0"
+        },
+        {
+          "va": "0x4038eb",
+          "assembly": "mov         edx,dword ptr ds:[0042A618h]"
+        },
+        {
+          "va": "0x4038f1",
+          "assembly": "push        edx"
+        },
+        {
+          "va": "0x4038f2",
+          "assembly": "call        00406EC4"
+        },
+        {
+          "va": "0x4038f7",
+          "assembly": "jmp         0040449D"
+        },
+        {
+          "va": "0x4038fc",
+          "assembly": "push        1"
+        },
+        {
+          "va": "0x4038fe",
+          "assembly": "mov         ecx,dword ptr ds:[0042A618h]"
+        },
+        {
+          "va": "0x403904",
+          "assembly": "push        ecx"
+        },
+        {
+          "va": "0x403905",
+          "assembly": "call        00406EC4"
+        },
+        {
+          "va": "0x40390a",
+          "assembly": "jmp         0040449D"
+        },
+        {
+          "va": "0x40390f",
+          "assembly": "mov         eax,dword ptr ds:[0042A618h]"
+        },
+        {
+          "va": "0x403914",
+          "assembly": "mov         ax,word ptr [eax+2]"
+        },
+        {
+          "va": "0x403918",
+          "assembly": "test        ax,ax"
+        },
+        {
+          "va": "0x40391b",
+          "assembly": "jle         0040449D"
+        },
+        {
+          "va": "0x403921",
+          "assembly": "movsx       edx,ax"
+        },
+        {
+          "va": "0x403924",
+          "assembly": "push        edx"
+        },
+        {
+          "va": "0x403925",
+          "assembly": "call        004188F0"
+        },
+        {
+          "va": "0x40392a",
+          "assembly": "jmp         0040449D"
+        }
+      ],
+      "tool_output_sha256": "97a13d21c4ac9ef4fe8bf1c5603da3cca9a694ff0fa603cfe8172a22c8ef9136"
+    },
+    {
+      "start_va": "0x4040b1",
+      "end_exclusive_va": "0x4040e1",
+      "instructions": [
+        {
+          "va": "0x4040b1",
+          "assembly": "cmp         dword ptr ds:[0041957Ch],1"
+        },
+        {
+          "va": "0x4040b8",
+          "assembly": "jne         004040C3"
+        },
+        {
+          "va": "0x4040ba",
+          "assembly": "mov         ax,511h"
+        },
+        {
+          "va": "0x4040be",
+          "assembly": "jmp         004044A1"
+        },
+        {
+          "va": "0x4040c3",
+          "assembly": "mov         edx,dword ptr ds:[0042A620h]"
+        },
+        {
+          "va": "0x4040c9",
+          "assembly": "push        edx"
+        },
+        {
+          "va": "0x4040ca",
+          "assembly": "call        00404AF8"
+        },
+        {
+          "va": "0x4040cf",
+          "assembly": "push        eax"
+        },
+        {
+          "va": "0x4040d0",
+          "assembly": "mov         ecx,dword ptr ds:[0042A618h]"
+        },
+        {
+          "va": "0x4040d6",
+          "assembly": "push        ecx"
+        },
+        {
+          "va": "0x4040d7",
+          "assembly": "call        00406F90"
+        },
+        {
+          "va": "0x4040dc",
+          "assembly": "jmp         0040449D"
+        }
+      ],
+      "tool_output_sha256": "95f6b100d279cae76d6d4d7e0601416bdcada70591b25516f3fb06516e40eb69"
+    },
+    {
+      "start_va": "0x406ec4",
+      "end_exclusive_va": "0x406f8f",
+      "instructions": [
+        {
+          "va": "0x406ec4",
+          "assembly": "and         word ptr ds:[0042757Ch],0FF7Eh"
+        },
+        {
+          "va": "0x406ecd",
+          "assembly": "push        ebp"
+        },
+        {
+          "va": "0x406ece",
+          "assembly": "mov         ebp,esp"
+        },
+        {
+          "va": "0x406ed0",
+          "assembly": "add         esp,0FFFFFFF8h"
+        },
+        {
+          "va": "0x406ed3",
+          "assembly": "xor         eax,eax"
+        },
+        {
+          "va": "0x406ed5",
+          "assembly": "mov         al,byte ptr ds:[00427648h]"
+        },
+        {
+          "va": "0x406eda",
+          "assembly": "push        ebx"
+        },
+        {
+          "va": "0x406edb",
+          "assembly": "push        esi"
+        },
+        {
+          "va": "0x406edc",
+          "assembly": "cmp         eax,1"
+        },
+        {
+          "va": "0x406edf",
+          "assembly": "mov         ebx,dword ptr [ebp+8]"
+        },
+        {
+          "va": "0x406ee2",
+          "assembly": "jne         00406EEA"
+        },
+        {
+          "va": "0x406ee4",
+          "assembly": "mov         si,8A00h"
+        },
+        {
+          "va": "0x406ee8",
+          "assembly": "jmp         00406F1A"
+        },
+        {
+          "va": "0x406eea",
+          "assembly": "cmp         eax,2"
+        },
+        {
+          "va": "0x406eed",
+          "assembly": "jne         00406F0A"
+        },
+        {
+          "va": "0x406eef",
+          "assembly": "cmp         dword ptr [ebp+0Ch],1"
+        },
+        {
+          "va": "0x406ef3",
+          "assembly": "je          00406EFE"
+        },
+        {
+          "va": "0x406ef5",
+          "assembly": "cmp         dword ptr ds:[00419574h],0"
+        },
+        {
+          "va": "0x406efc",
+          "assembly": "je          00406F04"
+        },
+        {
+          "va": "0x406efe",
+          "assembly": "mov         si,8B11h"
+        },
+        {
+          "va": "0x406f02",
+          "assembly": "jmp         00406F1A"
+        },
+        {
+          "va": "0x406f04",
+          "assembly": "mov         si,8B00h"
+        },
+        {
+          "va": "0x406f08",
+          "assembly": "jmp         00406F1A"
+        },
+        {
+          "va": "0x406f0a",
+          "assembly": "push        0"
+        },
+        {
+          "va": "0x406f0c",
+          "assembly": "push        0"
+        },
+        {
+          "va": "0x406f0e",
+          "assembly": "push        280h"
+        },
+        {
+          "va": "0x406f13",
+          "assembly": "call        00404A28"
+        },
+        {
+          "va": "0x406f18",
+          "assembly": "jmp         00406F87"
+        },
+        {
+          "va": "0x406f1a",
+          "assembly": "mov         dword ptr [ebp-4],4277A4h"
+        },
+        {
+          "va": "0x406f21",
+          "assembly": "movsx       eax,word ptr [ebx+4]"
+        },
+        {
+          "va": "0x406f25",
+          "assembly": "push        eax"
+        },
+        {
+          "va": "0x406f26",
+          "assembly": "lea         edx,[ebx+6]"
+        },
+        {
+          "va": "0x406f29",
+          "assembly": "push        edx"
+        },
+        {
+          "va": "0x406f2a",
+          "assembly": "mov         ecx,dword ptr [ebp-4]"
+        },
+        {
+          "va": "0x406f2d",
+          "assembly": "push        ecx"
+        },
+        {
+          "va": "0x406f2e",
+          "assembly": "call        0040E38C"
+        },
+        {
+          "va": "0x406f33",
+          "assembly": "movsx       ecx,word ptr [ebx+4]"
+        },
+        {
+          "va": "0x406f37",
+          "assembly": "add         dword ptr ds:[0042775Ch],ecx"
+        },
+        {
+          "va": "0x406f3d",
+          "assembly": "add         esp,0Ch"
+        },
+        {
+          "va": "0x406f40",
+          "assembly": "mov         eax,dword ptr ds:[00427654h]"
+        },
+        {
+          "va": "0x406f45",
+          "assembly": "mov         dword ptr [ebp-8],eax"
+        },
+        {
+          "va": "0x406f48",
+          "assembly": "cmp         dword ptr [ebp-8],0FFFh"
+        },
+        {
+          "va": "0x406f4f",
+          "assembly": "jbe         00406F6D"
+        },
+        {
+          "va": "0x406f51",
+          "assembly": "push        0"
+        },
+        {
+          "va": "0x406f53",
+          "assembly": "lea         edx,[ebp-8]"
+        },
+        {
+          "va": "0x406f56",
+          "assembly": "push        edx"
+        },
+        {
+          "va": "0x406f57",
+          "assembly": "lea         ecx,[ebp-4]"
+        },
+        {
+          "va": "0x406f5a",
+          "assembly": "push        ecx"
+        },
+        {
+          "va": "0x406f5b",
+          "assembly": "push        0"
+        },
+        {
+          "va": "0x406f5d",
+          "assembly": "mov         ax,word ptr [ebx+4]"
+        },
+        {
+          "va": "0x406f61",
+          "assembly": "push        eax"
+        },
+        {
+          "va": "0x406f62",
+          "assembly": "push        esi"
+        },
+        {
+          "va": "0x406f63",
+          "assembly": "push        0Bh"
+        },
+        {
+          "va": "0x406f65",
+          "assembly": "call        dword ptr ds:[004398A0h]"
+        },
+        {
+          "va": "0x406f6b",
+          "assembly": "jmp         00406F87"
+        },
+        {
+          "va": "0x406f6d",
+          "assembly": "push        0"
+        },
+        {
+          "va": "0x406f6f",
+          "assembly": "lea         edx,[ebp-8]"
+        },
+        {
+          "va": "0x406f72",
+          "assembly": "push        edx"
+        },
+        {
+          "va": "0x406f73",
+          "assembly": "lea         ecx,[ebp-4]"
+        },
+        {
+          "va": "0x406f76",
+          "assembly": "push        ecx"
+        },
+        {
+          "va": "0x406f77",
+          "assembly": "push        0"
+        },
+        {
+          "va": "0x406f79",
+          "assembly": "mov         ax,word ptr [ebx+4]"
+        },
+        {
+          "va": "0x406f7d",
+          "assembly": "push        eax"
+        },
+        {
+          "va": "0x406f7e",
+          "assembly": "push        esi"
+        },
+        {
+          "va": "0x406f7f",
+          "assembly": "push        0Bh"
+        },
+        {
+          "va": "0x406f81",
+          "assembly": "call        dword ptr ds:[004398A0h]"
+        },
+        {
+          "va": "0x406f87",
+          "assembly": "pop         esi"
+        },
+        {
+          "va": "0x406f88",
+          "assembly": "pop         ebx"
+        },
+        {
+          "va": "0x406f89",
+          "assembly": "pop         ecx"
+        },
+        {
+          "va": "0x406f8a",
+          "assembly": "pop         ecx"
+        },
+        {
+          "va": "0x406f8b",
+          "assembly": "pop         ebp"
+        },
+        {
+          "va": "0x406f8c",
+          "assembly": "ret         8"
+        }
+      ],
+      "tool_output_sha256": "2c5e93a844566124af2fc9c8479ad19683c4d4cb19ab5fc67301988553719561"
+    },
+    {
+      "start_va": "0x406f90",
+      "end_exclusive_va": "0x406fa7",
+      "instructions": [
+        {
+          "va": "0x406f90",
+          "assembly": "push        ebp"
+        },
+        {
+          "va": "0x406f91",
+          "assembly": "mov         ebp,esp"
+        },
+        {
+          "va": "0x406f93",
+          "assembly": "push        0"
+        },
+        {
+          "va": "0x406f95",
+          "assembly": "mov         ax,word ptr [ebp+0Ch]"
+        },
+        {
+          "va": "0x406f99",
+          "assembly": "push        eax"
+        },
+        {
+          "va": "0x406f9a",
+          "assembly": "mov         edx,dword ptr [ebp+8]"
+        },
+        {
+          "va": "0x406f9d",
+          "assembly": "push        edx"
+        },
+        {
+          "va": "0x406f9e",
+          "assembly": "call        00406FC0"
+        },
+        {
+          "va": "0x406fa3",
+          "assembly": "pop         ebp"
+        },
+        {
+          "va": "0x406fa4",
+          "assembly": "ret         8"
+        }
+      ],
+      "tool_output_sha256": "d626fac8887aa40565989b394926dc04309f99f99620aa2aa2f94858bd172a3d"
+    },
+    {
+      "start_va": "0x406fc0",
+      "end_exclusive_va": "0x407153",
+      "instructions": [
+        {
+          "va": "0x406fc0",
+          "assembly": "push        ebp"
+        },
+        {
+          "va": "0x406fc1",
+          "assembly": "mov         ebp,esp"
+        },
+        {
+          "va": "0x406fc3",
+          "assembly": "add         esp,0FFFFFFF4h"
+        },
+        {
+          "va": "0x406fc6",
+          "assembly": "xor         eax,eax"
+        },
+        {
+          "va": "0x406fc8",
+          "assembly": "mov         al,byte ptr ds:[00427648h]"
+        },
+        {
+          "va": "0x406fcd",
+          "assembly": "cmp         eax,1"
+        },
+        {
+          "va": "0x406fd0",
+          "assembly": "push        ebx"
+        },
+        {
+          "va": "0x406fd1",
+          "assembly": "push        esi"
+        },
+        {
+          "va": "0x406fd2",
+          "assembly": "push        edi"
+        },
+        {
+          "va": "0x406fd3",
+          "assembly": "mov         ebx,dword ptr [ebp+8]"
+        },
+        {
+          "va": "0x406fd6",
+          "assembly": "jne         00406FDE"
+        },
+        {
+          "va": "0x406fd8",
+          "assembly": "mov         di,8A00h"
+        },
+        {
+          "va": "0x406fdc",
+          "assembly": "jmp         00407011"
+        },
+        {
+          "va": "0x406fde",
+          "assembly": "cmp         eax,2"
+        },
+        {
+          "va": "0x406fe1",
+          "assembly": "jne         00406FFE"
+        },
+        {
+          "va": "0x406fe3",
+          "assembly": "cmp         dword ptr [ebp+10h],1"
+        },
+        {
+          "va": "0x406fe7",
+          "assembly": "je          00406FF2"
+        },
+        {
+          "va": "0x406fe9",
+          "assembly": "cmp         dword ptr ds:[00419574h],0"
+        },
+        {
+          "va": "0x406ff0",
+          "assembly": "je          00406FF8"
+        },
+        {
+          "va": "0x406ff2",
+          "assembly": "mov         di,8B11h"
+        },
+        {
+          "va": "0x406ff6",
+          "assembly": "jmp         00407011"
+        },
+        {
+          "va": "0x406ff8",
+          "assembly": "mov         di,8B00h"
+        },
+        {
+          "va": "0x406ffc",
+          "assembly": "jmp         00407011"
+        },
+        {
+          "va": "0x406ffe",
+          "assembly": "push        0"
+        },
+        {
+          "va": "0x407000",
+          "assembly": "push        0"
+        },
+        {
+          "va": "0x407002",
+          "assembly": "push        280h"
+        },
+        {
+          "va": "0x407007",
+          "assembly": "call        00404A28"
+        },
+        {
+          "va": "0x40700c",
+          "assembly": "jmp         0040714A"
+        },
+        {
+          "va": "0x407011",
+          "assembly": "mov         dword ptr [ebp-4],4277A4h"
+        },
+        {
+          "va": "0x407018",
+          "assembly": "and         word ptr ds:[0042757Ch],0FF7Eh"
+        },
+        {
+          "va": "0x407021",
+          "assembly": "push        0"
+        },
+        {
+          "va": "0x407023",
+          "assembly": "mov         eax,dword ptr ds:[0042A61Ch]"
+        },
+        {
+          "va": "0x407028",
+          "assembly": "push        eax"
+        },
+        {
+          "va": "0x407029",
+          "assembly": "call        00404B30"
+        },
+        {
+          "va": "0x40702e",
+          "assembly": "lea         edx,[ebp-0Ch]"
+        },
+        {
+          "va": "0x407031",
+          "assembly": "push        edx"
+        },
+        {
+          "va": "0x407032",
+          "assembly": "lea         ecx,[ebp-8]"
+        },
+        {
+          "va": "0x407035",
+          "assembly": "push        ecx"
+        },
+        {
+          "va": "0x407036",
+          "assembly": "lea         ecx,[ebp-4]"
+        },
+        {
+          "va": "0x407039",
+          "assembly": "push        ecx"
+        },
+        {
+          "va": "0x40703a",
+          "assembly": "movzx       eax,word ptr [ebp+0Ch]"
+        },
+        {
+          "va": "0x40703e",
+          "assembly": "push        eax"
+        },
+        {
+          "va": "0x40703f",
+          "assembly": "push        0"
+        },
+        {
+          "va": "0x407041",
+          "assembly": "push        edi"
+        },
+        {
+          "va": "0x407042",
+          "assembly": "push        0Dh"
+        },
+        {
+          "va": "0x407044",
+          "assembly": "call        dword ptr ds:[004398A0h]"
+        },
+        {
+          "va": "0x40704a",
+          "assembly": "mov         esi,eax"
+        },
+        {
+          "va": "0x40704c",
+          "assembly": "test        ax,ax"
+        },
+        {
+          "va": "0x40704f",
+          "assembly": "jl          00407090"
+        },
+        {
+          "va": "0x407051",
+          "assembly": "cmp         si,word ptr [ebx+2]"
+        },
+        {
+          "va": "0x407055",
+          "assembly": "jle         0040705D"
+        },
+        {
+          "va": "0x407057",
+          "assembly": "mov         ax,word ptr [ebx+2]"
+        },
+        {
+          "va": "0x40705b",
+          "assembly": "jmp         0040705F"
+        },
+        {
+          "va": "0x40705d",
+          "assembly": "mov         eax,esi"
+        },
+        {
+          "va": "0x40705f",
+          "assembly": "movsx       edx,ax"
+        },
+        {
+          "va": "0x407062",
+          "assembly": "mov         word ptr [ebx+4],ax"
+        },
+        {
+          "va": "0x407066",
+          "assembly": "push        edx"
+        },
+        {
+          "va": "0x407067",
+          "assembly": "mov         ecx,dword ptr [ebp-4]"
+        },
+        {
+          "va": "0x40706a",
+          "assembly": "push        ecx"
+        },
+        {
+          "va": "0x40706b",
+          "assembly": "lea         ecx,[ebx+6]"
+        },
+        {
+          "va": "0x40706e",
+          "assembly": "push        ecx"
+        },
+        {
+          "va": "0x40706f",
+          "assembly": "call        0040E38C"
+        },
+        {
+          "va": "0x407074",
+          "assembly": "add         esp,0Ch"
+        },
+        {
+          "va": "0x407077",
+          "assembly": "movsx       eax,si"
+        },
+        {
+          "va": "0x40707a",
+          "assembly": "push        eax"
+        },
+        {
+          "va": "0x40707b",
+          "assembly": "mov         edx,dword ptr ds:[0042A61Ch]"
+        },
+        {
+          "va": "0x407081",
+          "assembly": "push        edx"
+        },
+        {
+          "va": "0x407082",
+          "assembly": "call        00404B30"
+        },
+        {
+          "va": "0x407087",
+          "assembly": "mov         ecx,dword ptr [ebp-8]"
+        },
+        {
+          "va": "0x40708a",
+          "assembly": "mov         dword ptr ds:[0042765Ah],ecx"
+        },
+        {
+          "va": "0x407090",
+          "assembly": "cmp         byte ptr ds:[0042A64Ch],0"
+        },
+        {
+          "va": "0x407097",
+          "assembly": "je          004070E4"
+        },
+        {
+          "va": "0x407099",
+          "assembly": "test        si,si"
+        },
+        {
+          "va": "0x40709c",
+          "assembly": "jl          004070A7"
+        },
+        {
+          "va": "0x40709e",
+          "assembly": "inc         word ptr ds:[00427752h]"
+        },
+        {
+          "va": "0x4070a5",
+          "assembly": "jmp         004070E4"
+        },
+        {
+          "va": "0x4070a7",
+          "assembly": "cmp         dword ptr [ebp-0Ch],281h"
+        },
+        {
+          "va": "0x4070ae",
+          "assembly": "jne         004070B9"
+        },
+        {
+          "va": "0x4070b0",
+          "assembly": "inc         word ptr ds:[00427754h]"
+        },
+        {
+          "va": "0x4070b7",
+          "assembly": "jmp         004070E4"
+        },
+        {
+          "va": "0x4070b9",
+          "assembly": "cmp         dword ptr [ebp-0Ch],284h"
+        },
+        {
+          "va": "0x4070c0",
+          "assembly": "jne         004070CB"
+        },
+        {
+          "va": "0x4070c2",
+          "assembly": "inc         word ptr ds:[00427756h]"
+        },
+        {
+          "va": "0x4070c9",
+          "assembly": "jmp         004070E4"
+        },
+        {
+          "va": "0x4070cb",
+          "assembly": "cmp         dword ptr [ebp-0Ch],285h"
+        },
+        {
+          "va": "0x4070d2",
+          "assembly": "jne         004070DD"
+        },
+        {
+          "va": "0x4070d4",
+          "assembly": "inc         word ptr ds:[00427758h]"
+        },
+        {
+          "va": "0x4070db",
+          "assembly": "jmp         004070E4"
+        },
+        {
+          "va": "0x4070dd",
+          "assembly": "inc         word ptr ds:[0042775Ah]"
+        },
+        {
+          "va": "0x4070e4",
+          "assembly": "movsx       eax,word ptr [ebx+4]"
+        },
+        {
+          "va": "0x4070e8",
+          "assembly": "add         dword ptr ds:[00427760h],eax"
+        },
+        {
+          "va": "0x4070ee",
+          "assembly": "cmp         dword ptr [ebp+10h],1"
+        },
+        {
+          "va": "0x4070f2",
+          "assembly": "je          004070FD"
+        },
+        {
+          "va": "0x4070f4",
+          "assembly": "cmp         dword ptr ds:[00419574h],0"
+        },
+        {
+          "va": "0x4070fb",
+          "assembly": "je          00407122"
+        },
+        {
+          "va": "0x4070fd",
+          "assembly": "mov         edx,dword ptr ds:[0042765Ah]"
+        },
+        {
+          "va": "0x407103",
+          "assembly": "and         edx,0FF0000h"
+        },
+        {
+          "va": "0x407109",
+          "assembly": "sar         edx,10h"
+        },
+        {
+          "va": "0x40710c",
+          "assembly": "cmp         edx,0EFh"
+        },
+        {
+          "va": "0x407112",
+          "assembly": "jne         0040711B"
+        },
+        {
+          "va": "0x407114",
+          "assembly": "mov         eax,2"
+        },
+        {
+          "va": "0x407119",
+          "assembly": "jmp         00407127"
+        },
+        {
+          "va": "0x40711b",
+          "assembly": "mov         eax,3"
+        },
+        {
+          "va": "0x407120",
+          "assembly": "jmp         00407127"
+        },
+        {
+          "va": "0x407122",
+          "assembly": "mov         eax,1"
+        },
+        {
+          "va": "0x407127",
+          "assembly": "push        ebx"
+        },
+        {
+          "va": "0x407128",
+          "assembly": "push        eax"
+        },
+        {
+          "va": "0x407129",
+          "assembly": "test        si,si"
+        },
+        {
+          "va": "0x40712c",
+          "assembly": "jg          00407134"
+        },
+        {
+          "va": "0x40712e",
+          "assembly": "mov         ax,word ptr [ebp-0Ch]"
+        },
+        {
+          "va": "0x407132",
+          "assembly": "jmp         00407136"
+        },
+        {
+          "va": "0x407134",
+          "assembly": "xor         eax,eax"
+        },
+        {
+          "va": "0x407136",
+          "assembly": "push        eax"
+        },
+        {
+          "va": "0x407137",
+          "assembly": "call        00404A28"
+        },
+        {
+          "va": "0x40713c",
+          "assembly": "movzx       edx,ax"
+        },
+        {
+          "va": "0x40713f",
+          "assembly": "push        edx"
+        },
+        {
+          "va": "0x407140",
+          "assembly": "push        427642h"
+        },
+        {
+          "va": "0x407145",
+          "assembly": "call        00404B30"
+        },
+        {
+          "va": "0x40714a",
+          "assembly": "pop         edi"
+        },
+        {
+          "va": "0x40714b",
+          "assembly": "pop         esi"
+        },
+        {
+          "va": "0x40714c",
+          "assembly": "pop         ebx"
+        },
+        {
+          "va": "0x40714d",
+          "assembly": "mov         esp,ebp"
+        },
+        {
+          "va": "0x40714f",
+          "assembly": "pop         ebp"
+        },
+        {
+          "va": "0x407150",
+          "assembly": "ret         0Ch"
+        }
+      ],
+      "tool_output_sha256": "d511bd67f665d23ffe06f9186f8b4e6c550b8e17c91a5773bcf82d37bbdb439e"
+    },
+    {
+      "start_va": "0x407338",
+      "end_exclusive_va": "0x407353",
+      "instructions": [
+        {
+          "va": "0x407338",
+          "assembly": "push        0"
+        },
+        {
+          "va": "0x40733a",
+          "assembly": "push        0"
+        },
+        {
+          "va": "0x40733c",
+          "assembly": "push        0"
+        },
+        {
+          "va": "0x40733e",
+          "assembly": "push        64h"
+        },
+        {
+          "va": "0x407340",
+          "assembly": "push        0"
+        },
+        {
+          "va": "0x407342",
+          "assembly": "push        0"
+        },
+        {
+          "va": "0x407344",
+          "assembly": "push        0Ah"
+        },
+        {
+          "va": "0x407346",
+          "assembly": "call        dword ptr ds:[004398A0h]"
+        },
+        {
+          "va": "0x40734c",
+          "assembly": "ret"
+        },
+        {
+          "va": "0x40734d",
+          "assembly": "nop"
+        },
+        {
+          "va": "0x40734e",
+          "assembly": "nop"
+        },
+        {
+          "va": "0x40734f",
+          "assembly": "nop"
+        },
+        {
+          "va": "0x407350",
+          "assembly": "and         word ptr ds:[0042757Ch],0FF7Eh"
+        }
+      ],
+      "tool_output_sha256": "91936e8fb3249229e9b690febce94ab2654eafe29630f79a5ed8f9a16af18877"
+    },
+    {
+      "start_va": "0x404a28",
+      "end_exclusive_va": "0x404af5",
+      "instructions": [
+        {
+          "va": "0x404a28",
+          "assembly": "push        ebp"
+        },
+        {
+          "va": "0x404a29",
+          "assembly": "mov         ebp,esp"
+        },
+        {
+          "va": "0x404a2b",
+          "assembly": "push        ebx"
+        },
+        {
+          "va": "0x404a2c",
+          "assembly": "mov         edx,dword ptr [ebp+10h]"
+        },
+        {
+          "va": "0x404a2f",
+          "assembly": "mov         eax,dword ptr [ebp+8]"
+        },
+        {
+          "va": "0x404a32",
+          "assembly": "and         word ptr ds:[0042757Ch],0FF7Eh"
+        },
+        {
+          "va": "0x404a3b",
+          "assembly": "test        ax,ax"
+        },
+        {
+          "va": "0x404a3e",
+          "assembly": "je          00404A52"
+        },
+        {
+          "va": "0x404a40",
+          "assembly": "push        eax"
+        },
+        {
+          "va": "0x404a41",
+          "assembly": "call        004034D4"
+        },
+        {
+          "va": "0x404a46",
+          "assembly": "xor         eax,eax"
+        },
+        {
+          "va": "0x404a48",
+          "assembly": "jmp         00404AF0"
+        },
+        {
+          "va": "0x404a4d",
+          "assembly": "jmp         00404AEE"
+        },
+        {
+          "va": "0x404a52",
+          "assembly": "lea         eax,[edx+6]"
+        },
+        {
+          "va": "0x404a55",
+          "assembly": "mov         ecx,dword ptr [ebp+0Ch]"
+        },
+        {
+          "va": "0x404a58",
+          "assembly": "movsx       edx,word ptr [edx+4]"
+        },
+        {
+          "va": "0x404a5c",
+          "assembly": "dec         ecx"
+        },
+        {
+          "va": "0x404a5d",
+          "assembly": "je          00404A6A"
+        },
+        {
+          "va": "0x404a5f",
+          "assembly": "dec         ecx"
+        },
+        {
+          "va": "0x404a60",
+          "assembly": "je          00404AAF"
+        },
+        {
+          "va": "0x404a62",
+          "assembly": "dec         ecx"
+        },
+        {
+          "va": "0x404a63",
+          "assembly": "je          00404AC8"
+        },
+        {
+          "va": "0x404a65",
+          "assembly": "jmp         00404AEE"
+        },
+        {
+          "va": "0x404a6a",
+          "assembly": "mov         ecx,dword ptr ds:[004398B8h]"
+        },
+        {
+          "va": "0x404a70",
+          "assembly": "cmp         ecx,1"
+        },
+        {
+          "va": "0x404a73",
+          "assembly": "jne         00404A90"
+        },
+        {
+          "va": "0x404a75",
+          "assembly": "xor         ecx,ecx"
+        },
+        {
+          "va": "0x404a77",
+          "assembly": "mov         cl,byte ptr [eax+3]"
+        },
+        {
+          "va": "0x404a7a",
+          "assembly": "cmp         ecx,7Fh"
+        },
+        {
+          "va": "0x404a7d",
+          "assembly": "jne         00404AEE"
+        },
+        {
+          "va": "0x404a7f",
+          "assembly": "or          word ptr ds:[0042757Ch],1"
+        },
+        {
+          "va": "0x404a87",
+          "assembly": "movzx       eax,byte ptr [eax+edx-1]"
+        },
+        {
+          "va": "0x404a8c",
+          "assembly": "jmp         00404AF0"
+        },
+        {
+          "va": "0x404a8e",
+          "assembly": "jmp         00404AEE"
+        },
+        {
+          "va": "0x404a90",
+          "assembly": "cmp         ecx,2"
+        },
+        {
+          "va": "0x404a93",
+          "assembly": "jne         00404AEE"
+        },
+        {
+          "va": "0x404a95",
+          "assembly": "xor         ecx,ecx"
+        },
+        {
+          "va": "0x404a97",
+          "assembly": "mov         cl,byte ptr [eax]"
+        },
+        {
+          "va": "0x404a99",
+          "assembly": "cmp         ecx,7Fh"
+        },
+        {
+          "va": "0x404a9c",
+          "assembly": "jne         00404AEE"
+        },
+        {
+          "va": "0x404a9e",
+          "assembly": "or          word ptr ds:[0042757Ch],1"
+        },
+        {
+          "va": "0x404aa6",
+          "assembly": "movzx       eax,byte ptr [eax+edx-1]"
+        },
+        {
+          "va": "0x404aab",
+          "assembly": "jmp         00404AF0"
+        },
+        {
+          "va": "0x404aad",
+          "assembly": "jmp         00404AEE"
+        },
+        {
+          "va": "0x404aaf",
+          "assembly": "xor         edx,edx"
+        },
+        {
+          "va": "0x404ab1",
+          "assembly": "mov         dl,byte ptr [eax]"
+        },
+        {
+          "va": "0x404ab3",
+          "assembly": "cmp         edx,0Dh"
+        },
+        {
+          "va": "0x404ab6",
+          "assembly": "jne         00404AEE"
+        },
+        {
+          "va": "0x404ab8",
+          "assembly": "or          word ptr ds:[0042757Ch],1"
+        },
+        {
+          "va": "0x404ac0",
+          "assembly": "movzx       eax,byte ptr [eax+1]"
+        },
+        {
+          "va": "0x404ac4",
+          "assembly": "jmp         00404AF0"
+        },
+        {
+          "va": "0x404ac6",
+          "assembly": "jmp         00404AEE"
+        },
+        {
+          "va": "0x404ac8",
+          "assembly": "xor         edx,edx"
+        },
+        {
+          "va": "0x404aca",
+          "assembly": "mov         dl,byte ptr [eax+5]"
+        },
+        {
+          "va": "0x404acd",
+          "assembly": "cmp         edx,3"
+        },
+        {
+          "va": "0x404ad0",
+          "assembly": "jne         00404AEE"
+        },
+        {
+          "va": "0x404ad2",
+          "assembly": "or          word ptr ds:[0042757Ch],1"
+        },
+        {
+          "va": "0x404ada",
+          "assembly": "xor         ecx,ecx"
+        },
+        {
+          "va": "0x404adc",
+          "assembly": "mov         cl,byte ptr [eax+7]"
+        },
+        {
+          "va": "0x404adf",
+          "assembly": "xor         ebx,ebx"
+        },
+        {
+          "va": "0x404ae1",
+          "assembly": "shl         ecx,8"
+        },
+        {
+          "va": "0x404ae4",
+          "assembly": "mov         bl,byte ptr [eax+8]"
+        },
+        {
+          "va": "0x404ae7",
+          "assembly": "add         cx,bx"
+        },
+        {
+          "va": "0x404aea",
+          "assembly": "mov         eax,ecx"
+        },
+        {
+          "va": "0x404aec",
+          "assembly": "jmp         00404AF0"
+        },
+        {
+          "va": "0x404aee",
+          "assembly": "xor         eax,eax"
+        },
+        {
+          "va": "0x404af0",
+          "assembly": "pop         ebx"
+        },
+        {
+          "va": "0x404af1",
+          "assembly": "pop         ebp"
+        },
+        {
+          "va": "0x404af2",
+          "assembly": "ret         0Ch"
+        }
+      ],
+      "tool_output_sha256": "e09efb42ceab4d7fb0555e9c1f01bfbe32240446fed6a07f408332100ebba2e8"
+    },
+    {
+      "start_va": "0x4034d4",
+      "end_exclusive_va": "0x4034f7",
+      "instructions": [
+        {
+          "va": "0x4034d4",
+          "assembly": "push        ebp"
+        },
+        {
+          "va": "0x4034d5",
+          "assembly": "mov         ebp,esp"
+        },
+        {
+          "va": "0x4034d7",
+          "assembly": "mov         word ptr ds:[00427644h],0"
+        },
+        {
+          "va": "0x4034e0",
+          "assembly": "mov         ax,word ptr [ebp+8]"
+        },
+        {
+          "va": "0x4034e4",
+          "assembly": "mov         word ptr ds:[0042764Ch],ax"
+        },
+        {
+          "va": "0x4034ea",
+          "assembly": "or          word ptr ds:[0042757Ch],80h"
+        },
+        {
+          "va": "0x4034f3",
+          "assembly": "pop         ebp"
+        },
+        {
+          "va": "0x4034f4",
+          "assembly": "ret         4"
+        }
+      ],
+      "tool_output_sha256": "6f45b85a1116122a8a5a91d81466bcf408f27534c432003b52ef2980a820fd03"
+    },
+    {
+      "start_va": "0x408c28",
+      "end_exclusive_va": "0x408c6e",
+      "instructions": [
+        {
+          "va": "0x408c28",
+          "assembly": "push        ebp"
+        },
+        {
+          "va": "0x408c29",
+          "assembly": "mov         ebp,esp"
+        },
+        {
+          "va": "0x408c2b",
+          "assembly": "mov         eax,dword ptr ds:[0042A618h]"
+        },
+        {
+          "va": "0x408c30",
+          "assembly": "push        eax"
+        },
+        {
+          "va": "0x408c31",
+          "assembly": "call        00404AF8"
+        },
+        {
+          "va": "0x408c36",
+          "assembly": "movzx       edx,word ptr [ebp+8]"
+        },
+        {
+          "va": "0x408c3a",
+          "assembly": "cmp         edx,82h"
+        },
+        {
+          "va": "0x408c40",
+          "assembly": "jne         00408C4F"
+        },
+        {
+          "va": "0x408c42",
+          "assembly": "xor         ecx,ecx"
+        },
+        {
+          "va": "0x408c44",
+          "assembly": "mov         cl,al"
+        },
+        {
+          "va": "0x408c46",
+          "assembly": "or          word ptr ds:[0042757Ch],cx"
+        },
+        {
+          "va": "0x408c4d",
+          "assembly": "jmp         00408C6A"
+        },
+        {
+          "va": "0x408c4f",
+          "assembly": "xor         edx,edx"
+        },
+        {
+          "va": "0x408c51",
+          "assembly": "mov         dl,al"
+        },
+        {
+          "va": "0x408c53",
+          "assembly": "not         dx"
+        },
+        {
+          "va": "0x408c56",
+          "assembly": "and         word ptr ds:[0042757Ch],dx"
+        },
+        {
+          "va": "0x408c5d",
+          "assembly": "test        al,1"
+        },
+        {
+          "va": "0x408c5f",
+          "assembly": "je          00408C6A"
+        },
+        {
+          "va": "0x408c61",
+          "assembly": "mov         word ptr ds:[00427644h],0"
+        },
+        {
+          "va": "0x408c6a",
+          "assembly": "pop         ebp"
+        },
+        {
+          "va": "0x408c6b",
+          "assembly": "ret         4"
+        }
+      ],
+      "tool_output_sha256": "8fe97b125e0ac2d51e779e3c44cd903058138be931997fdb7d98d481d27aa39f"
+    }
+  ],
+  "write_protocol_verified": false,
+  "physical_recovery_verified": false,
+  "live_write_enabled": false
+}

@@ -40,8 +40,9 @@ using third operand as offset; B0 views reverse byte stepping, so this must not 
 flattened to forward memcpy. The exchange call is at `0x1CE8`. Response comparisons
 select distinct `0x73` and `0x77` branches. A failure branch calls helper `0x028E`;
 the backoff path delays, subtracts one from the attempt counter (`0x1DD4`) and
-tests flag `0x20` before returning to `0x1CCA`. Its flag producer is untraced, so
-neither an executable retry policy nor acknowledgment success is proven.
+tests flag `0x20` before returning to `0x1CCA`. The subsequent [retry/flag audit](VM_RETRY_FAILURE.md) resolves this immediate
+condition as stored-result nonzero. Executable retry authorization and physical
+acknowledgment success remain unproven.
 Exhaustion sets flag `0x80`. Progress also loops to `0x1BBC`.
 
 Finalization selects `0x36FE` or `0x36FF` according to system reference `0xFF28`,

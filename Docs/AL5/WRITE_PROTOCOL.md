@@ -313,3 +313,5 @@ Host callbacks: [static callback tracing and supplied-buffer CRC inspection](EFI
 [Captured object transform replay](EFILIVE_HOST_IPC.md): all five saved W traces match the installed object input and validator CRC. Device-independent transformation and programming/recovery remain unverified; live writes remain disabled.
 
 [Reconstructed VM programming and recovery flow](VM_PROGRAMMING_FLOW.md): static instruction listing, broader programming bounds, attempt-counter branches, and separate error/stop paths. Full VM semantics and physical recovery remain unverified; the planner keeps live writes disabled.
+
+[VM retry and failure tracing](VM_RETRY_FAILURE.md): flag0x20 stored-zero semantics, per-block attempt counters, receive-drain cleanup, and recovery limits. Live writes and automatic retry authorization remain disabled.

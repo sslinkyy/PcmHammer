@@ -1,0 +1,455 @@
+{
+  "schema_version": 1,
+  "profile": {
+    "matched_instruction_count": 34,
+    "matched_instruction_offsets": [
+      258,
+      268,
+      282,
+      288,
+      298,
+      314,
+      316,
+      404,
+      532,
+      542,
+      554,
+      564,
+      632,
+      654,
+      668,
+      7100,
+      7380,
+      7400,
+      7406,
+      7426,
+      7436,
+      7442,
+      7452,
+      7458,
+      7468,
+      7576,
+      7606,
+      7616,
+      7624,
+      7636,
+      7646,
+      7652,
+      10962,
+      11348
+    ],
+    "pool_descriptors": [
+      {
+        "reference": 8570,
+        "tag": 178,
+        "width_bits": 16,
+        "initial_stored_value": 0,
+        "source_sha256": "d34e2cf685aa12c7b7c752a58f0bac13f3059f0e351931c40b13c1257fa475fc"
+      },
+      {
+        "reference": 9334,
+        "tag": 177,
+        "width_bits": 8,
+        "initial_stored_value": 1,
+        "source_sha256": "9651e5ddead938f971314ec96dc07ca4a9e3b498d536e16ee710fb382fadcf7b"
+      },
+      {
+        "reference": 9338,
+        "tag": 177,
+        "width_bits": 8,
+        "initial_stored_value": 1,
+        "source_sha256": "9651e5ddead938f971314ec96dc07ca4a9e3b498d536e16ee710fb382fadcf7b"
+      },
+      {
+        "reference": 9390,
+        "tag": 177,
+        "width_bits": 8,
+        "initial_stored_value": 20,
+        "source_sha256": "c875be4f047de2460e456a041eb18b4d3b46ce9f7a6205f19c74119ca2621db7"
+      },
+      {
+        "reference": 9394,
+        "tag": 177,
+        "width_bits": 8,
+        "initial_stored_value": 0,
+        "source_sha256": "b2330055cac0e1732eaa4d32051fc5d723807a452179004c7357a2477973866f"
+      },
+      {
+        "reference": 9348,
+        "tag": 178,
+        "width_bits": 16,
+        "initial_stored_value": 250,
+        "source_sha256": "c65dca89d8560b2c44cb697ed74705a2057fa6d0b0cdabf742f6020cd34362b9"
+      },
+      {
+        "reference": 9352,
+        "tag": 180,
+        "width_bits": 32,
+        "initial_stored_value": 250,
+        "source_sha256": "cbd06d8fcf318c738812b6db19d881535863ac681b18973eda7b3822f7c227e4"
+      },
+      {
+        "reference": 8702,
+        "tag": 180,
+        "width_bits": 32,
+        "initial_stored_value": 0,
+        "source_sha256": "2fc888005638990b98ece160fb8f7a95fd43011a03073193cfee044dbf41a4e3"
+      }
+    ],
+    "helper028e_inline_bytes": "6c fe f0 28 00",
+    "helper028e_payload_sha256": "93fc79f7a7dbc1c54642c656da86a1b534b3f4b2e19dc2a241e0ef8b6addcb9f",
+    "packet_semantics_verified": false
+  },
+  "flag20": {
+    "after_opcode12": "Stored width-truncated destination equals zero; not borrow.",
+    "opcode47": "branch when20 set",
+    "opcode48": "branch when20 clear",
+    "global_numeric_meaning_assumed": false
+  },
+  "isolated_counter_models": {
+    "programming_attempts": {
+      "pool_reference": 8570,
+      "width_bits": 16,
+      "initial": 3,
+      "steps": [
+        {
+          "before": 3,
+          "stored_value": 2,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 2,
+          "stored_value": 1,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 1,
+          "stored_value": 0,
+          "flags": 32,
+          "opcode47_branch": true,
+          "opcode48_branch": false
+        }
+      ]
+    },
+    "mismatched_receives": {
+      "pool_reference": 9338,
+      "width_bits": 8,
+      "initial": 8,
+      "steps": [
+        {
+          "before": 8,
+          "stored_value": 7,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 7,
+          "stored_value": 6,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 6,
+          "stored_value": 5,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 5,
+          "stored_value": 4,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 4,
+          "stored_value": 3,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 3,
+          "stored_value": 2,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 2,
+          "stored_value": 1,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 1,
+          "stored_value": 0,
+          "flags": 32,
+          "opcode47_branch": true,
+          "opcode48_branch": false
+        }
+      ]
+    },
+    "helper_drain_receives": {
+      "pool_reference": 9394,
+      "width_bits": 8,
+      "initial": 20,
+      "steps": [
+        {
+          "before": 20,
+          "stored_value": 19,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 19,
+          "stored_value": 18,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 18,
+          "stored_value": 17,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 17,
+          "stored_value": 16,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 16,
+          "stored_value": 15,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 15,
+          "stored_value": 14,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 14,
+          "stored_value": 13,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 13,
+          "stored_value": 12,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 12,
+          "stored_value": 11,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 11,
+          "stored_value": 10,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 10,
+          "stored_value": 9,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 9,
+          "stored_value": 8,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 8,
+          "stored_value": 7,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 7,
+          "stored_value": 6,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 6,
+          "stored_value": 5,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 5,
+          "stored_value": 4,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 4,
+          "stored_value": 3,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 3,
+          "stored_value": 2,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 2,
+          "stored_value": 1,
+          "flags": 0,
+          "opcode47_branch": false,
+          "opcode48_branch": true
+        },
+        {
+          "before": 1,
+          "stored_value": 0,
+          "flags": 32,
+          "opcode47_branch": true,
+          "opcode48_branch": false
+        }
+      ]
+    }
+  },
+  "programming_branches": [
+    {
+      "source": 7406,
+      "condition": "flags &0x81 !=0",
+      "target": 7624,
+      "action": "Call028E then backoff and decrement outer counter."
+    },
+    {
+      "source": 7436,
+      "condition": "extracted response byte==0x77",
+      "target": 7630,
+      "action": "Backoff and decrement; no helper028E call on this branch."
+    },
+    {
+      "source": 7452,
+      "condition": "extracted response byte==0x73",
+      "target": 7544,
+      "action": "Progress branch resets outer counter to3 and updates positions/remaining bytes."
+    },
+    {
+      "source": 7458,
+      "condition": "other extracted response byte",
+      "target": 7630,
+      "action": "Assign status0x600+response, then backoff/decrement."
+    },
+    {
+      "source": 7646,
+      "condition": "stored outer counter nonzero immediately after12",
+      "target": 7370,
+      "action": "Repeat exchange for same built block; per-exchange send budget is assigned1."
+    },
+    {
+      "source": 7652,
+      "condition": "stored outer counter became zero",
+      "target": 7658,
+      "action": "Set80 and return; caller2C54 branches to2A00."
+    }
+  ],
+  "common_exchange": {
+    "entry": 392,
+    "send_call": 68,
+    "receive": 414,
+    "mismatch_decrement": 532,
+    "mismatch_zero_branch": 542,
+    "send_budget_decrement": 554,
+    "send_budget_zero_branch": 564,
+    "failure_flag_set": 620,
+    "reset_on_return": {
+      "send_budget": 3,
+      "timeout_value": 250,
+      "entry": 632
+    },
+    "limits": "Programming assigns budget1 before entry: failure consumes it and returns80 without the inner resend path. Up to8 mismatched candidate responses are counted for each entry. Actual callback results and wire correlation remain unknown."
+  },
+  "helper028e": {
+    "entry": 654,
+    "drain_call": 668,
+    "drain_entry": 258,
+    "drain_timeout_value": 250,
+    "maximum_counted_receives": 20,
+    "break_on_flag80_at": 282,
+    "callback_selector0a_at": 314,
+    "clear_flags_mask": 129,
+    "clear_at": 316,
+    "limits": "Inline bytes are passed to opcode60; no claim that controller received them or that they recover flash. Drain/cleanup can clear observed failure flags before the caller decrements its outer counter. External callback effects remain unknown."
+  },
+  "remaining_byte_loop": {
+    "decrement": 7606,
+    "branch": 7616,
+    "target": 7100,
+    "condition": "stored remaining-byte value nonzero, not unsigned borrow; valid block sizing is required."
+  },
+  "recovery_assessment": "Traced response retry/drain and error cleanup, not interrupted erase/program restoration. Durable marker/storage preservation and power-interruption recovery remain unverified.",
+  "scope": "Static saved-profile matching and isolated integer counter modeling. No VM, callbacks, IPC or adapter/controller execution.",
+  "complete_vm_semantics_verified": false,
+  "write_protocol_verified": false,
+  "physical_recovery_verified": false,
+  "automatic_retry_allowed": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "erase_scope": null,
+  "would_send": [],
+  "erase_packets": [],
+  "program_packets": [],
+  "evidence_inputs": [
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\VM_PROGRAMMING_FLOW.json",
+      "sha256": "f82ee19151b92d34630a4ff68793d6519f1e30e03f79bf0a282604cc9e820ad7"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\VM_FLAG20_STATIC.json",
+      "sha256": "73df3a1c9840b94375acf6438f2dae03576e56e18a99011186d15c28fe1e6b3a"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\VM_RETRY_HELPERS_STATIC.json",
+      "sha256": "de0179fb250a497b1e1beaaabbc36295b62ce50d3e8fcc705864488a95228d18"
+    }
+  ],
+  "generator_sha256": "220978634832b54b08cd8a2aae3b0837eb9257d1a8bf95ec94baad383a91ef82",
+  "instruction_buffer_sha256": "82c9dbbcb4f81b69bcbf2ec6e409962e21c7d84aedcad470c887551fe297d288",
+  "code_sha256": "4c9c8374c1375a7673adb794f48490fdf67538a615f34dec4d2c4f1ff01bf8f4",
+  "trace_sha256": "c63a4b8556edaf74ed671ef63d61cdb7d433face38c6e682f5edae4a50bd1304",
+  "object_sha256": "c55139dda40388f3c04daf1665013cdddd1fbe199bfc5709f613a79d902b7c43",
+  "native_source_sha256": "132832f80d7e5b642033fafc35df4ff3c0f3b19371081d23eacf696c4019ac00",
+  "flag20_arithmetic_predicate_statically_verified": true,
+  "limits": "Only the selected source/profile and counter arithmetic are modeled; no whole-VM execution, wall-clock timing, complete callback side effects or physical success/recovery proof."
+}

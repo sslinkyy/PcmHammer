@@ -80,7 +80,18 @@ def trace_assessment():
     flow_bytes = (Path(__file__).resolve().parents[2] / 'Docs/AL5/VM_PROGRAMMING_FLOW.json').read_bytes()
     flow = json.loads(flow_bytes)
     dispatch_bytes = (Path(__file__).resolve().parents[2] / 'Docs/AL5/EFILIVE_VM_DISPATCH.json').read_bytes()
-    return {'vm_control_flow_assessment': {
+    retry_bytes = (Path(__file__).resolve().parents[2] / 'Docs/AL5/VM_RETRY_FAILURE_AUDIT.json').read_bytes()
+    return {'vm_retry_failure_assessment': {
+                'evidence': 'Docs/AL5/VM_RETRY_FAILURE_AUDIT.json',
+                'evidence_sha256': sha256(retry_bytes),
+                'implementation': 'Tools/AL5/audit_vm_retries.py',
+                'implementation_sha256': sha256((Path(__file__).parent / 'audit_vm_retries.py').read_bytes()),
+                'flag20_arithmetic_predicate_statically_verified': True,
+                'complete_vm_semantics_verified': False,
+                'automatic_retry_allowed': False,
+                'write_protocol_verified': False,
+                'physical_recovery_verified': False},
+            'vm_control_flow_assessment': {
                 'evidence': 'Docs/AL5/VM_PROGRAMMING_FLOW.json',
                 'evidence_sha256': sha256(flow_bytes),
                 'static_evidence': 'Docs/AL5/EFILIVE_VM_DISPATCH.json',
