@@ -12,6 +12,7 @@ import os
 from pathlib import Path
 import re
 import time
+from obdx_speed import SpeedEvidence
 
 
 class ProtocolError(ValueError):
@@ -399,6 +400,7 @@ class Session:
 def replay_jsonl(path, emit, timestamps=False):
     """Reconstruct recorded RX only. This function has no transport authority."""
     decoder = Decoder(timestamps, track_timestamp_status=True)
+    speed = SpeedEvidence(emit)
     digest = hashlib.sha256()
     counts = {'network_frames': 0, 'adapter_frames': 0, 'adapter_errors': 0,
               'outgoing_guard_violations': 0, 'serial_chunks': 0,
@@ -430,6 +432,8 @@ def replay_jsonl(path, emit, timestamps=False):
                 else:
                     raise ProtocolError('Outgoing bytes precede known API')
                 counts['outgoing_guard_violations'] += not allowed
+                if api == 'dvi' and len(wire) >= 3 and len(wire) == wire[1] + 3 and sum(wire) & 255 == 255:
+                    speed.outgoing(wire[0], wire[2:-1], line_number)
                 emit({'kind': 'recorded_tx_audit', 'source_line': line_number,
                       'raw_hex': wire.hex(), 'allowed_by_capture_guard': allowed})
             elif kind == 'serial_rx':
@@ -458,6 +462,7 @@ def replay_jsonl(path, emit, timestamps=False):
                     decoded['source_line_end'] = line_number
                     decoded['host_monotonic_ns_at_chunk_end'] = row.get('host_monotonic_ns')
                     emit(decoded)
+                    speed.received(decoded)
                     counts['network_frames' if decoded['kind'] == 'network'
                            else 'adapter_frames'] += 1
                     counts['adapter_errors'] += decoded['command'] == 0x7F
@@ -472,10 +477,13 @@ def replay_jsonl(path, emit, timestamps=False):
     if api is None:
         raise ProtocolError('No transport declaration in source JSONL')
     decoder.finish()
+    speed_summary = speed.summary()
     emit({'kind': 'replay_summary', 'input_path': str(path.resolve()),
           'input_sha256': digest.hexdigest(), **counts,
           'capture_completeness': 'not established',
-          'timestamp_byte_order': 'unknown'})
+          'timestamp_byte_order': 'unknown', 'speed_analysis': speed_summary,
+          'speed_analysis_source_sha256': hashlib.sha256(
+              Path(__file__).with_name('obdx_speed.py').read_bytes()).hexdigest()})
 
 
 def main():

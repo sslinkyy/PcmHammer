@@ -48,7 +48,7 @@ responses are retained instead of assuming VT identity/capability widths.
 Run from `Tools/AL5`. Outputs must be new files; existing files are never replaced.
 
 ```powershell
-py -3.13 -m unittest -v test_obdx_capture
+py -3.13 -m unittest -v test_obdx_capture test_obdx_speed
 
 # Adapter-only inspection; DVI is the observed current API on the user's GT.
 py -3.13 obdx_capture.py inspect --port COM9 --api dvi --output GT_identity_new.jsonl
@@ -229,3 +229,12 @@ Actual receive coverage, dropped frames, rate changes and physical filtering
 behavior still need separate reception validation. The source-pinned
 [mask report](OBDX_MASK_CHECKS_20261011.json) records the cases and outgoing audit;
 raw logs remain ignored under `LocalOnly/OBDXCapture/`.
+
+## Offline speed-transition handling
+
+Replay now annotates recorded speed settings and generic PcmHammer negotiation
+candidates, preserving the distinction between adapter configuration, echoes,
+separate GET readbacks and unknown physical bus speed. It marks possible capture
+gaps without switching anything. See [speed evidence and validation](OBDX_SPEED_TRANSITIONS.md)
+for framing rules, source scope and limitations. Thirty-nine offline tests pass;
+actual receive/transition behavior and live automatic following remain unproven.

@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "analysis_scope": "offline retained adapter-local records; generic PcmHammer negotiation patterns",
+  "source_replay_path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\OBDXCapture\\GT_SPEED_REPLAY_20261011.jsonl",
+  "source_replay_sha256": "d2f77f7d748ae0f87cb140b8ea3d630c449ae1bb07483f8a7e628c72810d0b74",
+  "input_path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\OBDXCapture\\GT_RECONNECTED_DVI_PROBE_20261011.jsonl",
+  "input_sha256": "ff60a05c5651ba8482ad2f810318a22d10102295042721bbf6dee2b0a5ef14d1",
+  "analyzer_sha256": "a763a262b8ef7c28c66840822162ee2312a98dc7c33cfe4799832429f3105218",
+  "pcmhammer_sources": [
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Apps\\PcmLibrary\\Messages\\Protocol.Speed.cs",
+      "sha256": "710b4220d900b70bd9b49190f2825336a175b82cf8dc2d2611d53d674ac64faa"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Apps\\PcmLibrary\\Vehicle.Kernel.cs",
+      "sha256": "f4b33c05d26b1d522d873ef361cfea7024988ff10319a9e155a04987431d2591"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Apps\\PcmLibrary\\Devices\\OBDXProDevice.cs",
+      "sha256": "c1045772de7c182fc19aa59e8c1c2b22139162efbec57bba3e851736c2ba8e51"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Apps\\PcmLibrary\\AL5ReadOnlyProbe.cs",
+      "sha256": "8cd97c34f998f858e60e4eb1e44f8d1de649580b8ab0e2e966926955176998d6"
+    }
+  ],
+  "network_frames": 0,
+  "outgoing_guard_violations": 0,
+  "adapter_speed_readback_sequence": [
+    "1x",
+    "4x",
+    "1x"
+  ],
+  "analysis": {
+    "actual_bus_speed": "unknown",
+    "automatic_speed_tracking": false,
+    "event_counts": {
+      "adapter_speed_readback": 3,
+      "adapter_speed_set_acknowledged": 2,
+      "adapter_speed_set_requested": 2
+    },
+    "final_adapter_speed_readback": "1x",
+    "gap_risk_counts": {},
+    "transition_continuity_proven": false
+  },
+  "hardware_access_this_run": false,
+  "efilive_al5_speed_sequence_verified": false
+}
