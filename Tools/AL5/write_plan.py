@@ -35,9 +35,17 @@ LOADER_STALE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_S
 TRACE_WRAPPER_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/TRACE_WRAPPER_AUDIT.json'
 FIFO_CANDIDATE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/FIFO_CANDIDATE_COMPARISON.json'
 DEVICE_TRACE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/AUTOCAL_DEVICE_TRACE_INVENTORY.json'
+SESSION_CHRONOLOGY_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/SESSION_CHRONOLOGY.json'
+VM_OBJECT_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/EFILIVE_VM_OBJECT_INVENTORY.json'
+VM_STATIC_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/EFILIVE_VM_OBJECT_LOADING.json'
 
 
 def trace_assessment():
+    session_bytes = SESSION_CHRONOLOGY_EVIDENCE.read_bytes()
+    session = json.loads(session_bytes)
+    object_bytes = VM_OBJECT_EVIDENCE.read_bytes()
+    objects = json.loads(object_bytes)
+    static_bytes = VM_STATIC_EVIDENCE.read_bytes()
     data=TRACE_INVENTORY_EVIDENCE.read_bytes()
     report=json.loads(data)
     decoded_data=TRACE_DECODE_EVIDENCE.read_bytes()
@@ -62,7 +70,24 @@ def trace_assessment():
     fifo=json.loads(fifo_data)
     device_data=DEVICE_TRACE_EVIDENCE.read_bytes()
     device=json.loads(device_data)
-    return {'autocal_device_trace_assessment': {
+    return {'session_chronology_assessment': {
+                'evidence': 'Docs/AL5/SESSION_CHRONOLOGY.json',
+                'evidence_sha256': sha256(session_bytes),
+                'trace_count': session['trace_count'],
+                'upload_candidate_count': sum(t['subtype80_upload_count'] for t in session['traces']),
+                'request_response_pairing_verified': False,
+                'upload_arming_verified': False,
+                'scope': session['scope'], 'limits': session['limits']},
+            'vm_object_loading_assessment': {
+                'evidence': 'Docs/AL5/EFILIVE_VM_OBJECT_INVENTORY.json',
+                'evidence_sha256': sha256(object_bytes),
+                'static_evidence': 'Docs/AL5/EFILIVE_VM_OBJECT_LOADING.json',
+                'static_evidence_sha256': sha256(static_bytes),
+                'object_count': objects['object_count'],
+                'object_contents_decoded': False,
+                'callback_transform_reproduced': False,
+                'scope': objects['scope'], 'limits': objects['limits']},
+            'autocal_device_trace_assessment': {
                 'evidence': 'Docs/AL5/AUTOCAL_DEVICE_TRACE_INVENTORY.json',
                 'evidence_sha256': sha256(device_data),
                 'trace_count': device['trace_count'],

@@ -1,7 +1,7 @@
 {
   "scope": "Every binary record in supplied saved W traces inventoried; known wrappers accept module/global/tester address variants. Unsupported records scanned for diagnostic signatures only.",
   "limits": "Complete container framing is not complete bus capture. Unframed signatures are not messages; checksum, missing traffic, programming outcomes and recovery remain unverified. No private text, loader or raw payload exported.",
-  "generator_sha256": "49e2df583de66ff7e11aa190d3f5139371f0d0686addcefa029e5207635578f4",
+  "generator_sha256": "c824d113b63244d7e5d56b7bd53e3870fc155e666d897c12a570f1bdd69bd608",
   "trace_count": 5,
   "traces": [
     {

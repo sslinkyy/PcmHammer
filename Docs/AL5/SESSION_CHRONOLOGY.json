@@ -1,0 +1,655 @@
+{
+  "schema_version": 2,
+  "scope": "Saved framed Mode34, Mode74/44 and subtype80 chronology only.",
+  "limits": "Links enumerate all preceding address-compatible candidates without a time cutoff or unique pairing claim. Global requests can have module responses. Repeated or stale responses cannot prove arming; startup and boot dispatcher share 7444 bytes. Container order/timestamps do not establish physical bus order/timing or complete capture. Private payloads, keys and executable bytes are not exported.",
+  "generator_sha256": "15a1e258a2ad43c31378adc32827299cc304c061fd82d4b4acb266fb0701da44",
+  "trace_count": 5,
+  "traces": [
+    {
+      "source_name": "20260917_151435_AL5_W.htx",
+      "source_sha256": "c63a4b8556edaf74ed671ef63d61cdb7d433face38c6e682f5edae4a50bd1304",
+      "decoded_sha256": "664ccf4a878500f5998ffa4238924cb31f57020880a46a99eb5b23d5347664cc",
+      "record_count": 224,
+      "ordinal_origin": "zero_based_all_decoded_records",
+      "timestamp_origin": "first_decoded_record",
+      "timestamps_monotonic": true,
+      "candidate_ordinal_indices": {
+        "mode34:0xf0": {
+          "kind": "mode34",
+          "tester": "0xf0",
+          "ordinals": [
+            97,
+            137
+          ]
+        },
+        "mode34:0xf1": {
+          "kind": "mode34",
+          "tester": "0xf1",
+          "ordinals": []
+        },
+        "mode74_44:0xf0": {
+          "kind": "mode74_44",
+          "tester": "0xf0",
+          "ordinals": [
+            100,
+            138
+          ]
+        },
+        "mode74_44:0xf1": {
+          "kind": "mode74_44",
+          "tester": "0xf1",
+          "ordinals": []
+        }
+      },
+      "candidate_reference_semantics": "Each reference selects ordinals[0:end_exclusive] from its named shared index; later candidates are excluded. Indices combine module/global requests per tester because recognized AL5 responses originate from module 0x18.",
+      "events": [
+        {
+          "kind": "mode34_request_candidate",
+          "record_ordinal": 97,
+          "record_offset": "0xb761",
+          "elapsed_ms": 21212.0,
+          "direction_inference": "host_tx_candidate",
+          "priority": "0x6c",
+          "destination": "0x18",
+          "source": "0xf0",
+          "message_bytes": 4,
+          "message_sha256": "d3aa7114730149d91fe372e59cb1ced681f792b0106a74eba912b966ddc104fe",
+          "identical_message_candidate_count": 2
+        },
+        {
+          "kind": "mode74_44_response_candidate",
+          "record_ordinal": 100,
+          "record_offset": "0xb7cc",
+          "elapsed_ms": 21490.0,
+          "direction_inference": "device_rx_candidate",
+          "priority": "0x6c",
+          "destination": "0xf0",
+          "source": "0x18",
+          "message_bytes": 5,
+          "message_sha256": "5642e3f39efce51ceebf927bb53f090ba853a60db2355fa6eeeda031f90f10a3",
+          "preceding_route_compatible_requests": {
+            "index": "mode34:0xf0",
+            "end_exclusive": 1
+          },
+          "preceding_route_compatible_request_count": 1,
+          "request_pairing_verified": false,
+          "pairing_ambiguities": [
+            "application_startup_and_boot_dispatcher_share_response"
+          ],
+          "identical_message_candidate_count": 2
+        },
+        {
+          "kind": "mode34_request_candidate",
+          "record_ordinal": 137,
+          "record_offset": "0xbd20",
+          "elapsed_ms": 23216.0,
+          "direction_inference": "host_tx_candidate",
+          "priority": "0x6c",
+          "destination": "0x18",
+          "source": "0xf0",
+          "message_bytes": 4,
+          "message_sha256": "d3aa7114730149d91fe372e59cb1ced681f792b0106a74eba912b966ddc104fe",
+          "identical_message_candidate_count": 2
+        },
+        {
+          "kind": "mode74_44_response_candidate",
+          "record_ordinal": 138,
+          "record_offset": "0xbd44",
+          "elapsed_ms": 23228.0,
+          "direction_inference": "device_rx_candidate",
+          "priority": "0x6c",
+          "destination": "0xf0",
+          "source": "0x18",
+          "message_bytes": 5,
+          "message_sha256": "5642e3f39efce51ceebf927bb53f090ba853a60db2355fa6eeeda031f90f10a3",
+          "preceding_route_compatible_requests": {
+            "index": "mode34:0xf0",
+            "end_exclusive": 2
+          },
+          "preceding_route_compatible_request_count": 2,
+          "request_pairing_verified": false,
+          "pairing_ambiguities": [
+            "application_startup_and_boot_dispatcher_share_response",
+            "multiple_preceding_requests_or_retries"
+          ],
+          "identical_message_candidate_count": 2
+        },
+        {
+          "kind": "subtype80_upload_candidate",
+          "record_ordinal": 139,
+          "record_offset": "0xbd6a",
+          "elapsed_ms": 23231.0,
+          "direction_inference": "host_tx_candidate",
+          "priority": "0x6d",
+          "destination": "0x18",
+          "source": "0xf0",
+          "message_bytes": 1602,
+          "message_sha256": "82beee48e3e5095c5df8ddfe34deafe362bda14a3cb91856b5cb4a5be0555abe",
+          "preceding_route_compatible_responses": {
+            "index": "mode74_44:0xf0",
+            "end_exclusive": 2
+          },
+          "preceding_route_compatible_requests": {
+            "index": "mode34:0xf0",
+            "end_exclusive": 2
+          },
+          "preceding_route_compatible_response_count": 2,
+          "preceding_route_compatible_request_count": 2,
+          "preceding_orphan_response_count": 0,
+          "pairing_ambiguities": [
+            "response_does_not_prove_upload_arming",
+            "prior_response_may_be_stale_or_unrelated",
+            "multiple_preceding_responses"
+          ],
+          "upload_arming_verified": false,
+          "identical_message_candidate_count": 1
+        }
+      ],
+      "mode34_request_count": 2,
+      "mode74_44_response_count": 2,
+      "subtype80_upload_count": 1,
+      "application_entry_verified": false,
+      "upload_arming_verified": false,
+      "request_response_pairing_verified": false,
+      "physical_timing_verified": false,
+      "operation_outcome": null
+    },
+    {
+      "source_name": "20260917_152044_AL5_W.htx",
+      "source_sha256": "85887d279593408458afe1390151d1dc1467a3de5d347503f77680100ed04469",
+      "decoded_sha256": "20b4c6c4720a8df77b85fafdaf10f0ff1cf218dbb6ef70a2dfd302ac5ed4c6b9",
+      "record_count": 187,
+      "ordinal_origin": "zero_based_all_decoded_records",
+      "timestamp_origin": "first_decoded_record",
+      "timestamps_monotonic": true,
+      "candidate_ordinal_indices": {
+        "mode34:0xf0": {
+          "kind": "mode34",
+          "tester": "0xf0",
+          "ordinals": []
+        },
+        "mode34:0xf1": {
+          "kind": "mode34",
+          "tester": "0xf1",
+          "ordinals": []
+        },
+        "mode74_44:0xf0": {
+          "kind": "mode74_44",
+          "tester": "0xf0",
+          "ordinals": []
+        },
+        "mode74_44:0xf1": {
+          "kind": "mode74_44",
+          "tester": "0xf1",
+          "ordinals": []
+        }
+      },
+      "candidate_reference_semantics": "Each reference selects ordinals[0:end_exclusive] from its named shared index; later candidates are excluded. Indices combine module/global requests per tester because recognized AL5 responses originate from module 0x18.",
+      "events": [],
+      "mode34_request_count": 0,
+      "mode74_44_response_count": 0,
+      "subtype80_upload_count": 0,
+      "application_entry_verified": false,
+      "upload_arming_verified": false,
+      "request_response_pairing_verified": false,
+      "physical_timing_verified": false,
+      "operation_outcome": null
+    },
+    {
+      "source_name": "20260917_152205_AL5_W.htx",
+      "source_sha256": "8ee51aed10ccdd5b76fa238d5c4c7e8c848f9db96508b5dc21391e9e3a8de75a",
+      "decoded_sha256": "d0742082ca2bff67e6a43d86029f360313b4972eee1375e2e0ff149dbdb4badf",
+      "record_count": 204,
+      "ordinal_origin": "zero_based_all_decoded_records",
+      "timestamp_origin": "first_decoded_record",
+      "timestamps_monotonic": true,
+      "candidate_ordinal_indices": {
+        "mode34:0xf0": {
+          "kind": "mode34",
+          "tester": "0xf0",
+          "ordinals": [
+            97,
+            119
+          ]
+        },
+        "mode34:0xf1": {
+          "kind": "mode34",
+          "tester": "0xf1",
+          "ordinals": []
+        },
+        "mode74_44:0xf0": {
+          "kind": "mode74_44",
+          "tester": "0xf0",
+          "ordinals": [
+            100,
+            120
+          ]
+        },
+        "mode74_44:0xf1": {
+          "kind": "mode74_44",
+          "tester": "0xf1",
+          "ordinals": []
+        }
+      },
+      "candidate_reference_semantics": "Each reference selects ordinals[0:end_exclusive] from its named shared index; later candidates are excluded. Indices combine module/global requests per tester because recognized AL5 responses originate from module 0x18.",
+      "events": [
+        {
+          "kind": "mode34_request_candidate",
+          "record_ordinal": 97,
+          "record_offset": "0xb761",
+          "elapsed_ms": 3896.0,
+          "direction_inference": "host_tx_candidate",
+          "priority": "0x6c",
+          "destination": "0x18",
+          "source": "0xf0",
+          "message_bytes": 4,
+          "message_sha256": "d3aa7114730149d91fe372e59cb1ced681f792b0106a74eba912b966ddc104fe",
+          "identical_message_candidate_count": 2
+        },
+        {
+          "kind": "mode74_44_response_candidate",
+          "record_ordinal": 100,
+          "record_offset": "0xb7cc",
+          "elapsed_ms": 4175.0,
+          "direction_inference": "device_rx_candidate",
+          "priority": "0x6c",
+          "destination": "0xf0",
+          "source": "0x18",
+          "message_bytes": 5,
+          "message_sha256": "5642e3f39efce51ceebf927bb53f090ba853a60db2355fa6eeeda031f90f10a3",
+          "preceding_route_compatible_requests": {
+            "index": "mode34:0xf0",
+            "end_exclusive": 1
+          },
+          "preceding_route_compatible_request_count": 1,
+          "request_pairing_verified": false,
+          "pairing_ambiguities": [
+            "application_startup_and_boot_dispatcher_share_response"
+          ],
+          "identical_message_candidate_count": 2
+        },
+        {
+          "kind": "mode34_request_candidate",
+          "record_ordinal": 119,
+          "record_offset": "0xba8d",
+          "elapsed_ms": 4535.0,
+          "direction_inference": "host_tx_candidate",
+          "priority": "0x6c",
+          "destination": "0x18",
+          "source": "0xf0",
+          "message_bytes": 4,
+          "message_sha256": "d3aa7114730149d91fe372e59cb1ced681f792b0106a74eba912b966ddc104fe",
+          "identical_message_candidate_count": 2
+        },
+        {
+          "kind": "mode74_44_response_candidate",
+          "record_ordinal": 120,
+          "record_offset": "0xbab1",
+          "elapsed_ms": 4546.0,
+          "direction_inference": "device_rx_candidate",
+          "priority": "0x6c",
+          "destination": "0xf0",
+          "source": "0x18",
+          "message_bytes": 5,
+          "message_sha256": "5642e3f39efce51ceebf927bb53f090ba853a60db2355fa6eeeda031f90f10a3",
+          "preceding_route_compatible_requests": {
+            "index": "mode34:0xf0",
+            "end_exclusive": 2
+          },
+          "preceding_route_compatible_request_count": 2,
+          "request_pairing_verified": false,
+          "pairing_ambiguities": [
+            "application_startup_and_boot_dispatcher_share_response",
+            "multiple_preceding_requests_or_retries"
+          ],
+          "identical_message_candidate_count": 2
+        },
+        {
+          "kind": "subtype80_upload_candidate",
+          "record_ordinal": 121,
+          "record_offset": "0xbad7",
+          "elapsed_ms": 4547.999,
+          "direction_inference": "host_tx_candidate",
+          "priority": "0x6d",
+          "destination": "0x18",
+          "source": "0xf0",
+          "message_bytes": 1602,
+          "message_sha256": "82beee48e3e5095c5df8ddfe34deafe362bda14a3cb91856b5cb4a5be0555abe",
+          "preceding_route_compatible_responses": {
+            "index": "mode74_44:0xf0",
+            "end_exclusive": 2
+          },
+          "preceding_route_compatible_requests": {
+            "index": "mode34:0xf0",
+            "end_exclusive": 2
+          },
+          "preceding_route_compatible_response_count": 2,
+          "preceding_route_compatible_request_count": 2,
+          "preceding_orphan_response_count": 0,
+          "pairing_ambiguities": [
+            "response_does_not_prove_upload_arming",
+            "prior_response_may_be_stale_or_unrelated",
+            "multiple_preceding_responses"
+          ],
+          "upload_arming_verified": false,
+          "identical_message_candidate_count": 1
+        }
+      ],
+      "mode34_request_count": 2,
+      "mode74_44_response_count": 2,
+      "subtype80_upload_count": 1,
+      "application_entry_verified": false,
+      "upload_arming_verified": false,
+      "request_response_pairing_verified": false,
+      "physical_timing_verified": false,
+      "operation_outcome": null
+    },
+    {
+      "source_name": "20260917_205638_AL5_W.htx",
+      "source_sha256": "61ccb8cd085202f8154174a83df82f51d35e27a522bebbc090d328bb9a05adea",
+      "decoded_sha256": "134ee46fe3467891a19ae7d4297a86327cfb91056ab38005ecb4d0ff623c8e2f",
+      "record_count": 203,
+      "ordinal_origin": "zero_based_all_decoded_records",
+      "timestamp_origin": "first_decoded_record",
+      "timestamps_monotonic": true,
+      "candidate_ordinal_indices": {
+        "mode34:0xf0": {
+          "kind": "mode34",
+          "tester": "0xf0",
+          "ordinals": [
+            97,
+            119
+          ]
+        },
+        "mode34:0xf1": {
+          "kind": "mode34",
+          "tester": "0xf1",
+          "ordinals": []
+        },
+        "mode74_44:0xf0": {
+          "kind": "mode74_44",
+          "tester": "0xf0",
+          "ordinals": [
+            100,
+            120
+          ]
+        },
+        "mode74_44:0xf1": {
+          "kind": "mode74_44",
+          "tester": "0xf1",
+          "ordinals": []
+        }
+      },
+      "candidate_reference_semantics": "Each reference selects ordinals[0:end_exclusive] from its named shared index; later candidates are excluded. Indices combine module/global requests per tester because recognized AL5 responses originate from module 0x18.",
+      "events": [
+        {
+          "kind": "mode34_request_candidate",
+          "record_ordinal": 97,
+          "record_offset": "0xb761",
+          "elapsed_ms": 4033.0,
+          "direction_inference": "host_tx_candidate",
+          "priority": "0x6c",
+          "destination": "0x18",
+          "source": "0xf0",
+          "message_bytes": 4,
+          "message_sha256": "d3aa7114730149d91fe372e59cb1ced681f792b0106a74eba912b966ddc104fe",
+          "identical_message_candidate_count": 2
+        },
+        {
+          "kind": "mode74_44_response_candidate",
+          "record_ordinal": 100,
+          "record_offset": "0xb7cc",
+          "elapsed_ms": 4311.0,
+          "direction_inference": "device_rx_candidate",
+          "priority": "0x6c",
+          "destination": "0xf0",
+          "source": "0x18",
+          "message_bytes": 5,
+          "message_sha256": "5642e3f39efce51ceebf927bb53f090ba853a60db2355fa6eeeda031f90f10a3",
+          "preceding_route_compatible_requests": {
+            "index": "mode34:0xf0",
+            "end_exclusive": 1
+          },
+          "preceding_route_compatible_request_count": 1,
+          "request_pairing_verified": false,
+          "pairing_ambiguities": [
+            "application_startup_and_boot_dispatcher_share_response"
+          ],
+          "identical_message_candidate_count": 2
+        },
+        {
+          "kind": "mode34_request_candidate",
+          "record_ordinal": 119,
+          "record_offset": "0xba8d",
+          "elapsed_ms": 4666.0,
+          "direction_inference": "host_tx_candidate",
+          "priority": "0x6c",
+          "destination": "0x18",
+          "source": "0xf0",
+          "message_bytes": 4,
+          "message_sha256": "d3aa7114730149d91fe372e59cb1ced681f792b0106a74eba912b966ddc104fe",
+          "identical_message_candidate_count": 2
+        },
+        {
+          "kind": "mode74_44_response_candidate",
+          "record_ordinal": 120,
+          "record_offset": "0xbab1",
+          "elapsed_ms": 4677.0,
+          "direction_inference": "device_rx_candidate",
+          "priority": "0x6c",
+          "destination": "0xf0",
+          "source": "0x18",
+          "message_bytes": 5,
+          "message_sha256": "5642e3f39efce51ceebf927bb53f090ba853a60db2355fa6eeeda031f90f10a3",
+          "preceding_route_compatible_requests": {
+            "index": "mode34:0xf0",
+            "end_exclusive": 2
+          },
+          "preceding_route_compatible_request_count": 2,
+          "request_pairing_verified": false,
+          "pairing_ambiguities": [
+            "application_startup_and_boot_dispatcher_share_response",
+            "multiple_preceding_requests_or_retries"
+          ],
+          "identical_message_candidate_count": 2
+        },
+        {
+          "kind": "subtype80_upload_candidate",
+          "record_ordinal": 121,
+          "record_offset": "0xbad7",
+          "elapsed_ms": 4678.0,
+          "direction_inference": "host_tx_candidate",
+          "priority": "0x6d",
+          "destination": "0x18",
+          "source": "0xf0",
+          "message_bytes": 1602,
+          "message_sha256": "82beee48e3e5095c5df8ddfe34deafe362bda14a3cb91856b5cb4a5be0555abe",
+          "preceding_route_compatible_responses": {
+            "index": "mode74_44:0xf0",
+            "end_exclusive": 2
+          },
+          "preceding_route_compatible_requests": {
+            "index": "mode34:0xf0",
+            "end_exclusive": 2
+          },
+          "preceding_route_compatible_response_count": 2,
+          "preceding_route_compatible_request_count": 2,
+          "preceding_orphan_response_count": 0,
+          "pairing_ambiguities": [
+            "response_does_not_prove_upload_arming",
+            "prior_response_may_be_stale_or_unrelated",
+            "multiple_preceding_responses"
+          ],
+          "upload_arming_verified": false,
+          "identical_message_candidate_count": 1
+        }
+      ],
+      "mode34_request_count": 2,
+      "mode74_44_response_count": 2,
+      "subtype80_upload_count": 1,
+      "application_entry_verified": false,
+      "upload_arming_verified": false,
+      "request_response_pairing_verified": false,
+      "physical_timing_verified": false,
+      "operation_outcome": null
+    },
+    {
+      "source_name": "20260917_210157_AL5_W.htx",
+      "source_sha256": "751e3d2e1a3458ee37fc6231622435fe9cafde4333ee31c711f5138b167ce314",
+      "decoded_sha256": "24dc7b36764569b6c7fd5c9d2853141c337ec3c51be60afafa9e0935ce1d5376",
+      "record_count": 202,
+      "ordinal_origin": "zero_based_all_decoded_records",
+      "timestamp_origin": "first_decoded_record",
+      "timestamps_monotonic": true,
+      "candidate_ordinal_indices": {
+        "mode34:0xf0": {
+          "kind": "mode34",
+          "tester": "0xf0",
+          "ordinals": [
+            97,
+            119
+          ]
+        },
+        "mode34:0xf1": {
+          "kind": "mode34",
+          "tester": "0xf1",
+          "ordinals": []
+        },
+        "mode74_44:0xf0": {
+          "kind": "mode74_44",
+          "tester": "0xf0",
+          "ordinals": [
+            100,
+            120
+          ]
+        },
+        "mode74_44:0xf1": {
+          "kind": "mode74_44",
+          "tester": "0xf1",
+          "ordinals": []
+        }
+      },
+      "candidate_reference_semantics": "Each reference selects ordinals[0:end_exclusive] from its named shared index; later candidates are excluded. Indices combine module/global requests per tester because recognized AL5 responses originate from module 0x18.",
+      "events": [
+        {
+          "kind": "mode34_request_candidate",
+          "record_ordinal": 97,
+          "record_offset": "0xb761",
+          "elapsed_ms": 3986.0,
+          "direction_inference": "host_tx_candidate",
+          "priority": "0x6c",
+          "destination": "0x18",
+          "source": "0xf0",
+          "message_bytes": 4,
+          "message_sha256": "d3aa7114730149d91fe372e59cb1ced681f792b0106a74eba912b966ddc104fe",
+          "identical_message_candidate_count": 2
+        },
+        {
+          "kind": "mode74_44_response_candidate",
+          "record_ordinal": 100,
+          "record_offset": "0xb7cc",
+          "elapsed_ms": 4254.0,
+          "direction_inference": "device_rx_candidate",
+          "priority": "0x6c",
+          "destination": "0xf0",
+          "source": "0x18",
+          "message_bytes": 5,
+          "message_sha256": "5642e3f39efce51ceebf927bb53f090ba853a60db2355fa6eeeda031f90f10a3",
+          "preceding_route_compatible_requests": {
+            "index": "mode34:0xf0",
+            "end_exclusive": 1
+          },
+          "preceding_route_compatible_request_count": 1,
+          "request_pairing_verified": false,
+          "pairing_ambiguities": [
+            "application_startup_and_boot_dispatcher_share_response"
+          ],
+          "identical_message_candidate_count": 2
+        },
+        {
+          "kind": "mode34_request_candidate",
+          "record_ordinal": 119,
+          "record_offset": "0xba8d",
+          "elapsed_ms": 4611.0,
+          "direction_inference": "host_tx_candidate",
+          "priority": "0x6c",
+          "destination": "0x18",
+          "source": "0xf0",
+          "message_bytes": 4,
+          "message_sha256": "d3aa7114730149d91fe372e59cb1ced681f792b0106a74eba912b966ddc104fe",
+          "identical_message_candidate_count": 2
+        },
+        {
+          "kind": "mode74_44_response_candidate",
+          "record_ordinal": 120,
+          "record_offset": "0xbab1",
+          "elapsed_ms": 4623.0,
+          "direction_inference": "device_rx_candidate",
+          "priority": "0x6c",
+          "destination": "0xf0",
+          "source": "0x18",
+          "message_bytes": 5,
+          "message_sha256": "5642e3f39efce51ceebf927bb53f090ba853a60db2355fa6eeeda031f90f10a3",
+          "preceding_route_compatible_requests": {
+            "index": "mode34:0xf0",
+            "end_exclusive": 2
+          },
+          "preceding_route_compatible_request_count": 2,
+          "request_pairing_verified": false,
+          "pairing_ambiguities": [
+            "application_startup_and_boot_dispatcher_share_response",
+            "multiple_preceding_requests_or_retries"
+          ],
+          "identical_message_candidate_count": 2
+        },
+        {
+          "kind": "subtype80_upload_candidate",
+          "record_ordinal": 121,
+          "record_offset": "0xbad7",
+          "elapsed_ms": 4624.999,
+          "direction_inference": "host_tx_candidate",
+          "priority": "0x6d",
+          "destination": "0x18",
+          "source": "0xf0",
+          "message_bytes": 1602,
+          "message_sha256": "82beee48e3e5095c5df8ddfe34deafe362bda14a3cb91856b5cb4a5be0555abe",
+          "preceding_route_compatible_responses": {
+            "index": "mode74_44:0xf0",
+            "end_exclusive": 2
+          },
+          "preceding_route_compatible_requests": {
+            "index": "mode34:0xf0",
+            "end_exclusive": 2
+          },
+          "preceding_route_compatible_response_count": 2,
+          "preceding_route_compatible_request_count": 2,
+          "preceding_orphan_response_count": 0,
+          "pairing_ambiguities": [
+            "response_does_not_prove_upload_arming",
+            "prior_response_may_be_stale_or_unrelated",
+            "multiple_preceding_responses"
+          ],
+          "upload_arming_verified": false,
+          "identical_message_candidate_count": 1
+        }
+      ],
+      "mode34_request_count": 2,
+      "mode74_44_response_count": 2,
+      "subtype80_upload_count": 1,
+      "application_entry_verified": false,
+      "upload_arming_verified": false,
+      "request_response_pairing_verified": false,
+      "physical_timing_verified": false,
+      "operation_outcome": null
+    }
+  ],
+  "physical_transport_verified": false,
+  "complete_programming_exchange_verified": false,
+  "physical_recovery_verified": false,
+  "ready_to_flash": false,
+  "live_write_enabled": false,
+  "erase_scope": null,
+  "would_send": [],
+  "erase_packets": [],
+  "program_packets": []
+}

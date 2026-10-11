@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "generator_sha256": "7c80250a3c2dbb259cc887e34dd613bf7c7ffa2c1def03f7ea734f3c62d528dd",
+  "scope": "File-only section framing derived from EFILive_VM.dll vmLoad. No proprietary object execution, callbacks, hardware or packets.",
+  "limits": "Framing is not content decoding. Native loader invokes host-supplied callbacks around section transforms and CRC validation; their implementation and effects are unresolved. Unknown header words retain source values.",
+  "static_evidence": "Docs/AL5/EFILIVE_VM_OBJECT_LOADING.json",
+  "object_count": 4,
+  "objects": [
+    {
+      "source_name": "AL5_R.obj",
+      "source_sha256": "baba2be779a0084ab81833e457b91760225d703beda872d0147aa2711eae4609",
+      "bytes": 20314,
+      "header_words_le16": [
+        55422,
+        0,
+        9674,
+        9674,
+        10640,
+        10282,
+        10184,
+        176
+      ],
+      "uninterpreted_header_word_indices": [
+        0,
+        5,
+        6,
+        7
+      ],
+      "code_offset": 0,
+      "code_section_bytes": 9674,
+      "data_offset": 9674,
+      "data_section_bytes": 10640,
+      "code_preamble_bytes": 42,
+      "sections": [
+        {
+          "role": "code_transform_input",
+          "file_offset": 42,
+          "end_exclusive": 9674,
+          "bytes": 9632,
+          "source_sha256": "fe797e9b5116e8e749bb8816dceb0aa59c8458dfaf29e455202bb5befc44b6ef"
+        },
+        {
+          "role": "data_transform_input",
+          "file_offset": 9674,
+          "end_exclusive": 20314,
+          "bytes": 10640,
+          "source_sha256": "929874fa360a4bf6cdea3dc216606e4d7d08f28b6a37afb30a99561056b0d60d"
+        }
+      ],
+      "layout_matches_observed_reader_profile": true,
+      "callback_transform_reproduced": false,
+      "object_contents_decoded": false,
+      "object_crc_verified": false,
+      "object_executed": false
+    },
+    {
+      "source_name": "AL5_F.obj",
+      "source_sha256": "cc9fa070ac968e23ef04ecafcee21e2af2f7b397e99972d7d63a044c2f237ec1",
+      "bytes": 21402,
+      "header_words_le16": [
+        3824,
+        0,
+        9722,
+        9722,
+        11680,
+        10968,
+        10870,
+        176
+      ],
+      "uninterpreted_header_word_indices": [
+        0,
+        5,
+        6,
+        7
+      ],
+      "code_offset": 0,
+      "code_section_bytes": 9722,
+      "data_offset": 9722,
+      "data_section_bytes": 11680,
+      "code_preamble_bytes": 42,
+      "sections": [
+        {
+          "role": "code_transform_input",
+          "file_offset": 42,
+          "end_exclusive": 9722,
+          "bytes": 9680,
+          "source_sha256": "03b64cd06ebbce4aeadc7985c6e8fc1f9dd85af2d740a4c3e50f83d2d77363d8"
+        },
+        {
+          "role": "data_transform_input",
+          "file_offset": 9722,
+          "end_exclusive": 21402,
+          "bytes": 11680,
+          "source_sha256": "223cfead4c73c4a06d871b7a25d976da09af56356513fd609b8b2b9720585618"
+        }
+      ],
+      "layout_matches_observed_reader_profile": true,
+      "callback_transform_reproduced": false,
+      "object_contents_decoded": false,
+      "object_crc_verified": false,
+      "object_executed": false
+    },
+    {
+      "source_name": "AL5_L.obj",
+      "source_sha256": "36a552f243c0adb9fb009558787ab2833868deee633d6224b50dfe893c77e077",
+      "bytes": 21882,
+      "header_words_le16": [
+        46708,
+        0,
+        9706,
+        9706,
+        12176,
+        10968,
+        10870,
+        176
+      ],
+      "uninterpreted_header_word_indices": [
+        0,
+        5,
+        6,
+        7
+      ],
+      "code_offset": 0,
+      "code_section_bytes": 9706,
+      "data_offset": 9706,
+      "data_section_bytes": 12176,
+      "code_preamble_bytes": 42,
+      "sections": [
+        {
+          "role": "code_transform_input",
+          "file_offset": 42,
+          "end_exclusive": 9706,
+          "bytes": 9664,
+          "source_sha256": "050df3a52dd9decda5dab95c9c7524e0fb321c19dd26e3331a207ba90264d69e"
+        },
+        {
+          "role": "data_transform_input",
+          "file_offset": 9706,
+          "end_exclusive": 21882,
+          "bytes": 12176,
+          "source_sha256": "8d65404ee71da44f0483a4563ddc645f64c41a826dcb8dbc930c9a9361b88fce"
+        }
+      ],
+      "layout_matches_observed_reader_profile": true,
+      "callback_transform_reproduced": false,
+      "object_contents_decoded": false,
+      "object_crc_verified": false,
+      "object_executed": false
+    },
+    {
+      "source_name": "AL5_W.obj",
+      "source_sha256": "c55139dda40388f3c04daf1665013cdddd1fbe199bfc5709f613a79d902b7c43",
+      "bytes": 21114,
+      "header_words_le16": [
+        64673,
+        0,
+        9706,
+        9706,
+        11408,
+        10968,
+        10870,
+        176
+      ],
+      "uninterpreted_header_word_indices": [
+        0,
+        5,
+        6,
+        7
+      ],
+      "code_offset": 0,
+      "code_section_bytes": 9706,
+      "data_offset": 9706,
+      "data_section_bytes": 11408,
+      "code_preamble_bytes": 42,
+      "sections": [
+        {
+          "role": "code_transform_input",
+          "file_offset": 42,
+          "end_exclusive": 9706,
+          "bytes": 9664,
+          "source_sha256": "22e40eac3369d7a7646e5a3a8c68c7038b2b1a63ec3fe2447af624f922c780ad"
+        },
+        {
+          "role": "data_transform_input",
+          "file_offset": 9706,
+          "end_exclusive": 21114,
+          "bytes": 11408,
+          "source_sha256": "9a3ee8d457d44bfe82a92a841dc14eb5db47902d7c0ac2d40300d756fa1b241a"
+        }
+      ],
+      "layout_matches_observed_reader_profile": true,
+      "callback_transform_reproduced": false,
+      "object_contents_decoded": false,
+      "object_crc_verified": false,
+      "object_executed": false
+    }
+  ],
+  "write_protocol_verified": false,
+  "physical_recovery_verified": false,
+  "ready_to_flash": false,
+  "live_write_enabled": false,
+  "erase_scope": null,
+  "would_send": [],
+  "erase_packets": [],
+  "program_packets": []
+}

@@ -22,6 +22,25 @@ def key(message):
     return result
 
 
+def framed_message(record):
+    """Return the direction and bytes of one complete known binary wrapper.
+
+    Header classification belongs to the caller; an unrecognized vehicle
+    message can still have a fully supported wrapper.
+    """
+    payload = record['payload']
+    if record['kind'] != 0x42 or len(payload) < 14:
+        return None
+    length = struct.unpack_from('<H', payload, 10)[0]
+    if payload[:2] == b'\x01\x54' and record['channel'] == 1 and len(payload) == length + 14:
+        direction = 'host_tx_candidate'
+    elif payload[:2] == b'\x01\x52' and record['channel'] == 2 and len(payload) == length + 15:
+        direction = 'device_rx_candidate'
+    else:
+        return None
+    return direction, payload[12:12 + length]
+
+
 def analyze(path):
     path = Path(path)
     match = NAME.fullmatch(path.name)
@@ -39,12 +58,8 @@ def analyze(path):
         payload = record['payload']
         # Two bytes identify the wrapper command, not private payload contents.
         shapes[f"channel={record['channel']},command={payload[:2].hex()},subtype={record['subtype']}"] += 1
-        message = None
-        if len(payload) >= 14:
-            length = struct.unpack_from('<H', payload, 10)[0]
-            if (payload[:2] == b'\x01\x54' and record['channel'] == 1 and len(payload) == length + 14 or
-                payload[:2] == b'\x01\x52' and record['channel'] == 2 and len(payload) == length + 15):
-                message = payload[12:12 + length]
+        framed = framed_message(record)
+        message = framed[1] if framed is not None else None
         if message is not None:
             supported += 1
             if recognized_header(message):

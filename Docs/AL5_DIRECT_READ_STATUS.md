@@ -119,3 +119,17 @@ limits; physical controller acceptance and programming remain unproven.
 The AL5 write protocol remains incomplete. A file-only plan emits zero packets,
 and the shared writer rejects raw AL5 segments before transport access. No live
 destructive operation is implemented or authorized.
+
+## Offline EFILive session and VM object analysis - 2026-10-11
+
+The saved write-session chronology now retains exact record identity and all
+preceding Mode 34 / 74 44 candidates. Four of five saved W traces show two
+requests/responses before one subtype-80 upload; these bytes do not prove
+upload arming. See [session chronology](AL5/SESSION_CHRONOLOGY.md).
+
+Static Ghidra analysis of the installed EFILive_VM.dll recovered the object
+section load boundary and its unresolved host callbacks. The new file-only
+inspector validates all four installed AL5 object layouts without decoding or
+executing their contents. See [VM object loading](AL5/EFILIVE_VM_OBJECT_LOADING.md).
+The planner hash-links both reports; live writing, physical transport,
+preservation and recovery remain unverified, and packet lists remain empty.
