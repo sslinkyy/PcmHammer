@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "device_name": "OBDX Pro GT",
+  "firmware": "1.0.2.0",
+  "source_path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\OBDXCapture\\GT_MASK_MATRIX_20261011.jsonl",
+  "source_sha256": "920f23e5f5ee6866bc269eb847125deeb4cc2c4a175fc56d15aba1a91813db77",
+  "recorded_tool_sha256": "58bd7659f81792a004a2c6e0c656125b64feff6cea9cf97dc51e0aeee7728b56",
+  "adapter_tx_count": 39,
+  "vehicle_send_commands": 0,
+  "network_set_values": [
+    0
+  ],
+  "cases": [
+    {
+      "case": "original_bits_off",
+      "kind": "mask_probe_case",
+      "original_hex": "0400ff0001",
+      "readback_hex": "0400ff0001",
+      "readback_matches": false,
+      "requested_hex": "0400ff0000"
+    },
+    {
+      "case": "zero_bits_off",
+      "kind": "mask_probe_case",
+      "original_hex": "0400ff0001",
+      "readback_hex": "0400000001",
+      "readback_matches": false,
+      "requested_hex": "0400000000"
+    },
+    {
+      "case": "zero_bits_on",
+      "kind": "mask_probe_case",
+      "original_hex": "0400ff0001",
+      "readback_hex": "0400000001",
+      "readback_matches": true,
+      "requested_hex": "0400000001"
+    }
+  ],
+  "per_case_restoration_readbacks": [
+    {
+      "case": "original_bits_off",
+      "kind": "mask_probe_restored",
+      "mask_hex": "0400ff0001",
+      "network_readback": "0200"
+    },
+    {
+      "case": "zero_bits_off",
+      "kind": "mask_probe_restored",
+      "mask_hex": "0400ff0001",
+      "network_readback": "0200"
+    },
+    {
+      "case": "zero_bits_on",
+      "kind": "mask_probe_restored",
+      "mask_hex": "0400ff0001",
+      "network_readback": "0200"
+    }
+  ],
+  "capture_target_mask": "0400000001",
+  "mask_flag_internal_behavior": "unknown",
+  "documented_zero_mask_header_matching": "no header bits required to match",
+  "documentation_url": "https://obdxpro.com/Downloads/ReferenceManuals/OBDX%20Pro%20VT%20Reference%20Guide%20v2.pdf",
+  "live_receive_verified": false,
+  "physical_silence_independently_verified": false
+}

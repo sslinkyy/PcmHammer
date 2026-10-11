@@ -264,9 +264,11 @@ class Session:
     def configure_listener(self, speed):
         # capture() has verified OFF before saving the original settings.
         self.set_checked(0x31, [1, 1])
-        for p in ([0, 0, 0], [1, 0, 0], [2, 0, 0, 0],
-                  [3, 0, 0, 0], [4, 0, 0, 0, 0]):
+        for p in ([0, 0, 0], [1, 0, 0], [2, 0, 0, 0], [3, 0, 0, 0]):
             self.set_checked(0x33, p)
+        # A zero mask has no required header bits. Keep its reported flag ON:
+        # GT 1.0.2.0 can echo OFF while GET still reports ON. Require exact GET.
+        self.set_checked(0x33, [4, 0, 0, 0, 1])
         self.set_checked(0x33, [6, 0 if speed == '1x' else 1])
         self.set_checked(0x33, [7, 1])
         self.set_checked(0x33, [8, 1])
@@ -312,6 +314,40 @@ class Session:
         return {'firmware': identity.get('firmware'), 'network_state': '0200',
                 'local_settings_verified': [label for _, _, _, label in SETTINGS
                                             if labels is None or label in labels],
+                'live_receive_verified': False}
+
+    def probe_mask(self):
+        """Bounded mask investigation with network OFF and per-case restoration."""
+        identity = self.inspect()
+        original = bytes.fromhex(identity['mask_filter'])
+        if len(original) != 5 or original[0] != 4 or original[-1] not in (0, 1):
+            raise ProtocolError('Unknown mask layout; investigation blocked')
+        cases = []
+        variants = (('original_bits_off', original[:-1] + b'\x00'),
+                    ('zero_bits_off', b'\x04\x00\x00\x00\x00'),
+                    ('zero_bits_on', b'\x04\x00\x00\x00\x01'))
+        for name, target in variants:
+            if self.request(0x31, [2])['payload_hex'] != '0200':
+                raise ProtocolError('Network is not OFF; mask investigation blocked')
+            try:
+                self.request(0x33, target, echo=True)
+                observed = self.request(0x33, [4])['payload_hex']
+                row = {'kind': 'mask_probe_case', 'case': name,
+                       'requested_hex': target.hex(), 'readback_hex': observed,
+                       'readback_matches': observed == target.hex(),
+                       'original_hex': original.hex()}
+                cases.append(row)
+                self.emit(row)
+            finally:
+                self.set_checked(0x33, original)
+                if self.request(0x31, [2])['payload_hex'] != '0200':
+                    self.set_checked(0x31, [2, 0])
+                    raise ProtocolError('Unexpected network state during mask investigation')
+                self.emit({'kind': 'mask_probe_restored', 'case': name,
+                           'mask_hex': original.hex(), 'network_readback': '0200'})
+        return {'firmware': identity.get('firmware'), 'cases': cases,
+                'network_state': '0200', 'original_mask_restored': True,
+                'neutral_mask_configuration_verified': cases[-1]['readback_matches'],
                 'live_receive_verified': False}
 
     def capture(self, speed, seconds):
@@ -445,7 +481,7 @@ def replay_jsonl(path, emit, timestamps=False):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='mode', required=True)
-    for mode in ('inspect', 'probe', 'capture'):
+    for mode in ('inspect', 'probe', 'mask-probe', 'capture'):
         p = sub.add_parser(mode)
         p.add_argument('--port', required=True)
         p.add_argument('--api', choices=('elm', 'dvi'), default='elm',
@@ -507,6 +543,8 @@ def main():
                         print(json.dumps(session.inspect(), indent=2))
                     elif args.mode == 'probe':
                         print(json.dumps(session.probe_settings(args.setting), indent=2))
+                    elif args.mode == 'mask-probe':
+                        print(json.dumps(session.probe_mask(), indent=2))
                     else:
                         session.capture(args.speed, args.seconds)
                 finally:

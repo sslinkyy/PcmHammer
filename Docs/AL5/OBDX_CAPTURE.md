@@ -20,7 +20,8 @@ OFF and checking readback. This also disables a network left enabled by another
 application. API selection may leave the adapter in DVI mode. Close other serial
 applications before opening the tool; it opens the selected COM port exclusively.
 
-Capture first requests OFF and verifies readback, selects VPW, disables all five header filters,
+Capture first requests OFF and verifies readback, selects VPW, disables the four
+destination/source exact/range filters, sets an enabled zero-bit header mask,
 selects the caller's fixed 1x/4x speed, enables CRC validation/CRC display and
 device timestamps, then requests **LISTEN ONLY (2)** and verifies its readback.
 Each configuration change requires both an echo acknowledgment and a separate
@@ -172,7 +173,9 @@ restored and read back; network remained `0200` (OFF). This could be a setter or
 query implementation issue; the evidence does not identify which. No alternative
 mask values or firmware updates were tried.
 
-Capture now fails before requesting LISTEN ONLY when this discrepancy occurs.
+Capture initially failed before requesting LISTEN ONLY when this discrepancy occurred.
+This was the initial fail-closed response to the disable-flag discrepancy. The
+follow-up below replaces mask disabling with a separately verified neutral mask.
 The previous echo-only configuration checks were insufficient to establish filter
 state. All capture settings and restorations now use separate matching readbacks.
 An offline test reproduces the observed echo/GET disagreement and proves no
@@ -186,3 +189,43 @@ it into a successful capture. No vehicle messages, reception enablement, reset,
 firmware update, speed change in a controller or programming was performed.
 The [bounded local-check report](OBDX_LOCAL_CHECKS_20261011.json) pins the source
 log SHA256 values and outgoing-command audits without publishing device serials.
+
+## Mask investigation and capture fix
+
+The manufacturer's reference explains that `00 00 00` mask bits require none of
+the received header bits to match (section 2.31), and specifies the same three
+mask bytes in the DVI mask setting (section 3.11.5). Capture therefore does not
+need the GT's unresolved mask-OFF flag: it can use `0400000001`, with an exact
+separate readback, while disabling the other four filters.
+
+`mask-probe` performs three bounded adapter-local cases with network OFF and
+restores the exact original mask after each case. On this GT firmware 1.0.2.0:
+
+- Original mask with OFF: `0400ff0000` echoed, GET `0400ff0001`.
+- Zero bits with OFF: `0400000000` echoed, GET `0400000001`.
+- Zero bits with ON: `0400000001` echoed, GET `0400000001` (exact match).
+
+These observations show that mask bytes can change and are reported correctly,
+while the returned flag remains ON for these cases. They do not establish whether
+the setter ignores OFF, the getter misreports the flag, or some other firmware
+rule applies. The tool preserves the distinction; it does not normalize a
+mismatched flag into a successful setting check.
+
+Capture now requests the enabled zero-bit mask and verifies the entire payload.
+Any nonzero mask or other readback mismatch still fails before LISTEN ONLY.
+The existing original-mask restoration remains exact. No firmware change or
+vehicle service is needed for this configuration fix.
+
+```powershell
+py -3.13 obdx_capture.py mask-probe --port COM9 --api dvi --output mask_probe_new.jsonl
+```
+
+Twenty-six offline tests pass, including a model of the observed flag replies,
+successful zero-mask capture configuration, refusal when mask bytes fail to
+change, and stopping when original-mask restoration fails. The real mask probe
+was run with the network OFF throughout; neither capture nor LISTEN ONLY was run.
+The original mask `0400ff0001` and network `0200` were read back after all cases.
+Actual receive coverage, dropped frames, rate changes and physical filtering
+behavior still need separate reception validation. The source-pinned
+[mask report](OBDX_MASK_CHECKS_20261011.json) records the cases and outgoing audit;
+raw logs remain ignored under `LocalOnly/OBDXCapture/`.

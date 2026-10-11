@@ -23,6 +23,7 @@ class FakePort:
         self.reject_listen = False
         self.selected_protocol = b'\x01\x01'
         self.stuck_mask = False
+        self.mask_query_flag_stuck_on = False
         self.settings = {(cmd, sub): bytes([sub]) + bytes(size - 1)
                          for cmd, sub, size, _ in c.SETTINGS}
 
@@ -59,6 +60,8 @@ class FakePort:
         elif (command, p[0]) in self.settings:
             if len(p) == 1:
                 p = self.settings[command, p[0]]
+                if self.mask_query_flag_stuck_on and command == 0x33 and p[0] == 4:
+                    p = p[:-1] + b'\x01'
             else:
                 if not (self.stuck_mask and command == 0x33 and p[0] == 4):
                     self.settings[command, p[0]] = p
@@ -215,6 +218,40 @@ class CaptureTests(unittest.TestCase):
         self.assertEqual(port.state, 0)
         self.assertNotIn(c.packet(0x31, [2, 2]), port.writes)
         self.assertEqual(port.settings[0x33, 4], b'\x04\x00\xff\x00\x01')
+
+    def test_zero_mask_configuration_works_with_stuck_query_flag(self):
+        port, events = FakePort(), []
+        port.mask_query_flag_stuck_on = True
+        port.settings[0x33, 4] = b'\x04\x00\xff\x00\x01'
+        original = dict(port.settings)
+        session = c.Session(port, events.append)
+        session.connect('dvi')
+        result = session.probe_mask()
+        self.assertEqual([r['readback_matches'] for r in result['cases']], [False, False, True])
+        self.assertEqual(original, port.settings)
+        self.assertNotIn(c.packet(0x31, [2, 2]), port.writes)
+        self.assertEqual(port.state, 0)
+        session.capture('1x', 0)
+        self.assertIn(c.packet(0x33, [4, 0, 0, 0, 1]), port.writes)
+        self.assertEqual(original, port.settings)
+        self.assertEqual(port.state, 0)
+
+    def test_mask_probe_restore_failure_stops_remaining_cases(self):
+        port, events = FakePort(), []
+        port.settings[0x33, 4] = b'\x04\x00\xff\x00\x01'
+        session = c.Session(port, events.append)
+        session.connect('dvi')
+        write = port.write
+        def fail_restore(wire):
+            if wire == c.packet(0x33, [4, 0, 255, 0, 1]):
+                raise OSError('Mask restore failed')
+            write(wire)
+        port.write = fail_restore
+        with self.assertRaises(OSError):
+            session.probe_mask()
+        self.assertEqual(len([r for r in events if r['kind'] == 'mask_probe_case']), 1)
+        self.assertNotIn(c.packet(0x33, [4, 0, 0, 0, 1]), port.writes)
+        self.assertEqual(port.state, 0)
 
     def test_selected_probe_does_not_mutate_other_settings(self):
         port = FakePort()
