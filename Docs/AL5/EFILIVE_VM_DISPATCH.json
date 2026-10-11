@@ -1,0 +1,2101 @@
+{
+  "schema_version": 1,
+  "scope": "Offline vmStep fetch, descriptor cursor movement, dispatch tables and selected control-flow profiles. No native/VM execution, callbacks, transport or hardware.",
+  "source": {
+    "path": "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll",
+    "sha256": "132832f80d7e5b642033fafc35df4ff3c0f3b19371081d23eacf696c4019ac00",
+    "bytes": 156016,
+    "preferred_image_base": "0x400000"
+  },
+  "mapping_provenance": "Static preferred VA to PE section raw file offset; addresses are not observed loaded pointers.",
+  "export": {
+    "name": "vmStep",
+    "entry": {
+      "va": "0x40b4d4",
+      "rva": "0xb4d4",
+      "section": ".text",
+      "file_offset": "0xaad4",
+      "mapping": "file bytes"
+    },
+    "dispatch_callsite": "0x40b4e4",
+    "dispatch_target": {
+      "va": "0x403690",
+      "rva": "0x3690",
+      "section": ".text",
+      "file_offset": "0x2c90",
+      "mapping": "file bytes"
+    },
+    "returned_pc": "uint16([0x427534]-0x435618)",
+    "returned_opcode": "low byte of word global0x42757a",
+    "returned_flags": "word0x42757c",
+    "returned_stack_depth": "word0x427578"
+  },
+  "fetch": {
+    "pc_pointer_global_va": "0x427534",
+    "data_base_va": "0x435618",
+    "opcode_load": "LE16 at pointed PC at0x4036a2",
+    "advance": "PC +=2 at0x4036ae",
+    "opcode_global_va": "0x42757a",
+    "normal_success_status": "0x510 at0x40449d",
+    "no_observed_stream_boundary_check_at_fetch": true,
+    "limits": "No claim that every data-section byte is an instruction; start PC and reachability constrain decoding."
+  },
+  "descriptor_reader": {
+    "procedure": {
+      "va": "0x404900",
+      "rva": "0x4900",
+      "section": ".text",
+      "file_offset": "0x3f00",
+      "mapping": "file bytes"
+    },
+    "first_descriptor_callsite": "0x403741",
+    "first_descriptor_pointer_global_va": "0x42a618",
+    "second_descriptor_callsite": "0x403c73",
+    "second_descriptor_pointer_global_va": "0x42a61c",
+    "profiles": [
+      {
+        "tag": "0xa0",
+        "cursor_bytes": 4,
+        "semantics": "Consumes tag and LE16reference; helper0x4044a8 resolves pointer, then zero result falls back to code buffer0x432818+LE16reference. Resolution side effects/identity remain unresolved."
+      },
+      {
+        "tag": "0xa1",
+        "cursor_bytes": 4,
+        "semantics": "Pointer identifies inline tag+word pair; native readers interpret value according to opcode."
+      },
+      {
+        "tag": "0xb0",
+        "cursor_formula": "6 + ((sign_extended_LE16(length_at_descriptor+2)+1) & 0xfffe)",
+        "semantics": "Inline variable-length descriptor. This is native arithmetic, not a safe malformed-input acceptance rule."
+      },
+      {
+        "tag": "0xb1",
+        "cursor_bytes": 4
+      },
+      {
+        "tag": "0xb2",
+        "cursor_bytes": 4
+      },
+      {
+        "tag": "0xb4",
+        "cursor_bytes": 6
+      }
+    ],
+    "unknown_tag_behavior": "Helper leaves cursor unchanged for other tags, including0xb3, after assigning descriptor pointer. Other helpers may impose their own interpretation; no generalized valid grammar claim.",
+    "limits": "No native bounds proof, reference validity or payload typing is established. A future offline parser must validate extent before allocation/read."
+  },
+  "early_routes": [
+    {
+      "opcode": "0x64",
+      "native_route_va": "0x40371e",
+      "callee_va": "0x407338",
+      "descriptor_count": "unknown; bypasses first generic descriptor reader"
+    },
+    {
+      "opcode": "0x77",
+      "native_route_va": "0x403732",
+      "callee_va": "0x406b30",
+      "descriptor_count": "unknown; bypasses first generic descriptor reader"
+    },
+    {
+      "opcode": "0x7e",
+      "native_route_va": "0x403728",
+      "callee_va": "0x407600",
+      "descriptor_count": "unknown; bypasses first generic descriptor reader"
+    }
+  ],
+  "first_dispatch_table": {
+    "opcode_range": [
+      "0xc",
+      "0x95"
+    ],
+    "selector_table": {
+      "va": "0x403768",
+      "rva": "0x3768",
+      "section": ".text",
+      "file_offset": "0x2d68",
+      "mapping": "file bytes"
+    },
+    "selector_bytes": 138,
+    "selector_sha256": "18bea61ccf273dc84d706db415da39a6ebb20e3c0fa8fdfe220076acb16c8df5",
+    "target_table": {
+      "va": "0x4037f2",
+      "rva": "0x37f2",
+      "section": ".text",
+      "file_offset": "0x2df2",
+      "mapping": "file bytes"
+    },
+    "target_count": 34,
+    "entries": [
+      {
+        "table_index": 0,
+        "route_va": "0x403c6e",
+        "opcodes": [
+          "0xd",
+          "0xe",
+          "0xf",
+          "0x10",
+          "0x11",
+          "0x12",
+          "0x13",
+          "0x14",
+          "0x15",
+          "0x16",
+          "0x17",
+          "0x19",
+          "0x1a",
+          "0x1c",
+          "0x1d",
+          "0x1e",
+          "0x1f",
+          "0x20",
+          "0x21",
+          "0x22",
+          "0x23",
+          "0x24",
+          "0x25",
+          "0x26",
+          "0x27",
+          "0x29",
+          "0x2a",
+          "0x2b",
+          "0x2c",
+          "0x2d",
+          "0x2e",
+          "0x2f",
+          "0x30",
+          "0x31",
+          "0x32",
+          "0x33",
+          "0x34",
+          "0x35",
+          "0x36",
+          "0x37",
+          "0x38",
+          "0x39",
+          "0x3a",
+          "0x3b",
+          "0x3c",
+          "0x3d",
+          "0x3e",
+          "0x3f",
+          "0x4a",
+          "0x4d",
+          "0x4e",
+          "0x4f",
+          "0x52",
+          "0x53",
+          "0x54",
+          "0x55",
+          "0x56",
+          "0x57",
+          "0x58",
+          "0x5a",
+          "0x5b",
+          "0x5c",
+          "0x5d",
+          "0x5e",
+          "0x5f",
+          "0x61",
+          "0x62",
+          "0x63",
+          "0x64",
+          "0x66",
+          "0x67",
+          "0x68",
+          "0x69",
+          "0x6b",
+          "0x6d",
+          "0x6e",
+          "0x6f",
+          "0x70",
+          "0x71",
+          "0x72",
+          "0x73",
+          "0x74",
+          "0x75",
+          "0x77",
+          "0x78",
+          "0x7a",
+          "0x7b",
+          "0x7c",
+          "0x7d",
+          "0x7e",
+          "0x7f",
+          "0x85",
+          "0x86",
+          "0x87",
+          "0x88",
+          "0x89",
+          "0x8a",
+          "0x8b",
+          "0x8c",
+          "0x8d",
+          "0x8f",
+          "0x91",
+          "0x92",
+          "0x93"
+        ]
+      },
+      {
+        "table_index": 1,
+        "route_va": "0x403997",
+        "opcodes": [
+          "0x95"
+        ]
+      },
+      {
+        "table_index": 2,
+        "route_va": "0x40398d",
+        "opcodes": [
+          "0x94"
+        ]
+      },
+      {
+        "table_index": 3,
+        "route_va": "0x40392f",
+        "opcodes": [
+          "0x90"
+        ]
+      },
+      {
+        "table_index": 4,
+        "route_va": "0x403963",
+        "opcodes": [
+          "0x8e"
+        ]
+      },
+      {
+        "table_index": 5,
+        "route_va": "0x403890",
+        "opcodes": [
+          "0x84"
+        ]
+      },
+      {
+        "table_index": 6,
+        "route_va": "0x4038b4",
+        "opcodes": [
+          "0x82",
+          "0x83"
+        ]
+      },
+      {
+        "table_index": 7,
+        "route_va": "0x40387a",
+        "opcodes": [
+          "0x81"
+        ]
+      },
+      {
+        "table_index": 8,
+        "route_va": "0x40390f",
+        "opcodes": [
+          "0x80"
+        ]
+      },
+      {
+        "table_index": 9,
+        "route_va": "0x403c14",
+        "opcodes": [
+          "0x79"
+        ]
+      },
+      {
+        "table_index": 10,
+        "route_va": "0x403bfc",
+        "opcodes": [
+          "0x76"
+        ]
+      },
+      {
+        "table_index": 11,
+        "route_va": "0x403c64",
+        "opcodes": [
+          "0x6c"
+        ]
+      },
+      {
+        "table_index": 12,
+        "route_va": "0x403c1e",
+        "opcodes": [
+          "0x6a"
+        ]
+      },
+      {
+        "table_index": 13,
+        "route_va": "0x4038fc",
+        "opcodes": [
+          "0x65"
+        ]
+      },
+      {
+        "table_index": 14,
+        "route_va": "0x4038d7",
+        "opcodes": [
+          "0x60"
+        ]
+      },
+      {
+        "table_index": 15,
+        "route_va": "0x403c3c",
+        "opcodes": [
+          "0x59"
+        ]
+      },
+      {
+        "table_index": 16,
+        "route_va": "0x403b9d",
+        "opcodes": [
+          "0x51"
+        ]
+      },
+      {
+        "table_index": 17,
+        "route_va": "0x403b83",
+        "opcodes": [
+          "0x50"
+        ]
+      },
+      {
+        "table_index": 18,
+        "route_va": "0x403b5b",
+        "opcodes": [
+          "0x4c"
+        ]
+      },
+      {
+        "table_index": 19,
+        "route_va": "0x403b34",
+        "opcodes": [
+          "0x4b"
+        ]
+      },
+      {
+        "table_index": 20,
+        "route_va": "0x403b0d",
+        "opcodes": [
+          "0x49"
+        ]
+      },
+      {
+        "table_index": 21,
+        "route_va": "0x403ae5",
+        "opcodes": [
+          "0x48"
+        ]
+      },
+      {
+        "table_index": 22,
+        "route_va": "0x403abe",
+        "opcodes": [
+          "0x47"
+        ]
+      },
+      {
+        "table_index": 23,
+        "route_va": "0x403a97",
+        "opcodes": [
+          "0x46"
+        ]
+      },
+      {
+        "table_index": 24,
+        "route_va": "0x403a6f",
+        "opcodes": [
+          "0x45"
+        ]
+      },
+      {
+        "table_index": 25,
+        "route_va": "0x403a48",
+        "opcodes": [
+          "0x44"
+        ]
+      },
+      {
+        "table_index": 26,
+        "route_va": "0x403a21",
+        "opcodes": [
+          "0x43"
+        ]
+      },
+      {
+        "table_index": 27,
+        "route_va": "0x4039f9",
+        "opcodes": [
+          "0x42"
+        ]
+      },
+      {
+        "table_index": 28,
+        "route_va": "0x4039d2",
+        "opcodes": [
+          "0x41"
+        ]
+      },
+      {
+        "table_index": 29,
+        "route_va": "0x4039ab",
+        "opcodes": [
+          "0x40"
+        ]
+      },
+      {
+        "table_index": 30,
+        "route_va": "0x403c28",
+        "opcodes": [
+          "0x28"
+        ]
+      },
+      {
+        "table_index": 31,
+        "route_va": "0x4039a1",
+        "opcodes": [
+          "0x1b"
+        ]
+      },
+      {
+        "table_index": 32,
+        "route_va": "0x4038c6",
+        "opcodes": [
+          "0x18"
+        ]
+      },
+      {
+        "table_index": 33,
+        "route_va": "0x403c32",
+        "opcodes": [
+          "0xc"
+        ]
+      }
+    ],
+    "default_route": "0x403c6e consumes second descriptor, then further dispatch",
+    "limits": "Early special routes override table entries for0x52/64/77/7e. Nonbranch helpers can consume additional descriptors. Table is native dispatch metadata, not a complete opcode arity catalog."
+  },
+  "second_dispatch_table": {
+    "opcode_range": [
+      "0x8",
+      "0x27"
+    ],
+    "target_table": {
+      "va": "0x403ca1",
+      "rva": "0x3ca1",
+      "section": ".text",
+      "file_offset": "0x32a1",
+      "mapping": "file bytes"
+    },
+    "entries": [
+      {
+        "opcode": "0x8",
+        "route_va": "0x403d9f"
+      },
+      {
+        "opcode": "0x9",
+        "route_va": "0x403e8f"
+      },
+      {
+        "opcode": "0xa",
+        "route_va": "0x403e8f"
+      },
+      {
+        "opcode": "0xb",
+        "route_va": "0x403e67"
+      },
+      {
+        "opcode": "0xc",
+        "route_va": "0x403e8f"
+      },
+      {
+        "opcode": "0xd",
+        "route_va": "0x403e8f"
+      },
+      {
+        "opcode": "0xe",
+        "route_va": "0x403e8f"
+      },
+      {
+        "opcode": "0xf",
+        "route_va": "0x403e8f"
+      },
+      {
+        "opcode": "0x10",
+        "route_va": "0x403e8f"
+      },
+      {
+        "opcode": "0x11",
+        "route_va": "0x403da9"
+      },
+      {
+        "opcode": "0x12",
+        "route_va": "0x403da9"
+      },
+      {
+        "opcode": "0x13",
+        "route_va": "0x403da9"
+      },
+      {
+        "opcode": "0x14",
+        "route_va": "0x403da9"
+      },
+      {
+        "opcode": "0x15",
+        "route_va": "0x403da9"
+      },
+      {
+        "opcode": "0x16",
+        "route_va": "0x403da9"
+      },
+      {
+        "opcode": "0x17",
+        "route_va": "0x403da9"
+      },
+      {
+        "opcode": "0x18",
+        "route_va": "0x403e8f"
+      },
+      {
+        "opcode": "0x19",
+        "route_va": "0x403da9"
+      },
+      {
+        "opcode": "0x1a",
+        "route_va": "0x403da9"
+      },
+      {
+        "opcode": "0x1b",
+        "route_va": "0x403e8f"
+      },
+      {
+        "opcode": "0x1c",
+        "route_va": "0x403e24"
+      },
+      {
+        "opcode": "0x1d",
+        "route_va": "0x403da9"
+      },
+      {
+        "opcode": "0x1e",
+        "route_va": "0x403da9"
+      },
+      {
+        "opcode": "0x1f",
+        "route_va": "0x403e8f"
+      },
+      {
+        "opcode": "0x20",
+        "route_va": "0x403dbb"
+      },
+      {
+        "opcode": "0x21",
+        "route_va": "0x403e8f"
+      },
+      {
+        "opcode": "0x22",
+        "route_va": "0x403dd4"
+      },
+      {
+        "opcode": "0x23",
+        "route_va": "0x403e8f"
+      },
+      {
+        "opcode": "0x24",
+        "route_va": "0x403e8f"
+      },
+      {
+        "opcode": "0x25",
+        "route_va": "0x403dde"
+      },
+      {
+        "opcode": "0x26",
+        "route_va": "0x403de8"
+      },
+      {
+        "opcode": "0x27",
+        "route_va": "0x403df2"
+      }
+    ],
+    "default_route": "0x403e8f",
+    "limits": "Reached after two descriptor reads. Subsequent cases/helpers may consume more operands; no complete arities assigned."
+  },
+  "control_flow_profiles": [
+    {
+      "opcode": "0x40",
+      "kind": "conditional_branch",
+      "native_route_va": "0x4039ab",
+      "descriptor_count": 1,
+      "condition": {
+        "flags_global_va": "0x42757c",
+        "mask": "0x1",
+        "branch_when_masked_bits_nonzero": true
+      },
+      "target": "data_base0x435618 + sign_extended_LE16(first_operand_pointer+2)",
+      "fallthrough": "PC already advanced over opcode and first descriptor"
+    },
+    {
+      "opcode": "0x41",
+      "kind": "conditional_branch",
+      "native_route_va": "0x4039d2",
+      "descriptor_count": 1,
+      "condition": {
+        "flags_global_va": "0x42757c",
+        "mask": "0x2",
+        "branch_when_masked_bits_nonzero": true
+      },
+      "target": "data_base0x435618 + sign_extended_LE16(first_operand_pointer+2)",
+      "fallthrough": "PC already advanced over opcode and first descriptor"
+    },
+    {
+      "opcode": "0x42",
+      "kind": "conditional_branch",
+      "native_route_va": "0x4039f9",
+      "descriptor_count": 1,
+      "condition": {
+        "flags_global_va": "0x42757c",
+        "mask": "0x6",
+        "branch_when_masked_bits_nonzero": true
+      },
+      "target": "data_base0x435618 + sign_extended_LE16(first_operand_pointer+2)",
+      "fallthrough": "PC already advanced over opcode and first descriptor"
+    },
+    {
+      "opcode": "0x43",
+      "kind": "conditional_branch",
+      "native_route_va": "0x403a21",
+      "descriptor_count": 1,
+      "condition": {
+        "flags_global_va": "0x42757c",
+        "mask": "0x4",
+        "branch_when_masked_bits_nonzero": true
+      },
+      "target": "data_base0x435618 + sign_extended_LE16(first_operand_pointer+2)",
+      "fallthrough": "PC already advanced over opcode and first descriptor"
+    },
+    {
+      "opcode": "0x44",
+      "kind": "conditional_branch",
+      "native_route_va": "0x403a48",
+      "descriptor_count": 1,
+      "condition": {
+        "flags_global_va": "0x42757c",
+        "mask": "0x4",
+        "branch_when_masked_bits_nonzero": false
+      },
+      "target": "data_base0x435618 + sign_extended_LE16(first_operand_pointer+2)",
+      "fallthrough": "PC already advanced over opcode and first descriptor"
+    },
+    {
+      "opcode": "0x45",
+      "kind": "conditional_branch",
+      "native_route_va": "0x403a6f",
+      "descriptor_count": 1,
+      "condition": {
+        "flags_global_va": "0x42757c",
+        "mask": "0x8",
+        "branch_when_masked_bits_nonzero": true
+      },
+      "target": "data_base0x435618 + sign_extended_LE16(first_operand_pointer+2)",
+      "fallthrough": "PC already advanced over opcode and first descriptor"
+    },
+    {
+      "opcode": "0x46",
+      "kind": "conditional_branch",
+      "native_route_va": "0x403a97",
+      "descriptor_count": 1,
+      "condition": {
+        "flags_global_va": "0x42757c",
+        "mask": "0xc",
+        "branch_when_masked_bits_nonzero": true
+      },
+      "target": "data_base0x435618 + sign_extended_LE16(first_operand_pointer+2)",
+      "fallthrough": "PC already advanced over opcode and first descriptor"
+    },
+    {
+      "opcode": "0x47",
+      "kind": "conditional_branch",
+      "native_route_va": "0x403abe",
+      "descriptor_count": 1,
+      "condition": {
+        "flags_global_va": "0x42757c",
+        "mask": "0x20",
+        "branch_when_masked_bits_nonzero": true
+      },
+      "target": "data_base0x435618 + sign_extended_LE16(first_operand_pointer+2)",
+      "fallthrough": "PC already advanced over opcode and first descriptor"
+    },
+    {
+      "opcode": "0x48",
+      "kind": "conditional_branch",
+      "native_route_va": "0x403ae5",
+      "descriptor_count": 1,
+      "condition": {
+        "flags_global_va": "0x42757c",
+        "mask": "0x20",
+        "branch_when_masked_bits_nonzero": false
+      },
+      "target": "data_base0x435618 + sign_extended_LE16(first_operand_pointer+2)",
+      "fallthrough": "PC already advanced over opcode and first descriptor"
+    },
+    {
+      "opcode": "0x49",
+      "kind": "conditional_branch",
+      "native_route_va": "0x403b0d",
+      "descriptor_count": 1,
+      "condition": {
+        "flags_global_va": "0x42757c",
+        "mask": "0x10",
+        "branch_when_masked_bits_nonzero": true
+      },
+      "target": "data_base0x435618 + sign_extended_LE16(first_operand_pointer+2)",
+      "fallthrough": "PC already advanced over opcode and first descriptor"
+    },
+    {
+      "opcode": "0x4b",
+      "kind": "conditional_branch",
+      "native_route_va": "0x403b34",
+      "descriptor_count": 1,
+      "condition": {
+        "flags_global_va": "0x42757c",
+        "mask": "0x80",
+        "branch_when_masked_bits_nonzero": true
+      },
+      "target": "data_base0x435618 + sign_extended_LE16(first_operand_pointer+2)",
+      "fallthrough": "PC already advanced over opcode and first descriptor"
+    },
+    {
+      "opcode": "0x4c",
+      "kind": "conditional_branch",
+      "native_route_va": "0x403b5b",
+      "descriptor_count": 1,
+      "condition": {
+        "flags_global_va": "0x42757c",
+        "mask": "0x81",
+        "branch_when_masked_bits_nonzero": true
+      },
+      "target": "data_base0x435618 + sign_extended_LE16(first_operand_pointer+2)",
+      "fallthrough": "PC already advanced over opcode and first descriptor"
+    },
+    {
+      "opcode": "0x50",
+      "kind": "unconditional_jump",
+      "descriptor_count": 1,
+      "native_route_va": "0x403b83",
+      "target": "data_base0x435618 + sign_extended_LE16(first_operand_pointer+2)"
+    },
+    {
+      "opcode": "0x51",
+      "kind": "call",
+      "descriptor_count": 1,
+      "native_route_va": "0x403b9d",
+      "target": "data_base0x435618 + sign_extended_LE16(first_operand_pointer+2)",
+      "return_saved": "post-descriptor PC minus data base truncated to uint16 at stack0x427538",
+      "stack_capacity": 32,
+      "overflow_status": "0x513",
+      "depth_global_va": "0x427578",
+      "callee_offset_saved": "target offset truncated to uint16 at0x427764 before depth increment"
+    },
+    {
+      "opcode": "0x52",
+      "kind": "return",
+      "descriptor_count": 0,
+      "native_route_va": "0x4036e4",
+      "target": "data_base + zero_extended_uint16(return_stack[--depth])",
+      "empty_stack_status": "0x512"
+    },
+    {
+      "opcode": "0x1",
+      "kind": "early_success_route",
+      "descriptor_count": 0,
+      "native_route_va": "0x4036d8",
+      "note": "Sets global0x427580 zero then reaches success status0x510; not established end-of-program."
+    }
+  ],
+  "other_callback_boundary_observations": [
+    {
+      "opcode": "0x84",
+      "route_va": "0x403890",
+      "callback_callsite": "0x4038a9",
+      "callback_pointer_global_va": "0x4398b4",
+      "arguments_observed": "zero and signed descriptor word+2 when nonzero; callback effect unresolved"
+    },
+    {
+      "opcode": "0x90",
+      "route_va": "0x40392f",
+      "callback_pointer_global_va": "0x4398bc",
+      "argument": "resolved first descriptor via0x404af8; updates selector global0x4398b8"
+    },
+    {
+      "opcode": "0x8e",
+      "route_va": "0x403963",
+      "callback_pointer_globals": [
+        "0x4398bc",
+        "0x4398c0"
+      ],
+      "note": "Selects value2 then invokes another callback with resolved descriptor; effects unresolved"
+    }
+  ],
+  "disassembly_windows": [
+    {
+      "role": "vmStep_export",
+      "start": {
+        "va": "0x40b4d4",
+        "rva": "0xb4d4",
+        "section": ".text",
+        "file_offset": "0xaad4",
+        "mapping": "file bytes"
+      },
+      "last_instruction_address_bound": "0x40b52c",
+      "disassembly": [
+        "0040B4D4: push        ebp",
+        "0040B4D5: mov         ebp,esp",
+        "0040B4D7: push        ebx",
+        "0040B4D8: mov         ebx,dword ptr [ebp+14h]",
+        "0040B4DB: mov         ax,word ptr [ebx]",
+        "0040B4DE: mov         word ptr ds:[00427650h],ax",
+        "0040B4E4: call        00403690",
+        "0040B4E9: mov         ecx,dword ptr [ebp+8]",
+        "0040B4EC: mov         edx,dword ptr ds:[00427534h]",
+        "0040B4F2: sub         edx,435618h",
+        "0040B4F8: mov         word ptr [ecx],dx",
+        "0040B4FB: mov         edx,dword ptr [ebp+0Ch]",
+        "0040B4FE: mov         cl,byte ptr ds:[0042757Ah]",
+        "0040B504: mov         byte ptr [edx],cl",
+        "0040B506: mov         cx,word ptr ds:[0042757Ch]",
+        "0040B50D: mov         edx,dword ptr [ebp+10h]",
+        "0040B510: mov         word ptr [edx],cx",
+        "0040B513: mov         dx,word ptr ds:[00427650h]",
+        "0040B51A: mov         word ptr [ebx],dx",
+        "0040B51D: mov         dx,word ptr ds:[00427578h]",
+        "0040B524: mov         ecx,dword ptr [ebp+18h]",
+        "0040B527: mov         word ptr [ecx],dx",
+        "0040B52A: pop         ebx",
+        "0040B52B: pop         ebp",
+        "0040B52C: ret         14h"
+      ],
+      "limits": "Static only. Upper dump range extended to decode the final instruction, then address-filtered; no executable bytes exported."
+    },
+    {
+      "role": "fetch_early_routes_and_first_switch",
+      "start": {
+        "va": "0x403690",
+        "rva": "0x3690",
+        "section": ".text",
+        "file_offset": "0x2c90",
+        "mapping": "file bytes"
+      },
+      "last_instruction_address_bound": "0x403761",
+      "disassembly": [
+        "00403690: push        ebx",
+        "00403691: push        esi",
+        "00403692: add         esp,0FFFFFFF0h",
+        "00403695: push        esp",
+        "00403696: call        004188C6",
+        "0040369B: mov         eax,dword ptr ds:[00427534h]",
+        "004036A0: xor         edx,edx",
+        "004036A2: mov         ax,word ptr [eax]",
+        "004036A5: movzx       ecx,ax",
+        "004036A8: mov         word ptr ds:[0042757Ah],ax",
+        "004036AE: add         dword ptr ds:[00427534h],2",
+        "004036B5: cmp         ecx,64h",
+        "004036B8: mov         dword ptr ds:[00427580h],edx",
+        "004036BE: jg          004036CC",
+        "004036C0: je          0040371E",
+        "004036C2: dec         ecx",
+        "004036C3: je          004036D8",
+        "004036C5: sub         ecx,51h",
+        "004036C8: je          004036E4",
+        "004036CA: jmp         0040373C",
+        "004036CC: sub         ecx,77h",
+        "004036CF: je          00403732",
+        "004036D1: sub         ecx,7",
+        "004036D4: je          00403728",
+        "004036D6: jmp         0040373C",
+        "004036D8: xor         eax,eax",
+        "004036DA: mov         dword ptr ds:[00427580h],eax",
+        "004036DF: jmp         0040449D",
+        "004036E4: cmp         word ptr ds:[00427578h],0",
+        "004036EC: jne         004036F7",
+        "004036EE: mov         ax,512h",
+        "004036F2: jmp         004044A1",
+        "004036F7: dec         word ptr ds:[00427578h]",
+        "004036FE: movzx       edx,word ptr ds:[00427578h]",
+        "00403705: movzx       ecx,word ptr [edx*2+00427538h]",
+        "0040370D: add         ecx,435618h",
+        "00403713: mov         dword ptr ds:[00427534h],ecx",
+        "00403719: jmp         0040449D",
+        "0040371E: call        00407338",
+        "00403723: jmp         0040449D",
+        "00403728: call        00407600",
+        "0040372D: jmp         0040449D",
+        "00403732: call        00406B30",
+        "00403737: jmp         0040449D",
+        "0040373C: push        42A618h",
+        "00403741: call        00404900",
+        "00403746: movzx       eax,word ptr ds:[0042757Ah]",
+        "0040374D: add         eax,0FFFFFFF4h",
+        "00403750: cmp         eax,89h",
+        "00403755: ja          00403C6E",
+        "0040375B: mov         al,byte ptr [eax+00403768h]",
+        "00403761: jmp         dword ptr [eax*4+004037F2h]"
+      ],
+      "limits": "Static only. Upper dump range extended to decode the final instruction, then address-filtered; no executable bytes exported."
+    },
+    {
+      "role": "first_switch_handlers",
+      "start": {
+        "va": "0x40387a",
+        "rva": "0x387a",
+        "section": ".text",
+        "file_offset": "0x2e7a",
+        "mapping": "file bytes"
+      },
+      "last_instruction_address_bound": "0x403c78",
+      "disassembly": [
+        "0040387A: mov         byte ptr ds:[004274C4h],1",
+        "00403881: mov         edx,dword ptr ds:[0042A618h]",
+        "00403887: mov         ax,word ptr [edx+2]",
+        "0040388B: jmp         004044A1",
+        "00403890: mov         edx,dword ptr ds:[0042A618h]",
+        "00403896: mov         ax,word ptr [edx+2]",
+        "0040389A: test        ax,ax",
+        "0040389D: je          0040449D",
+        "004038A3: movsx       edx,ax",
+        "004038A6: push        0",
+        "004038A8: push        edx",
+        "004038A9: call        dword ptr ds:[004398B4h]",
+        "004038AF: jmp         0040449D",
+        "004038B4: mov         cx,word ptr ds:[0042757Ah]",
+        "004038BB: push        ecx",
+        "004038BC: call        00408C28",
+        "004038C1: jmp         0040449D",
+        "004038C6: mov         ax,word ptr ds:[0042757Ah]",
+        "004038CC: push        eax",
+        "004038CD: call        00404B70",
+        "004038D2: jmp         0040449D",
+        "004038D7: cmp         dword ptr ds:[0041957Ch],1",
+        "004038DE: jne         004038E9",
+        "004038E0: mov         ax,511h",
+        "004038E4: jmp         004044A1",
+        "004038E9: push        0",
+        "004038EB: mov         edx,dword ptr ds:[0042A618h]",
+        "004038F1: push        edx",
+        "004038F2: call        00406EC4",
+        "004038F7: jmp         0040449D",
+        "004038FC: push        1",
+        "004038FE: mov         ecx,dword ptr ds:[0042A618h]",
+        "00403904: push        ecx",
+        "00403905: call        00406EC4",
+        "0040390A: jmp         0040449D",
+        "0040390F: mov         eax,dword ptr ds:[0042A618h]",
+        "00403914: mov         ax,word ptr [eax+2]",
+        "00403918: test        ax,ax",
+        "0040391B: jle         0040449D",
+        "00403921: movsx       edx,ax",
+        "00403924: push        edx",
+        "00403925: call        004188F0",
+        "0040392A: jmp         0040449D",
+        "0040392F: mov         ecx,dword ptr ds:[0042A618h]",
+        "00403935: push        ecx",
+        "00403936: call        00404AF8",
+        "0040393B: push        eax",
+        "0040393C: call        dword ptr ds:[004398BCh]",
+        "00403942: mov         eax,dword ptr ds:[0042A618h]",
+        "00403947: push        eax",
+        "00403948: call        00404AF8",
+        "0040394D: mov         dword ptr ds:[004398B8h],eax",
+        "00403952: mov         dl,byte ptr ds:[004398B8h]",
+        "00403958: mov         byte ptr ds:[00427648h],dl",
+        "0040395E: jmp         0040449D",
+        "00403963: push        2",
+        "00403965: call        dword ptr ds:[004398BCh]",
+        "0040396B: mov         dword ptr ds:[004398B8h],2",
+        "00403975: mov         ecx,dword ptr ds:[0042A618h]",
+        "0040397B: push        ecx",
+        "0040397C: call        00404AF8",
+        "00403981: push        eax",
+        "00403982: call        dword ptr ds:[004398C0h]",
+        "00403988: jmp         0040449D",
+        "0040398D: call        004073C4",
+        "00403992: jmp         0040449D",
+        "00403997: call        00407404",
+        "0040399C: jmp         0040449D",
+        "004039A1: call        00404F24",
+        "004039A6: jmp         0040449D",
+        "004039AB: test        byte ptr ds:[0042757Ch],1",
+        "004039B2: je          0040449D",
+        "004039B8: mov         eax,dword ptr ds:[0042A618h]",
+        "004039BD: movsx       edx,word ptr [eax+2]",
+        "004039C1: add         edx,435618h",
+        "004039C7: mov         dword ptr ds:[00427534h],edx",
+        "004039CD: jmp         0040449D",
+        "004039D2: test        byte ptr ds:[0042757Ch],2",
+        "004039D9: je          0040449D",
+        "004039DF: mov         ecx,dword ptr ds:[0042A618h]",
+        "004039E5: movsx       eax,word ptr [ecx+2]",
+        "004039E9: add         eax,435618h",
+        "004039EF: mov         dword ptr ds:[00427534h],eax",
+        "004039F4: jmp         0040449D",
+        "004039F9: test        byte ptr ds:[0042757Ch],6",
+        "00403A00: je          0040449D",
+        "00403A06: mov         edx,dword ptr ds:[0042A618h]",
+        "00403A0C: movsx       ecx,word ptr [edx+2]",
+        "00403A10: add         ecx,435618h",
+        "00403A16: mov         dword ptr ds:[00427534h],ecx",
+        "00403A1C: jmp         0040449D",
+        "00403A21: test        byte ptr ds:[0042757Ch],4",
+        "00403A28: je          0040449D",
+        "00403A2E: mov         eax,dword ptr ds:[0042A618h]",
+        "00403A33: movsx       edx,word ptr [eax+2]",
+        "00403A37: add         edx,435618h",
+        "00403A3D: mov         dword ptr ds:[00427534h],edx",
+        "00403A43: jmp         0040449D",
+        "00403A48: test        byte ptr ds:[0042757Ch],4",
+        "00403A4F: jne         0040449D",
+        "00403A55: mov         ecx,dword ptr ds:[0042A618h]",
+        "00403A5B: movsx       eax,word ptr [ecx+2]",
+        "00403A5F: add         eax,435618h",
+        "00403A65: mov         dword ptr ds:[00427534h],eax",
+        "00403A6A: jmp         0040449D",
+        "00403A6F: test        byte ptr ds:[0042757Ch],8",
+        "00403A76: je          0040449D",
+        "00403A7C: mov         edx,dword ptr ds:[0042A618h]",
+        "00403A82: movsx       ecx,word ptr [edx+2]",
+        "00403A86: add         ecx,435618h",
+        "00403A8C: mov         dword ptr ds:[00427534h],ecx",
+        "00403A92: jmp         0040449D",
+        "00403A97: test        byte ptr ds:[0042757Ch],0Ch",
+        "00403A9E: je          0040449D",
+        "00403AA4: mov         eax,dword ptr ds:[0042A618h]",
+        "00403AA9: movsx       edx,word ptr [eax+2]",
+        "00403AAD: add         edx,435618h",
+        "00403AB3: mov         dword ptr ds:[00427534h],edx",
+        "00403AB9: jmp         0040449D",
+        "00403ABE: test        byte ptr ds:[0042757Ch],20h",
+        "00403AC5: je          0040449D",
+        "00403ACB: mov         ecx,dword ptr ds:[0042A618h]",
+        "00403AD1: movsx       eax,word ptr [ecx+2]",
+        "00403AD5: add         eax,435618h",
+        "00403ADB: mov         dword ptr ds:[00427534h],eax",
+        "00403AE0: jmp         0040449D",
+        "00403AE5: test        byte ptr ds:[0042757Ch],20h",
+        "00403AEC: jne         0040449D",
+        "00403AF2: mov         edx,dword ptr ds:[0042A618h]",
+        "00403AF8: movsx       ecx,word ptr [edx+2]",
+        "00403AFC: add         ecx,435618h",
+        "00403B02: mov         dword ptr ds:[00427534h],ecx",
+        "00403B08: jmp         0040449D",
+        "00403B0D: test        byte ptr ds:[0042757Ch],10h",
+        "00403B14: je          0040449D",
+        "00403B1A: mov         eax,dword ptr ds:[0042A618h]",
+        "00403B1F: movsx       edx,word ptr [eax+2]",
+        "00403B23: add         edx,435618h",
+        "00403B29: mov         dword ptr ds:[00427534h],edx",
+        "00403B2F: jmp         0040449D",
+        "00403B34: test        byte ptr ds:[0042757Ch],80h",
+        "00403B3B: je          0040449D",
+        "00403B41: mov         ecx,dword ptr ds:[0042A618h]",
+        "00403B47: movsx       eax,word ptr [ecx+2]",
+        "00403B4B: add         eax,435618h",
+        "00403B51: mov         dword ptr ds:[00427534h],eax",
+        "00403B56: jmp         0040449D",
+        "00403B5B: test        byte ptr ds:[0042757Ch],81h",
+        "00403B62: je          0040449D",
+        "00403B68: mov         edx,dword ptr ds:[0042A618h]",
+        "00403B6E: movsx       ecx,word ptr [edx+2]",
+        "00403B72: add         ecx,435618h",
+        "00403B78: mov         dword ptr ds:[00427534h],ecx",
+        "00403B7E: jmp         0040449D",
+        "00403B83: mov         eax,dword ptr ds:[0042A618h]",
+        "00403B88: movsx       edx,word ptr [eax+2]",
+        "00403B8C: add         edx,435618h",
+        "00403B92: mov         dword ptr ds:[00427534h],edx",
+        "00403B98: jmp         0040449D",
+        "00403B9D: movzx       eax,word ptr ds:[00427578h]",
+        "00403BA4: cmp         eax,20h",
+        "00403BA7: jl          00403BB2",
+        "00403BA9: mov         ax,513h",
+        "00403BAD: jmp         004044A1",
+        "00403BB2: mov         edx,dword ptr ds:[00427534h]",
+        "00403BB8: sub         edx,435618h",
+        "00403BBE: mov         word ptr [eax*2+00427538h],dx",
+        "00403BC6: mov         ecx,dword ptr ds:[0042A618h]",
+        "00403BCC: movsx       edx,word ptr [ecx+2]",
+        "00403BD0: add         edx,435618h",
+        "00403BD6: mov         dword ptr ds:[00427534h],edx",
+        "00403BDC: mov         ecx,dword ptr ds:[00427534h]",
+        "00403BE2: sub         ecx,435618h",
+        "00403BE8: mov         word ptr [eax*2+00427764h],cx",
+        "00403BF0: inc         word ptr ds:[00427578h]",
+        "00403BF7: jmp         0040449D",
+        "00403BFC: mov         eax,dword ptr ds:[0042A618h]",
+        "00403C01: push        eax",
+        "00403C02: call        00404AF8",
+        "00403C07: push        eax",
+        "00403C08: push        1",
+        "00403C0A: call        00406E84",
+        "00403C0F: jmp         0040449D",
+        "00403C14: call        00406E78",
+        "00403C19: jmp         0040449D",
+        "00403C1E: call        00407F78",
+        "00403C23: jmp         0040449D",
+        "00403C28: call        004062C8",
+        "00403C2D: jmp         0040449D",
+        "00403C32: call        00406334",
+        "00403C37: jmp         0040449D",
+        "00403C3C: mov         eax,dword ptr ds:[0042A618h]",
+        "00403C41: push        eax",
+        "00403C42: call        00404AF8",
+        "00403C47: mov         byte ptr ds:[004274C6h],al",
+        "00403C4C: push        0",
+        "00403C4E: call        00415D8C",
+        "00403C53: pop         ecx",
+        "00403C54: sub         eax,dword ptr ds:[004275B8h]",
+        "00403C5A: mov         dword ptr ds:[004275B8h],eax",
+        "00403C5F: jmp         0040449D",
+        "00403C64: call        00406AD0",
+        "00403C69: jmp         0040449D",
+        "00403C6E: push        42A61Ch",
+        "00403C73: call        00404900",
+        "00403C78: movzx       edx,word ptr ds:[0042757Ah]"
+      ],
+      "limits": "Static only. Upper dump range extended to decode the final instruction, then address-filtered; no executable bytes exported."
+    },
+    {
+      "role": "second_switch_setup",
+      "start": {
+        "va": "0x403c78",
+        "rva": "0x3c78",
+        "section": ".text",
+        "file_offset": "0x3278",
+        "mapping": "file bytes"
+      },
+      "last_instruction_address_bound": "0x403c9a",
+      "disassembly": [
+        "00403C78: movzx       edx,word ptr ds:[0042757Ah]",
+        "00403C7F: cmp         edx,29h",
+        "00403C82: jg          00403D21",
+        "00403C88: je          00403E5D",
+        "00403C8E: add         edx,0FFFFFFF8h",
+        "00403C91: cmp         edx,1Fh",
+        "00403C94: ja          00403E8F",
+        "00403C9A: jmp         dword ptr [edx*4+00403CA1h]"
+      ],
+      "limits": "Static only. Upper dump range extended to decode the final instruction, then address-filtered; no executable bytes exported."
+    },
+    {
+      "role": "second_switch_comparison_routes",
+      "start": {
+        "va": "0x403d21",
+        "rva": "0x3d21",
+        "section": ".text",
+        "file_offset": "0x3321",
+        "mapping": "file bytes"
+      },
+      "last_instruction_address_bound": "0x403d65",
+      "disassembly": [
+        "00403D21: cmp         edx,68h",
+        "00403D24: jg          00403D65",
+        "00403D26: je          00403E2E",
+        "00403D2C: cmp         edx,39h",
+        "00403D2F: jg          00403D4E",
+        "00403D31: je          00403E10",
+        "00403D37: sub         edx,30h",
+        "00403D3A: je          00403DFC",
+        "00403D40: sub         edx,8",
+        "00403D43: je          00403E06",
+        "00403D49: jmp         00403E8F",
+        "00403D4E: sub         edx,3Bh",
+        "00403D51: je          00403E1A",
+        "00403D57: sub         edx,19h",
+        "00403D5A: je          00403E85",
+        "00403D60: jmp         00403E8F",
+        "00403D65: cmp         edx,7Ch"
+      ],
+      "limits": "Static only. Upper dump range extended to decode the final instruction, then address-filtered; no executable bytes exported."
+    },
+    {
+      "role": "descriptor_reader",
+      "start": {
+        "va": "0x404900",
+        "rva": "0x4900",
+        "section": ".text",
+        "file_offset": "0x3f00",
+        "mapping": "file bytes"
+      },
+      "last_instruction_address_bound": "0x4049ac",
+      "disassembly": [
+        "00404900: push        ebp",
+        "00404901: mov         ebp,esp",
+        "00404903: push        ebx",
+        "00404904: push        esi",
+        "00404905: mov         esi,427534h",
+        "0040490A: push        edi",
+        "0040490B: mov         ebx,dword ptr [ebp+8]",
+        "0040490E: mov         eax,dword ptr [esi]",
+        "00404910: movzx       edx,word ptr [eax]",
+        "00404913: cmp         edx,0A0h",
+        "00404919: jne         00404941",
+        "0040491B: add         dword ptr [esi],2",
+        "0040491E: push        ebx",
+        "0040491F: mov         ecx,dword ptr [esi]",
+        "00404921: mov         cx,word ptr [ecx]",
+        "00404924: push        ecx",
+        "00404925: call        004044A8",
+        "0040492A: cmp         dword ptr [ebx],0",
+        "0040492D: jne         0040493C",
+        "0040492F: mov         eax,dword ptr [esi]",
+        "00404931: movzx       edx,word ptr [eax]",
+        "00404934: add         edx,432818h",
+        "0040493A: mov         dword ptr [ebx],edx",
+        "0040493C: add         dword ptr [esi],2",
+        "0040493F: jmp         004049A8",
+        "00404941: mov         eax,dword ptr [esi]",
+        "00404943: movzx       edx,word ptr [eax]",
+        "00404946: cmp         edx,0A1h",
+        "0040494C: jne         00404955",
+        "0040494E: mov         dword ptr [ebx],eax",
+        "00404950: add         dword ptr [esi],4",
+        "00404953: jmp         004049A8",
+        "00404955: mov         eax,dword ptr [esi]",
+        "00404957: movzx       edx,word ptr [eax]",
+        "0040495A: cmp         edx,0B0h",
+        "00404960: jne         00404977",
+        "00404962: mov         edx,eax",
+        "00404964: mov         dword ptr [ebx],edx",
+        "00404966: movsx       eax,word ptr [edx+2]",
+        "0040496A: inc         eax",
+        "0040496B: and         eax,0FFFEh",
+        "00404970: add         eax,6",
+        "00404973: add         dword ptr [esi],eax",
+        "00404975: jmp         004049A8",
+        "00404977: mov         eax,dword ptr [esi]",
+        "00404979: mov         dword ptr [ebx],eax",
+        "0040497B: mov         dx,word ptr [eax]",
+        "0040497E: sub         dx,0B0h",
+        "00404983: je          00404993",
+        "00404985: dec         edx",
+        "00404986: sub         dx,2",
+        "0040498A: jb          004049A0",
+        "0040498C: dec         dx",
+        "0040498F: je          004049A5",
+        "00404991: jmp         004049A8",
+        "00404993: mov         ecx,dword ptr [ebx]",
+        "00404995: movsx       edi,word ptr [ecx+2]",
+        "00404999: add         edi,6",
+        "0040499C: add         dword ptr [esi],edi",
+        "0040499E: jmp         004049A8",
+        "004049A0: add         dword ptr [esi],4",
+        "004049A3: jmp         004049A8",
+        "004049A5: add         dword ptr [esi],6",
+        "004049A8: pop         edi",
+        "004049A9: pop         esi",
+        "004049AA: pop         ebx",
+        "004049AB: pop         ebp",
+        "004049AC: ret         4"
+      ],
+      "limits": "Static only. Upper dump range extended to decode the final instruction, then address-filtered; no executable bytes exported."
+    },
+    {
+      "role": "status_return",
+      "start": {
+        "va": "0x40449d",
+        "rva": "0x449d",
+        "section": ".text",
+        "file_offset": "0x3a9d",
+        "mapping": "file bytes"
+      },
+      "last_instruction_address_bound": "0x4044a6",
+      "disassembly": [
+        "0040449D: mov         ax,510h",
+        "004044A1: add         esp,10h",
+        "004044A4: pop         esi",
+        "004044A5: pop         ebx",
+        "004044A6: ret"
+      ],
+      "limits": "Static only. Upper dump range extended to decode the final instruction, then address-filtered; no executable bytes exported."
+    },
+    {
+      "role": "second_operand_dispatch",
+      "start": {
+        "va": "0x403c6e",
+        "rva": "0x3c6e",
+        "section": ".text",
+        "file_offset": "0x326e",
+        "mapping": "file bytes"
+      },
+      "last_instruction_address_bound": "0x403c9a",
+      "disassembly": [
+        "00403C6E: push        42A61Ch",
+        "00403C73: call        00404900",
+        "00403C78: movzx       edx,word ptr ds:[0042757Ah]",
+        "00403C7F: cmp         edx,29h",
+        "00403C82: jg          00403D21",
+        "00403C88: je          00403E5D",
+        "00403C8E: add         edx,0FFFFFFF8h",
+        "00403C91: cmp         edx,1Fh",
+        "00403C94: ja          00403E8F",
+        "00403C9A: jmp         dword ptr [edx*4+00403CA1h]"
+      ],
+      "limits": "Static only. Upper dump range extended to decode the final instruction, then address-filtered; no executable bytes exported."
+    },
+    {
+      "role": "two_operand_routes",
+      "start": {
+        "va": "0x403d9f",
+        "rva": "0x3d9f",
+        "section": ".text",
+        "file_offset": "0x339f",
+        "mapping": "file bytes"
+      },
+      "last_instruction_address_bound": "0x403e8a",
+      "disassembly": [
+        "00403D9F: call        00404F3C",
+        "00403DA4: jmp         0040449D",
+        "00403DA9: mov         cx,word ptr ds:[0042757Ah]",
+        "00403DB0: push        ecx",
+        "00403DB1: call        00404B9C",
+        "00403DB6: jmp         0040449D",
+        "00403DBB: mov         eax,dword ptr ds:[0042A61Ch]",
+        "00403DC0: mov         edx,dword ptr ds:[0042A618h]",
+        "00403DC6: push        eax",
+        "00403DC7: push        0",
+        "00403DC9: push        edx",
+        "00403DCA: call        004059A8",
+        "00403DCF: jmp         0040449D",
+        "00403DD4: call        00405C84",
+        "00403DD9: jmp         0040449D",
+        "00403DDE: call        00405F6C",
+        "00403DE3: jmp         0040449D",
+        "00403DE8: call        00405FA0",
+        "00403DED: jmp         0040449D",
+        "00403DF2: call        00405FF8",
+        "00403DF7: jmp         0040449D",
+        "00403DFC: call        004055F0",
+        "00403E01: jmp         0040449D",
+        "00403E06: call        0040562C",
+        "00403E0B: jmp         0040449D",
+        "00403E10: call        0040565C",
+        "00403E15: jmp         0040449D",
+        "00403E1A: call        004058CC",
+        "00403E1F: jmp         0040449D",
+        "00403E24: call        00405950",
+        "00403E29: jmp         0040449D",
+        "00403E2E: mov         ecx,dword ptr ds:[0042A61Ch]",
+        "00403E34: push        ecx",
+        "00403E35: call        00407528",
+        "00403E3A: jmp         0040449D",
+        "00403E3F: call        004068BC",
+        "00403E44: jmp         0040449D",
+        "00403E49: call        00406934",
+        "00403E4E: jmp         0040449D",
+        "00403E53: call        004069D4",
+        "00403E58: jmp         0040449D",
+        "00403E5D: call        00406394",
+        "00403E62: jmp         0040449D",
+        "00403E67: call        004054B8",
+        "00403E6C: jmp         0040449D",
+        "00403E71: call        00408990",
+        "00403E76: jmp         0040449D",
+        "00403E7B: call        00407154",
+        "00403E80: jmp         0040449D",
+        "00403E85: call        00409FA4",
+        "00403E8A: jmp         0040449D"
+      ],
+      "limits": "Static only. Upper dump range extended to decode the final instruction, then address-filtered; no executable bytes exported."
+    },
+    {
+      "role": "third_operand_dispatch",
+      "start": {
+        "va": "0x403e8f",
+        "rva": "0x3e8f",
+        "section": ".text",
+        "file_offset": "0x348f",
+        "mapping": "file bytes"
+      },
+      "last_instruction_address_bound": "0x403f25",
+      "disassembly": [
+        "00403E8F: push        42A620h",
+        "00403E94: call        00404900",
+        "00403E99: movzx       eax,word ptr ds:[0042757Ah]",
+        "00403EA0: cmp         eax,66h",
+        "00403EA3: jg          00403F2A",
+        "00403EA9: je          00404111",
+        "00403EAF: cmp         eax,3Ah",
+        "00403EB2: jg          00403EF3",
+        "00403EB4: je          0040408A",
+        "00403EBA: cmp         eax,23h",
+        "00403EBD: jg          00403EDC",
+        "00403EBF: je          00403FA4",
+        "00403EC5: sub         eax,9",
+        "00403EC8: je          00403F9A",
+        "00403ECE: sub         eax,4",
+        "00403ED1: je          004040A5",
+        "00403ED7: jmp         004041B6",
+        "00403EDC: sub         eax,24h",
+        "00403EDF: je          00403FC8",
+        "00403EE5: sub         eax,7",
+        "00403EE8: je          0040409E",
+        "00403EEE: jmp         004041B6",
+        "00403EF3: cmp         eax,5Ah",
+        "00403EF6: jg          00403F13",
+        "00403EF8: je          0040414A",
+        "00403EFE: sub         eax,3Ch",
+        "00403F01: je          0040415E",
+        "00403F07: dec         eax",
+        "00403F08: je          00404094",
+        "00403F0E: jmp         004041B6",
+        "00403F13: sub         eax,61h",
+        "00403F16: je          004040B1",
+        "00403F1C: sub         eax,2",
+        "00403F1F: je          004040E1",
+        "00403F25: jmp         004041B6"
+      ],
+      "limits": "Static only. Upper dump range extended to decode the final instruction, then address-filtered; no executable bytes exported."
+    },
+    {
+      "role": "third_operand_routes",
+      "start": {
+        "va": "0x403f9a",
+        "rva": "0x3f9a",
+        "section": ".text",
+        "file_offset": "0x359a",
+        "mapping": "file bytes"
+      },
+      "last_instruction_address_bound": "0x403fe7",
+      "disassembly": [
+        "00403F9A: call        00405478",
+        "00403F9F: jmp         0040449D",
+        "00403FA4: mov         edx,dword ptr ds:[0042A620h]",
+        "00403FAA: push        edx",
+        "00403FAB: mov         ecx,dword ptr ds:[0042A61Ch]",
+        "00403FB1: push        ecx",
+        "00403FB2: call        00404AF8",
+        "00403FB7: push        eax",
+        "00403FB8: mov         eax,dword ptr ds:[0042A618h]",
+        "00403FBD: push        eax",
+        "00403FBE: call        004059A8",
+        "00403FC3: jmp         0040449D",
+        "00403FC8: mov         edx,dword ptr ds:[0042A61Ch]",
+        "00403FCE: push        edx",
+        "00403FCF: mov         ecx,dword ptr ds:[0042A620h]",
+        "00403FD5: push        ecx",
+        "00403FD6: call        00404AF8",
+        "00403FDB: push        eax",
+        "00403FDC: mov         eax,dword ptr ds:[0042A618h]",
+        "00403FE1: push        eax",
+        "00403FE2: call        004059A8",
+        "00403FE7: jmp         0040449D"
+      ],
+      "limits": "Static only. Upper dump range extended to decode the final instruction, then address-filtered; no executable bytes exported."
+    },
+    {
+      "role": "scalar_read_write",
+      "start": {
+        "va": "0x404af8",
+        "rva": "0x4af8",
+        "section": ".text",
+        "file_offset": "0x40f8",
+        "mapping": "file bytes"
+      },
+      "last_instruction_address_bound": "0x404b6b",
+      "disassembly": [
+        "00404AF8: push        ebp",
+        "00404AF9: mov         ebp,esp",
+        "00404AFB: mov         eax,dword ptr [ebp+8]",
+        "00404AFE: mov         dx,word ptr [eax]",
+        "00404B01: sub         dx,0B1h",
+        "00404B06: je          00404B15",
+        "00404B08: dec         dx",
+        "00404B0B: je          00404B1B",
+        "00404B0D: sub         dx,2",
+        "00404B11: je          00404B23",
+        "00404B13: jmp         00404B28",
+        "00404B15: movzx       eax,byte ptr [eax+2]",
+        "00404B19: jmp         00404B2A",
+        "00404B1B: movsx       ecx,word ptr [eax+2]",
+        "00404B1F: mov         eax,ecx",
+        "00404B21: jmp         00404B2A",
+        "00404B23: mov         eax,dword ptr [eax+2]",
+        "00404B26: jmp         00404B2A",
+        "00404B28: xor         eax,eax",
+        "00404B2A: pop         ebp",
+        "00404B2B: ret         4",
+        "00404B2E: nop",
+        "00404B2F: nop",
+        "00404B30: push        ebp",
+        "00404B31: mov         ebp,esp",
+        "00404B33: mov         eax,dword ptr [ebp+8]",
+        "00404B36: mov         dx,word ptr [eax]",
+        "00404B39: sub         dx,0B1h",
+        "00404B3E: je          00404B4D",
+        "00404B40: dec         dx",
+        "00404B43: je          00404B55",
+        "00404B45: sub         dx,2",
+        "00404B49: je          00404B5F",
+        "00404B4B: jmp         00404B65",
+        "00404B4D: mov         cl,byte ptr [ebp+0Ch]",
+        "00404B50: mov         byte ptr [eax+2],cl",
+        "00404B53: jmp         00404B65",
+        "00404B55: mov         dx,word ptr [ebp+0Ch]",
+        "00404B59: mov         word ptr [eax+2],dx",
+        "00404B5D: jmp         00404B65",
+        "00404B5F: mov         ecx,dword ptr [ebp+0Ch]",
+        "00404B62: mov         dword ptr [eax+2],ecx",
+        "00404B65: mov         dword ptr ds:[00427580h],eax",
+        "00404B6A: pop         ebp",
+        "00404B6B: ret         8"
+      ],
+      "limits": "Static only. Upper dump range extended to decode the final instruction, then address-filtered; no executable bytes exported."
+    },
+    {
+      "role": "arithmetic_dispatch",
+      "start": {
+        "va": "0x404b9c",
+        "rva": "0x4b9c",
+        "section": ".text",
+        "file_offset": "0x419c",
+        "mapping": "file bytes"
+      },
+      "last_instruction_address_bound": "0x404bb1",
+      "disassembly": [
+        "00404B9C: push        ebp",
+        "00404B9D: mov         ebp,esp",
+        "00404B9F: push        ebx",
+        "00404BA0: push        esi",
+        "00404BA1: movzx       eax,word ptr [ebp+8]",
+        "00404BA5: add         eax,0FFFFFFEFh",
+        "00404BA8: cmp         eax,0Dh",
+        "00404BAB: ja          00404DB0",
+        "00404BB1: jmp         dword ptr [eax*4+00404BB8h]"
+      ],
+      "limits": "Static only. Upper dump range extended to decode the final instruction, then address-filtered; no executable bytes exported."
+    },
+    {
+      "role": "arithmetic_add_subtract",
+      "start": {
+        "va": "0x404bf0",
+        "rva": "0x4bf0",
+        "section": ".text",
+        "file_offset": "0x41f0",
+        "mapping": "file bytes"
+      },
+      "last_instruction_address_bound": "0x404c39",
+      "disassembly": [
+        "00404BF0: mov         ebx,dword ptr ds:[0042A61Ch]",
+        "00404BF6: push        ebx",
+        "00404BF7: call        00404AF8",
+        "00404BFC: mov         esi,eax",
+        "00404BFE: mov         eax,dword ptr ds:[0042A618h]",
+        "00404C03: push        eax",
+        "00404C04: call        00404AF8",
+        "00404C09: add         esi,eax",
+        "00404C0B: push        esi",
+        "00404C0C: push        ebx",
+        "00404C0D: call        00404B30",
+        "00404C12: jmp         00404DB0",
+        "00404C17: mov         ebx,dword ptr ds:[0042A61Ch]",
+        "00404C1D: push        ebx",
+        "00404C1E: call        00404AF8",
+        "00404C23: mov         esi,eax",
+        "00404C25: mov         eax,dword ptr ds:[0042A618h]",
+        "00404C2A: push        eax",
+        "00404C2B: call        00404AF8",
+        "00404C30: sub         esi,eax",
+        "00404C32: push        esi",
+        "00404C33: push        ebx",
+        "00404C34: call        00404B30",
+        "00404C39: jmp         00404DB0"
+      ],
+      "limits": "Static only. Upper dump range extended to decode the final instruction, then address-filtered; no executable bytes exported."
+    },
+    {
+      "role": "comparison",
+      "start": {
+        "va": "0x4055f0",
+        "rva": "0x55f0",
+        "section": ".text",
+        "file_offset": "0x4bf0",
+        "mapping": "file bytes"
+      },
+      "last_instruction_address_bound": "0x405628",
+      "disassembly": [
+        "004055F0: push        ebx",
+        "004055F1: mov         eax,dword ptr ds:[0042A618h]",
+        "004055F6: push        eax",
+        "004055F7: call        00404AF8",
+        "004055FC: mov         ebx,eax",
+        "004055FE: mov         eax,dword ptr ds:[0042A61Ch]",
+        "00405603: push        eax",
+        "00405604: call        00404AF8",
+        "00405609: cmp         eax,ebx",
+        "0040560B: jle         00405612",
+        "0040560D: or          eax,0FFFFFFFFh",
+        "00405610: jmp         0040561E",
+        "00405612: cmp         eax,ebx",
+        "00405614: jge         0040561C",
+        "00405616: mov         ax,1",
+        "0040561A: jmp         0040561E",
+        "0040561C: xor         eax,eax",
+        "0040561E: movsx       edx,ax",
+        "00405621: push        edx",
+        "00405622: call        004049F0",
+        "00405627: pop         ebx",
+        "00405628: ret"
+      ],
+      "limits": "Static only. Upper dump range extended to decode the final instruction, then address-filtered; no executable bytes exported."
+    },
+    {
+      "role": "comparison_flag_writer",
+      "start": {
+        "va": "0x4049f0",
+        "rva": "0x49f0",
+        "section": ".text",
+        "file_offset": "0x3ff0",
+        "mapping": "file bytes"
+      },
+      "last_instruction_address_bound": "0x404a24",
+      "disassembly": [
+        "004049F0: push        ebp",
+        "004049F1: mov         ebp,esp",
+        "004049F3: mov         eax,dword ptr [ebp+8]",
+        "004049F6: and         word ptr ds:[0042757Ch],0FFF1h",
+        "004049FF: test        eax,eax",
+        "00404A01: jne         00404A0D",
+        "00404A03: or          word ptr ds:[0042757Ch],4",
+        "00404A0B: jmp         00404A23",
+        "00404A0D: test        eax,eax",
+        "00404A0F: jge         00404A1B",
+        "00404A11: or          word ptr ds:[0042757Ch],2",
+        "00404A19: jmp         00404A23",
+        "00404A1B: or          word ptr ds:[0042757Ch],8",
+        "00404A23: pop         ebp",
+        "00404A24: ret         4"
+      ],
+      "limits": "Static only. Upper dump range extended to decode the final instruction, then address-filtered; no executable bytes exported."
+    },
+    {
+      "role": "copy_helper",
+      "start": {
+        "va": "0x4059a8",
+        "rva": "0x59a8",
+        "section": ".text",
+        "file_offset": "0x4fa8",
+        "mapping": "file bytes"
+      },
+      "last_instruction_address_bound": "0x405b89",
+      "disassembly": [
+        "004059A8: push        ebp",
+        "004059A9: mov         ebp,esp",
+        "004059AB: push        ecx",
+        "004059AC: push        ebx",
+        "004059AD: push        esi",
+        "004059AE: push        edi",
+        "004059AF: mov         ecx,dword ptr [ebp+8]",
+        "004059B2: mov         esi,dword ptr [ebp+10h]",
+        "004059B5: mov         word ptr [ebp-2],1",
+        "004059BB: mov         edx,dword ptr [ebp+8]",
+        "004059BE: add         ecx,2",
+        "004059C1: mov         dx,word ptr [edx]",
+        "004059C4: sub         dx,0B0h",
+        "004059C9: je          004059DD",
+        "004059CB: dec         dx",
+        "004059CE: je          004059FA",
+        "004059D0: dec         dx",
+        "004059D3: je          00405A00",
+        "004059D5: sub         dx,2",
+        "004059D9: je          00405A06",
+        "004059DB: jmp         00405A0A",
+        "004059DD: movsx       ecx,word ptr [ebp+0Ch]",
+        "004059E1: mov         edx,dword ptr [ebp+8]",
+        "004059E4: add         ecx,dword ptr [ebp+8]",
+        "004059E7: add         ecx,6",
+        "004059EA: mov         bx,word ptr [edx+4]",
+        "004059EE: sub         bx,word ptr [ebp+0Ch]",
+        "004059F2: mov         word ptr [ebp-2],0FFFFh",
+        "004059F8: jmp         00405A0A",
+        "004059FA: mov         bx,1",
+        "004059FE: jmp         00405A0A",
+        "00405A00: mov         bx,2",
+        "00405A04: jmp         00405A0A",
+        "00405A06: mov         bx,4",
+        "00405A0A: mov         word ptr [ebp-4],1",
+        "00405A10: mov         di,word ptr [esi]",
+        "00405A13: lea         edx,[esi+2]",
+        "00405A16: sub         di,0B0h",
+        "00405A1B: je          00405A1F",
+        "00405A1D: jmp         00405A3B",
+        "00405A1F: movsx       edx,word ptr [ebp+0Ch]",
+        "00405A23: mov         ax,word ptr [esi+2]",
+        "00405A27: add         edx,esi",
+        "00405A29: add         edx,6",
+        "00405A2C: sub         ax,word ptr [ebp+0Ch]",
+        "00405A30: mov         word ptr [ebp-4],0FFFFh",
+        "00405A36: jmp         00405ADE",
+        "00405A3B: mov         edi,dword ptr [ebp+8]",
+        "00405A3E: movzx       edi,word ptr [edi]",
+        "00405A41: cmp         edi,0B0h",
+        "00405A47: je          00405AB7",
+        "00405A49: mov         eax,dword ptr [ebp+8]",
+        "00405A4C: mov         dx,word ptr [eax]",
+        "00405A4F: sub         dx,0B1h",
+        "00405A54: je          00405A66",
+        "00405A56: dec         dx",
+        "00405A59: je          00405A83",
+        "00405A5B: sub         dx,2",
+        "00405A5F: je          00405A9B",
+        "00405A61: jmp         00405B84",
+        "00405A66: mov         ecx,dword ptr [ebp+8]",
+        "00405A69: push        ecx",
+        "00405A6A: call        00404AF8",
+        "00405A6F: mov         edi,eax",
+        "00405A71: and         edi,0FFh",
+        "00405A77: push        edi",
+        "00405A78: push        esi",
+        "00405A79: call        00404B30",
+        "00405A7E: jmp         00405B84",
+        "00405A83: mov         eax,dword ptr [ebp+8]",
+        "00405A86: push        eax",
+        "00405A87: call        00404AF8",
+        "00405A8C: movsx       edx,ax",
+        "00405A8F: push        edx",
+        "00405A90: push        esi",
+        "00405A91: call        00404B30",
+        "00405A96: jmp         00405B84",
+        "00405A9B: mov         ecx,dword ptr [ebp+8]",
+        "00405A9E: push        ecx",
+        "00405A9F: call        00404AF8",
+        "00405AA4: push        eax",
+        "00405AA5: push        esi",
+        "00405AA6: call        00404B30",
+        "00405AAB: jmp         00405B84",
+        "00405AB0: jmp         00405B84",
+        "00405AB5: jmp         00405ADE",
+        "00405AB7: mov         di,word ptr [esi]",
+        "00405ABA: sub         di,0B1h",
+        "00405ABF: je          00405ACE",
+        "00405AC1: dec         di",
+        "00405AC4: je          00405AD4",
+        "00405AC6: sub         di,2",
+        "00405ACA: je          00405ADA",
+        "00405ACC: jmp         00405ADE",
+        "00405ACE: mov         ax,1",
+        "00405AD2: jmp         00405ADE",
+        "00405AD4: mov         ax,2",
+        "00405AD8: jmp         00405ADE",
+        "00405ADA: mov         ax,4",
+        "00405ADE: cmp         ax,bx",
+        "00405AE1: jge         00405AED",
+        "00405AE3: or          word ptr ds:[0042757Ch],10h",
+        "00405AEB: jmp         00405AF6",
+        "00405AED: and         word ptr ds:[0042757Ch],0FFEFh",
+        "00405AF6: cmp         ax,bx",
+        "00405AF9: jg          00405AFD",
+        "00405AFB: mov         ebx,eax",
+        "00405AFD: mov         eax,ebx",
+        "00405AFF: movzx       ebx,word ptr [esi]",
+        "00405B02: cmp         ebx,0B0h",
+        "00405B08: jne         00405B33",
+        "00405B0A: cmp         word ptr [ebp+0Ch],0",
+        "00405B0F: jne         00405B17",
+        "00405B11: mov         word ptr [esi+4],ax",
+        "00405B15: jmp         00405B33",
+        "00405B17: movsx       ebx,ax",
+        "00405B1A: movsx       edi,word ptr [ebp+0Ch]",
+        "00405B1E: add         ebx,edi",
+        "00405B20: movsx       edi,word ptr [esi+4]",
+        "00405B24: cmp         ebx,edi",
+        "00405B26: jle         00405B33",
+        "00405B28: mov         bx,word ptr [ebp+0Ch]",
+        "00405B2C: add         bx,ax",
+        "00405B2F: mov         word ptr [esi+4],bx",
+        "00405B33: cmp         word ptr [ebp-2],0",
+        "00405B38: jge         00405B40",
+        "00405B3A: movsx       ebx,ax",
+        "00405B3D: dec         ebx",
+        "00405B3E: add         ecx,ebx",
+        "00405B40: cmp         word ptr [ebp-4],0",
+        "00405B45: jge         00405B4D",
+        "00405B47: movsx       ebx,ax",
+        "00405B4A: dec         ebx",
+        "00405B4B: add         edx,ebx",
+        "00405B4D: test        ax,ax",
+        "00405B50: jle         00405B68",
+        "00405B52: mov         bl,byte ptr [ecx]",
+        "00405B54: mov         byte ptr [edx],bl",
+        "00405B56: movsx       ebx,word ptr [ebp-4]",
+        "00405B5A: add         edx,ebx",
+        "00405B5C: movsx       ebx,word ptr [ebp-2]",
+        "00405B60: add         ecx,ebx",
+        "00405B62: dec         eax",
+        "00405B63: test        ax,ax",
+        "00405B66: jg          00405B52",
+        "00405B68: mov         dword ptr ds:[00427580h],esi",
+        "00405B6E: movzx       eax,word ptr [esi]",
+        "00405B71: cmp         eax,0B0h",
+        "00405B76: je          00405B84",
+        "00405B78: push        esi",
+        "00405B79: call        00404AF8",
+        "00405B7E: push        eax",
+        "00405B7F: call        004049D0",
+        "00405B84: pop         edi",
+        "00405B85: pop         esi",
+        "00405B86: pop         ebx",
+        "00405B87: pop         ecx",
+        "00405B88: pop         ebp",
+        "00405B89: ret         0Ch"
+      ],
+      "limits": "Static only. Upper dump range extended to decode the final instruction, then address-filtered; no executable bytes exported."
+    },
+    {
+      "role": "stop_and_flag_routes",
+      "start": {
+        "va": "0x40387a",
+        "rva": "0x387a",
+        "section": ".text",
+        "file_offset": "0x2e7a",
+        "mapping": "file bytes"
+      },
+      "last_instruction_address_bound": "0x4038c1",
+      "disassembly": [
+        "0040387A: mov         byte ptr ds:[004274C4h],1",
+        "00403881: mov         edx,dword ptr ds:[0042A618h]",
+        "00403887: mov         ax,word ptr [edx+2]",
+        "0040388B: jmp         004044A1",
+        "00403890: mov         edx,dword ptr ds:[0042A618h]",
+        "00403896: mov         ax,word ptr [edx+2]",
+        "0040389A: test        ax,ax",
+        "0040389D: je          0040449D",
+        "004038A3: movsx       edx,ax",
+        "004038A6: push        0",
+        "004038A8: push        edx",
+        "004038A9: call        dword ptr ds:[004398B4h]",
+        "004038AF: jmp         0040449D",
+        "004038B4: mov         cx,word ptr ds:[0042757Ah]",
+        "004038BB: push        ecx",
+        "004038BC: call        00408C28",
+        "004038C1: jmp         0040449D"
+      ],
+      "limits": "Static only. Upper dump range extended to decode the final instruction, then address-filtered; no executable bytes exported."
+    },
+    {
+      "role": "flag_mask_helper",
+      "start": {
+        "va": "0x408c28",
+        "rva": "0x8c28",
+        "section": ".text",
+        "file_offset": "0x8228",
+        "mapping": "file bytes"
+      },
+      "last_instruction_address_bound": "0x408c6b",
+      "disassembly": [
+        "00408C28: push        ebp",
+        "00408C29: mov         ebp,esp",
+        "00408C2B: mov         eax,dword ptr ds:[0042A618h]",
+        "00408C30: push        eax",
+        "00408C31: call        00404AF8",
+        "00408C36: movzx       edx,word ptr [ebp+8]",
+        "00408C3A: cmp         edx,82h",
+        "00408C40: jne         00408C4F",
+        "00408C42: xor         ecx,ecx",
+        "00408C44: mov         cl,al",
+        "00408C46: or          word ptr ds:[0042757Ch],cx",
+        "00408C4D: jmp         00408C6A",
+        "00408C4F: xor         edx,edx",
+        "00408C51: mov         dl,al",
+        "00408C53: not         dx",
+        "00408C56: and         word ptr ds:[0042757Ch],dx",
+        "00408C5D: test        al,1",
+        "00408C5F: je          00408C6A",
+        "00408C61: mov         word ptr ds:[00427644h],0",
+        "00408C6A: pop         ebp",
+        "00408C6B: ret         4"
+      ],
+      "limits": "Static only. Upper dump range extended to decode the final instruction, then address-filtered; no executable bytes exported."
+    }
+  ],
+  "unknowns": [
+    "Full opcode arities and helper effects outside selected control-flow cases.",
+    "Host callback parameter schemas and device requirements.",
+    "Actual execution reachability and preservation/recovery outcomes.",
+    "Safe native malformed-input behavior not proven.",
+    "Selected descriptor read counts refer to traced dispatch paths; helpers for other opcodes may consume more descriptors.",
+    "Flag 0x20 producer/meaning remains untraced; branches 47/48 only test it.",
+    "Opcode 81 native stop flag and returned status do not establish controller reset, recovery success or physical flash state."
+  ],
+  "write_protocol_verified": false,
+  "physical_recovery_verified": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "would_send": [],
+  "arithmetic_dispatch_table": {
+    "source": {
+      "va": "0x404bb8",
+      "rva": "0x4bb8",
+      "section": ".text",
+      "file_offset": "0x41b8",
+      "mapping": "file bytes"
+    },
+    "entries": [
+      {
+        "opcode": "0x11",
+        "route_va": "0x404bf0"
+      },
+      {
+        "opcode": "0x12",
+        "route_va": "0x404c17"
+      },
+      {
+        "opcode": "0x13",
+        "route_va": "0x404c3e"
+      },
+      {
+        "opcode": "0x14",
+        "route_va": "0x404c66"
+      },
+      {
+        "opcode": "0x15",
+        "route_va": "0x404c91"
+      },
+      {
+        "opcode": "0x16",
+        "route_va": "0x404cb8"
+      },
+      {
+        "opcode": "0x17",
+        "route_va": "0x404cdf"
+      },
+      {
+        "opcode": "0x18",
+        "route_va": "0x404db0"
+      },
+      {
+        "opcode": "0x19",
+        "route_va": "0x404d06"
+      },
+      {
+        "opcode": "0x1a",
+        "route_va": "0x404d46"
+      },
+      {
+        "opcode": "0x1b",
+        "route_va": "0x404db0"
+      },
+      {
+        "opcode": "0x1c",
+        "route_va": "0x404db0"
+      },
+      {
+        "opcode": "0x1d",
+        "route_va": "0x404d86"
+      },
+      {
+        "opcode": "0x1e",
+        "route_va": "0x404d9c"
+      }
+    ],
+    "data_not_instructions": true
+  },
+  "selected_opcode_semantics": [
+    {
+      "opcode": "0x11",
+      "native_descriptor_reads": 2,
+      "dispatch_va": "0x403da9",
+      "helper_va": "0x404b9c",
+      "effect": "Read first and second scalar values; write second + first to second operand through 404B30.",
+      "body_va": "0x404bf0"
+    },
+    {
+      "opcode": "0x12",
+      "native_descriptor_reads": 2,
+      "dispatch_va": "0x403da9",
+      "helper_va": "0x404b9c",
+      "effect": "Read first and second scalar values; write second - first to second operand through 404B30.",
+      "body_va": "0x404c17"
+    },
+    {
+      "opcode": "0x20",
+      "native_descriptor_reads": 2,
+      "dispatch_va": "0x403dbb",
+      "helper_va": "0x4059a8",
+      "effect": "Call copy helper(first resolved operand, offset=0, second resolved operand). Scalar path writes first value into second."
+    },
+    {
+      "opcode": "0x24",
+      "native_descriptor_reads": 3,
+      "dispatch_va": "0x403fc8",
+      "helper_va": "0x4059a8",
+      "effect": "Call copy helper(first resolved operand, scalar value of third resolved operand, second resolved operand)."
+    },
+    {
+      "opcode": "0x30",
+      "native_descriptor_reads": 2,
+      "dispatch_va": "0x403dfc",
+      "helper_va": "0x4055f0",
+      "effect": "Signed scalar comparison first versus second. Clear flags bits 0x0E; set 0x04 for equality, 0x02 if first < second, 0x08 if first > second.",
+      "flag_writer_va": "0x4049f0"
+    },
+    {
+      "opcode": "0x81",
+      "native_descriptor_reads": 1,
+      "dispatch_va": "0x40387a",
+      "effect": "Set byte at 4274C4 to 1; return the raw word at first resolved operand +2 as VM step status through 4044A1. Meaning of the status and flag remains unknown."
+    },
+    {
+      "opcode": "0x82",
+      "native_descriptor_reads": 1,
+      "dispatch_va": "0x4038b4",
+      "helper_va": "0x408c28",
+      "effect": "OR low 8 bits of first scalar value into flags word 42757C. Does not itself establish an error or termination."
+    },
+    {
+      "opcode": "0x83",
+      "native_descriptor_reads": 1,
+      "dispatch_va": "0x4038b4",
+      "helper_va": "0x408c28",
+      "effect": "Clear flags selected by low 8 bits of first scalar value. If value bit 0 selected, also clear word 427644."
+    }
+  ],
+  "scalar_helpers": {
+    "reader_va": "0x404af8",
+    "writer_va": "0x404b30",
+    "read_types": {
+      "0xb1": "zero-extended 8-bit at operand+2",
+      "0xb2": "sign-extended 16-bit at operand+2",
+      "0xb4": "32-bit at operand+2"
+    },
+    "other_read_tags": "return zero",
+    "write_types": {
+      "0xb1": "low 8 bits at operand+2",
+      "0xb2": "low 16 bits at operand+2",
+      "0xb4": "32 bits at operand+2"
+    },
+    "other_write_tags": "no scalar memory write; 427580 still assigned operand pointer"
+  },
+  "copy_helper_observations": {
+    "helper_va": "0x4059a8",
+    "arguments": [
+      "first resolved pointer (source)",
+      "signed low-16-bit offset",
+      "second resolved pointer (destination)"
+    ],
+    "scalar_path": "First B1/B2/B4 value is converted at matching width then scalar-written to second.",
+    "b0_path": "First B0 source starts at first+6+offset with bound word(first+4)-offset; second B0 destination starts at second+6+offset with bound word(second+2)-offset. Scalar sides use operand+2 and width 1/2/4. Copy count is signed-16-bit minimum of bounds. B0 sides step -1; scalar sides step +1. For negative steps, starting pointer additionally advances count-1.",
+    "copy_loop_va": "0x405b52",
+    "destination_b0_metadata": "Second B0 word+4 set to count for offset zero; otherwise increased to offset+count when greater.",
+    "flag_0x10": "Set if signed second-side bound is less than first-side bound, cleared otherwise.",
+    "unknowns": [
+      "No semantic labeling of B0 header words as length/capacity beyond observed native accesses.",
+      "No host packet, controller erase, program or physical outcome inferred from copy semantics.",
+      "Descriptor resolution helper 4044A8 not fully traced."
+    ]
+  },
+  "entry_profile": {
+    "initial_entry": "Object header word5 (file offset0x0a), initial PC = instruction base + zero-extended entry at native0x402fd5..0x402fe2.",
+    "host_error_entry": "Object header word6 (file offset0x0c). Negative callback result at0x40359c..0x4035b7 records error0x508 and redirects PC to instruction base + this entry.",
+    "instruction_base": "0x435618",
+    "pc_global": "0x427534",
+    "initial_entry_global": "0x42752e",
+    "host_error_entry_global": "0x427530",
+    "provenance": "Bounded dumpbin static disassembly of pinned source DLL; no runtime observation."
+  }
+}

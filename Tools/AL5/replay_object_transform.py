@@ -22,7 +22,7 @@ def local_transform(value):
     return bytes(output)
 
 
-def replay(parsed, obj, name):
+def reconstruct(parsed, obj, name):
     info=inspect_bytes(obj,name)
     exchanges=[]
     for ordinal,record in enumerate(parsed):
@@ -70,6 +70,11 @@ def replay(parsed, obj, name):
     if cursor!=len(exchanges):raise ValueError('extra transform exchanges; source association unresolved')
     code=obj[:42]+transformed[0]
     data=transformed[1]
+    return code, data, stages
+
+
+def replay(parsed, obj, name):
+    code, data, stages = reconstruct(parsed, obj, name)
     result=inspect_buffers(code,data,sha256(code),sha256(data))
     result.update(object_source_name=name,object_source_sha256=sha256(obj),
                   captured_transform_replay_verified=True,

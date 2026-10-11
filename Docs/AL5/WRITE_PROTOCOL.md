@@ -308,6 +308,8 @@ executing their contents. See [VM object loading](EFILIVE_VM_OBJECT_LOADING.md).
 The planner hash-links both reports; live writing, physical transport,
 preservation and recovery remain unverified, and packet lists remain empty.
 
-Host callbacks: [static callback tracing and supplied-buffer CRC inspection](EFILIVE_HOST_CALLBACKS.md). The transform reaches Windows IPC; its recipient and actual AL5 object transformation remain unresolved. Live writes remain disabled.
+Host callbacks: [static callback tracing and supplied-buffer CRC inspection](EFILIVE_HOST_CALLBACKS.md). The transform reaches Windows IPC; its recipient is statically linked, and captured-reply reconstruction is available. Device-independent transformation remains unresolved. Live writes remain disabled.
 
 [Captured object transform replay](EFILIVE_HOST_IPC.md): all five saved W traces match the installed object input and validator CRC. Device-independent transformation and programming/recovery remain unverified; live writes remain disabled.
+
+[Reconstructed VM programming and recovery flow](VM_PROGRAMMING_FLOW.md): static instruction listing, broader programming bounds, attempt-counter branches, and separate error/stop paths. Full VM semantics and physical recovery remain unverified; the planner keeps live writes disabled.

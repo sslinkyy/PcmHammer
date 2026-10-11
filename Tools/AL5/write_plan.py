@@ -77,7 +77,23 @@ def trace_assessment():
     fifo=json.loads(fifo_data)
     device_data=DEVICE_TRACE_EVIDENCE.read_bytes()
     device=json.loads(device_data)
-    return {'object_transform_replay_assessment': {
+    flow_bytes = (Path(__file__).resolve().parents[2] / 'Docs/AL5/VM_PROGRAMMING_FLOW.json').read_bytes()
+    flow = json.loads(flow_bytes)
+    dispatch_bytes = (Path(__file__).resolve().parents[2] / 'Docs/AL5/EFILIVE_VM_DISPATCH.json').read_bytes()
+    return {'vm_control_flow_assessment': {
+                'evidence': 'Docs/AL5/VM_PROGRAMMING_FLOW.json',
+                'evidence_sha256': sha256(flow_bytes),
+                'static_evidence': 'Docs/AL5/EFILIVE_VM_DISPATCH.json',
+                'static_evidence_sha256': sha256(dispatch_bytes),
+                'implementation': 'Tools/AL5/inspect_vm_flow.py',
+                'implementation_sha256': sha256((Path(__file__).parent / 'inspect_vm_flow.py').read_bytes()),
+                'structural_instruction_count': flow['instruction_count'],
+                'complete_vm_semantics_verified': False,
+                'write_protocol_verified': False,
+                'physical_recovery_verified': False,
+                'automatic_retry_allowed': False,
+                'scope': flow['scope'], 'limits': flow['limits']},
+            'object_transform_replay_assessment': {
                 'evidence': 'Docs/AL5/OBJECT_TRANSFORM_REPLAY.json',
                 'evidence_sha256': sha256(replay_bytes),
                 'static_evidence': 'Docs/AL5/EFILIVE_HOST_IPC.json',

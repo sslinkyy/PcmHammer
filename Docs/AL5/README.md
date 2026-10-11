@@ -266,3 +266,5 @@ python -m unittest discover -s Tools/AL5 -p test_flash_inventory.py -v
 Build PcmHammer first so the gate harness uses the current Debug library. The
 Python tools use the standard library; `scan_firmware.py` additionally needs
 Capstone (the existing WSL environment was used). Neither test opens a vehicle.
+
+[Reconstructed VM programming and recovery flow](VM_PROGRAMMING_FLOW.md): static instruction listing, broader programming bounds, attempt-counter branches, and separate error/stop paths. Full VM semantics and physical recovery remain unverified; the planner keeps live writes disabled.
