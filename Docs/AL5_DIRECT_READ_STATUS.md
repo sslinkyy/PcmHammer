@@ -133,3 +133,5 @@ inspector validates all four installed AL5 object layouts without decoding or
 executing their contents. See [VM object loading](AL5/EFILIVE_VM_OBJECT_LOADING.md).
 The planner hash-links both reports; live writing, physical transport,
 preservation and recovery remain unverified, and packet lists remain empty.
+
+[Captured object transform replay](AL5/EFILIVE_HOST_IPC.md): all five saved W traces match the installed object input and validator CRC. Device-independent transformation and programming/recovery remain unverified; live writes remain disabled.
