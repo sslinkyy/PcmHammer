@@ -37,10 +37,12 @@ FIFO_CANDIDATE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/FIFO_C
 DEVICE_TRACE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/AUTOCAL_DEVICE_TRACE_INVENTORY.json'
 SESSION_CHRONOLOGY_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/SESSION_CHRONOLOGY.json'
 VM_OBJECT_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/EFILIVE_VM_OBJECT_INVENTORY.json'
+HOST_CALLBACK_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/EFILIVE_HOST_CALLBACKS.json'
 VM_STATIC_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/EFILIVE_VM_OBJECT_LOADING.json'
 
 
 def trace_assessment():
+    callback_bytes = HOST_CALLBACK_EVIDENCE.read_bytes()
     session_bytes = SESSION_CHRONOLOGY_EVIDENCE.read_bytes()
     session = json.loads(session_bytes)
     object_bytes = VM_OBJECT_EVIDENCE.read_bytes()
@@ -70,7 +72,17 @@ def trace_assessment():
     fifo=json.loads(fifo_data)
     device_data=DEVICE_TRACE_EVIDENCE.read_bytes()
     device=json.loads(device_data)
-    return {'session_chronology_assessment': {
+    return {'host_callback_assessment': {
+                'evidence': 'Docs/AL5/EFILIVE_HOST_CALLBACKS.json',
+                'evidence_sha256': sha256(callback_bytes),
+                'implementation': 'Tools/AL5/validate_vm_buffers.py',
+                'implementation_sha256': sha256((Path(__file__).parent / 'validate_vm_buffers.py').read_bytes()),
+                'crc_callback_algorithm_statically_resolved': True,
+                'object_transform_reproduced': False,
+                'object_validation_verified': False,
+                'ipc_recipient_resolved': False,
+                'physical_recovery_verified': False},
+            'session_chronology_assessment': {
                 'evidence': 'Docs/AL5/SESSION_CHRONOLOGY.json',
                 'evidence_sha256': sha256(session_bytes),
                 'trace_count': session['trace_count'],

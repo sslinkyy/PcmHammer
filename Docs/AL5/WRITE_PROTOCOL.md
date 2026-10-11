@@ -307,3 +307,5 @@ inspector validates all four installed AL5 object layouts without decoding or
 executing their contents. See [VM object loading](EFILIVE_VM_OBJECT_LOADING.md).
 The planner hash-links both reports; live writing, physical transport,
 preservation and recovery remain unverified, and packet lists remain empty.
+
+Host callbacks: [static callback tracing and supplied-buffer CRC inspection](EFILIVE_HOST_CALLBACKS.md). The transform reaches Windows IPC; its recipient and actual AL5 object transformation remain unresolved. Live writes remain disabled.
