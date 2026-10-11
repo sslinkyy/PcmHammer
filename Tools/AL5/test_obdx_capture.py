@@ -1,0 +1,248 @@
+import unittest
+from unittest.mock import patch
+import tempfile
+from pathlib import Path
+import json
+
+import obdx_capture as c
+
+
+def network(payload, large=False, stamp=None):
+    body = bytes([9 if large else 8])
+    if stamp is not None:
+        body += stamp
+    body += len(payload).to_bytes(2 if large else 1, 'big') + payload
+    return body + bytes([(~sum(body)) & 255])
+
+
+class FakePort:
+    def __init__(self):
+        self.writes = []
+        self.replies = []
+        self.state = 0
+        self.reject_listen = False
+
+    def write(self, data):
+        self.writes.append(data)
+        if data == b'AT@1\r':
+            self.replies.append(b'AT@1\r\nOBDX Pro GT\r\n>')
+            return
+        if data == b'DXDP1\r':
+            self.replies.append(b'DXDP1\r\nOK\r\n>')
+            return
+        if sum(data) & 255 != 255:
+            raise AssertionError('Outgoing checksum')
+        command, p = data[0], data[2:-1]
+        if not c.permitted(command, p):
+            raise AssertionError('Forbidden adapter operation')
+        if command == 0x22:
+            values = {0: bytes([2, 0, 0, 0]), 1: bytes([1, 2, 3, 4]),
+                      2: b'\x00\x01', 3: b'OBDX Pro GT', 4: bytes(range(12)),
+                      5: b'\x02\x00', 6: b'\x01'}
+            p += values[p[0]]
+        elif command == 0x31 and p[0] == 2:
+            if len(p) == 2:
+                self.state = p[1]
+            else:
+                p += bytes([self.state])
+            if self.reject_listen and p == b'\x02\x02':
+                p = b'\x02\x01'
+        elif len(p) == 1:
+            p += b'\x00'
+        self.replies.append(c.packet(command + 0x10, p))
+
+    def read(self):
+        return self.replies.pop(0) if self.replies else b''
+
+
+class CaptureTests(unittest.TestCase):
+    def test_only_exact_local_commands_reach_transport(self):
+        port = FakePort()
+        session = c.Session(port, lambda _: None)
+        session.dvi = True
+        for opcode in range(256):
+            if c.permitted(opcode, [1]):
+                continue
+            with self.assertRaises(PermissionError):
+                session.send(opcode, [1])
+        self.assertEqual([], port.writes)
+        for payload in ([2, 1], [6, 0], [6, 1], [1, 2], [2, 2, 0]):
+            with self.assertRaises(PermissionError):
+                session.send(0x31, payload)
+        for opcode in (0x10, 0x11):
+            for service in range(256):
+                with self.assertRaises(PermissionError):
+                    session.send(opcode, [0x6C, 0x18, 0xF0, service])
+        self.assertEqual([], port.writes)
+
+    def test_elm_does_not_accept_vehicle_data_or_reset(self):
+        port = FakePort()
+        session = c.Session(port, lambda _: None)
+        for command in ('01', 'ATZ', 'ATSP2', 'ATMA', 'DXSD6C18F034',
+                        'AT@1\r01', 'DXDP0', 'AT@1\n'):
+            with self.assertRaises(PermissionError):
+                session.elm(command)
+        self.assertEqual([], port.writes)
+
+    def test_inspection_disables_previously_enabled_network(self):
+        port = FakePort()
+        port.state = 1
+        events = []
+        session = c.Session(port, events.append)
+        session.connect('elm')
+        result = session.inspect()
+        self.assertEqual(result['firmware'], '1.2.3.4')
+        self.assertEqual(port.state, 0)
+        for wire in port.writes[2:]:
+            if wire[1] != 1:
+                self.assertEqual(wire, c.packet(0x31, [2, 0]))
+            self.assertNotIn(wire[0], (0x10, 0x11, 0x25))
+        self.assertEqual(result['network_state_before_inspection_cleanup'], '0201')
+        self.assertEqual(result['network_state'], '0200')
+
+    def test_listener_uses_only_listen_and_cleans_up(self):
+        for speed in ('1x', '4x'):
+            port, events = FakePort(), []
+            session = c.Session(port, events.append)
+            session.connect('dvi')
+            session.capture(speed, 0)
+            self.assertEqual(port.state, 0)
+            states = [wire[3] for wire in port.writes
+                      if wire[:3] == b'\x31\x02\x02']
+            self.assertEqual(states, [0, 2, 0])
+            self.assertTrue(any(e.get('network_off_acknowledged') for e in events))
+            self.assertFalse(session.decoder.timestamps)
+            self.assertEqual(port.writes[-3:], [c.packet(0x24, [3, 0]),
+                                               c.packet(0x33, [8, 0]),
+                                               c.packet(0x33, [6, 0])])
+
+    def test_wrong_listen_ack_fails_and_turns_network_off(self):
+        port = FakePort()
+        port.reject_listen = True
+        session = c.Session(port, lambda _: None)
+        session.connect('dvi')
+        with self.assertRaises(c.ProtocolError):
+            session.capture('1x', 0)
+        self.assertEqual(port.state, 0)
+
+    def test_cancellation_turns_network_off(self):
+        port, events = FakePort(), []
+        session = c.Session(port, events.append)
+        session.connect('dvi')
+        with patch.object(session, 'configure_listener', side_effect=KeyboardInterrupt):
+            with self.assertRaises(KeyboardInterrupt):
+                session.capture('1x', 1)
+        self.assertTrue(any(e.get('network_off_acknowledged') for e in events))
+
+    def test_cleanup_failure_is_not_reported_as_success(self):
+        session = c.Session(FakePort(), lambda _: None)
+        events = []
+        session.emit = events.append
+        with patch.object(session, 'configure_listener'), \
+                patch.object(session, 'request', side_effect=TimeoutError('OFF timeout')):
+            with self.assertRaises(TimeoutError):
+                session.capture('1x', 0)
+        self.assertFalse(events[-1]['network_off_acknowledged'])
+
+    def test_setting_restore_failure_keeps_off_and_reports_failure(self):
+        port, events = FakePort(), []
+        session = c.Session(port, events.append)
+        session.connect('dvi')
+        original_write = port.write
+        def fail_restore(wire):
+            if wire == c.packet(0x24, [3, 0]):
+                raise OSError('Restore failed')
+            original_write(wire)
+        port.write = fail_restore
+        with self.assertRaises(OSError):
+            session.capture('1x', 0)
+        self.assertEqual(port.state, 0)
+        self.assertEqual(events[-1]['kind'], 'settings_restored')
+        self.assertFalse(events[-1]['success'])
+
+    def test_corruption_and_truncation_preserve_undecoded_bytes(self):
+        raw = bytearray(network(b'\x6c\xf0\x18\x63'))
+        raw[-1] ^= 1
+        decoder = c.Decoder()
+        with self.assertRaises(c.ProtocolError):
+            decoder.feed(raw)
+        self.assertEqual(decoder.buffer, raw)
+        decoder = c.Decoder()
+        self.assertEqual([], decoder.feed(network(b'abc')[:-1]))
+        with self.assertRaises(c.ProtocolError):
+            decoder.finish()
+
+    def test_every_fragment_boundary_and_coalesced_frame(self):
+        for timestamped in (False, True):
+            stamp = b'\xff\xff\xff\xff' if timestamped else None
+            raw = network(b'\x6c\x18\xf1\x34', stamp=stamp)
+            raw += network(bytes(range(256)) * 16, large=True, stamp=stamp)
+            raw += c.packet(0x7F, [0xFF, 5])
+            expected = c.Decoder(timestamped).feed(raw)
+            for cut in range(len(raw) + 1):
+                decoder = c.Decoder(timestamped)
+                self.assertEqual(expected, decoder.feed(raw[:cut]) + decoder.feed(raw[cut:]))
+                decoder.finish()
+            self.assertEqual(expected[1]['payload_hex'], (bytes(range(256)) * 16).hex())
+
+    def test_uint16_maximum_network_frame_and_raw_timestamp(self):
+        decoder = c.Decoder(True)
+        payload = b'x' * 65535
+        wire = network(payload, large=True, stamp=b'\x04\x03\x02\x01')
+        rows = decoder.feed(wire)
+        self.assertEqual(rows[0]['adapter_timestamp_raw_hex'], '04030201')
+        self.assertEqual(rows[0]['payload_hex'], payload.hex())
+        decoder.finish()
+
+    def test_wrong_identity_stops_without_network_commands(self):
+        port = FakePort()
+        port.write = lambda data: (port.writes.append(data),
+                                  port.replies.append(b'OTHER\r\n>'))
+        session = c.Session(port, lambda _: None)
+        with self.assertRaises(c.ProtocolError):
+            session.connect('elm')
+        self.assertEqual(port.writes, [b'AT@1\r'])
+
+    def test_no_reply_is_not_retried(self):
+        port = FakePort()
+        port.write = port.writes.append
+        session = c.Session(port, lambda _: None, timeout=0)
+        session.dvi = True
+        with self.assertRaises(TimeoutError):
+            session.request(0x22, [3])
+        self.assertEqual(len(port.writes), 1)
+
+    def test_offline_cli_never_opens_serial_and_preserves_output(self):
+        with tempfile.TemporaryDirectory() as root:
+            source, output = Path(root) / 'rx.bin', Path(root) / 'rx.jsonl'
+            source.write_bytes(network(b'\x6c\x18\xf1\x23'))
+            args = ['obdx_capture.py', 'decode', '--input', str(source),
+                    '--output', str(output)]
+            with patch('sys.argv', args), patch.object(c, 'WindowsSerial') as serial:
+                c.main()
+                serial.assert_not_called()
+                original = output.read_bytes()
+                rows = [json.loads(line) for line in output.read_text().splitlines()]
+                self.assertEqual(rows[-1]['success'], True)
+                with self.assertRaises(FileExistsError):
+                    c.main()
+                self.assertEqual(output.read_bytes(), original)
+            with patch('sys.argv', args[:-1] + [str(source)]):
+                with self.assertRaises(FileExistsError):
+                    c.main()
+            self.assertEqual(source.read_bytes(), network(b'\x6c\x18\xf1\x23'))
+
+    def test_offline_cli_corruption_records_failure(self):
+        with tempfile.TemporaryDirectory() as root:
+            source, output = Path(root) / 'rx.bin', Path(root) / 'rx.jsonl'
+            source.write_bytes(b'\x08\x01\x01\x00')
+            with patch('sys.argv', ['obdx_capture.py', 'decode', '--input',
+                                   str(source), '--output', str(output)]):
+                with self.assertRaises(c.ProtocolError):
+                    c.main()
+            rows = [json.loads(line) for line in output.read_text().splitlines()]
+            self.assertFalse(rows[-1]['success'])
+
+
+if __name__ == '__main__':
+    unittest.main()

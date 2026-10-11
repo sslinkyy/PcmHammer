@@ -6,8 +6,10 @@ The existing direct reader, identity probe and their UI code were preserved.
 All new reverse engineering and validation were offline.
 
 The next truck session is specified in [the read-only vehicle session plan](READ_ONLY_VEHICLE_SESSION_PLAN.md).
-The existing direct calibration reader is available now; passive capture and a
-narrow identity-only path require separate preparation and verification.
+The existing direct calibration reader is available now. The standalone
+[OBDX GT capture-only tool](OBDX_CAPTURE.md) now has offline protocol/guard
+tests and adapter-local firmware inspection. Actual listen-only bus capture,
+speed-transition coverage and complete programming capture remain unverified.
 
 [Public-source research dated 2026-10-06](ONLINE_RESEARCH_20261006.md) records
 AL5-specific vendor programming/recovery guidance, conditional hardware leads
