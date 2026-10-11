@@ -7,7 +7,8 @@ third-party packages are needed. Live USB serial access uses Windows APIs.
 
 ## Authority and command boundary
 
-Every outgoing DVI packet goes through an exact command/payload allowlist before
+Every outgoing DVI packet goes through an adapter-local command allowlist with
+validated payload shapes before
 serial write. Vehicle-send commands 0x10 and 0x11, ordinary network-ON mode 1,
 resets, firmware updates, unknown commands and generic ELM/hex strings are
 blocked. The only ELM operations are `AT@1` identification and `DXDP1` API
@@ -26,12 +27,11 @@ It requests OFF on completion, cancellation, or configuration failure. A failed
 cleanup acknowledgment is recorded as an unknown adapter state and is an error,
 never a successful cleanup. Do not retry after such a failure without inspecting
 the adapter state. Software guards do not independently prove physical silence.
-After verified network OFF, capture restores the recorded timestamp, CRC-display
-and speed settings, with checked acknowledgments. Restoration failure is an
-error. This protects the existing reader's expected frame layout. Header filters
-remain disabled and CRC validation remains enabled; normal PcmHammer initialization
-sets its own destination filter. Other serial clients must configure their own
-filters before use.
+After verified network OFF, capture restores the recorded timestamp, all five
+VPW header filters, CRC-validation policy, CRC-display and speed settings, with
+checked acknowledgments. Restoration failure is an error. This protects the
+existing reader's expected frame layout and preserves nondefault adapter filters.
+Network ON is never restored. Selecting VPW remains the capture protocol choice.
 
 The manufacturer [OBDX VT reference, v1.06](https://obdxpro.com/Downloads/ReferenceManuals/OBDX%20Pro%20VT%20Reference%20Guide%20v2.pdf)
 documents the DVI framing, adapter queries, timestamp field, filters, speed
@@ -52,6 +52,12 @@ py -3.13 obdx_capture.py inspect --port COM9 --api dvi --output GT_identity_new.
 
 # Decode a retained raw binary DVI receive stream entirely offline.
 py -3.13 obdx_capture.py decode --input receive.bin --timestamps --output decoded_new.jsonl
+
+# Replay original receive chunks from a saved tool JSONL log, without serial access.
+py -3.13 obdx_capture.py replay --input GT_identity_new.jsonl --output replay_new.jsonl
+
+# Adapter-local setting round trips; network stays OFF and each value is restored.
+py -3.13 obdx_capture.py probe --port COM9 --api dvi --output GT_probe_new.jsonl
 ```
 
 The capture command is implemented but has **not been run on hardware**:
@@ -91,6 +97,21 @@ checksum corruption, truncation, every split position in a combined short/long
 frame stream, the maximum uint16 receive length and raw timestamp preservation.
 These tests do not establish real firmware or bus behavior.
 
+`replay` ignores previously decoded rows and reconstructs only original
+`serial_rx` chunks. It retains the ending source-line number for fragmented
+frames, source host timestamps, original-result status, outgoing-command guard
+audit and source SHA256. Verified frames are emitted before a later corrupt frame
+fails; partial facts are not discarded. Checksum-valid timestamp-status packets
+update the layout for following bytes, including coalesced packets in one chunk.
+This follows the documented setting semantics; it is not physical timestamp
+verification or automatic VPW speed tracking. Missing source results remain
+explicitly unknown, and replay success never establishes capture completeness.
+
+`probe` verifies network OFF before changing timestamp, speed and CRC-display
+settings. It checks each alternate-value readback, restores the saved value and
+rechecks network OFF. It neither enables reception nor selects LISTEN ONLY.
+It tests configuration round trips, not actual 1x/4x reception or physical silence.
+
 ## Connected-device observations, 2026-10-11 UTC
 
 COM9 enumerated as an STMicroelectronics USB virtual COM port. The first ELM
@@ -111,3 +132,19 @@ Git, including the unsuccessful initial attempt and successful OFF verification.
 No capture mode, vehicle messages, adapter reset, firmware update, controller
 speed switch or AL5 programming was performed. Listen-only mode on this exact
 firmware and complete programming/recovery capture remain unproven.
+
+## Follow-up validation
+
+Twenty-two offline tests pass after adding exact filter/CRC restoration, JSONL
+replay, source-status preservation and the adapter-local probe. Replaying the
+retained successful OFF inspection reconstructed 15 adapter packets from 16 raw
+receive chunks, with zero vehicle packets and zero outgoing guard violations.
+These are real retained adapter replies, not simulated programming traffic.
+
+The new live local-setting probe could not open COM9 (`WinError 2`). A subsequent
+PnP inventory contained no USB virtual COM port for the GT. No probe bytes were
+sent and no setting changed. The failed attempt and replay output remain under
+`LocalOnly/OBDXCapture/`. Reconnect the GT to complete those adapter-local checks.
+Actual listen-only reception, rate/overflow behavior, speed transitions and
+programming/recovery capture remain unverified. No speed-follow heuristic was
+added on the basis of incomplete vendor documentation.

@@ -21,6 +21,8 @@ class FakePort:
         self.replies = []
         self.state = 0
         self.reject_listen = False
+        self.settings = {(cmd, sub): bytes([sub]) + bytes(size - 1)
+                         for cmd, sub, size, _ in c.SETTINGS}
 
     def write(self, data):
         self.writes.append(data)
@@ -47,6 +49,11 @@ class FakePort:
                 p += bytes([self.state])
             if self.reject_listen and p == b'\x02\x02':
                 p = b'\x02\x01'
+        elif (command, p[0]) in self.settings:
+            if len(p) == 1:
+                p = self.settings[command, p[0]]
+            else:
+                self.settings[command, p[0]] = p
         elif len(p) == 1:
             p += b'\x00'
         self.replies.append(c.packet(command + 0x10, p))
@@ -112,9 +119,9 @@ class CaptureTests(unittest.TestCase):
             self.assertEqual(states, [0, 2, 0])
             self.assertTrue(any(e.get('network_off_acknowledged') for e in events))
             self.assertFalse(session.decoder.timestamps)
-            self.assertEqual(port.writes[-3:], [c.packet(0x24, [3, 0]),
-                                               c.packet(0x33, [8, 0]),
-                                               c.packet(0x33, [6, 0])])
+            self.assertEqual(port.writes[-len(c.SETTINGS):],
+                             [c.packet(cmd, bytes([sub]) + bytes(size - 1))
+                              for cmd, sub, size, _ in c.SETTINGS])
 
     def test_wrong_listen_ack_fails_and_turns_network_off(self):
         port = FakePort()
@@ -159,6 +166,99 @@ class CaptureTests(unittest.TestCase):
         self.assertEqual(port.state, 0)
         self.assertEqual(events[-1]['kind'], 'settings_restored')
         self.assertFalse(events[-1]['success'])
+
+    def test_listener_restores_nondefault_filters_and_crc_policy(self):
+        port = FakePort()
+        for cmd, sub, size, label in c.SETTINGS:
+            if 'filter' in label:
+                port.settings[cmd, sub] = bytes([sub]) + bytes([0x18] * (size - 2)) + b'\x01'
+        port.settings[0x33, 7] = b'\x07\x00'
+        original = dict(port.settings)
+        session = c.Session(port, lambda _: None)
+        session.connect('dvi')
+        session.capture('4x', 0)
+        self.assertEqual(port.settings, original)
+        self.assertEqual(port.state, 0)
+
+    def test_local_probe_never_enables_network_and_restores_settings(self):
+        port = FakePort()
+        port.settings[0x24, 3] = b'\x03\x01'
+        original = dict(port.settings)
+        session = c.Session(port, lambda _: None)
+        session.connect('dvi')
+        result = session.probe_settings()
+        self.assertFalse(result['live_receive_verified'])
+        self.assertEqual(original, port.settings)
+        self.assertFalse(any(wire[:3] == b'\x31\x02\x02' and wire[3] != 0
+                             for wire in port.writes))
+
+    def test_replay_tracks_timestamp_changes_within_one_chunk(self):
+        rows = [{'kind': 'transport', 'api': 'dvi'},
+                {'kind': 'serial_rx', 'raw_hex': (
+                    c.packet(0x34, [3, 1]) + network(b'abc', stamp=bytes(4)) +
+                    c.packet(0x34, [3, 0]) + network(b'def')).hex()},
+                {'kind': 'network', 'raw_hex': 'invented decoded source row'},
+                {'kind': 'result', 'success': False}]
+        with tempfile.TemporaryDirectory() as root:
+            source = Path(root) / 'capture.jsonl'
+            source.write_text(''.join(json.dumps(r) + '\n' for r in rows))
+            events = []
+            with patch.object(c, 'WindowsSerial') as serial:
+                c.replay_jsonl(source, events.append)
+                serial.assert_not_called()
+            frames = [r for r in events if r['kind'] == 'network']
+            self.assertEqual([r['payload_hex'] for r in frames], ['616263', '646566'])
+            self.assertEqual(frames[0]['adapter_timestamp_raw_hex'], '00000000')
+            self.assertIsNone(frames[1]['adapter_timestamp_raw_hex'])
+            self.assertEqual(frames[0]['source_line_end'], 2)
+            self.assertTrue(events[-1]['source_reported_failure'])
+
+    def test_replay_audits_forbidden_recorded_commands_without_sending(self):
+        rows = [{'kind': 'transport', 'api': 'dvi'},
+                {'kind': 'adapter_tx', 'raw_hex': c.packet(0x10, [0x34]).hex()}]
+        with tempfile.TemporaryDirectory() as root:
+            source = Path(root) / 'capture.jsonl'
+            source.write_text(''.join(json.dumps(r) + '\n' for r in rows))
+            events = []
+            c.replay_jsonl(source, events.append)
+            self.assertEqual(events[-1]['outgoing_guard_violations'], 1)
+
+    def test_replay_elm_to_dvi_and_split_frames(self):
+        wire = network(b'abc')
+        rows = [{'kind': 'transport', 'api': 'elm'},
+                {'kind': 'adapter_tx', 'raw_hex': b'DXDP1\r'.hex()},
+                {'kind': 'serial_rx', 'raw_hex': b'DXDP1\rOK\r>'.hex()},
+                {'kind': 'serial_rx', 'raw_hex': wire[:2].hex()},
+                {'kind': 'serial_rx', 'raw_hex': wire[2:].hex()}]
+        with tempfile.TemporaryDirectory() as root:
+            source = Path(root) / 'capture.jsonl'
+            source.write_text(''.join(json.dumps(r) + '\n' for r in rows))
+            events = []
+            c.replay_jsonl(source, events.append)
+            self.assertEqual(events[-1]['network_frames'], 1)
+            self.assertEqual(events[-2]['source_line_end'], 5)
+
+    def test_replay_keeps_verified_frame_before_later_corruption(self):
+        raw = network(b'abc') + b'\x08\x01\x01\x00'
+        rows = [{'kind': 'transport', 'api': 'dvi'},
+                {'kind': 'serial_rx', 'raw_hex': raw.hex()}]
+        with tempfile.TemporaryDirectory() as root:
+            source = Path(root) / 'capture.jsonl'
+            source.write_text(''.join(json.dumps(r) + '\n' for r in rows))
+            events = []
+            with self.assertRaises(c.ProtocolError):
+                c.replay_jsonl(source, events.append)
+            self.assertEqual(events[0]['payload_hex'], '616263')
+
+    def test_replay_rejects_missing_api_and_invalid_source_records(self):
+        for rows in ([{'kind': 'serial_rx', 'raw_hex': '00'}],
+                     [{'kind': 'transport', 'api': 'dvi'}, {'kind': 'result', 'success': 'true'}],
+                     [{'kind': 'transport', 'api': 'dvi'}, {'kind': 'transport', 'api': 'dvi'}]):
+            with tempfile.TemporaryDirectory() as root:
+                source = Path(root) / 'capture.jsonl'
+                source.write_text(''.join(json.dumps(r) + '\n' for r in rows))
+                with self.assertRaises(c.ProtocolError):
+                    c.replay_jsonl(source, lambda _: None)
 
     def test_corruption_and_truncation_preserve_undecoded_bytes(self):
         raw = bytearray(network(b'\x6c\xf0\x18\x63'))
