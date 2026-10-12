@@ -67,7 +67,7 @@ py -3.13 obdx_capture.py replay --input saved_capture.jsonl --output speed_repla
 py -3.13 -m unittest -v test_obdx_capture test_obdx_speed
 ```
 
-Forty-five offline tests pass. Speed-specific coverage includes independent
+Fifty offline tests pass. Speed-specific coverage includes independent
 readbacks, acknowledgments without GET, mismatched readbacks, incomplete and
 overlapping requests, CRC ambiguity, refusal context, unrelated traffic,
 fragmented/coalesced packets, partial facts and replay through the public CLI
@@ -120,3 +120,32 @@ The [follow-up replay report](OBDX_SPEED_REPLAY_CHECKS_20261011.json) pins the
 updated analyzer and replay implementation. The original GT local probe still
 replays as 1x/4x/1x adapter configuration, with zero vehicle packets and no gap
 risks; its entire source was examined and its terminal result preserved.
+
+## Evidence qualification
+
+The final `speed_analysis.qualification` reports recorded vehicle-frame counts,
+frame associations with the last confirmed adapter readback, readback counts by
+OFF/other configuration scope, and readbacks recorded in a reported receive
+context. A frame associated with a 4x adapter readback is not a measured 4x frame:
+it could be buffered or delayed. The counts preserve that distinction.
+
+`missing_recorded_evidence` identifies absent negotiation candidates, receive-
+context readbacks and frame associations. `unverified_physical_evidence` separately
+lists per-frame bus rate, switching latency/loss, dropped-frame/overflow accounting,
+physical return to 1x and the controller-specific programming speed sequence.
+Those cannot be established from this DVI record format alone. All existing gap
+risks remain in `blocking_risk_counts`. `live_speed_following_ready` remains false;
+this report is not authority to switch a logger or program a controller.
+
+Malformed or unsupported network-state and CRC-display status replies now erase
+the previous interpretation and clear negotiation context. A subsequent frame
+cannot inherit the earlier CRC layout or permission grants. Unknown network state
+still permits raw protocol-candidate reporting, never receive qualification.
+
+Tests include a complete-looking synthetic negotiation with readbacks and frame
+associations at both adapter settings and no gap findings. Its missing-recorded
+list is empty, but its physical evidence remains unverified and live readiness
+remains false. The saved real GT local probe has only OFF-context readbacks and
+therefore lacks every recorded vehicle/negotiation requirement. The
+[qualification report](OBDX_SPEED_QUALIFICATION_20261011.json) pins that replay
+and its implementation. No hardware was opened or commanded for this extension.

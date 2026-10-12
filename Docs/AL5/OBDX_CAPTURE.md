@@ -236,5 +236,5 @@ Replay now annotates recorded speed settings and generic PcmHammer negotiation
 candidates, preserving the distinction between adapter configuration, echoes,
 separate GET readbacks and unknown physical bus speed. It marks possible capture
 gaps without switching anything. See [speed evidence and validation](OBDX_SPEED_TRANSITIONS.md)
-for framing rules, source scope and limitations. Forty-five offline tests pass;
+for framing rules, source scope and limitations. Fifty offline tests pass;
 actual receive/transition behavior and live automatic following remain unproven.

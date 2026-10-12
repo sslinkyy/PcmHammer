@@ -249,6 +249,81 @@ class SpeedTests(unittest.TestCase):
             self.assertFalse(events[-1]['replay_complete'])
             self.assertIsNone(events[-1]['speed_analysis']['final_adapter_speed_readback'])
 
+    def test_local_settings_only_report_missing_vehicle_evidence(self):
+        speed, _ = self.make()
+        self.rx(speed, 0x41, [2, 0])
+        for value in (0, 1, 0):
+            speed.outgoing(0x33, [6], 1)
+            self.rx(speed, 0x43, [6, value])
+        qualification = speed.summary()['qualification']
+        self.assertEqual(qualification['readbacks_by_scope']['network_off_configuration'],
+                         {'1x': 2, '4x': 1})
+        self.assertEqual(qualification['recorded_network_frames'], 0)
+        self.assertIn('recorded_vehicle_frames', qualification['missing_recorded_evidence'])
+        self.assertIn('adapter_4x_readback_in_receive_context', qualification['missing_recorded_evidence'])
+        self.assertFalse(qualification['live_speed_following_ready'])
+
+    def test_complete_protocol_candidates_still_do_not_prove_physical_transition(self):
+        speed, _ = self.make()
+        self.rx(speed, 0x41, [2, 2])
+        self.rx(speed, 0x43, [8, 0])
+        speed.outgoing(0x33, [6], 1)
+        self.rx(speed, 0x43, [6, 0])
+        self.rx(speed, 8, [0x6C, 0xFE, 0xF0, 0xA0])
+        self.rx(speed, 8, [0x6C, 0xF0, 0x18, 0xE0])
+        speed.outgoing(0x33, [6, 1], 2)
+        self.rx(speed, 0x43, [6, 1])
+        speed.outgoing(0x33, [6], 3)
+        self.rx(speed, 0x43, [6, 1])
+        self.rx(speed, 8, [0x6C, 0xFE, 0xF0, 0xA1])
+        self.rx(speed, 8, [0x6C, 0xF0, 0x18, 0x63, 0, 0])
+        qualification = speed.summary()['qualification']
+        self.assertEqual(qualification['missing_recorded_evidence'], [])
+        self.assertEqual(qualification['blocking_risk_counts'], {})
+        self.assertEqual(qualification['frames_by_adapter_readback'], {'1x': 2, '4x': 2, 'unknown': 0})
+        self.assertFalse(qualification['live_speed_following_ready'])
+        self.assertIn('actual_bus_rate_for_each_frame', qualification['unverified_physical_evidence'])
+        self.assertIn('physical_return_to_1x', qualification['unverified_physical_evidence'])
+
+    def test_unknown_crc_status_invalidates_previous_layout_and_permissions(self):
+        for payload in ([8, 7], [8], [8, 0, 0]):
+            speed, events = self.make()
+            self.rx(speed, 0x43, [8, 0])
+            self.rx(speed, 8, [0x6C, 0xFE, 0xF0, 0xA0])
+            self.rx(speed, 8, [0x6C, 0xF0, 0x18, 0xE0])
+            self.rx(speed, 0x43, payload)
+            self.assertIsNone(speed.crc_display)
+            self.assertIsNone(speed.prepare_tool)
+            self.rx(speed, 8, [0x6C, 0xFE, 0xF0, 0xA1])
+            self.assertNotIn('begin_high_speed_candidate', speed.events)
+            self.assertIn('unknown_crc_display_status', speed.risks)
+            self.assertEqual(events[-1]['event'], 'ambiguous_vpw_crc_layout')
+
+    def test_unknown_network_status_cannot_reuse_receive_context(self):
+        for payload in ([2, 7], [2], [2, 2, 0]):
+            speed, events = self.make()
+            self.rx(speed, 0x41, [2, 2])
+            self.rx(speed, 0x43, [8, 0])
+            self.rx(speed, 8, [0x6C, 0xFE, 0xF0, 0xA0])
+            self.rx(speed, 0x41, payload)
+            self.assertIsNone(speed.network_state)
+            self.assertIsNone(speed.prepare_tool)
+            self.rx(speed, 8, [0x6C, 0xFE, 0xF0, 0xA1])
+            begin = next(r for r in events if r.get('event') == 'begin_high_speed_candidate')
+            self.assertFalse(begin['permission_context_seen'])
+            self.assertIn('unknown_network_status', speed.risks)
+
+    def test_qualification_keeps_failure_risks_and_returns_detached_counts(self):
+        speed, _ = self.make()
+        speed.discontinuity('source_result_missing', 5)
+        first = speed.summary()['qualification']
+        self.assertIn('source_result_missing', first['blocking_risk_counts'])
+        first['frames_by_adapter_readback']['4x'] = 99
+        first['readbacks_by_scope']['network_off_configuration']['4x'] = 99
+        second = speed.summary()['qualification']
+        self.assertEqual(second['frames_by_adapter_readback']['4x'], 0)
+        self.assertEqual(second['readbacks_by_scope']['network_off_configuration']['4x'], 0)
+
     def test_replay_correlates_split_reply_and_preserves_source(self):
         status = c.packet(0x43, [6, 0])
         rows = [{'kind': 'transport', 'api': 'dvi'},
