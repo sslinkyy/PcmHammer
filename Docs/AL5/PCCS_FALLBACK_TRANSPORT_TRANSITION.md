@@ -1,5 +1,9 @@
 # PCCS fallback and receive-format transition
 
+Follow-up: [driver filters and bus configuration](PCCS_DRIVER_FILTERS_BUS.md)
+binds the callbacks to RP1210, models pass-all initialization and traces later
+filter replacements. Driver/controller qualification remains unresolved.
+
 2026-10-15, continuation of `PCCS_E2_ORDINARY_ACCEPTANCE.md`.
 The host explicitly selects different message envelopes for the initial E2
 probe and ordinary identification. The difference between the prior parser
