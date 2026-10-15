@@ -5,6 +5,10 @@ The examined routine helper has separate interpreter-3 and interpreter-4+
 paths. Neither identifies a qualified AL5 utility or VPW programming sequence.
 Live AL5 writes remain disabled.
 
+Follow-up: [native LCT writer tracing](PCCS_NATIVE_LCT_WRITE.md) connects a
+separate native caller to WriteData and the erase helper, identifies the
+Use CCP Messages configuration flag, and models the file-loop slice.
+
 ## Exact source and evidence scope
 
 Installed `Winrw32.exe` 15.2.17.0, SHA-256

@@ -9,6 +9,10 @@ routine/file-transfer helpers, distinguishes interpreter-3 and interpreter-4+
 paths, and adds isolated native framing checks. LCT utility selection and
 physical AL5 compatibility remain unresolved.
 
+Latest: [native WriteData tracing](PCCS_NATIVE_LCT_WRITE.md) identifies a
+separate native programming branch and its CCP/ordinary transfer alternatives.
+Erase, preservation, controller binding and recovery remain unqualified.
+
 ## Inputs and provenance
 
 Read/Write TCM `Winrw32.exe` 15.2.17.0, SHA-256
