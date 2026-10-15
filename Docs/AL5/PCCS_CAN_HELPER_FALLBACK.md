@@ -1,6 +1,9 @@
 # PCCS CAN/GMW helper failure and standard-LCT fallback
 
 2026-10-15, offline continuation of `PCCS_ALTERNATE_ROUTE_OWNERS.md`.
+Follow-up: [E2 and ordinary acceptance](PCCS_E2_ORDINARY_ACCEPTANCE.md) models
+positive host-parser acceptance of zero. The format transition and complete
+AL5 exchange remain unproven; the assumptions below describe this earlier model.
 A concrete failed-request path through helper `0x5D7A98` preserves the
 nonzero alternate-route byte and can pass the caller's ordinary-fallback
 gate. Later ordinary identification can replace the failed host status.
@@ -54,8 +57,8 @@ not an incidental synthetic value.
 
 On a traced ordinary route, UI flag `*0x81EB44 == 0`, CCP control
 `0x81D108 == 0`, caller stack flag zero and selected index 3 lead to internal
-request `35` at `0x5D9F04`. VMT +0 dispatch occurs at `0x5D9F94` (class 1,
-timeout parameter 200) or `0x5D9FB4` (class 5, timeout parameter 500), selected
+request `35` at `0x5D9F04`. VMT +0 dispatch occurs at `0x5D9F94` (EDX 1,
+timeout parameter 200) or `0x5D9FB4` (EDX 5, timeout parameter 500), selected
 by a local flag. These buffers/parameters are not qualified VPW/CAN packets.
 
 The real VMT +0 target `0x5AEDC4` assigns host status 1 at `0x5AEE25` on a

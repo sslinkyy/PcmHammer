@@ -274,3 +274,5 @@ Capstone (the existing WSL environment was used). Neither test opens a vehicle.
 [VM retry and failure tracing](VM_RETRY_FAILURE.md): flag0x20 stored-zero semantics, per-block attempt counters, receive-drain cleanup, and recovery limits. Live writes and automatic retry authorization remain disabled.
 
 [Host callback result and cleanup tracing](VM_CALLBACK_RESULTS.md): selector0A is transport cleanup, while0B/0D route send/receive with separate exception status. Physical programming, preservation and interrupted-flash recovery remain unverified.
+
+[PCCS E2 and ordinary response acceptance](PCCS_E2_ORDINARY_ACCEPTANCE.md): bounded native models accept identifier zero and conditionally classify standard LCT while retaining the alternate byte. Complete receive-format transition and AL5 programming/recovery remain unproven.
