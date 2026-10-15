@@ -297,3 +297,6 @@ Capstone (the existing WSL environment was used). Neither test opens a vehicle.
 
 
 [WriteCal switches and FIL selection effects](PCCS_WRITECAL_SWITCHES_CALLEE_EFFECTS.md): all three switch gaps are resolved; a transitive FIL branch can change controller selection under explicit guards. Offline models cover 768 selectors and 48 selection contexts; no AL5 J1850 mapping or programming bypass is proven.
+
+
+[PcmHammer offline calibration BIN comparison](PCMHAMMER_CALIBRATION_COMPARISON.md): the WinForms Tools menu and shared C# library inspect original/custom raw calibration files without an adapter. Hashes, native checksums and changed ranges are file facts; programming and recovery remain unproven and live writes stay disabled.

@@ -98,6 +98,9 @@ namespace PcmHacking
         /// <summary>Direct read-only AL5 calibration-segment reader.</summary>
         private ToolStripMenuItem al5ReadCalibrationToolStripMenuItem;
 
+        /// <summary>File-only comparison; available without an adapter.</summary>
+        private ToolStripMenuItem al5CompareCalibrationToolStripMenuItem;
+
         /// <summary>
         /// Initializes a new instance of the main window.
         /// </summary>
@@ -142,6 +145,15 @@ namespace PcmHacking
             this.al5ReadCalibrationToolStripMenuItem.Click +=
                 new EventHandler(this.al5ReadCalibrationToolStripMenuItem_Click);
             this.menuItemTools.DropDownItems.Add(this.al5ReadCalibrationToolStripMenuItem);
+
+            this.al5CompareCalibrationToolStripMenuItem = new ToolStripMenuItem();
+            this.al5CompareCalibrationToolStripMenuItem.Name = "al5CompareCalibrationToolStripMenuItem";
+            this.al5CompareCalibrationToolStripMenuItem.Text = "AL5 Compare Calibration BINs (Offline)...";
+            this.al5CompareCalibrationToolStripMenuItem.ToolTipText =
+                "Compare original and edited AL5 calibration files, including checksums and changed addresses. No adapter required.";
+            this.al5CompareCalibrationToolStripMenuItem.Click +=
+                new EventHandler(this.al5CompareCalibrationToolStripMenuItem_Click);
+            this.menuItemTools.DropDownItems.Add(this.al5CompareCalibrationToolStripMenuItem);
         }
 
         /// <summary>
@@ -705,6 +717,7 @@ namespace PcmHacking
             this.bruteForceUnlockToolStripMenuItem.Enabled = false;
             this.haltRunningKernelToolStripMenuItem.Enabled = false;
             this.testFileChecksumsToolStripMenuItem.Enabled = false;
+            this.al5CompareCalibrationToolStripMenuItem.Enabled = false;
             this.e54RamSurveyToolStripMenuItem.Enabled = false;
             this.e54RamCanaryToolStripMenuItem.Enabled = false;
 
@@ -743,6 +756,7 @@ namespace PcmHacking
                 this.bruteForceUnlockToolStripMenuItem.Enabled = true;
                 this.haltRunningKernelToolStripMenuItem.Enabled = true;
                 this.testFileChecksumsToolStripMenuItem.Enabled = true;
+                this.al5CompareCalibrationToolStripMenuItem.Enabled = true;
                 this.e54RamSurveyToolStripMenuItem.Enabled = true;
                 this.e54RamCanaryToolStripMenuItem.Enabled = true;
 
@@ -766,6 +780,7 @@ namespace PcmHacking
             // Test File Checksums works on a file only - it needs no interface - so make it
             // available whenever no operation is in progress, even with no device selected.
             this.testFileChecksumsToolStripMenuItem.Enabled = true;
+            this.al5CompareCalibrationToolStripMenuItem.Enabled = true;
         }
 
         /// <summary>
@@ -1518,6 +1533,89 @@ namespace PcmHacking
                 // The token / token-source can only be cancelled once, so we need to make sure they won't be re-used.
                 this.cancellationTokenSource = null;
             }
+        }
+
+        private void al5CompareCalibrationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // This path uses local files only. It does not initialize an interface
+            // or call Vehicle, FileValidator, WriteManager, or a transport API.
+            if (BackgroundWorker.IsAlive || this.cancellationTokenSource != null)
+                return;
+
+            using (OpenFileDialog dialog = new OpenFileDialog())
+            {
+                dialog.Filter = "Calibration BIN files (*.bin)|*.bin|All files (*.*)|*.*";
+                dialog.CheckFileExists = true;
+                dialog.RestoreDirectory = true;
+                dialog.Title = "Select original AL5 calibration BIN (57,304 bytes)";
+                if (dialog.ShowDialog(this) != DialogResult.OK)
+                    return;
+                string baselinePath = dialog.FileName;
+
+                dialog.Title = "Select edited AL5 calibration BIN (57,304 bytes)";
+                dialog.FileName = string.Empty;
+                if (dialog.ShowDialog(this) != DialogResult.OK)
+                    return;
+                string candidatePath = dialog.FileName;
+
+                try
+                {
+                    AL5CalibrationComparisonReport report = AL5CalibrationInspection.Compare(
+                        ReadAl5CalibrationFile(baselinePath), ReadAl5CalibrationFile(candidatePath));
+                    this.AddUserMessage("AL5 offline calibration comparison: original " + baselinePath);
+                    this.AddUserMessage("Edited file: " + candidatePath);
+                    LogAl5CalibrationReport("Original", report.Baseline);
+                    LogAl5CalibrationReport("Edited", report.Candidate);
+                    this.AddUserMessage(string.Format(
+                        "Changed bytes: {0}; contiguous address ranges: {1}.", report.ChangedByteCount, report.DiffRanges.Count));
+                    const int displayedRanges = 20;
+                    foreach (AL5CalibrationDiffRange range in report.DiffRanges.Take(displayedRanges))
+                        this.AddUserMessage(string.Format("0x{0:X5}-0x{1:X5}: {2} changed bytes.",
+                            range.StartAddress, range.EndAddressInclusive, range.Length));
+                    if (report.DiffRanges.Count > displayedRanges)
+                        this.AddUserMessage("Showing the first 20 address ranges; the totals include all changes.");
+                    this.AddUserMessage("Offline file checks: " + (report.FileChecksPass ? "passed" : "failed") +
+                        ". Scope: OS 15184109 / calibration 15183960 reference layout; vehicle identity is unverified.");
+                    this.AddUserMessage("AL5 live writing remains disabled. File checks do not establish programming or recovery readiness.");
+                }
+                catch (Exception exception)
+                {
+                    this.AddUserMessage("AL5 offline comparison failed: " + exception.Message);
+                    this.AddDebugMessage(exception.ToString());
+                }
+            }
+        }
+
+        private static byte[] ReadAl5CalibrationFile(string path)
+        {
+            using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                if (stream.Length != AL5CalibrationInspection.Length)
+                    throw new InvalidDataException("Expected a 57,304-byte AL5 calibration segment. Full flash images and containers are not supported by this comparison.");
+                byte[] data = new byte[AL5CalibrationInspection.Length];
+                int offset = 0;
+                while (offset < data.Length)
+                {
+                    int count = stream.Read(data, offset, data.Length - offset);
+                    if (count == 0)
+                        throw new EndOfStreamException("Calibration file ended before the expected segment length.");
+                    offset += count;
+                }
+                if (stream.ReadByte() != -1)
+                    throw new InvalidDataException("Calibration file length changed while reading.");
+                return data;
+            }
+        }
+
+        private void LogAl5CalibrationReport(string label, AL5CalibrationFileReport report)
+        {
+            this.AddUserMessage(label + " SHA256: " + (report.Sha256 ?? "not checked"));
+            this.AddUserMessage(label + " reference anchors: " + report.KnownFamilyAnchorsMatch +
+                "; native checksum: " + report.NativeChecksumValid +
+                "; stored: " + report.StoredChecksumHex + "; computed: " + report.ComputedChecksumHex +
+                "; BE16 sum: " + (report.BigEndianWordSum.HasValue ? "0x" + report.BigEndianWordSum.Value.ToString("X4") : "not checked"));
+            foreach (string error in report.InputErrors)
+                this.AddUserMessage(label + ": " + error);
         }
 
         private async void al5ReadOnlyProbeToolStripMenuItem_Click(object sender, EventArgs e)
