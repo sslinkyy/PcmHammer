@@ -13,6 +13,40 @@ The supplied tree contained 49 FIL files; neither `APPANDCAL_UTILITY.FIL` nor
 `ERASE_APP_UTILITY.FIL` was present. Generic CALONLY is byte-identical to the
 A54-named calibration utility, so generic names do not qualify LCT compatibility.
 
+### Archive recheck, 2026-10-15
+
+Rechecked the user-supplied extracted calibration tree and installed Allison
+tree, then directly listed seven archive directories without running installers:
+the outer Reflash/calibration ZIP, Allison Calibrations ZIP, ALLISON UTIL JAN
+2022 RAR, CALIBRATION FILES 2019.02 RAR, PCCS 2021.12 RAR, SETUP 5.2 RAR and
+TRF6.3 Setup RAR. Neither exact basename `APPANDCAL_UTILITY.FIL` nor
+`ERASE_APP_UTILITY.FIL` appears in those listings.
+
+The extracted calibration tree and CALIBRATION FILES 2019.02 archive contain no
+FIL files. The separate ALLISON UTIL JAN 2022 archive contains 49 FIL members
+under `util` and `Gen5`. It includes CALONLY, APPONLY, CALANDDID and POONLY generic
+utilities, plus G4G5SERV, A54 and UDS variants. Its Gen5 directory includes
+`ERASE_PO_UDS_Utility.fil`; that distinct name does not establish equivalence to
+the missing application-erase utility.
+
+Five members were read and compared directly with installed DownloadApp files:
+CALONLY, APPONLY, CALANDDID, A54_250KB_CALONLY and A54_250KB_APPANDCAL. All five
+match their installed counterparts byte for byte. CALONLY and A54_250KB_CALONLY
+share SHA-256 `d1dadc0060c6f619b4c683cea308237b768bf1970ee39e99724fb9cb533083a9`.
+Re-extracting these members would therefore supply the same bytes already
+examined. No variant was renamed or substituted.
+
+Full member listings and comparison hashes are retained privately in
+`Tools/AL5/LocalOnly/PCCS_20261015/archive-utility-recheck-20261015.json`.
+Archive listing does not inspect payloads embedded inside installer executables;
+that coverage remains unverified. No installer was executed for this recheck.
+
+The suggestion that generic APPANDCAL is present in this local calibration-pack
+root is not supported by the examined files. LCT/DF9 compatibility of generic
+CALONLY remains unresolved. Treat application-plus-calibration and calibration
+only as separate operations until actual selection branches, utility behavior
+and erase scope establish otherwise. These findings do not enable live writing.
+
 REA/Ghidra search Evidence:
 `ev_f7e0e3282714b48069b32cb0ba0317152e82874d8c10f92193c1adb32006d5b0`.
 Native identification function `0x5D8EC8` distinguishes LCT Gen3 application,
