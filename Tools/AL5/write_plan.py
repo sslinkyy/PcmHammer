@@ -41,6 +41,31 @@ HOST_IPC_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/EFILIVE_HOST
 TRANSFORM_REPLAY_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/OBJECT_TRANSFORM_REPLAY.json'
 HOST_CALLBACK_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/EFILIVE_HOST_CALLBACKS.json'
 VM_STATIC_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/EFILIVE_VM_OBJECT_LOADING.json'
+LOADER_FINALIZATION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_FINALIZATION_EMULATION.json'
+CALIBRATION_MARKER_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/CALIBRATION_MARKER_EMULATION.json'
+
+
+def calibration_recovery_assessment():
+    finalize = LOADER_FINALIZATION_EVIDENCE.read_bytes()
+    marker = CALIBRATION_MARKER_EVIDENCE.read_bytes()
+    return {
+        'scope': 'Independent native finalization and conditional application marker/CRC slices; no continuous reset or VPW session.',
+        'finalization_evidence': 'Docs/AL5/LOADER_FINALIZATION_EMULATION.json',
+        'finalization_evidence_sha256': sha256(finalize),
+        'marker_evidence': 'Docs/AL5/CALIBRATION_MARKER_EMULATION.json',
+        'marker_evidence_sha256': sha256(marker),
+        'implementations': {name: sha256((Path(__file__).parent / name).read_bytes())
+                            for name in ('emulate_loader_finalize.py', 'emulate_calibration_marker.py')},
+        'conditional_boot_error_routes_emulated': True,
+        'finalize_status_proves_native_crc': False,
+        'completion_marker_check_always_runs': False,
+        'complete_startup_flag_provenance_verified': False,
+        'physical_reset_verified': False,
+        'vpw_reentry_after_failure_verified': False,
+        'physical_recovery_verified': False,
+        'automatic_retry_allowed': False,
+        'live_write_enabled': False,
+        'ready_to_flash': False}
 
 
 def trace_assessment():
@@ -490,6 +515,7 @@ def plan(current, candidate, expected_hash, controller, os_id):
             'boot_loader_assessment': boot_loader_assessment(),
             'boot_preparation_assessment': preparation_assessment(),
             'existing_trace_assessment': trace_assessment(),
+            'calibration_recovery_assessment': calibration_recovery_assessment(),
             'diff_ranges': ranges,
             'requested_calibration_range': {'start': '0x08000', 'end_inclusive': '0x15FD7'},
             'erase_scope': None, 'program_block_size': None,

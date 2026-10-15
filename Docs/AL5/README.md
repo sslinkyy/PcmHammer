@@ -300,3 +300,6 @@ Capstone (the existing WSL environment was used). Neither test opens a vehicle.
 
 
 [PcmHammer offline calibration BIN comparison](PCMHAMMER_CALIBRATION_COMPARISON.md): the WinForms Tools menu and shared C# library inspect original/custom raw calibration files without an adapter. Hashes, native checksums and changed ranges are file facts; programming and recovery remain unproven and live writes stay disabled.
+
+
+[AL5 finalization and conditional recovery routes](VPW_FINALIZATION_RECOVERY.md): native offline models trace finalize status, marker-program failure and application marker/CRC error routing. The file-only planner links the evidence while physical reset, VPW re-entry, recovery and live writing remain unproven.

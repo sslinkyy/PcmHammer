@@ -317,3 +317,6 @@ Host callbacks: [static callback tracing and supplied-buffer CRC inspection](EFI
 [VM retry and failure tracing](VM_RETRY_FAILURE.md): flag0x20 stored-zero semantics, per-block attempt counters, receive-drain cleanup, and recovery limits. Live writes and automatic retry authorization remain disabled.
 
 [Host callback result and cleanup tracing](VM_CALLBACK_RESULTS.md): selector0A is transport cleanup, while0B/0D route send/receive with separate exception status. Physical programming, preservation and interrupted-flash recovery remain unverified.
+
+
+New offline [finalization and conditional recovery evidence](VPW_FINALIZATION_RECOVERY.md) traces loader marker/status/error behavior and selected application CRC/boot error branches. These models do not establish physical VPW re-entry or interrupted-flash recovery; the planner keeps every live-write/retry qualification false.

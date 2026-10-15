@@ -1,0 +1,348 @@
+{
+  "mode": "offline_calibration_marker_crc_and_selected_reset_branch",
+  "low_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
+  "high_sha256": "492040d9460d53b77dda606b9a89f4254e0680f239093001663f6ed5cf51ba75",
+  "generator_sha256": "47c02ee844451d1c221be088267c508f4c8e69d5346f8f2360ec606c37a9819f",
+  "unicorn_version": "2.1.4",
+  "source_ranges": [
+    {
+      "start": "0xa96f8",
+      "exclusive_end": "0xa97e0",
+      "sha256": "3f8b5f1c84aace0b184b67cd88245f6e3b1483378f038dbc8223422bf41d151e"
+    },
+    {
+      "start": "0xa960c",
+      "exclusive_end": "0xa9694",
+      "sha256": "77e3d61ac4ddf654ecd3635f06be32d545d24b06c94b25cd2d2734c6c1acdfe6"
+    },
+    {
+      "start": "0xa95d0",
+      "exclusive_end": "0xa960a",
+      "sha256": "5329265cbf7a1c449efc6a3c17d9f4fd99f28104645a01388b01f40151fac183"
+    },
+    {
+      "start": "0x21d08",
+      "exclusive_end": "0x21d18",
+      "sha256": "f832fbbf2f61247c97fe4b3e7273d2a79c7c26f0f904e85eb36ab5dc0fdbeec3"
+    },
+    {
+      "start": "0xaa610",
+      "exclusive_end": "0xaa810",
+      "sha256": "4052764821e02d264bca5dfa3b5cd61eb2e8fcb335277af5726a319480245a4d"
+    },
+    {
+      "start": "0x8b2",
+      "exclusive_end": "0x96e",
+      "sha256": "1d793d395e6b37c4b1a6c75ab0bff0c82040b81442da2ae8d450902e27453e77"
+    },
+    {
+      "start": "0x2141e",
+      "exclusive_end": "0x21421",
+      "sha256": "4740dbf585cb9292a54636ba101669cd96dfd067086cfc2527a2e0ba59331e4d"
+    }
+  ],
+  "cases": [
+    {
+      "name": "saved_marker_and_calibration",
+      "synthetic_context": {
+        "marker": "0x4afc",
+        "initial_check_flag": true,
+        "crc_seed": 0,
+        "calibration_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6"
+      },
+      "observed": {
+        "stop": "returned",
+        "stop_pc": "0x300000",
+        "marker_reads": 1,
+        "crc_helper_calls": 1,
+        "interrupt_mask_helper_calls": 0,
+        "instructions": 573094,
+        "reset_marker": "0x0",
+        "initial_check_flag_after": 0,
+        "crc_accumulator_after": "0x0",
+        "current_start_after": "0x8000",
+        "current_end_after": "0x83bb",
+        "stride_after": 955,
+        "interrupt_mask_after": 0,
+        "pc": "0x300000",
+        "live_write_enabled": false,
+        "ready_to_flash": false,
+        "physical_recovery_verified": false
+      },
+      "selected_reset_branch": null
+    },
+    {
+      "name": "erased_marker",
+      "synthetic_context": {
+        "marker": "0xffff",
+        "initial_check_flag": true,
+        "crc_seed": 0,
+        "calibration_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6"
+      },
+      "observed": {
+        "stop": "completion_marker_rejected",
+        "stop_pc": "0xa971a",
+        "marker_reads": 1,
+        "crc_helper_calls": 0,
+        "interrupt_mask_helper_calls": 1,
+        "instructions": 15,
+        "reset_marker": "0xcc8b",
+        "initial_check_flag_after": 1,
+        "crc_accumulator_after": "0x0",
+        "current_start_after": "0x8000",
+        "current_end_after": "0x15fd4",
+        "stride_after": 955,
+        "interrupt_mask_after": 7,
+        "pc": "0xa971a",
+        "live_write_enabled": false,
+        "ready_to_flash": false,
+        "physical_recovery_verified": false
+      },
+      "selected_reset_branch": {
+        "stop_pc": "0x97c",
+        "selected_reset_branch_only": true,
+        "marker_after": "0xc7d8",
+        "physical_reset_verified": false
+      }
+    },
+    {
+      "name": "zero_marker",
+      "synthetic_context": {
+        "marker": "0x0",
+        "initial_check_flag": true,
+        "crc_seed": 0,
+        "calibration_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6"
+      },
+      "observed": {
+        "stop": "completion_marker_rejected",
+        "stop_pc": "0xa971a",
+        "marker_reads": 1,
+        "crc_helper_calls": 0,
+        "interrupt_mask_helper_calls": 1,
+        "instructions": 15,
+        "reset_marker": "0xcc8b",
+        "initial_check_flag_after": 1,
+        "crc_accumulator_after": "0x0",
+        "current_start_after": "0x8000",
+        "current_end_after": "0x15fd4",
+        "stride_after": 955,
+        "interrupt_mask_after": 7,
+        "pc": "0xa971a",
+        "live_write_enabled": false,
+        "ready_to_flash": false,
+        "physical_recovery_verified": false
+      },
+      "selected_reset_branch": {
+        "stop_pc": "0x97c",
+        "selected_reset_branch_only": true,
+        "marker_after": "0xc7d8",
+        "physical_reset_verified": false
+      }
+    },
+    {
+      "name": "partial_marker",
+      "synthetic_context": {
+        "marker": "0x4aff",
+        "initial_check_flag": true,
+        "crc_seed": 0,
+        "calibration_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6"
+      },
+      "observed": {
+        "stop": "completion_marker_rejected",
+        "stop_pc": "0xa971a",
+        "marker_reads": 1,
+        "crc_helper_calls": 0,
+        "interrupt_mask_helper_calls": 1,
+        "instructions": 15,
+        "reset_marker": "0xcc8b",
+        "initial_check_flag_after": 1,
+        "crc_accumulator_after": "0x0",
+        "current_start_after": "0x8000",
+        "current_end_after": "0x15fd4",
+        "stride_after": 955,
+        "interrupt_mask_after": 7,
+        "pc": "0xa971a",
+        "live_write_enabled": false,
+        "ready_to_flash": false,
+        "physical_recovery_verified": false
+      },
+      "selected_reset_branch": {
+        "stop_pc": "0x97c",
+        "selected_reset_branch_only": true,
+        "marker_after": "0xc7d8",
+        "physical_reset_verified": false
+      }
+    },
+    {
+      "name": "payload_bit_fault",
+      "synthetic_context": {
+        "marker": "0x4afc",
+        "initial_check_flag": true,
+        "crc_seed": 0,
+        "calibration_sha256": "f10ef112575419bec614878959a8fb62cb878db5fdaf9fbcb924025f37a9e770"
+      },
+      "observed": {
+        "stop": "calibration_crc_rejected",
+        "stop_pc": "0xa9668",
+        "marker_reads": 1,
+        "crc_helper_calls": 1,
+        "interrupt_mask_helper_calls": 1,
+        "instructions": 573072,
+        "reset_marker": "0x30d4",
+        "initial_check_flag_after": 1,
+        "crc_accumulator_after": "0x9b66",
+        "current_start_after": "0x8000",
+        "current_end_after": "0x15fd4",
+        "stride_after": 955,
+        "interrupt_mask_after": 7,
+        "pc": "0xa9668",
+        "live_write_enabled": false,
+        "ready_to_flash": false,
+        "physical_recovery_verified": false
+      },
+      "selected_reset_branch": {
+        "stop_pc": "0x97c",
+        "selected_reset_branch_only": true,
+        "marker_after": "0x3e91",
+        "physical_reset_verified": false
+      }
+    },
+    {
+      "name": "stored_crc_fault",
+      "synthetic_context": {
+        "marker": "0x4afc",
+        "initial_check_flag": true,
+        "crc_seed": 0,
+        "calibration_sha256": "42118e7dae14bc7168e30ffe187395b4955bab7bb34cfd7f9d2bdf0448a5d649"
+      },
+      "observed": {
+        "stop": "calibration_crc_rejected",
+        "stop_pc": "0xa9668",
+        "marker_reads": 1,
+        "crc_helper_calls": 1,
+        "interrupt_mask_helper_calls": 1,
+        "instructions": 573072,
+        "reset_marker": "0x30d4",
+        "initial_check_flag_after": 1,
+        "crc_accumulator_after": "0x4e35",
+        "current_start_after": "0x8000",
+        "current_end_after": "0x15fd4",
+        "stride_after": 955,
+        "interrupt_mask_after": 7,
+        "pc": "0xa9668",
+        "live_write_enabled": false,
+        "ready_to_flash": false,
+        "physical_recovery_verified": false
+      },
+      "selected_reset_branch": {
+        "stop_pc": "0x97c",
+        "selected_reset_branch_only": true,
+        "marker_after": "0x3e91",
+        "physical_reset_verified": false
+      }
+    },
+    {
+      "name": "compensation_only_fault",
+      "synthetic_context": {
+        "marker": "0x4afc",
+        "initial_check_flag": true,
+        "crc_seed": 0,
+        "calibration_sha256": "f6eaf734ef913c3e325b4aff59192dd5628ee318353339217301367916f5e48d"
+      },
+      "observed": {
+        "stop": "returned",
+        "stop_pc": "0x300000",
+        "marker_reads": 1,
+        "crc_helper_calls": 1,
+        "interrupt_mask_helper_calls": 0,
+        "instructions": 573094,
+        "reset_marker": "0x0",
+        "initial_check_flag_after": 0,
+        "crc_accumulator_after": "0x0",
+        "current_start_after": "0x8000",
+        "current_end_after": "0x83bb",
+        "stride_after": 955,
+        "interrupt_mask_after": 0,
+        "pc": "0x300000",
+        "live_write_enabled": false,
+        "ready_to_flash": false,
+        "physical_recovery_verified": false
+      },
+      "selected_reset_branch": null
+    },
+    {
+      "name": "crc_correct_identifier_fault",
+      "synthetic_context": {
+        "marker": "0x4afc",
+        "initial_check_flag": true,
+        "crc_seed": 0,
+        "calibration_sha256": "2f7796baf8a6f009f1e92e50f5ce97947fc7a3bfcda62ba04c988b55daa0fb99"
+      },
+      "observed": {
+        "stop": "calibration_identifier_rejected",
+        "stop_pc": "0xa979c",
+        "marker_reads": 1,
+        "crc_helper_calls": 1,
+        "interrupt_mask_helper_calls": 1,
+        "instructions": 573091,
+        "reset_marker": "0x9515",
+        "initial_check_flag_after": 1,
+        "crc_accumulator_after": "0x0",
+        "current_start_after": "0x8000",
+        "current_end_after": "0x83bb",
+        "stride_after": 955,
+        "interrupt_mask_after": 7,
+        "pc": "0xa979c",
+        "live_write_enabled": false,
+        "ready_to_flash": false,
+        "physical_recovery_verified": false
+      },
+      "selected_reset_branch": {
+        "stop_pc": "0x97c",
+        "selected_reset_branch_only": true,
+        "marker_after": "0xc12a",
+        "physical_reset_verified": false
+      }
+    },
+    {
+      "name": "clear_initial_flag_erased_marker",
+      "synthetic_context": {
+        "marker": "0xffff",
+        "initial_check_flag": false,
+        "crc_seed": 0,
+        "calibration_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6"
+      },
+      "observed": {
+        "stop": "returned",
+        "stop_pc": "0x300000",
+        "marker_reads": 0,
+        "crc_helper_calls": 1,
+        "interrupt_mask_helper_calls": 0,
+        "instructions": 573074,
+        "reset_marker": "0x0",
+        "initial_check_flag_after": 0,
+        "crc_accumulator_after": "0x0",
+        "current_start_after": "0x8000",
+        "current_end_after": "0x83bb",
+        "stride_after": 955,
+        "interrupt_mask_after": 0,
+        "pc": "0x300000",
+        "live_write_enabled": false,
+        "ready_to_flash": false,
+        "physical_recovery_verified": false
+      },
+      "selected_reset_branch": null
+    }
+  ],
+  "all_pass": true,
+  "limitations": [
+    "Entry flag +0x104 and initial CRC state are synthetic; their complete startup producer is unresolved.",
+    "Only selected reset-marker branches run; power loss, RAM retention, boot integrity gates, peripheral startup and VPW reentry are unverified.",
+    "The CRC check excludes the final BE16 compensation word; this model does not certify the complete native checksum.",
+    "Flash primitives and transport do not execute."
+  ],
+  "ready_to_flash": false,
+  "live_write_enabled": false,
+  "physical_recovery_verified": false,
+  "would_send": []
+}

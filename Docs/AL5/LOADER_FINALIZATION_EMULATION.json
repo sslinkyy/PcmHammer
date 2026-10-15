@@ -1,0 +1,337 @@
+{
+  "schema": "al5-loader-finalize-v1",
+  "payload_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
+  "generator_sha256": "993b3c7f6f66c4bb21db53603d5351f3f2138a9770a594257756e55b99e4153f",
+  "cases": [
+    {
+      "case": "valid",
+      "context": {
+        "image_sha256": "44fd039e0545c28ee8371fb9bba84237c8164be7e429e17498c452f21dd41475",
+        "marker_before": "0xffff",
+        "readback": "match",
+        "image_be16_sum": 0,
+        "image_native_checksum_valid": true
+      },
+      "observed": {
+        "stop": "before_shared_reset_exit",
+        "status_bodies": [
+          {
+            "service": 118,
+            "subtype": 0,
+            "status": 134
+          }
+        ],
+        "synthetic_marker_readbacks": [
+          {
+            "address": "0x1fffe",
+            "value": "0x4afc",
+            "matched": true
+          }
+        ],
+        "watchdog_calls_stubbed": 113,
+        "flash_reset_sequences_skipped": 1,
+        "poll_reads": 1,
+        "flash_command_instructions_executed": 0,
+        "mmio_instructions_executed": 0,
+        "physical_reset_executed": false,
+        "marker_after": "0x4afc",
+        "stack_delta": 0,
+        "retained_error_bits": 0,
+        "native_instructions": 229477
+      },
+      "synthetic_pointer_table": true,
+      "physical_marker_programming_proven": false,
+      "full_receive_or_session_executed": false,
+      "physical_recovery_proven": false,
+      "transport_used": false,
+      "live_write_enabled": false,
+      "ready_to_flash": false,
+      "would_send": []
+    },
+    {
+      "case": "zero_sum_bad_crc",
+      "context": {
+        "image_sha256": "87ed7ef592c68bd62ff5028ab2b007008f5cc246e9a50ece4e23c831af0fd6b4",
+        "marker_before": "0xffff",
+        "readback": "match",
+        "image_be16_sum": 0,
+        "image_native_checksum_valid": false
+      },
+      "observed": {
+        "stop": "before_shared_reset_exit",
+        "status_bodies": [
+          {
+            "service": 118,
+            "subtype": 0,
+            "status": 134
+          }
+        ],
+        "synthetic_marker_readbacks": [
+          {
+            "address": "0x1fffe",
+            "value": "0x4afc",
+            "matched": true
+          }
+        ],
+        "watchdog_calls_stubbed": 113,
+        "flash_reset_sequences_skipped": 1,
+        "poll_reads": 1,
+        "flash_command_instructions_executed": 0,
+        "mmio_instructions_executed": 0,
+        "physical_reset_executed": false,
+        "marker_after": "0x4afc",
+        "stack_delta": 0,
+        "retained_error_bits": 0,
+        "native_instructions": 229477
+      },
+      "synthetic_pointer_table": true,
+      "physical_marker_programming_proven": false,
+      "full_receive_or_session_executed": false,
+      "physical_recovery_proven": false,
+      "transport_used": false,
+      "live_write_enabled": false,
+      "ready_to_flash": false,
+      "would_send": []
+    },
+    {
+      "case": "bad_sum",
+      "context": {
+        "image_sha256": "4cc6000434ba86c006240feb891645d714b0a7300463d4c607dd34aace24cb14",
+        "marker_before": "0xffff",
+        "readback": "match",
+        "image_be16_sum": 256,
+        "image_native_checksum_valid": false
+      },
+      "observed": {
+        "stop": "before_shared_reset_exit",
+        "status_bodies": [
+          {
+            "service": 118,
+            "subtype": 0,
+            "status": 255
+          }
+        ],
+        "synthetic_marker_readbacks": [],
+        "watchdog_calls_stubbed": 112,
+        "flash_reset_sequences_skipped": 0,
+        "poll_reads": 0,
+        "flash_command_instructions_executed": 0,
+        "mmio_instructions_executed": 0,
+        "physical_reset_executed": false,
+        "marker_after": "0xffff",
+        "stack_delta": 0,
+        "retained_error_bits": 0,
+        "native_instructions": 229452
+      },
+      "synthetic_pointer_table": true,
+      "physical_marker_programming_proven": false,
+      "full_receive_or_session_executed": false,
+      "physical_recovery_proven": false,
+      "transport_used": false,
+      "live_write_enabled": false,
+      "ready_to_flash": false,
+      "would_send": []
+    },
+    {
+      "case": "erased_calibration",
+      "context": {
+        "image_sha256": "77f10c3114c8d2c3505dd50635acd52ce2e16b1298e2c824531e4ae37951afd0",
+        "marker_before": "0xffff",
+        "readback": "match",
+        "image_be16_sum": 36884,
+        "image_native_checksum_valid": false
+      },
+      "observed": {
+        "stop": "before_shared_reset_exit",
+        "status_bodies": [
+          {
+            "service": 118,
+            "subtype": 0,
+            "status": 255
+          }
+        ],
+        "synthetic_marker_readbacks": [],
+        "watchdog_calls_stubbed": 112,
+        "flash_reset_sequences_skipped": 0,
+        "poll_reads": 0,
+        "flash_command_instructions_executed": 0,
+        "mmio_instructions_executed": 0,
+        "physical_reset_executed": false,
+        "marker_after": "0xffff",
+        "stack_delta": 0,
+        "retained_error_bits": 0,
+        "native_instructions": 229452
+      },
+      "synthetic_pointer_table": true,
+      "physical_marker_programming_proven": false,
+      "full_receive_or_session_executed": false,
+      "physical_recovery_proven": false,
+      "transport_used": false,
+      "live_write_enabled": false,
+      "ready_to_flash": false,
+      "would_send": []
+    },
+    {
+      "case": "partial_calibration",
+      "context": {
+        "image_sha256": "59ffecf64c96038a6dc5f0b1ee998ee010b961924abf460c56e5f90b46500006",
+        "marker_before": "0xffff",
+        "readback": "match",
+        "image_be16_sum": 43871,
+        "image_native_checksum_valid": false
+      },
+      "observed": {
+        "stop": "before_shared_reset_exit",
+        "status_bodies": [
+          {
+            "service": 118,
+            "subtype": 0,
+            "status": 255
+          }
+        ],
+        "synthetic_marker_readbacks": [],
+        "watchdog_calls_stubbed": 112,
+        "flash_reset_sequences_skipped": 0,
+        "poll_reads": 0,
+        "flash_command_instructions_executed": 0,
+        "mmio_instructions_executed": 0,
+        "physical_reset_executed": false,
+        "marker_after": "0xffff",
+        "stack_delta": 0,
+        "retained_error_bits": 0,
+        "native_instructions": 229452
+      },
+      "synthetic_pointer_table": true,
+      "physical_marker_programming_proven": false,
+      "full_receive_or_session_executed": false,
+      "physical_recovery_proven": false,
+      "transport_used": false,
+      "live_write_enabled": false,
+      "ready_to_flash": false,
+      "would_send": []
+    },
+    {
+      "case": "marker_readback_failure",
+      "context": {
+        "image_sha256": "44fd039e0545c28ee8371fb9bba84237c8164be7e429e17498c452f21dd41475",
+        "marker_before": "0xffff",
+        "readback": "mismatch",
+        "image_be16_sum": 0,
+        "image_native_checksum_valid": true
+      },
+      "observed": {
+        "stop": "receive_boundary",
+        "status_bodies": [
+          {
+            "service": 118,
+            "subtype": 0,
+            "status": 248
+          }
+        ],
+        "synthetic_marker_readbacks": [
+          {
+            "address": "0x1fffe",
+            "value": "0x4afd",
+            "matched": false
+          }
+        ],
+        "watchdog_calls_stubbed": 12401,
+        "flash_reset_sequences_skipped": 1,
+        "poll_reads": 12290,
+        "flash_command_instructions_executed": 0,
+        "mmio_instructions_executed": 0,
+        "physical_reset_executed": false,
+        "marker_after": "0x4afd",
+        "stack_delta": -4,
+        "retained_error_bits": 64,
+        "native_instructions": 290933
+      },
+      "synthetic_pointer_table": true,
+      "physical_marker_programming_proven": false,
+      "full_receive_or_session_executed": false,
+      "physical_recovery_proven": false,
+      "transport_used": false,
+      "live_write_enabled": false,
+      "ready_to_flash": false,
+      "would_send": []
+    },
+    {
+      "case": "before_marker_command",
+      "context": {
+        "image_sha256": "44fd039e0545c28ee8371fb9bba84237c8164be7e429e17498c452f21dd41475",
+        "marker_before": "0xffff",
+        "readback": "stop_before_command",
+        "image_be16_sum": 0,
+        "image_native_checksum_valid": true
+      },
+      "observed": {
+        "stop": "marker_command_boundary",
+        "status_bodies": [],
+        "synthetic_marker_readbacks": [],
+        "watchdog_calls_stubbed": 112,
+        "flash_reset_sequences_skipped": 0,
+        "poll_reads": 0,
+        "flash_command_instructions_executed": 0,
+        "mmio_instructions_executed": 0,
+        "physical_reset_executed": false,
+        "marker_after": "0xffff",
+        "stack_delta": -4,
+        "retained_error_bits": 0,
+        "native_instructions": 229456
+      },
+      "synthetic_pointer_table": true,
+      "physical_marker_programming_proven": false,
+      "full_receive_or_session_executed": false,
+      "physical_recovery_proven": false,
+      "transport_used": false,
+      "live_write_enabled": false,
+      "ready_to_flash": false,
+      "would_send": []
+    },
+    {
+      "case": "bad_sum_old_marker",
+      "context": {
+        "image_sha256": "4cc6000434ba86c006240feb891645d714b0a7300463d4c607dd34aace24cb14",
+        "marker_before": "0x4afc",
+        "readback": "match",
+        "image_be16_sum": 256,
+        "image_native_checksum_valid": false
+      },
+      "observed": {
+        "stop": "before_shared_reset_exit",
+        "status_bodies": [
+          {
+            "service": 118,
+            "subtype": 0,
+            "status": 255
+          }
+        ],
+        "synthetic_marker_readbacks": [],
+        "watchdog_calls_stubbed": 112,
+        "flash_reset_sequences_skipped": 0,
+        "poll_reads": 0,
+        "flash_command_instructions_executed": 0,
+        "mmio_instructions_executed": 0,
+        "physical_reset_executed": false,
+        "marker_after": "0x4afc",
+        "stack_delta": 0,
+        "retained_error_bits": 0,
+        "native_instructions": 229452
+      },
+      "synthetic_pointer_table": true,
+      "physical_marker_programming_proven": false,
+      "full_receive_or_session_executed": false,
+      "physical_recovery_proven": false,
+      "transport_used": false,
+      "live_write_enabled": false,
+      "ready_to_flash": false,
+      "would_send": []
+    }
+  ],
+  "scope": "Actual captured checksum, marker-loop and status/error instructions with synthetic flash readback; stops before shared reset.",
+  "limits": "No flash command/reset store, transport, actual elapsed polling, boot re-entry or physical interrupted-write recovery. Marker values are host-modeled.",
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "erase_scope": null,
+  "would_send": []
+}

@@ -71,6 +71,32 @@ class OfflineSafetyTests(unittest.TestCase):
         self.assertEqual([], report['erase_packets'])
         self.assertTrue(any('collateral' in b for b in report['blockers']))
 
+    def test_conditional_marker_evidence_does_not_enable_recovery_or_retry(self):
+        data = fixture()
+        report = plan(data, data, sha256(data), 'AL5', 15184109)
+        recovery = report['calibration_recovery_assessment']
+        root = Path(__file__).resolve().parents[2]
+        for prefix in ('finalization', 'marker'):
+            raw = (root / recovery[prefix+'_evidence']).read_bytes()
+            self.assertEqual(sha256(raw), recovery[prefix+'_evidence_sha256'])
+            native = json.loads(raw)
+            self.assertFalse(native['ready_to_flash'])
+            self.assertFalse(native['live_write_enabled'])
+            implementation = 'emulate_loader_finalize.py' if prefix == 'finalization' else 'emulate_calibration_marker.py'
+            self.assertEqual(native['generator_sha256'], recovery['implementations'][implementation])
+        for name, digest in recovery['implementations'].items():
+            self.assertEqual(digest, sha256(Path(__file__).with_name(name).read_bytes()))
+        self.assertTrue(recovery['conditional_boot_error_routes_emulated'])
+        for field in ('finalize_status_proves_native_crc', 'completion_marker_check_always_runs',
+                      'complete_startup_flag_provenance_verified', 'physical_reset_verified',
+                      'vpw_reentry_after_failure_verified', 'physical_recovery_verified',
+                      'automatic_retry_allowed', 'live_write_enabled', 'ready_to_flash'):
+            self.assertFalse(recovery[field])
+        self.assertFalse(report['ready_to_flash'])
+        self.assertEqual(report['would_send'], [])
+        self.assertEqual(report['erase_packets'], [])
+        self.assertEqual(report['program_packets'], [])
+
     def test_cli_valid_input_still_returns_blocked_exit_code(self):
         data = fixture()
         with tempfile.TemporaryDirectory() as directory:
