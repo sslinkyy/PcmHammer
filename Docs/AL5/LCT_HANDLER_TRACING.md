@@ -71,6 +71,12 @@ GetWriteIOErrors Evidence:
 
 ## Reconstructing command tables without starting DOC
 
+Follow-up: [LCT session tracing](LCT_SESSION_TRACING.md) expands the four-range
+reconstruction below to 15 initializers and fills all 135 request slots. It
+also corrects response-table alignment, traces the startup callbacks and
+records the bounded search for a `10 10` activator. The four-range counts below
+describe the earlier partial reconstruction, not the current tool output.
+
 Raw file bytes contain partially initialized tables. Treating zero-filled slots
 as absent commands would be incorrect. The new `audit_lct_command_tables.py`
 runs four exact pinned initializer ranges in private Unicorn 2.1.4 memory:

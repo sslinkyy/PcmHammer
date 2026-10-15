@@ -1,6 +1,6 @@
 """Reconstruct pinned DOC LCT tables in isolated memory; no host/vehicle I/O.
 
-Requires optional Unicorn 2.1.4. Only four exact initializer ranges may execute;
+Requires optional Unicorn 2.1.4. Only the exact initializer ranges may execute;
 writes are restricted to the table region and synthetic stack. No imports,
 callbacks, DLL entry point, COM objects or adapter APIs are executed.
 """
@@ -15,8 +15,14 @@ from inspect_pccs_methods import executable_sections
 
 
 SOURCE_SHA256 = '023185650cddbd015a16eef4a8d58b2d6e173519ff07dc6434cb1552a55389c8'
-INITIALIZERS = ((0x10001064, 0x10001814), (0x10001823, 0x10002bc9),
-                (0x10002bc9, 0x10002cc3), (0x10002cc3, 0x10004ac8))
+INITIALIZERS = ((0x10001000, 0x1000100f), (0x1000100f, 0x1000101e),
+                (0x1000101e, 0x10001064), (0x10001064, 0x10001814),
+                (0x10001814, 0x10001823), (0x10001823, 0x10002bc9),
+                (0x10002bc9, 0x10002cc3), (0x10002cc3, 0x10004ac8),
+                (0x10004ac8, 0x10004c43), (0x10004c43, 0x10004c89),
+                (0x10004c89, 0x10004c98), (0x10004c98, 0x10004ca7),
+                (0x10004ca7, 0x100052d3), (0x100052d3, 0x1000531d),
+                (0x1000531d, 0x100053b9))
 STACK, EXIT = 0x20000000, 0x30000000
 TABLE_START, TABLE_END = 0x10071018, 0x10076bf4
 # Catalog and row counts derived from native function 0x10008ee6.
@@ -110,6 +116,21 @@ def descriptors(read, address, count):
     return rows
 
 
+def response_descriptors(read, address, count):
+    """Layout from native matchers 0x10007c27/0x10007bac, not pointer scans."""
+    rows = []
+    for index in range(count):
+        raw = bytes(read(address+index*88, 88))
+        if len(raw) != 88 or raw[41] > 38:
+            raise ValueError('Invalid response descriptor storage span')
+        rows.append({'index': index, 'address': hex(address+index*88),
+                     'raw_hex': raw.hex(), 'match_prefix_hex': raw[42:42+raw[41]].hex(),
+                     'handler_address_candidate': hex(struct.unpack_from('<I', raw, 80)[0]),
+                     'opaque_final_word_hex': raw[84:88].hex(),
+                     'provider_function_verified': False})
+    return rows
+
+
 def audit(data):
     uc, runs = reconstruct(data)
     tables = [{'selector': selector, 'base_address': hex(address),
@@ -121,16 +142,26 @@ def audit(data):
         raise ValueError('Startup diagnostic-poll anchor differs')
     if resets[12]['internal_request_hex'] != 'ae01000020200000':
         raise ValueError('Adaptive reset anchor differs')
+    startup_probe = next(t for t in tables if t['selector'] == 0)['rows']
+    if [r['internal_request_hex'] for r in startup_probe] != ['31', '37', '35']:
+        raise ValueError('Complete startup probe order differs')
+    responses = [{'name': name, 'base_address': hex(address),
+                  'rows': response_descriptors(uc.mem_read, address, count)}
+                 for name, address, count in (('j1939_startup', 0x10073e80, 5),
+                                             ('normal', 0x10074038, 122))]
+    session_reply = next(r for r in responses[1]['rows'] if r['match_prefix_hex'] == '5010')
+    if session_reply['handler_address_candidate'] != '0x1000a783':
+        raise ValueError('Session reply callback binding differs')
     services = Counter(r['internal_request_hex'][:2] for t in tables for r in t['rows']
                        if r['internal_request_hex'])
-    return {'schema': 'lct-command-table-audit-v1', 'source_sha256': SOURCE_SHA256,
+    return {'schema': 'lct-command-table-audit-v2', 'source_sha256': SOURCE_SHA256,
             'emulator': 'Unicorn 2.1.4',
-            'initializers': runs, 'tables': tables,
+            'initializers': runs, 'tables': tables, 'response_tables': responses,
             'internal_request_leading_byte_counts': dict(sorted(services.items())),
             'host_prefixes': {'j1939': bytes(uc.mem_read(0x10071000, 6)).hex(),
                               'j1850': bytes(uc.mem_read(0x10071008, 6)).hex(),
                               'alternate_j1850': bytes(uc.mem_read(0x10071010, 6)).hex()},
-            'scope': 'Four source-pinned initializers in private Unicorn memory; not host execution',
+            'scope': 'Fifteen source-pinned table initializers in private Unicorn memory; not host execution',
             'limitations': ['Tables may be modified later; this is not a live-state snapshot.',
                             'Internal request and match fields are not qualified wire frames.',
                             'Only the selected initializers ran; later changes are not modeled.',
