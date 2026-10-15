@@ -78,3 +78,5 @@ not authorized for experimental qualification. Live writes remain disabled.
 Validation: the combined offline suite passed **287 tests with no skips**
 using pinned native inputs and Unicorn 2.1.4. Staged changes passed
 `git diff --cached --check`. No adapter or vehicle was accessed.
+
+[Loader entry and programming continuity](LOADER_ENTRY_PROGRAM_PATH.md) joins actual loader entry, receive/parser and bounded synthetic word programming. Nonlocal errors retain pending call frames; software reentry resets the stack without rollback. Live writes and recovery qualification remain disabled.

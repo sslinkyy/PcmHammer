@@ -116,6 +116,25 @@ class OfflineSafetyTests(unittest.TestCase):
         self.assertFalse(report['ready_to_flash'])
         self.assertEqual([], report['would_send'])
 
+    def test_loader_entry_report_does_not_qualify_programming_or_recovery(self):
+        data = fixture()
+        report = plan(data, data, sha256(data), 'AL5', 15184109)
+        recovery = report['calibration_recovery_assessment']
+        root = Path(__file__).resolve().parents[2]
+        raw = (root / recovery['loader_entry_evidence']).read_bytes()
+        native = json.loads(raw)
+        self.assertEqual(sha256(raw), recovery['loader_entry_evidence_sha256'])
+        self.assertEqual(8, len(native['cases']))
+        self.assertEqual(native['generator_sha256'], recovery['implementations']['emulate_loader_entry.py'])
+        for name, digest in native['dependency_sha256'].items():
+            self.assertEqual(digest, recovery['implementations'][name])
+        self.assertTrue(recovery['loader_entry_program_path_same_session_modeled'])
+        for field in ('physical_loader_execution_verified', 'physical_recovery_verified',
+                      'automatic_retry_allowed', 'live_write_enabled', 'ready_to_flash'):
+            self.assertFalse(recovery[field])
+        self.assertEqual([], report['would_send'])
+        self.assertEqual([], report['program_packets'])
+
     def test_cli_valid_input_still_returns_blocked_exit_code(self):
         data = fixture()
         with tempfile.TemporaryDirectory() as directory:

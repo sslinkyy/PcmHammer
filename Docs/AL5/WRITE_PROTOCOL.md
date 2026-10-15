@@ -324,3 +324,5 @@ New offline [finalization and conditional recovery evidence](VPW_FINALIZATION_RE
 [Startup and VPW receive entry](BOOT_STARTUP_VPW_ENTRY.md) traces cold-start integrity flags, pre-marker initializers, the boot interface gate and receive ISR with offline native models. Physical programming and interrupted-flash recovery remain unqualified; live writes remain disabled.
 
 [Joined boot receive session](BOOT_RECEIVE_SESSION.md) now executes the original ISR, resident dispatch and four-byte synthetic RAM-transfer path together, including native cleanup and explicit retry steps. Physical programming/recovery and live writes remain disabled.
+
+[Loader entry and programming continuity](LOADER_ENTRY_PROGRAM_PATH.md) joins actual loader entry, receive/parser and bounded synthetic word programming. Nonlocal errors retain pending call frames; software reentry resets the stack without rollback. Live writes and recovery qualification remain disabled.

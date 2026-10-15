@@ -44,26 +44,33 @@ VM_STATIC_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/EFILIVE_VM_
 LOADER_FINALIZATION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_FINALIZATION_EMULATION.json'
 CALIBRATION_MARKER_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/CALIBRATION_MARKER_EMULATION.json'
 BOOT_RECEIVE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/BOOT_RECEIVE_SESSION_EMULATION.json'
+LOADER_ENTRY_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_ENTRY_EMULATION.json'
 
 
 def calibration_recovery_assessment():
     finalize = LOADER_FINALIZATION_EVIDENCE.read_bytes()
     marker = CALIBRATION_MARKER_EVIDENCE.read_bytes()
     receive = BOOT_RECEIVE_EVIDENCE.read_bytes()
+    entry = LOADER_ENTRY_EVIDENCE.read_bytes()
     return {
-        'scope': 'Native finalization and conditional marker/CRC slices plus a same-session boot ISR/dispatch/synthetic RAM transfer; no continuous reset or physical VPW session.',
+        'scope': 'Native finalization/marker slices, joined boot ISR/synthetic RAM transfer, and separate joined loader entry/receive/modeled word programming; no continuous reset-to-loader or physical VPW session.',
         'finalization_evidence': 'Docs/AL5/LOADER_FINALIZATION_EMULATION.json',
         'finalization_evidence_sha256': sha256(finalize),
         'marker_evidence': 'Docs/AL5/CALIBRATION_MARKER_EMULATION.json',
         'marker_evidence_sha256': sha256(marker),
         'boot_receive_evidence': 'Docs/AL5/BOOT_RECEIVE_SESSION_EMULATION.json',
         'boot_receive_evidence_sha256': sha256(receive),
+        'loader_entry_evidence': 'Docs/AL5/LOADER_ENTRY_EMULATION.json',
+        'loader_entry_evidence_sha256': sha256(entry),
         'implementations': {name: sha256((Path(__file__).parent / name).read_bytes())
                             for name in ('emulate_loader_finalize.py', 'emulate_calibration_marker.py',
                                          'emulate_boot_receive_session.py', 'emulate_boot_receive_isr.py',
-                                         'emulate_boot_session.py')},
+                                         'emulate_boot_session.py', 'emulate_loader_entry.py',
+                                         'emulate_loader_parser.py')},
         'conditional_boot_error_routes_emulated': True,
         'boot_receive_same_session_modeled': True,
+        'loader_entry_program_path_same_session_modeled': True,
+        'physical_loader_execution_verified': False,
         'physical_interrupt_delivery_verified': False,
         'continuous_reset_to_upload_verified': False,
         'finalize_status_proves_native_crc': False,
