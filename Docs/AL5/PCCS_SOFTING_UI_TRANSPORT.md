@@ -1,5 +1,9 @@
 # PCCS Softing UI selection and outgoing transport
 
+Follow-up: [genuine J1850 programming route](PCCS_J1850_PROGRAMMING_ROUTE.md)
+finds the separate TJ1850 class and inherited programming entry points.
+The SPX driver implementation and complete AL5 VPW sequence remain unavailable.
+
 2026-10-15, continuation of `PCCS_BUNDLED_DRIVER_FILTER_BEHAVIOR.md`.
 PCCS's Softing CANusb UI branch normalizes the protocol to CAN unless IESCAN
 is selected. The outgoing SoftUSB wrapper then constructs standard/extended
