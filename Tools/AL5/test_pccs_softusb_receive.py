@@ -11,6 +11,8 @@ class SoftUsbReceiveTests(unittest.TestCase):
     def test_pin_before_layout(self):
         with self.assertRaisesRegex(ValueError, 'pin changed'):
             receive.run(b'not the DLL')
+        with self.assertRaisesRegex(ValueError, 'pin changed'):
+            receive.run_protocol_selection(b'not the DLL')
 
     def test_execution_bounds(self):
         for start, stop in receive.BRANCHES:
@@ -61,6 +63,22 @@ class SoftUsbReceiveTests(unittest.TestCase):
                         {'payload': bytes(9)}, {'timestamp': -1}, {'frame_format': 1, 'identifier': 0x20000000}):
             with self.assertRaises(ValueError):
                 receive.run(data, **context)
+
+    @unittest.skipUnless(os.environ.get('AL5_SOFTUSB_DLL') and importlib.util.find_spec('unicorn'), 'requires pinned local SoftUSB and Unicorn')
+    def test_native_protocol_selection(self):
+        data = Path(os.environ['AL5_SOFTUSB_DLL']).read_bytes()
+        cases = [receive.run_protocol_selection(data, protocol=p) for p in ('CAN', 'J1850', 'IESCAN', 'XCAN', 'YCAN', '1MEGCAN')]
+        self.assertEqual([(c['flag_4030a0'], c['flag_4030a4']) for c in cases],
+                         [(0, 0), (0, 0), (1, 0), (0, 1), (1, 1), (0, 0)])
+        for case in cases:
+            self.assertFalse(case['chip_initialization_executed'])
+            self.assertFalse(case['protocol_support_proven'])
+            self.assertFalse(case['transport_used'])
+            self.assertFalse(case['live_write_enabled'])
+            self.assertEqual(case['would_send'], [])
+        for name in ('', 'CAN\x00J1850', 'X'*65, [], '\u00e9'):
+            with self.assertRaises(ValueError):
+                receive.run_protocol_selection(data, protocol=name)
 
 
 if __name__ == '__main__':

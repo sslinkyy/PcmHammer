@@ -19,7 +19,37 @@ The prior PCCS command-17/5 emitters have driver-name guards involving
 DR1210/DG/NXULNK/NULN2R32 and DLAWIR/NORWIR/V3PUWA. The bundled SoftUSB and
 Vectcdxl32 names are not those guarded names. Their no-op handlers therefore
 do not establish the behavior of the drivers eligible for those filter blocks.
-PCCS's selected Communications adapter/library remains the next identity input.
+The owner's follow-up below narrows the selected family; the runtime-loaded
+file path and digest remain unverified.
+
+### Owner-reported Softing selection and protocol mismatch
+
+The owner subsequently reported the previous selection as Softing CANcard with
+250 kbit CAN, and the current selection as Softing CANusb with J1850. This
+narrows the driver family; it does not verify the runtime-loaded file path or
+digest. The bundled SoftUSB implementation remains the pinned analysis target.
+
+The new native protocol-selector checks execute `0x402151..0x40219F`, after
+successful reset is assumed and before chip initialization. This wrapper reads
+only the protocol name's first byte. Initial letters I/X/Y select flag pairs
+1/0, 0/1 and 1/1 respectively. Other names, including CAN and J1850, select
+0/0 and then reach the same CAN-chip initialization helper. Six contexts cover
+CAN, J1850, IESCAN, XCAN, YCAN and 1MEGCAN. This also shows why a menu label or
+a successful connect return cannot independently establish protocol support.
+
+There is no distinct J1850/VPW branch in this selector. The current J1850 menu
+selection therefore must not be used as evidence that this SoftUSB wrapper
+operates a VPW network. The earlier CAN selection is consistent with the
+CAN-related PCCS path under investigation, but actual bus behavior remains
+unverified. No application setting was changed.
+
+Static comparison of bundled SoftCD32.dll
+(`f0ae6fca492996da23e8facdc73100172d205b7d1e5b41fbfc6b1a7ee52639e9`)
+also shows CAN-chip initialization and first-character protocol selection;
+it additionally has a leading-1 branch absent from this SoftUSB selector.
+This is a bounded comparison, not qualification of the former CANcard setup.
+Private `softing-protocol-selector-source.json` preserves both anchored windows;
+`native-softusb-protocol-selection.json` records the updated native audit.
 
 ## SoftUSB command handling and initial acceptance
 
@@ -104,7 +134,7 @@ Private evidence is under `Tools/AL5/LocalOnly/PCCS_20261015/QuickWriteTrace/`:
 `VECTCDXL_FILTER_FINDINGS.md` and the saved snapshot. Reports pin source
 digests, execution boundaries, synthetic callbacks and qualification limits.
 
-Validation: **186 tests passed, no skips**, including nine new test methods,
+Validation: **187 tests passed, no skips**, including ten new test methods,
 with pinned PCCS/DOC/SoftUSB/Vector inputs and both S2 images present. Focused
 command from `Tools/AL5`, with optional Unicorn and `AL5_SOFTUSB_DLL` /
 `AL5_VECTCDXL_DLL` pointing to the pinned existing files:

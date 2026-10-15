@@ -122,10 +122,63 @@ def audit(data):
                            sha256=hashlib.sha256(data[off:off+stop-start]).hexdigest()))
     return {'schema': 'pccs-bundled-softusb-receive-conversion-v1', 'source_sha256': SOURCE_SHA256,
             'source_ranges': ranges, 'cases': cases,
+            'protocol_selection_cases': [run_protocol_selection(data, protocol=p)
+                                         for p in ('CAN', 'J1850', 'IESCAN', 'XCAN', 'YCAN', '1MEGCAN')],
             'limitations': ['Bundled DLL identity only; runtime PCCS driver choice is unknown.',
                             'Synthetic CANPC events; no hardware or actual event delivery.',
                             'Guarded byte-copy replacements; native event dispatch and byte order execute.',
                             'No actual filter installation, AL5 response, programming or recovery qualification.'],
+            'live_write_enabled': False, 'ready_to_flash': False, 'would_send': []}
+
+
+def run_protocol_selection(data, *, protocol='CAN'):
+    """Actual post-reset selector; stops before chip initialization, no imports."""
+    if hashlib.sha256(data).hexdigest() != SOURCE_SHA256:
+        raise ValueError('source SoftUSB pin changed')
+    if (type(protocol) is not str or not protocol or len(protocol) > 64
+            or any(not 0x20 <= ord(c) <= 0x7e for c in protocol)):
+        raise ValueError('Requires a bounded ASCII protocol name')
+    import unicorn
+    if unicorn.__version__ != '2.1.4':
+        raise ValueError('Requires Unicorn 2.1.4')
+    from unicorn import Uc, UC_ARCH_X86, UC_MODE_32, UC_HOOK_CODE, UC_HOOK_MEM_WRITE
+    from unicorn.x86_const import UC_X86_REG_EBP, UC_X86_REG_EIP
+    from inspect_pccs_methods import executable_sections
+    start, stop = 0x402151, 0x4021a0
+    section = next(s for s in executable_sections(data) if s['va'] <= start and stop <= s['va']+s['raw_bytes'])
+    off = section['raw_offset']+start-section['va']
+    raw = data[off:off+stop-start]
+    uc = Uc(UC_ARCH_X86, UC_MODE_32)
+    uc.mem_map(0x400000, 0x4000)
+    uc.mem_write(start, raw)
+    uc.mem_map(STACK, 0x10000)
+    uc.mem_map(BUFFER, 0x1000)
+    uc.mem_write(BUFFER, protocol.encode('ascii')+b'\x00')
+    uc.mem_write(0x4030a0, b'\xaa')
+    uc.mem_write(0x4030a4, b'\xbb')
+    bp = STACK+0x8000
+    uc.mem_write(bp+0x10, struct.pack('<I', BUFFER))
+    uc.reg_write(UC_X86_REG_EBP, bp)
+    steps = [0]
+    def code(engine, pc, size, _):
+        if not (size > 0 and start <= pc and pc+size <= stop):
+            raise ValueError('Unexpected protocol-selector PC')
+        steps[0] += 1
+    def write(engine, access, address, size, value, _):
+        if address not in (0x4030a0, 0x4030a4) or size != 1:
+            raise ValueError('Unexpected protocol-selector write')
+    uc.hook_add(UC_HOOK_CODE, code)
+    uc.hook_add(UC_HOOK_MEM_WRITE, write)
+    uc.emu_start(start, stop, count=100)
+    if uc.reg_read(UC_X86_REG_EIP) != stop:
+        raise ValueError('Protocol selector did not reach initialization-call boundary')
+    return {'protocol': protocol, 'flag_4030a0': uc.mem_read(0x4030a0, 1)[0],
+            'flag_4030a4': uc.mem_read(0x4030a4, 1)[0], 'boundary': hex(stop),
+            'source_range': dict(start=hex(start), exclusive_end=hex(stop), file_offset=off,
+                                 sha256=hashlib.sha256(raw).hexdigest()),
+            'instruction_observations': steps[0], 'reset_success_assumed': True,
+            'chip_initialization_executed': False, 'protocol_support_proven': False,
+            'actual_driver_loaded_in_pccs': None, 'transport_used': False,
             'live_write_enabled': False, 'ready_to_flash': False, 'would_send': []}
 
 
@@ -141,7 +194,7 @@ def main():
     with args.output.open('x', encoding='utf-8') as output:
         json.dump(result, output, indent=2)
         output.write('\n')
-    print(json.dumps({'cases': len(result['cases']), 'ready_to_flash': False}))
+    print(json.dumps({'cases': len(result['cases']), 'protocol_selection_cases': len(result['protocol_selection_cases']), 'ready_to_flash': False}))
 
 
 if __name__ == '__main__':
