@@ -6,6 +6,11 @@ AL5 investigation beyond the generic FIL path, but does not qualify a writer.
 Controller/context binding, preparation, erase geometry, verification and
 interrupted-flash recovery remain unresolved. Live writes stay disabled.
 
+Follow-up: [preparation and finalization](PCCS_PREPARATION_FINALIZATION.md)
+identifies EnterWrite and seed/key prerequisites, mutable routing fields and
+BlockFill/EndWrite. Identification can enable QuickWriteData, so the ordinary
+`22` model is not a confirmed AL5 route.
+
 ## Source and retained evidence
 
 Installed Winrw32.exe SHA-256:
