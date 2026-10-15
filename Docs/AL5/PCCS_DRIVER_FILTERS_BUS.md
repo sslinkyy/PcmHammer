@@ -1,5 +1,9 @@
 # PCCS driver filters and bus configuration
 
+Follow-up: [bundled driver behavior](PCCS_BUNDLED_DRIVER_FILTER_BEHAVIOR.md)
+finds no-op SendCommand handlers in bundled SoftUSB/Vector wrappers and
+models both SoftUSB receive formats. Runtime driver selection remains unknown.
+
 2026-10-15, continuation of `PCCS_FALLBACK_TRANSPORT_TRANSITION.md`.
 PCCS uses RP1210 callbacks and requests pass-all filtering after connection.
 The ordinary target-3 identification branch skips a later target-F3 filter
