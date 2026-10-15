@@ -1,5 +1,10 @@
 # PCCS J1850 programming route and missing SPX driver
 
+Later finding: [preparation and programming compatibility](PCCS_J1850_PREPARATION_COMPATIBILITY.md)
+shows that PCCS disables J1850 programming/recovery controls. Inherited
+ordinary target forwarding and direct CAN formatting in QuickWrite leave
+additional compatibility gaps; inherited slots do not prove a VPW writer.
+
 Follow-up: [TJ1850 identification and prerequisites](PCCS_J1850_IDENTITY_PREREQUISITES.md)
 models the probe classifier, reset prefix and request constructors. The full
 programming exchange and SPX driver implementation remain unproven.
