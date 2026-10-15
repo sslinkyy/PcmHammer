@@ -4,7 +4,8 @@
 The concrete QuickWrite clear/requalification connection is downstream in
 EnterWrite preparation, after communication initialization. It is conditional
 on reaching that preparation path; the vector mismatch still does not itself
-retry writing. Live writes remain disabled.
+retry writing. Live writes remain disabled. Follow-up ownership and bypass sequencing are
+traced in `PCCS_ALTERNATE_ROUTE_OWNERS.md`.
 
 ## Communication initialization versus preparation
 

@@ -59,7 +59,12 @@ class EnterWritePollTests(unittest.TestCase):
         self.assertEqual((exhausted['identification_count'], exhausted['final_host_status'], exhausted['final_d104']), (12, 8, 0))
         self.assertEqual((failing['identification_count'], failing['boot_predicate_count'], failing['final_host_status']), (12, 0, 9))
         self.assertEqual([c['milliseconds'] for c in failing['calls'] if c['kind'] == 'synthetic_delay'], [2000])
-        for context in ({'status': 256}, {'alternate': 2}, {'prior_d104': True}, {'identify_statuses': ()}, {'identify_statuses': None}, {'identify_statuses': [0]},
+        for alternate_byte in (2, 255):
+            case = poll.run(data, alternate=alternate_byte)
+            self.assertEqual(case['context']['alternate_route'], alternate_byte)
+            self.assertEqual(case['identification_count'], 0)
+            self.assertEqual(case['calls'], [{'kind': 'synthetic_alternate_identity_assignment'}])
+        for context in ({'status': 256}, {'alternate': 256}, {'prior_d104': True}, {'identify_statuses': ()}, {'identify_statuses': None}, {'identify_statuses': [0]},
                         {'boot_states': None}, {'boot_states': (1,)}):
             with self.assertRaises(ValueError):
                 poll.run(data, **context)

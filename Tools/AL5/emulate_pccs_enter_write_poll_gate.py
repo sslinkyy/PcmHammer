@@ -32,8 +32,8 @@ def run(data, *, status=0, alternate=0, version=0, prior_d104=1,
         identify_statuses=(0,)*12, boot_states=(True,)*12):
     if hashlib.sha256(data).hexdigest() != SOURCE_SHA256:
         raise ValueError('source executable pin changed')
-    if (any(type(v) is not int or not 0 <= v <= 255 for v in (status, version))
-            or any(type(v) is not int or v not in (0, 1) for v in (alternate, prior_d104))
+    if (any(type(v) is not int or not 0 <= v <= 255 for v in (status, version, alternate))
+            or any(type(v) is not int or v not in (0, 1) for v in (prior_d104,))
             or not isinstance(identify_statuses, tuple) or not identify_statuses or any(type(v) is not int or not 0 <= v <= 255 for v in identify_statuses)
             or not isinstance(boot_states, tuple) or not boot_states or any(type(v) is not bool for v in boot_states)):
         raise ValueError('Invalid synthetic EnterWrite gate context')
