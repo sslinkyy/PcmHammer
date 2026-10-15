@@ -276,3 +276,5 @@ Capstone (the existing WSL environment was used). Neither test opens a vehicle.
 [Host callback result and cleanup tracing](VM_CALLBACK_RESULTS.md): selector0A is transport cleanup, while0B/0D route send/receive with separate exception status. Physical programming, preservation and interrupted-flash recovery remain unverified.
 
 [PCCS E2 and ordinary response acceptance](PCCS_E2_ORDINARY_ACCEPTANCE.md): bounded native models accept identifier zero and conditionally classify standard LCT while retaining the alternate byte. Complete receive-format transition and AL5 programming/recovery remain unproven.
+
+[PCCS fallback transport transition](PCCS_FALLBACK_TRANSPORT_TRANSITION.md): offline caller and formatter models trace the explicit initial-to-ordinary header change. Driver filters, AL5 compatibility and programming/recovery remain unproven.

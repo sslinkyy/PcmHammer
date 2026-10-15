@@ -1,5 +1,9 @@
 # PCCS initial E2 and ordinary response acceptance
 
+Follow-up: [fallback transport transition](PCCS_FALLBACK_TRANSPORT_TRANSITION.md)
+traces the host's explicit header rebuilding. Driver/controller compatibility
+and a complete invocation remain unproven.
+
 2026-10-15, offline continuation of `PCCS_CAN_HELPER_FALLBACK.md`.
 The examined host parsers permit identifier zero. A synthetic accepted ordinary
 `35 00` response reaches family 1/version 0, retaining alternate-route byte 1.
