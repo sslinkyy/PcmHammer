@@ -155,6 +155,23 @@ class OfflineSafetyTests(unittest.TestCase):
         self.assertEqual([], report['program_packets'])
         self.assertEqual([], report['would_send'])
 
+    def test_native_sender_timeout_does_not_qualify_acknowledgment(self):
+        data = fixture()
+        report = plan(data, data, sha256(data), 'AL5', 15184109)
+        recovery = report['calibration_recovery_assessment']
+        raw = (Path(__file__).resolve().parents[2] / recovery['error_sender_evidence']).read_bytes()
+        native = json.loads(raw)
+        self.assertEqual(sha256(raw), recovery['error_sender_evidence_sha256'])
+        self.assertEqual(6, len(native['cases']))
+        self.assertEqual(native['generator_sha256'], recovery['implementations']['emulate_loader_error_sender.py'])
+        for name, digest in native['dependency_sha256'].items():
+            self.assertEqual(digest, recovery['implementations'][name])
+        self.assertTrue(recovery['sender_timeout_software_reentry_modeled'])
+        for field in ('physical_acknowledgment_verified', 'physical_recovery_verified',
+                      'automatic_retry_allowed', 'live_write_enabled', 'ready_to_flash'):
+            self.assertFalse(recovery[field])
+        self.assertEqual([], report['would_send'])
+
     def test_cli_valid_input_still_returns_blocked_exit_code(self):
         data = fixture()
         with tempfile.TemporaryDirectory() as directory:

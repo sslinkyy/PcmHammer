@@ -1,0 +1,778 @@
+{
+  "mode": "offline_error_to_native_sender_timeout_to_software_entry",
+  "payload_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
+  "generator_sha256": "ab02b80fcf1181a4d90e70658eb7ca5da4ac3a1fa069712ea90a360876fb83d1",
+  "dependency_sha256": {
+    "emulate_loader_erase_failures.py": "2db16548347065ecf10bacf3d232a751b276dc1c4cf8c6e0ebc2486d7c8987b0",
+    "emulate_loader_entry.py": "e9b5566fc2b2906e4a1253bd0909ad620328e7629e04ccf119995b7a4a1e91f8",
+    "emulate_loader_parser.py": "62ba7801849fc51361c0dfab2b8b85063a3e590eda1b78d14329fb125c10416c"
+  },
+  "source_range": {
+    "start": "0xff952e",
+    "exclusive_end": "0xff95fc",
+    "sha256": "e5859c1ce8c5a1cceecd801729df33ca8391b0183bab2fb0125a1fc8af067bba"
+  },
+  "cases": [
+    {
+      "name": "program_error_sender_ready",
+      "timeout_at_byte": null,
+      "steps": [
+        {
+          "stop": "receive_boundary",
+          "events_consumed": 0,
+          "responses": [],
+          "modeled_words": [],
+          "suppressed_setup_stores": 1,
+          "suppressed_flash_stores": 0,
+          "synthetic_helper_calls": {
+            "0xff961a": 1
+          },
+          "native_poll_reads": 0,
+          "sectors": [],
+          "suppressed_id_command_stores": 0,
+          "suppressed_id_reset_stores": 0,
+          "suppressed_erase_command_stores": 0,
+          "synthetic_id_reads": 0,
+          "synthetic_poll_reads": 0,
+          "staged_fifo_bytes": [],
+          "synthetic_control_values": [],
+          "native_sender_returns": 0,
+          "synthetic_ready_reads": 0,
+          "sender_timeout_jumps": [],
+          "stop_pc": "0xff903a",
+          "stack_delta": 0,
+          "a0": "0xffff9aa0",
+          "d7": "0xa5",
+          "interrupt_mask": 7,
+          "receive_budget": 255,
+          "receive_prefix_hex": "a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5",
+          "synthetic_flash_hex": "00000000",
+          "pending_events": 0,
+          "same_native_session": true,
+          "physical_loader_execution_verified": false,
+          "flash_commands_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "automatic_retry_allowed": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": [],
+          "pending_stack_words": [],
+          "physical_erase_mode_verified": false,
+          "erased_contents_modeled": false,
+          "synthetic_poll_budget": 3
+        },
+        {
+          "stop": "receive_boundary",
+          "events_consumed": 17,
+          "responses": [
+            "7600f8"
+          ],
+          "modeled_words": [
+            {
+              "address": "0x8000",
+              "readback_matches": false
+            }
+          ],
+          "suppressed_setup_stores": 0,
+          "suppressed_flash_stores": 6,
+          "synthetic_helper_calls": {
+            "0xff960c": 12319
+          },
+          "native_poll_reads": 12290,
+          "sectors": [],
+          "suppressed_id_command_stores": 0,
+          "suppressed_id_reset_stores": 0,
+          "suppressed_erase_command_stores": 0,
+          "synthetic_id_reads": 0,
+          "synthetic_poll_reads": 0,
+          "staged_fifo_bytes": [
+            109,
+            240,
+            24,
+            118,
+            0,
+            248
+          ],
+          "synthetic_control_values": [
+            20,
+            4,
+            4,
+            4,
+            4,
+            12
+          ],
+          "native_sender_returns": 1,
+          "synthetic_ready_reads": 6,
+          "sender_timeout_jumps": [],
+          "stop_pc": "0xff903a",
+          "stack_delta": -4,
+          "a0": "0xffff9aac",
+          "d7": "0x40",
+          "interrupt_mask": 7,
+          "receive_budget": 255,
+          "receive_prefix_hex": "6d18f036000004008000123456780198",
+          "synthetic_flash_hex": "12350000",
+          "pending_events": 0,
+          "same_native_session": true,
+          "physical_loader_execution_verified": false,
+          "flash_commands_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "automatic_retry_allowed": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": [],
+          "pending_stack_words": [
+            "0xff91be"
+          ],
+          "physical_erase_mode_verified": false,
+          "erased_contents_modeled": false,
+          "synthetic_poll_budget": 3
+        }
+      ]
+    },
+    {
+      "name": "erase_error_sender_ready",
+      "timeout_at_byte": null,
+      "steps": [
+        {
+          "stop": "receive_boundary",
+          "events_consumed": 0,
+          "responses": [],
+          "modeled_words": [],
+          "suppressed_setup_stores": 1,
+          "suppressed_flash_stores": 0,
+          "synthetic_helper_calls": {
+            "0xff961a": 1
+          },
+          "native_poll_reads": 0,
+          "sectors": [],
+          "suppressed_id_command_stores": 0,
+          "suppressed_id_reset_stores": 0,
+          "suppressed_erase_command_stores": 0,
+          "synthetic_id_reads": 0,
+          "synthetic_poll_reads": 0,
+          "staged_fifo_bytes": [],
+          "synthetic_control_values": [],
+          "native_sender_returns": 0,
+          "synthetic_ready_reads": 0,
+          "sender_timeout_jumps": [],
+          "stop_pc": "0xff903a",
+          "stack_delta": 0,
+          "a0": "0xffff9aa0",
+          "d7": "0xa5",
+          "interrupt_mask": 7,
+          "receive_budget": 255,
+          "receive_prefix_hex": "a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5",
+          "synthetic_flash_hex": "00000000",
+          "pending_events": 0,
+          "same_native_session": true,
+          "physical_loader_execution_verified": false,
+          "flash_commands_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "automatic_retry_allowed": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": [],
+          "pending_stack_words": [],
+          "physical_erase_mode_verified": false,
+          "erased_contents_modeled": false,
+          "synthetic_poll_budget": 3
+        },
+        {
+          "stop": "receive_boundary",
+          "events_consumed": 17,
+          "responses": [
+            "760085"
+          ],
+          "modeled_words": [],
+          "suppressed_setup_stores": 0,
+          "suppressed_flash_stores": 0,
+          "synthetic_helper_calls": {
+            "0xff960c": 27,
+            "0xff9550": 1
+          },
+          "native_poll_reads": 0,
+          "sectors": [
+            {
+              "address": "0x8000",
+              "poll_iterations": 1,
+              "synthetic_pattern": "persistent_toggle",
+              "reset_stores_suppressed": 0
+            }
+          ],
+          "suppressed_id_command_stores": 3,
+          "suppressed_id_reset_stores": 1,
+          "suppressed_erase_command_stores": 6,
+          "synthetic_id_reads": 2,
+          "synthetic_poll_reads": 5,
+          "staged_fifo_bytes": [
+            109,
+            240,
+            24,
+            118,
+            0,
+            133
+          ],
+          "synthetic_control_values": [
+            20,
+            4,
+            4,
+            4,
+            4,
+            12
+          ],
+          "native_sender_returns": 1,
+          "synthetic_ready_reads": 6,
+          "sender_timeout_jumps": [],
+          "stop_pc": "0xff903a",
+          "stack_delta": -12,
+          "a0": "0x8000",
+          "d7": "0x4",
+          "interrupt_mask": 7,
+          "receive_budget": 255,
+          "receive_prefix_hex": "6d18f036ee0004008000123456780286",
+          "synthetic_flash_hex": "00000000",
+          "pending_events": 0,
+          "same_native_session": true,
+          "physical_loader_execution_verified": false,
+          "flash_commands_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "automatic_retry_allowed": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": [],
+          "pending_stack_words": [
+            "0xff9370",
+            "0xff9358",
+            "0xff9256"
+          ],
+          "physical_erase_mode_verified": false,
+          "erased_contents_modeled": false,
+          "synthetic_poll_budget": 3
+        }
+      ]
+    },
+    {
+      "name": "program_error_first_byte_timeout",
+      "timeout_at_byte": 1,
+      "steps": [
+        {
+          "stop": "receive_boundary",
+          "events_consumed": 0,
+          "responses": [],
+          "modeled_words": [],
+          "suppressed_setup_stores": 1,
+          "suppressed_flash_stores": 0,
+          "synthetic_helper_calls": {
+            "0xff961a": 1
+          },
+          "native_poll_reads": 0,
+          "sectors": [],
+          "suppressed_id_command_stores": 0,
+          "suppressed_id_reset_stores": 0,
+          "suppressed_erase_command_stores": 0,
+          "synthetic_id_reads": 0,
+          "synthetic_poll_reads": 0,
+          "staged_fifo_bytes": [],
+          "synthetic_control_values": [],
+          "native_sender_returns": 0,
+          "synthetic_ready_reads": 0,
+          "sender_timeout_jumps": [],
+          "stop_pc": "0xff903a",
+          "stack_delta": 0,
+          "a0": "0xffff9aa0",
+          "d7": "0xa5",
+          "interrupt_mask": 7,
+          "receive_budget": 255,
+          "receive_prefix_hex": "a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5",
+          "synthetic_flash_hex": "00000000",
+          "pending_events": 0,
+          "same_native_session": true,
+          "physical_loader_execution_verified": false,
+          "flash_commands_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "automatic_retry_allowed": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": [],
+          "pending_stack_words": [],
+          "physical_erase_mode_verified": false,
+          "erased_contents_modeled": false,
+          "synthetic_poll_budget": 3
+        },
+        {
+          "stop": "receive_boundary",
+          "events_consumed": 17,
+          "responses": [
+            "7600f8"
+          ],
+          "modeled_words": [
+            {
+              "address": "0x8000",
+              "readback_matches": false
+            }
+          ],
+          "suppressed_setup_stores": 1,
+          "suppressed_flash_stores": 6,
+          "synthetic_helper_calls": {
+            "0xff960c": 16409,
+            "0xff961a": 1
+          },
+          "native_poll_reads": 12290,
+          "sectors": [],
+          "suppressed_id_command_stores": 0,
+          "suppressed_id_reset_stores": 0,
+          "suppressed_erase_command_stores": 0,
+          "synthetic_id_reads": 0,
+          "synthetic_poll_reads": 0,
+          "staged_fifo_bytes": [
+            109
+          ],
+          "synthetic_control_values": [
+            20
+          ],
+          "native_sender_returns": 0,
+          "synthetic_ready_reads": 4095,
+          "sender_timeout_jumps": [
+            {
+              "stack_delta": -16,
+              "pending_words": [
+                "0xff953c",
+                "0xff952c",
+                "0xff9512",
+                "0xff91be"
+              ]
+            }
+          ],
+          "stop_pc": "0xff903a",
+          "stack_delta": 0,
+          "a0": "0xffff9aa0",
+          "d7": "0x40",
+          "interrupt_mask": 7,
+          "receive_budget": 255,
+          "receive_prefix_hex": "6d18f036000004008000123456780198",
+          "synthetic_flash_hex": "12350000",
+          "pending_events": 0,
+          "same_native_session": true,
+          "physical_loader_execution_verified": false,
+          "flash_commands_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "automatic_retry_allowed": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": [],
+          "pending_stack_words": [],
+          "physical_erase_mode_verified": false,
+          "erased_contents_modeled": false,
+          "synthetic_poll_budget": 3
+        }
+      ]
+    },
+    {
+      "name": "erase_error_first_byte_timeout",
+      "timeout_at_byte": 1,
+      "steps": [
+        {
+          "stop": "receive_boundary",
+          "events_consumed": 0,
+          "responses": [],
+          "modeled_words": [],
+          "suppressed_setup_stores": 1,
+          "suppressed_flash_stores": 0,
+          "synthetic_helper_calls": {
+            "0xff961a": 1
+          },
+          "native_poll_reads": 0,
+          "sectors": [],
+          "suppressed_id_command_stores": 0,
+          "suppressed_id_reset_stores": 0,
+          "suppressed_erase_command_stores": 0,
+          "synthetic_id_reads": 0,
+          "synthetic_poll_reads": 0,
+          "staged_fifo_bytes": [],
+          "synthetic_control_values": [],
+          "native_sender_returns": 0,
+          "synthetic_ready_reads": 0,
+          "sender_timeout_jumps": [],
+          "stop_pc": "0xff903a",
+          "stack_delta": 0,
+          "a0": "0xffff9aa0",
+          "d7": "0xa5",
+          "interrupt_mask": 7,
+          "receive_budget": 255,
+          "receive_prefix_hex": "a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5",
+          "synthetic_flash_hex": "00000000",
+          "pending_events": 0,
+          "same_native_session": true,
+          "physical_loader_execution_verified": false,
+          "flash_commands_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "automatic_retry_allowed": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": [],
+          "pending_stack_words": [],
+          "physical_erase_mode_verified": false,
+          "erased_contents_modeled": false,
+          "synthetic_poll_budget": 3
+        },
+        {
+          "stop": "receive_boundary",
+          "events_consumed": 17,
+          "responses": [
+            "760085"
+          ],
+          "modeled_words": [],
+          "suppressed_setup_stores": 1,
+          "suppressed_flash_stores": 0,
+          "synthetic_helper_calls": {
+            "0xff960c": 4117,
+            "0xff9550": 1,
+            "0xff961a": 1
+          },
+          "native_poll_reads": 0,
+          "sectors": [
+            {
+              "address": "0x8000",
+              "poll_iterations": 1,
+              "synthetic_pattern": "persistent_toggle",
+              "reset_stores_suppressed": 0
+            }
+          ],
+          "suppressed_id_command_stores": 3,
+          "suppressed_id_reset_stores": 1,
+          "suppressed_erase_command_stores": 6,
+          "synthetic_id_reads": 2,
+          "synthetic_poll_reads": 5,
+          "staged_fifo_bytes": [
+            109
+          ],
+          "synthetic_control_values": [
+            20
+          ],
+          "native_sender_returns": 0,
+          "synthetic_ready_reads": 4095,
+          "sender_timeout_jumps": [
+            {
+              "stack_delta": -24,
+              "pending_words": [
+                "0xff953c",
+                "0xff952c",
+                "0xff9512",
+                "0xff9370",
+                "0xff9358",
+                "0xff9256"
+              ]
+            }
+          ],
+          "stop_pc": "0xff903a",
+          "stack_delta": 0,
+          "a0": "0xffff9aa0",
+          "d7": "0x4",
+          "interrupt_mask": 7,
+          "receive_budget": 255,
+          "receive_prefix_hex": "6d18f036ee0004008000123456780286",
+          "synthetic_flash_hex": "00000000",
+          "pending_events": 0,
+          "same_native_session": true,
+          "physical_loader_execution_verified": false,
+          "flash_commands_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "automatic_retry_allowed": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": [],
+          "pending_stack_words": [],
+          "physical_erase_mode_verified": false,
+          "erased_contents_modeled": false,
+          "synthetic_poll_budget": 3
+        }
+      ]
+    },
+    {
+      "name": "erase_error_last_byte_timeout",
+      "timeout_at_byte": 6,
+      "steps": [
+        {
+          "stop": "receive_boundary",
+          "events_consumed": 0,
+          "responses": [],
+          "modeled_words": [],
+          "suppressed_setup_stores": 1,
+          "suppressed_flash_stores": 0,
+          "synthetic_helper_calls": {
+            "0xff961a": 1
+          },
+          "native_poll_reads": 0,
+          "sectors": [],
+          "suppressed_id_command_stores": 0,
+          "suppressed_id_reset_stores": 0,
+          "suppressed_erase_command_stores": 0,
+          "synthetic_id_reads": 0,
+          "synthetic_poll_reads": 0,
+          "staged_fifo_bytes": [],
+          "synthetic_control_values": [],
+          "native_sender_returns": 0,
+          "synthetic_ready_reads": 0,
+          "sender_timeout_jumps": [],
+          "stop_pc": "0xff903a",
+          "stack_delta": 0,
+          "a0": "0xffff9aa0",
+          "d7": "0xa5",
+          "interrupt_mask": 7,
+          "receive_budget": 255,
+          "receive_prefix_hex": "a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5",
+          "synthetic_flash_hex": "00000000",
+          "pending_events": 0,
+          "same_native_session": true,
+          "physical_loader_execution_verified": false,
+          "flash_commands_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "automatic_retry_allowed": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": [],
+          "pending_stack_words": [],
+          "physical_erase_mode_verified": false,
+          "erased_contents_modeled": false,
+          "synthetic_poll_budget": 3
+        },
+        {
+          "stop": "receive_boundary",
+          "events_consumed": 17,
+          "responses": [
+            "760085"
+          ],
+          "modeled_words": [],
+          "suppressed_setup_stores": 1,
+          "suppressed_flash_stores": 0,
+          "synthetic_helper_calls": {
+            "0xff960c": 4122,
+            "0xff9550": 1,
+            "0xff961a": 1
+          },
+          "native_poll_reads": 0,
+          "sectors": [
+            {
+              "address": "0x8000",
+              "poll_iterations": 1,
+              "synthetic_pattern": "persistent_toggle",
+              "reset_stores_suppressed": 0
+            }
+          ],
+          "suppressed_id_command_stores": 3,
+          "suppressed_id_reset_stores": 1,
+          "suppressed_erase_command_stores": 6,
+          "synthetic_id_reads": 2,
+          "synthetic_poll_reads": 5,
+          "staged_fifo_bytes": [
+            109,
+            240,
+            24,
+            118,
+            0,
+            133
+          ],
+          "synthetic_control_values": [
+            20,
+            4,
+            4,
+            4,
+            4,
+            12
+          ],
+          "native_sender_returns": 0,
+          "synthetic_ready_reads": 4100,
+          "sender_timeout_jumps": [
+            {
+              "stack_delta": -28,
+              "pending_words": [
+                "0xff95bc",
+                "0xff954e",
+                "0xff952c",
+                "0xff9512",
+                "0xff9370",
+                "0xff9358",
+                "0xff9256"
+              ]
+            }
+          ],
+          "stop_pc": "0xff903a",
+          "stack_delta": 0,
+          "a0": "0xffff9aa0",
+          "d7": "0x4",
+          "interrupt_mask": 7,
+          "receive_budget": 255,
+          "receive_prefix_hex": "6d18f036ee0004008000123456780286",
+          "synthetic_flash_hex": "00000000",
+          "pending_events": 0,
+          "same_native_session": true,
+          "physical_loader_execution_verified": false,
+          "flash_commands_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "automatic_retry_allowed": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": [],
+          "pending_stack_words": [],
+          "physical_erase_mode_verified": false,
+          "erased_contents_modeled": false,
+          "synthetic_poll_budget": 3
+        }
+      ]
+    },
+    {
+      "name": "program_success_last_byte_timeout",
+      "timeout_at_byte": 6,
+      "steps": [
+        {
+          "stop": "receive_boundary",
+          "events_consumed": 0,
+          "responses": [],
+          "modeled_words": [],
+          "suppressed_setup_stores": 1,
+          "suppressed_flash_stores": 0,
+          "synthetic_helper_calls": {
+            "0xff961a": 1
+          },
+          "native_poll_reads": 0,
+          "sectors": [],
+          "suppressed_id_command_stores": 0,
+          "suppressed_id_reset_stores": 0,
+          "suppressed_erase_command_stores": 0,
+          "synthetic_id_reads": 0,
+          "synthetic_poll_reads": 0,
+          "staged_fifo_bytes": [],
+          "synthetic_control_values": [],
+          "native_sender_returns": 0,
+          "synthetic_ready_reads": 0,
+          "sender_timeout_jumps": [],
+          "stop_pc": "0xff903a",
+          "stack_delta": 0,
+          "a0": "0xffff9aa0",
+          "d7": "0xa5",
+          "interrupt_mask": 7,
+          "receive_budget": 255,
+          "receive_prefix_hex": "a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5",
+          "synthetic_flash_hex": "00000000",
+          "pending_events": 0,
+          "same_native_session": true,
+          "physical_loader_execution_verified": false,
+          "flash_commands_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "automatic_retry_allowed": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": [],
+          "pending_stack_words": [],
+          "physical_erase_mode_verified": false,
+          "erased_contents_modeled": false,
+          "synthetic_poll_budget": 3
+        },
+        {
+          "stop": "receive_boundary",
+          "events_consumed": 17,
+          "responses": [
+            "760073"
+          ],
+          "modeled_words": [
+            {
+              "address": "0x8000",
+              "readback_matches": true
+            },
+            {
+              "address": "0x8002",
+              "readback_matches": true
+            }
+          ],
+          "suppressed_setup_stores": 1,
+          "suppressed_flash_stores": 10,
+          "synthetic_helper_calls": {
+            "0xff960c": 4127,
+            "0xff961a": 1
+          },
+          "native_poll_reads": 2,
+          "sectors": [],
+          "suppressed_id_command_stores": 0,
+          "suppressed_id_reset_stores": 0,
+          "suppressed_erase_command_stores": 0,
+          "synthetic_id_reads": 0,
+          "synthetic_poll_reads": 0,
+          "staged_fifo_bytes": [
+            109,
+            240,
+            24,
+            118,
+            0,
+            115
+          ],
+          "synthetic_control_values": [
+            20,
+            4,
+            4,
+            4,
+            4,
+            12
+          ],
+          "native_sender_returns": 0,
+          "synthetic_ready_reads": 4100,
+          "sender_timeout_jumps": [
+            {
+              "stack_delta": -16,
+              "pending_words": [
+                "0xff95bc",
+                "0xff954e",
+                "0xff952c",
+                "0xff91c6"
+              ]
+            }
+          ],
+          "stop_pc": "0xff903a",
+          "stack_delta": 0,
+          "a0": "0xffff9aa0",
+          "d7": "0x0",
+          "interrupt_mask": 7,
+          "receive_budget": 255,
+          "receive_prefix_hex": "6d18f036000004008000123456780198",
+          "synthetic_flash_hex": "12345678",
+          "pending_events": 0,
+          "same_native_session": true,
+          "physical_loader_execution_verified": false,
+          "flash_commands_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "automatic_retry_allowed": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": [],
+          "pending_stack_words": [],
+          "physical_erase_mode_verified": false,
+          "erased_contents_modeled": false,
+          "synthetic_poll_budget": 3
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Sender readiness and FIFO stores are synthetic; staged bytes and logical status bodies do not establish transmission or reception.",
+    "Actual sender polling counter/JMP and software entry run; hardware reset, FIFO timing, flash mode and recovery remain unverified.",
+    "Broadcast cleanup, delays and watchdog are guarded synthetic helpers; all flash/MMIO command stores remain suppressed."
+  ],
+  "physical_transport_verified": false,
+  "physical_recovery_verified": false,
+  "automatic_retry_allowed": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "would_send": []
+}

@@ -328,3 +328,5 @@ New offline [finalization and conditional recovery evidence](VPW_FINALIZATION_RE
 [Loader entry and programming continuity](LOADER_ENTRY_PROGRAM_PATH.md) joins actual loader entry, receive/parser and bounded synthetic word programming. Nonlocal errors retain pending call frames; software reentry resets the stack without rollback. Live writes and recovery qualification remain disabled.
 
 [Erase failure and retry stack evidence](ERASE_FAILURE_RETRY_STACKS.md) traces native ID/sector failures and mixed program retries with synthetic flash samples. Successful later calls retain older error frames; physical recovery and live writes remain disabled.
+
+[Error sender and native software reentry](ERROR_SENDER_REENTRY.md) follows actual sender timeouts through their JMP into loader entry. Intended status bytes do not qualify physical delivery or retry safety; live writes remain disabled.

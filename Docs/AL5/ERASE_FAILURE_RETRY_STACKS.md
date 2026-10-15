@@ -97,3 +97,5 @@ Validation: **322 offline tests passed with no skips**, including the existing
 parser/program/receive regressions. The new CLI reproduced the nine-case report
 byte-for-byte. Staged changes passed `git diff --cached --check`. No adapter,
 controller or vehicle access occurred.
+
+[Error sender and native software reentry](ERROR_SENDER_REENTRY.md) follows actual sender timeouts through their JMP into loader entry. Intended status bytes do not qualify physical delivery or retry safety; live writes remain disabled.
