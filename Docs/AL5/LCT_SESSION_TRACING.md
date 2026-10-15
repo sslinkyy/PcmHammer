@@ -6,6 +6,11 @@ direct activation was identified in the bounded caller audit. Neither path
 establishes AL5 programming, erase, firmware transfer, or interrupted-flash
 recovery. Live writes remain disabled.
 
+Latest follow-up: [native COM gap tracing](LCT_TYPELIB_TRACING.md) identifies
+all four previously unnamed slots from the embedded type library. None of
+their traced native bodies activates group 2. Historical unknown-slot limits
+below describe the earlier audit; computed/external activation remains open.
+
 ## Source and scope
 
 Installed `LctTransBusRules.dll`, SHA-256

@@ -34,16 +34,19 @@ provide alignment anchors. Derived bindings include:
 - Slot 17, WriteIO: 0x100117ED.
 - Slot 32, GetWriteIOErrors: 0x100093E9.
 
-The three metadata gaps remain unknown methods. ReprogramECU methods on other
+The three managed metadata gaps cover four native slots. Follow-up
+[type-library tracing](LCT_TYPELIB_TRACING.md) identifies them as LCT,
+ReturnToNormalMode, CancelSnapshot and SmartDetect. ReprogramECU methods on other
 WTEC/CEC types are not LCT methods. This bounded selection is not a proof that
 all programming functionality is absent from the application.
 
-The unnamed native slot-11 body at 0x1000F6BB selects group 3 (`20`), then
+The native slot-11 body at 0x1000F6BB, now named ReturnToNormalMode by the
+embedded type library, selects group 3 (`20`), then
 conditionally group 5 (`2A 14 FE FD FC FB` / `2A 24 FA F9 F8 F7`). Those two
 group-5 bodies match the echoed request portions of the demo's two `7F 2A`
 messages. This ties them to a DOC diagnostic setup path; it does not establish
-interrupted-programming errors. The wrapper's original method name and full
-response semantics remain unresolved. Evidence:
+interrupted-programming errors. Full controller response semantics remain
+unresolved. Evidence:
 `ev_dfb4cdaeb93f571f2617d917caa028e2006d609634e44791c71c4427515abe3e`.
 
 ## What the apparent write/reset paths actually establish
