@@ -6,6 +6,10 @@ BlockFill and EndWrite. Their results do not establish checksum or readback
 verification. Actual AL5 routing and interrupted-flash recovery remain
 unproven; live writing stays disabled.
 
+Follow-up: [QuickWriteData and optional readback](PCCS_QUICKWRITE_READBACK.md)
+traces the indexed getter/route conditions and a real W/WC configured-byte
+comparison. That optional comparison does not establish whole-flash integrity.
+
 ## Source and scope
 
 Installed Winrw32.exe SHA-256:
