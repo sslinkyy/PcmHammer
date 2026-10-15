@@ -1,5 +1,9 @@
 # PCCS J1850 programming route and missing SPX driver
 
+Follow-up: [TJ1850 identification and prerequisites](PCCS_J1850_IDENTITY_PREREQUISITES.md)
+models the probe classifier, reset prefix and request constructors. The full
+programming exchange and SPX driver implementation remain unproven.
+
 2026-10-15, continuation of `PCCS_SOFTING_UI_TRANSPORT.md`.
 PCCS contains a genuine TJ1850 class with inherited programming entry points
 and its own dispatcher, security, reads and reset. This is stronger evidence

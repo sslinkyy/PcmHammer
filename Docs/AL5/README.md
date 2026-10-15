@@ -286,3 +286,5 @@ Capstone (the existing WSL environment was used). Neither test opens a vehicle.
 [PCCS Softing UI and outgoing transport](PCCS_SOFTING_UI_TRANSPORT.md): the CANusb UI normalizes J1850 to CAN; offline sender checks stop before the lower CAN call. Actual AL5 programming and recovery remain unproven.
 
 [PCCS genuine J1850 programming route](PCCS_J1850_PROGRAMMING_ROUTE.md): TJ1850 inherits programming entries but overrides dispatch/security/read/reset. Offline envelope and VMT checks pass; SPX1850.DLL and complete AL5 VPW/recovery proof remain missing.
+
+[TJ1850 identity and programming prerequisites](PCCS_J1850_IDENTITY_PREREQUISITES.md): offline probe/reset and read/security construction checks distinguish application/boot markers, global reset ownership and unproven authorization/recovery. Live writes remain disabled.
