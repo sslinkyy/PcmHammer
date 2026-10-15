@@ -81,9 +81,10 @@ The vector mismatch path performs neither loop automatically. None of these
 constitutes interrupted-flash recovery.
 
 A distinct reset helper, VMT +`0x70` / `0x5DCB40`, clears object +`0x68C60`
-at `0x5DCB54` before calling identification `0x5D8EC8`. Its reachability from
-this initialization call is not yet established. Do not assume the next
-attempt necessarily uses ordinary writes solely because Slow Writes is on.
+at `0x5DCB54` before calling identification `0x5D8EC8`. Its downstream EnterWrite connection is traced in
+`PCCS_ROUTE_REQUALIFICATION.md`. Communication initialization alone is not
+established as a route-reset boundary. Slow Writes alone does not prove which
+route the next operation will take.
 
 ## Offline models and limits
 
@@ -133,8 +134,9 @@ executed. The working Mode `$23` reader and live-write gates are unchanged.
 
 ## Remaining questions
 
-The initialization retry decision is identified, but complete initialization
-and route requalification are not. Full programming acceptance, independent
+The initialization retry decision is identified; downstream conditional route
+reset and requalification are traced in `PCCS_ROUTE_REQUALIFICATION.md`.
+Complete physical initialization and identification remain unproven. Full programming acceptance, independent
 image/preserved-area verification and recovery after erase or interruption
 remain unproven. Switching a setting or retrying initialization does not
 establish recovery of an erased or partially programmed controller.
