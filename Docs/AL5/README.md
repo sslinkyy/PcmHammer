@@ -282,3 +282,5 @@ Capstone (the existing WSL environment was used). Neither test opens a vehicle.
 [PCCS driver filters and bus configuration](PCCS_DRIVER_FILTERS_BUS.md): offline RP1210 connection and filter-command models trace pass-all initialization, conditional replacements and unresolved mixed-format AL5 compatibility. Live writes remain disabled.
 
 [PCCS bundled driver filter behavior](PCCS_BUNDLED_DRIVER_FILTER_BEHAVIOR.md): bundled SoftUSB/Vector commands are no-ops; offline SoftUSB receive conversion supports both layouts. Active driver identity, hardware admission and AL5 programming remain unproven.
+
+[PCCS Softing UI and outgoing transport](PCCS_SOFTING_UI_TRANSPORT.md): the CANusb UI normalizes J1850 to CAN; offline sender checks stop before the lower CAN call. Actual AL5 programming and recovery remain unproven.

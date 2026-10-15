@@ -24,6 +24,10 @@ file path and digest remain unverified.
 
 ### Owner-reported Softing selection and protocol mismatch
 
+Follow-up: [UI normalization and outgoing transport](PCCS_SOFTING_UI_TRANSPORT.md)
+finds that the Softing CANusb UI branch rewrites J1850 to CAN before connection.
+The literal-name selector checks below do not include that earlier rewrite.
+
 The owner subsequently reported the previous selection as Softing CANcard with
 250 kbit CAN, and the current selection as Softing CANusb with J1850. This
 narrows the driver family; it does not verify the runtime-loaded file path or
