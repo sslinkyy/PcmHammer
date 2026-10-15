@@ -92,3 +92,5 @@ truck TCM remains outside experimental qualification; live writes stay disabled.
 Validation: the broader AL5 offline suite passed **299 tests with no skips**.
 The new CLI reproduced the saved eight-case report byte-for-byte. No adapter,
 controller or vehicle access occurred.
+
+[Erase failure and retry stack evidence](ERASE_FAILURE_RETRY_STACKS.md) traces native ID/sector failures and mixed program retries with synthetic flash samples. Successful later calls retain older error frames; physical recovery and live writes remain disabled.

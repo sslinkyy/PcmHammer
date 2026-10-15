@@ -135,6 +135,26 @@ class OfflineSafetyTests(unittest.TestCase):
         self.assertEqual([], report['would_send'])
         self.assertEqual([], report['program_packets'])
 
+    def test_erase_stack_evidence_cannot_authorize_retry(self):
+        data = fixture()
+        report = plan(data, data, sha256(data), 'AL5', 15184109)
+        recovery = report['calibration_recovery_assessment']
+        root = Path(__file__).resolve().parents[2]
+        raw = (root / recovery['erase_failure_evidence']).read_bytes()
+        native = json.loads(raw)
+        self.assertEqual(sha256(raw), recovery['erase_failure_evidence_sha256'])
+        self.assertEqual(9, len(native['cases']))
+        self.assertEqual(native['generator_sha256'], recovery['implementations']['emulate_loader_erase_failures.py'])
+        for name, digest in native['dependency_sha256'].items():
+            self.assertEqual(digest, recovery['implementations'][name])
+        self.assertTrue(recovery['erase_failure_stack_paths_modeled'])
+        for field in ('physical_erase_mode_verified', 'erase_poll_deadline_verified',
+                      'physical_recovery_verified', 'automatic_retry_allowed', 'live_write_enabled', 'ready_to_flash'):
+            self.assertFalse(recovery[field])
+        self.assertEqual([], report['erase_packets'])
+        self.assertEqual([], report['program_packets'])
+        self.assertEqual([], report['would_send'])
+
     def test_cli_valid_input_still_returns_blocked_exit_code(self):
         data = fixture()
         with tempfile.TemporaryDirectory() as directory:

@@ -45,6 +45,7 @@ LOADER_FINALIZATION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/L
 CALIBRATION_MARKER_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/CALIBRATION_MARKER_EMULATION.json'
 BOOT_RECEIVE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/BOOT_RECEIVE_SESSION_EMULATION.json'
 LOADER_ENTRY_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_ENTRY_EMULATION.json'
+LOADER_ERASE_FAILURE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_ERASE_FAILURE_EMULATION.json'
 
 
 def calibration_recovery_assessment():
@@ -52,8 +53,9 @@ def calibration_recovery_assessment():
     marker = CALIBRATION_MARKER_EVIDENCE.read_bytes()
     receive = BOOT_RECEIVE_EVIDENCE.read_bytes()
     entry = LOADER_ENTRY_EVIDENCE.read_bytes()
+    erase_failure = LOADER_ERASE_FAILURE_EVIDENCE.read_bytes()
     return {
-        'scope': 'Native finalization/marker slices, joined boot ISR/synthetic RAM transfer, and separate joined loader entry/receive/modeled word programming; no continuous reset-to-loader or physical VPW session.',
+        'scope': 'Native finalization/marker slices, joined boot ISR/synthetic RAM transfer, and separate joined loader entry/receive with synthetic erase polls and word readback; no continuous reset-to-loader or physical VPW session.',
         'finalization_evidence': 'Docs/AL5/LOADER_FINALIZATION_EMULATION.json',
         'finalization_evidence_sha256': sha256(finalize),
         'marker_evidence': 'Docs/AL5/CALIBRATION_MARKER_EMULATION.json',
@@ -62,14 +64,19 @@ def calibration_recovery_assessment():
         'boot_receive_evidence_sha256': sha256(receive),
         'loader_entry_evidence': 'Docs/AL5/LOADER_ENTRY_EMULATION.json',
         'loader_entry_evidence_sha256': sha256(entry),
+        'erase_failure_evidence': 'Docs/AL5/LOADER_ERASE_FAILURE_EMULATION.json',
+        'erase_failure_evidence_sha256': sha256(erase_failure),
         'implementations': {name: sha256((Path(__file__).parent / name).read_bytes())
                             for name in ('emulate_loader_finalize.py', 'emulate_calibration_marker.py',
                                          'emulate_boot_receive_session.py', 'emulate_boot_receive_isr.py',
                                          'emulate_boot_session.py', 'emulate_loader_entry.py',
-                                         'emulate_loader_parser.py')},
+                                         'emulate_loader_parser.py', 'emulate_loader_erase_failures.py')},
         'conditional_boot_error_routes_emulated': True,
         'boot_receive_same_session_modeled': True,
         'loader_entry_program_path_same_session_modeled': True,
+        'erase_failure_stack_paths_modeled': True,
+        'physical_erase_mode_verified': False,
+        'erase_poll_deadline_verified': False,
         'physical_loader_execution_verified': False,
         'physical_interrupt_delivery_verified': False,
         'continuous_reset_to_upload_verified': False,

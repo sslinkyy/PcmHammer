@@ -26,6 +26,8 @@ def writable_span(address, size):
 
 
 class LoaderSession:
+    executable_span = staticmethod(executable_span)
+
     def __init__(self, code):
         if sha256(code) != EXPECTED_SHA:
             raise ValueError('captured loader hash mismatch')
@@ -68,7 +70,7 @@ class LoaderSession:
             ret-2 + int.from_bytes(self.code[offset-2:offset], 'big', signed=True) == target)
         short = self.code[offset-2:offset-1] == b'\x61' and self.code[offset-1:offset] != b'\x00' and (
             ret + int.from_bytes(self.code[offset-1:offset], 'big', signed=True) == target)
-        if not executable_span(ret, 2) or not (word or short):
+        if not self.executable_span(ret, 2) or not (word or short):
             raise RuntimeError('unexpected synthetic helper caller')
         self.uc.reg_write(UC_M68K_REG_A7, sp+4)
         self.uc.reg_write(UC_M68K_REG_PC, ret)
@@ -140,7 +142,7 @@ class LoaderSession:
         elif pc == BASE+0x452:
             self.observed['suppressed_flash_stores'] += 2
             machine.reg_write(UC_M68K_REG_PC, BASE+0x45A)
-        elif not executable_span(pc, size):
+        elif not self.executable_span(pc, size):
             raise RuntimeError(f'execution escaped loader entry model at {pc:#x}+{size}')
 
     def read_hook(self, machine, access, address, size, value, _):
@@ -157,11 +159,14 @@ class LoaderSession:
         if not writable_span(address, size):
             raise RuntimeError(f'native write escaped loader model at {address:#x}+{size}')
 
+    def new_observation(self):
+        return dict(stop=None, events_consumed=0, responses=[], modeled_words=[],
+            suppressed_setup_stores=0, suppressed_flash_stores=0, synthetic_helper_calls={}, native_poll_reads=0)
+
     def execute(self, entry, mode):
         from unicorn.m68k_const import UC_M68K_REG_PC, UC_M68K_REG_A7, UC_M68K_REG_A0, UC_M68K_REG_D7, UC_M68K_REG_SR
         self.mode = mode
-        self.observed = dict(stop=None, events_consumed=0, responses=[], modeled_words=[],
-            suppressed_setup_stores=0, suppressed_flash_stores=0, synthetic_helper_calls={}, native_poll_reads=0)
+        self.observed = self.new_observation()
         self.closed = True
         self.uc.emu_start(entry, 0, count=500000, timeout=5_000_000)
         if self.observed['stop'] is None:

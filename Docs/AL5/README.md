@@ -309,3 +309,5 @@ Capstone (the existing WSL environment was used). Neither test opens a vehicle.
 [Joined boot receive session](BOOT_RECEIVE_SESSION.md) now executes the original ISR, resident dispatch and four-byte synthetic RAM-transfer path together, including native cleanup and explicit retry steps. Physical programming/recovery and live writes remain disabled.
 
 [Loader entry and programming continuity](LOADER_ENTRY_PROGRAM_PATH.md) joins actual loader entry, receive/parser and bounded synthetic word programming. Nonlocal errors retain pending call frames; software reentry resets the stack without rollback. Live writes and recovery qualification remain disabled.
+
+[Erase failure and retry stack evidence](ERASE_FAILURE_RETRY_STACKS.md) traces native ID/sector failures and mixed program retries with synthetic flash samples. Successful later calls retain older error frames; physical recovery and live writes remain disabled.
