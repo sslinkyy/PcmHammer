@@ -92,10 +92,12 @@ When synthetic entry flag `A5+0x104` is set:
 - A CRC-correct prefix identifier mismatch writes `9515`; the selected
   boot branch changes it to `C12A` and reaches `0x97C`.
 
-The initial flag's complete producer remains unresolved. With that flag
-clear, a valid-CRC image with an erased marker returns without reading the
-marker. Consequently, this is not a universal erased-marker recovery gate.
-Bulk initialization, computed aliases and intervening startup are unknown.
+The later [startup and VPW entry investigation](BOOT_STARTUP_VPW_ENTRY.md)
+traces the cold-start ROM copy producing flag 1 and CRC seed 0, and executes
+the intervening initializers preserving them. Other entry paths and physical
+startup remain unqualified. With a supplied clear flag, a valid-CRC image
+with an erased marker returns without reading the marker; this slice alone
+does not establish a universal recovery gate.
 
 The CRC sweep checks the stored word at `0x15FD4` and excludes the compensation
 word at `0x15FD6`. Compensation-only corruption can pass this application CRC
@@ -114,9 +116,10 @@ operations and jumps to caller `0xA78`. That caller invokes several peripheral
 initializers, tests separate byte `0xFF8010` at `0xAB4`, conditionally calls
 the previously modeled initializer `0x3B7C`, and later calls `0x2A24`.
 The separate byte's producer reads hardware word `0xFFFD02`; its physical
-meaning is unresolved. Callee effects and placeholder-looking operands in
-adjacent saved initialization code prevent treating these calls as a proven
-VPW listener after power loss. The application `+0x104` flag and boot
+meaning is unresolved. The later investigation corrects the apparent
+placeholder operands: they are valid 68020 full-format addressing. Bounded
+initializer and receive-ISR models still do not establish a physical VPW
+listener after power loss. The application `+0x104` flag and boot
 `0xFF8010` flag are distinct.
 
 ## Reports, planner and verification

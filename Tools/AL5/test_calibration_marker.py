@@ -52,6 +52,7 @@ class CalibrationMarkerTests(unittest.TestCase):
             for context in ({'marker': -1}, {'marker': 0x10000}, {'initial_check': 1},
                             {'marker': True}, {'calibration': b''}, {'calibration': 100000000},
                             {'crc_seed': 0x10000}, {'crc_seed': True}, {'stride': 0}, {'stride': True},
+                            {'initial_ram_marker': True}, {'initial_ram_marker': -1}, {'initial_ram_marker': 0x10000},
                             {'current_start': True}, {'current_end': True},
                             {'current_start': 0x7FFF}, {'current_end': 0x15FD5}):
                 with self.subTest(context=context), self.assertRaises(ValueError):
@@ -77,6 +78,16 @@ class CalibrationMarkerTests(unittest.TestCase):
             self.assertFalse(case['observed']['physical_recovery_verified'])
         self.assertFalse(report['physical_recovery_verified'])
         self.assertEqual([], report['would_send'])
+        low = Path(os.environ['AL5_LOW_DUMP']).read_bytes()
+        high = Path(os.environ['AL5_HIGH_DUMP']).read_bytes()
+        success = marker.marker_case(low, high, initial_ram_marker=0x0595)
+        self.assertEqual('returned', success['stop'])
+        self.assertEqual('0x595', success['initial_ram_marker'])
+        self.assertEqual('0x595', success['reset_marker'])
+        fault = marker.marker_case(low, high, marker=0xFFFF, initial_ram_marker=0x0595)
+        self.assertEqual('completion_marker_rejected', fault['stop'])
+        self.assertEqual('0x595', fault['initial_ram_marker'])
+        self.assertEqual('0xcc8b', fault['reset_marker'])
 
 
 if __name__ == '__main__':

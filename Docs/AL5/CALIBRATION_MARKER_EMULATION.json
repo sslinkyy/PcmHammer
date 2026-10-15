@@ -2,7 +2,7 @@
   "mode": "offline_calibration_marker_crc_and_selected_reset_branch",
   "low_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
   "high_sha256": "492040d9460d53b77dda606b9a89f4254e0680f239093001663f6ed5cf51ba75",
-  "generator_sha256": "47c02ee844451d1c221be088267c508f4c8e69d5346f8f2360ec606c37a9819f",
+  "generator_sha256": "f8854afe6419b9f5e88e0e51cecc9ef006ff043daf9c34fab9c6ca17505289a5",
   "unicorn_version": "2.1.4",
   "source_ranges": [
     {
@@ -47,6 +47,7 @@
       "synthetic_context": {
         "marker": "0x4afc",
         "initial_check_flag": true,
+        "initial_ram_marker": "0x0",
         "crc_seed": 0,
         "calibration_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6"
       },
@@ -57,6 +58,7 @@
         "crc_helper_calls": 1,
         "interrupt_mask_helper_calls": 0,
         "instructions": 573094,
+        "initial_ram_marker": "0x0",
         "reset_marker": "0x0",
         "initial_check_flag_after": 0,
         "crc_accumulator_after": "0x0",
@@ -76,6 +78,7 @@
       "synthetic_context": {
         "marker": "0xffff",
         "initial_check_flag": true,
+        "initial_ram_marker": "0x0",
         "crc_seed": 0,
         "calibration_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6"
       },
@@ -86,6 +89,7 @@
         "crc_helper_calls": 0,
         "interrupt_mask_helper_calls": 1,
         "instructions": 15,
+        "initial_ram_marker": "0x0",
         "reset_marker": "0xcc8b",
         "initial_check_flag_after": 1,
         "crc_accumulator_after": "0x0",
@@ -110,6 +114,7 @@
       "synthetic_context": {
         "marker": "0x0",
         "initial_check_flag": true,
+        "initial_ram_marker": "0x0",
         "crc_seed": 0,
         "calibration_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6"
       },
@@ -120,6 +125,7 @@
         "crc_helper_calls": 0,
         "interrupt_mask_helper_calls": 1,
         "instructions": 15,
+        "initial_ram_marker": "0x0",
         "reset_marker": "0xcc8b",
         "initial_check_flag_after": 1,
         "crc_accumulator_after": "0x0",
@@ -144,6 +150,7 @@
       "synthetic_context": {
         "marker": "0x4aff",
         "initial_check_flag": true,
+        "initial_ram_marker": "0x0",
         "crc_seed": 0,
         "calibration_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6"
       },
@@ -154,6 +161,7 @@
         "crc_helper_calls": 0,
         "interrupt_mask_helper_calls": 1,
         "instructions": 15,
+        "initial_ram_marker": "0x0",
         "reset_marker": "0xcc8b",
         "initial_check_flag_after": 1,
         "crc_accumulator_after": "0x0",
@@ -178,6 +186,7 @@
       "synthetic_context": {
         "marker": "0x4afc",
         "initial_check_flag": true,
+        "initial_ram_marker": "0x0",
         "crc_seed": 0,
         "calibration_sha256": "f10ef112575419bec614878959a8fb62cb878db5fdaf9fbcb924025f37a9e770"
       },
@@ -188,6 +197,7 @@
         "crc_helper_calls": 1,
         "interrupt_mask_helper_calls": 1,
         "instructions": 573072,
+        "initial_ram_marker": "0x0",
         "reset_marker": "0x30d4",
         "initial_check_flag_after": 1,
         "crc_accumulator_after": "0x9b66",
@@ -212,6 +222,7 @@
       "synthetic_context": {
         "marker": "0x4afc",
         "initial_check_flag": true,
+        "initial_ram_marker": "0x0",
         "crc_seed": 0,
         "calibration_sha256": "42118e7dae14bc7168e30ffe187395b4955bab7bb34cfd7f9d2bdf0448a5d649"
       },
@@ -222,6 +233,7 @@
         "crc_helper_calls": 1,
         "interrupt_mask_helper_calls": 1,
         "instructions": 573072,
+        "initial_ram_marker": "0x0",
         "reset_marker": "0x30d4",
         "initial_check_flag_after": 1,
         "crc_accumulator_after": "0x4e35",
@@ -246,6 +258,7 @@
       "synthetic_context": {
         "marker": "0x4afc",
         "initial_check_flag": true,
+        "initial_ram_marker": "0x0",
         "crc_seed": 0,
         "calibration_sha256": "f6eaf734ef913c3e325b4aff59192dd5628ee318353339217301367916f5e48d"
       },
@@ -256,6 +269,7 @@
         "crc_helper_calls": 1,
         "interrupt_mask_helper_calls": 0,
         "instructions": 573094,
+        "initial_ram_marker": "0x0",
         "reset_marker": "0x0",
         "initial_check_flag_after": 0,
         "crc_accumulator_after": "0x0",
@@ -275,6 +289,7 @@
       "synthetic_context": {
         "marker": "0x4afc",
         "initial_check_flag": true,
+        "initial_ram_marker": "0x0",
         "crc_seed": 0,
         "calibration_sha256": "2f7796baf8a6f009f1e92e50f5ce97947fc7a3bfcda62ba04c988b55daa0fb99"
       },
@@ -285,6 +300,7 @@
         "crc_helper_calls": 1,
         "interrupt_mask_helper_calls": 1,
         "instructions": 573091,
+        "initial_ram_marker": "0x0",
         "reset_marker": "0x9515",
         "initial_check_flag_after": 1,
         "crc_accumulator_after": "0x0",
@@ -309,6 +325,7 @@
       "synthetic_context": {
         "marker": "0xffff",
         "initial_check_flag": false,
+        "initial_ram_marker": "0x0",
         "crc_seed": 0,
         "calibration_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6"
       },
@@ -319,6 +336,7 @@
         "crc_helper_calls": 1,
         "interrupt_mask_helper_calls": 0,
         "instructions": 573074,
+        "initial_ram_marker": "0x0",
         "reset_marker": "0x0",
         "initial_check_flag_after": 0,
         "crc_accumulator_after": "0x0",
@@ -336,7 +354,7 @@
   ],
   "all_pass": true,
   "limitations": [
-    "Entry flag +0x104 and initial CRC state are synthetic; their complete startup producer is unresolved.",
+    "Entry flag +0x104 and initial CRC state are supplied to this slice; startup provenance is tested separately by the startup/initializer models.",
     "Only selected reset-marker branches run; power loss, RAM retention, boot integrity gates, peripheral startup and VPW reentry are unverified.",
     "The CRC check excludes the final BE16 compensation word; this model does not certify the complete native checksum.",
     "Flash primitives and transport do not execute."

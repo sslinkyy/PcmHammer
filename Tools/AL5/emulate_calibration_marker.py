@@ -43,10 +43,12 @@ def writable_span(address, size):
 
 def marker_case(low, high, *, marker=0x4AFC, initial_check=True,
                 calibration=None, crc_seed=0, current_start=START, current_end=0x15FD4,
-                stride=955):
+                stride=955, initial_ram_marker=0):
     validate_source(low, high)
     if type(marker) is not int or not 0 <= marker <= 0xFFFF:
         raise ValueError('marker must be a word')
+    if type(initial_ram_marker) is not int or not 0 <= initial_ram_marker <= 0xFFFF:
+        raise ValueError('initial RAM marker must be a word, not Boolean')
     if type(initial_check) is not bool:
         raise ValueError('initial check flag must be Boolean')
     calibration = low[START:START + LENGTH] if calibration is None else calibration
@@ -75,6 +77,7 @@ def marker_case(low, high, *, marker=0x4AFC, initial_check=True,
     uc.mem_map(BASE, 0x8000)
     uc.mem_map(0x200000, 0x10000)
     uc.mem_map(RETURN, 0x1000)
+    uc.mem_write(BASE, initial_ram_marker.to_bytes(2, 'big'))
     uc.mem_write(BASE + 0x104, bytes([int(initial_check)]))
     uc.mem_write(BASE + 0x106, crc_seed.to_bytes(2, 'big'))
     uc.mem_write(BASE + 0x1F78, stride.to_bytes(2, 'big'))
@@ -117,6 +120,7 @@ def marker_case(low, high, *, marker=0x4AFC, initial_check=True,
     if observed['stop'] == 'returned' and uc.reg_read(UC_M68K_REG_A7) != STACK + 4:
         raise RuntimeError('unexpected marker routine return stack')
     observed.update({
+        'initial_ram_marker': hex(initial_ram_marker),
         'reset_marker': hex(int.from_bytes(uc.mem_read(BASE, 2), 'big')),
         'initial_check_flag_after': uc.mem_read(BASE + 0x104, 1)[0],
         'crc_accumulator_after': hex(int.from_bytes(uc.mem_read(BASE + 0x106, 2), 'big')),
@@ -208,6 +212,7 @@ def audit(low, high):
             raise RuntimeError('clear-flag path unexpectedly checked completion marker')
         records.append({'name': name, 'synthetic_context': {
             'marker': hex(context.get('marker', 0x4AFC)), 'initial_check_flag': context.get('initial_check', True),
+            'initial_ram_marker': hex(context.get('initial_ram_marker', 0)),
             'crc_seed': 0, 'calibration_sha256': sha256(context.get('calibration', stock))},
             'observed': observed, 'selected_reset_branch': branch})
     data = low + high
@@ -217,7 +222,7 @@ def audit(low, high):
             'generator_sha256': sha256(Path(__file__).read_bytes()), 'unicorn_version': '2.1.4',
             'source_ranges': [{'start': hex(a), 'exclusive_end': hex(b), 'sha256': sha256(data[a:b])} for a, b in source_ranges],
             'cases': records, 'all_pass': True,
-            'limitations': ['Entry flag +0x104 and initial CRC state are synthetic; their complete startup producer is unresolved.',
+            'limitations': ['Entry flag +0x104 and initial CRC state are supplied to this slice; startup provenance is tested separately by the startup/initializer models.',
                 'Only selected reset-marker branches run; power loss, RAM retention, boot integrity gates, peripheral startup and VPW reentry are unverified.',
                 'The CRC check excludes the final BE16 compensation word; this model does not certify the complete native checksum.',
                 'Flash primitives and transport do not execute.'],
