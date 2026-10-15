@@ -294,3 +294,6 @@ Capstone (the existing WSL environment was used). Neither test opens a vehicle.
 
 
 [TJ1850 later controls and address mapping](PCCS_J1850_REENABLE_ADDRESS_MAPPING.md): later communication/protocol handlers preserve J1850 programming restrictions. Native offline gate and target-forwarding checks find no qualified index-to-address bridge; live writes remain disabled.
+
+
+[WriteCal switches and FIL selection effects](PCCS_WRITECAL_SWITCHES_CALLEE_EFFECTS.md): all three switch gaps are resolved; a transitive FIL branch can change controller selection under explicit guards. Offline models cover 768 selectors and 48 selection contexts; no AL5 J1850 mapping or programming bypass is proven.

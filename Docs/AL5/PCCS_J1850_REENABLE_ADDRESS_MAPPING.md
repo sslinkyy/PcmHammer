@@ -1,5 +1,10 @@
 # PCCS J1850 later controls and controller addressing
 
+Follow-up: [WriteCal switches and callee effects](PCCS_WRITECAL_SWITCHES_CALLEE_EFFECTS.md)
+resolves all three switch gaps and demonstrates a guarded FIL selection assignment.
+Direct caller-store searches do not establish selection purity across callees;
+ESI also changes roles on an early retry path.
+
 The examined later communication, protocol and controller-selection handlers
 preserve the J1850 programming restriction. No controller `3` to physical
 address `0x18` conversion was found in the examined selection owners or
