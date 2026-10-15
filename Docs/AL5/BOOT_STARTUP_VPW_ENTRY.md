@@ -96,3 +96,5 @@ Validation: the combined AL5 offline suite passed **275 tests with no skips**
 using the pinned native inputs and Unicorn 2.1.4. This includes 23 new test
 methods for the four models, plus the extended marker checks. Source staging
 passed `git diff --cached --check`. No adapter or controller was accessed.
+
+[Joined boot receive session](BOOT_RECEIVE_SESSION.md) now executes the original ISR, resident dispatch and four-byte synthetic RAM-transfer path together, including native cleanup and explicit retry steps. Physical programming/recovery and live writes remain disabled.

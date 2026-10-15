@@ -97,6 +97,25 @@ class OfflineSafetyTests(unittest.TestCase):
         self.assertEqual(report['erase_packets'], [])
         self.assertEqual(report['program_packets'], [])
 
+    def test_joined_boot_receive_evidence_keeps_physical_qualification_blocked(self):
+        data = fixture()
+        report = plan(data, data, sha256(data), 'AL5', 15184109)
+        recovery = report['calibration_recovery_assessment']
+        root = Path(__file__).resolve().parents[2]
+        raw = (root / recovery['boot_receive_evidence']).read_bytes()
+        native = json.loads(raw)
+        self.assertEqual(sha256(raw), recovery['boot_receive_evidence_sha256'])
+        self.assertEqual(8, len(native['cases']))
+        self.assertEqual(native['generator_sha256'], recovery['implementations']['emulate_boot_receive_session.py'])
+        for name, digest in native['dependency_sha256'].items():
+            self.assertEqual(digest, recovery['implementations'][name])
+        self.assertTrue(recovery['boot_receive_same_session_modeled'])
+        for field in ('physical_interrupt_delivery_verified', 'continuous_reset_to_upload_verified',
+                      'physical_recovery_verified', 'automatic_retry_allowed', 'live_write_enabled', 'ready_to_flash'):
+            self.assertFalse(recovery[field])
+        self.assertFalse(report['ready_to_flash'])
+        self.assertEqual([], report['would_send'])
+
     def test_cli_valid_input_still_returns_blocked_exit_code(self):
         data = fixture()
         with tempfile.TemporaryDirectory() as directory:

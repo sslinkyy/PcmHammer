@@ -43,20 +43,29 @@ HOST_CALLBACK_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/EFILIVE
 VM_STATIC_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/EFILIVE_VM_OBJECT_LOADING.json'
 LOADER_FINALIZATION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_FINALIZATION_EMULATION.json'
 CALIBRATION_MARKER_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/CALIBRATION_MARKER_EMULATION.json'
+BOOT_RECEIVE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/BOOT_RECEIVE_SESSION_EMULATION.json'
 
 
 def calibration_recovery_assessment():
     finalize = LOADER_FINALIZATION_EVIDENCE.read_bytes()
     marker = CALIBRATION_MARKER_EVIDENCE.read_bytes()
+    receive = BOOT_RECEIVE_EVIDENCE.read_bytes()
     return {
-        'scope': 'Independent native finalization and conditional application marker/CRC slices; no continuous reset or VPW session.',
+        'scope': 'Native finalization and conditional marker/CRC slices plus a same-session boot ISR/dispatch/synthetic RAM transfer; no continuous reset or physical VPW session.',
         'finalization_evidence': 'Docs/AL5/LOADER_FINALIZATION_EMULATION.json',
         'finalization_evidence_sha256': sha256(finalize),
         'marker_evidence': 'Docs/AL5/CALIBRATION_MARKER_EMULATION.json',
         'marker_evidence_sha256': sha256(marker),
+        'boot_receive_evidence': 'Docs/AL5/BOOT_RECEIVE_SESSION_EMULATION.json',
+        'boot_receive_evidence_sha256': sha256(receive),
         'implementations': {name: sha256((Path(__file__).parent / name).read_bytes())
-                            for name in ('emulate_loader_finalize.py', 'emulate_calibration_marker.py')},
+                            for name in ('emulate_loader_finalize.py', 'emulate_calibration_marker.py',
+                                         'emulate_boot_receive_session.py', 'emulate_boot_receive_isr.py',
+                                         'emulate_boot_session.py')},
         'conditional_boot_error_routes_emulated': True,
+        'boot_receive_same_session_modeled': True,
+        'physical_interrupt_delivery_verified': False,
+        'continuous_reset_to_upload_verified': False,
         'finalize_status_proves_native_crc': False,
         'completion_marker_check_always_runs': False,
         'complete_startup_flag_provenance_verified': False,

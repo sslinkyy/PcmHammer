@@ -305,3 +305,5 @@ Capstone (the existing WSL environment was used). Neither test opens a vehicle.
 [AL5 finalization and conditional recovery routes](VPW_FINALIZATION_RECOVERY.md): native offline models trace finalize status, marker-program failure and application marker/CRC error routing. The file-only planner links the evidence while physical reset, VPW re-entry, recovery and live writing remain unproven.
 
 [Startup and VPW receive entry](BOOT_STARTUP_VPW_ENTRY.md) traces cold-start integrity flags, pre-marker initializers, the boot interface gate and receive ISR with offline native models. Physical programming and interrupted-flash recovery remain unqualified; live writes remain disabled.
+
+[Joined boot receive session](BOOT_RECEIVE_SESSION.md) now executes the original ISR, resident dispatch and four-byte synthetic RAM-transfer path together, including native cleanup and explicit retry steps. Physical programming/recovery and live writes remain disabled.

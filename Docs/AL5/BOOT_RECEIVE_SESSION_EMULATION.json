@@ -1,0 +1,555 @@
+{
+  "mode": "offline_continuous_boot_isr_dispatch_ram_transfer",
+  "source_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
+  "generator_sha256": "d3580db54d26a44eda477693fbb25a7ad59f62085c3b4acf1dbe7042cc09b156",
+  "dependency_sha256": {
+    "emulate_boot_receive_isr.py": "8081e9e93af19a753162d2257ee51fe4579cd0d9602bbc9ef621badee13d3b85",
+    "emulate_boot_session.py": "18198e3c16ae5431a30887af0b71e31f2b7703fbbd2113c2dceebf5ed351acb1"
+  },
+  "source_ranges": [
+    {
+      "start": "0x39ac",
+      "exclusive_end": "0x3b7a",
+      "sha256": "ab62d40e530fa411ae81696421b7ddee7be1f3327c4d4b51597936fcd6405039"
+    },
+    {
+      "start": "0x341c",
+      "exclusive_end": "0x39aa",
+      "sha256": "30f4e26263dbf718054a713f5728cceb4c21f7f763141d8724d1619c79d9c133"
+    },
+    {
+      "start": "0x3074",
+      "exclusive_end": "0x341a",
+      "sha256": "6805cbfcef4d275c678c630a6e9301dc859d1bb76776cf0fd9d8587d12c752fa"
+    },
+    {
+      "start": "0x2fe0",
+      "exclusive_end": "0x3074",
+      "sha256": "479dc4b76332bcdea62598af54fda7dc330efb694107e62ffee44a63ecbe2bf0"
+    }
+  ],
+  "cases": [
+    {
+      "name": "arm_then_transfer",
+      "steps": [
+        {
+          "responses": [
+            "6df0187444"
+          ],
+          "fifo_events_consumed": 6,
+          "flush_calls": 0,
+          "handler_entries": [
+            "0x341c"
+          ],
+          "native_instructions": 238,
+          "stop": "before_rte",
+          "suppressed_watchdog_stores": 0,
+          "stop_pc": "0x3b78",
+          "stack_delta": 0,
+          "fifo_events_remaining": 0,
+          "upload_armed": 1,
+          "processing_flag": 0,
+          "staged_length": 0,
+          "staged_buffer_hex": "0000000000000000000000000000",
+          "synthetic_ram_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "same_native_session": true,
+          "actual_interrupt_delivered": false,
+          "exception_return_executed": false,
+          "uploaded_code_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": []
+        },
+        {
+          "responses": [
+            "6cf018760073"
+          ],
+          "fifo_events_consumed": 18,
+          "flush_calls": 0,
+          "handler_entries": [
+            "0x3074"
+          ],
+          "native_instructions": 609,
+          "stop": "before_rte",
+          "suppressed_watchdog_stores": 26,
+          "stop_pc": "0x3b78",
+          "stack_delta": 0,
+          "fifo_events_remaining": 0,
+          "upload_armed": 1,
+          "processing_flag": 0,
+          "staged_length": 0,
+          "staged_buffer_hex": "0000000000000000000000000000",
+          "synthetic_ram_hex": "12345678000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "same_native_session": true,
+          "actual_interrupt_delivered": false,
+          "exception_return_executed": false,
+          "uploaded_code_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": []
+        }
+      ]
+    },
+    {
+      "name": "unarmed_transfer",
+      "steps": [
+        {
+          "responses": [
+            "6cf0187f36000004ff9022"
+          ],
+          "fifo_events_consumed": 18,
+          "flush_calls": 0,
+          "handler_entries": [
+            "0x3074"
+          ],
+          "native_instructions": 708,
+          "stop": "before_rte",
+          "suppressed_watchdog_stores": 26,
+          "stop_pc": "0x3b78",
+          "stack_delta": 0,
+          "fifo_events_remaining": 0,
+          "upload_armed": 0,
+          "processing_flag": 0,
+          "staged_length": 0,
+          "staged_buffer_hex": "0000000000000000000000000000",
+          "synthetic_ram_hex": "12345678000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "same_native_session": true,
+          "actual_interrupt_delivered": false,
+          "exception_return_executed": false,
+          "uploaded_code_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": []
+        }
+      ]
+    },
+    {
+      "name": "checksum_failure_then_retry",
+      "steps": [
+        {
+          "responses": [
+            "6df0187444"
+          ],
+          "fifo_events_consumed": 6,
+          "flush_calls": 0,
+          "handler_entries": [
+            "0x341c"
+          ],
+          "native_instructions": 238,
+          "stop": "before_rte",
+          "suppressed_watchdog_stores": 0,
+          "stop_pc": "0x3b78",
+          "stack_delta": 0,
+          "fifo_events_remaining": 0,
+          "upload_armed": 1,
+          "processing_flag": 0,
+          "staged_length": 0,
+          "staged_buffer_hex": "0000000000000000000000000000",
+          "synthetic_ram_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "same_native_session": true,
+          "actual_interrupt_delivered": false,
+          "exception_return_executed": false,
+          "uploaded_code_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": []
+        },
+        {
+          "responses": [
+            "6cf018760077"
+          ],
+          "fifo_events_consumed": 18,
+          "flush_calls": 0,
+          "handler_entries": [
+            "0x3074"
+          ],
+          "native_instructions": 608,
+          "stop": "before_rte",
+          "suppressed_watchdog_stores": 26,
+          "stop_pc": "0x3b78",
+          "stack_delta": 0,
+          "fifo_events_remaining": 0,
+          "upload_armed": 1,
+          "processing_flag": 0,
+          "staged_length": 0,
+          "staged_buffer_hex": "0000000000000000000000000000",
+          "synthetic_ram_hex": "62616421000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "same_native_session": true,
+          "actual_interrupt_delivered": false,
+          "exception_return_executed": false,
+          "uploaded_code_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": []
+        },
+        {
+          "responses": [
+            "6cf018760073"
+          ],
+          "fifo_events_consumed": 18,
+          "flush_calls": 0,
+          "handler_entries": [
+            "0x3074"
+          ],
+          "native_instructions": 609,
+          "stop": "before_rte",
+          "suppressed_watchdog_stores": 26,
+          "stop_pc": "0x3b78",
+          "stack_delta": 0,
+          "fifo_events_remaining": 0,
+          "upload_armed": 1,
+          "processing_flag": 0,
+          "staged_length": 0,
+          "staged_buffer_hex": "0000000000000000000000000000",
+          "synthetic_ram_hex": "12345678000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "same_native_session": true,
+          "actual_interrupt_delivered": false,
+          "exception_return_executed": false,
+          "uploaded_code_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": []
+        }
+      ]
+    },
+    {
+      "name": "duplicate_transfer",
+      "steps": [
+        {
+          "responses": [
+            "6df0187444"
+          ],
+          "fifo_events_consumed": 6,
+          "flush_calls": 0,
+          "handler_entries": [
+            "0x341c"
+          ],
+          "native_instructions": 238,
+          "stop": "before_rte",
+          "suppressed_watchdog_stores": 0,
+          "stop_pc": "0x3b78",
+          "stack_delta": 0,
+          "fifo_events_remaining": 0,
+          "upload_armed": 1,
+          "processing_flag": 0,
+          "staged_length": 0,
+          "staged_buffer_hex": "0000000000000000000000000000",
+          "synthetic_ram_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "same_native_session": true,
+          "actual_interrupt_delivered": false,
+          "exception_return_executed": false,
+          "uploaded_code_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": []
+        },
+        {
+          "responses": [
+            "6cf018760073"
+          ],
+          "fifo_events_consumed": 18,
+          "flush_calls": 0,
+          "handler_entries": [
+            "0x3074"
+          ],
+          "native_instructions": 609,
+          "stop": "before_rte",
+          "suppressed_watchdog_stores": 26,
+          "stop_pc": "0x3b78",
+          "stack_delta": 0,
+          "fifo_events_remaining": 0,
+          "upload_armed": 1,
+          "processing_flag": 0,
+          "staged_length": 0,
+          "staged_buffer_hex": "0000000000000000000000000000",
+          "synthetic_ram_hex": "12345678000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "same_native_session": true,
+          "actual_interrupt_delivered": false,
+          "exception_return_executed": false,
+          "uploaded_code_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": []
+        },
+        {
+          "responses": [
+            "6cf018760073"
+          ],
+          "fifo_events_consumed": 18,
+          "flush_calls": 0,
+          "handler_entries": [
+            "0x3074"
+          ],
+          "native_instructions": 609,
+          "stop": "before_rte",
+          "suppressed_watchdog_stores": 26,
+          "stop_pc": "0x3b78",
+          "stack_delta": 0,
+          "fifo_events_remaining": 0,
+          "upload_armed": 1,
+          "processing_flag": 0,
+          "staged_length": 0,
+          "staged_buffer_hex": "0000000000000000000000000000",
+          "synthetic_ram_hex": "12345678000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "same_native_session": true,
+          "actual_interrupt_delivered": false,
+          "exception_return_executed": false,
+          "uploaded_code_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": []
+        }
+      ]
+    },
+    {
+      "name": "bad_arm_length_preserves_arm",
+      "steps": [
+        {
+          "responses": [
+            "6df0187444"
+          ],
+          "fifo_events_consumed": 6,
+          "flush_calls": 0,
+          "handler_entries": [
+            "0x341c"
+          ],
+          "native_instructions": 238,
+          "stop": "before_rte",
+          "suppressed_watchdog_stores": 0,
+          "stop_pc": "0x3b78",
+          "stack_delta": 0,
+          "fifo_events_remaining": 0,
+          "upload_armed": 1,
+          "processing_flag": 0,
+          "staged_length": 0,
+          "staged_buffer_hex": "0000000000000000000000000000",
+          "synthetic_ram_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "same_native_session": true,
+          "actual_interrupt_delivered": false,
+          "exception_return_executed": false,
+          "uploaded_code_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": []
+        },
+        {
+          "responses": [
+            "6cf0187f340012"
+          ],
+          "fifo_events_consumed": 7,
+          "flush_calls": 0,
+          "handler_entries": [
+            "0x341c"
+          ],
+          "native_instructions": 314,
+          "stop": "before_rte",
+          "suppressed_watchdog_stores": 0,
+          "stop_pc": "0x3b78",
+          "stack_delta": 0,
+          "fifo_events_remaining": 0,
+          "upload_armed": 1,
+          "processing_flag": 0,
+          "staged_length": 0,
+          "staged_buffer_hex": "0000000000000000000000000000",
+          "synthetic_ram_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "same_native_session": true,
+          "actual_interrupt_delivered": false,
+          "exception_return_executed": false,
+          "uploaded_code_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": []
+        }
+      ]
+    },
+    {
+      "name": "wrong_destination",
+      "steps": [
+        {
+          "responses": [],
+          "fifo_events_consumed": 6,
+          "flush_calls": 0,
+          "handler_entries": [
+            "0x341c"
+          ],
+          "native_instructions": 209,
+          "stop": "before_rte",
+          "suppressed_watchdog_stores": 0,
+          "stop_pc": "0x3b78",
+          "stack_delta": 0,
+          "fifo_events_remaining": 0,
+          "upload_armed": 0,
+          "processing_flag": 0,
+          "staged_length": 0,
+          "staged_buffer_hex": "0000000000000000000000000000",
+          "synthetic_ram_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "same_native_session": true,
+          "actual_interrupt_delivered": false,
+          "exception_return_executed": false,
+          "uploaded_code_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": []
+        }
+      ]
+    },
+    {
+      "name": "uploaded_entry_trapped",
+      "steps": [
+        {
+          "responses": [
+            "6df0187444"
+          ],
+          "fifo_events_consumed": 6,
+          "flush_calls": 0,
+          "handler_entries": [
+            "0x341c"
+          ],
+          "native_instructions": 238,
+          "stop": "before_rte",
+          "suppressed_watchdog_stores": 0,
+          "stop_pc": "0x3b78",
+          "stack_delta": 0,
+          "fifo_events_remaining": 0,
+          "upload_armed": 1,
+          "processing_flag": 0,
+          "staged_length": 0,
+          "staged_buffer_hex": "0000000000000000000000000000",
+          "synthetic_ram_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "same_native_session": true,
+          "actual_interrupt_delivered": false,
+          "exception_return_executed": false,
+          "uploaded_code_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": []
+        },
+        {
+          "responses": [],
+          "fifo_events_consumed": 17,
+          "flush_calls": 0,
+          "handler_entries": [
+            "0x3074"
+          ],
+          "native_instructions": 562,
+          "stop": "before_uploaded_execution",
+          "suppressed_watchdog_stores": 26,
+          "stop_pc": "0xff9000",
+          "stack_delta": -72,
+          "fifo_events_remaining": 1,
+          "upload_armed": 1,
+          "processing_flag": 1,
+          "staged_length": 16,
+          "staged_buffer_hex": "006d18f036800004ff9000000010",
+          "synthetic_ram_hex": "12345678000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "same_native_session": true,
+          "actual_interrupt_delivered": false,
+          "exception_return_executed": false,
+          "uploaded_code_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": []
+        }
+      ]
+    },
+    {
+      "name": "split_arm_across_interrupt_entries",
+      "steps": [
+        {
+          "responses": [],
+          "fifo_events_consumed": 3,
+          "flush_calls": 0,
+          "handler_entries": [],
+          "native_instructions": 78,
+          "stop": "before_rte",
+          "suppressed_watchdog_stores": 0,
+          "stop_pc": "0x3b78",
+          "stack_delta": 0,
+          "fifo_events_remaining": 0,
+          "upload_armed": 0,
+          "processing_flag": 0,
+          "staged_length": 2,
+          "staged_buffer_hex": "006d180000000000000000000002",
+          "synthetic_ram_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "same_native_session": true,
+          "actual_interrupt_delivered": false,
+          "exception_return_executed": false,
+          "uploaded_code_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": []
+        },
+        {
+          "responses": [
+            "6df0187444"
+          ],
+          "fifo_events_consumed": 4,
+          "flush_calls": 0,
+          "handler_entries": [
+            "0x341c"
+          ],
+          "native_instructions": 184,
+          "stop": "before_rte",
+          "suppressed_watchdog_stores": 0,
+          "stop_pc": "0x3b78",
+          "stack_delta": 0,
+          "fifo_events_remaining": 0,
+          "upload_armed": 1,
+          "processing_flag": 0,
+          "staged_length": 0,
+          "staged_buffer_hex": "0000000000000000000000000000",
+          "synthetic_ram_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "same_native_session": true,
+          "actual_interrupt_delivered": false,
+          "exception_return_executed": false,
+          "uploaded_code_executed": false,
+          "transport_used": false,
+          "physical_recovery_verified": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false,
+          "would_send": []
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Interrupt entry is explicit; RTE and uploaded code are trapped before execution.",
+    "FIFO, sender and flush callbacks are synthetic; watchdog stores are suppressed before execution. No hardware initialization or timing is modeled.",
+    "Four-byte synthetic RAM writes establish neither loader execution nor flash programming/recovery."
+  ],
+  "physical_recovery_verified": false,
+  "automatic_retry_allowed": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "would_send": []
+}
