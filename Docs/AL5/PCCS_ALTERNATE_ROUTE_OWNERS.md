@@ -5,7 +5,8 @@ Object +`0x72D90` is mutable routing state: identification entry clears it,
 and generic CAN/GMW probing, version-specific identification and alternate
 workflows can set it later. Standard family 1/version 0 alone does not prove
 it is zero. Nonzero at the EnterWrite post-status gate bypasses the QuickWrite
-reset/identification loop. Live writes remain disabled.
+reset/identification loop. Live writes remain disabled. Follow-up helper
+failure and caller fallback are traced in `PCCS_CAN_HELPER_FALLBACK.md`.
 
 ## Entry clear and control ownership
 
@@ -77,7 +78,9 @@ probe setter through `0x5D91CA`, `0x5D9BA9` and standard classification
 without a direct clear. The graph examines 2472 instructions and leaves an
 indexed switch at `0x5DAB17` unresolved. Its 102-instruction path is a
 candidate, not proof the branch conditions are jointly feasible. Calls are
-opaque, notably helper `0x5D7A98`; their effects may change this conclusion.
+opaque in that partial graph. A concrete failed-request path through helper
+`0x5D7A98` is now modeled in `PCCS_CAN_HELPER_FALLBACK.md`; successful-response
+parsers and other transitive effects remain incomplete.
 It is therefore unsupported to declare that every standard-LCT identification
 ends with zero, or that an actual AL5 reaches this candidate nonzero context.
 
