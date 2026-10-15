@@ -111,6 +111,9 @@ or truncation, never resynchronizes, and refuses output overwrite. Raw messages,
 unused slot bytes, trailing bytes and opaque flags remain separate. All transport,
 programming, recovery and flash-readiness gates remain false.
 
+Follow-up [LCT handler tracing](LCT_HANDLER_TRACING.md) binds the managed LCT
+interface to native handlers and reconstructs selected command tables offline.
+
 Next: inspect the playback-manager producer/reader to establish prefix flags and
 timestamp units, then trace the native LCT diagnostic dispatcher to assign
 evidenced service meanings. A complete programming, verification and recovery
