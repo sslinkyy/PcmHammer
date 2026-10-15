@@ -291,3 +291,6 @@ Capstone (the existing WSL environment was used). Neither test opens a vehicle.
 
 
 [TJ1850 preparation and programming compatibility](PCCS_J1850_PREPARATION_COMPATIBILITY.md): PCCS disables J1850 programming/recovery controls; inherited writer target forwarding and direct CAN formatting leave compatibility gaps. The offline preparation gate checks 24 contexts; live writes remain disabled.
+
+
+[TJ1850 later controls and address mapping](PCCS_J1850_REENABLE_ADDRESS_MAPPING.md): later communication/protocol handlers preserve J1850 programming restrictions. Native offline gate and target-forwarding checks find no qualified index-to-address bridge; live writes remain disabled.
