@@ -82,8 +82,9 @@ span is not automatically a completely compared span. A mismatch logs
 `Vector check failed: $` and forces Slow Writes at `0x7BABE1`.
 
 This is a concrete standard-LCT readback/fallback path, scoped to loaded file
-coverage. Its full caller reachability for a particular AL5 operation, response
-handling, continuation/retry behavior and physical routing remain unproven.
+coverage. Follow-up failure exits and initialization retry decisions are traced
+in `PCCS_VECTOR_FAILURE_RETRY.md`. Full caller reachability for a particular
+AL5 operation, route requalification and physical transactions remain unproven.
 The flag-store model executes only the final store, not the vector read or
 comparison. Anchored raw instructions are preserved privately in
 `slow-writes-vector-readback-source.json`. The other force-one path is not
