@@ -53,3 +53,65 @@ Do not use STPBR to attempt a 4X VPW transition.
 
 A splitter purchase alone would not resolve these missing capture capabilities.
 Live monitoring and vehicle transmissions remain outside this inspection.
+
+## USB-only monitor probe, 2026-10-14
+
+The user explicitly confirmed that the SX was powered by USB only, with its
+OBD plug physically unplugged. A separate `probe_obdlink_monitor.py` tool was
+then used. The original identity-only tool still rejects monitoring commands.
+
+Observed on the same COM8 / STN1130 v4.0.1 / SX r4.2:
+
+1. Confirmed identity, already selected VPW protocol 2, and 0.0 V readback.
+2. Sent `STMA` followed by CR. The adapter echoed the command and remained
+   active for the one-second observation interval, without a prompt or error.
+3. Sent a single `x` byte, without CR. The adapter returned exactly CR + `>`.
+   It did **not** print `STOPPED` on this empty, disconnected bus.
+4. A following `STI` query returned the expected firmware identity.
+
+The first probe required `STOPPED` and therefore stopped without a subsequent
+query, preserving the prompt-only response. A second probe specifically checked
+the older firmware's prompt-only exit and confirmed the subsequent local query.
+Both raw reports are retained under the ignored evidence directory as
+`usb-monitor-01.json` and `usb-monitor-02.json`.
+
+No protocol-open command, vehicle payload, reset, firmware update or settings
+setter was used. The adapter was closed after each probe. The probe requires
+explicit physical-disconnection confirmation and does not implement vehicle
+capture. Voltage alone is not a disconnection interlock.
+
+This confirms command acceptance and entry/exit behavior on an empty bus. No
+VPW frames were supplied, so reception and electrical silence remain unproven.
+The absence of SX UART output while waiting is not evidence of electrical
+silence at the OBD pins.
+
+### Source checks and remaining uncertainty
+
+The [official 4.0.1 archive](https://www.scantool.net/scantool/downloads/213/obdlink_sx-4.0.1.zip)
+contains the dated SX changelog. Its 3.3.0 entries describe improvements to UART
+cancellation and monitoring protocol detection/saving; the 4.0.1 entry describes
+a CAN flow-control fix. This corroborates historical monitoring support but
+does not establish silent VPW operation. Archive SHA-256:
+`343a1fab1ab457d093fa6b4167805abfa347ce843ffe71dc3dd4aa7db937575f`.
+Only the changelog was extracted; no updater, library or firmware was executed.
+Member hashes and names are retained in `firmware-changelog-source.json`.
+
+The old-looking `stn1100-frpm-preliminary.pdf` download URL currently served
+the modern 78-page OBDLink FRPM F. It must not be cited as a contemporary manual
+for 4.0.1. The observed prompt-only exit differs from that manual's documented
+`STOPPED` sequence.
+
+The [ELM327 datasheet](https://elmelectronics.com/wp-content/uploads/2020/05/ELM327DSL.pdf)
+describes original ELM327 monitoring as suppressing J1850 in-frame responses.
+This is compatibility evidence, not a measurement or a firmware-level proof for
+STN1130. The OBDLink manual separately documents `ATIFR0` as disabling IFR
+transmission; no IFR setting was changed in these probes. CAN silent-monitoring
+settings such as `STCMM` do not establish VPW silence.
+
+Qualification still requires an isolated powered VPW source and an independent
+means to attribute electrical activity to the SX. Check connection, monitor
+entry, sustained reception, monitor exit and USB disconnect/reconnect, including
+messages that request an IFR. A second decoded packet log alone cannot rule out
+malformed pulses, contention or loading; electrical measurement is needed for
+that claim. Frame completeness and 4X reception are separate checks. Do not use
+an AL5 programming session as the first qualification test.
