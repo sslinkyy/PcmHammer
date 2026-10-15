@@ -138,3 +138,13 @@ and route requalification are not. Full programming acceptance, independent
 image/preserved-area verification and recovery after erase or interruption
 remain unproven. Switching a setting or retrying initialization does not
 establish recovery of an erased or partially programmed controller.
+
+## Provider coverage
+
+REA/Ghidra reports retry-tail address `0x7BE9F7` as `not_in_procedure`:
+`ev_8331c1a4216455162758ded13a0af370dcdba9e522510fa85b13bc768d319adb`.
+The new control-flow findings remain anchored raw-source observations and
+bounded native models, not a provider-recovered wrapper. No function was
+created or expanded. The session was closed and its snapshot saved privately
+as `pccs-vector-failure-retry-20261015.snapshot.json` (38 evidence records,
+five primitive bindings).
