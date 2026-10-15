@@ -104,3 +104,56 @@ transfer, final verification and recovery remain unproven.
 - Startup callback: `ev_d7b4eabda4405da66f3ea235d318651efcbeb02d44e2cde301e26d65f1bb5724`.
 - Nonwaiting selector: `ev_8148b3dd5fc2ac4349e703aeeabd568c6d0790374b186a2a8f889b4497b5bd3a`.
 - Undefined group-2 address: `ev_fb94b0ee8f7379a8815f99efc2b28931f77e9bea0f5cf865ac356c491e64c6f2`.
+
+## Follow-up: creation and managed activation audit
+
+The native event setup at `0x1000796F..0x10007AFE` creates 168 events:
+135 request-descriptor acknowledgement handles, five auxiliary object handles,
+and 14 request / 14 completion handles. Every call requests
+`CreateEventA(NULL, FALSE, FALSE, NULL)`: anonymous, auto-reset and initially
+unsignaled. In particular, group 2's request event at `this+0xDC` is distinct
+from its completion event at `this+0x114` and its descriptor acknowledgement at
+`0x10073220`. Creation does not activate `10 10`.
+
+`emulate_lct_event_setup.py` reproduces this exact provider-defined body with
+synthetic successful allocation handles. The only allowed native-code writes
+are exact event-handle slots and the private stack; descriptor request bytes
+must remain unchanged. Only the setup body and a three-byte synthetic RET-16
+stub may execute. No Windows event is created, signaled or waited on. This
+models requested creation state, not subsequent live event state or allocation
+failure handling. Source mismatch and existing output paths are rejected.
+
+An independent dnfile/dncil audit decoded all 1,909 RVA-bearing CIL bodies in
+Gen3Tcm (1,104), AllisonDocCore (587) and DocConn (218), with zero decode failures.
+It found 29 typed LCT COM call sites covering all 24 named interface methods.
+None establishes group-2 activation. Gen3Tcm's ConnectToTCM MethodDef
+`0x06000155` calls Connect (`0x06000AB3`) at IL offset 277 and
+QueryLCTforStartupData (`0x06000AB5`) at IL offset 690. Three ReprogramEcu
+calls resolve to WTEC2, WTEC3 and CEC2 interfaces, not the LCT interface.
+
+This is a bounded static-token audit. Four unknown COM slots are represented
+by three `_VtblGap` entries; no managed invocation is declared for those slots.
+Reflection, computed dispatch and native external callers remain unresolved.
+The native root executable, PlayBMgr, DataReadEngine5_0 and AtlRP1210 were
+inventoried and hashed by this audit, not decompiled.
+
+Private follow-up evidence, source hashes, tokens and scripts are retained under
+`Tools/AL5/LocalOnly/AllisonPlayback_20261015/SessionFollowup/`:
+`managed-call-audit.json`, `managed-findings.json`, `audit_managed_callers.py`,
+`native-event-setup.json`, and `lct-event-followup-20261015.snapshot.json`.
+The new snapshot contains 70 Evidence records and 28 primitive query bindings.
+Event-setup Evidence:
+`ev_36b906539b6abe349d08151f6f68a75e5e71dcde963957fb24af69208ef5b2b8`.
+
+Reproduce the added check from `Tools/AL5`:
+
+```powershell
+python emulate_lct_event_setup.py $env:AL5_LCT_DLL --output 'PATH\new-events.json'
+python -m unittest test_lct_event_setup test_lct_command_tables test_lct_session_callbacks test_allison_playback test_offline test_authorization test_pccs_methods -q
+```
+
+Updated validation: 53 tests passed, including the pinned native event setup.
+The working reader is unchanged. No controller programming or recovery claim
+follows; live writing remains disabled. The remaining activation question now
+requires the unnamed native COM slots or computed/native caller paths, rather
+than another search of named managed LCT calls.
