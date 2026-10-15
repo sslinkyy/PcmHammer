@@ -4,6 +4,11 @@ Status: offline host analysis only. AL5 live writing remains disabled. Internal
 PCCS buffers below are not qualified CAN/VPW frames and are not added to the
 PcmHammer writer or its dry-run packet plan.
 
+Follow-up: [FIL transfer tracing](PCCS_FIL_TRANSFER.md) connects opcode B0 to
+routine/file-transfer helpers, distinguishes interpreter-3 and interpreter-4+
+paths, and adds isolated native framing checks. LCT utility selection and
+physical AL5 compatibility remain unresolved.
+
 ## Inputs and provenance
 
 Read/Write TCM `Winrw32.exe` 15.2.17.0, SHA-256
