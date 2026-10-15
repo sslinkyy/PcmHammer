@@ -23,6 +23,7 @@ class PccsNativeWriteTests(unittest.TestCase):
             for context in ({'payload': b''}, {'payload': bytes(257)}, {'ccp': 1},
                             {'address': -1}, {'address': 0xffffff},
                             {'ccp': True, 'address': 0xffffffff},
+                            {'quick': 1}, {'caller_flag': -1}, {'caller_flag': 256}, {'caller_flag': True},
                             {'statuses': ()}, {'responses': [0]}, {'statuses': (256,)}):
                 with self.subTest(context=context), self.assertRaises(ValueError):
                     run(data, **context)
@@ -51,6 +52,23 @@ class PccsNativeWriteTests(unittest.TestCase):
                 main()
             runner.assert_not_called()
             self.assertEqual(path.read_bytes(), b'keep')
+
+    @unittest.skipUnless(os.environ.get('AL5_PCCS_EXE') and importlib.util.find_spec('unicorn'),
+                         'Set AL5_PCCS_EXE and provide optional Unicorn for pinned real input')
+    def test_quick_selection_and_ccp_precedence(self):
+        data = Path(os.environ['AL5_PCCS_EXE']).read_bytes()
+        for quick in (False, True):
+            for flag in (0, 1, 255):
+                for ccp in (False, True):
+                    with self.subTest(quick=quick, caller_flag=flag, ccp=ccp):
+                        case = run(data, quick=quick, caller_flag=flag, ccp=ccp)
+                        selected = quick and flag == 0 and not ccp
+                        self.assertEqual(len(case['quick_calls']), int(selected))
+                        self.assertEqual(bool(case['dispatches']), not selected)
+                        if selected:
+                            self.assertFalse(case['quick_calls'][0]['body_executed'])
+                        self.assertFalse(case['transport_used'])
+                        self.assertEqual(case['would_send'], [])
 
     @unittest.skipUnless(os.environ.get('AL5_PCCS_EXE') and importlib.util.find_spec('unicorn'),
                          'Set AL5_PCCS_EXE and provide optional Unicorn for pinned real input')

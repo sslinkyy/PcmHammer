@@ -50,8 +50,9 @@ flag is object-wide while the identification data are indexed, so an enable
 condition failing does not necessarily imply a clear route flag.
 
 Source `.data` initializes global `0x81D16C` to **1**, which blocks these
-enabling branches. The exact runtime override owner remains unresolved; a
-data pointer to it does not establish an INI configuration binding. This source
+enabling branches. The configuration and UI owners are traced in
+`PCCS_SLOW_WRITES_CHECKSUM_RANGES.md`; the effective value for the installed
+AL5 remains unobserved. This source
 initial value must not be presented as the current value in a connected session.
 
 If earlier CCP/FIL routing has not exited WriteData, object +`0x68C60` nonzero
@@ -138,9 +139,10 @@ unexpected execution/writes, exhausted synthetic responses and existing report
 paths are rejected. No working reader or live-write gate changed.
 
 Selection conditions and optional configured-byte comparison are now traced.
-Still unresolved: actual `0x3FE2` bytes and global override state for the AL5,
-driver-batch behavior and physical transport, exact required checksum-storage
-ranges and complete independent programmed/preserved-byte verification.
+Follow-up inhibit ownership, write-call selection and variant-specific checksum
+ranges are documented in `PCCS_SLOW_WRITES_CHECKSUM_RANGES.md`. Still unresolved:
+actual `0x3FE2` bytes and effective state for the AL5, driver-batch behavior and
+physical transport, and complete independent programmed/preserved-byte verification.
 Recovery after erase/interruption remains unproven; no flash readiness follows.
 
 ## Provider coverage
