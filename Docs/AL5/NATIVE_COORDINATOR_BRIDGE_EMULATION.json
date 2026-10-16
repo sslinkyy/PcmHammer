@@ -1,0 +1,212 @@
+{
+  "scope": "production_csharp_coordinator_with_original_instruction_emulation",
+  "low_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
+  "loader_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
+  "bridge_sha256": "31f4e649cbdb0870d60867b6c123981f23148d53406c8301b670630956e1316e",
+  "source_sha256": {
+    "Tools/AL5/test_native_coordinator_bridge.py": "73942f4a51af2ca7f6396b438428388aa2a7e75239249de96017a95801330692",
+    "Apps/PcmLibrary/AL5OfflineProgrammingSession.cs": "1c4ab64087ceec549fe7bfb4fe0c5adae27af898998ded8fc98fc46f89fa10c5",
+    "Apps/PcmLibrary/AL5ProgrammingWorkflow.cs": "a62229ef7bdc1b9f7537c251e94d02002bcfeb85ddf601bebcc72d95794d5ed4",
+    "Apps/PcmLibrary/AL5LoaderModelReply.cs": "e5519d6d7225222b87845b7d60f04c1dcc463ca44fe2a77d09422a4d1b62d0ea",
+    "Apps/PcmLibrary/AL5CalibrationInspection.cs": "c0c1b546fa184d2ac6ada7e1e1cb95a7825caf70bcb7c929042721f527e85f11",
+    "Tools/AL5/OfflineCoordinatorBridge.cs": "fe158f3e3807865a4979b7c69e6c211bf739b529145e8550241fec4a45e9346f",
+    "Tools/AL5/CalibrationInspectionTest.cs": "189fda01d769d3fb78154f46fd7ed2ee3277d8151c16c9fbaac0b2f0618447de",
+    "Tools/AL5/CalibrationInspectionTest.csproj": "3d8a57e062116224f6a8e4d9f9ef891ec4d4aedc72fc354069410d6a1a3a899c",
+    "Tools/AL5/emulate_al5_program_session.py": "8c98dfa2c18742ac032cfc7ee3ce8619f60fb5970cbf77a22db5498c81acc844",
+    "Tools/AL5/emulate_al5_interruptions.py": "0ed2b326e163ce8d3f439cb5d6949b7f8eeea6949d2312dc917f5a2b578e8cf0",
+    "Tools/AL5/emulate_boot_loader_handoff.py": "e4b42498fcd0a77490052002ee1e6291a4dfe425c80c2b9ac85a0ac5466fcbf7",
+    "Tools/AL5/emulate_loader_error_sender.py": "ab02b80fcf1181a4d90e70658eb7ca5da4ac3a1fa069712ea90a360876fb83d1",
+    "Tools/AL5/emulate_loader_erase_failures.py": "2db16548347065ecf10bacf3d232a751b276dc1c4cf8c6e0ebc2486d7c8987b0",
+    "Tools/AL5/emulate_loader_entry.py": "e9b5566fc2b2906e4a1253bd0909ad620328e7629e04ccf119995b7a4a1e91f8",
+    "Tools/AL5/emulate_loader_parser.py": "62ba7801849fc51361c0dfab2b8b85063a3e590eda1b78d14329fb125c10416c",
+    "Tools/AL5/emulate_boot_receive_session.py": "d3580db54d26a44eda477693fbb25a7ad59f62085c3b4acf1dbe7042cc09b156",
+    "Tools/AL5/emulate_boot_receive_isr.py": "8081e9e93af19a753162d2257ee51fe4579cd0d9602bbc9ef621badee13d3b85",
+    "Tools/AL5/emulate_boot_session.py": "18198e3c16ae5431a30887af0b71e31f2b7703fbbd2113c2dceebf5ed351acb1",
+    "Tools/AL5/checksum.py": "b057805b2f5dc141141be5ce747ee78be98e441746a05d3a4a0cb3911bf2ef93",
+    "Tools/AL5/al5_segment.py": "c391085ae14ed3f8c762c0ad2baf174474d2287fc17d95b3a5bb4ba3fe169edb"
+  },
+  "runtime": {
+    "python": "3.12.3",
+    "unicorn": "2.1.4"
+  },
+  "cases": [
+    {
+      "name": "complete_dense",
+      "state": "SavedImageVerified",
+      "native_program_bytes": 98302,
+      "observations": 389,
+      "verification": {
+        "exact_image": true,
+        "snapshot_sha256": "a144b3327ffb9226d987db8b11bd7e76f9d227b17b33ad1089cef34109bb29a5"
+      },
+      "bridge_runtime": "8.0.5",
+      "stale_and_terminal_requests_rejected": true
+    },
+    {
+      "name": "lost_ack",
+      "state": "Stopped",
+      "pending": {
+        "sequence": 19,
+        "phase": "CalibrationBlocks",
+        "start": 36864,
+        "length": 256
+      },
+      "reconciliation": {
+        "disposition": "SavedRangeMatches",
+        "exact_image": false,
+        "snapshot_sha256": "b284bf709c88d1c8a819fb35b870e3b3108878050fe42289acc84c8dd59e20ff",
+        "stop_outcome": "ReplyLost",
+        "retry_enabled": false,
+        "can_resume": false,
+        "matching_words": 128,
+        "clear_words": 0,
+        "set_words": 0,
+        "first_conflict": null
+      },
+      "native_response": [
+        "760073"
+      ],
+      "native_stack_delta": 0,
+      "native_sender_returns": 0,
+      "native_program_bytes": 4352,
+      "observations": 19,
+      "bridge_runtime": "8.0.5",
+      "stale_and_terminal_requests_rejected": true
+    },
+    {
+      "name": "partial_block",
+      "state": "Stopped",
+      "pending": {
+        "sequence": 19,
+        "phase": "CalibrationBlocks",
+        "start": 36864,
+        "length": 256
+      },
+      "reconciliation": {
+        "disposition": "ClearOnlyDifferences",
+        "exact_image": false,
+        "snapshot_sha256": "5bddada599052a66d94e0698e7435a3457d488839e3252dbbdd8cbd3a1181301",
+        "stop_outcome": "Interrupted",
+        "retry_enabled": false,
+        "can_resume": false,
+        "matching_words": 4,
+        "clear_words": 124,
+        "set_words": 0,
+        "first_conflict": null
+      },
+      "native_response": [],
+      "native_stack_delta": -4,
+      "native_sender_returns": 0,
+      "native_program_bytes": 4104,
+      "observations": 19,
+      "bridge_runtime": "8.0.5",
+      "stale_and_terminal_requests_rejected": true
+    },
+    {
+      "name": "conflicting_word",
+      "state": "Stopped",
+      "pending": {
+        "sequence": 19,
+        "phase": "CalibrationBlocks",
+        "start": 36864,
+        "length": 256
+      },
+      "reconciliation": {
+        "disposition": "ZeroToOneConflict",
+        "exact_image": false,
+        "snapshot_sha256": "d010482286ff96bcab556294f808c3de571fe4fc5bd7dc166c3b749ee4026818",
+        "stop_outcome": "ModelFailure",
+        "retry_enabled": false,
+        "can_resume": false,
+        "matching_words": 0,
+        "clear_words": 127,
+        "set_words": 1,
+        "first_conflict": 36864
+      },
+      "native_response": [
+        "7600f8"
+      ],
+      "native_stack_delta": -4,
+      "native_sender_returns": 1,
+      "native_program_bytes": 4098,
+      "observations": 19,
+      "bridge_runtime": "8.0.5",
+      "stale_and_terminal_requests_rejected": true
+    },
+    {
+      "name": "erase_failure",
+      "state": "Stopped",
+      "pending": {
+        "sequence": 2,
+        "phase": "ConditionalErase",
+        "start": 32768,
+        "length": 98304
+      },
+      "reconciliation": {
+        "disposition": "ZeroToOneConflict",
+        "exact_image": false,
+        "snapshot_sha256": "b94ca9923e37af62096ab12bf9fe5ec711f130efb885625e68b005df314839fb",
+        "stop_outcome": "ModelFailure",
+        "retry_enabled": false,
+        "can_resume": false,
+        "matching_words": 20484,
+        "clear_words": 0,
+        "set_words": 28668,
+        "first_conflict": 32768
+      },
+      "native_response": [
+        "760085"
+      ],
+      "native_stack_delta": -12,
+      "native_sender_returns": 1,
+      "native_program_bytes": 0,
+      "observations": 2,
+      "bridge_runtime": "8.0.5",
+      "stale_and_terminal_requests_rejected": true
+    },
+    {
+      "name": "marker_failure",
+      "state": "Stopped",
+      "pending": {
+        "sequence": 388,
+        "phase": "Finalization",
+        "start": 131070,
+        "length": 2
+      },
+      "reconciliation": {
+        "disposition": "ClearOnlyDifferences",
+        "exact_image": false,
+        "snapshot_sha256": "9a3a01b08ea5eb67db1e7d542ed31ad9de7486b35e7dd811c38a72a4129cfdc7",
+        "stop_outcome": "ModelFailure",
+        "retry_enabled": false,
+        "can_resume": false,
+        "matching_words": 0,
+        "clear_words": 1,
+        "set_words": 0,
+        "first_conflict": null
+      },
+      "native_response": [
+        "7600f8"
+      ],
+      "native_stack_delta": -4,
+      "native_sender_returns": 1,
+      "native_program_bytes": 98302,
+      "observations": 388,
+      "bridge_runtime": "8.0.5",
+      "stale_and_terminal_requests_rejected": true
+    }
+  ],
+  "physical_programming_verified": false,
+  "physical_readback_verified": false,
+  "physical_recovery_verified": false,
+  "automatic_retry_enabled": false,
+  "live_writes_enabled": false,
+  "ready_to_flash": false,
+  "would_send": [],
+  "limitations": [
+    "Conditional sector map, flash bytes, FIFO readiness, boot entry and fault word values remain synthetic.",
+    "Original command/MMIO stores are suppressed. Software reentry and saved image matches do not prove physical recovery.",
+    "Boot/loader entry is one explicit host-model milestone; real power-cycle/interrupt behavior is not established.",
+    "Pinned LOW is saved editor memory, not an independently acquired current physical backup."
+  ]
+}

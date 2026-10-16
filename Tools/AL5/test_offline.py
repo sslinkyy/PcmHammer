@@ -19,6 +19,31 @@ def fixture():
 
 
 class OfflineSafetyTests(unittest.TestCase):
+    def test_native_coordinator_bridge_evidence_stays_offline_and_source_pinned(self):
+        data = fixture()
+        report = plan(data, data, sha256(data), 'AL5', 15184109)
+        recovery = report['calibration_recovery_assessment']
+        root = Path(__file__).resolve().parents[2]
+        raw = (root/recovery['coordinator_bridge_evidence']).read_bytes()
+        self.assertEqual(sha256(raw), recovery['coordinator_bridge_evidence_sha256'])
+        native = json.loads(raw)
+        for name, digest in native['source_sha256'].items():
+            self.assertEqual(sha256((root/name).read_bytes()), digest, name)
+        cases = {case['name']: case for case in native['cases']}
+        self.assertEqual(6, len(cases))
+        self.assertEqual('SavedImageVerified', cases['complete_dense']['state'])
+        self.assertEqual(98302, cases['complete_dense']['native_program_bytes'])
+        self.assertEqual(389, cases['complete_dense']['observations'])
+        self.assertEqual('SavedRangeMatches', cases['lost_ack']['reconciliation']['disposition'])
+        self.assertEqual('ZeroToOneConflict', cases['conflicting_word']['reconciliation']['disposition'])
+        self.assertTrue(all(case['stale_and_terminal_requests_rejected'] for case in cases.values()))
+        for field in ('physical_programming_verified', 'physical_readback_verified', 'physical_recovery_verified',
+                      'automatic_retry_enabled', 'live_writes_enabled', 'ready_to_flash'):
+            self.assertFalse(native[field])
+        self.assertEqual([], report['would_send'])
+        self.assertEqual([], report['erase_packets'])
+        self.assertEqual([], report['program_packets'])
+
     def test_short_and_editor_images_rejected(self):
         self.assertTrue(validate(bytes(LENGTH-1)))
         self.assertTrue(validate(bytes(1024*1024)))

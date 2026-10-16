@@ -215,3 +215,5 @@ the existing 27 pinned native-model observations. The shared library and WinForm
 builds, 210 null-vehicle write guards and 31 Python file-only regressions passed.
 No native instructions, hardware or interactive UI were exercised in this step. The optional
 native calibration-file corpus was not supplied.
+
+[Native/C# coordinator integration](NATIVE_COORDINATOR_BRIDGE.md) now drives the shared host sequence with original loader instructions over bounded local test pipes. Six full/failed/interrupted scenarios pass; physical programming, readback and recovery remain unqualified and live writes stay disabled.

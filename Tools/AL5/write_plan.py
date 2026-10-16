@@ -50,6 +50,7 @@ LOADER_ERROR_SENDER_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/L
 BOOT_LOADER_HANDOFF_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/BOOT_LOADER_HANDOFF_EMULATION.json'
 PROGRAM_SESSION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/PROGRAM_SESSION_EMULATION.json'
 INTERRUPTION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/INTERRUPTION_RETRY_EMULATION.json'
+COORDINATOR_BRIDGE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/NATIVE_COORDINATOR_BRIDGE_EMULATION.json'
 
 
 def calibration_recovery_assessment():
@@ -62,6 +63,7 @@ def calibration_recovery_assessment():
     handoff = BOOT_LOADER_HANDOFF_EVIDENCE.read_bytes()
     program_session = PROGRAM_SESSION_EVIDENCE.read_bytes()
     interruptions = INTERRUPTION_EVIDENCE.read_bytes()
+    coordinator_bridge = COORDINATOR_BRIDGE_EVIDENCE.read_bytes()
     return {
         'scope': 'Joined native boot/upload/loader flow with modeled erase, block programming, finalization and host verification; physical reset, VPW, flash/readback and recovery remain unqualified.',
         'finalization_evidence': 'Docs/AL5/LOADER_FINALIZATION_EMULATION.json',
@@ -82,6 +84,8 @@ def calibration_recovery_assessment():
         'program_session_evidence_sha256': sha256(program_session),
         'interruption_evidence': 'Docs/AL5/INTERRUPTION_RETRY_EMULATION.json',
         'interruption_evidence_sha256': sha256(interruptions),
+        'coordinator_bridge_evidence': 'Docs/AL5/NATIVE_COORDINATOR_BRIDGE_EMULATION.json',
+        'coordinator_bridge_evidence_sha256': sha256(coordinator_bridge),
         'implementations': {name: sha256((Path(__file__).parent / name).read_bytes())
                             for name in ('emulate_loader_finalize.py', 'emulate_calibration_marker.py',
                                          'emulate_boot_receive_session.py', 'emulate_boot_receive_isr.py',
@@ -103,6 +107,7 @@ def calibration_recovery_assessment():
         'boot_upload_to_loader_entry_same_session_modeled': True,
         'joined_erase_program_finalize_verification_modeled': True,
         'interruption_retry_reconstruction_modeled': True,
+        'native_csharp_coordinator_bridge_modeled': True,
         'physical_interruption_verified': False,
         'physical_programming_verified': False,
         'physical_readback_verified': False,

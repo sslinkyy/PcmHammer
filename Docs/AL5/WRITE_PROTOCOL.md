@@ -346,3 +346,5 @@ The [ordered offline coordinator](PCMHAMMER_PROGRAMMING_WORKFLOW.md#ordered-offl
 [Constructed loader reply handling](PCMHAMMER_PROGRAMMING_WORKFLOW.md#constructed-loader-reply-handling-2026-10-16) now qualifies phase-specific statuses against sender, stack and exact modeled block coverage. Timeout, unknown delivery and retained frames stop the offline coordinator; live writes remain disabled.
 
 [Pending-operation reconciliation](PCMHAMMER_PROGRAMMING_WORKFLOW.md#pending-operation-reconciliation-2026-10-16) now joins the original stop reason to exact block, erased-range, marker or full-image comparisons. A matching pending range never authorizes retry or session reuse; live writes remain disabled.
+
+[Native/C# coordinator integration](NATIVE_COORDINATOR_BRIDGE.md) now drives the shared host sequence with original loader instructions over bounded local test pipes. Six full/failed/interrupted scenarios pass; physical programming, readback and recovery remain unqualified and live writes stay disabled.

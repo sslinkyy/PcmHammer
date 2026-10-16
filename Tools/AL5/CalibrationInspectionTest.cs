@@ -59,6 +59,8 @@ internal static class CalibrationInspectionTest
     {
         try
         {
+            if (args.Length == 1 && args[0] == "--offline-coordinator-bridge")
+                return OfflineCoordinatorBridge.Run();
             Test("Python golden checksum fixture and unchanged comparison", () =>
             {
                 var report = AL5CalibrationInspection.Compare(Fixture(), Fixture());
