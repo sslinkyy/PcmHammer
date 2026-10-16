@@ -1617,10 +1617,10 @@ namespace PcmHacking
                 string? backupPath = dialog.ShowDialog(this) == DialogResult.OK ? dialog.FileName : null;
                 try
                 {
-                    AL5ProgrammingAssessment report = AL5ProgrammingWorkflow.Assess(
-                        ReadAl5OfflineFile(candidatePath, AL5CalibrationInspection.Length),
-                        ReadAl5OfflineFile(snapshotPath, AL5ProgrammingWorkflow.SnapshotLength),
-                        backupPath == null ? null : ReadAl5OfflineFile(backupPath, AL5ProgrammingWorkflow.CollateralLength));
+                    byte[] candidate = ReadAl5OfflineFile(candidatePath, AL5CalibrationInspection.Length);
+                    byte[] snapshot = ReadAl5OfflineFile(snapshotPath, AL5ProgrammingWorkflow.SnapshotLength);
+                    byte[]? backup = backupPath == null ? null : ReadAl5OfflineFile(backupPath, AL5ProgrammingWorkflow.CollateralLength);
+                    AL5ProgrammingAssessment report = AL5ProgrammingWorkflow.Assess(candidate, snapshot, backup);
                     this.AddUserMessage("AL5 offline snapshot assessment. Candidate: " + candidatePath);
                     this.AddUserMessage("Snapshot: " + snapshotPath + "; SHA256: " + report.SnapshotSha256);
                     this.AddUserMessage("Collateral backup: " + (backupPath ?? "unavailable") +
@@ -1630,6 +1630,13 @@ namespace PcmHacking
                     this.AddUserMessage("Saved-file match: " + report.ExactSavedImageMatch +
                         "; zero-to-one conflict: " + report.ObservedZeroToOneConflict +
                         ". Current physical state and loader session are unknown.");
+                    if (report.Candidate.ChecksPass && backup != null)
+                    {
+                        var rehearsal = new AL5OfflineProgrammingSession(candidate, backup);
+                        this.AddUserMessage("Offline sequence prepared: " + rehearsal.Operations.Count +
+                            " modeled operations; first stage " + rehearsal.PendingOperation!.Phase +
+                            ". No operation outcomes have been supplied and no controller operations are executed.");
+                    }
                 }
                 catch (Exception exception)
                 {

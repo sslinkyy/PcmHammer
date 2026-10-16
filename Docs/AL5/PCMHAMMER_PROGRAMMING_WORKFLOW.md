@@ -71,3 +71,50 @@ The C# assessment carries the same data-versus-authority distinction as
 [Python snapshot reconciliation](SNAPSHOT_RECONCILIATION.md). Native instruction
 experiments remain in the existing offline tools; none of this establishes
 physical programming or interrupted-flash recovery.
+
+## Ordered offline coordinator (2026-10-16)
+
+`AL5OfflineProgrammingSession` now expands the shared stage layout into 389
+immutable, ordered operations: boot/loader entry, conditional erase, 224
+calibration blocks, 161 collateral blocks, finalization and saved verification.
+The final calibration block is 216 bytes; the final collateral block is 38 bytes.
+There are no payloads, packets, transport callbacks or live execution methods.
+The constructor requires a valid candidate and an exact independent collateral
+baseline before a rehearsal can start. It owns copies of both input buffers.
+
+The synchronous host coordinator accepts explicit **model** results against the
+exact pending operation object. Reused ordinals or addresses from another attempt
+do not identify that operation. Stale, duplicate, out-of-order and foreign-attempt
+results are rejected without changing the cursor or journal. Modeled completion
+advances one operation; lost replies, model failures, interruptions and cancellation
+stop the attempt immediately, retaining the pending operation and outcome.
+
+`AssessStoppedSnapshot` compares saved bytes using the existing assessment. It
+never resumes or advances the stopped attempt, including when the complete saved
+image matches. A reconstruction rehearsal requires explicitly creating a separate
+session, which begins at boot/loader entry and conditional erase with a new set
+of operation identities. This choice is a host-model experiment, not proof that
+a physical TCM can reenter its loader or survive another erase.
+
+Finalization completion cannot substitute for verification. The last operation
+requires `RecordSavedVerification` and matching calibration, collateral and marker
+bytes. A damaged region stops the attempt; malformed verification input changes
+neither the journal nor state. A match yields `SavedImageVerified`, which describes
+the supplied files only. Physical operation success and loader-session reuse
+remain unknown; live writing, automatic retry, recovery and readiness remain false.
+Observation collections are immutable snapshots, and include the snapshot SHA256
+when verification was assessed.
+
+The WinForms saved-snapshot tool now also prepares this coordinator when a valid
+candidate and independent collateral file are supplied. It logs the operation
+count and first pending stage, without supplying any synthetic completion results
+or executing controller operations. Existing WriteManager rejection and the reader
+are unchanged in this step.
+
+Validation adds nine coordinator scenarios to the production-source BCL harness
+(26 checks total). These cover exact block coverage, short tails, full sequence
+completion, immutable ownership, and all four stop outcomes at all six stages.
+They exercise host decision semantics, not native instructions or hardware.
+The shared library and WinForms builds passed, as did all 210 null-vehicle write
+guard combinations and 31 file-only Python reconciliation/planner regressions.
+No adapter, controller, native emulator or interactive UI was run for this step.

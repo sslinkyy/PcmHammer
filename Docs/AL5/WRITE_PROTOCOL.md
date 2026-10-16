@@ -340,3 +340,5 @@ New offline [finalization and conditional recovery evidence](VPW_FINALIZATION_RE
 [Saved snapshot reconciliation](SNAPSHOT_RECONCILIATION.md) distinguishes matching data, remaining clear-only differences and zero-to-one conflicts after ambiguous operations. Missing collateral stays unknown; saved files never authorize retry, session reuse or live writes.
 
 [PcmHammer programming workflow integration](PCMHAMMER_PROGRAMMING_WORKFLOW.md) adds a shared C# modeled-stage and retry assessment, an offline saved-snapshot command in WinForms, and blocked-write diagnostics. No vehicle programming or automatic retry is enabled.
+
+The [ordered offline coordinator](PCMHAMMER_PROGRAMMING_WORKFLOW.md#ordered-offline-coordinator-2026-10-16) now tracks 389 modeled operations with attempt-bound results, terminal interruption handling and separate saved-image verification. Reconciliation cannot resume stopped attempts; live writes remain disabled.
