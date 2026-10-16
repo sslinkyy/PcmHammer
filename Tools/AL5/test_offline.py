@@ -190,6 +190,27 @@ class OfflineSafetyTests(unittest.TestCase):
         self.assertEqual([], report['would_send'])
         self.assertEqual([], report['program_packets'])
 
+    def test_integrated_program_verification_evidence_keeps_writes_disabled(self):
+        data = fixture()
+        report = plan(data, data, sha256(data), 'AL5', 15184109)
+        recovery = report['calibration_recovery_assessment']
+        raw = (Path(__file__).resolve().parents[2] / recovery['program_session_evidence']).read_bytes()
+        native = json.loads(raw)
+        self.assertEqual(sha256(raw), recovery['program_session_evidence_sha256'])
+        self.assertEqual(native['generator_sha256'], recovery['implementations']['emulate_al5_program_session.py'])
+        for name, digest in native['dependency_sha256'].items():
+            self.assertEqual(digest, recovery['implementations'][name])
+        self.assertEqual(4, len(native['cases']))
+        self.assertEqual(LENGTH, native['cases'][0]['calibration']['native_program_bytes'])
+        self.assertTrue(native['cases'][0]['verification']['offline_verification_pass'])
+        self.assertTrue(recovery['joined_erase_program_finalize_verification_modeled'])
+        for field in ('physical_programming_verified', 'physical_readback_verified',
+                      'physical_recovery_verified', 'automatic_retry_allowed', 'live_write_enabled', 'ready_to_flash'):
+            self.assertFalse(recovery[field])
+        self.assertEqual([], report['would_send'])
+        self.assertEqual([], report['erase_packets'])
+        self.assertEqual([], report['program_packets'])
+
     def test_cli_valid_input_still_returns_blocked_exit_code(self):
         data = fixture()
         with tempfile.TemporaryDirectory() as directory:

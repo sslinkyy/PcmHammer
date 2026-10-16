@@ -84,3 +84,5 @@ remain disabled.
 Validation: **346 offline tests passed with no skips**. The CLI reproduced
 the four-case saved report byte-for-byte. Staged changes passed
 `git diff --cached --check`; no adapter or controller was accessed.
+
+[Joined erase/program/finalize/verification session](PROGRAM_SESSION.md) now exercises all 57,304 calibration bytes through native block/word code with conditional synthetic flash and collateral restoration. Host verification rejects checksum, collateral and marker failures; live writes remain disabled.

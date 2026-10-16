@@ -1,0 +1,342 @@
+{
+  "mode": "offline_joined_boot_erase_program_finalize_verify",
+  "low_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
+  "loader_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
+  "generator_sha256": "73809892b661ff3ca1589b47a3ad4024413d8796ef0397033077d03b63d4ec03",
+  "dependency_sha256": {
+    "emulate_boot_loader_handoff.py": "e4b42498fcd0a77490052002ee1e6291a4dfe425c80c2b9ac85a0ac5466fcbf7",
+    "emulate_loader_error_sender.py": "ab02b80fcf1181a4d90e70658eb7ca5da4ac3a1fa069712ea90a360876fb83d1",
+    "emulate_loader_erase_failures.py": "2db16548347065ecf10bacf3d232a751b276dc1c4cf8c6e0ebc2486d7c8987b0",
+    "emulate_loader_entry.py": "e9b5566fc2b2906e4a1253bd0909ad620328e7629e04ccf119995b7a4a1e91f8",
+    "emulate_loader_parser.py": "62ba7801849fc51361c0dfab2b8b85063a3e590eda1b78d14329fb125c10416c",
+    "checksum.py": "b057805b2f5dc141141be5ce747ee78be98e441746a05d3a4a0cb3911bf2ef93",
+    "al5_segment.py": "c391085ae14ed3f8c762c0ad2baf174474d2287fc17d95b3a5bb4ba3fe169edb"
+  },
+  "cases": [
+    {
+      "name": "complete_dense_calibration",
+      "boot_arm_response": [
+        "6df0187444"
+      ],
+      "handoff": {
+        "uploaded_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
+        "native_uploaded_bytes": 1590,
+        "boot_stack_delta": -72,
+        "pending_boot_return": "0x33b8",
+        "d7_at_loader_entry": "0x680",
+        "native_jsr_reached": true,
+        "loader_bytes_preloaded": false
+      },
+      "erase_ranges": [
+        {
+          "start": "0x8000",
+          "exclusive_end": "0x10000"
+        },
+        {
+          "start": "0x10000",
+          "exclusive_end": "0x20000"
+        }
+      ],
+      "calibration": {
+        "region_start": "0x8000",
+        "bytes_reconstructed": 57304,
+        "blocks_completed": 224,
+        "blocks_skipped_erased": 0,
+        "native_program_bytes": 57304,
+        "expected_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b"
+      },
+      "collateral": {
+        "region_start": "0x15fd8",
+        "bytes_reconstructed": 40998,
+        "blocks_completed": 2,
+        "blocks_skipped_erased": 159,
+        "native_program_bytes": 512,
+        "expected_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268"
+      },
+      "finalization": {
+        "stop": "reset_exit",
+        "responses": [
+          "760086"
+        ],
+        "stack_delta": 0,
+        "marker_writes": 1
+      },
+      "verification": {
+        "expected_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+        "readback_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+        "exact_calibration_match": true,
+        "native_checksum_valid": true,
+        "calibration_layout_valid": true,
+        "be16_sum_zero": true,
+        "marker": "0x4afc",
+        "completion_marker_matches": true,
+        "collateral_before_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+        "collateral_after_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+        "collateral_matches": true,
+        "scope": "Host inspection of the same synthetic flash backing; no physical readback exchange.",
+        "offline_verification_pass": true,
+        "physical_readback_verified": false,
+        "physical_recovery_verified": false,
+        "live_write_enabled": false,
+        "ready_to_flash": false
+      },
+      "same_native_session": true,
+      "synthetic_pointer_table": true,
+      "conditional_sector_map": true,
+      "physical_programming_verified": false,
+      "live_write_enabled": false,
+      "ready_to_flash": false,
+      "would_send": [],
+      "post_finalization_fault_check": {
+        "expected_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+        "readback_sha256": "8314e2f9ff5d226a30d757dafa9ab6ccfe6fa087281f3e397d32a3e7a0af6889",
+        "exact_calibration_match": false,
+        "native_checksum_valid": false,
+        "calibration_layout_valid": true,
+        "be16_sum_zero": false,
+        "marker": "0x4afc",
+        "completion_marker_matches": true,
+        "collateral_before_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+        "collateral_after_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+        "collateral_matches": true,
+        "scope": "Host inspection of the same synthetic flash backing; no physical readback exchange.",
+        "offline_verification_pass": false,
+        "physical_readback_verified": false,
+        "physical_recovery_verified": false,
+        "live_write_enabled": false,
+        "ready_to_flash": false
+      }
+    },
+    {
+      "name": "zero_sum_bad_crc_rejected",
+      "boot_arm_response": [
+        "6df0187444"
+      ],
+      "handoff": {
+        "uploaded_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
+        "native_uploaded_bytes": 1590,
+        "boot_stack_delta": -72,
+        "pending_boot_return": "0x33b8",
+        "d7_at_loader_entry": "0x680",
+        "native_jsr_reached": true,
+        "loader_bytes_preloaded": false
+      },
+      "erase_ranges": [
+        {
+          "start": "0x8000",
+          "exclusive_end": "0x10000"
+        },
+        {
+          "start": "0x10000",
+          "exclusive_end": "0x20000"
+        }
+      ],
+      "calibration": {
+        "region_start": "0x8000",
+        "bytes_reconstructed": 57304,
+        "blocks_completed": 8,
+        "blocks_skipped_erased": 216,
+        "native_program_bytes": 2008,
+        "expected_sha256": "d1ab91e39db6cb5b2c19fea74e09acbb468ade947187e2e13656d6d3062c7cd3"
+      },
+      "collateral": {
+        "region_start": "0x15fd8",
+        "bytes_reconstructed": 40998,
+        "blocks_completed": 2,
+        "blocks_skipped_erased": 159,
+        "native_program_bytes": 512,
+        "expected_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268"
+      },
+      "finalization": {
+        "stop": "reset_exit",
+        "responses": [
+          "760086"
+        ],
+        "stack_delta": 0,
+        "marker_writes": 1
+      },
+      "verification": {
+        "expected_sha256": "d1ab91e39db6cb5b2c19fea74e09acbb468ade947187e2e13656d6d3062c7cd3",
+        "readback_sha256": "d1ab91e39db6cb5b2c19fea74e09acbb468ade947187e2e13656d6d3062c7cd3",
+        "exact_calibration_match": true,
+        "native_checksum_valid": false,
+        "calibration_layout_valid": true,
+        "be16_sum_zero": true,
+        "marker": "0x4afc",
+        "completion_marker_matches": true,
+        "collateral_before_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+        "collateral_after_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+        "collateral_matches": true,
+        "scope": "Host inspection of the same synthetic flash backing; no physical readback exchange.",
+        "offline_verification_pass": false,
+        "physical_readback_verified": false,
+        "physical_recovery_verified": false,
+        "live_write_enabled": false,
+        "ready_to_flash": false
+      },
+      "same_native_session": true,
+      "synthetic_pointer_table": true,
+      "conditional_sector_map": true,
+      "physical_programming_verified": false,
+      "live_write_enabled": false,
+      "ready_to_flash": false,
+      "would_send": []
+    },
+    {
+      "name": "collateral_not_restored_rejected",
+      "boot_arm_response": [
+        "6df0187444"
+      ],
+      "handoff": {
+        "uploaded_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
+        "native_uploaded_bytes": 1590,
+        "boot_stack_delta": -72,
+        "pending_boot_return": "0x33b8",
+        "d7_at_loader_entry": "0x680",
+        "native_jsr_reached": true,
+        "loader_bytes_preloaded": false
+      },
+      "erase_ranges": [
+        {
+          "start": "0x8000",
+          "exclusive_end": "0x10000"
+        },
+        {
+          "start": "0x10000",
+          "exclusive_end": "0x20000"
+        }
+      ],
+      "calibration": {
+        "region_start": "0x8000",
+        "bytes_reconstructed": 57304,
+        "blocks_completed": 8,
+        "blocks_skipped_erased": 216,
+        "native_program_bytes": 2008,
+        "expected_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b"
+      },
+      "collateral": null,
+      "finalization": {
+        "stop": "reset_exit",
+        "responses": [
+          "760086"
+        ],
+        "stack_delta": 0,
+        "marker_writes": 1
+      },
+      "verification": {
+        "expected_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+        "readback_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+        "exact_calibration_match": true,
+        "native_checksum_valid": true,
+        "calibration_layout_valid": true,
+        "be16_sum_zero": true,
+        "marker": "0x4afc",
+        "completion_marker_matches": true,
+        "collateral_before_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+        "collateral_after_sha256": "021aa8ff312a098ab93e5b684dacc7b1deec7ce4c745ada29a81b0232ede44bf",
+        "collateral_matches": false,
+        "scope": "Host inspection of the same synthetic flash backing; no physical readback exchange.",
+        "offline_verification_pass": false,
+        "physical_readback_verified": false,
+        "physical_recovery_verified": false,
+        "live_write_enabled": false,
+        "ready_to_flash": false
+      },
+      "same_native_session": true,
+      "synthetic_pointer_table": true,
+      "conditional_sector_map": true,
+      "physical_programming_verified": false,
+      "live_write_enabled": false,
+      "ready_to_flash": false,
+      "would_send": []
+    },
+    {
+      "name": "marker_failure_rejected",
+      "boot_arm_response": [
+        "6df0187444"
+      ],
+      "handoff": {
+        "uploaded_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
+        "native_uploaded_bytes": 1590,
+        "boot_stack_delta": -72,
+        "pending_boot_return": "0x33b8",
+        "d7_at_loader_entry": "0x680",
+        "native_jsr_reached": true,
+        "loader_bytes_preloaded": false
+      },
+      "erase_ranges": [
+        {
+          "start": "0x8000",
+          "exclusive_end": "0x10000"
+        },
+        {
+          "start": "0x10000",
+          "exclusive_end": "0x20000"
+        }
+      ],
+      "calibration": {
+        "region_start": "0x8000",
+        "bytes_reconstructed": 57304,
+        "blocks_completed": 8,
+        "blocks_skipped_erased": 216,
+        "native_program_bytes": 2008,
+        "expected_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b"
+      },
+      "collateral": {
+        "region_start": "0x15fd8",
+        "bytes_reconstructed": 40998,
+        "blocks_completed": 2,
+        "blocks_skipped_erased": 159,
+        "native_program_bytes": 512,
+        "expected_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268"
+      },
+      "finalization": {
+        "stop": "receive_boundary",
+        "responses": [
+          "7600f8"
+        ],
+        "stack_delta": -4,
+        "marker_writes": 1
+      },
+      "verification": {
+        "expected_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+        "readback_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+        "exact_calibration_match": true,
+        "native_checksum_valid": true,
+        "calibration_layout_valid": true,
+        "be16_sum_zero": true,
+        "marker": "0x4afd",
+        "completion_marker_matches": false,
+        "collateral_before_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+        "collateral_after_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+        "collateral_matches": true,
+        "scope": "Host inspection of the same synthetic flash backing; no physical readback exchange.",
+        "offline_verification_pass": false,
+        "physical_readback_verified": false,
+        "physical_recovery_verified": false,
+        "live_write_enabled": false,
+        "ready_to_flash": false
+      },
+      "same_native_session": true,
+      "synthetic_pointer_table": true,
+      "conditional_sector_map": true,
+      "physical_programming_verified": false,
+      "live_write_enabled": false,
+      "ready_to_flash": false,
+      "would_send": []
+    }
+  ],
+  "limitations": [
+    "Conditional 32 KiB/64 KiB sector mapping is a host model, not proven installed-chip erase scope.",
+    "ID/FIFO/readiness and erased/programmed bytes are synthetic. Command/MMIO stores remain suppressed; stops before reset.",
+    "Collateral snapshot/restore and verification use synthetic memory, not current physical backups or independent wire readback.",
+    "256-byte block bound is an experiment limit, not a physical protocol or buffer-size qualification."
+  ],
+  "physical_programming_verified": false,
+  "physical_readback_verified": false,
+  "physical_recovery_verified": false,
+  "automatic_retry_allowed": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "would_send": []
+}

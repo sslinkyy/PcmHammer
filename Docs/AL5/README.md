@@ -315,3 +315,5 @@ Capstone (the existing WSL environment was used). Neither test opens a vehicle.
 [Error sender and native software reentry](ERROR_SENDER_REENTRY.md) follows actual sender timeouts through their JMP into loader entry. Intended status bytes do not qualify physical delivery or retry safety; live writes remain disabled.
 
 [Native boot-to-loader handoff](BOOT_LOADER_HANDOFF.md) now joins original boot copying/JSR, captured-loader entry and modeled word programming in one CPU/RAM session. Physical startup, programming and recovery remain unqualified; live writes stay disabled.
+
+[Joined erase/program/finalize/verification session](PROGRAM_SESSION.md) now exercises all 57,304 calibration bytes through native block/word code with conditional synthetic flash and collateral restoration. Host verification rejects checksum, collateral and marker failures; live writes remain disabled.
