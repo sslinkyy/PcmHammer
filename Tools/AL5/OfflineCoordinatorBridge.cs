@@ -63,6 +63,7 @@ internal static class OfflineCoordinatorBridge
             bridge_sha256 = Hash(File.ReadAllBytes(path)), runtime = Environment.Version.ToString(),
             live_writes_enabled = false }));
         AL5OfflineProgrammingSession? session = null;
+        AL5OfflineProgrammingSession? previous = null;
         string? attempt = null;
         string? line;
         while ((line = ReadLine()) != null)
@@ -87,6 +88,13 @@ internal static class OfflineCoordinatorBridge
                     continue;
                 }
                 if (session == null || token != attempt) throw new ArgumentException("Unknown bridge attempt.");
+                if (action == "source-state")
+                {
+                    if (previous == null) throw new InvalidOperationException("No reconstruction source.");
+                    State(session, attempt, new { source_state = previous.State.ToString(), source_observations = previous.Observations.Count,
+                        source_snapshot_sha256 = session.ReconstructionSource!.ImageAssessment.SnapshotSha256 });
+                    continue;
+                }
                 var pending = session.PendingOperation;
                 if (pending == null || request.GetProperty("sequence").GetInt32() != pending.Sequence)
                     throw new ArgumentException("Not the pending operation.");
@@ -108,9 +116,24 @@ internal static class OfflineCoordinatorBridge
                         break;
                     case "verify":
                     case "reconcile":
+                    case "reconstruct":
                         byte[] snapshot = Bytes(request, "snapshot", AL5ProgrammingWorkflow.SnapshotLength);
                         Pin(request, "snapshot_sha256", Hash(snapshot));
-                        if (action == "verify")
+                        if (action == "reconstruct")
+                        {
+                            if (previous != null) throw new InvalidOperationException("One reconstruction per test bridge process.");
+                            string next = request.GetProperty("next_attempt").GetString()!;
+                            if (!Guid.TryParseExact(next, "N", out _) || next == attempt)
+                                throw new ArgumentException("Requires a distinct next attempt UUID.");
+                            var source = session.AssessStoppedSnapshot(snapshot);
+                            var reconstruction = session.CreateReconstructionRehearsal(source);
+                            previous = session;
+                            session = reconstruction;
+                            attempt = next;
+                            detail = new { source_state = previous.State.ToString(), source_observations = previous.Observations.Count,
+                                source_snapshot_sha256 = source.ImageAssessment.SnapshotSha256 };
+                        }
+                        else if (action == "verify")
                         {
                             var verified = session.RecordSavedVerification(pending, snapshot);
                             detail = new { exact_image = verified.ExactSavedImageMatch, snapshot_sha256 = verified.SnapshotSha256 };

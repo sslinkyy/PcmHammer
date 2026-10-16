@@ -103,6 +103,38 @@ class BridgeBoundaryTests(unittest.TestCase):
         self.assertEqual(1, len(responses))
         self.assertIn('resource budget', result.stderr)
 
+    def test_missing_baseline_does_not_initialize_an_attempt(self):
+        missing = self.init(); missing['backup'] = ''; missing['backup_sha256'] = sha256(b'')
+        result, responses = self.run_bridge([missing, self.init()])
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertTrue(responses[1]['error'])
+        self.assertIsNone(responses[1]['state'])
+        self.assertEqual(0, responses[2]['observations'])
+
+    def test_explicit_reconstruction_changes_active_identity_without_resuming_source(self):
+        snapshot = b'\xff'*98304
+        next_attempt = uuid.uuid4().hex
+        reconstruct = self.command('reconstruct', sequence=2, snapshot=snapshot.hex(),
+            snapshot_sha256=sha256(snapshot), next_attempt=next_attempt)
+        bad = dict(reconstruct); bad['snapshot_sha256'] = '0'*64
+        same = dict(reconstruct); same['next_attempt'] = self.attempt
+        source = dict(action='source-state', attempt=next_attempt)
+        result, responses = self.run_bridge([self.init(), self.command('outcome', outcome='ModelCompleted'),
+            self.command('loader', sequence=2, body='760085', sender='Returned', stack_delta=-12,
+                         program_start=None, program_bytes=None), bad, same, reconstruct,
+            self.command('outcome', outcome='ModelCompleted'), source])
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertTrue(responses[4]['error'])
+        self.assertTrue(responses[5]['error'])
+        fresh = responses[6]
+        self.assertEqual(next_attempt, fresh['attempt'])
+        self.assertEqual(0, fresh['observations'])
+        self.assertEqual('BootAndLoaderEntry', fresh['pending']['phase'])
+        self.assertEqual('Stopped', fresh['detail']['source_state'])
+        self.assertTrue(responses[7]['error'])
+        self.assertEqual('Stopped', responses[8]['detail']['source_state'])
+        self.assertEqual(2, responses[8]['detail']['source_observations'])
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -2,14 +2,14 @@
   "scope": "production_csharp_coordinator_with_original_instruction_emulation",
   "low_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
   "loader_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
-  "bridge_sha256": "31f4e649cbdb0870d60867b6c123981f23148d53406c8301b670630956e1316e",
+  "bridge_sha256": "3dc390b3bb1a8746a0e8aa2ebfb2d5b3f7a5623ec35eb00f7f76e705b51f018a",
   "source_sha256": {
-    "Tools/AL5/test_native_coordinator_bridge.py": "73942f4a51af2ca7f6396b438428388aa2a7e75239249de96017a95801330692",
-    "Apps/PcmLibrary/AL5OfflineProgrammingSession.cs": "1c4ab64087ceec549fe7bfb4fe0c5adae27af898998ded8fc98fc46f89fa10c5",
+    "Tools/AL5/test_native_coordinator_bridge.py": "08e6be3936e92036a1908720a50ebce096d1a7aeced2e4711b1344bbdf08ec9f",
+    "Apps/PcmLibrary/AL5OfflineProgrammingSession.cs": "fcde55f2413adbf3bbbbac5201624f8c9b4e5f2dee5036e42c0f494daaa0090f",
     "Apps/PcmLibrary/AL5ProgrammingWorkflow.cs": "a62229ef7bdc1b9f7537c251e94d02002bcfeb85ddf601bebcc72d95794d5ed4",
     "Apps/PcmLibrary/AL5LoaderModelReply.cs": "e5519d6d7225222b87845b7d60f04c1dcc463ca44fe2a77d09422a4d1b62d0ea",
     "Apps/PcmLibrary/AL5CalibrationInspection.cs": "c0c1b546fa184d2ac6ada7e1e1cb95a7825caf70bcb7c929042721f527e85f11",
-    "Tools/AL5/OfflineCoordinatorBridge.cs": "fe158f3e3807865a4979b7c69e6c211bf739b529145e8550241fec4a45e9346f",
+    "Tools/AL5/OfflineCoordinatorBridge.cs": "0cbc30546647bb620f0e9c51229b7528312275cefd0ba92aa95af24d89a46d41",
     "Tools/AL5/CalibrationInspectionTest.cs": "189fda01d769d3fb78154f46fd7ed2ee3277d8151c16c9fbaac0b2f0618447de",
     "Tools/AL5/CalibrationInspectionTest.csproj": "3d8a57e062116224f6a8e4d9f9ef891ec4d4aedc72fc354069410d6a1a3a899c",
     "Tools/AL5/emulate_al5_program_session.py": "8c98dfa2c18742ac032cfc7ee3ce8619f60fb5970cbf77a22db5498c81acc844",
@@ -193,6 +193,114 @@
       "native_program_bytes": 98302,
       "observations": 388,
       "bridge_runtime": "8.0.5",
+      "stale_and_terminal_requests_rejected": true
+    },
+    {
+      "name": "partial_block_reconstruction",
+      "state": "SavedImageVerified",
+      "native_program_bytes": 98302,
+      "observations": 389,
+      "source_attempt": {
+        "name": "partial_block",
+        "state": "Stopped",
+        "pending": {
+          "sequence": 19,
+          "phase": "CalibrationBlocks",
+          "start": 36864,
+          "length": 256
+        },
+        "reconciliation": {
+          "disposition": "ClearOnlyDifferences",
+          "exact_image": false,
+          "snapshot_sha256": "5bddada599052a66d94e0698e7435a3457d488839e3252dbbdd8cbd3a1181301",
+          "stop_outcome": "Interrupted",
+          "retry_enabled": false,
+          "can_resume": false,
+          "matching_words": 4,
+          "clear_words": 124,
+          "set_words": 0,
+          "first_conflict": null
+        },
+        "native_response": [],
+        "native_stack_delta": -4,
+        "native_sender_returns": 0,
+        "native_program_bytes": 4104,
+        "observations": 19,
+        "bridge_runtime": "8.0.5",
+        "stale_and_terminal_requests_rejected": true
+      },
+      "reconstruction": {
+        "name": "complete_dense",
+        "state": "SavedImageVerified",
+        "native_program_bytes": 98302,
+        "observations": 389,
+        "verification": {
+          "exact_image": true,
+          "snapshot_sha256": "a144b3327ffb9226d987db8b11bd7e76f9d227b17b33ad1089cef34109bb29a5"
+        },
+        "bridge_runtime": "8.0.5",
+        "stale_and_terminal_requests_rejected": true
+      },
+      "source_snapshot_sha256": "5bddada599052a66d94e0698e7435a3457d488839e3252dbbdd8cbd3a1181301",
+      "fresh_emulator_flash_only": true,
+      "old_ram_not_copied": true,
+      "loader_reuploaded": true,
+      "source_coordinator_remains_stopped": true,
+      "stale_and_terminal_requests_rejected": true
+    },
+    {
+      "name": "conflicting_word_reconstruction",
+      "state": "SavedImageVerified",
+      "native_program_bytes": 98302,
+      "observations": 389,
+      "source_attempt": {
+        "name": "conflicting_word",
+        "state": "Stopped",
+        "pending": {
+          "sequence": 19,
+          "phase": "CalibrationBlocks",
+          "start": 36864,
+          "length": 256
+        },
+        "reconciliation": {
+          "disposition": "ZeroToOneConflict",
+          "exact_image": false,
+          "snapshot_sha256": "d010482286ff96bcab556294f808c3de571fe4fc5bd7dc166c3b749ee4026818",
+          "stop_outcome": "ModelFailure",
+          "retry_enabled": false,
+          "can_resume": false,
+          "matching_words": 0,
+          "clear_words": 127,
+          "set_words": 1,
+          "first_conflict": 36864
+        },
+        "native_response": [
+          "7600f8"
+        ],
+        "native_stack_delta": -4,
+        "native_sender_returns": 1,
+        "native_program_bytes": 4098,
+        "observations": 19,
+        "bridge_runtime": "8.0.5",
+        "stale_and_terminal_requests_rejected": true
+      },
+      "reconstruction": {
+        "name": "complete_dense",
+        "state": "SavedImageVerified",
+        "native_program_bytes": 98302,
+        "observations": 389,
+        "verification": {
+          "exact_image": true,
+          "snapshot_sha256": "a144b3327ffb9226d987db8b11bd7e76f9d227b17b33ad1089cef34109bb29a5"
+        },
+        "bridge_runtime": "8.0.5",
+        "stale_and_terminal_requests_rejected": true
+      },
+      "source_snapshot_sha256": "d010482286ff96bcab556294f808c3de571fe4fc5bd7dc166c3b749ee4026818",
+      "fresh_emulator_flash_only": true,
+      "old_ram_not_copied": true,
+      "loader_reuploaded": true,
+      "source_coordinator_remains_stopped": true,
       "stale_and_terminal_requests_rejected": true
     }
   ],

@@ -348,3 +348,5 @@ The [ordered offline coordinator](PCMHAMMER_PROGRAMMING_WORKFLOW.md#ordered-offl
 [Pending-operation reconciliation](PCMHAMMER_PROGRAMMING_WORKFLOW.md#pending-operation-reconciliation-2026-10-16) now joins the original stop reason to exact block, erased-range, marker or full-image comparisons. A matching pending range never authorizes retry or session reuse; live writes remain disabled.
 
 [Native/C# coordinator integration](NATIVE_COORDINATOR_BRIDGE.md) now drives the shared host sequence with original loader instructions over bounded local test pipes. Six full/failed/interrupted scenarios pass; physical programming, readback and recovery remain unqualified and live writes stay disabled.
+
+Explicit reconstruction rehearsal now binds the chosen stopped-session reconciliation to a fresh coordinator and a fresh emulator. Both partial-block and conflicting-word reconstructions repeat boot, erase, programming and verification; the original attempt stays stopped and physical recovery remains unproven. See [the integration evidence](NATIVE_COORDINATOR_BRIDGE.md).

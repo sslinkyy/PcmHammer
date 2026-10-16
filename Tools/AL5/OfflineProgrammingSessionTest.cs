@@ -254,6 +254,55 @@ internal static class OfflineProgrammingSessionTest
                 "Reconciliation modified journal or retained mutable bytes");
             Reject(() => New().AssessStoppedSnapshot(snapshot));
         });
+        Test("explicit reconstruction starts fresh and binds the chosen source evidence", () =>
+        {
+            var old = Stopped(AL5ProgrammingPhase.CalibrationBlocks);
+            var source = old.AssessStoppedSnapshot(snapshot);
+            int oldCount = old.Observations.Count;
+            var fresh = old.CreateReconstructionRehearsal(source);
+            Check(ReferenceEquals(fresh.ReconstructionSource, source) && fresh.Observations.Count == 0 &&
+                fresh.PendingOperation!.Phase == AL5ProgrammingPhase.BootAndLoaderEntry && fresh.PendingOperation.Sequence == 1 &&
+                fresh.Operations.Count == 389, "Reconstruction inherited progress or lost source");
+            Check(fresh.Assessment.Candidate.Sha256 == old.Assessment.Candidate.Sha256 &&
+                fresh.Assessment.CollateralBackupSha256 == source.ImageAssessment.CollateralBackupSha256,
+                "Reconstruction changed candidate or baseline identity");
+            fresh.RecordModelOutcome(fresh.PendingOperation!, AL5OfflineOutcome.ModelCompleted);
+            Check(fresh.PendingOperation!.Phase == AL5ProgrammingPhase.ConditionalErase &&
+                old.State == AL5OfflineRunState.Stopped && old.Observations.Count == oldCount, "New attempt resumed old attempt or skipped erase");
+            Reject(() => fresh.RecordModelOutcome(old.PendingOperation!, AL5OfflineOutcome.ModelCompleted));
+            Blocked(old); Blocked(fresh);
+        });
+        Test("foreign reconciliation cannot seed a reconstruction", () =>
+        {
+            var old = Stopped(AL5ProgrammingPhase.CalibrationBlocks);
+            var other = Stopped(AL5ProgrammingPhase.CalibrationBlocks);
+            Reject(() => old.CreateReconstructionRehearsal(other.AssessStoppedSnapshot(snapshot)));
+            Reject(() => old.CreateReconstructionRehearsal(null!));
+            Check(old.State == AL5OfflineRunState.Stopped, "Rejected source changed attempt");
+        });
+        Test("active and completed attempts cannot prepare reconstruction", () =>
+        {
+            var source = Stopped(AL5ProgrammingPhase.CalibrationBlocks).AssessStoppedSnapshot(snapshot);
+            var active = New();
+            Reject(() => active.CreateReconstructionRehearsal(source));
+            Reach(active, AL5ProgrammingPhase.IndependentVerification);
+            active.RecordSavedVerification(active.PendingOperation!, snapshot);
+            Reject(() => active.CreateReconstructionRehearsal(source));
+            Check(active.State == AL5OfflineRunState.SavedImageVerified, "Completed attempt changed");
+        });
+        Test("reconstruction requires retained baseline independently of flash snapshots", () =>
+        {
+            var old = Stopped(AL5ProgrammingPhase.CalibrationBlocks);
+            byte[] changed = (byte[])snapshot.Clone(); changed[0x25] &= 0xFE;
+            var earlier = old.AssessStoppedSnapshot(changed);
+            var later = old.AssessStoppedSnapshot(snapshot);
+            var fresh = old.CreateReconstructionRehearsal(earlier);
+            Check(fresh.ReconstructionSource!.ImageAssessment.SnapshotSha256 != later.ImageAssessment.SnapshotSha256 &&
+                fresh.ReconstructionSource.ImageAssessment.ObservedZeroToOneConflict,
+                "Caller-selected reconciliation evidence was replaced");
+            Reject(() => new AL5OfflineProgrammingSession(image, Array.Empty<byte>()));
+            Blocked(fresh);
+        });
         return passed;
     }
 }

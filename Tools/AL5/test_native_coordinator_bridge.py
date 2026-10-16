@@ -16,7 +16,8 @@ from al5_segment import START, END, sha256
 from emulate_al5_interruptions import InterruptionSession, enter_loader
 from emulate_al5_program_session import fixture
 
-CASES = ('complete_dense', 'lost_ack', 'partial_block', 'conflicting_word', 'erase_failure', 'marker_failure')
+CASES = ('complete_dense', 'lost_ack', 'partial_block', 'conflicting_word', 'erase_failure', 'marker_failure',
+         'partial_block_reconstruction', 'conflicting_word_reconstruction')
 
 
 class Bridge:
@@ -77,6 +78,10 @@ class Bridge:
         response = self.receive()
         if bool(response.get('error')) != expect_error:
             raise RuntimeError('unexpected bridge result: '+str(response.get('error')))
+        if action == 'reconstruct' and not expect_error:
+            if response['attempt'] != fields['next_attempt']:
+                raise RuntimeError('bridge did not bind the new attempt identity')
+            self.attempt = response['attempt']
         self.state = response
         return response
 
@@ -110,89 +115,125 @@ def loader_result(bridge, native, operation):
         program_bytes=count if count else None)
 
 
+def drive(native, bridge, image, backup, name):
+    programmed = 0
+    last = None
+    # A stale/foreign stream request cannot select an operation in this attempt.
+    bridge.request('outcome', outcome='ModelCompleted', attempt=uuid.uuid4().hex, expect_error=True)
+    bridge.request('outcome', outcome='ModelCompleted', sequence=2, expect_error=True)
+    if bridge.state['observations'] != 0 or bridge.state['pending']['sequence'] != 1:
+        raise RuntimeError('rejected bridge request changed coordinator')
+    for _ in range(389):
+        operation = bridge.state['pending']
+        if operation is None:
+            break
+        phase = operation['phase']
+        if phase == 'BootAndLoaderEntry':
+            handoff = enter_loader(native)
+            if handoff['uploaded_sha256'] != sha256(native.code):
+                raise RuntimeError('native handoff identity mismatch')
+            bridge.request('outcome', outcome='ModelCompleted')
+        elif phase == 'ConditionalErase':
+            bridge.request('outcome', outcome='ModelCompleted', expect_error=True)
+            last = native.erase(patterns=('persistent_toggle', 'stable') if name == 'erase_failure' else ('stable', 'stable'))
+            loader_result(bridge, last, operation)
+        elif phase in ('CalibrationBlocks', 'CollateralRestoration'):
+            start, length = operation['start'], operation['length']
+            data, base = (image, START) if phase == 'CalibrationBlocks' else (backup, END)
+            if start == START+0x1000:
+                if name == 'lost_ack':
+                    native.timeout_at_byte = 6
+                elif name == 'partial_block':
+                    native.arm_interruption('after_word', occurrence=4)
+                elif name == 'conflicting_word':
+                    # Explicit chosen flash-model fault: requested 0x0001 cannot set this zero bit.
+                    native.uc.mem_write(start, b'\x00\x00')
+            last = native.program_block(start, data[start-base:start-base+length])
+            programmed += last['modeled_program_words']*2
+            if last['stop'] == 'modeled_interruption':
+                bridge.request('outcome', outcome='Interrupted')
+            else:
+                loader_result(bridge, last, operation)
+        elif phase == 'Finalization':
+            last = native.finalize(marker_matches=name != 'marker_failure')
+            loader_result(bridge, last, operation)
+        elif phase == 'IndependentVerification':
+            snapshot = native.snapshot().flash
+            bridge.request('verify', snapshot=snapshot.hex(), snapshot_sha256='0'*64, expect_error=True)
+            bridge.request('verify', snapshot=snapshot.hex(), snapshot_sha256=sha256(snapshot))
+        else:
+            raise RuntimeError('unknown coordinator phase')
+        if bridge.state['state'] == 'Stopped':
+            snapshot = native.snapshot().flash
+            bridge.request('reconcile', snapshot=snapshot.hex(), snapshot_sha256=sha256(snapshot))
+            result = bridge.state['detail']
+            expected = dict(lost_ack='SavedRangeMatches', partial_block='ClearOnlyDifferences',
+                conflicting_word='ZeroToOneConflict', erase_failure='ZeroToOneConflict', marker_failure='ClearOnlyDifferences')
+            if result['disposition'] != expected[name] or result['retry_enabled'] or result['can_resume']:
+                raise RuntimeError('native memory and coordinator reconciliation disagree')
+            if name == 'partial_block' and (result['matching_words'], result['clear_words']) != (4, 124):
+                raise RuntimeError('partial native word coverage disagrees')
+            if name == 'conflicting_word' and result['first_conflict'] != START+0x1000:
+                raise RuntimeError('conflicting word address disagrees')
+            before = bridge.state['observations']
+            bridge.request('outcome', outcome='Cancelled', expect_error=True)
+            if bridge.state['state'] != 'Stopped' or bridge.state['observations'] != before:
+                raise RuntimeError('stopped coordinator resumed')
+            return dict(name=name, state='Stopped', pending=operation, reconciliation=result,
+                native_response=last['responses'], native_stack_delta=last['stack_delta'],
+                native_sender_returns=last['native_sender_returns'], native_program_bytes=programmed,
+                observations=before, bridge_runtime=bridge.hello['runtime'], stale_and_terminal_requests_rejected=True)
+    if name != 'complete_dense' or bridge.state['state'] != 'SavedImageVerified':
+        raise RuntimeError('coordinator did not reach expected terminal state')
+    if programmed != 98302 or bridge.state['observations'] != 389:
+        raise RuntimeError('dense native coverage disagrees')
+    verified = bridge.state['detail']
+    bridge.request('outcome', outcome='Cancelled', sequence=389, expect_error=True)
+    if bridge.state['state'] != 'SavedImageVerified' or bridge.state['observations'] != 389:
+        raise RuntimeError('completed coordinator accepted another outcome')
+    return dict(name=name, state=bridge.state['state'], native_program_bytes=programmed,
+        observations=bridge.state['observations'], verification=verified, bridge_runtime=bridge.hello['runtime'],
+        stale_and_terminal_requests_rejected=True)
+
+
 def case(low, code, dll, name):
     native = InterruptionSession(low, code)
     image = fixture()
     backup = native.collateral_before
     bridge = Bridge(dll, image, backup)
-    programmed = 0
-    last = None
     try:
-        # A stale/foreign stream request cannot select an operation in this attempt.
-        bridge.request('outcome', outcome='ModelCompleted', attempt=uuid.uuid4().hex, expect_error=True)
-        bridge.request('outcome', outcome='ModelCompleted', sequence=2, expect_error=True)
-        if bridge.state['observations'] != 0 or bridge.state['pending']['sequence'] != 1:
-            raise RuntimeError('rejected bridge request changed coordinator')
-        for _ in range(389):
-            operation = bridge.state['pending']
-            if operation is None:
-                break
-            phase = operation['phase']
-            if phase == 'BootAndLoaderEntry':
-                handoff = enter_loader(native)
-                if handoff['uploaded_sha256'] != sha256(code):
-                    raise RuntimeError('native handoff identity mismatch')
-                bridge.request('outcome', outcome='ModelCompleted')
-            elif phase == 'ConditionalErase':
-                bridge.request('outcome', outcome='ModelCompleted', expect_error=True)
-                last = native.erase(patterns=('persistent_toggle', 'stable') if name == 'erase_failure' else ('stable', 'stable'))
-                loader_result(bridge, last, operation)
-            elif phase in ('CalibrationBlocks', 'CollateralRestoration'):
-                start, length = operation['start'], operation['length']
-                data, base = (image, START) if phase == 'CalibrationBlocks' else (backup, END)
-                if start == START+0x1000:
-                    if name == 'lost_ack':
-                        native.timeout_at_byte = 6
-                    elif name == 'partial_block':
-                        native.arm_interruption('after_word', occurrence=4)
-                    elif name == 'conflicting_word':
-                        # Explicit chosen flash-model fault: requested 0x0001 cannot set this zero bit.
-                        native.uc.mem_write(start, b'\x00\x00')
-                last = native.program_block(start, data[start-base:start-base+length])
-                programmed += last['modeled_program_words']*2
-                if last['stop'] == 'modeled_interruption':
-                    bridge.request('outcome', outcome='Interrupted')
-                else:
-                    loader_result(bridge, last, operation)
-            elif phase == 'Finalization':
-                last = native.finalize(marker_matches=name != 'marker_failure')
-                loader_result(bridge, last, operation)
-            elif phase == 'IndependentVerification':
-                snapshot = native.snapshot().flash
-                bridge.request('verify', snapshot=snapshot.hex(), snapshot_sha256='0'*64, expect_error=True)
-                bridge.request('verify', snapshot=snapshot.hex(), snapshot_sha256=sha256(snapshot))
-            else:
-                raise RuntimeError('unknown coordinator phase')
-            if bridge.state['state'] == 'Stopped':
-                snapshot = native.snapshot().flash
-                bridge.request('reconcile', snapshot=snapshot.hex(), snapshot_sha256=sha256(snapshot))
-                result = bridge.state['detail']
-                expected = dict(lost_ack='SavedRangeMatches', partial_block='ClearOnlyDifferences',
-                    conflicting_word='ZeroToOneConflict', erase_failure='ZeroToOneConflict', marker_failure='ClearOnlyDifferences')
-                if result['disposition'] != expected[name] or result['retry_enabled'] or result['can_resume']:
-                    raise RuntimeError('native memory and coordinator reconciliation disagree')
-                if name == 'partial_block' and (result['matching_words'], result['clear_words']) != (4, 124):
-                    raise RuntimeError('partial native word coverage disagrees')
-                if name == 'conflicting_word' and result['first_conflict'] != START+0x1000:
-                    raise RuntimeError('conflicting word address disagrees')
-                before = bridge.state['observations']
-                bridge.request('outcome', outcome='Cancelled', expect_error=True)
-                if bridge.state['state'] != 'Stopped' or bridge.state['observations'] != before:
-                    raise RuntimeError('stopped coordinator resumed')
-                return dict(name=name, state='Stopped', pending=operation, reconciliation=result,
-                    native_response=last['responses'], native_stack_delta=last['stack_delta'],
-                    native_sender_returns=last['native_sender_returns'], native_program_bytes=programmed,
-                    observations=before, bridge_runtime=bridge.hello['runtime'], stale_and_terminal_requests_rejected=True)
-        if name != 'complete_dense' or bridge.state['state'] != 'SavedImageVerified':
-            raise RuntimeError('coordinator did not reach expected terminal state')
-        if programmed != 98302 or bridge.state['observations'] != 389:
-            raise RuntimeError('dense native coverage disagrees')
-        verified = bridge.state['detail']
-        bridge.request('outcome', outcome='Cancelled', sequence=389, expect_error=True)
-        if bridge.state['state'] != 'SavedImageVerified' or bridge.state['observations'] != 389:
-            raise RuntimeError('completed coordinator accepted another outcome')
-        return dict(name=name, state=bridge.state['state'], native_program_bytes=programmed,
-            observations=bridge.state['observations'], verification=verified, bridge_runtime=bridge.hello['runtime'],
+        fault = name.removesuffix('_reconstruction')
+        first = drive(native, bridge, image, backup, fault)
+        if not name.endswith('_reconstruction'):
+            return first
+        # Choose a fresh modeled boot context; no physical power-cycle is implied.
+        native.uc.mem_write(0xFF8200, b'OLD!')
+        snapshot = native.snapshot()
+        fresh = InterruptionSession(low, code, snapshot=snapshot)
+        if (fresh.imported_snapshot_sha256 != sha256(snapshot.flash) or fresh.phase != 'boot' or
+                bytes(fresh.uc.mem_read(0xFF8200, 4)) != bytes(4) or
+                bytes(fresh.uc.mem_read(0xFF9000, len(code))) != bytes(len(code))):
+            raise RuntimeError('fresh emulator inherited old CPU/RAM/loader state')
+        old_token = bridge.attempt
+        old_observations = bridge.state['observations']
+        bridge.request('reconstruct', snapshot=snapshot.flash.hex(), snapshot_sha256=sha256(snapshot.flash),
+                       next_attempt=uuid.uuid4().hex)
+        if (bridge.state['observations'] != 0 or bridge.state['pending']['sequence'] != 1 or
+                bridge.state['pending']['phase'] != 'BootAndLoaderEntry'):
+            raise RuntimeError('reconstruction inherited old coordinator progress')
+        source = bridge.state['detail']
+        if source['source_state'] != 'Stopped' or source['source_snapshot_sha256'] != sha256(snapshot.flash):
+            raise RuntimeError('reconstruction source identity was lost')
+        bridge.request('outcome', outcome='ModelCompleted', attempt=old_token, expect_error=True)
+        reconstructed = drive(fresh, bridge, image, backup, 'complete_dense')
+        bridge.request('source-state')
+        if (bridge.state['detail']['source_state'] != 'Stopped' or
+                bridge.state['detail']['source_observations'] != old_observations):
+            raise RuntimeError('reconstruction reopened the source attempt')
+        return dict(name=name, state=reconstructed['state'], native_program_bytes=reconstructed['native_program_bytes'],
+            observations=reconstructed['observations'], source_attempt=first, reconstruction=reconstructed,
+            source_snapshot_sha256=sha256(snapshot.flash), fresh_emulator_flash_only=True,
+            old_ram_not_copied=True, loader_reuploaded=True, source_coordinator_remains_stopped=True,
             stale_and_terminal_requests_rejected=True)
     finally:
         bridge.close()

@@ -21,7 +21,7 @@ feed `RecordLoaderModelResult`. Snapshot bytes feed C#'s saved verification or
 stopped-operation reconciliation. Boot entry remains one explicit modeled
 milestone; real startup/reset and interrupt delivery are not established.
 
-The six cases in [the metadata report](NATIVE_COORDINATOR_BRIDGE_EMULATION.json)
+The eight cases in [the metadata report](NATIVE_COORDINATOR_BRIDGE_EMULATION.json)
 passed on 2026-10-16:
 
 - `complete_dense`: 389 coordinator observations, 98,302 bytes through the native
@@ -40,12 +40,23 @@ passed on 2026-10-16:
 - `marker_failure`: the second dense full sequence reconstructs all block data,
   but a synthetic marker readback fault reaches native `F8`. Marker arithmetic
   alone looks clear-only; C# still forbids retry and session reuse.
+- `partial_block_reconstruction`: after the interrupted attempt stops, an explicit
+  reconstruction rehearsal starts at boot/loader entry with no progress copied.
+  A fresh emulator imports only the saved flash and retained collateral baseline;
+  loader upload, erase, all blocks, finalization and saved verification repeat.
+- `conflicting_word_reconstruction`: the same separate-attempt sequence rebuilds
+  the modeled image after the conflicting-word failure. The original coordinator
+  stays stopped and rejects old attempt tokens. The selected synthetic boot entry
+  and conditional erase model remain assumptions, not a physical recovery test.
 
 Foreign attempt tokens, stale ordinals and outcomes after terminal states are
 rejected without advancing the coordinator. The bridge also rejects bare
 completion assertions for loader stages, malformed bodies and input digest
-mismatches. A supplied UUID binds one attempt per owned process; it is not an
-authentication credential or a physical controller identity.
+mismatches. A supplied UUID binds one active attempt per owned process; it is not
+an authentication credential or a physical controller identity. The test bridge
+allows one explicit `reconstruct` transition with a different UUID and retains
+the previous stopped coordinator for read-only `source-state` inspection. That
+limit bounds this two-attempt test fixture, not vehicle recovery behavior.
 
 Candidate, baseline and snapshot bytes pass over owned process pipes without
 being logged or persisted by the bridge. Input reads use exact native sizes;
@@ -70,8 +81,8 @@ not committed; a future build need not have the same binary digest.
 
 The file-only write planner now references this report and its digest while
 retaining empty send/erase/program lists and all physical readiness gates false.
-Regression checks pin the report's current source dependencies. Six stdio/input
-guard tests pass with the built bridge, alongside the existing 40 C# checks,
+Regression checks pin the report's current source dependencies. Eight stdio/input
+guard tests pass with the built bridge, alongside the existing 44 C# checks,
 27 saved native-model observations and 32 Python planner/reconciliation tests.
 The existing 210 null-vehicle WriteManager guard combinations remain rejected.
 
@@ -81,3 +92,18 @@ table is also supplied by model setup. The compared snapshots come from
 the same modeled flash backing, not an independent physical readback. No adapter,
 controller, power interruption or physical recovery was exercised. Live writes,
 automatic retries and `ready_to_flash` remain false.
+
+The shared library's `CreateReconstructionRehearsal` requires reconciliation
+whose original stop observation belongs to that exact stopped session. It retains
+the chosen immutable source report in `ReconstructionSource`, including snapshot
+and baseline hashes, then creates all 389 operations with new identities and an
+empty journal. It neither executes operations nor changes the original session.
+It uses retained candidate/baseline bytes; a new session cannot start from a
+flash snapshot in place of a missing collateral baseline. This API does not
+import durable checkpoints after application restart or qualify physical reset
+and reentry. All live-writing, automatic-retry and physical-readiness gates remain
+false for both attempts.
+
+The shared-library and WinForms builds passed after adding this API. Validation
+passed all eight native/C# scenarios, 44 C# checks, 40 Python regressions and the
+210 WriteManager guard combinations. No hardware or interactive UI was used.

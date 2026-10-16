@@ -14,6 +14,9 @@ namespace PcmHacking
         private int cursor;
 
         public AL5OfflineProgrammingSession(byte[] candidate, byte[] collateralBackup)
+            : this(candidate, collateralBackup, null) { }
+
+        private AL5OfflineProgrammingSession(byte[] candidate, byte[] collateralBackup, AL5StoppedOperationAssessment? reconstructionSource)
         {
             if (candidate == null) throw new ArgumentNullException(nameof(candidate));
             if (collateralBackup == null) throw new ArgumentNullException(nameof(collateralBackup));
@@ -41,10 +44,12 @@ namespace PcmHacking
                 }
             }
             Operations = new ReadOnlyCollection<AL5OfflineOperation>(operations);
+            ReconstructionSource = reconstructionSource;
             State = AL5OfflineRunState.AwaitingModelOutcome;
         }
 
         public AL5ProgrammingAssessment Assessment { get; }
+        public AL5StoppedOperationAssessment? ReconstructionSource { get; }
         public IReadOnlyList<AL5OfflineOperation> Operations { get; }
         public IReadOnlyList<AL5OfflineObservation> Observations =>
             new ReadOnlyCollection<AL5OfflineObservation>(new List<AL5OfflineObservation>(observations));
@@ -141,6 +146,18 @@ namespace PcmHacking
             }
             // Reconciliation never changes the cursor, outcome journal or stopped state.
             return new AL5StoppedOperationAssessment(observations[observations.Count-1], image, range);
+        }
+
+        /// <summary>Explicitly prepares a new offline rehearsal; never resumes this attempt or executes an erase.</summary>
+        public AL5OfflineProgrammingSession CreateReconstructionRehearsal(AL5StoppedOperationAssessment source)
+        {
+            if (State != AL5OfflineRunState.Stopped)
+                throw new InvalidOperationException("Reconstruction preparation requires a stopped rehearsal.");
+            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (!ReferenceEquals(source.StopObservation, observations[observations.Count-1]))
+                throw new ArgumentException("Reconciliation does not belong to this stopped attempt.", nameof(source));
+            // Reuse only owned candidate/baseline bytes and immutable provenance, never progress or CPU state.
+            return new AL5OfflineProgrammingSession(candidate, collateralBackup, source);
         }
 
         private void RequirePending(AL5OfflineOperation operation)

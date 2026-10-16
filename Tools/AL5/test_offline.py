@@ -30,12 +30,19 @@ class OfflineSafetyTests(unittest.TestCase):
         for name, digest in native['source_sha256'].items():
             self.assertEqual(sha256((root/name).read_bytes()), digest, name)
         cases = {case['name']: case for case in native['cases']}
-        self.assertEqual(6, len(cases))
+        self.assertEqual(8, len(cases))
         self.assertEqual('SavedImageVerified', cases['complete_dense']['state'])
         self.assertEqual(98302, cases['complete_dense']['native_program_bytes'])
         self.assertEqual(389, cases['complete_dense']['observations'])
         self.assertEqual('SavedRangeMatches', cases['lost_ack']['reconciliation']['disposition'])
         self.assertEqual('ZeroToOneConflict', cases['conflicting_word']['reconciliation']['disposition'])
+        for name in ('partial_block_reconstruction', 'conflicting_word_reconstruction'):
+            reconstructed = cases[name]
+            self.assertEqual('Stopped', reconstructed['source_attempt']['state'])
+            self.assertEqual('SavedImageVerified', reconstructed['reconstruction']['state'])
+            self.assertEqual(389, reconstructed['observations'])
+            self.assertTrue(reconstructed['fresh_emulator_flash_only'])
+            self.assertTrue(reconstructed['source_coordinator_remains_stopped'])
         self.assertTrue(all(case['stale_and_terminal_requests_rejected'] for case in cases.values()))
         for field in ('physical_programming_verified', 'physical_readback_verified', 'physical_recovery_verified',
                       'automatic_retry_enabled', 'live_writes_enabled', 'ready_to_flash'):
