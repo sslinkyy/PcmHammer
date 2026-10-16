@@ -344,3 +344,5 @@ New offline [finalization and conditional recovery evidence](VPW_FINALIZATION_RE
 The [ordered offline coordinator](PCMHAMMER_PROGRAMMING_WORKFLOW.md#ordered-offline-coordinator-2026-10-16) now tracks 389 modeled operations with attempt-bound results, terminal interruption handling and separate saved-image verification. Reconciliation cannot resume stopped attempts; live writes remain disabled.
 
 [Constructed loader reply handling](PCMHAMMER_PROGRAMMING_WORKFLOW.md#constructed-loader-reply-handling-2026-10-16) now qualifies phase-specific statuses against sender, stack and exact modeled block coverage. Timeout, unknown delivery and retained frames stop the offline coordinator; live writes remain disabled.
+
+[Pending-operation reconciliation](PCMHAMMER_PROGRAMMING_WORKFLOW.md#pending-operation-reconciliation-2026-10-16) now joins the original stop reason to exact block, erased-range, marker or full-image comparisons. A matching pending range never authorizes retry or session reuse; live writes remain disabled.

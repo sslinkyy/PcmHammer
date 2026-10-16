@@ -44,10 +44,10 @@ namespace PcmHacking
                     AL5CalibrationInspection.StartAddress, SnapshotEndExclusive, 0));
                 if (observed != null)
                 {
-                    calibration = CompareWords(observed, 0, image, AL5CalibrationInspection.StartAddress);
+                    calibration = CompareWords(observed, 0, image, 0, image.Length, AL5CalibrationInspection.StartAddress);
                     if (backup != null)
-                        collateral = CompareWords(observed, image.Length, backup, AL5CalibrationInspection.EndAddressExclusive);
-                    marker = CompareWords(observed, SnapshotLength - 2, new byte[] { 0x4A, 0xFC }, MarkerAddress);
+                        collateral = CompareWords(observed, image.Length, backup, 0, backup.Length, AL5CalibrationInspection.EndAddressExclusive);
+                    marker = CompareWords(observed, SnapshotLength - 2, new byte[] { 0x4A, 0xFC }, 0, 2, MarkerAddress);
                 }
             }
             return new AL5ProgrammingAssessment(file, stages, calibration, collateral, marker,
@@ -62,14 +62,14 @@ namespace PcmHacking
                 return BitConverter.ToString(sha.ComputeHash(data)).Replace("-", "").ToLowerInvariant();
         }
 
-        private static AL5WordComparison CompareWords(byte[] observed, int offset, byte[] desired, int address)
+        internal static AL5WordComparison CompareWords(byte[] observed, int offset, byte[] desired, int desiredOffset, int count, int address)
         {
             int matching = 0, clear = 0, set = 0;
             int? first = null;
-            for (int index = 0; index < desired.Length; index += 2)
+            for (int index = 0; index < count; index += 2)
             {
                 int actual = (observed[offset+index] << 8) | observed[offset+index+1];
-                int target = (desired[index] << 8) | desired[index+1];
+                int target = (desired[desiredOffset+index] << 8) | desired[desiredOffset+index+1];
                 if (actual == target) matching++;
                 else if ((actual & target) == target) clear++;
                 else { set++; if (!first.HasValue) first = address+index; }

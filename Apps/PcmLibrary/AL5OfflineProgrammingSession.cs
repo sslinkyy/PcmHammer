@@ -110,13 +110,37 @@ namespace PcmHacking
             return report;
         }
 
-        public AL5ProgrammingAssessment AssessStoppedSnapshot(byte[] snapshot)
+        public AL5StoppedOperationAssessment AssessStoppedSnapshot(byte[] snapshot)
         {
             if (State != AL5OfflineRunState.Stopped)
                 throw new InvalidOperationException("Interruption reconciliation requires a stopped rehearsal.");
             if (snapshot == null) throw new ArgumentNullException(nameof(snapshot));
-            // Reconciliation never changes the cursor/state, even when all saved bytes match.
-            return AL5ProgrammingWorkflow.Assess(candidate, snapshot, collateralBackup);
+            if (snapshot.Length != AL5ProgrammingWorkflow.SnapshotLength)
+                throw new ArgumentException("Requires the complete saved conditional flash range at 0x8000.", nameof(snapshot));
+            // Use one owned snapshot for both the full-image facts/hash and operation comparison.
+            byte[] observed = (byte[])snapshot.Clone();
+            AL5ProgrammingAssessment image = AL5ProgrammingWorkflow.Assess(candidate, observed, collateralBackup);
+            AL5OfflineOperation operation = PendingOperation!;
+            AL5WordComparison? range = null;
+            if (operation.StartAddress.HasValue)
+            {
+                byte[] target = new byte[AL5ProgrammingWorkflow.SnapshotLength];
+                if (operation.Phase == AL5ProgrammingPhase.ConditionalErase)
+                {
+                    for (int index = 0; index < target.Length; index++) target[index] = 0xFF;
+                }
+                else
+                {
+                    Array.Copy(candidate, target, candidate.Length);
+                    Array.Copy(collateralBackup, 0, target, candidate.Length, collateralBackup.Length);
+                    target[target.Length-2] = 0x4A; target[target.Length-1] = 0xFC;
+                }
+                int offset = operation.StartAddress.Value - AL5CalibrationInspection.StartAddress;
+                range = AL5ProgrammingWorkflow.CompareWords(observed, offset, target, offset,
+                    operation.Length!.Value, operation.StartAddress.Value);
+            }
+            // Reconciliation never changes the cursor, outcome journal or stopped state.
+            return new AL5StoppedOperationAssessment(observations[observations.Count-1], image, range);
         }
 
         private void RequirePending(AL5OfflineOperation operation)
@@ -127,6 +151,24 @@ namespace PcmHacking
             if (operation == null || !ReferenceEquals(operation, PendingOperation))
                 throw new ArgumentException("Result does not belong to the pending operation of this rehearsal.", nameof(operation));
         }
+    }
+
+    public enum AL5PendingRangeDisposition { NoFlashRange, SavedRangeMatches, ClearOnlyDifferences, ZeroToOneConflict }
+
+    public sealed class AL5StoppedOperationAssessment
+    {
+        internal AL5StoppedOperationAssessment(AL5OfflineObservation stopObservation, AL5ProgrammingAssessment image, AL5WordComparison? range)
+        { StopObservation = stopObservation; ImageAssessment = image; PendingRangeComparison = range; }
+        public AL5OfflineObservation StopObservation { get; }
+        public AL5OfflineOperation Operation => StopObservation.Operation;
+        public AL5ProgrammingAssessment ImageAssessment { get; }
+        public AL5WordComparison? PendingRangeComparison { get; }
+        public AL5PendingRangeDisposition Disposition => PendingRangeComparison == null ? AL5PendingRangeDisposition.NoFlashRange :
+            PendingRangeComparison.RequiresSetWords > 0 ? AL5PendingRangeDisposition.ZeroToOneConflict :
+            PendingRangeComparison.ExactMatch ? AL5PendingRangeDisposition.SavedRangeMatches : AL5PendingRangeDisposition.ClearOnlyDifferences;
+        public bool RetryEnabled => false;
+        public bool CanResumeStoppedSession => false;
+        public bool PhysicalReadbackVerified => false;
     }
 
     public enum AL5OfflineRunState { AwaitingModelOutcome, AwaitingSavedVerification, Stopped, SavedImageVerified }

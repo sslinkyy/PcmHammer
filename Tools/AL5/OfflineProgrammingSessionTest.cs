@@ -99,7 +99,7 @@ internal static class OfflineProgrammingSessionTest
                 Check(session.State == AL5OfflineRunState.Stopped && session.PendingOperation == pending &&
                     session.Observations.Last().Outcome == outcome, "Ambiguous result advanced or disappeared");
                 var report = session.AssessStoppedSnapshot(snapshot);
-                Check(report.ExactSavedImageMatch && session.State == AL5OfflineRunState.Stopped,
+                Check(report.ImageAssessment.ExactSavedImageMatch && session.State == AL5OfflineRunState.Stopped,
                     "Matching file resumed stopped session");
                 Reject(() => session.RecordModelOutcome(pending, AL5OfflineOutcome.ModelCompleted));
                 Reject(() => session.RecordSavedVerification(pending, snapshot));
@@ -130,7 +130,7 @@ internal static class OfflineProgrammingSessionTest
             var old = New(); Reach(old, AL5ProgrammingPhase.CalibrationBlocks);
             old.RecordModelOutcome(old.PendingOperation!, AL5OfflineOutcome.Interrupted);
             byte[] damaged = (byte[])snapshot.Clone(); damaged[0x25] &= 0xFE;
-            Check(old.AssessStoppedSnapshot(damaged).ObservedZeroToOneConflict, "Conflict lost");
+            Check(old.AssessStoppedSnapshot(damaged).ImageAssessment.ObservedZeroToOneConflict, "Conflict lost");
             var fresh = New();
             Check(fresh.PendingOperation!.Phase == AL5ProgrammingPhase.BootAndLoaderEntry && fresh.Observations.Count == 0,
                 "New attempt inherited old progress");
@@ -153,6 +153,106 @@ internal static class OfflineProgrammingSessionTest
             Reject(() => new AL5OfflineProgrammingSession(new byte[image.Length], backup));
             Reject(() => new AL5OfflineProgrammingSession(image, new byte[2]));
             Reject(() => new AL5OfflineProgrammingSession(image, null!));
+        });
+        AL5OfflineProgrammingSession Stopped(AL5ProgrammingPhase phase)
+        {
+            var session = New(); Reach(session, phase);
+            session.RecordModelOutcome(session.PendingOperation!, AL5OfflineOutcome.ReplyLost);
+            return session;
+        }
+        Test("lost-ACK block match remains distinct from complete image verification", () =>
+        {
+            var session = New(); Reach(session, AL5ProgrammingPhase.CalibrationBlocks);
+            var decision = session.RecordLoaderModelResult(session.PendingOperation!, new AL5LoaderModelResult(
+                Convert.FromHexString("760073"), AL5ModeledSenderState.TimedOutWithSoftwareReentry, 0, 0x8000, 256));
+            byte[] partial = Enumerable.Repeat((byte)0xFF, snapshot.Length).ToArray();
+            Array.Copy(image, 0, partial, 0, 256);
+            var report = session.AssessStoppedSnapshot(partial);
+            Check(report.Disposition == AL5PendingRangeDisposition.SavedRangeMatches &&
+                report.PendingRangeComparison!.MatchingWords == 128 && !report.ImageAssessment.ExactSavedImageMatch,
+                "Block and whole image outcomes conflated");
+            Check(report.Operation == session.PendingOperation && !report.RetryEnabled && !report.CanResumeStoppedSession &&
+                !report.PhysicalReadbackVerified && session.State == AL5OfflineRunState.Stopped, "Range match resumed attempt");
+            Check(report.StopObservation.Outcome == AL5OfflineOutcome.ReplyLost &&
+                ReferenceEquals(report.StopObservation.LoaderDecision, decision), "Lost-ACK provenance not bound to reconciliation");
+        });
+        Test("partial and overprogrammed pending block states differ", () =>
+        {
+            var session = Stopped(AL5ProgrammingPhase.CalibrationBlocks);
+            byte[] partial = Enumerable.Repeat((byte)0xFF, snapshot.Length).ToArray();
+            Array.Copy(image, 0, partial, 0, 2);
+            var report = session.AssessStoppedSnapshot(partial);
+            Check(report.Disposition == AL5PendingRangeDisposition.ClearOnlyDifferences &&
+                report.PendingRangeComparison!.AdditionalClearWords == 127, "Partial block arithmetic wrong");
+            partial[0x25] = 0xE6; // Desired anchor low byte is E7.
+            report = session.AssessStoppedSnapshot(partial);
+            Check(report.Disposition == AL5PendingRangeDisposition.ZeroToOneConflict &&
+                report.PendingRangeComparison!.FirstRequiresSetAddress == 0x8024, "Extra cleared bit lost");
+            Blocked(session);
+        });
+        Test("short final calibration and collateral blocks compare only their own words", () =>
+        {
+            foreach (var phase in new[] { AL5ProgrammingPhase.CalibrationBlocks, AL5ProgrammingPhase.CollateralRestoration })
+            {
+                var session = New(); Reach(session, phase);
+                while (session.PendingOperation!.Length == 256)
+                    session.RecordModelOutcome(session.PendingOperation, AL5OfflineOutcome.ModelCompleted);
+                var pending = session.PendingOperation!;
+                session.RecordModelOutcome(pending, AL5OfflineOutcome.Interrupted);
+                byte[] partial = (byte[])snapshot.Clone();
+                int offset = pending.StartAddress!.Value - 0x8000;
+                partial[offset-1] ^= 1; // Outside this block: full-image mismatch, range still matches.
+                var report = session.AssessStoppedSnapshot(partial);
+                Check(report.PendingRangeComparison!.MatchingWords == pending.Length/2 &&
+                    report.Disposition == AL5PendingRangeDisposition.SavedRangeMatches && !report.ImageAssessment.ExactSavedImageMatch,
+                    "Short block compared adjacent bytes");
+                partial[offset+pending.Length!.Value-1] &= 0xFE;
+                report = session.AssessStoppedSnapshot(partial);
+                Check(report.Disposition == AL5PendingRangeDisposition.ZeroToOneConflict &&
+                    report.PendingRangeComparison!.FirstRequiresSetAddress == pending.StartAddress+pending.Length-2,
+                    "Final word omitted from short block");
+            }
+        });
+        Test("erase comparison expects erased bytes, not the candidate image", () =>
+        {
+            var session = Stopped(AL5ProgrammingPhase.ConditionalErase);
+            byte[] erased = Enumerable.Repeat((byte)0xFF, snapshot.Length).ToArray();
+            var report = session.AssessStoppedSnapshot(erased);
+            Check(report.Disposition == AL5PendingRangeDisposition.SavedRangeMatches &&
+                report.PendingRangeComparison!.MatchingWords == 49152 && !report.ImageAssessment.ExactSavedImageMatch,
+                "Erase expected target wrong");
+            erased[erased.Length-1] = 0xFE;
+            report = session.AssessStoppedSnapshot(erased);
+            Check(report.Disposition == AL5PendingRangeDisposition.ZeroToOneConflict &&
+                report.PendingRangeComparison!.FirstRequiresSetAddress == 0x1FFFE, "Erase scope excluded marker");
+        });
+        Test("boot has no flash outcome and marker match cannot verify the full image", () =>
+        {
+            var boot = Stopped(AL5ProgrammingPhase.BootAndLoaderEntry).AssessStoppedSnapshot(snapshot);
+            Check(boot.Disposition == AL5PendingRangeDisposition.NoFlashRange && boot.PendingRangeComparison == null,
+                "Flash bytes inferred boot/loader entry");
+            byte[] damaged = (byte[])snapshot.Clone(); damaged[0x25] &= 0xFE;
+            var final = Stopped(AL5ProgrammingPhase.Finalization).AssessStoppedSnapshot(damaged);
+            Check(final.Disposition == AL5PendingRangeDisposition.SavedRangeMatches &&
+                final.PendingRangeComparison!.MatchingWords == 1 && !final.ImageAssessment.ExactSavedImageMatch,
+                "Marker match hid calibration damage");
+            var verify = Stopped(AL5ProgrammingPhase.IndependentVerification).AssessStoppedSnapshot(damaged);
+            Check(verify.Disposition == AL5PendingRangeDisposition.ZeroToOneConflict &&
+                verify.PendingRangeComparison!.FirstRequiresSetAddress == 0x8024, "Verification did not compare complete range");
+        });
+        Test("stopped range reconciliation preserves journal and immutable snapshot facts", () =>
+        {
+            var session = Stopped(AL5ProgrammingPhase.CalibrationBlocks);
+            int count = session.Observations.Count;
+            Reject(() => session.AssessStoppedSnapshot(new byte[2]));
+            byte[] current = (byte[])snapshot.Clone();
+            var report = session.AssessStoppedSnapshot(current);
+            string? hash = report.ImageAssessment.SnapshotSha256;
+            current[0] ^= 1;
+            Check(report.PendingRangeComparison!.ExactMatch && report.ImageAssessment.SnapshotSha256 == hash &&
+                session.Observations.Count == count && session.State == AL5OfflineRunState.Stopped,
+                "Reconciliation modified journal or retained mutable bytes");
+            Reject(() => New().AssessStoppedSnapshot(snapshot));
         });
         return passed;
     }

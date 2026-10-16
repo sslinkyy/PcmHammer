@@ -172,3 +172,46 @@ The shared library and WinForms builds passed, as did 210 null-vehicle write
 guard combinations and 31 Python file-only regressions. No native instructions
 were rerun in this step; saved evidence was reused. No hardware or interactive
 UI was accessed, and the optional native calibration-file corpus was not supplied.
+
+## Pending-operation reconciliation (2026-10-16)
+
+`AssessStoppedSnapshot` now returns an `AL5StoppedOperationAssessment`, joining
+the original stop observation to both the full-image facts and an exact comparison
+of the pending operation's range. Callers access the former whole-image report
+through `ImageAssessment`; the experimental API's previous return type is
+superseded. Repository tests use the richer report; no live-writing caller is
+introduced.
+
+This distinguishes a block that matches after a lost acknowledgement from an
+entire image that passed saved-file verification. A matching block can coexist
+with erased or incomplete data elsewhere. Partial clear-only differences and
+zero-to-one conflicts are classified independently for that block. The report
+retains the stopped operation identity, original outcome and any loader decision,
+including sender timeout and constructed status, alongside the saved-image hash.
+
+Expected bytes follow the pending stage:
+
+- Calibration and collateral operations compare only their exact block ranges,
+  including the 216-byte and 38-byte tails.
+- Conditional erase compares the modeled 98,304-byte range against erased `FF`
+  bytes, rather than against the desired programmed image. A zero-to-one
+  difference here indicates that saved bytes are not all erased; it is not an
+  instruction to retry either erase or word programming.
+- Finalization compares the `4AFC` marker word; it cannot establish matching
+  calibration or collateral data.
+- Independent verification compares the complete desired conditional image.
+- Boot/loader entry has no flash range whose contents could prove execution,
+  so its range comparison is explicitly absent.
+
+Whole-image and operation comparisons use the same owned snapshot and the same
+word-comparison implementation. Reconciliation does not append outcomes, advance
+the cursor or reopen the stopped session. `RetryEnabled`,
+`CanResumeStoppedSession` and `PhysicalReadbackVerified` remain false, even for a
+perfect pending-range match. Physical identity, erase geometry, programming and
+recovery remain unqualified.
+
+Validation passed 40 C# checks, including six new reconciliation scenarios and
+the existing 27 pinned native-model observations. The shared library and WinForms
+builds, 210 null-vehicle write guards and 31 Python file-only regressions passed.
+No native instructions, hardware or interactive UI were exercised in this step. The optional
+native calibration-file corpus was not supplied.
