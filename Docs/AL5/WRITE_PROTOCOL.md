@@ -336,3 +336,5 @@ New offline [finalization and conditional recovery evidence](VPW_FINALIZATION_RE
 [Joined erase/program/finalize/verification session](PROGRAM_SESSION.md) now exercises all 57,304 calibration bytes through native block/word code with conditional synthetic flash and collateral restoration. Host verification rejects checksum, collateral and marker failures; live writes remain disabled.
 
 [Integrated interruption/retry testing](INTERRUPTION_RETRY_TESTING.md) adds seven synthetic interruption and reconstruction scenarios, including unknown collateral after backup loss. Fresh-emulator boot selection is explicit; physical recovery and live writes remain unqualified.
+
+[Saved snapshot reconciliation](SNAPSHOT_RECONCILIATION.md) distinguishes matching data, remaining clear-only differences and zero-to-one conflicts after ambiguous operations. Missing collateral stays unknown; saved files never authorize retry, session reuse or live writes.

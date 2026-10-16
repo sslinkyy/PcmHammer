@@ -89,7 +89,12 @@ def calibration_recovery_assessment():
                                          'emulate_loader_parser.py', 'emulate_loader_erase_failures.py',
                                          'emulate_loader_error_sender.py', 'emulate_boot_loader_handoff.py',
                                          'emulate_al5_program_session.py', 'emulate_al5_interruptions.py',
-                                         'checksum.py', 'al5_segment.py')},
+                                         'checksum.py', 'al5_segment.py', 'reconcile_al5_snapshot.py')},
+        'saved_snapshot_reconciliation': {
+            'implementation': 'Tools/AL5/reconcile_al5_snapshot.py',
+            'documentation': 'Docs/AL5/SNAPSHOT_RECONCILIATION.md',
+            'physical_state_or_retry_authority': False,
+        },
         'conditional_boot_error_routes_emulated': True,
         'boot_receive_same_session_modeled': True,
         'loader_entry_program_path_same_session_modeled': True,
