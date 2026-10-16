@@ -100,6 +100,7 @@ namespace PcmHacking
 
         /// <summary>File-only comparison; available without an adapter.</summary>
         private ToolStripMenuItem al5CompareCalibrationToolStripMenuItem;
+        private ToolStripMenuItem al5ReconcileSnapshotToolStripMenuItem;
 
         /// <summary>
         /// Initializes a new instance of the main window.
@@ -154,6 +155,10 @@ namespace PcmHacking
             this.al5CompareCalibrationToolStripMenuItem.Click +=
                 new EventHandler(this.al5CompareCalibrationToolStripMenuItem_Click);
             this.menuItemTools.DropDownItems.Add(this.al5CompareCalibrationToolStripMenuItem);
+            this.al5ReconcileSnapshotToolStripMenuItem = new ToolStripMenuItem();
+            this.al5ReconcileSnapshotToolStripMenuItem.Text = "AL5 Assess Saved Flash Snapshot (Offline)...";
+            this.al5ReconcileSnapshotToolStripMenuItem.Click += this.al5ReconcileSnapshotToolStripMenuItem_Click;
+            this.menuItemTools.DropDownItems.Add(this.al5ReconcileSnapshotToolStripMenuItem);
         }
 
         /// <summary>
@@ -718,6 +723,7 @@ namespace PcmHacking
             this.haltRunningKernelToolStripMenuItem.Enabled = false;
             this.testFileChecksumsToolStripMenuItem.Enabled = false;
             this.al5CompareCalibrationToolStripMenuItem.Enabled = false;
+            this.al5ReconcileSnapshotToolStripMenuItem.Enabled = false;
             this.e54RamSurveyToolStripMenuItem.Enabled = false;
             this.e54RamCanaryToolStripMenuItem.Enabled = false;
 
@@ -757,6 +763,7 @@ namespace PcmHacking
                 this.haltRunningKernelToolStripMenuItem.Enabled = true;
                 this.testFileChecksumsToolStripMenuItem.Enabled = true;
                 this.al5CompareCalibrationToolStripMenuItem.Enabled = true;
+                this.al5ReconcileSnapshotToolStripMenuItem.Enabled = true;
                 this.e54RamSurveyToolStripMenuItem.Enabled = true;
                 this.e54RamCanaryToolStripMenuItem.Enabled = true;
 
@@ -781,6 +788,7 @@ namespace PcmHacking
             // available whenever no operation is in progress, even with no device selected.
             this.testFileChecksumsToolStripMenuItem.Enabled = true;
             this.al5CompareCalibrationToolStripMenuItem.Enabled = true;
+            this.al5ReconcileSnapshotToolStripMenuItem.Enabled = true;
         }
 
         /// <summary>
@@ -1560,8 +1568,9 @@ namespace PcmHacking
 
                 try
                 {
+                    byte[] candidate = ReadAl5OfflineFile(candidatePath, AL5CalibrationInspection.Length);
                     AL5CalibrationComparisonReport report = AL5CalibrationInspection.Compare(
-                        ReadAl5CalibrationFile(baselinePath), ReadAl5CalibrationFile(candidatePath));
+                        ReadAl5OfflineFile(baselinePath, AL5CalibrationInspection.Length), candidate);
                     this.AddUserMessage("AL5 offline calibration comparison: original " + baselinePath);
                     this.AddUserMessage("Edited file: " + candidatePath);
                     LogAl5CalibrationReport("Original", report.Baseline);
@@ -1577,6 +1586,7 @@ namespace PcmHacking
                     this.AddUserMessage("Offline file checks: " + (report.FileChecksPass ? "passed" : "failed") +
                         ". Scope: OS 15184109 / calibration 15183960 reference layout; vehicle identity is unverified.");
                     this.AddUserMessage("AL5 live writing remains disabled. File checks do not establish programming or recovery readiness.");
+                    LogAl5ProgrammingAssessment(AL5ProgrammingWorkflow.Assess(candidate));
                 }
                 catch (Exception exception)
                 {
@@ -1586,23 +1596,85 @@ namespace PcmHacking
             }
         }
 
-        private static byte[] ReadAl5CalibrationFile(string path)
+        private void al5ReconcileSnapshotToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (BackgroundWorker.IsAlive || this.cancellationTokenSource != null) return;
+            // Local files only: no Vehicle or adapter initialization, even without an interface selected.
+            using (OpenFileDialog dialog = new OpenFileDialog())
+            {
+                dialog.Filter = "BIN files (*.bin)|*.bin|All files (*.*)|*.*";
+                dialog.CheckFileExists = true;
+                dialog.RestoreDirectory = true;
+                dialog.Title = "Select desired AL5 calibration (57,304 bytes)";
+                if (dialog.ShowDialog(this) != DialogResult.OK) return;
+                string candidatePath = dialog.FileName;
+                dialog.FileName = string.Empty;
+                dialog.Title = "Select saved flash snapshot at 0x8000 (98,304 bytes)";
+                if (dialog.ShowDialog(this) != DialogResult.OK) return;
+                string snapshotPath = dialog.FileName;
+                dialog.FileName = string.Empty;
+                dialog.Title = "Select independent pre-erase collateral backup (40,998 bytes), or Cancel if unavailable";
+                string? backupPath = dialog.ShowDialog(this) == DialogResult.OK ? dialog.FileName : null;
+                try
+                {
+                    AL5ProgrammingAssessment report = AL5ProgrammingWorkflow.Assess(
+                        ReadAl5OfflineFile(candidatePath, AL5CalibrationInspection.Length),
+                        ReadAl5OfflineFile(snapshotPath, AL5ProgrammingWorkflow.SnapshotLength),
+                        backupPath == null ? null : ReadAl5OfflineFile(backupPath, AL5ProgrammingWorkflow.CollateralLength));
+                    this.AddUserMessage("AL5 offline snapshot assessment. Candidate: " + candidatePath);
+                    this.AddUserMessage("Snapshot: " + snapshotPath + "; SHA256: " + report.SnapshotSha256);
+                    this.AddUserMessage("Collateral backup: " + (backupPath ?? "unavailable") +
+                        "; SHA256: " + (report.CollateralBackupSha256 ?? "unknown"));
+                    LogAl5CalibrationReport("Candidate", report.Candidate);
+                    LogAl5ProgrammingAssessment(report);
+                    this.AddUserMessage("Saved-file match: " + report.ExactSavedImageMatch +
+                        "; zero-to-one conflict: " + report.ObservedZeroToOneConflict +
+                        ". Current physical state and loader session are unknown.");
+                }
+                catch (Exception exception)
+                {
+                    this.AddUserMessage("AL5 offline snapshot assessment failed: " + exception.Message);
+                    this.AddDebugMessage(exception.ToString());
+                }
+            }
+        }
+
+        private void LogAl5ProgrammingAssessment(AL5ProgrammingAssessment report)
+        {
+            foreach (AL5ProgrammingStage stage in report.Stages)
+                this.AddUserMessage("AL5 offline modeled stage: " + stage.Phase +
+                    (stage.ModeledBlockCount > 0 ? " (" + stage.ModeledBlockCount + " blocks at up to 256 bytes)." : "."));
+            this.AddUserMessage("AL5 retry assessment: " + report.RetryAssessment + ". " + report.BlockingReason);
+            foreach (var region in new[] {
+                new { Name = "Calibration", Comparison = report.Calibration },
+                new { Name = "Collateral", Comparison = report.Collateral },
+                new { Name = "Completion marker", Comparison = report.CompletionMarker } })
+            {
+                AL5WordComparison? comparison = region.Comparison;
+                this.AddUserMessage(region.Name + (comparison == null ? ": unknown." :
+                    ": matching words " + comparison.MatchingWords + "; further clear-only words " + comparison.AdditionalClearWords +
+                    "; zero-to-one conflicts " + comparison.RequiresSetWords +
+                    (comparison.FirstRequiresSetAddress.HasValue ? "; first conflict at 0x" + comparison.FirstRequiresSetAddress.Value.ToString("X5") : "") + "."));
+            }
+        }
+
+        private static byte[] ReadAl5OfflineFile(string path, int expectedLength)
         {
             using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                if (stream.Length != AL5CalibrationInspection.Length)
-                    throw new InvalidDataException("Expected a 57,304-byte AL5 calibration segment. Full flash images and containers are not supported by this comparison.");
-                byte[] data = new byte[AL5CalibrationInspection.Length];
+                if (stream.Length != expectedLength)
+                    throw new InvalidDataException("Expected exactly " + expectedLength + " bytes for the selected AL5 file role.");
+                byte[] data = new byte[expectedLength];
                 int offset = 0;
                 while (offset < data.Length)
                 {
                     int count = stream.Read(data, offset, data.Length - offset);
                     if (count == 0)
-                        throw new EndOfStreamException("Calibration file ended before the expected segment length.");
+                        throw new EndOfStreamException("AL5 file ended before the expected range length.");
                     offset += count;
                 }
                 if (stream.ReadByte() != -1)
-                    throw new InvalidDataException("Calibration file length changed while reading.");
+                    throw new InvalidDataException("AL5 file length changed while reading.");
                 return data;
             }
         }

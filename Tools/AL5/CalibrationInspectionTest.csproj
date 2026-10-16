@@ -15,7 +15,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CalibrationInspectionTest.cs" />
+    <Compile Include="ProgrammingWorkflowTest.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5CalibrationInspection.cs" Link="AL5CalibrationInspection.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5ProgrammingWorkflow.cs" Link="AL5ProgrammingWorkflow.cs" />
   </ItemGroup>
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
 </Project>

@@ -321,3 +321,5 @@ Capstone (the existing WSL environment was used). Neither test opens a vehicle.
 [Integrated interruption/retry testing](INTERRUPTION_RETRY_TESTING.md) adds seven synthetic interruption and reconstruction scenarios, including unknown collateral after backup loss. Fresh-emulator boot selection is explicit; physical recovery and live writes remain unqualified.
 
 [Saved snapshot reconciliation](SNAPSHOT_RECONCILIATION.md) distinguishes matching data, remaining clear-only differences and zero-to-one conflicts after ambiguous operations. Missing collateral stays unknown; saved files never authorize retry, session reuse or live writes.
+
+[PcmHammer programming workflow integration](PCMHAMMER_PROGRAMMING_WORKFLOW.md) adds a shared C# modeled-stage and retry assessment, an offline saved-snapshot command in WinForms, and blocked-write diagnostics. No vehicle programming or automatic retry is enabled.

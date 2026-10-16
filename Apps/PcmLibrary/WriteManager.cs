@@ -76,7 +76,11 @@ namespace PcmHacking
 
             if (image.Length == AL5CalibrationReader.Length)
             {
+                AL5ProgrammingAssessment assessment = AL5ProgrammingWorkflow.Assess(image);
                 logger.AddUserMessage("AL5 calibration-segment writing is disabled. Use the offline AL5 write-plan tool; the write protocol remains unproven.");
+                logger.AddUserMessage("AL5 offline retry assessment: " + assessment.RetryAssessment + ". " + assessment.BlockingReason);
+                foreach (string error in assessment.Candidate.InputErrors)
+                    logger.AddUserMessage("AL5 candidate: " + error);
                 return false;
             }
 

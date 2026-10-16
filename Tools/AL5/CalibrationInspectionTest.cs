@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using PcmHacking;
 
-// This project compiles the production inspector with the BCL only. It cannot
+// This project compiles the production inspector/workflow with the BCL only. It cannot
 // access Vehicle, adapter classes, or the PCM writer. Optional corpus files are
 // read only and require explicit expected hashes and independently known fields.
 internal static class CalibrationInspectionTest
@@ -177,6 +177,7 @@ internal static class CalibrationInspectionTest
 
             if (args.Length % 4 != 0) throw new ArgumentException("Use repeated --corpus or --reconstructed-corpus PATH EXPECTED_SHA256 EXPECTED_FIELD arguments.");
             int corpus = 0;
+            passed += ProgrammingWorkflowTest.Run(Fixture);
             int reconstructed = 0;
             for (int index = 0; index < args.Length; index += 4)
             {
