@@ -118,3 +118,57 @@ They exercise host decision semantics, not native instructions or hardware.
 The shared library and WinForms builds passed, as did all 210 null-vehicle write
 guard combinations and 31 file-only Python reconciliation/planner regressions.
 No adapter, controller, native emulator or interactive UI was run for this step.
+
+## Constructed loader reply handling (2026-10-16)
+
+`RecordLoaderModelResult` connects the coordinator to a phase-specific captured
+loader reply contract. It accepts a constructed three-byte body, an explicit
+modeled sender state, an optional observed stack delta and modeled block coverage.
+It does not accept raw VPW frames or prove delivery to a host. Boot handoff and
+saved verification retain their separate contracts and reject loader replies.
+
+For the modeled erase stage the expected body is `7600EE`; calibration and
+collateral blocks expect `760073`; finalization expects `760086`. Known negative
+bodies ending in `77`, `85`, `89`, `F8` or `FF`, malformed bodies and wrong-phase
+statuses stop the attempt. Unknown body values are retained rather than promoted
+to success. Malformed body sizes and undefined sender enum values are rejected
+at the result boundary before any coordinator transition.
+
+A success-looking body advances exactly one modeled operation only when the
+sender returned and the observed stack delta is zero. Missing sender, body or
+stack facts produce a terminal `UnconfirmedModelResult`. A nonzero delta stops
+the attempt even after a positive status: native error paths can retain pending
+call frames. A sender timeout with software reentry produces `ReplyLost`, even
+if the constructed body is positive and the reentry reset the stack. Neither
+condition establishes host receipt or rollback.
+
+Block completion additionally requires the exact pending block's modeled start
+address and byte count. This matters because a non-programming delay subtype can
+also construct `760073`. Missing coverage stays unknown; wrong address or byte
+count stops as a model failure. These facts describe modeled effects only, not
+physical writes or independent readback. Generic explicit `RecordModelOutcome`
+remains available for sequence-only rehearsal; it is not a native evidence parser.
+
+The observation journal now retains the decision reason, expected body, exact
+constructed body value, sender state, stack delta and supplied coverage facts.
+No failure, unknown result or later snapshot match automatically retries a block
+or resumes the attempt. All physical qualification and live-write gates remain
+unchanged.
+
+Run the production-source harness with the saved native evidence:
+
+```powershell
+dotnet run --project Tools/AL5/CalibrationInspectionTest.csproj --no-restore -- --loader-model-evidence-root .
+```
+
+Validation passed 34 C# checks, including 27 observations from the saved entry,
+erase-failure and native-sender reports. Their report hashes, captured-loader
+identity and current producer/dependency hashes are checked before use. Older
+reports without native sender return facts remain unconfirmed; no sender success
+is inferred from constructed status bytes. The source scenario, not the reply
+value, selects hypothetical host-stage context for these comparisons.
+
+The shared library and WinForms builds passed, as did 210 null-vehicle write
+guard combinations and 31 Python file-only regressions. No native instructions
+were rerun in this step; saved evidence was reused. No hardware or interactive
+UI was accessed, and the optional native calibration-file corpus was not supplied.

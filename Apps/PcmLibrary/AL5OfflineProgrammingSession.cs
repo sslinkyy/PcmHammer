@@ -63,11 +63,25 @@ namespace PcmHacking
             RequirePending(operation);
             if (outcome != AL5OfflineOutcome.ModelCompleted && outcome != AL5OfflineOutcome.ReplyLost &&
                 outcome != AL5OfflineOutcome.ModelFailure && outcome != AL5OfflineOutcome.Interrupted &&
-                outcome != AL5OfflineOutcome.Cancelled)
+                outcome != AL5OfflineOutcome.Cancelled && outcome != AL5OfflineOutcome.UnconfirmedModelResult)
                 throw new ArgumentOutOfRangeException(nameof(outcome));
             if (operation.Phase == AL5ProgrammingPhase.IndependentVerification && outcome == AL5OfflineOutcome.ModelCompleted)
                 throw new InvalidOperationException("Final verification requires saved bytes, not a completion assertion.");
-            observations.Add(new AL5OfflineObservation(operation, outcome, null));
+            RecordOutcome(operation, outcome, null);
+        }
+
+        public AL5LoaderModelDecision RecordLoaderModelResult(AL5OfflineOperation operation, AL5LoaderModelResult result)
+        {
+            RequirePending(operation);
+            if (result == null) throw new ArgumentNullException(nameof(result));
+            AL5LoaderModelDecision decision = AL5LoaderModelDecision.Assess(operation, result);
+            RecordOutcome(operation, decision.Outcome, decision);
+            return decision;
+        }
+
+        private void RecordOutcome(AL5OfflineOperation operation, AL5OfflineOutcome outcome, AL5LoaderModelDecision? decision)
+        {
+            observations.Add(new AL5OfflineObservation(operation, outcome, null, decision));
             if (outcome != AL5OfflineOutcome.ModelCompleted)
             {
                 State = AL5OfflineRunState.Stopped;
@@ -119,7 +133,7 @@ namespace PcmHacking
     public enum AL5OfflineOutcome
     {
         ModelCompleted, ReplyLost, ModelFailure, Interrupted, Cancelled,
-        SavedVerificationMatched, SavedVerificationFailed
+        SavedVerificationMatched, SavedVerificationFailed, UnconfirmedModelResult
     }
 
     public sealed class AL5OfflineOperation
@@ -134,10 +148,12 @@ namespace PcmHacking
 
     public sealed class AL5OfflineObservation
     {
-        internal AL5OfflineObservation(AL5OfflineOperation operation, AL5OfflineOutcome outcome, string? snapshotHash)
-        { Operation = operation; Outcome = outcome; SnapshotSha256 = snapshotHash; }
+        internal AL5OfflineObservation(AL5OfflineOperation operation, AL5OfflineOutcome outcome, string? snapshotHash,
+            AL5LoaderModelDecision? loaderDecision = null)
+        { Operation = operation; Outcome = outcome; SnapshotSha256 = snapshotHash; LoaderDecision = loaderDecision; }
         public AL5OfflineOperation Operation { get; }
         public AL5OfflineOutcome Outcome { get; }
         public string? SnapshotSha256 { get; }
+        public AL5LoaderModelDecision? LoaderDecision { get; }
     }
 }

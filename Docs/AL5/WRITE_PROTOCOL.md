@@ -342,3 +342,5 @@ New offline [finalization and conditional recovery evidence](VPW_FINALIZATION_RE
 [PcmHammer programming workflow integration](PCMHAMMER_PROGRAMMING_WORKFLOW.md) adds a shared C# modeled-stage and retry assessment, an offline saved-snapshot command in WinForms, and blocked-write diagnostics. No vehicle programming or automatic retry is enabled.
 
 The [ordered offline coordinator](PCMHAMMER_PROGRAMMING_WORKFLOW.md#ordered-offline-coordinator-2026-10-16) now tracks 389 modeled operations with attempt-bound results, terminal interruption handling and separate saved-image verification. Reconciliation cannot resume stopped attempts; live writes remain disabled.
+
+[Constructed loader reply handling](PCMHAMMER_PROGRAMMING_WORKFLOW.md#constructed-loader-reply-handling-2026-10-16) now qualifies phase-specific statuses against sender, stack and exact modeled block coverage. Timeout, unknown delivery and retained frames stop the offline coordinator; live writes remain disabled.

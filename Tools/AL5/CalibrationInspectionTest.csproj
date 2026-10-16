@@ -17,9 +17,11 @@
     <Compile Include="CalibrationInspectionTest.cs" />
     <Compile Include="ProgrammingWorkflowTest.cs" />
     <Compile Include="OfflineProgrammingSessionTest.cs" />
+    <Compile Include="LoaderModelReplyTest.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5CalibrationInspection.cs" Link="AL5CalibrationInspection.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5ProgrammingWorkflow.cs" Link="AL5ProgrammingWorkflow.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5OfflineProgrammingSession.cs" Link="AL5OfflineProgrammingSession.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5LoaderModelReply.cs" Link="AL5LoaderModelReply.cs" />
   </ItemGroup>
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
 </Project>

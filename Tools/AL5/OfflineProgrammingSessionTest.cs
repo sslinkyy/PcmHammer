@@ -90,7 +90,7 @@ internal static class OfflineProgrammingSessionTest
         {
             foreach (AL5ProgrammingPhase phase in Enum.GetValues(typeof(AL5ProgrammingPhase)))
             foreach (var outcome in new[] { AL5OfflineOutcome.ReplyLost, AL5OfflineOutcome.ModelFailure,
-                AL5OfflineOutcome.Interrupted, AL5OfflineOutcome.Cancelled })
+                AL5OfflineOutcome.Interrupted, AL5OfflineOutcome.Cancelled, AL5OfflineOutcome.UnconfirmedModelResult })
             {
                 var session = New();
                 Reach(session, phase);

@@ -175,10 +175,18 @@ internal static class CalibrationInspectionTest
                 Check(rejected == 3, "Null boundary not explicit");
             });
 
-            if (args.Length % 4 != 0) throw new ArgumentException("Use repeated --corpus or --reconstructed-corpus PATH EXPECTED_SHA256 EXPECTED_FIELD arguments.");
+            if (args.Length >= 2 && args[0] == "--loader-model-evidence-root")
+            {
+                passed += LoaderModelReplyTest.RunEvidence(Fixture, Path.GetFullPath(args[1]));
+                var remaining = new string[args.Length-2];
+                Array.Copy(args, 2, remaining, 0, remaining.Length);
+                args = remaining;
+            }
+            if (args.Length % 4 != 0) throw new ArgumentException("Use optional --loader-model-evidence-root REPO followed by repeated --corpus or --reconstructed-corpus PATH EXPECTED_SHA256 EXPECTED_FIELD arguments.");
             int corpus = 0;
             passed += ProgrammingWorkflowTest.Run(Fixture);
             passed += OfflineProgrammingSessionTest.Run(Fixture);
+            passed += LoaderModelReplyTest.Run(Fixture);
             int reconstructed = 0;
             for (int index = 0; index < args.Length; index += 4)
             {
