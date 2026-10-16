@@ -172,6 +172,24 @@ class OfflineSafetyTests(unittest.TestCase):
             self.assertFalse(recovery[field])
         self.assertEqual([], report['would_send'])
 
+    def test_native_boot_loader_handoff_does_not_qualify_hardware(self):
+        data = fixture()
+        report = plan(data, data, sha256(data), 'AL5', 15184109)
+        recovery = report['calibration_recovery_assessment']
+        raw = (Path(__file__).resolve().parents[2] / recovery['boot_loader_handoff_evidence']).read_bytes()
+        native = json.loads(raw)
+        self.assertEqual(sha256(raw), recovery['boot_loader_handoff_evidence_sha256'])
+        self.assertEqual(4, len(native['cases']))
+        self.assertEqual(native['generator_sha256'], recovery['implementations']['emulate_boot_loader_handoff.py'])
+        for name, digest in native['dependency_sha256'].items():
+            self.assertEqual(digest, recovery['implementations'][name])
+        self.assertTrue(recovery['boot_upload_to_loader_entry_same_session_modeled'])
+        for field in ('continuous_reset_to_upload_verified', 'physical_loader_execution_verified',
+                      'physical_recovery_verified', 'automatic_retry_allowed', 'live_write_enabled', 'ready_to_flash'):
+            self.assertFalse(recovery[field])
+        self.assertEqual([], report['would_send'])
+        self.assertEqual([], report['program_packets'])
+
     def test_cli_valid_input_still_returns_blocked_exit_code(self):
         data = fixture()
         with tempfile.TemporaryDirectory() as directory:

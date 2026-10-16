@@ -21,9 +21,10 @@ complete physical session or preservation/recovery after erase.
 The candidate implementation path is now specific: identify and qualify the
 controller/session; upload and enter the matching RAM loader; issue its erase,
 block-program and finalize operations; independently verify image integrity
-and readback. Important boundaries remain: boot and loader models are still
-separate, flash/FIFO effects are synthetic, erase preservation is unqualified,
-and no interrupted-flash recovery has been demonstrated. A stock utility name,
+and readback. The later [native handoff model](BOOT_LOADER_HANDOFF.md) joins
+boot upload to loader entry in one offline session. Flash/FIFO effects remain
+synthetic, erase preservation is unqualified, and no interrupted-flash
+recovery has been demonstrated. A stock utility name,
 a positive status, or an offline test pass cannot replace those observations.
 
 ## New joined sender model
@@ -85,3 +86,5 @@ stays disabled.
 Validation: **335 offline tests passed with no skips**. The CLI reproduced the
 six-case evidence report byte-for-byte; staged changes passed
 `git diff --cached --check`. No adapter or controller was accessed.
+
+[Native boot-to-loader handoff](BOOT_LOADER_HANDOFF.md) now joins original boot copying/JSR, captured-loader entry and modeled word programming in one CPU/RAM session. Physical startup, programming and recovery remain unqualified; live writes stay disabled.

@@ -313,3 +313,5 @@ Capstone (the existing WSL environment was used). Neither test opens a vehicle.
 [Erase failure and retry stack evidence](ERASE_FAILURE_RETRY_STACKS.md) traces native ID/sector failures and mixed program retries with synthetic flash samples. Successful later calls retain older error frames; physical recovery and live writes remain disabled.
 
 [Error sender and native software reentry](ERROR_SENDER_REENTRY.md) follows actual sender timeouts through their JMP into loader entry. Intended status bytes do not qualify physical delivery or retry safety; live writes remain disabled.
+
+[Native boot-to-loader handoff](BOOT_LOADER_HANDOFF.md) now joins original boot copying/JSR, captured-loader entry and modeled word programming in one CPU/RAM session. Physical startup, programming and recovery remain unqualified; live writes stay disabled.
