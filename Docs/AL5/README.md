@@ -317,3 +317,5 @@ Capstone (the existing WSL environment was used). Neither test opens a vehicle.
 [Native boot-to-loader handoff](BOOT_LOADER_HANDOFF.md) now joins original boot copying/JSR, captured-loader entry and modeled word programming in one CPU/RAM session. Physical startup, programming and recovery remain unqualified; live writes stay disabled.
 
 [Joined erase/program/finalize/verification session](PROGRAM_SESSION.md) now exercises all 57,304 calibration bytes through native block/word code with conditional synthetic flash and collateral restoration. Host verification rejects checksum, collateral and marker failures; live writes remain disabled.
+
+[Integrated interruption/retry testing](INTERRUPTION_RETRY_TESTING.md) adds seven synthetic interruption and reconstruction scenarios, including unknown collateral after backup loss. Fresh-emulator boot selection is explicit; physical recovery and live writes remain unqualified.

@@ -1,0 +1,408 @@
+{
+  "mode": "offline_integrated_interruption_and_retry_matrix",
+  "low_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
+  "loader_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
+  "generator_sha256": "0ed2b326e163ce8d3f439cb5d6949b7f8eeea6949d2312dc917f5a2b578e8cf0",
+  "dependency_sha256": {
+    "emulate_al5_program_session.py": "8c98dfa2c18742ac032cfc7ee3ce8619f60fb5970cbf77a22db5498c81acc844",
+    "emulate_boot_loader_handoff.py": "e4b42498fcd0a77490052002ee1e6291a4dfe425c80c2b9ac85a0ac5466fcbf7",
+    "emulate_loader_error_sender.py": "ab02b80fcf1181a4d90e70658eb7ca5da4ac3a1fa069712ea90a360876fb83d1",
+    "emulate_loader_erase_failures.py": "2db16548347065ecf10bacf3d232a751b276dc1c4cf8c6e0ebc2486d7c8987b0",
+    "emulate_loader_entry.py": "e9b5566fc2b2906e4a1253bd0909ad620328e7629e04ccf119995b7a4a1e91f8",
+    "emulate_loader_parser.py": "62ba7801849fc51361c0dfab2b8b85063a3e590eda1b78d14329fb125c10416c"
+  },
+  "cases": [
+    {
+      "name": "erase_interruption_with_backup",
+      "interruption": {
+        "kind": "after_sector_erase",
+        "source_pc": "0xff93d6",
+        "stack_pointer": "0xffa7f2",
+        "detail": null,
+        "physical_interruption_observed": false
+      },
+      "interrupted_stack_delta": -12,
+      "snapshot_sha256": "3d1c6df752197e00c1f39d31975109a8e823863d5991982670904c769361764e",
+      "external_backup_retained": true,
+      "fresh_emulator_selected_boot_entry": true,
+      "old_ram_not_copied": true,
+      "result": {
+        "calibration": {
+          "region_start": "0x8000",
+          "bytes_reconstructed": 57304,
+          "blocks_completed": 8,
+          "blocks_skipped_erased": 216,
+          "native_program_bytes": 2008,
+          "expected_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b"
+        },
+        "finalize_responses": [
+          "760086"
+        ],
+        "final_stack_delta": 0,
+        "imported_snapshot_sha256": "3d1c6df752197e00c1f39d31975109a8e823863d5991982670904c769361764e",
+        "verification": {
+          "expected_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+          "readback_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+          "exact_calibration_match": true,
+          "native_checksum_valid": true,
+          "calibration_layout_valid": true,
+          "be16_sum_zero": true,
+          "marker": "0x4afc",
+          "completion_marker_matches": true,
+          "collateral_backup_available": true,
+          "collateral_before_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+          "collateral_after_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+          "collateral_matches": true,
+          "scope": "Host inspection of the same synthetic flash backing; no physical readback exchange.",
+          "offline_verification_pass": true,
+          "physical_readback_verified": false,
+          "physical_recovery_verified": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false
+        }
+      }
+    },
+    {
+      "name": "erase_interruption_backup_missing",
+      "interruption": {
+        "kind": "after_sector_erase",
+        "source_pc": "0xff93d6",
+        "stack_pointer": "0xffa7f2",
+        "detail": null,
+        "physical_interruption_observed": false
+      },
+      "interrupted_stack_delta": -12,
+      "snapshot_sha256": "3d1c6df752197e00c1f39d31975109a8e823863d5991982670904c769361764e",
+      "external_backup_retained": false,
+      "fresh_emulator_selected_boot_entry": true,
+      "old_ram_not_copied": true,
+      "result": {
+        "calibration": {
+          "region_start": "0x8000",
+          "bytes_reconstructed": 57304,
+          "blocks_completed": 8,
+          "blocks_skipped_erased": 216,
+          "native_program_bytes": 2008,
+          "expected_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b"
+        },
+        "finalize_responses": [
+          "760086"
+        ],
+        "final_stack_delta": 0,
+        "imported_snapshot_sha256": "3d1c6df752197e00c1f39d31975109a8e823863d5991982670904c769361764e",
+        "verification": {
+          "expected_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+          "readback_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+          "exact_calibration_match": true,
+          "native_checksum_valid": true,
+          "calibration_layout_valid": true,
+          "be16_sum_zero": true,
+          "marker": "0x4afc",
+          "completion_marker_matches": true,
+          "collateral_backup_available": false,
+          "collateral_before_sha256": null,
+          "collateral_after_sha256": "021aa8ff312a098ab93e5b684dacc7b1deec7ce4c745ada29a81b0232ede44bf",
+          "collateral_matches": null,
+          "scope": "Host inspection of the same synthetic flash backing; no physical readback exchange.",
+          "offline_verification_pass": false,
+          "physical_readback_verified": false,
+          "physical_recovery_verified": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false
+        }
+      }
+    },
+    {
+      "name": "partial_block_retry",
+      "interruption": {
+        "kind": "after_word",
+        "source_pc": "0xff940e",
+        "stack_pointer": "0xffa7fa",
+        "detail": null,
+        "physical_interruption_observed": false
+      },
+      "interrupted_stack_delta": -4,
+      "retry_responses": [
+        "760073"
+      ],
+      "retry_stack_delta": 0,
+      "fresh_emulator_selected_boot_entry": true,
+      "old_ram_not_copied": true,
+      "result": {
+        "calibration": {
+          "region_start": "0x8000",
+          "bytes_reconstructed": 57304,
+          "blocks_completed": 8,
+          "blocks_skipped_erased": 216,
+          "native_program_bytes": 2008,
+          "expected_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b"
+        },
+        "finalize_responses": [
+          "760086"
+        ],
+        "final_stack_delta": 0,
+        "imported_snapshot_sha256": "272a9c8b21bff64ad52707ecbd977ce9fd6fd7d12bbb5c8eae89323cb07b2ab4",
+        "verification": {
+          "expected_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+          "readback_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+          "exact_calibration_match": true,
+          "native_checksum_valid": true,
+          "calibration_layout_valid": true,
+          "be16_sum_zero": true,
+          "marker": "0x4afc",
+          "completion_marker_matches": true,
+          "collateral_backup_available": true,
+          "collateral_before_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+          "collateral_after_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+          "collateral_matches": true,
+          "scope": "Host inspection of the same synthetic flash backing; no physical readback exchange.",
+          "offline_verification_pass": true,
+          "physical_readback_verified": false,
+          "physical_recovery_verified": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false
+        }
+      }
+    },
+    {
+      "name": "overprogrammed_word_requires_reerase",
+      "interruption": {
+        "kind": "overprogrammed_word",
+        "source_pc": "0xff940e",
+        "stack_pointer": "0xffa7fa",
+        "detail": {
+          "address": "0x9000",
+          "requested": "0x1",
+          "chosen_fault_word": "0x0",
+          "physical_word_state_known": false
+        },
+        "physical_interruption_observed": false
+      },
+      "interrupted_stack_delta": -4,
+      "retry_responses": [
+        "7600f8"
+      ],
+      "retry_stack_delta": -4,
+      "fresh_emulator_selected_boot_entry": true,
+      "old_ram_not_copied": true,
+      "result": {
+        "calibration": {
+          "region_start": "0x8000",
+          "bytes_reconstructed": 57304,
+          "blocks_completed": 8,
+          "blocks_skipped_erased": 216,
+          "native_program_bytes": 2008,
+          "expected_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b"
+        },
+        "finalize_responses": [
+          "760086"
+        ],
+        "final_stack_delta": -4,
+        "imported_snapshot_sha256": "61f519b3f9d15e57a5baf66286d59dd8b377c0353aad1e476ac50ff6f760ebc0",
+        "verification": {
+          "expected_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+          "readback_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+          "exact_calibration_match": true,
+          "native_checksum_valid": true,
+          "calibration_layout_valid": true,
+          "be16_sum_zero": true,
+          "marker": "0x4afc",
+          "completion_marker_matches": true,
+          "collateral_backup_available": true,
+          "collateral_before_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+          "collateral_after_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+          "collateral_matches": true,
+          "scope": "Host inspection of the same synthetic flash backing; no physical readback exchange.",
+          "offline_verification_pass": true,
+          "physical_readback_verified": false,
+          "physical_recovery_verified": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false
+        }
+      }
+    },
+    {
+      "name": "lost_ack_duplicate_and_conflicting_retry",
+      "lost_ack_sender_returns": 0,
+      "sender_timeout_jumps": [
+        {
+          "stack_delta": -16,
+          "pending_words": [
+            "0xff95bc",
+            "0xff954e",
+            "0xff952c",
+            "0xff91c6"
+          ]
+        }
+      ],
+      "duplicate_responses": [
+        "760073"
+      ],
+      "conflicting_responses": [
+        "7600f8"
+      ],
+      "conflicting_stack_delta": -4,
+      "result": {
+        "calibration": {
+          "region_start": "0x8000",
+          "bytes_reconstructed": 57304,
+          "blocks_completed": 8,
+          "blocks_skipped_erased": 216,
+          "native_program_bytes": 2008,
+          "expected_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b"
+        },
+        "finalize_responses": [
+          "760086"
+        ],
+        "final_stack_delta": -4,
+        "imported_snapshot_sha256": null,
+        "verification": {
+          "expected_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+          "readback_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+          "exact_calibration_match": true,
+          "native_checksum_valid": true,
+          "calibration_layout_valid": true,
+          "be16_sum_zero": true,
+          "marker": "0x4afc",
+          "completion_marker_matches": true,
+          "collateral_backup_available": true,
+          "collateral_before_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+          "collateral_after_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+          "collateral_matches": true,
+          "scope": "Host inspection of the same synthetic flash backing; no physical readback exchange.",
+          "offline_verification_pass": true,
+          "physical_readback_verified": false,
+          "physical_recovery_verified": false,
+          "live_write_enabled": false,
+          "ready_to_flash": false
+        }
+      }
+    },
+    {
+      "name": "interruption_before_marker",
+      "interruption": {
+        "kind": "before_marker",
+        "source_pc": "0xff940e",
+        "stack_pointer": "0xffa7fa",
+        "detail": null,
+        "physical_interruption_observed": false
+      },
+      "final_status_before_interruption": [],
+      "verification_before_restart": {
+        "expected_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+        "readback_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+        "exact_calibration_match": true,
+        "native_checksum_valid": true,
+        "calibration_layout_valid": true,
+        "be16_sum_zero": true,
+        "marker": "0xffff",
+        "completion_marker_matches": false,
+        "collateral_backup_available": true,
+        "collateral_before_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+        "collateral_after_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+        "collateral_matches": true,
+        "scope": "Host inspection of the same synthetic flash backing; no physical readback exchange.",
+        "offline_verification_pass": false,
+        "physical_readback_verified": false,
+        "physical_recovery_verified": false,
+        "live_write_enabled": false,
+        "ready_to_flash": false
+      },
+      "fresh_emulator_selected_boot_entry": true,
+      "old_ram_not_copied": true,
+      "final_responses": [
+        "760086"
+      ],
+      "verification_after_restart": {
+        "expected_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+        "readback_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+        "exact_calibration_match": true,
+        "native_checksum_valid": true,
+        "calibration_layout_valid": true,
+        "be16_sum_zero": true,
+        "marker": "0x4afc",
+        "completion_marker_matches": true,
+        "collateral_backup_available": true,
+        "collateral_before_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+        "collateral_after_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+        "collateral_matches": true,
+        "scope": "Host inspection of the same synthetic flash backing; no physical readback exchange.",
+        "offline_verification_pass": true,
+        "physical_readback_verified": false,
+        "physical_recovery_verified": false,
+        "live_write_enabled": false,
+        "ready_to_flash": false
+      }
+    },
+    {
+      "name": "interruption_after_marker",
+      "interruption": {
+        "kind": "after_marker",
+        "source_pc": "0xff940e",
+        "stack_pointer": "0xffa7fa",
+        "detail": null,
+        "physical_interruption_observed": false
+      },
+      "final_status_before_interruption": [],
+      "verification_before_restart": {
+        "expected_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+        "readback_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+        "exact_calibration_match": true,
+        "native_checksum_valid": true,
+        "calibration_layout_valid": true,
+        "be16_sum_zero": true,
+        "marker": "0x4afc",
+        "completion_marker_matches": true,
+        "collateral_backup_available": true,
+        "collateral_before_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+        "collateral_after_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+        "collateral_matches": true,
+        "scope": "Host inspection of the same synthetic flash backing; no physical readback exchange.",
+        "offline_verification_pass": true,
+        "physical_readback_verified": false,
+        "physical_recovery_verified": false,
+        "live_write_enabled": false,
+        "ready_to_flash": false
+      },
+      "fresh_emulator_selected_boot_entry": true,
+      "old_ram_not_copied": true,
+      "final_responses": [
+        "760086"
+      ],
+      "verification_after_restart": {
+        "expected_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+        "readback_sha256": "e67aaf6a1b69498b5642ff0da822f392a0d01d51f61bdd82471f37a02137a76b",
+        "exact_calibration_match": true,
+        "native_checksum_valid": true,
+        "calibration_layout_valid": true,
+        "be16_sum_zero": true,
+        "marker": "0x4afc",
+        "completion_marker_matches": true,
+        "collateral_backup_available": true,
+        "collateral_before_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+        "collateral_after_sha256": "f7199db3a7b6b4c150c6db6448ea4c899a57d1116e4d67d6f411a6316f189268",
+        "collateral_matches": true,
+        "scope": "Host inspection of the same synthetic flash backing; no physical readback exchange.",
+        "offline_verification_pass": true,
+        "physical_readback_verified": false,
+        "physical_recovery_verified": false,
+        "live_write_enabled": false,
+        "ready_to_flash": false
+      }
+    }
+  ],
+  "limitations": [
+    "Interruption points, flash persistence and fault word values are explicit model assumptions, not measured chip power-loss behavior.",
+    "Fresh emulator reconstruction explicitly selects synthetic boot entry; physical reset/boot availability and RAM retention are unproven.",
+    "Only flash bytes and an optionally retained external collateral baseline cross the model restart; no old CPU/RAM state is copied.",
+    "Successful model reconstruction does not authorize retry, reerase, recovery or vehicle writes."
+  ],
+  "physical_programming_verified": false,
+  "physical_readback_verified": false,
+  "physical_recovery_verified": false,
+  "physical_interruption_verified": false,
+  "automatic_retry_allowed": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "would_send": []
+}

@@ -49,6 +49,7 @@ LOADER_ERASE_FAILURE_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/
 LOADER_ERROR_SENDER_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/LOADER_ERROR_SENDER_EMULATION.json'
 BOOT_LOADER_HANDOFF_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/BOOT_LOADER_HANDOFF_EMULATION.json'
 PROGRAM_SESSION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/PROGRAM_SESSION_EMULATION.json'
+INTERRUPTION_EVIDENCE = Path(__file__).resolve().parents[2] / 'Docs/AL5/INTERRUPTION_RETRY_EMULATION.json'
 
 
 def calibration_recovery_assessment():
@@ -60,6 +61,7 @@ def calibration_recovery_assessment():
     error_sender = LOADER_ERROR_SENDER_EVIDENCE.read_bytes()
     handoff = BOOT_LOADER_HANDOFF_EVIDENCE.read_bytes()
     program_session = PROGRAM_SESSION_EVIDENCE.read_bytes()
+    interruptions = INTERRUPTION_EVIDENCE.read_bytes()
     return {
         'scope': 'Joined native boot/upload/loader flow with modeled erase, block programming, finalization and host verification; physical reset, VPW, flash/readback and recovery remain unqualified.',
         'finalization_evidence': 'Docs/AL5/LOADER_FINALIZATION_EMULATION.json',
@@ -78,13 +80,16 @@ def calibration_recovery_assessment():
         'boot_loader_handoff_evidence_sha256': sha256(handoff),
         'program_session_evidence': 'Docs/AL5/PROGRAM_SESSION_EMULATION.json',
         'program_session_evidence_sha256': sha256(program_session),
+        'interruption_evidence': 'Docs/AL5/INTERRUPTION_RETRY_EMULATION.json',
+        'interruption_evidence_sha256': sha256(interruptions),
         'implementations': {name: sha256((Path(__file__).parent / name).read_bytes())
                             for name in ('emulate_loader_finalize.py', 'emulate_calibration_marker.py',
                                          'emulate_boot_receive_session.py', 'emulate_boot_receive_isr.py',
                                          'emulate_boot_session.py', 'emulate_loader_entry.py',
                                          'emulate_loader_parser.py', 'emulate_loader_erase_failures.py',
                                          'emulate_loader_error_sender.py', 'emulate_boot_loader_handoff.py',
-                                         'emulate_al5_program_session.py', 'checksum.py', 'al5_segment.py')},
+                                         'emulate_al5_program_session.py', 'emulate_al5_interruptions.py',
+                                         'checksum.py', 'al5_segment.py')},
         'conditional_boot_error_routes_emulated': True,
         'boot_receive_same_session_modeled': True,
         'loader_entry_program_path_same_session_modeled': True,
@@ -92,6 +97,8 @@ def calibration_recovery_assessment():
         'sender_timeout_software_reentry_modeled': True,
         'boot_upload_to_loader_entry_same_session_modeled': True,
         'joined_erase_program_finalize_verification_modeled': True,
+        'interruption_retry_reconstruction_modeled': True,
+        'physical_interruption_verified': False,
         'physical_programming_verified': False,
         'physical_readback_verified': False,
         'physical_acknowledgment_verified': False,

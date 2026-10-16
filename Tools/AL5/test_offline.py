@@ -211,6 +211,26 @@ class OfflineSafetyTests(unittest.TestCase):
         self.assertEqual([], report['erase_packets'])
         self.assertEqual([], report['program_packets'])
 
+    def test_interruption_model_does_not_qualify_physical_recovery(self):
+        data = fixture()
+        report = plan(data, data, sha256(data), 'AL5', 15184109)
+        recovery = report['calibration_recovery_assessment']
+        raw = (Path(__file__).resolve().parents[2] / recovery['interruption_evidence']).read_bytes()
+        native = json.loads(raw)
+        self.assertEqual(sha256(raw), recovery['interruption_evidence_sha256'])
+        self.assertEqual(native['generator_sha256'], recovery['implementations']['emulate_al5_interruptions.py'])
+        for name, digest in native['dependency_sha256'].items():
+            self.assertEqual(digest, recovery['implementations'][name])
+        self.assertEqual(7, len(native['cases']))
+        lost = next(c for c in native['cases'] if c['name'] == 'erase_interruption_backup_missing')
+        self.assertIsNone(lost['result']['verification']['collateral_matches'])
+        self.assertFalse(lost['result']['verification']['offline_verification_pass'])
+        self.assertTrue(recovery['interruption_retry_reconstruction_modeled'])
+        for field in ('physical_interruption_verified', 'physical_recovery_verified',
+                      'automatic_retry_allowed', 'live_write_enabled', 'ready_to_flash'):
+            self.assertFalse(recovery[field])
+        self.assertEqual([], report['would_send'])
+
     def test_cli_valid_input_still_returns_blocked_exit_code(self):
         data = fixture()
         with tempfile.TemporaryDirectory() as directory:

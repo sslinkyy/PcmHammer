@@ -102,3 +102,5 @@ Validation: **358 offline tests passed with no skips**. The production CLI
 generated the four-case source-pinned report. The principal native model
 processed all 57,304 calibration bytes in 224 blocks. No adapter, controller
 or vehicle was accessed; staged changes passed `git diff --cached --check`.
+
+[Integrated interruption/retry testing](INTERRUPTION_RETRY_TESTING.md) adds seven synthetic interruption and reconstruction scenarios, including unknown collateral after backup loss. Fresh-emulator boot selection is explicit; physical recovery and live writes remain unqualified.

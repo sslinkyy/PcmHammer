@@ -180,14 +180,19 @@ class ProgramSession(BootLoaderSession):
         actual = bytes(self.uc.mem_read(START, LENGTH))
         collateral = bytes(self.uc.mem_read(END, MARKER-END))
         marker = int.from_bytes(self.uc.mem_read(MARKER, 2), 'big')
+        baseline = self.collateral_before
+        if baseline is not None and (type(baseline) is not bytes or len(baseline) != MARKER-END):
+            raise ValueError('collateral baseline must be absent or exact snapshot bytes')
         facts = dict(expected_sha256=sha256(expected), readback_sha256=sha256(actual),
             exact_calibration_match=actual == expected, native_checksum_valid=checksum_valid(actual),
             calibration_layout_valid=not validate(actual),
             be16_sum_zero=word_sum(actual) == 0, marker=hex(marker), completion_marker_matches=marker == 0x4AFC,
-            collateral_before_sha256=sha256(self.collateral_before), collateral_after_sha256=sha256(collateral),
-            collateral_matches=collateral == self.collateral_before,
+            collateral_backup_available=baseline is not None,
+            collateral_before_sha256=sha256(baseline) if baseline is not None else None,
+            collateral_after_sha256=sha256(collateral),
+            collateral_matches=collateral == baseline if baseline is not None else None,
             scope='Host inspection of the same synthetic flash backing; no physical readback exchange.')
-        facts['offline_verification_pass'] = all(facts[k] for k in (
+        facts['offline_verification_pass'] = all(facts[k] is True for k in (
             'exact_calibration_match', 'calibration_layout_valid', 'native_checksum_valid', 'be16_sum_zero',
             'completion_marker_matches', 'collateral_matches'))
         return dict(facts, physical_readback_verified=False, physical_recovery_verified=False,
