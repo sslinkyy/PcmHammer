@@ -64,9 +64,11 @@ def gt_fixed(session, command, payload):
     raise TimeoutError('GT acknowledgment missing; no retry')
 
 
-def run_sx_monitor(gt, sx, emit, source_speed='1x'):
+def run_sx_monitor(gt, sx, emit, source_speed='1x', count=1):
     if source_speed not in ('1x', '4x'):
         raise ValueError('Unknown source speed; no commands sent')
+    if type(count) is not int or not 1 <= count <= (3 if source_speed == '4x' else 100):
+        raise ValueError('Request count outside bench bound; no commands sent')
     rows = []
     if sx.read():
         raise ValueError('SX pending input')
@@ -82,7 +84,7 @@ def run_sx_monitor(gt, sx, emit, source_speed='1x'):
             raise ValueError('SX monitor setup rejected')
     session = Session(gt, emit)
     session.connect('dvi')
-        # Fixed source speed only: no ECM speed negotiation is sent.
+    # Fixed source speed only: no ECM speed negotiation is sent.
     saved = []
     monitoring = False
     try:
@@ -109,7 +111,14 @@ def run_sx_monitor(gt, sx, emit, source_speed='1x'):
         gt_fixed(session, 0x31, b'\x02\x01')
         if session.request(0x31, [2])['payload_hex'] != '0201':
             raise ValueError('GT ON readback failed; no query sent')
-        gt_fixed(session, 0x10, bytes.fromhex('686af10100'))
+        for ordinal in range(count):
+            gt_fixed(session, 0x10, bytes.fromhex('686af10100'))
+            emit({'kind': 'request_acknowledged', 'ordinal': ordinal + 1})
+            deadline = time.monotonic() + .15
+            while time.monotonic() < deadline:
+                data.extend(sx.read())
+                if len(data) > 65536 or b'>' in data:
+                    raise ValueError('SX monitor stopped or overflowed')
         deadline = time.monotonic() + 2
         while time.monotonic() < deadline:
             data.extend(sx.read())
@@ -143,7 +152,7 @@ def run_sx_monitor(gt, sx, emit, source_speed='1x'):
                   'sx_volatile_settings_left': ['ATH1', 'ATIFR0']})
 
 
-def run(gt, sx, emit):
+def run(gt, sx, emit, gt_source_id=None):
     rows = []
     if sx.read():
         raise ValueError('SX pending input; no commands sent')
@@ -166,7 +175,10 @@ def run(gt, sx, emit):
         try:
             session = Session(gt, gt_emit)
             session.connect('dvi')
-            session.capture('1x', 6)
+            if gt_source_id is None:
+                session.capture('1x', 6)
+            else:
+                session.capture('1x', 6, gt_source_id)
         except BaseException as error:
             errors.append(str(error))
     thread = threading.Thread(target=listen)
@@ -198,11 +210,22 @@ def main():
     parser.add_argument('--listener', choices=('gt', 'sx'), default='gt')
     parser.add_argument('--source-speed', choices=('1x', '4x'), default='1x',
                         help='SX-listener test only; does not change ECM speed')
+    parser.add_argument('--count', type=int, default=1,
+                        help='SX-listener fixed PID queries; maximum 100 at 1x, 3 at 4x')
+    parser.add_argument('--gt-source-id', type=lambda value: int(value, 0),
+                        choices=range(256), metavar='BYTE',
+                        help='GT listener only: optional explicit source filter')
     args = parser.parse_args()
     if args.gt_port == args.sx_port:
         parser.error('Adapters require distinct ports')
     if args.source_speed != '1x' and args.listener != 'sx':
         parser.error('4x source test requires SX listener')
+    if args.listener != 'sx' and args.count != 1:
+        parser.error('Repeated queries require SX listener')
+    if args.gt_source_id is not None and args.listener != 'gt':
+        parser.error('GT source filter requires GT listener')
+    if not 1 <= args.count <= (3 if args.source_speed == '4x' else 100):
+        parser.error('Count outside bounded source-speed test limit')
     with args.output.open('x', encoding='utf8') as output:
         lock = threading.Lock()
         def emit(row):
@@ -215,16 +238,16 @@ def main():
               'gt_api': 'dvi', 'isolated_bench_user_confirmed': True,
               'programming_enabled': False, 'electrical_silence_proven': False,
               'programming_capture_proven': False})
-        emit({'kind': 'tool_source', 'source_speed': args.source_speed,
+        emit({'kind': 'tool_source', 'source_speed': args.source_speed, 'count': args.count,
               'sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()})
         gt = sx = None
         try:
             gt = WindowsSerial(args.gt_port)
             sx = WindowsSerial(args.sx_port)
             if args.listener == 'gt':
-                run(gt, sx, emit)
+                run(gt, sx, emit, args.gt_source_id)
             else:
-                run_sx_monitor(gt, sx, emit, args.source_speed)
+                run_sx_monitor(gt, sx, emit, args.source_speed, args.count)
             emit({'kind': 'result', 'completed': True,
                   'capture_completeness': 'not established'})
         except Exception as error:

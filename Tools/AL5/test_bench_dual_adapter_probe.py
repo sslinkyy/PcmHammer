@@ -32,9 +32,33 @@ class SX:
 
 
 class Tests(unittest.TestCase):
+    def test_explicit_source_filter_is_checked_and_restored(self):
+        port, rows = FakePort(), []
+        original = dict(port.settings)
+        session = Session(port, rows.append)
+        session.connect('dvi')
+        session.capture('1x', 0, 0x10)
+        self.assertIn(packet(0x33, [1, 0x10, 1]), port.writes)
+        self.assertEqual(port.settings, original)
+        started = next(r for r in rows if r['kind'] == 'capture_started')
+        self.assertEqual(started['receive_scope'], 'exact_source')
+        self.assertEqual(started['source_filter'], 0x10)
+
+    def test_invalid_source_filter_rejected_before_send(self):
+        for value in (-1, 256, True, '0x10'):
+            port = FakePort()
+            with self.assertRaises(ValueError):
+                Session(port, lambda row: None).capture('1x', 0, value)
+            self.assertEqual(port.writes, [])
+
     def test_unknown_source_speed_stops_before_ports(self):
         with self.assertRaises(ValueError):
             probe.run_sx_monitor(object(), object(), lambda row: None, 'auto')
+
+    def test_invalid_request_counts_stop_before_ports(self):
+        for speed, count in (('1x', 0), ('1x', 101), ('4x', 4), ('1x', True)):
+            with self.assertRaises(ValueError):
+                probe.run_sx_monitor(object(), object(), lambda row: None, speed, count)
 
     def test_4x_source_only_preserves_settings_and_stops_monitor(self):
         class Monitor(SX):

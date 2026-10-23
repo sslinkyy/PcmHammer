@@ -262,7 +262,9 @@ class Session:
                    'vehicle_transmit_commands_enabled': False})
         return identity
 
-    def configure_listener(self, speed):
+    def configure_listener(self, speed, source_id=None):
+        if source_id is not None and (type(source_id) is not int or not 0 <= source_id <= 255):
+            raise ValueError('Source filter must be one byte')
         # capture() has verified OFF before saving the original settings.
         self.set_checked(0x31, [1, 1])
         for p in ([0, 0, 0], [1, 0, 0], [2, 0, 0, 0], [3, 0, 0, 0]):
@@ -273,6 +275,8 @@ class Session:
         if len(mask) != 5 or mask[0] != 4 or mask[-1] not in (0, 1):
             raise ProtocolError('Unknown mask layout; listener blocked')
         self.set_checked(0x33, [4, 0, 0, 0, mask[-1]])
+        if source_id is not None:
+            self.set_checked(0x33, [1, source_id, 1])
         self.set_checked(0x33, [6, 0 if speed == '1x' else 1])
         self.set_checked(0x33, [7, 1])
         self.set_checked(0x33, [8, 1])
@@ -354,7 +358,9 @@ class Session:
                 'neutral_mask_configuration_verified': cases[-1]['readback_matches'],
                 'live_receive_verified': False}
 
-    def capture(self, speed, seconds):
+    def capture(self, speed, seconds, source_id=None):
+        if source_id is not None and (type(source_id) is not int or not 0 <= source_id <= 255):
+            raise ValueError('Source filter must be one byte')
         saved = []
         try:
             self.set_checked(0x31, [2, 0])
@@ -366,10 +372,15 @@ class Session:
                 saved.append((command, p))
                 self.emit({'kind': 'saved_setting', 'label': label, 'command': command,
                            'payload_hex': p.hex()})
-            self.configure_listener(speed)
+            if source_id is None:
+                self.configure_listener(speed)
+            else:
+                self.configure_listener(speed, source_id)
             self.emit({'kind': 'capture_started', 'fixed_speed': speed,
                        'automatic_speed_tracking': False,
                        'complete_programming_capture_proven': False,
+                       'source_filter': source_id,
+                       'receive_scope': 'exact_source' if source_id is not None else 'unqualified_all_filters_off',
                        'crc_in_payload': True})
             deadline = time.monotonic() + seconds
             while time.monotonic() < deadline:
@@ -531,6 +542,9 @@ def main():
         if mode == 'capture':
             p.add_argument('--speed', choices=('1x', '4x'), required=True)
             p.add_argument('--seconds', type=float, default=60)
+            p.add_argument('--source-id', type=lambda value: int(value, 0),
+                           choices=range(256), metavar='BYTE',
+                           help='Exact source filter, e.g. 0x10. All-filters-off reception is unproven.')
     p = sub.add_parser('decode')
     p.add_argument('--input', type=Path, required=True,
                    help='Raw binary DVI receive stream, not EFX/HTX')
@@ -584,7 +598,7 @@ def main():
                     elif args.mode == 'mask-probe':
                         print(json.dumps(session.probe_mask(), indent=2))
                     else:
-                        session.capture(args.speed, args.seconds)
+                        session.capture(args.speed, args.seconds, args.source_id)
                 finally:
                     port.close()
             emit({'kind': 'result', 'success': True,

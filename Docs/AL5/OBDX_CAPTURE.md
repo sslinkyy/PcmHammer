@@ -22,6 +22,7 @@ applications before opening the tool; it opens the selected COM port exclusively
 
 Capture first requests OFF and verifies readback, selects VPW, disables the four
 destination/source exact/range filters, sets a zero-bit header mask while preserving its reported flag,
+optionally enables the caller's exact `--source-id` filter,
 selects the caller's fixed 1x/4x speed, enables CRC validation/CRC display and
 device timestamps, then requests **LISTEN ONLY (2)** and verifies its readback.
 Each configuration change requires both an echo acknowledgment and a separate
@@ -35,6 +36,13 @@ VPW header filters, CRC-validation policy, CRC-display and speed settings, with
 checked acknowledgments and status queries. Restoration failure is an error. This protects the
 existing reader's expected frame layout and preserves nondefault adapter filters.
 Network ON is never restored. Selecting VPW remains the capture protocol choice.
+
+The [powered bench battery](DUAL_ADAPTER_BATTERY_20261022.md) established that
+an explicit source filter receives traffic on this GT, whereas all-filters-off
+received none. For example, `--source-id 0x10` receives ECM-originated frames;
+it does not also capture the tester's requests. Exact source/destination
+reception is demonstrated at 1x; unfiltered, range-filter, 4x and full
+two-direction capture remain unqualified.
 
 The manufacturer [OBDX VT reference, v1.06](https://obdxpro.com/Downloads/ReferenceManuals/OBDX%20Pro%20VT%20Reference%20Guide%20v2.pdf)
 documents the DVI framing, adapter queries, timestamp field, filters, speed

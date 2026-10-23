@@ -111,3 +111,11 @@ This failed to establish SX 4x capture under the tested configuration while
 confirming that its 1x receive path still worked. Do not use it as a qualified
 monitor for a flash that changes to 4x. A complete ECM 4x exchange, independent
 bit-rate measurement and programming/non-interference validation remain undone.
+
+
+## Later receive-matrix result
+
+The subsequent [bench battery](DUAL_ADAPTER_BATTERY_20261022.md) established
+working GT 1x LISTEN ONLY reception with explicit exact source/destination
+filters. Earlier zero-frame results above describe the original configuration,
+not absence of monitor capability. Range/mask behavior remains unresolved.

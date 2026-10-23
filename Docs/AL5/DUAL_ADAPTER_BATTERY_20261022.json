@@ -1,0 +1,1090 @@
+{
+  "schema": "dual-adapter-battery-v1",
+  "client_local_date": "2026-10-22",
+  "bench_setup": "user confirmed bench ECM and two adapters via Y splitter",
+  "programming_commands_sent": false,
+  "security_access_sent": false,
+  "loader_upload_sent": false,
+  "ecm_speed_negotiation_sent": false,
+  "physical_speed_measured": false,
+  "electrical_silence_proven": false,
+  "electrical_loading_proven": false,
+  "flash_throughput_proven": false,
+  "transition_continuity_proven": false,
+  "complete_bidirectional_capture_proven": false,
+  "live_al5_write_enabled": false,
+  "offline_tests_passed": 77,
+  "raw_logs": [
+    {
+      "path": "LocalOnly/AL5/bench-receive-battery-20261022-01.jsonl",
+      "bytes": 203741,
+      "sha256": "d7c3f700fc844465ed1f39fca91dc949f6971a4489c9b848ceb400e99a69786b",
+      "executed_source_metadata": [
+        {
+          "electrical_silence_proven": false,
+          "gt_port": "COM9",
+          "kind": "battery",
+          "programming_enabled": false,
+          "schema": "bench-gt-receive-matrix-v1",
+          "source_files": {
+            "bench_dual_adapter_probe.py": "105f5ba442effb283b28de0b90c0d673abaa68bec5bbc81b673f7dd13f385998",
+            "inspect_obdlink.py": "d6d4bd4c1adf26d1ec8bf18f38e20bed9b0297602199dab401958f174fefcd92",
+            "obdx_capture.py": "90c931bdff61175325a3acc61f4d7e9fd9cb19246f2ac2a82194119c6eac354f"
+          },
+          "source_sha256": "8aa389b0106f249ed36f33914e88c052ac3e0c94085cba7dbc8483af7bf4b084",
+          "sx_port": "COM8",
+          "utc": "2026-10-23T04:36:36Z"
+        }
+      ],
+      "terminal_result": {
+        "cases_blocked": 0,
+        "cases_completed": 10,
+        "completed": true,
+        "kind": "result"
+      }
+    },
+    {
+      "path": "LocalOnly/AL5/bench-receive-battery-extended-20261022-01.jsonl",
+      "bytes": 150766,
+      "sha256": "13f08208402d7ddde6852fe4fc002ac5df189e30342319a9c41aa0670a823389",
+      "executed_source_metadata": [
+        {
+          "electrical_silence_proven": false,
+          "gt_port": "COM9",
+          "kind": "battery",
+          "programming_enabled": false,
+          "schema": "bench-gt-receive-matrix-v1",
+          "source_files": {
+            "bench_dual_adapter_probe.py": "105f5ba442effb283b28de0b90c0d673abaa68bec5bbc81b673f7dd13f385998",
+            "inspect_obdlink.py": "d6d4bd4c1adf26d1ec8bf18f38e20bed9b0297602199dab401958f174fefcd92",
+            "obdx_capture.py": "90c931bdff61175325a3acc61f4d7e9fd9cb19246f2ac2a82194119c6eac354f"
+          },
+          "source_sha256": "671436e639d36786c6d338e5671563d2ac73fcb391a1c68ec2908aebf0b6a5ac",
+          "sx_port": "COM8",
+          "utc": "2026-10-23T04:37:34Z"
+        }
+      ],
+      "terminal_result": {
+        "cases_blocked": 0,
+        "cases_completed": 7,
+        "completed": true,
+        "kind": "result"
+      }
+    },
+    {
+      "path": "LocalOnly/AL5/bench-receive-battery-routing-20261022-01.jsonl",
+      "bytes": 146938,
+      "sha256": "6d07ad5079a131bd7bc0831bb0426902c42a5beca583fe80c75a6de6283ffad7",
+      "executed_source_metadata": [
+        {
+          "electrical_silence_proven": false,
+          "gt_port": "COM9",
+          "kind": "battery",
+          "programming_enabled": false,
+          "schema": "bench-gt-receive-matrix-v1",
+          "source_files": {
+            "bench_dual_adapter_probe.py": "105f5ba442effb283b28de0b90c0d673abaa68bec5bbc81b673f7dd13f385998",
+            "inspect_obdlink.py": "d6d4bd4c1adf26d1ec8bf18f38e20bed9b0297602199dab401958f174fefcd92",
+            "obdx_capture.py": "90c931bdff61175325a3acc61f4d7e9fd9cb19246f2ac2a82194119c6eac354f"
+          },
+          "source_sha256": "94cb7673ea8d351e73d2d00797615a6d2db4d956ca2138d703c576143f44210e",
+          "sx_port": "COM8",
+          "utc": "2026-10-23T04:38:40Z"
+        }
+      ],
+      "terminal_result": {
+        "cases_blocked": 0,
+        "cases_completed": 7,
+        "completed": true,
+        "kind": "result"
+      }
+    },
+    {
+      "path": "LocalOnly/AL5/bench-receive-battery-combined-20261022-01.jsonl",
+      "bytes": 108285,
+      "sha256": "d35d5e02491fbe29488f96d6f36c76ea8d93838d8088b17c2806536581fe6a05",
+      "executed_source_metadata": [
+        {
+          "electrical_silence_proven": false,
+          "gt_port": "COM9",
+          "kind": "battery",
+          "programming_enabled": false,
+          "schema": "bench-gt-receive-matrix-v1",
+          "source_files": {
+            "bench_dual_adapter_probe.py": "9512ef8fe62cbeaf0c5c0e54ae949eb9897b1e75ea1c9140e3e20df70ec5271a",
+            "inspect_obdlink.py": "d6d4bd4c1adf26d1ec8bf18f38e20bed9b0297602199dab401958f174fefcd92",
+            "obdx_capture.py": "90c931bdff61175325a3acc61f4d7e9fd9cb19246f2ac2a82194119c6eac354f"
+          },
+          "source_sha256": "c76bb3779edee8ff2c9d339b1239f276ecc7149448a0cb233cd65a9acab2f45d",
+          "sx_port": "COM8",
+          "utc": "2026-10-23T04:39:49Z"
+        }
+      ],
+      "terminal_result": {
+        "cases_blocked": 2,
+        "cases_completed": 3,
+        "completed": true,
+        "kind": "result"
+      }
+    },
+    {
+      "path": "LocalOnly/AL5/bench-gt-monitor-repeat-20261022-01.jsonl",
+      "bytes": 134906,
+      "sha256": "b7b21a244b79e5f669c6b46d3ec710fd7023ef979f546fe1667aea2fa60ee4d0",
+      "executed_source_metadata": [
+        {
+          "electrical_silence_proven": false,
+          "gt_port": "COM9",
+          "kind": "battery",
+          "programming_enabled": false,
+          "schema": "bench-gt-receive-matrix-v1",
+          "source_files": {
+            "bench_dual_adapter_probe.py": "9512ef8fe62cbeaf0c5c0e54ae949eb9897b1e75ea1c9140e3e20df70ec5271a",
+            "inspect_obdlink.py": "d6d4bd4c1adf26d1ec8bf18f38e20bed9b0297602199dab401958f174fefcd92",
+            "obdx_capture.py": "90c931bdff61175325a3acc61f4d7e9fd9cb19246f2ac2a82194119c6eac354f"
+          },
+          "source_sha256": "51553534778084928a4861d632fb4f0c96606fc23d83479eb028d3aa751b37b5",
+          "sx_port": "COM8",
+          "utc": "2026-10-23T04:40:57Z"
+        }
+      ],
+      "terminal_result": {
+        "cases_blocked": 0,
+        "cases_completed": 4,
+        "completed": true,
+        "kind": "result"
+      }
+    },
+    {
+      "path": "LocalOnly/AL5/bench-gt-capture-fixed-source-20261022-01.jsonl",
+      "bytes": 18392,
+      "sha256": "b07f920347ee5aac0c140321c33abe757aa93362d9c0dba5ae8c4d5b6c849ab0",
+      "executed_source_metadata": [
+        {
+          "count": 1,
+          "kind": "tool_source",
+          "sha256": "0bf4dc3d29b2f161b5e3ae473d3f7ee238f77a928e48fde690196f0814c3aa6a",
+          "source_speed": "1x"
+        }
+      ],
+      "terminal_result": {
+        "capture_completeness": "not established",
+        "completed": true,
+        "kind": "result"
+      }
+    },
+    {
+      "path": "LocalOnly/AL5/bench-sx-monitor-100-20261022-01.jsonl",
+      "bytes": 67255,
+      "sha256": "2291e30d10fc56984376e3e9a6c513b7e7976ec9e47c3f86caee08bfce56f269",
+      "executed_source_metadata": [
+        {
+          "count": 100,
+          "kind": "tool_source",
+          "sha256": "9512ef8fe62cbeaf0c5c0e54ae949eb9897b1e75ea1c9140e3e20df70ec5271a",
+          "source_speed": "1x"
+        }
+      ],
+      "terminal_result": {
+        "capture_completeness": "not established",
+        "completed": true,
+        "kind": "result"
+      }
+    },
+    {
+      "path": "LocalOnly/AL5/bench-sx-monitor-4x-three-20261022-01.jsonl",
+      "bytes": 17836,
+      "sha256": "531597424cf6d89b28eee91d488e5819cdc79928d8cd349ab817f2a7b962a7b2",
+      "executed_source_metadata": [
+        {
+          "count": 3,
+          "kind": "tool_source",
+          "sha256": "0bf4dc3d29b2f161b5e3ae473d3f7ee238f77a928e48fde690196f0814c3aa6a",
+          "source_speed": "4x"
+        }
+      ],
+      "terminal_result": {
+        "capture_completeness": "not established",
+        "completed": true,
+        "kind": "result"
+      }
+    },
+    {
+      "path": "LocalOnly/AL5/bench-sx-monitor-1x-postcontrol-20261022-01.jsonl",
+      "bytes": 18216,
+      "sha256": "a54798256e3f5b39bbf8fa9c89b1ea801365a17cfab1cd0f5305ef51a4c17ab7",
+      "executed_source_metadata": [
+        {
+          "count": 3,
+          "kind": "tool_source",
+          "sha256": "0bf4dc3d29b2f161b5e3ae473d3f7ee238f77a928e48fde690196f0814c3aa6a",
+          "source_speed": "1x"
+        }
+      ],
+      "terminal_result": {
+        "capture_completeness": "not established",
+        "completed": true,
+        "kind": "result"
+      }
+    },
+    {
+      "path": "LocalOnly/AL5/bench-battery-final-gt-inspection-20261022-01.jsonl",
+      "bytes": 6672,
+      "sha256": "155fd18735c656d83783f1722cc0f4530fa21fddb2a0f088ca63ce0c717a11cf",
+      "executed_source_metadata": [],
+      "terminal_result": {
+        "capture_completeness": "not established",
+        "kind": "result",
+        "success": true
+      }
+    }
+  ],
+  "cases": [
+    {
+      "log": "bench-receive-battery-20261022-01.jsonl",
+      "case": "off_control",
+      "completed": true,
+      "state": 0,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": null,
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 0,
+      "error": null,
+      "latency_ms": {
+        "min": 203.0,
+        "median": 203.0,
+        "max": 219.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-20261022-01.jsonl",
+      "case": "listen_no_timestamps",
+      "completed": true,
+      "state": 2,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": null,
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 0,
+      "error": null,
+      "latency_ms": {
+        "min": 94.0,
+        "median": 109.0,
+        "max": 125.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-20261022-01.jsonl",
+      "case": "listen_timestamps",
+      "completed": true,
+      "state": 2,
+      "timestamps": 1,
+      "crc_validation": 1,
+      "filter": null,
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 0,
+      "error": null,
+      "latency_ms": {
+        "min": 93.0,
+        "median": 110.0,
+        "max": 110.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-20261022-01.jsonl",
+      "case": "listen_crc_validation_off",
+      "completed": true,
+      "state": 2,
+      "timestamps": 0,
+      "crc_validation": 0,
+      "filter": null,
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 0,
+      "error": null,
+      "latency_ms": {
+        "min": 110.0,
+        "median": 110.0,
+        "max": 125.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-20261022-01.jsonl",
+      "case": "listen_to_f1",
+      "completed": true,
+      "state": 2,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": [
+        0,
+        241,
+        1
+      ],
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 0,
+      "error": null,
+      "latency_ms": {
+        "min": 109.0,
+        "median": 109.0,
+        "max": 109.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-20261022-01.jsonl",
+      "case": "listen_from_10",
+      "completed": true,
+      "state": 2,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": [
+        1,
+        16,
+        1
+      ],
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 4,
+      "error": null,
+      "latency_ms": {
+        "min": 110.0,
+        "median": 110.0,
+        "max": 110.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-20261022-01.jsonl",
+      "case": "listen_to_range_all",
+      "completed": true,
+      "state": 2,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": [
+        2,
+        0,
+        255,
+        1
+      ],
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 0,
+      "error": null,
+      "latency_ms": {
+        "min": 109.0,
+        "median": 109.0,
+        "max": 125.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-20261022-01.jsonl",
+      "case": "listen_from_range_all",
+      "completed": true,
+      "state": 2,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": [
+        3,
+        0,
+        255,
+        1
+      ],
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 0,
+      "error": null,
+      "latency_ms": {
+        "min": 109.0,
+        "median": 109.0,
+        "max": 110.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-20261022-01.jsonl",
+      "case": "on_receive_no_gt_requests",
+      "completed": true,
+      "state": 1,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": null,
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 0,
+      "error": null,
+      "latency_ms": {
+        "min": 93.0,
+        "median": 109.0,
+        "max": 125.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-20261022-01.jsonl",
+      "case": "on_to_f1_no_gt_requests",
+      "completed": true,
+      "state": 1,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": [
+        0,
+        241,
+        1
+      ],
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 0,
+      "error": null,
+      "latency_ms": {
+        "min": 94.0,
+        "median": 109.0,
+        "max": 110.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-extended-20261022-01.jsonl",
+      "case": "off_control",
+      "completed": true,
+      "state": 0,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": null,
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 0,
+      "error": null,
+      "latency_ms": {
+        "min": 109.0,
+        "median": 110.0,
+        "max": 110.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-extended-20261022-01.jsonl",
+      "case": "listen_from_10_flag_off",
+      "completed": true,
+      "state": 2,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": [
+        1,
+        16,
+        0
+      ],
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 0,
+      "error": null,
+      "latency_ms": {
+        "min": 94.0,
+        "median": 94.0,
+        "max": 109.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-extended-20261022-01.jsonl",
+      "case": "listen_from_f1",
+      "completed": true,
+      "state": 2,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": [
+        1,
+        241,
+        1
+      ],
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 3,
+      "error": null,
+      "latency_ms": {
+        "min": 109.0,
+        "median": 110.0,
+        "max": 110.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-extended-20261022-01.jsonl",
+      "case": "listen_from_f1_flag_off",
+      "completed": true,
+      "state": 2,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": [
+        1,
+        241,
+        0
+      ],
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 0,
+      "error": null,
+      "latency_ms": {
+        "min": 109.0,
+        "median": 125.0,
+        "max": 125.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-extended-20261022-01.jsonl",
+      "case": "listen_from_unrelated_55",
+      "completed": true,
+      "state": 2,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": [
+        1,
+        85,
+        1
+      ],
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 0,
+      "error": null,
+      "latency_ms": {
+        "min": 109.0,
+        "median": 110.0,
+        "max": 110.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-extended-20261022-01.jsonl",
+      "case": "listen_from_10_timestamps",
+      "completed": true,
+      "state": 2,
+      "timestamps": 1,
+      "crc_validation": 1,
+      "filter": [
+        1,
+        16,
+        1
+      ],
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 4,
+      "error": null,
+      "latency_ms": {
+        "min": 109.0,
+        "median": 109.0,
+        "max": 109.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-extended-20261022-01.jsonl",
+      "case": "listen_from_10_crc_off",
+      "completed": true,
+      "state": 2,
+      "timestamps": 0,
+      "crc_validation": 0,
+      "filter": [
+        1,
+        16,
+        1
+      ],
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 3,
+      "error": null,
+      "latency_ms": {
+        "min": 94.0,
+        "median": 109.0,
+        "max": 110.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-routing-20261022-01.jsonl",
+      "case": "off_control",
+      "completed": true,
+      "state": 0,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": null,
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 0,
+      "error": null,
+      "latency_ms": {
+        "min": 94.0,
+        "median": 109.0,
+        "max": 125.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-routing-20261022-01.jsonl",
+      "case": "listen_to_6a",
+      "completed": true,
+      "state": 2,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": [
+        0,
+        106,
+        1
+      ],
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 3,
+      "error": null,
+      "latency_ms": {
+        "min": 94.0,
+        "median": 109.0,
+        "max": 125.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-routing-20261022-01.jsonl",
+      "case": "listen_to_6b",
+      "completed": true,
+      "state": 2,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": [
+        0,
+        107,
+        1
+      ],
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 3,
+      "error": null,
+      "latency_ms": {
+        "min": 109.0,
+        "median": 110.0,
+        "max": 125.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-routing-20261022-01.jsonl",
+      "case": "listen_to_range_60_70",
+      "completed": true,
+      "state": 2,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": [
+        2,
+        96,
+        112,
+        1
+      ],
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 0,
+      "error": null,
+      "latency_ms": {
+        "min": 94.0,
+        "median": 109.0,
+        "max": 125.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-routing-20261022-01.jsonl",
+      "case": "listen_from_range_10_11",
+      "completed": true,
+      "state": 2,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": [
+        3,
+        16,
+        17,
+        1
+      ],
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 0,
+      "error": null,
+      "latency_ms": {
+        "min": 94.0,
+        "median": 109.0,
+        "max": 110.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-routing-20261022-01.jsonl",
+      "case": "listen_from_range_00_7f",
+      "completed": true,
+      "state": 2,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": [
+        3,
+        0,
+        127,
+        1
+      ],
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 0,
+      "error": null,
+      "latency_ms": {
+        "min": 94.0,
+        "median": 109.0,
+        "max": 109.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-routing-20261022-01.jsonl",
+      "case": "listen_from_range_80_ff",
+      "completed": true,
+      "state": 2,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": [
+        3,
+        128,
+        255,
+        1
+      ],
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 0,
+      "error": null,
+      "latency_ms": {
+        "min": 93.0,
+        "median": 109.0,
+        "max": 109.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-combined-20261022-01.jsonl",
+      "case": "off_control",
+      "completed": true,
+      "state": 0,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": null,
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 0,
+      "error": null,
+      "latency_ms": {
+        "min": 109.0,
+        "median": 109.0,
+        "max": 110.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-combined-20261022-01.jsonl",
+      "case": "listen_from_10_or_to_6a",
+      "completed": true,
+      "state": 2,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": [
+        [
+          1,
+          16,
+          1
+        ],
+        [
+          0,
+          106,
+          1
+        ]
+      ],
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 0,
+      "error": null,
+      "latency_ms": {
+        "min": 93.0,
+        "median": 110.0,
+        "max": 125.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-combined-20261022-01.jsonl",
+      "case": "listen_from_10_or_to_6a_timestamps",
+      "completed": true,
+      "state": 2,
+      "timestamps": 1,
+      "crc_validation": 1,
+      "filter": [
+        [
+          1,
+          16,
+          1
+        ],
+        [
+          0,
+          106,
+          1
+        ]
+      ],
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 0,
+      "error": null,
+      "latency_ms": {
+        "min": 93.0,
+        "median": 110.0,
+        "max": 125.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-combined-20261022-01.jsonl",
+      "case": "listen_mask_priority_08",
+      "completed": false,
+      "state": 2,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": [
+        4,
+        8,
+        0,
+        0,
+        1
+      ],
+      "queries": 0,
+      "positive_replies": 0,
+      "network_frames": 0,
+      "error": "Adapter setting readback mismatch: command 33 payload 0408000001 observed 0408000000",
+      "latency_ms": null,
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-receive-battery-combined-20261022-01.jsonl",
+      "case": "listen_mask_priority_40",
+      "completed": false,
+      "state": 2,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": [
+        4,
+        64,
+        0,
+        0,
+        1
+      ],
+      "queries": 0,
+      "positive_replies": 0,
+      "network_frames": 0,
+      "error": "Adapter setting readback mismatch: command 33 payload 0440000001 observed 0440000000",
+      "latency_ms": null,
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-gt-monitor-repeat-20261022-01.jsonl",
+      "case": "off_control",
+      "completed": true,
+      "state": 0,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": null,
+      "queries": 3,
+      "positive_replies": 3,
+      "network_frames": 0,
+      "error": null,
+      "latency_ms": {
+        "min": 203.0,
+        "median": 218.0,
+        "max": 219.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-gt-monitor-repeat-20261022-01.jsonl",
+      "case": "listen_from_10_repeat",
+      "completed": true,
+      "state": 2,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": [
+        1,
+        16,
+        1
+      ],
+      "queries": 25,
+      "positive_replies": 25,
+      "network_frames": 29,
+      "error": null,
+      "latency_ms": {
+        "min": 93.0,
+        "median": 110.0,
+        "max": 125.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-gt-monitor-repeat-20261022-01.jsonl",
+      "case": "listen_from_f1_repeat",
+      "completed": true,
+      "state": 2,
+      "timestamps": 0,
+      "crc_validation": 1,
+      "filter": [
+        1,
+        241,
+        1
+      ],
+      "queries": 25,
+      "positive_replies": 25,
+      "network_frames": 25,
+      "error": null,
+      "latency_ms": {
+        "min": 93.0,
+        "median": 109.0,
+        "max": 125.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    },
+    {
+      "log": "bench-gt-monitor-repeat-20261022-01.jsonl",
+      "case": "listen_from_10_and_to_6b_repeat",
+      "completed": true,
+      "state": 2,
+      "timestamps": 1,
+      "crc_validation": 1,
+      "filter": [
+        [
+          1,
+          16,
+          1
+        ],
+        [
+          0,
+          107,
+          1
+        ]
+      ],
+      "queries": 25,
+      "positive_replies": 25,
+      "network_frames": 25,
+      "error": null,
+      "latency_ms": {
+        "min": 93.0,
+        "median": 109.0,
+        "max": 125.0
+      },
+      "gt_network_off_confirmed": true,
+      "settings_restored": true
+    }
+  ],
+  "sx_trials": [
+    {
+      "log": "bench-sx-monitor-100-20261022-01.jsonl",
+      "gt_reported_speed": "1x",
+      "transmit_acks": 100,
+      "decoded_requests": 100,
+      "decoded_pid_replies": 100,
+      "decoded_broadcasts": 19,
+      "stop_prompt": true,
+      "gt_off": true
+    },
+    {
+      "log": "bench-sx-monitor-4x-three-20261022-01.jsonl",
+      "gt_reported_speed": "4x",
+      "transmit_acks": 3,
+      "decoded_requests": 0,
+      "decoded_pid_replies": 0,
+      "decoded_broadcasts": 2,
+      "stop_prompt": true,
+      "gt_off": true
+    },
+    {
+      "log": "bench-sx-monitor-1x-postcontrol-20261022-01.jsonl",
+      "gt_reported_speed": "1x",
+      "transmit_acks": 3,
+      "decoded_requests": 3,
+      "decoded_pid_replies": 3,
+      "decoded_broadcasts": 2,
+      "stop_prompt": true,
+      "gt_off": true
+    }
+  ],
+  "final_gt": {
+    "network_state_before_inspection_cleanup": "0200",
+    "network_state": "0200",
+    "selected_protocol": "0101",
+    "timestamps": "0300",
+    "to_filter": "000000",
+    "from_filter": "010000",
+    "to_range_filter": "02000000",
+    "from_range_filter": "03000000",
+    "mask_filter": "0400000000",
+    "speed": "0600",
+    "crc_validation": "0701",
+    "crc_display": "0800"
+  },
+  "gt_crc_derivation": {
+    "algorithm": "CRC-8 SAE J1850 poly1D initFF xoroutFF nonreflected",
+    "frames_checked": 103,
+    "mismatches": 0,
+    "physical_wire_measurement": false
+  },
+  "totals": {
+    "matrix_cases": 33,
+    "completed": 31,
+    "blocked": 2,
+    "sx_queries": 159,
+    "sx_positive_replies": 159
+  },
+  "limitations": [
+    "Identical repeated frames permit count comparisons, not uniquely identified delivery proof.",
+    "Queries were paced, short PID requests, not saturation or flash-size payloads.",
+    "Modern VT reference was used as a documented DVI baseline; actual GT behavior is separately recorded.",
+    "Adaptive matrix variants logged their source hashes; not every intermediate source revision was committed.",
+    "GT range filters and priority-mask settings remain unresolved.",
+    "Independent 4x transmitter/receiver verification, scope measurements and programming qualification remain outstanding."
+  ]
+}
