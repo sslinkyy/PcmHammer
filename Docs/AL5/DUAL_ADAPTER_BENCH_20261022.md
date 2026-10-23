@@ -84,3 +84,30 @@ Sources: [OBDX reference sections 3.5, 3.10.2 and 3.11.5](https://obdxpro.com/Do
 [OBDLink reference sections 7 and 8.9](https://www.scantool.net/scantool/downloads/682/obdlink_frpm_f.pdf).
 The latter is a modern command reference; command acknowledgments and the
 observations above provide the narrower evidence for this older SX firmware.
+
+## 4x source check and 1x control, same bench session
+
+The user then requested a 4x test. The separate bench tool gained
+`--source-speed 4x`, restricted to the SX listener test. This changes only the
+GT setting; it does not send permission/begin-speed commands to the ECM. The
+SX's selected protocol remains ordinary VPW, with no experimental baud setter.
+The official OBDLink manual section 8.6 restricts STPBR switching to ISO/CAN;
+the existing PcmHammer SX implementation also marks Supports4X false. Neither
+alone proves every undocumented firmware behavior is impossible.
+
+GT speed GET confirmed `0601`, network ON was verified, and the one fixed
+`68 6A F1 01 00` request received GT transmit acknowledgment. SX decoded only
+one `08 FF 10 03 58` broadcast, and **did not decode the request**. The ECM
+remained at 1x; an ECM response at 4x was not part of this test. GT readback
+and acknowledgment are not independent measurement of the physical bit rate.
+
+An immediate 1x control confirmed GT `0600`; SX again decoded the request,
+matching `48 6B 10 41 00 98 3B 00 15 76` reply and two broadcasts. Both trials
+confirmed GT OFF, exact GT settings restoration and SX monitor exit prompt.
+Raw log hashes, driver source hash and extracted observations are appended to
+the JSON evidence report. The expanded offline suite passed 71 tests.
+
+This failed to establish SX 4x capture under the tested configuration while
+confirming that its 1x receive path still worked. Do not use it as a qualified
+monitor for a flash that changes to 4x. A complete ECM 4x exchange, independent
+bit-rate measurement and programming/non-interference validation remain undone.

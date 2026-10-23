@@ -6,6 +6,7 @@ SX listener mode leaves headers enabled and J1850 in-frame responses disabled.
 This proves neither electrical silence nor capture during programming.
 """
 import argparse
+import hashlib
 import json
 from pathlib import Path
 import threading
@@ -63,7 +64,9 @@ def gt_fixed(session, command, payload):
     raise TimeoutError('GT acknowledgment missing; no retry')
 
 
-def run_sx_monitor(gt, sx, emit):
+def run_sx_monitor(gt, sx, emit, source_speed='1x'):
+    if source_speed not in ('1x', '4x'):
+        raise ValueError('Unknown source speed; no commands sent')
     rows = []
     if sx.read():
         raise ValueError('SX pending input')
@@ -79,7 +82,7 @@ def run_sx_monitor(gt, sx, emit):
             raise ValueError('SX monitor setup rejected')
     session = Session(gt, emit)
     session.connect('dvi')
-    # Fixed VPW 1x listener setup first; preserve/restore all its settings.
+        # Fixed source speed only: no ECM speed negotiation is sent.
     saved = []
     monitoring = False
     try:
@@ -90,7 +93,11 @@ def run_sx_monitor(gt, sx, emit):
             if len(value) != size or value[-1] not in (0, 1):
                 raise ValueError('Unknown GT setting shape')
             saved.append((command, value))
-        session.configure_listener('1x')
+        session.configure_listener(source_speed)
+        emit({'kind': 'source_speed_configuration', 'gt_reported_speed': source_speed,
+              'ecm_speed_negotiation_sent': False,
+              'physical_bus_speed_measured': False,
+              'sx_receive_speed_verified': False})
         sx.write(b'STMA\r')
         monitoring = True
         data = bytearray()
@@ -189,9 +196,13 @@ def main():
     parser.add_argument('--bench-ecm-confirmed', action='store_true', required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--listener', choices=('gt', 'sx'), default='gt')
+    parser.add_argument('--source-speed', choices=('1x', '4x'), default='1x',
+                        help='SX-listener test only; does not change ECM speed')
     args = parser.parse_args()
     if args.gt_port == args.sx_port:
         parser.error('Adapters require distinct ports')
+    if args.source_speed != '1x' and args.listener != 'sx':
+        parser.error('4x source test requires SX listener')
     with args.output.open('x', encoding='utf8') as output:
         lock = threading.Lock()
         def emit(row):
@@ -204,11 +215,16 @@ def main():
               'gt_api': 'dvi', 'isolated_bench_user_confirmed': True,
               'programming_enabled': False, 'electrical_silence_proven': False,
               'programming_capture_proven': False})
+        emit({'kind': 'tool_source', 'source_speed': args.source_speed,
+              'sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()})
         gt = sx = None
         try:
             gt = WindowsSerial(args.gt_port)
             sx = WindowsSerial(args.sx_port)
-            (run if args.listener == 'gt' else run_sx_monitor)(gt, sx, emit)
+            if args.listener == 'gt':
+                run(gt, sx, emit)
+            else:
+                run_sx_monitor(gt, sx, emit, args.source_speed)
             emit({'kind': 'result', 'completed': True,
                   'capture_completeness': 'not established'})
         except Exception as error:

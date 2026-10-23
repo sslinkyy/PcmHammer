@@ -1,4 +1,5 @@
 import threading
+import itertools
 import unittest
 from unittest.mock import patch
 
@@ -31,6 +32,38 @@ class SX:
 
 
 class Tests(unittest.TestCase):
+    def test_unknown_source_speed_stops_before_ports(self):
+        with self.assertRaises(ValueError):
+            probe.run_sx_monitor(object(), object(), lambda row: None, 'auto')
+
+    def test_4x_source_only_preserves_settings_and_stops_monitor(self):
+        class Monitor(SX):
+            def write(self, wire):
+                if wire in (b'ATH1\r', b'ATIFR0\r', b'STMA\r', b'x'):
+                    self.writes.append(wire)
+                    self.pending = b'STMA\r' if wire == b'STMA\r' else (
+                        b'\r>' if wire == b'x' else b'OK\r>')
+                else:
+                    super().write(wire)
+        gt, sx, rows, sent = FakePort(), Monitor(), [], []
+        original = dict(gt.settings)
+        def send(session, command, payload):
+            sent.append((command, bytes(payload)))
+            if command == 0x31:
+                gt.state = 1
+            else:
+                sx.pending = b'68 6A F1 01 00 17\r'
+        with patch.object(probe, 'gt_fixed', side_effect=send), patch(
+                'time.monotonic', side_effect=(n * .01 for n in itertools.count())):
+            probe.run_sx_monitor(gt, sx, rows.append, '4x')
+        self.assertIn(packet(0x33, [6, 1]), gt.writes)
+        self.assertEqual(sent, [(0x31, b'\x02\x01'),
+                                (0x10, bytes.fromhex('686af10100'))])
+        self.assertEqual(gt.settings, original)
+        self.assertEqual(gt.state, 0)
+        self.assertEqual(sx.writes[-1], b'x')
+        self.assertTrue(any(r.get('prompt_observed') for r in rows))
+
     def test_gt_bench_guard_rejects_programming_before_send(self):
         port = FakePort()
         session = Session(port, lambda row: None)

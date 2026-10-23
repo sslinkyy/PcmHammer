@@ -40,5 +40,37 @@
       "bytes": 3468,
       "sha256": "c25090f73f945fb2e7a3fc76a20aa62fc600fcc8b860237f0ae0f7c729db0876"
     }
-  ]
+  ],
+  "source_speed_followup": {
+    "ecm_speed_negotiation_sent": false,
+    "ecm_4x_exchange_tested": false,
+    "physical_source_speed_measured": false,
+    "sx_4x_support_established": false,
+    "trials": [
+      {
+        "path": "LocalOnly/AL5/bench-sx-listen-gt-4x-pid-20261022-01.jsonl",
+        "bytes": 16963,
+        "sha256": "e1b94ee1fa349ad58f14d3b41e03c1bead5112b4d00a0ee66d567639cd2d6fe4",
+        "gt_reported_speed": "4x",
+        "executed_driver_sha256": "105f5ba442effb283b28de0b90c0d673abaa68bec5bbc81b673f7dd13f385998",
+        "sx_decoded_request_observed": false,
+        "sx_decoded_ecm_pid_reply_observed": false,
+        "sx_monitor_text": "STMA\r08 FF 10 03 58 \r",
+        "gt_network_off_confirmed": true,
+        "gt_settings_restored": true
+      },
+      {
+        "path": "LocalOnly/AL5/bench-sx-listen-gt-1x-control-20261022-01.jsonl",
+        "bytes": 17164,
+        "sha256": "ee449a1e0975bc5793d6a2a729f9f96fa08435c42a6aa1e6ca2074a901efbbdf",
+        "gt_reported_speed": "1x",
+        "executed_driver_sha256": "105f5ba442effb283b28de0b90c0d673abaa68bec5bbc81b673f7dd13f385998",
+        "sx_decoded_request_observed": true,
+        "sx_decoded_ecm_pid_reply_observed": true,
+        "sx_monitor_text": "STMA\r08 FF 10 03 58 \r68 6A F1 01 00 17 \r48 6B 10 41 00 98 3B 00 15 76 \r08 FF 10 03 58 \r",
+        "gt_network_off_confirmed": true,
+        "gt_settings_restored": true
+      }
+    ]
+  }
 }
