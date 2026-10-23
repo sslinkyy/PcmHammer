@@ -267,9 +267,12 @@ class Session:
         self.set_checked(0x31, [1, 1])
         for p in ([0, 0, 0], [1, 0, 0], [2, 0, 0, 0], [3, 0, 0, 0]):
             self.set_checked(0x33, p)
-        # A zero mask has no required header bits. Keep its reported flag ON:
-        # GT 1.0.2.0 can echo OFF while GET still reports ON. Require exact GET.
-        self.set_checked(0x33, [4, 0, 0, 0, 1])
+        # Zero mask bits admit every header. Preserve the reported flag rather
+        # than assuming this firmware can change it; verify the full readback.
+        mask = bytes.fromhex(self.request(0x33, [4])['payload_hex'])
+        if len(mask) != 5 or mask[0] != 4 or mask[-1] not in (0, 1):
+            raise ProtocolError('Unknown mask layout; listener blocked')
+        self.set_checked(0x33, [4, 0, 0, 0, mask[-1]])
         self.set_checked(0x33, [6, 0 if speed == '1x' else 1])
         self.set_checked(0x33, [7, 1])
         self.set_checked(0x33, [8, 1])

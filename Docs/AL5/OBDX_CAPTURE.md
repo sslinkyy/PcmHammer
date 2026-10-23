@@ -21,7 +21,7 @@ application. API selection may leave the adapter in DVI mode. Close other serial
 applications before opening the tool; it opens the selected COM port exclusively.
 
 Capture first requests OFF and verifies readback, selects VPW, disables the four
-destination/source exact/range filters, sets an enabled zero-bit header mask,
+destination/source exact/range filters, sets a zero-bit header mask while preserving its reported flag,
 selects the caller's fixed 1x/4x speed, enables CRC validation/CRC display and
 device timestamps, then requests **LISTEN ONLY (2)** and verifies its readback.
 Each configuration change requires both an echo acknowledgment and a separate
@@ -238,3 +238,12 @@ separate GET readbacks and unknown physical bus speed. It marks possible capture
 gaps without switching anything. See [speed evidence and validation](OBDX_SPEED_TRANSITIONS.md)
 for framing rules, source scope and limitations. Fifty offline tests pass;
 actual receive/transition behavior and live automatic following remain unproven.
+
+
+## Powered bench follow-up, 2026-10-22
+
+The mask flag now read back OFF after an ON echo. Capture preserves the
+currently reported flag and verifies zero mask bits rather than requiring ON.
+See [dual-adapter bench observations](DUAL_ADAPTER_BENCH_20261022.md): SX
+captured a short 1x request/reply exchange; GT delivered zero listener frames.
+Neither adapter is qualified for capture during programming.

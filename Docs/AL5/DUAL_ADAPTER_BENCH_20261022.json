@@ -1,0 +1,44 @@
+{
+  "schema": "dual-adapter-bench-evidence-v1",
+  "local_date": "2026-10-22",
+  "bench_setup": "user confirmed isolated bench ECM and Y splitter",
+  "controller_identity_independently_verified": false,
+  "sx_1x_request_and_reply_reception_observed": true,
+  "gt_listen_network_frames": 0,
+  "gt_reception_proven": false,
+  "electrical_silence_proven": false,
+  "capture_completeness_proven": false,
+  "vpw_4x_proven": false,
+  "programming_capture_proven": false,
+  "programming_commands_sent": false,
+  "gt_network_off_after_tests": true,
+  "sx_monitor_exit_prompt_observed": true,
+  "executed_bench_driver_source_hash": null,
+  "logs": [
+    {
+      "path": "LocalOnly/AL5/bench-gt-listen-sx-pid-20261022-01.jsonl",
+      "bytes": 13630,
+      "sha256": "b492008fa061fce8a64d546de32a572ea2159c7151c058cfe09550adb1ecf435"
+    },
+    {
+      "path": "LocalOnly/AL5/bench-gt-listen-sx-pid-20261022-02.jsonl",
+      "bytes": 16621,
+      "sha256": "7e6427a9a5229f1f5115bb6b3ec4fcb0554e856ccf945832c05c0303331d37c8"
+    },
+    {
+      "path": "LocalOnly/AL5/bench-sx-listen-gt-pid-20261022-01.jsonl",
+      "bytes": 16861,
+      "sha256": "cd4d7e2815b3708f2889e5fe80fdb6d3a05dba04738a36a93d0d8a26cc182ce9"
+    },
+    {
+      "path": "LocalOnly/AL5/bench-gt-inspection-20261022-01.jsonl",
+      "bytes": 7064,
+      "sha256": "bd4ac7a927e4d3df86d7089a44dd759d635a9492d500fe813c2676044444ed0c"
+    },
+    {
+      "path": "Tools/AL5/LocalOnly/OBDLinkSX_20261014/bench-inspection-20261022-01.json",
+      "bytes": 3468,
+      "sha256": "c25090f73f945fb2e7a3fc76a20aa62fc600fcc8b860237f0ae0f7c729db0876"
+    }
+  ]
+}
