@@ -307,3 +307,45 @@ transitions automatically and does not authorize or perform a flash operation.
 The [actual simultaneous bench run](AUTOCAL_GT_ALL_SOURCES_20261029.md) captured
 all 128 data blocks but missed three short replies present in the matching HTX.
 It therefore establishes reception in both directions, not a complete capture.
+
+## Separating recorded-byte completeness from electrical behavior
+
+`analyze_capture_delivery.py` reuses strict replay and accounts for every saved
+receive byte against the reconstructed DVI frames. It maps network frames to
+their original `serial_rx` lines and byte offsets, preserving host timestamps
+and uninterpreted adapter timestamp bytes. Run it only on closed DVI logs:
+
+```powershell
+python Tools/AL5/analyze_capture_delivery.py --capture CAPTURE.jsonl --address 0x025000 --address 0x043000 --output NEW_DELIVERY.json
+```
+
+The receipt includes chunk sizes, host arrival gaps, frame assembly spans and
+the neighboring frames around each selected address or zero-based `--ordinal`.
+Host arrival times describe ReadFile delivery and logging, not USB transaction
+times or VPW pulse widths. Complete byte accounting can exclude replay dropping
+a recorded complete DVI frame; it cannot exclude losses before `serial_rx`.
+An absent selection or unsuccessful replay cannot produce a successful exit.
+
+On the saved 2026-10-29 all-source run, all 532,830 recorded receive bytes map
+exactly to 467 DVI frames, including 393 network frames, with zero unaccounted
+bytes. The three missing acknowledgments are absent from the recorded input
+before decoding. This narrows the investigation to the path before that logging
+boundary; it does not distinguish adapter, driver, host servicing or bus effects.
+
+The FNIRSI 2C53P confirmed for this bench can support short waveform comparisons.
+Its [manufacturer manual](https://cdn.shopify.com/s/files/1/0694/8310/2426/files/2C53P-_Manual.pdf?v=1715670710)
+documents shared channel grounds (printed page 32), BMP screenshot saving
+(page 22), and a restriction on charging from equipment under test (page 33).
+Continuous raw-sample capture/export has not been established. Use battery power
+with USB disconnected and the CH1 probe ground clip at a verified bench ground;
+CH2 and the multimeter COM lead are not substitutes for that clip.
+
+Further read-only qualification should compare GT unplugged, attached with its
+network OFF, and LISTEN ONLY, with the same harness, image, AutoCal settings and
+completed ignition/reset sequence. Keep the scope probe position fixed and use
+matched repeated controls. Compare same-read HTX messages, addressed data,
+checksums, retries and transfer timing alongside measured levels, edges and
+glitches. These are bounded observations: screenshots do not prove every bus
+frame was captured, and a shared bus waveform alone does not identify which
+device drove it. No electrical qualification or additional live test is claimed
+by this offline tool. Live AL5 writes remain disabled.
