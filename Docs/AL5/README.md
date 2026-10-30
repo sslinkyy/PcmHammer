@@ -13,8 +13,14 @@ tests and adapter-local firmware inspection. The [1x bench battery](DUAL_ADAPTER
 and [AutoCal/E54 4x read comparison](AUTOCAL_GT_BENCH_20261029.md) establish
 bounded, filtered listen-only reception. The latter matched all 260 ECM
 responses, including 128 long data blocks, against the independent host trace.
-Continuous speed transitions, both directions and programming capture remain
-unqualified; live AL5 writes remain disabled.
+The [source-F0 follow-up](AUTOCAL_GT_REQUESTS_20261029.md) captured all 132
+host-window requests plus 131 explicitly retained extra frames, and identified
+shared GT filter readbacks with the network OFF. Source address alone does not
+identify the physical transmitter: the E54 read loader also emits F0 frames.
+The [simultaneous capture experiment](AUTOCAL_GT_ALL_SOURCES_20261029.md)
+received both directions and all 128 data blocks, but missed three short replies
+present in its host trace. Lossless capture, continuous speed transitions and
+programming capture remain unqualified; live AL5 writes remain disabled.
 
 [Public-source research dated 2026-10-06](ONLINE_RESEARCH_20261006.md) records
 AL5-specific vendor programming/recovery guidance, conditional hardware leads

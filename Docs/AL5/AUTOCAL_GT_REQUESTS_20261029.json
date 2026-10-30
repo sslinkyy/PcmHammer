@@ -1,0 +1,924 @@
+{
+  "schema_version": 1,
+  "scope": "Isolated E54/LB7 bench read, source-F0 fixed-4x capture, and OFF-only GT filter probe",
+  "observations": {
+    "read_succeeded": true,
+    "read_elapsed_ui": "02:00",
+    "displayed_valid_segment_checksums": [
+      "7288",
+      "BE72",
+      "6D21",
+      "A3D3",
+      "9F33",
+      "16FB"
+    ],
+    "user_confirmed_ignition_off": true,
+    "ui_observed_after_countdown_with_saved_third_read": true,
+    "gt_final_network_off_verified": true,
+    "source_header_filter": "F0",
+    "physical_sender_identity_proven": false,
+    "capture_frames": 263,
+    "crc_failed_frames": 0,
+    "htx_expected_requests": 132,
+    "missing_requests": 0,
+    "extra_frames": 131,
+    "strict_comparison_passed": false,
+    "strict_comparison_issues": [
+      "Ordered messages differ from selected HTX window"
+    ],
+    "ordered_subsequence_analysis": {
+      "expected_is_subsequence": true,
+      "matched_expected_message_count": 132,
+      "matched_observed_ordinals_zero_based": [
+        0,
+        1,
+        4,
+        5,
+        6,
+        8,
+        10,
+        12,
+        14,
+        16,
+        18,
+        20,
+        22,
+        24,
+        26,
+        28,
+        30,
+        32,
+        34,
+        36,
+        38,
+        40,
+        42,
+        44,
+        46,
+        48,
+        50,
+        52,
+        54,
+        56,
+        58,
+        60,
+        62,
+        64,
+        66,
+        68,
+        70,
+        72,
+        74,
+        76,
+        78,
+        80,
+        82,
+        84,
+        86,
+        88,
+        90,
+        92,
+        94,
+        96,
+        98,
+        100,
+        102,
+        104,
+        106,
+        108,
+        110,
+        112,
+        114,
+        116,
+        118,
+        120,
+        122,
+        124,
+        126,
+        128,
+        130,
+        132,
+        134,
+        136,
+        138,
+        140,
+        142,
+        144,
+        146,
+        148,
+        150,
+        152,
+        154,
+        156,
+        158,
+        160,
+        162,
+        164,
+        166,
+        168,
+        170,
+        172,
+        174,
+        176,
+        178,
+        180,
+        182,
+        184,
+        186,
+        188,
+        190,
+        192,
+        194,
+        196,
+        198,
+        200,
+        202,
+        204,
+        206,
+        208,
+        210,
+        212,
+        214,
+        216,
+        218,
+        220,
+        222,
+        224,
+        226,
+        228,
+        230,
+        232,
+        234,
+        236,
+        238,
+        240,
+        242,
+        244,
+        246,
+        248,
+        250,
+        252,
+        254,
+        256,
+        258,
+        260
+      ],
+      "unmatched_observed_ordinals_zero_based": [
+        2,
+        3,
+        7,
+        9,
+        11,
+        13,
+        15,
+        17,
+        19,
+        21,
+        23,
+        25,
+        27,
+        29,
+        31,
+        33,
+        35,
+        37,
+        39,
+        41,
+        43,
+        45,
+        47,
+        49,
+        51,
+        53,
+        55,
+        57,
+        59,
+        61,
+        63,
+        65,
+        67,
+        69,
+        71,
+        73,
+        75,
+        77,
+        79,
+        81,
+        83,
+        85,
+        87,
+        89,
+        91,
+        93,
+        95,
+        97,
+        99,
+        101,
+        103,
+        105,
+        107,
+        109,
+        111,
+        113,
+        115,
+        117,
+        119,
+        121,
+        123,
+        125,
+        127,
+        129,
+        131,
+        133,
+        135,
+        137,
+        139,
+        141,
+        143,
+        145,
+        147,
+        149,
+        151,
+        153,
+        155,
+        157,
+        159,
+        161,
+        163,
+        165,
+        167,
+        169,
+        171,
+        173,
+        175,
+        177,
+        179,
+        181,
+        183,
+        185,
+        187,
+        189,
+        191,
+        193,
+        195,
+        197,
+        199,
+        201,
+        203,
+        205,
+        207,
+        209,
+        211,
+        213,
+        215,
+        217,
+        219,
+        221,
+        223,
+        225,
+        227,
+        229,
+        231,
+        233,
+        235,
+        237,
+        239,
+        241,
+        243,
+        245,
+        247,
+        249,
+        251,
+        253,
+        255,
+        257,
+        259,
+        261,
+        262
+      ],
+      "unmatched_observed_frames": [
+        {
+          "header_and_service": "8cfef03f",
+          "message_bytes": 4,
+          "message_sha256": "74c3716572d12617e262114190fabeccc4371404b3052f1ec363ee29c18492b3",
+          "count": 129
+        },
+        {
+          "header_and_service": "6c10f03f",
+          "message_bytes": 4,
+          "message_sha256": "485e3723ccf380346c88d336c0fffc4eca1883f61801103013f141b7ac1f43f0",
+          "count": 1
+        },
+        {
+          "header_and_service": "6c10f03c",
+          "message_bytes": 5,
+          "message_sha256": "d1f6f6df7c324e0f5408e2251ce5c7452e1327d650121aa0ec92dfcaaa05be6d",
+          "count": 1
+        }
+      ],
+      "method": "Greedy exact ordered match; duplicate messages can make attribution ambiguous",
+      "changes_strict_comparison_result": false
+    },
+    "extra_frame_payloads_without_crc": {
+      "8cfef03f": 129,
+      "6c10f03f": 1,
+      "6c10f03c55": 1
+    },
+    "trace_blocks": {
+      "count": 128,
+      "unique_addresses": 128,
+      "duplicate_address_count": 0,
+      "malformed_block_ordinals_zero_based": [],
+      "checksum_failed_block_ordinals_zero_based": [],
+      "conflicting_block_ordinals_zero_based": [],
+      "checksum_method": "sum(message[4:-2]) modulo 65536, final two bytes big-endian",
+      "covered_bytes": 524286,
+      "covered_ranges": [
+        {
+          "start": 0,
+          "end_exclusive": 524286,
+          "sha256": "a53bef772ac8f176296c5923fd3f93ca862ab5148cff292b7fb63eee37dd58ed"
+        }
+      ],
+      "expected_transfer_end_exclusive": 524286,
+      "complete_observed_e54_read_range": true,
+      "reconstructed_partial_sha256": "a53bef772ac8f176296c5923fd3f93ca862ab5148cff292b7fb63eee37dd58ed",
+      "full_512kib_image": false,
+      "untransferred_tail": {
+        "start": 524286,
+        "end_exclusive": 524288
+      }
+    },
+    "covered_bytes_match_previous_reads": true,
+    "strict_replay": {
+      "network_frames": 263,
+      "adapter_frames": 57,
+      "adapter_errors": 0,
+      "outgoing_guard_violations": 0,
+      "examined_lines": 622,
+      "source_fully_read": true,
+      "source_reported_failure": false,
+      "replay_complete": true,
+      "undecoded_dvi_hex": ""
+    },
+    "frames_by_adapter_readback": {
+      "1x": 0,
+      "4x": 263,
+      "unknown": 0
+    },
+    "filter_probe": {
+      "adapter_frames": 190,
+      "network_frames": 0,
+      "network_state_reply_count": 66,
+      "network_state_reply_values": {
+        "0200": 66
+      },
+      "observations": [
+        {
+          "all_filter_readbacks": {
+            "from_filter": "010000",
+            "from_range_filter": "03000000",
+            "mask_filter": "0400000000",
+            "to_filter": "000000",
+            "to_range_filter": "02000000"
+          },
+          "case": "to0_from0_to_filter",
+          "changed_setting": "to_filter",
+          "echo_matches": true,
+          "kind": "filter_link_observation",
+          "network_state": "0200",
+          "observed_exact_flags": {
+            "from": 0,
+            "to": 0
+          },
+          "readback_matches": true,
+          "readback_payload_hex": "000000",
+          "receive_behavior_verified": false,
+          "requested_payload_hex": "000000",
+          "target_exact_flags": {
+            "from": 0,
+            "to": 0
+          },
+          "target_exact_flags_reached": true
+        },
+        {
+          "all_filter_readbacks": {
+            "from_filter": "010000",
+            "from_range_filter": "03000000",
+            "mask_filter": "0400000000",
+            "to_filter": "000000",
+            "to_range_filter": "02000000"
+          },
+          "case": "to0_from0_from_filter",
+          "changed_setting": "from_filter",
+          "echo_matches": true,
+          "kind": "filter_link_observation",
+          "network_state": "0200",
+          "observed_exact_flags": {
+            "from": 0,
+            "to": 0
+          },
+          "readback_matches": true,
+          "readback_payload_hex": "010000",
+          "receive_behavior_verified": false,
+          "requested_payload_hex": "010000",
+          "target_exact_flags": {
+            "from": 0,
+            "to": 0
+          },
+          "target_exact_flags_reached": true
+        },
+        {
+          "all_filter_readbacks": {
+            "from_filter": "010000",
+            "from_range_filter": "03000000",
+            "mask_filter": "0400000000",
+            "to_filter": "000000",
+            "to_range_filter": "02000000"
+          },
+          "case": "to0_from0_mask0",
+          "changed_setting": "mask_filter",
+          "echo_matches": true,
+          "kind": "filter_link_observation",
+          "network_state": "0200",
+          "observed_exact_flags": {
+            "from": 0,
+            "to": 0
+          },
+          "readback_matches": true,
+          "readback_payload_hex": "0400000000",
+          "receive_behavior_verified": false,
+          "requested_payload_hex": "0400000000",
+          "target_exact_flags": {
+            "from": 0,
+            "to": 0
+          },
+          "target_exact_flags_reached": true
+        },
+        {
+          "all_filter_readbacks": {
+            "from_filter": "010000",
+            "from_range_filter": "03000000",
+            "mask_filter": "0400000000",
+            "to_filter": "000000",
+            "to_range_filter": "02000000"
+          },
+          "case": "to0_from0_mask1",
+          "changed_setting": "mask_filter",
+          "echo_matches": true,
+          "kind": "filter_link_observation",
+          "network_state": "0200",
+          "observed_exact_flags": {
+            "from": 0,
+            "to": 0
+          },
+          "readback_matches": false,
+          "readback_payload_hex": "0400000000",
+          "receive_behavior_verified": false,
+          "requested_payload_hex": "0400000001",
+          "target_exact_flags": {
+            "from": 0,
+            "to": 0
+          },
+          "target_exact_flags_reached": true
+        },
+        {
+          "all_filter_readbacks": {
+            "from_filter": "010001",
+            "from_range_filter": "03000000",
+            "mask_filter": "0400ff0001",
+            "to_filter": "000001",
+            "to_range_filter": "02000000"
+          },
+          "case": "to1_from0_to_filter",
+          "changed_setting": "to_filter",
+          "echo_matches": true,
+          "kind": "filter_link_observation",
+          "network_state": "0200",
+          "observed_exact_flags": {
+            "from": 1,
+            "to": 1
+          },
+          "readback_matches": true,
+          "readback_payload_hex": "000001",
+          "receive_behavior_verified": false,
+          "requested_payload_hex": "000001",
+          "target_exact_flags": {
+            "from": 0,
+            "to": 1
+          },
+          "target_exact_flags_reached": false
+        },
+        {
+          "all_filter_readbacks": {
+            "from_filter": "010000",
+            "from_range_filter": "03000000",
+            "mask_filter": "0400ff0000",
+            "to_filter": "000000",
+            "to_range_filter": "02000000"
+          },
+          "case": "to1_from0_from_filter",
+          "changed_setting": "from_filter",
+          "echo_matches": true,
+          "kind": "filter_link_observation",
+          "network_state": "0200",
+          "observed_exact_flags": {
+            "from": 0,
+            "to": 0
+          },
+          "readback_matches": true,
+          "readback_payload_hex": "010000",
+          "receive_behavior_verified": false,
+          "requested_payload_hex": "010000",
+          "target_exact_flags": {
+            "from": 0,
+            "to": 1
+          },
+          "target_exact_flags_reached": false
+        },
+        {
+          "all_filter_readbacks": {
+            "from_filter": "010000",
+            "from_range_filter": "03000000",
+            "mask_filter": "0400000000",
+            "to_filter": "000000",
+            "to_range_filter": "02000000"
+          },
+          "case": "to1_from0_mask0",
+          "changed_setting": "mask_filter",
+          "echo_matches": true,
+          "kind": "filter_link_observation",
+          "network_state": "0200",
+          "observed_exact_flags": {
+            "from": 0,
+            "to": 0
+          },
+          "readback_matches": true,
+          "readback_payload_hex": "0400000000",
+          "receive_behavior_verified": false,
+          "requested_payload_hex": "0400000000",
+          "target_exact_flags": {
+            "from": 0,
+            "to": 1
+          },
+          "target_exact_flags_reached": false
+        },
+        {
+          "all_filter_readbacks": {
+            "from_filter": "010000",
+            "from_range_filter": "03000000",
+            "mask_filter": "0400000000",
+            "to_filter": "000000",
+            "to_range_filter": "02000000"
+          },
+          "case": "to1_from0_mask1",
+          "changed_setting": "mask_filter",
+          "echo_matches": true,
+          "kind": "filter_link_observation",
+          "network_state": "0200",
+          "observed_exact_flags": {
+            "from": 0,
+            "to": 0
+          },
+          "readback_matches": false,
+          "readback_payload_hex": "0400000000",
+          "receive_behavior_verified": false,
+          "requested_payload_hex": "0400000001",
+          "target_exact_flags": {
+            "from": 0,
+            "to": 1
+          },
+          "target_exact_flags_reached": false
+        },
+        {
+          "all_filter_readbacks": {
+            "from_filter": "010000",
+            "from_range_filter": "03000000",
+            "mask_filter": "0400000000",
+            "to_filter": "000000",
+            "to_range_filter": "02000000"
+          },
+          "case": "to0_from1_to_filter",
+          "changed_setting": "to_filter",
+          "echo_matches": true,
+          "kind": "filter_link_observation",
+          "network_state": "0200",
+          "observed_exact_flags": {
+            "from": 0,
+            "to": 0
+          },
+          "readback_matches": true,
+          "readback_payload_hex": "000000",
+          "receive_behavior_verified": false,
+          "requested_payload_hex": "000000",
+          "target_exact_flags": {
+            "from": 1,
+            "to": 0
+          },
+          "target_exact_flags_reached": false
+        },
+        {
+          "all_filter_readbacks": {
+            "from_filter": "010001",
+            "from_range_filter": "03000000",
+            "mask_filter": "040000ff01",
+            "to_filter": "000001",
+            "to_range_filter": "02000000"
+          },
+          "case": "to0_from1_from_filter",
+          "changed_setting": "from_filter",
+          "echo_matches": true,
+          "kind": "filter_link_observation",
+          "network_state": "0200",
+          "observed_exact_flags": {
+            "from": 1,
+            "to": 1
+          },
+          "readback_matches": true,
+          "readback_payload_hex": "010001",
+          "receive_behavior_verified": false,
+          "requested_payload_hex": "010001",
+          "target_exact_flags": {
+            "from": 1,
+            "to": 0
+          },
+          "target_exact_flags_reached": false
+        },
+        {
+          "all_filter_readbacks": {
+            "from_filter": "010001",
+            "from_range_filter": "03000000",
+            "mask_filter": "0400000001",
+            "to_filter": "000001",
+            "to_range_filter": "02000000"
+          },
+          "case": "to0_from1_mask0",
+          "changed_setting": "mask_filter",
+          "echo_matches": true,
+          "kind": "filter_link_observation",
+          "network_state": "0200",
+          "observed_exact_flags": {
+            "from": 1,
+            "to": 1
+          },
+          "readback_matches": false,
+          "readback_payload_hex": "0400000001",
+          "receive_behavior_verified": false,
+          "requested_payload_hex": "0400000000",
+          "target_exact_flags": {
+            "from": 1,
+            "to": 0
+          },
+          "target_exact_flags_reached": false
+        },
+        {
+          "all_filter_readbacks": {
+            "from_filter": "010001",
+            "from_range_filter": "03000000",
+            "mask_filter": "0400000001",
+            "to_filter": "000001",
+            "to_range_filter": "02000000"
+          },
+          "case": "to0_from1_mask1",
+          "changed_setting": "mask_filter",
+          "echo_matches": true,
+          "kind": "filter_link_observation",
+          "network_state": "0200",
+          "observed_exact_flags": {
+            "from": 1,
+            "to": 1
+          },
+          "readback_matches": true,
+          "readback_payload_hex": "0400000001",
+          "receive_behavior_verified": false,
+          "requested_payload_hex": "0400000001",
+          "target_exact_flags": {
+            "from": 1,
+            "to": 0
+          },
+          "target_exact_flags_reached": false
+        },
+        {
+          "all_filter_readbacks": {
+            "from_filter": "010001",
+            "from_range_filter": "03000000",
+            "mask_filter": "0400ff0001",
+            "to_filter": "000001",
+            "to_range_filter": "02000000"
+          },
+          "case": "to1_from1_to_filter",
+          "changed_setting": "to_filter",
+          "echo_matches": true,
+          "kind": "filter_link_observation",
+          "network_state": "0200",
+          "observed_exact_flags": {
+            "from": 1,
+            "to": 1
+          },
+          "readback_matches": true,
+          "readback_payload_hex": "000001",
+          "receive_behavior_verified": false,
+          "requested_payload_hex": "000001",
+          "target_exact_flags": {
+            "from": 1,
+            "to": 1
+          },
+          "target_exact_flags_reached": true
+        },
+        {
+          "all_filter_readbacks": {
+            "from_filter": "010001",
+            "from_range_filter": "03000000",
+            "mask_filter": "0400ffff01",
+            "to_filter": "000001",
+            "to_range_filter": "02000000"
+          },
+          "case": "to1_from1_from_filter",
+          "changed_setting": "from_filter",
+          "echo_matches": true,
+          "kind": "filter_link_observation",
+          "network_state": "0200",
+          "observed_exact_flags": {
+            "from": 1,
+            "to": 1
+          },
+          "readback_matches": true,
+          "readback_payload_hex": "010001",
+          "receive_behavior_verified": false,
+          "requested_payload_hex": "010001",
+          "target_exact_flags": {
+            "from": 1,
+            "to": 1
+          },
+          "target_exact_flags_reached": true
+        },
+        {
+          "all_filter_readbacks": {
+            "from_filter": "010001",
+            "from_range_filter": "03000000",
+            "mask_filter": "0400000001",
+            "to_filter": "000001",
+            "to_range_filter": "02000000"
+          },
+          "case": "to1_from1_mask0",
+          "changed_setting": "mask_filter",
+          "echo_matches": true,
+          "kind": "filter_link_observation",
+          "network_state": "0200",
+          "observed_exact_flags": {
+            "from": 1,
+            "to": 1
+          },
+          "readback_matches": false,
+          "readback_payload_hex": "0400000001",
+          "receive_behavior_verified": false,
+          "requested_payload_hex": "0400000000",
+          "target_exact_flags": {
+            "from": 1,
+            "to": 1
+          },
+          "target_exact_flags_reached": true
+        },
+        {
+          "all_filter_readbacks": {
+            "from_filter": "010001",
+            "from_range_filter": "03000000",
+            "mask_filter": "0400000001",
+            "to_filter": "000001",
+            "to_range_filter": "02000000"
+          },
+          "case": "to1_from1_mask1",
+          "changed_setting": "mask_filter",
+          "echo_matches": true,
+          "kind": "filter_link_observation",
+          "network_state": "0200",
+          "observed_exact_flags": {
+            "from": 1,
+            "to": 1
+          },
+          "readback_matches": true,
+          "readback_payload_hex": "0400000001",
+          "receive_behavior_verified": false,
+          "requested_payload_hex": "0400000001",
+          "target_exact_flags": {
+            "from": 1,
+            "to": 1
+          },
+          "target_exact_flags_reached": true
+        }
+      ],
+      "summary": {
+        "completed": true,
+        "electrical_silence_proven": false,
+        "hidden_setting_state_restored": null,
+        "kind": "probe_summary",
+        "mask_cases": 8,
+        "network_state": "0200",
+        "observable_readbacks_match_original": true,
+        "observations": 16,
+        "readback_mismatches": 4,
+        "receive_behavior_verified": false,
+        "requested_exact_states": 4,
+        "vehicle_transmit_commands_enabled": false
+      },
+      "restoration": {
+        "hidden_setting_state_restored": null,
+        "kind": "settings_readback_restoration",
+        "observable_readbacks_match_original": true,
+        "restoration_required": true,
+        "scope": "All nine GET payloads match; hidden stored state is unknown",
+        "success": true
+      }
+    }
+  },
+  "static_derivation": {
+    "loader_address": "FF9200",
+    "loader_bytes": 1174,
+    "loader_sha256": "e2726849cc006ee7602c3391e7c39182627639edbb98d99f1392642ed5bee2a6",
+    "post_data_call_address": "FF953C",
+    "keepalive_routine_address": "FF95CA",
+    "routine_messages": [
+      "8cfef03f",
+      "6cfef13f"
+    ],
+    "observed_read_request_followed_by_f0_keepalive_pairs": 128,
+    "inference": "Static loader output and observed ordering strongly support loader origin for post-block F0 keepalives; physical transmitter was not measured"
+  },
+  "unknowns": [
+    "Origin of the additional startup 8cfef03f and 6c10f03f",
+    "Hidden filter stored-state restoration despite matching observable GET payloads",
+    "Simultaneous both-direction reception and complete bus capture",
+    "Physical pulse timing, loading and electrical noninterference",
+    "Continuous speed transitions, flash capture and AL5 recovery",
+    "Final two flash bytes absent from the read"
+  ],
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "private_artifacts": [
+    {
+      "path": "LocalOnly/autocal_request_20261029_01/gt_autocal_4x_attempt02.jsonl",
+      "bytes": 85621,
+      "sha256": "3bf16784382fde3073706572799b109a7b3175f08f3a47edc613a327cc668119"
+    },
+    {
+      "path": "LocalOnly/autocal_request_20261029_01/gt_request_replay.jsonl",
+      "bytes": 87921,
+      "sha256": "e251d1df96a981ec0325e3d67b31cc531f272c7e537b060a9ae5753b0963ea4b"
+    },
+    {
+      "path": "LocalOnly/autocal_request_20261029_01/request_E54_R.htx",
+      "bytes": 200291,
+      "sha256": "127c9a149dda0abbf1002d46dad818e6f220f4976235427d7bdf920368265e54"
+    },
+    {
+      "path": "LocalOnly/autocal_request_20261029_01/request_3_E54_0000.ctz",
+      "bytes": 332337,
+      "sha256": "d460a1729a038df01f4a35cc8c2e016355aedbdc405e2045f843b69291f7a321"
+    },
+    {
+      "path": "LocalOnly/autocal_request_20261029_01/request_read.json",
+      "bytes": 2037,
+      "sha256": "b0988b098abb4ec0f6c9e1470aaa2da6ee08440017bd974ab88ed6a388cb0f7a"
+    },
+    {
+      "path": "LocalOnly/autocal_request_20261029_01/request_comparison_raw_context.json",
+      "bytes": 17784,
+      "sha256": "622b741a1837f05c394964397da8d1698d31307130509f4039d3ff0b7d192d2a"
+    },
+    {
+      "path": "LocalOnly/autocal_request_20261029_01/gt_filter_links.jsonl",
+      "bytes": 64999,
+      "sha256": "597645db08dabe06e3071a71dc8b5717e66476d272d1f0c6881056c4539f455b"
+    },
+    {
+      "path": "LocalOnly/autocal_request_20261029_01/keepalive_loader_analysis.json",
+      "bytes": 61928,
+      "sha256": "f4a36c30d3a9096995ea5742376b6dc946b00770c7908708a06305ff33e4dbd7"
+    },
+    {
+      "path": "LocalOnly/autocal_request_20261029_01/e54_readloader_ff9200.bin",
+      "bytes": 1174,
+      "sha256": "e2726849cc006ee7602c3391e7c39182627639edbb98d99f1392642ed5bee2a6"
+    },
+    {
+      "path": "LocalOnly/autocal_request_20261029_01/e54_readloader_keepalive_windows.txt",
+      "bytes": 4489,
+      "sha256": "633f80ce4828911876dee0a75d971ad97a8e1b2f073b4e5d411c895895c6d492"
+    },
+    {
+      "path": "LocalOnly/autocal_request_20261029_01/preflight_cancellation.json",
+      "bytes": 733,
+      "sha256": "1f22baacf06892cbc10c6e3e1bcb6c6ba500641926e2f4259082edc3ca5b7aa3"
+    },
+    {
+      "path": "LocalOnly/autocal_request_20261029_01/gt_autocal_4x.jsonl",
+      "bytes": 16449,
+      "sha256": "6c365ab800fc23622ea9bbebfd63fb39e8a5895f99d0159ef1e8bf9de96664b5"
+    },
+    {
+      "path": "LocalOnly/autocal_request_20261029_01/summarize_evidence.py",
+      "bytes": 5539,
+      "sha256": "6a1f1581560f7570450d9f8b53258bb695d5c9558b00039d5cc2f49dc4edef8f"
+    }
+  ]
+}

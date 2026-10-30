@@ -260,3 +260,50 @@ currently reported flag and verifies zero mask bits rather than requiring ON.
 See [dual-adapter bench observations](DUAL_ADAPTER_BENCH_20261022.md): SX
 captured a short 1x request/reply exchange; GT delivered zero listener frames.
 Neither adapter is qualified for capture during programming.
+
+## Source-F0 read and filter coupling, 2026-10-29
+
+The [source-F0 bench report](AUTOCAL_GT_REQUESTS_20261029.md) records a successful
+AutoCal E54 read, 263 captured frames, and a bounded OFF-only filter probe.
+The actual firmware readbacks show coupled exact-TO/exact-FROM/mask flags;
+exact-filter writes also change the mask bytes. Earlier sections above are
+historical observations, not evidence of independently stored filter controls.
+
+Compare closed files without hardware access:
+
+```powershell
+python Tools/AL5/compare_vpw_read_capture.py --capture CAPTURE.jsonl --trace E54_R.htx --source-id 0xF0 --output NEW_COMPARISON.json
+```
+
+This command requires raw correlated configuration readbacks and retains every
+captured frame. It reports the expected-request subsequence separately from
+strict equality; extra frames cannot produce a strict pass. A source address
+does not establish physical transmitter identity.
+
+The diagnostic filter-link probe uses OFF-only adapter commands:
+
+```powershell
+python Tools/AL5/probe_obdx_filter_links.py --port COM9 --api dvi --output NEW_FILTER_LINKS.jsonl
+```
+
+It queries every filter after each change and verifies all nine final GET
+payloads against the original snapshot. Matching GETs do not prove hidden
+stored-state restoration. No receive or programming qualification follows from
+this settings probe; a restoration mismatch remains a failed result.
+
+The explicit experimental `--all-sources` option enables the shared filter,
+then sets its three mask bytes to zero last. Before LISTEN it requires all five
+filter GETs to match the observed coupled profile; setup mismatches fail closed.
+It is mutually exclusive with `--source-id`. Restoration writes the mask last
+and compares all nine final GET payloads, reporting observable restoration only.
+The vehicle-send and network-ON command guards remain unchanged.
+
+```powershell
+python Tools/AL5/obdx_capture.py capture --port COM9 --api dvi --speed 4x --all-sources --seconds 240 --output NEW_ALL_SOURCE_CAPTURE.jsonl
+```
+
+This is a fixed-speed, explicitly selected experiment. It does not follow speed
+transitions automatically and does not authorize or perform a flash operation.
+The [actual simultaneous bench run](AUTOCAL_GT_ALL_SOURCES_20261029.md) captured
+all 128 data blocks but missed three short replies present in the matching HTX.
+It therefore establishes reception in both directions, not a complete capture.

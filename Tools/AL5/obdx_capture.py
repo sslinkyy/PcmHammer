@@ -26,6 +26,18 @@ SETTINGS = ((0x24, 3, 2, 'timestamps'),
             (0x33, 4, 5, 'mask_filter'), (0x33, 6, 2, 'speed'),
             (0x33, 7, 2, 'crc_validation'), (0x33, 8, 2, 'crc_display'))
 
+# Observed shared-enable/filter-mask readbacks, not a receive qualification.
+EXPERIMENTAL_ALL_FILTERS = (b'\x00\x00\x01', b'\x01\x10\x01',
+                            b'\x02\x00\x00\x00', b'\x03\x00\x00\x00',
+                            b'\x04\x00\x00\x00\x01')
+
+
+def validate_filter_choice(source_id, all_sources):
+    if source_id is not None and (type(source_id) is not int or not 0 <= source_id <= 255):
+        raise ValueError('Source filter must be one byte')
+    if type(all_sources) is not bool or (all_sources and source_id is not None):
+        raise ValueError('Choose either an exact source or experimental all-sources profile')
+
 
 def packet(command, payload):
     payload = bytes(payload)
@@ -262,21 +274,25 @@ class Session:
                    'vehicle_transmit_commands_enabled': False})
         return identity
 
-    def configure_listener(self, speed, source_id=None):
-        if source_id is not None and (type(source_id) is not int or not 0 <= source_id <= 255):
-            raise ValueError('Source filter must be one byte')
+    def configure_listener(self, speed, source_id=None, *, all_sources=False):
+        validate_filter_choice(source_id, all_sources)
         # capture() has verified OFF before saving the original settings.
         self.set_checked(0x31, [1, 1])
         for p in ([0, 0, 0], [1, 0, 0], [2, 0, 0, 0], [3, 0, 0, 0]):
             self.set_checked(0x33, p)
-        # Zero mask bits admit every header. Preserve the reported flag rather
-        # than assuming this firmware can change it; verify the full readback.
+        # Clear mask bits while preserving the reported flag; this setter did
+        # not independently change the shared enable in the saved GT probe.
         mask = bytes.fromhex(self.request(0x33, [4])['payload_hex'])
         if len(mask) != 5 or mask[0] != 4 or mask[-1] not in (0, 1):
             raise ProtocolError('Unknown mask layout; listener blocked')
         self.set_checked(0x33, [4, 0, 0, 0, mask[-1]])
         if source_id is not None:
             self.set_checked(0x33, [1, source_id, 1])
+        elif all_sources:
+            # Exact ON establishes shared enable but also inserts FF mask bits.
+            # Clear those bits LAST; the mask setter alone did not enable it.
+            self.set_checked(0x33, [1, 0x10, 1])
+            self.set_checked(0x33, [4, 0, 0, 0, 1])
         self.set_checked(0x33, [6, 0 if speed == '1x' else 1])
         self.set_checked(0x33, [7, 1])
         self.set_checked(0x33, [8, 1])
@@ -284,6 +300,17 @@ class Session:
             raise ProtocolError('Pending bytes before timestamp layout change')
         self.set_checked(0x24, [3, 1])
         self.decoder.timestamps = True
+        if all_sources:
+            observed = [self.request(0x33, [p[0]])['payload_hex']
+                        for p in EXPERIMENTAL_ALL_FILTERS]
+            expected = [p.hex() for p in EXPERIMENTAL_ALL_FILTERS]
+            self.emit({'kind': 'experimental_filter_profile',
+                       'receive_scope': 'experimental_mask_all',
+                       'expected_readbacks': expected, 'observed_readbacks': observed,
+                       'readbacks_match': observed == expected,
+                       'live_receive_verified': False})
+            if observed != expected:
+                raise ProtocolError('Experimental full filter profile mismatch; listener blocked')
         self.request(0x31, [2, 2], echo=True)
         if self.request(0x31, [2])['payload_hex'] != '0202':
             raise ProtocolError('LISTEN ONLY readback failed')
@@ -358,21 +385,53 @@ class Session:
                 'neutral_mask_configuration_verified': cases[-1]['readback_matches'],
                 'live_receive_verified': False}
 
-    def capture(self, speed, seconds, source_id=None):
-        if source_id is not None and (type(source_id) is not int or not 0 <= source_id <= 255):
-            raise ValueError('Source filter must be one byte')
+    def restore_experimental_settings(self, saved):
+        # Exact setters can OR FF bits into the shared mask. Restore mask LAST.
+        ordered = sorted(saved, key=lambda item: item[0] == 0x33 and item[1][0] == 4)
+        try:
+            for command, p in ordered:
+                self.set_checked(command, p)
+                if command == 0x24:
+                    self.decoder.timestamps = bool(p[1])
+            observed = [self.request(command, [p[0]])['payload_hex']
+                        for command, p in saved]
+            expected = [p.hex() for _, p in saved]
+            if self.request(0x31, [2])['payload_hex'] != '0200':
+                self.set_checked(0x31, [2, 0])
+                raise ProtocolError('Unexpected network state during experimental restoration')
+            if observed != expected:
+                raise ProtocolError('Final experimental setting snapshot does not match original')
+            self.emit({'kind': 'settings_readback_restoration', 'success': True,
+                       'observable_readbacks_match_original': True,
+                       'expected_readbacks': expected, 'observed_readbacks': observed,
+                       'hidden_setting_state_restored': None})
+        except BaseException as error:
+            self.emit({'kind': 'settings_readback_restoration', 'success': False,
+                       'observable_readbacks_match_original': False,
+                       'hidden_setting_state_restored': None, 'error': str(error)})
+            raise
+
+    def capture(self, speed, seconds, source_id=None, *, all_sources=False):
+        validate_filter_choice(source_id, all_sources)
         saved = []
+        experimental_setup_started = False
         try:
             self.set_checked(0x31, [2, 0])
             # Preserve each exact filter and CRC policy, not inferred defaults.
             for command, sub, size, label in SETTINGS:
                 p = bytes.fromhex(self.request(command, [sub])['payload_hex'])
-                if len(p) != size or p[-1] not in (0, 1):
+                if len(p) != size or p[-1] not in (0, 1) or (all_sources and p[0] != sub):
                     raise ProtocolError('Unknown adapter setting; no listener setup')
                 saved.append((command, p))
                 self.emit({'kind': 'saved_setting', 'label': label, 'command': command,
                            'payload_hex': p.hex()})
-            if source_id is None:
+            if all_sources:
+                filters = {p[0]: p for command, p in saved if command == 0x33}
+                if len({filters[sub][-1] for sub in (0, 1, 4)}) != 1:
+                    raise ProtocolError('Unknown original filter enable coupling; listener blocked')
+                experimental_setup_started = True
+                self.configure_listener(speed, all_sources=True)
+            elif source_id is None:
                 self.configure_listener(speed)
             else:
                 self.configure_listener(speed, source_id)
@@ -380,7 +439,10 @@ class Session:
                        'automatic_speed_tracking': False,
                        'complete_programming_capture_proven': False,
                        'source_filter': source_id,
-                       'receive_scope': 'exact_source' if source_id is not None else 'unqualified_all_filters_off',
+                       'receive_scope': ('experimental_mask_all' if all_sources else
+                                         'exact_source' if source_id is not None else
+                                         'unqualified_all_filters_off'),
+                       **({'live_receive_verified': False} if all_sources else {}),
                        'crc_in_payload': True})
             deadline = time.monotonic() + seconds
             while time.monotonic() < deadline:
@@ -399,14 +461,23 @@ class Session:
                 raise
             self.decoder.finish()
             try:
-                for command, p in saved:
-                    self.set_checked(command, p)
-                    if command == 0x24:
-                        self.decoder.timestamps = bool(p[1])
-                self.emit({'kind': 'settings_restored', 'success': True})
+                if all_sources:
+                    if experimental_setup_started:
+                        self.restore_experimental_settings(saved)
+                    else:
+                        self.emit({'kind': 'settings_readback_restoration', 'success': None,
+                                   'attempted': False, 'reason': 'listener setup never started',
+                                   'hidden_setting_state_restored': None})
+                else:
+                    for command, p in saved:
+                        self.set_checked(command, p)
+                        if command == 0x24:
+                            self.decoder.timestamps = bool(p[1])
+                    self.emit({'kind': 'settings_restored', 'success': True})
             except BaseException as error:
-                self.emit({'kind': 'settings_restored', 'success': False,
-                           'error': str(error)})
+                if not all_sources:
+                    self.emit({'kind': 'settings_restored', 'success': False,
+                               'error': str(error)})
                 raise
         self.decoder.finish()
 
@@ -542,9 +613,12 @@ def main():
         if mode == 'capture':
             p.add_argument('--speed', choices=('1x', '4x'), required=True)
             p.add_argument('--seconds', type=float, default=60)
-            p.add_argument('--source-id', type=lambda value: int(value, 0),
-                           choices=range(256), metavar='BYTE',
-                           help='Exact source filter, e.g. 0x10. All-filters-off reception is unproven.')
+            filters = p.add_mutually_exclusive_group()
+            filters.add_argument('--source-id', type=lambda value: int(value, 0),
+                                 choices=range(256), metavar='BYTE',
+                                 help='Exact source filter, e.g. 0x10. All-filters-off reception is unproven.')
+            filters.add_argument('--all-sources', action='store_true',
+                                 help='Experimental shared-enable zero-mask profile; reception is unproven.')
     p = sub.add_parser('decode')
     p.add_argument('--input', type=Path, required=True,
                    help='Raw binary DVI receive stream, not EFX/HTX')
@@ -598,7 +672,8 @@ def main():
                     elif args.mode == 'mask-probe':
                         print(json.dumps(session.probe_mask(), indent=2))
                     else:
-                        session.capture(args.speed, args.seconds, args.source_id)
+                        session.capture(args.speed, args.seconds, args.source_id,
+                                        all_sources=args.all_sources)
                 finally:
                     port.close()
             emit({'kind': 'result', 'success': True,

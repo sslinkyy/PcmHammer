@@ -3,6 +3,8 @@ from unittest.mock import patch
 import tempfile
 from pathlib import Path
 import json
+import contextlib
+import io
 
 import obdx_capture as c
 
@@ -71,6 +73,183 @@ class FakePort:
 
     def read(self):
         return self.replies.pop(0) if self.replies else b''
+
+
+class CoupledFilterPort(FakePort):
+    """Model the closed 2026-10-29 OFF-only probe, not physical reception."""
+    def write(self, data):
+        if data in (b'AT@1\r', b'DXDP1\r'):
+            return super().write(data)
+        command, p = data[0], data[2:-1]
+        previous_mask = self.settings[0x33, 4]
+        if command in (0x24, 0x33) and len(p) > 1:
+            if self.state != 0:
+                raise AssertionError('Setting changed while network not OFF')
+        super().write(data)
+        if command == 0x33 and len(p) > 1:
+            if p[0] in (0, 1):
+                mask = bytearray(previous_mask)
+                if p[-1]:
+                    mask[2 + p[0]] |= 255
+                mask[-1] = p[-1]
+                self.settings[0x33, 4] = bytes(mask)
+                for sub in (0, 1):
+                    value = self.settings[0x33, sub]
+                    self.settings[0x33, sub] = value[:-1] + p[-1:]
+            elif p[0] == 4:
+                # MASK's requested flag does not control the observed enable.
+                self.settings[0x33, 4] = p[:-1] + previous_mask[-1:]
+
+
+class ExperimentalFilterTests(unittest.TestCase):
+    def session(self, port=None):
+        port, events = port or CoupledFilterPort(), []
+        session = c.Session(port, events.append)
+        session.connect('dvi')
+        return session, port, events
+
+    def test_full_profile_verified_before_listen_and_observable_state_restored(self):
+        for original_mask in ('0400000000', '040000ff01', '0400000001'):
+            with self.subTest(original_mask=original_mask):
+                session, port, events = self.session()
+                flag = bytes.fromhex(original_mask)[-1:]
+                port.settings[0x33, 0] = b'\x00\xF0' + flag
+                port.settings[0x33, 1] = b'\x01\x10' + flag
+                port.settings[0x33, 4] = bytes.fromhex(original_mask)
+                original = dict(port.settings)
+                session.capture('4x', 0, all_sources=True)
+                self.assertEqual(port.settings, original)
+                self.assertEqual(port.state, 0)
+                start = next(e for e in events if e['kind'] == 'capture_started')
+                self.assertEqual(start['receive_scope'], 'experimental_mask_all')
+                self.assertFalse(start['live_receive_verified'])
+                self.assertIsNone(start['source_filter'])
+                before_listen = port.writes[:port.writes.index(c.packet(0x31, [2, 2]))]
+                self.assertEqual(before_listen[-5:],
+                                 [c.packet(0x33, [i]) for i in range(5)])
+                profile = next(e for e in events if e['kind'] == 'experimental_filter_profile')
+                self.assertTrue(profile['readbacks_match'])
+                self.assertEqual(profile['observed_readbacks'],
+                                 ['000001', '011001', '02000000', '03000000', '0400000001'])
+                changes = [w for w in port.writes if w[0] in (0x24, 0x33) and w[1] > 1]
+                self.assertEqual(changes[-1], c.packet(0x33, bytes.fromhex(original_mask)))
+                expected_final = [c.packet(cmd, [sub]) for cmd, sub, _, _ in c.SETTINGS]
+                self.assertEqual(port.writes[-10:-1], expected_final)
+                self.assertEqual(port.writes[-1], c.packet(0x31, [2]))
+                self.assertEqual(events[-1]['kind'], 'settings_readback_restoration')
+                self.assertTrue(events[-1]['observable_readbacks_match_original'])
+                self.assertIsNone(events[-1]['hidden_setting_state_restored'])
+                states = [w[3] for w in port.writes if w[:3] == b'\x31\x02\x02']
+                self.assertEqual(states, [0, 2, 0])
+                self.assertTrue(all(c.permitted(w[0], w[2:-1]) for w in port.writes))
+
+    def test_rejected_mask_or_late_cross_filter_change_blocks_listener(self):
+        for fault in ('mask', 'to_filter', 'range'):
+            with self.subTest(fault=fault):
+                session, port, events = self.session()
+                original = dict(port.settings)
+                write = port.write
+                def corrupt(wire):
+                    write(wire)
+                    if wire == c.packet(0x33, [4, 0, 0, 0, 1]):
+                        if fault == 'mask':
+                            port.settings[0x33, 4] = b'\x04\x00\x00\xff\x01'
+                        elif fault == 'to_filter':
+                            port.settings[0x33, 0] = b'\x00\x99\x01'
+                        else:
+                            port.settings[0x33, 2] = b'\x02\x01\x02\x01'
+                port.write = corrupt
+                with self.assertRaises(c.ProtocolError):
+                    session.capture('4x', 0, all_sources=True)
+                self.assertNotIn(c.packet(0x31, [2, 2]), port.writes)
+                self.assertEqual(port.settings, original)
+                self.assertEqual(port.state, 0)
+                self.assertTrue(events[-1]['observable_readbacks_match_original'])
+
+    def test_inconsistent_original_enable_flags_fail_before_setting_mutations(self):
+        session, port, events = self.session()
+        port.settings[0x33, 4] = b'\x04\x00\x00\x00\x01'
+        original = dict(port.settings)
+        with self.assertRaisesRegex(c.ProtocolError, 'original filter enable coupling'):
+            session.capture('4x', 0, all_sources=True)
+        self.assertEqual(port.settings, original)
+        self.assertFalse(any(w[0] in (0x24, 0x33) and w[1] > 1 for w in port.writes))
+        self.assertNotIn(c.packet(0x31, [2, 2]), port.writes)
+        self.assertFalse(events[-1]['attempted'])
+        self.assertEqual(port.state, 0)
+
+    def test_independent_filter_firmware_cannot_satisfy_experimental_profile(self):
+        session, port, _ = self.session(FakePort())
+        with self.assertRaisesRegex(c.ProtocolError, 'full filter profile mismatch'):
+            session.capture('4x', 0, all_sources=True)
+        self.assertNotIn(c.packet(0x31, [2, 2]), port.writes)
+        self.assertEqual(port.state, 0)
+
+    def test_cancellation_after_exact_enable_restores_shared_mask(self):
+        session, port, events = self.session()
+        original = dict(port.settings)
+        write = port.write
+        def cancel(wire):
+            if wire == c.packet(0x33, [4, 0, 0, 0, 1]):
+                raise KeyboardInterrupt()
+            write(wire)
+        port.write = cancel
+        with self.assertRaises(KeyboardInterrupt):
+            session.capture('4x', 1, all_sources=True)
+        self.assertEqual(port.settings, original)
+        self.assertEqual(port.state, 0)
+        self.assertTrue(events[-1]['observable_readbacks_match_original'])
+
+    def test_final_snapshot_detects_late_cross_setting_restoration_change(self):
+        session, port, events = self.session()
+        write = port.write
+        def corrupt_restore(wire):
+            write(wire)
+            if wire == c.packet(0x33, [4, 0, 0, 0, 0]) and c.packet(0x31, [2, 2]) in port.writes:
+                port.settings[0x33, 8] = b'\x08\x01'
+        port.write = corrupt_restore
+        with self.assertRaisesRegex(c.ProtocolError, 'Final experimental setting snapshot'):
+            session.capture('4x', 0, all_sources=True)
+        self.assertEqual(port.state, 0)
+        self.assertFalse(events[-1]['success'])
+        self.assertFalse(events[-1]['observable_readbacks_match_original'])
+
+    def test_active_capture_interruption_returns_off_and_restores_settings(self):
+        for failure in (KeyboardInterrupt(), c.ProtocolError('capture interrupted')):
+            with self.subTest(failure=type(failure).__name__):
+                session, port, events = self.session()
+                original = dict(port.settings)
+                read = port.read
+                def interrupt_read():
+                    if port.state == 2 and not port.replies:
+                        raise failure
+                    return read()
+                port.read = interrupt_read
+                with self.assertRaises(type(failure)):
+                    session.capture('4x', 1, all_sources=True)
+                self.assertEqual(port.state, 0)
+                self.assertEqual(port.settings, original)
+                self.assertTrue(events[-1]['observable_readbacks_match_original'])
+
+    def test_api_filter_choices_rejected_before_commands(self):
+        session, port, _ = self.session()
+        port.writes.clear()
+        for operation in (session.capture, session.configure_listener):
+            args = ('4x', 0) if operation == session.capture else ('4x',)
+            with self.assertRaises(ValueError):
+                operation(*args, source_id=0x10, all_sources=True)
+        self.assertEqual(port.writes, [])
+
+    def test_cli_filter_choices_rejected_before_output_or_serial(self):
+        with tempfile.TemporaryDirectory() as root:
+            output = Path(root) / 'capture.jsonl'
+            args = ['obdx_capture.py', 'capture', '--port', 'COM99', '--speed', '4x',
+                    '--source-id', '0x10', '--all-sources', '--output', str(output)]
+            with patch('sys.argv', args), patch.object(c, 'WindowsSerial') as serial, \
+                    contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+                c.main()
+            serial.assert_not_called()
+            self.assertFalse(output.exists())
 
 
 class CaptureTests(unittest.TestCase):

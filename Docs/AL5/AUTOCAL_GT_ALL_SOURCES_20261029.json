@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "scope": "Isolated E54 read with GT experimental all-source fixed-4x listener",
+  "observation": {
+    "efilive_read_succeeded": true,
+    "elapsed_ui": "01:59",
+    "all_six_displayed_segment_checksums_valid": true,
+    "ignition_off_confirmed_by_user": true,
+    "shutdown_countdown_completed": true,
+    "fourth_read_ctz_saved": true,
+    "gt_network_off_verified": true,
+    "configured_filter_readbacks_before_listen": [
+      "000001",
+      "011001",
+      "02000000",
+      "03000000",
+      "0400000001"
+    ]
+  },
+  "comparison": {
+    "comparison_passed": false,
+    "issues": [
+      "Ordered messages differ from selected HTX window"
+    ],
+    "observed_network_frame_count": 393,
+    "observed_header_source_counts": {
+      "f0": 135,
+      "10": 257,
+      "f1": 1
+    },
+    "expected_header_source_counts": {
+      "f0": 132,
+      "10": 260
+    },
+    "missing_frame_count": 3,
+    "extra_frame_count": 4,
+    "missing_frames": [
+      {
+        "header_and_service": "6cf01076",
+        "message_bytes": 6,
+        "message_sha256": "02cae7732977956a7a0219faa42984a6abe7a52f1ea9e42eb35696b1bd05b5e1",
+        "count": 1
+      },
+      {
+        "header_and_service": "6df01075",
+        "message_bytes": 6,
+        "message_sha256": "50af0ba05d21a908e0646360252f2fbc697ce23d04a82b23873e0250c227a994",
+        "count": 2
+      }
+    ],
+    "extra_frames": [
+      {
+        "header_and_service": "6cfef13f",
+        "message_bytes": 4,
+        "message_sha256": "67b7198b9e2df23db31289be6c41c52e45ed1d10ebf01888033f8047b8e3dc9b",
+        "count": 1
+      },
+      {
+        "header_and_service": "8cfef03f",
+        "message_bytes": 4,
+        "message_sha256": "74c3716572d12617e262114190fabeccc4371404b3052f1ec363ee29c18492b3",
+        "count": 1
+      },
+      {
+        "header_and_service": "6c10f03f",
+        "message_bytes": 4,
+        "message_sha256": "485e3723ccf380346c88d336c0fffc4eca1883f61801103013f141b7ac1f43f0",
+        "count": 1
+      },
+      {
+        "header_and_service": "6c10f03c",
+        "message_bytes": 5,
+        "message_sha256": "d1f6f6df7c324e0f5408e2251ce5c7452e1327d650121aa0ec92dfcaaa05be6d",
+        "count": 1
+      }
+    ],
+    "vpw_crc": {
+      "algorithm": "CRC-8 SAE J1850, poly1D initFF xoroutFF nonreflected",
+      "check_vector_123456789": "4b",
+      "checked_frames": 393,
+      "failed_frame_ordinals_zero_based": []
+    },
+    "capture_blocks": {
+      "count": 128,
+      "unique_addresses": 128,
+      "duplicate_address_count": 0,
+      "malformed_block_ordinals_zero_based": [],
+      "checksum_failed_block_ordinals_zero_based": [],
+      "conflicting_block_ordinals_zero_based": [],
+      "checksum_method": "sum(message[4:-2]) modulo 65536, final two bytes big-endian",
+      "covered_bytes": 524286,
+      "covered_ranges": [
+        {
+          "start": 0,
+          "end_exclusive": 524286,
+          "sha256": "a53bef772ac8f176296c5923fd3f93ca862ab5148cff292b7fb63eee37dd58ed"
+        }
+      ],
+      "expected_transfer_end_exclusive": 524286,
+      "complete_observed_e54_read_range": true,
+      "reconstructed_partial_sha256": "a53bef772ac8f176296c5923fd3f93ca862ab5148cff292b7fb63eee37dd58ed",
+      "full_512kib_image": false,
+      "untransferred_tail": {
+        "start": 524286,
+        "end_exclusive": 524288
+      }
+    },
+    "raw_observable_restoration": {
+      "verified": true,
+      "issues": [],
+      "original_readbacks": [
+        "0300",
+        "000000",
+        "010000",
+        "02000000",
+        "03000000",
+        "0400000000",
+        "0600",
+        "0701",
+        "0800"
+      ],
+      "final_readbacks": [
+        "0300",
+        "000000",
+        "010000",
+        "02000000",
+        "03000000",
+        "0400000000",
+        "0600",
+        "0701",
+        "0800"
+      ],
+      "hidden_setting_state_restored": null,
+      "scope": "Nine observable GET payloads; hidden register state remains unknown"
+    }
+  },
+  "per_header_source_summary": {
+    "10": {
+      "expected": 260,
+      "observed": 257,
+      "missing": 3,
+      "extra": 0,
+      "expected_is_ordered_subsequence": false
+    },
+    "f0": {
+      "expected": 132,
+      "observed": 135,
+      "missing": 0,
+      "extra": 3,
+      "expected_is_ordered_subsequence": true
+    },
+    "f1": {
+      "expected": 0,
+      "observed": 1,
+      "missing": 0,
+      "extra": 1,
+      "expected_is_ordered_subsequence": true
+    }
+  },
+  "strict_replay": {
+    "network_frames": 393,
+    "adapter_frames": 74,
+    "adapter_errors": 0,
+    "outgoing_guard_violations": 0,
+    "examined_lines": 1027,
+    "source_fully_read": true,
+    "source_reported_failure": false,
+    "replay_complete": true,
+    "undecoded_dvi_hex": ""
+  },
+  "raw_receive_context_verified": true,
+  "missing_reply_context": {
+    "loader_acknowledgment": "6cf010768078",
+    "block_acknowledgment": "6df010750154",
+    "block_addresses": [
+      "025000",
+      "043000"
+    ],
+    "localization": "Unique request/data anchors bracket intervals with an HTX ACK but no captured GT ACK; repeated acknowledgments remain individually ambiguous",
+    "cause": "unknown"
+  },
+  "keepalive_comparison": {
+    "previous_f0_source_capture_8cfef03f_count": 129,
+    "this_all_source_capture_8cfef03f_count": 1,
+    "this_all_source_post_block_keepalive_observations": 0,
+    "physical_transmission_of_missing_keepalives_proven": false
+  },
+  "complete_bus_capture_proven": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "limits": [
+    "Comparison is relative to the HTX window; its physical-bus completeness is unknown.",
+    "Wrapper directions are inferred; wrapper checksums are not independently verified.",
+    "Explicit known device-query wrapper routes are excluded from the VPW window.",
+    "Configured 4x is not a physical pulse-timing measurement.",
+    "Fixed 4x excludes 1x startup/return; all-source filter reception coverage remains experimental.",
+    "VPW source addresses do not identify physical transmitters; physical origins of F0/F1 keepalives remain unverified.",
+    "Identical acknowledgments cannot exclude offsetting physical loss and duplication.",
+    "No waveform, electrical silence/loading, programming, recovery or flash-readiness proof.",
+    "The final two flash bytes are absent and are never filled from another image."
+  ],
+  "private_artifacts": [
+    {
+      "path": "LocalOnly/autocal_all_sources_20261029_01/gt_all_4x.jsonl",
+      "bytes": 3283699,
+      "sha256": "0c3a118bed1c9acdfa90e0dafb811627c45cad37b00495d3d5f1b890f8e4613e"
+    },
+    {
+      "path": "LocalOnly/autocal_all_sources_20261029_01/gt_all_replay.jsonl",
+      "bytes": 2224653,
+      "sha256": "1df5b8faa2b4645b3175036b8cf21cb194a789a688086e095357798d0b845f29"
+    },
+    {
+      "path": "LocalOnly/autocal_all_sources_20261029_01/all_sources_E54_R.htx",
+      "bytes": 200267,
+      "sha256": "81256913c9014b3927e196c85410d2a2f175eca018c38cd0483c891bcf321201"
+    },
+    {
+      "path": "LocalOnly/autocal_all_sources_20261029_01/all_sources_4_LB7_E54_0000.ctz",
+      "bytes": 332337,
+      "sha256": "d3f32f0022e149b7dd6746360469490d6d1acf730976e9e20c7923214f11bd26"
+    },
+    {
+      "path": "LocalOnly/autocal_all_sources_20261029_01/all_source_read.json",
+      "bytes": 1939,
+      "sha256": "74779fc37a1ffdddaff83f44158112002ccefdb63b9f8d2cb7263eb5bb5eec7c"
+    },
+    {
+      "path": "LocalOnly/autocal_all_sources_20261029_01/all_sources_comparison_final.json",
+      "bytes": 124202,
+      "sha256": "3dee1ed9d69ca35e3790ee6459057072b640d6f349a8c7f838785db2080282d4"
+    },
+    {
+      "path": "LocalOnly/autocal_all_sources_20261029_01/ack_keepalive_context.json",
+      "bytes": 281000,
+      "sha256": "807d2312767822af25a0d490bfc5fabba1eb128ed360946bd01255e8dd31b7c0"
+    },
+    {
+      "path": "LocalOnly/autocal_all_sources_20261029_01/summarize_evidence.py",
+      "bytes": 3896,
+      "sha256": "67e8077470caa43f77788449656a1bed5c0b07eaf6b29eb8e52e770e115b029a"
+    }
+  ]
+}
