@@ -930,6 +930,15 @@ unqualified.
 
 ## Remaining integration work
 
+The offline policy now models 128 acknowledged 4,096-byte blocks, followed by
+the pinned full-image digest and all seven controller CRC ranges. Each block
+requires its own acknowledgement; the preceding block's ACK cannot authorize
+the next reply. The production-policy regression passes this complete sequence
+and rejects a missing second-block ACK. This uses saved baseline bytes and
+synthetic replies, not a physical full read. The live session explicitly rejects
+this mode until the running reader's submode selection and per-block receive
+boundaries are integrated. No hardware was accessed for this extension.
+
 The developer probe now has a separate fixed baseline-read profile. It reuses
 the production reader after verified kernel execution and checks 128 sequential
 4,096-byte blocks, the pinned 512 KiB GT baseline hash, and seven controller CRC

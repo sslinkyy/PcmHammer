@@ -73,6 +73,7 @@ public sealed class AutoCalKernelProbePolicy
     public bool ShortReadEnabled { get; }
     public bool UsesZeroSubmodeKernel { get; }
     public bool PrependReadAcknowledgement { get; }
+    public int ReadAcknowledgementCount { get; private set; }
     public bool ReadAcknowledgementObserved => readAcknowledgement != null;
     public byte[]? ReadAcknowledgement => Clone(readAcknowledgement);
     public byte ReadReplySubmode => UsesZeroSubmodeKernel ? (byte)0 : (byte)1;
@@ -115,13 +116,15 @@ public sealed class AutoCalKernelProbePolicy
     public byte[]? PostExitIdentityReply => Clone(finalIdentity);
 
     public AutoCalKernelProbePolicy(byte[] pinnedKernel, bool fullRead = false, bool shortRead = false,
-        bool useZeroSubmodeKernel = false, bool prependReadAcknowledgement = false)
+        bool useZeroSubmodeKernel = false, bool prependReadAcknowledgement = false, bool acknowledgedFullRead = false)
     {
         if (pinnedKernel == null) throw new ArgumentNullException(nameof(pinnedKernel));
         if (fullRead && shortRead) throw new ArgumentException("Full-image and short-prefix read modes are mutually exclusive.");
-        if (useZeroSubmodeKernel && !shortRead)
+        if (acknowledgedFullRead && (!fullRead || shortRead || !useZeroSubmodeKernel || !prependReadAcknowledgement))
+            throw new ArgumentException("Acknowledged full-read requires its exact offline mode combination.");
+        if (useZeroSubmodeKernel && !shortRead && !acknowledgedFullRead)
             throw new ArgumentException("The zero-submode kernel is restricted to the fixed short-prefix experiment.");
-        if (prependReadAcknowledgement && (!useZeroSubmodeKernel || !shortRead || fullRead))
+        if (prependReadAcknowledgement && !acknowledgedFullRead && (!useZeroSubmodeKernel || !shortRead || fullRead))
             throw new ArgumentException("The acknowledged kernel requires the exclusive zero-submode short-prefix experiment.");
         kernel = (byte[])pinnedKernel.Clone();
         FullReadEnabled = fullRead;
@@ -289,9 +292,9 @@ public sealed class AutoCalKernelProbePolicy
         if (bytes.Length >= 4 && bytes[3] == 0x75)
         {
             if (!PrependReadAcknowledgement || phase != Phase.ReadAcknowledgementReply
-                || ReadBlockAttempts != 1 || ReadAcknowledgementObserved || !Equal(bytes, "6DF010750154"))
+                || ReadBlockAttempts != ReadBlockReplies + 1 || ReadAcknowledgementCount != ReadBlockReplies || !Equal(bytes, "6DF010750154"))
                 Reject("Read acknowledgement is wrong, repeated, out of phase or disabled for this experiment.");
-            readAcknowledgement = (byte[])bytes.Clone(); phase = Phase.ReadBlockReply;
+            readAcknowledgement = (byte[])bytes.Clone(); ReadAcknowledgementCount++; phase = Phase.ReadBlockReply;
             return;
         }
         if (phase == Phase.ReadAcknowledgementReply

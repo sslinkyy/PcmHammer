@@ -34,6 +34,7 @@ internal static partial class AutoCalKernelProbePolicyTest
         string path = args.Length == 0 ? AutoCalKernelProbePolicy.DefaultKernelPath : args[0];
         try { kernel = File.ReadAllBytes(path); }
         catch (Exception error) { Console.Error.WriteLine(error); return 2; }
+        Run("acknowledged full image and seven CRC ranges offline", AcknowledgedFullReadOffline);
         Run("pinned asset and production upload-plan equivalence", PlanAndPin);
         Run("complete positive-seed session and exact provenance", CompletePositive);
         Run("unknown copy suffix is observable but cannot authorize execution", ZeroSeed);

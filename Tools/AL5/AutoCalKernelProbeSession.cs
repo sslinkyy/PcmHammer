@@ -81,6 +81,8 @@ internal sealed class AutoCalKernelProbeSession
         inner = device ?? throw new ArgumentNullException(nameof(device));
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         this.policy = policy ?? throw new ArgumentNullException(nameof(policy));
+        if (policy.FullReadEnabled && policy.PrependReadAcknowledgement)
+            throw new NotSupportedException("Acknowledged full-image mode is offline-only until the running reader handles its reply submode and per-block acknowledgement boundary.");
         cancellation = cancellationToken;
         this.copyOnly = copyOnly;
         if (copyOnly && (fullRead || shortRead) || fullRead && shortRead)

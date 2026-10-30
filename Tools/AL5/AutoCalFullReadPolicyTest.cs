@@ -21,9 +21,9 @@ internal static partial class AutoCalKernelProbePolicyTest
         "6CF0107D020200000200004E3F92B0", "6CF0107D02018000008000712EFE11",
         "6CF0107D0200200000600085B5BB36", "6CF0107D020020000040007D830D3E",
         "6CF0107D02004000000000CED58D53" };
-    private static AutoCalKernelProbePolicy FullVersion()
+    private static AutoCalKernelProbePolicy FullVersion(bool acknowledged = false)
     {
-        var p = new AutoCalKernelProbePolicy(kernel, fullRead: true);
+        var p = new AutoCalKernelProbePolicy(kernel, fullRead: true, useZeroSubmodeKernel: acknowledged, prependReadAcknowledgement: acknowledged, acknowledgedFullRead: acknowledged);
         Tx(p, "6C10F03C0A"); Rx(p, "6CF0107C0A00E7C434444E");
         Tx(p, "6C10F02701"); Rx(p, "6CF01067010000");
         p.BeforeTransmit(p.UploadPermissionMessage); Rx(p, "6CF010740044");
@@ -49,6 +49,31 @@ internal static partial class AutoCalKernelProbePolicyTest
         for (int index = 0; index < 128; index++) { p.BeforeTransmit(DataRequest(index)); p.ObserveReceive(DataReply(index)); }
         return p;
     }
+    private static void AcknowledgedFullReadOffline()
+    {
+        var p = FullVersion(true); Tx(p, "6C10F03D01"); Rx(p, "6CF0107D0100894471");
+        for (int index = 0; index < 128; index++)
+        {
+            p.BeforeTransmit(DataRequest(index)); Rx(p, "6DF010750154");
+            byte[] reply = DataReply(index); reply[4] = 0; VpwUtilities.AddBlockChecksum(reply);
+            p.ObserveReceive(reply);
+            Require(p.ReadAcknowledgementCount == index + 1 && p.ReadBlockReplies == index + 1,
+                "one acknowledgement required for each sequential block");
+        }
+        Require(p.BaselineShaMatched && !p.IsImageVerified, "full baseline needs controller CRCs");
+        for (int index = 0; index < 7; index++) { p.BeforeTransmit(p.CrcRequests[index]); Rx(p, savedCrcReplies[index]); }
+        Require(p.IsImageVerified && p.VerifiedCrcRanges == 7, "all CRC ranges verified offline");
+        Tx(p, "6C10F020"); Rx(p, "6CF01060"); Tx(p, "6C10F03C0A"); Rx(p, "6CF0107C0A00E7C434444E");
+        Require(p.IsPostExitIdentityVerified, "explicit exit follows full verification");
+        var missing = FullVersion(true); Tx(missing, "6C10F03D01"); Rx(missing, "6CF0107D0100894471");
+        missing.BeforeTransmit(DataRequest(0)); Rx(missing, "6DF010750154");
+        byte[] first = DataReply(0); first[4] = 0; VpwUtilities.AddBlockChecksum(first); missing.ObserveReceive(first);
+        missing.BeforeTransmit(DataRequest(1));
+        byte[] second = DataReply(1); second[4] = 0; VpwUtilities.AddBlockChecksum(second);
+        Reject(() => missing.ObserveReceive(second), "previous block ACK cannot authorize next block");
+        Require(missing.ReadBlockReplies == 1, "missing second ACK adds no coverage");
+    }
+
     private static void FullReadSourcePins()
     {
         Require(baseline.Value.Length == 524288, "512KiB SHA-pinned actual GT baseline");
