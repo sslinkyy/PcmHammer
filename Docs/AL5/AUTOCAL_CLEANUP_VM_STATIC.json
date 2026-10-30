@@ -1,0 +1,3733 @@
+{
+  "schema": "autocal-cleanup-vm-static-v1",
+  "scope": "Pinned E54 saved-read cleanup, native host exit and comparison with existing AL5 structure; no target execution",
+  "sources": [
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\autocal_vpw_setup_20261030\\e54_read_code.bin",
+      "bytes": 9674,
+      "sha256": "fb9bc77f076cb5ee5c1e0228317bddd8448383bf1797d83154f40aced1568626"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\autocal_vpw_setup_20261030\\e54_read_data.bin",
+      "bytes": 10816,
+      "sha256": "c10236503cc23011df5e46c4f19e6ebc4e5d94059c1163488a899afe3235eceb"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\autocal_vpw_setup_20261030\\e54_read_vm.json",
+      "bytes": 638034,
+      "sha256": "0e98bc288388a7664cdacdf121e0a76eec885e460461e9d8f8df359b0a0a6aa5"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\usb_capture_setup_20261030\\e54_usb_read_01\\crc_retained_E54_R.htx",
+      "bytes": 200276,
+      "sha256": "49e0b14e2e5deb3581baca6c00f8ac29e264e2006d999aa017e4c736c448987f"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll",
+      "bytes": 156016,
+      "sha256": "132832f80d7e5b642033fafc35df4ff3c0f3b19371081d23eacf696c4019ac00"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_ScanAndTune.exe",
+      "bytes": 27302768,
+      "sha256": "9d3aad921df7ac8848b7d7cdb82fea0fd7695070f1c4d1f6bf9f68f0a0f34a3a"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+      "bytes": 23512,
+      "sha256": "6ad86f7fa61936301fddafa97de7c8f0ac5c3cb225569dca68edfa021cce5919"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\AUTOCAL_VM_SETUP_20261030.json",
+      "bytes": 33394,
+      "sha256": "1af2b09f12257a8d375984cb1def62cbffd5b4a67b9c32d10fe581db73578a7b"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\AUTOCAL_SPEED_VM_STATIC.json",
+      "bytes": 58793,
+      "sha256": "707007048f3b47ed25c153892ad71e4adb7b62ae4181c860ea83a63b81fee680"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\EFILIVE_VM_DISPATCH.json",
+      "bytes": 73116,
+      "sha256": "418a2da13a80be14381e42b85eb3297bef4336ded131ab2fd521590f0e86bb4f"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\VM_RETRY_HELPERS_STATIC.json",
+      "bytes": 37479,
+      "sha256": "de0179fb250a497b1e1beaaabbc36295b62ce50d3e8fcc705864488a95228d18"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\VM_CALLBACK10_STATIC.json",
+      "bytes": 42527,
+      "sha256": "39bba596ebfeebac2c1c4e112f6b3c5e6ecb7badae6b4f578a0d65ad66244c18"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\VM_PROGRAMMING_FLOW.json",
+      "bytes": 686935,
+      "sha256": "f82ee19151b92d34630a4ff68793d6519f1e30e03f79bf0a282604cc9e820ad7"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\EFILIVE_HOST_CALLBACKS.json",
+      "bytes": 647884,
+      "sha256": "ba0f6fb0196dcfe93f738f39c33c1d320427fa704495476081d63276cd77c7f8"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_autocal_cleanup_vm.py",
+      "bytes": 20079,
+      "sha256": "fd7aaf15d457a43e91bb6798d7a874f8a981718ea06e9a01af7fc1cb3742ace0"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_autocal_speed_vm.py",
+      "bytes": 17189,
+      "sha256": "75656bff58c5856e592c230bffd891f25ebd76f1c84b64099d99306c297b4e14"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_vm_flow.py",
+      "bytes": 9210,
+      "sha256": "664fbce5aba9fddcf47d2bee7c1d6680f82cb59839bc2859b553c3d6a099541e"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\audit_trace_wrappers.py",
+      "bytes": 5198,
+      "sha256": "c824d113b63244d7e5d56b7bd53e3870fc155e666d897c12a570f1bdd69bd608"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\checksum.py",
+      "bytes": 1841,
+      "sha256": "b057805b2f5dc141141be5ce747ee78be98e441746a05d3a4a0cb3911bf2ef93"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\decode_trace_containers.py",
+      "bytes": 5780,
+      "sha256": "ab2feac05c102f3616c444889c428608e8466084bb7661743d5cd85e02cae382"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\validate_vm_buffers.py",
+      "bytes": 3869,
+      "sha256": "198c7b1a1fd0e69b73a90be502bd642a405bb0b6d52bca8cf054c24126a21f62"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\al5_segment.py",
+      "bytes": 1710,
+      "sha256": "c391085ae14ed3f8c762c0ad2baf174474d2287fc17d95b3a5bb4ba3fe169edb"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_vm_objects.py",
+      "bytes": 4400,
+      "sha256": "7c80250a3c2dbb259cc887e34dd613bf7c7ffa2c1def03f7ea734f3c62d528dd"
+    }
+  ],
+  "selected_structural_nodes": [
+    {
+      "offset": 68,
+      "end_exclusive": 82,
+      "opcode": 35,
+      "operands": [
+        {
+          "offset": 70,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 182
+        },
+        {
+          "offset": 74,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 3
+        },
+        {
+          "offset": 78,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9426
+        }
+      ],
+      "source_sha256": "ef0247a14d59d58c3573a839d431fbccd5e3e517387cd3f3037272e811a9fc33",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 82,
+      "end_exclusive": 96,
+      "opcode": 35,
+      "operands": [
+        {
+          "offset": 84,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 182
+        },
+        {
+          "offset": 88,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 4
+        },
+        {
+          "offset": 92,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9430
+        }
+      ],
+      "source_sha256": "fddbde1bf5b06b50647411fc88663c0f20cfbd4b967e97f446bb140d963df124",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 96,
+      "end_exclusive": 106,
+      "opcode": 48,
+      "operands": [
+        {
+          "offset": 98,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 102,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9442
+        }
+      ],
+      "source_sha256": "4e24b9bd9d6a194959bb1e51db1fc52e36d83d4e2e6c0a3f40cbae2c2e6bc9ad",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 106,
+      "end_exclusive": 112,
+      "opcode": 67,
+      "operands": [
+        {
+          "offset": 108,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 162
+        }
+      ],
+      "source_sha256": "8c51c0b5209188e07352f604f1e246e11416f504e14839121d48a6ff89f21451",
+      "effects_fully_modeled": false,
+      "target_offset": 162,
+      "branch_condition": {
+        "flags_mask": 4,
+        "branch_if_nonzero": true
+      }
+    },
+    {
+      "offset": 112,
+      "end_exclusive": 122,
+      "opcode": 32,
+      "operands": [
+        {
+          "offset": 114,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9442
+        },
+        {
+          "offset": 118,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 8724
+        }
+      ],
+      "source_sha256": "19af1bdd92ba69d28d5a9e2802cb0da1393b93de7234a30d7f32cf853c3c61c5",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 122,
+      "end_exclusive": 132,
+      "opcode": 20,
+      "operands": [
+        {
+          "offset": 124,
+          "tag": 178,
+          "extent_bytes": 4,
+          "value": 256
+        },
+        {
+          "offset": 128,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 8724
+        }
+      ],
+      "source_sha256": "cd12a894b9547393bcc1d857c4fce9cbbb626d2ef12dcf6b22d079e92f197333",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 132,
+      "end_exclusive": 142,
+      "opcode": 18,
+      "operands": [
+        {
+          "offset": 134,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 64
+        },
+        {
+          "offset": 138,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 8724
+        }
+      ],
+      "source_sha256": "3f382d8b7a01988e5f9c0fc776764c85b3d0503df527566c5609507d71ef5275",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 142,
+      "end_exclusive": 152,
+      "opcode": 32,
+      "operands": [
+        {
+          "offset": 144,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 8724
+        },
+        {
+          "offset": 148,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9426
+        }
+      ],
+      "source_sha256": "85aa6810d4605a50eb4833ce7d9f059164239cf26ec9091e65798f812dccc797",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 152,
+      "end_exclusive": 162,
+      "opcode": 32,
+      "operands": [
+        {
+          "offset": 154,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9442
+        },
+        {
+          "offset": 158,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9430
+        }
+      ],
+      "source_sha256": "59d165ff04bd81605383279c0bcc74e41b007fbce3a629a0de33c8cd087b4bcf",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 162,
+      "end_exclusive": 168,
+      "opcode": 96,
+      "operands": [
+        {
+          "offset": 164,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 182
+        }
+      ],
+      "source_sha256": "406a61ce95104ec0e8c712e4b6a12fc8fb4ff064c33efcaa3d2d6ac7ecfba293",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 168,
+      "end_exclusive": 170,
+      "opcode": 82,
+      "operands": [],
+      "source_sha256": "4f82d2d4702d95b60ed4e752df221c56b0fb2de94af5889d016578e6db8afb7a",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 258,
+      "end_exclusive": 268,
+      "opcode": 32,
+      "operands": [
+        {
+          "offset": 260,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9390
+        },
+        {
+          "offset": 264,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9394
+        }
+      ],
+      "source_sha256": "7dff8739120c5d35721dacd2e7a3dc2dbedd71d986e148e3bd37b69a8eac63f6",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 268,
+      "end_exclusive": 282,
+      "opcode": 97,
+      "operands": [
+        {
+          "offset": 270,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 4300
+        },
+        {
+          "offset": 274,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9330
+        },
+        {
+          "offset": 278,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9348
+        }
+      ],
+      "source_sha256": "5323bee467cf01b8252939dcbd27e5026f3b87a4e1f170b4ed3c536b9b1cabf5",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 282,
+      "end_exclusive": 288,
+      "opcode": 75,
+      "operands": [
+        {
+          "offset": 284,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 304
+        }
+      ],
+      "source_sha256": "d328a11709cf639500c5b3ae629daa9661de72a01f32c011d565f7c0a1fa805e",
+      "effects_fully_modeled": false,
+      "target_offset": 304,
+      "branch_condition": {
+        "flags_mask": 128,
+        "branch_if_nonzero": true
+      }
+    },
+    {
+      "offset": 288,
+      "end_exclusive": 298,
+      "opcode": 18,
+      "operands": [
+        {
+          "offset": 290,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 1
+        },
+        {
+          "offset": 294,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9394
+        }
+      ],
+      "source_sha256": "0c6f57775436de646c12968f7d0bc7a740780dc1efc1036a644552eded146d85",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 298,
+      "end_exclusive": 304,
+      "opcode": 72,
+      "operands": [
+        {
+          "offset": 300,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 268
+        }
+      ],
+      "source_sha256": "6627fd7f96876a03e64eace6feaaf4b300652304136c25584590cfc17d6476bd",
+      "effects_fully_modeled": false,
+      "target_offset": 268,
+      "branch_condition": {
+        "flags_mask": 32,
+        "branch_if_nonzero": false
+      }
+    },
+    {
+      "offset": 304,
+      "end_exclusive": 314,
+      "opcode": 32,
+      "operands": [
+        {
+          "offset": 306,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9352
+        },
+        {
+          "offset": 310,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9342
+        }
+      ],
+      "source_sha256": "6a60c0d0ee118525c0ddb7742263f3a85b09782b5a6e57c53b72b15347900df7",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 314,
+      "end_exclusive": 316,
+      "opcode": 100,
+      "operands": [],
+      "source_sha256": "4658d6abbbaf7748c172ed5a3e003cdb8997648f88724834e41f75e54520e142",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 316,
+      "end_exclusive": 322,
+      "opcode": 131,
+      "operands": [
+        {
+          "offset": 318,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 129
+        }
+      ],
+      "source_sha256": "6d8dea8391f56c00ffc7b52559132968ff55936147e955cf69d95c5ec2555c6e",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 322,
+      "end_exclusive": 324,
+      "opcode": 82,
+      "operands": [],
+      "source_sha256": "4f82d2d4702d95b60ed4e752df221c56b0fb2de94af5889d016578e6db8afb7a",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 392,
+      "end_exclusive": 398,
+      "opcode": 81,
+      "operands": [
+        {
+          "offset": 394,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 68
+        }
+      ],
+      "source_sha256": "739321a734fd5efcae91f1442317a054c597955d933fd3ee59e97e286ec35a96",
+      "effects_fully_modeled": false,
+      "target_offset": 68
+    },
+    {
+      "offset": 398,
+      "end_exclusive": 404,
+      "opcode": 75,
+      "operands": [
+        {
+          "offset": 400,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 554
+        }
+      ],
+      "source_sha256": "7670bad476356ffe65406b2489857ea85bde4d75a2f30ffff2980c434fb1c681",
+      "effects_fully_modeled": false,
+      "target_offset": 554,
+      "branch_condition": {
+        "flags_mask": 128,
+        "branch_if_nonzero": true
+      }
+    },
+    {
+      "offset": 404,
+      "end_exclusive": 414,
+      "opcode": 32,
+      "operands": [
+        {
+          "offset": 406,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 8
+        },
+        {
+          "offset": 410,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9338
+        }
+      ],
+      "source_sha256": "d7e4f0832007db263af4667e7a72cbe294debfc0c99ebf294bcd611ebec4daf2",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 414,
+      "end_exclusive": 428,
+      "opcode": 97,
+      "operands": [
+        {
+          "offset": 416,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 4300
+        },
+        {
+          "offset": 420,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9330
+        },
+        {
+          "offset": 424,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9342
+        }
+      ],
+      "source_sha256": "9e19d7f636effbdf615134e936917ee47907ec29747d6041b77d86aa11af6b72",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 428,
+      "end_exclusive": 434,
+      "opcode": 64,
+      "operands": [
+        {
+          "offset": 430,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 584
+        }
+      ],
+      "source_sha256": "37dcc9cd2f3f44b03a0ea1989ae804dd601946ce63d78b2b07b3d8c8bdde2124",
+      "effects_fully_modeled": false,
+      "target_offset": 584,
+      "branch_condition": {
+        "flags_mask": 1,
+        "branch_if_nonzero": true
+      }
+    },
+    {
+      "offset": 434,
+      "end_exclusive": 440,
+      "opcode": 75,
+      "operands": [
+        {
+          "offset": 436,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 554
+        }
+      ],
+      "source_sha256": "7670bad476356ffe65406b2489857ea85bde4d75a2f30ffff2980c434fb1c681",
+      "effects_fully_modeled": false,
+      "target_offset": 554,
+      "branch_condition": {
+        "flags_mask": 128,
+        "branch_if_nonzero": true
+      }
+    },
+    {
+      "offset": 440,
+      "end_exclusive": 454,
+      "opcode": 35,
+      "operands": [
+        {
+          "offset": 442,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 4300
+        },
+        {
+          "offset": 446,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 3
+        },
+        {
+          "offset": 450,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9434
+        }
+      ],
+      "source_sha256": "a2affc22d7d99c8f27656c16ba2b25c0dc8d36a44c45aca87a766b6008a9a5c6",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 454,
+      "end_exclusive": 464,
+      "opcode": 18,
+      "operands": [
+        {
+          "offset": 456,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 64
+        },
+        {
+          "offset": 460,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9434
+        }
+      ],
+      "source_sha256": "ed2c61d18324bfb86245a57607114b57970a7331018282f3195279e6d107fb84",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 464,
+      "end_exclusive": 474,
+      "opcode": 48,
+      "operands": [
+        {
+          "offset": 466,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9434
+        },
+        {
+          "offset": 470,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9426
+        }
+      ],
+      "source_sha256": "497075b0578696907fc7f314051a5054ddc25f3c53389cde5eeec817a9dbbe77",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 474,
+      "end_exclusive": 480,
+      "opcode": 68,
+      "operands": [
+        {
+          "offset": 476,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 532
+        }
+      ],
+      "source_sha256": "fb09f7d66b2b0f566a976d7ae448e9029610307e23a9b57862002f46fa19a063",
+      "effects_fully_modeled": false,
+      "target_offset": 532,
+      "branch_condition": {
+        "flags_mask": 4,
+        "branch_if_nonzero": false
+      }
+    },
+    {
+      "offset": 480,
+      "end_exclusive": 490,
+      "opcode": 48,
+      "operands": [
+        {
+          "offset": 482,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 60
+        },
+        {
+          "offset": 486,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9434
+        }
+      ],
+      "source_sha256": "4c306e54fe65dccc5ba0a33f8025a544de522091c5105266bc24c2c5f52b288d",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 490,
+      "end_exclusive": 496,
+      "opcode": 68,
+      "operands": [
+        {
+          "offset": 492,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 632
+        }
+      ],
+      "source_sha256": "cc4bd803d18717f7ae0e5ff6cfd3791294c5e76a654e45ba8ca7ddc6e1cec970",
+      "effects_fully_modeled": false,
+      "target_offset": 632,
+      "branch_condition": {
+        "flags_mask": 4,
+        "branch_if_nonzero": false
+      }
+    },
+    {
+      "offset": 496,
+      "end_exclusive": 510,
+      "opcode": 35,
+      "operands": [
+        {
+          "offset": 498,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 4300
+        },
+        {
+          "offset": 502,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 4
+        },
+        {
+          "offset": 506,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9438
+        }
+      ],
+      "source_sha256": "1bc253559b23f8c18d9fa5014ecc171be5cdc877aae445b6032432ee87f935db",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 510,
+      "end_exclusive": 520,
+      "opcode": 48,
+      "operands": [
+        {
+          "offset": 512,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9438
+        },
+        {
+          "offset": 516,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9430
+        }
+      ],
+      "source_sha256": "955fd1ac955f5d05eac5b07ec36c61d4a2f88db6dbee183c7cae00b9414bae4d",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 520,
+      "end_exclusive": 526,
+      "opcode": 68,
+      "operands": [
+        {
+          "offset": 522,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 532
+        }
+      ],
+      "source_sha256": "fb09f7d66b2b0f566a976d7ae448e9029610307e23a9b57862002f46fa19a063",
+      "effects_fully_modeled": false,
+      "target_offset": 532,
+      "branch_condition": {
+        "flags_mask": 4,
+        "branch_if_nonzero": false
+      }
+    },
+    {
+      "offset": 526,
+      "end_exclusive": 532,
+      "opcode": 80,
+      "operands": [
+        {
+          "offset": 528,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 632
+        }
+      ],
+      "source_sha256": "0d2861779e8c0b5cbd6097ff02e465ed40df8ae22e47e8c5e2e62b24e1daa31d",
+      "effects_fully_modeled": false,
+      "target_offset": 632
+    },
+    {
+      "offset": 532,
+      "end_exclusive": 542,
+      "opcode": 18,
+      "operands": [
+        {
+          "offset": 534,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 1
+        },
+        {
+          "offset": 538,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9338
+        }
+      ],
+      "source_sha256": "41a58f452e36599accb939ce9069d1f9d1ebebf0a17ee4dcadc3f0f4a49e94b3",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 542,
+      "end_exclusive": 548,
+      "opcode": 71,
+      "operands": [
+        {
+          "offset": 544,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 554
+        }
+      ],
+      "source_sha256": "f25d39d2bbb1e64bc73aaea5cd30f7bd8c8749c794690fa75f5b6d57e5764c92",
+      "effects_fully_modeled": false,
+      "target_offset": 554,
+      "branch_condition": {
+        "flags_mask": 32,
+        "branch_if_nonzero": true
+      }
+    },
+    {
+      "offset": 548,
+      "end_exclusive": 554,
+      "opcode": 80,
+      "operands": [
+        {
+          "offset": 550,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 414
+        }
+      ],
+      "source_sha256": "a5da35e1feee3d58ea5332f8c4e4619c126a53e351678e3ad82a01ef0695948f",
+      "effects_fully_modeled": false,
+      "target_offset": 414
+    },
+    {
+      "offset": 554,
+      "end_exclusive": 564,
+      "opcode": 18,
+      "operands": [
+        {
+          "offset": 556,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 1
+        },
+        {
+          "offset": 560,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9334
+        }
+      ],
+      "source_sha256": "7ca062736e6a6d010ac364dcbc9e50add3443320a805dd34e289e9d14825436d",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 564,
+      "end_exclusive": 570,
+      "opcode": 71,
+      "operands": [
+        {
+          "offset": 566,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 620
+        }
+      ],
+      "source_sha256": "0ed111a9ef486f98022a2cd76504b2a692f21f5c20acbdafffbee93af40bc0fa",
+      "effects_fully_modeled": false,
+      "target_offset": 620,
+      "branch_condition": {
+        "flags_mask": 32,
+        "branch_if_nonzero": true
+      }
+    },
+    {
+      "offset": 570,
+      "end_exclusive": 572,
+      "opcode": 100,
+      "operands": [],
+      "source_sha256": "4658d6abbbaf7748c172ed5a3e003cdb8997648f88724834e41f75e54520e142",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 572,
+      "end_exclusive": 578,
+      "opcode": 128,
+      "operands": [
+        {
+          "offset": 574,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 100
+        }
+      ],
+      "source_sha256": "458af65989fd537248335c8f4d4b9cd12638e23102b49c6a015bf6acebe3888f",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 578,
+      "end_exclusive": 584,
+      "opcode": 80,
+      "operands": [
+        {
+          "offset": 580,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 392
+        }
+      ],
+      "source_sha256": "55e2a9e57dc2e76c4c88c394c379f86223b147e4d42f48fbe046218ec6d4b578",
+      "effects_fully_modeled": false,
+      "target_offset": 392
+    },
+    {
+      "offset": 584,
+      "end_exclusive": 598,
+      "opcode": 35,
+      "operands": [
+        {
+          "offset": 586,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 4300
+        },
+        {
+          "offset": 590,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 4
+        },
+        {
+          "offset": 594,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9434
+        }
+      ],
+      "source_sha256": "9a1cb5e95912749ef029519f06ac75e74dd0bb18e1b0f67527ba275c3414573e",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 598,
+      "end_exclusive": 608,
+      "opcode": 48,
+      "operands": [
+        {
+          "offset": 600,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9434
+        },
+        {
+          "offset": 604,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9426
+        }
+      ],
+      "source_sha256": "497075b0578696907fc7f314051a5054ddc25f3c53389cde5eeec817a9dbbe77",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 608,
+      "end_exclusive": 614,
+      "opcode": 68,
+      "operands": [
+        {
+          "offset": 610,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 532
+        }
+      ],
+      "source_sha256": "fb09f7d66b2b0f566a976d7ae448e9029610307e23a9b57862002f46fa19a063",
+      "effects_fully_modeled": false,
+      "target_offset": 532,
+      "branch_condition": {
+        "flags_mask": 4,
+        "branch_if_nonzero": false
+      }
+    },
+    {
+      "offset": 614,
+      "end_exclusive": 620,
+      "opcode": 80,
+      "operands": [
+        {
+          "offset": 616,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 632
+        }
+      ],
+      "source_sha256": "0d2861779e8c0b5cbd6097ff02e465ed40df8ae22e47e8c5e2e62b24e1daa31d",
+      "effects_fully_modeled": false,
+      "target_offset": 632
+    },
+    {
+      "offset": 620,
+      "end_exclusive": 626,
+      "opcode": 130,
+      "operands": [
+        {
+          "offset": 622,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 128
+        }
+      ],
+      "source_sha256": "69350cae4aa81864327755c020619e3821de399a8861cec23f23f8cdc9332743",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 626,
+      "end_exclusive": 632,
+      "opcode": 80,
+      "operands": [
+        {
+          "offset": 628,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 632
+        }
+      ],
+      "source_sha256": "0d2861779e8c0b5cbd6097ff02e465ed40df8ae22e47e8c5e2e62b24e1daa31d",
+      "effects_fully_modeled": false,
+      "target_offset": 632
+    },
+    {
+      "offset": 632,
+      "end_exclusive": 642,
+      "opcode": 32,
+      "operands": [
+        {
+          "offset": 634,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 3
+        },
+        {
+          "offset": 638,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9334
+        }
+      ],
+      "source_sha256": "7f84d7161c140a19c23a4f0e44453a034c6b3b6b7e3761b093832d6e4990cc2d",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 642,
+      "end_exclusive": 652,
+      "opcode": 32,
+      "operands": [
+        {
+          "offset": 644,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9352
+        },
+        {
+          "offset": 648,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9342
+        }
+      ],
+      "source_sha256": "6a60c0d0ee118525c0ddb7742263f3a85b09782b5a6e57c53b72b15347900df7",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 652,
+      "end_exclusive": 654,
+      "opcode": 82,
+      "operands": [],
+      "source_sha256": "4f82d2d4702d95b60ed4e752df221c56b0fb2de94af5889d016578e6db8afb7a",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 676,
+      "end_exclusive": 688,
+      "opcode": 96,
+      "operands": [
+        {
+          "offset": 678,
+          "tag": 176,
+          "payload_bytes": 4,
+          "capacity_word": 4,
+          "extent_bytes": 10,
+          "payload_sha256": "631418c078ba035376f6e56730c784f536131bb5bfa8c6f41c36d064c7ba6034"
+        }
+      ],
+      "source_sha256": "4cbbfcf55019f4c8033a3885faf7d7760c4c750007fdd4b068a27a299a3de8d3",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 688,
+      "end_exclusive": 694,
+      "opcode": 81,
+      "operands": [
+        {
+          "offset": 690,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 258
+        }
+      ],
+      "source_sha256": "b1956099f6610a85e2d0bcd45749dd52c8df18f1fa7356789688c57c50cfd043",
+      "effects_fully_modeled": false,
+      "target_offset": 258
+    },
+    {
+      "offset": 694,
+      "end_exclusive": 696,
+      "opcode": 82,
+      "operands": [],
+      "source_sha256": "4f82d2d4702d95b60ed4e752df221c56b0fb2de94af5889d016578e6db8afb7a",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 794,
+      "end_exclusive": 804,
+      "opcode": 32,
+      "operands": [
+        {
+          "offset": 796,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9408
+        },
+        {
+          "offset": 800,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 182
+        }
+      ],
+      "source_sha256": "b35e75ba26527db7670dea4720e1d28da5c3418ca17e5a4ce2d303917ec64f99",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 804,
+      "end_exclusive": 818,
+      "opcode": 36,
+      "operands": [
+        {
+          "offset": 806,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 4
+        },
+        {
+          "offset": 810,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 182
+        },
+        {
+          "offset": 814,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 3
+        }
+      ],
+      "source_sha256": "bca50c0530ef83ba633512be7f4991a25fd455c26dae62e7e657b7c776deb47b",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 818,
+      "end_exclusive": 824,
+      "opcode": 81,
+      "operands": [
+        {
+          "offset": 820,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 68
+        }
+      ],
+      "source_sha256": "739321a734fd5efcae91f1442317a054c597955d933fd3ee59e97e286ec35a96",
+      "effects_fully_modeled": false,
+      "target_offset": 68
+    },
+    {
+      "offset": 824,
+      "end_exclusive": 830,
+      "opcode": 81,
+      "operands": [
+        {
+          "offset": 826,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 258
+        }
+      ],
+      "source_sha256": "b1956099f6610a85e2d0bcd45749dd52c8df18f1fa7356789688c57c50cfd043",
+      "effects_fully_modeled": false,
+      "target_offset": 258
+    },
+    {
+      "offset": 830,
+      "end_exclusive": 840,
+      "opcode": 32,
+      "operands": [
+        {
+          "offset": 832,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9398
+        },
+        {
+          "offset": 836,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 182
+        }
+      ],
+      "source_sha256": "3bf1ec94e1d442a96d326e16dd4c0ad1be701246a480448a0ffa0859e9f3c0f2",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 840,
+      "end_exclusive": 854,
+      "opcode": 36,
+      "operands": [
+        {
+          "offset": 842,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 20
+        },
+        {
+          "offset": 846,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 182
+        },
+        {
+          "offset": 850,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 3
+        }
+      ],
+      "source_sha256": "9e8c572932c3aa7c40f1b80714656030db26406a4405b164cebc164b3999ac47",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 854,
+      "end_exclusive": 860,
+      "opcode": 81,
+      "operands": [
+        {
+          "offset": 856,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 68
+        }
+      ],
+      "source_sha256": "739321a734fd5efcae91f1442317a054c597955d933fd3ee59e97e286ec35a96",
+      "effects_fully_modeled": false,
+      "target_offset": 68
+    },
+    {
+      "offset": 860,
+      "end_exclusive": 866,
+      "opcode": 81,
+      "operands": [
+        {
+          "offset": 862,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 258
+        }
+      ],
+      "source_sha256": "b1956099f6610a85e2d0bcd45749dd52c8df18f1fa7356789688c57c50cfd043",
+      "effects_fully_modeled": false,
+      "target_offset": 258
+    },
+    {
+      "offset": 866,
+      "end_exclusive": 868,
+      "opcode": 82,
+      "operands": [],
+      "source_sha256": "4f82d2d4702d95b60ed4e752df221c56b0fb2de94af5889d016578e6db8afb7a",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 868,
+      "end_exclusive": 878,
+      "opcode": 32,
+      "operands": [
+        {
+          "offset": 870,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 874,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 8518
+        }
+      ],
+      "source_sha256": "7daa6a69d57bb62c168d2c5e0c690ed540e62cf93664289967e754a69c6b9636",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 878,
+      "end_exclusive": 896,
+      "opcode": 153,
+      "operands": [
+        {
+          "offset": 880,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 884,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 888,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 892,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        }
+      ],
+      "source_sha256": "8dd48edc57a6d8f64edbc78f3c3b76b2f74f0352f919303b34b471cabc495e72",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 896,
+      "end_exclusive": 906,
+      "opcode": 32,
+      "operands": [
+        {
+          "offset": 898,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 64
+        },
+        {
+          "offset": 902,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 182
+        }
+      ],
+      "source_sha256": "d4133867a402192a862882edae44d3c681a46e2ea2d3f2b8f1d50da98417a811",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 906,
+      "end_exclusive": 920,
+      "opcode": 36,
+      "operands": [
+        {
+          "offset": 908,
+          "tag": 178,
+          "extent_bytes": 4,
+          "value": 15445
+        },
+        {
+          "offset": 912,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 182
+        },
+        {
+          "offset": 916,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 3
+        }
+      ],
+      "source_sha256": "7731c6948639921967e7dfce031d7678bfbfc72599ece9482d184adf7a89bdcb",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 920,
+      "end_exclusive": 930,
+      "opcode": 32,
+      "operands": [
+        {
+          "offset": 922,
+          "tag": 178,
+          "extent_bytes": 4,
+          "value": 1000
+        },
+        {
+          "offset": 926,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9342
+        }
+      ],
+      "source_sha256": "612a1e6ab4d10a72cecfc6f8f6cc402760a164ee0dcb9dcc014406709889d508",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 930,
+      "end_exclusive": 936,
+      "opcode": 81,
+      "operands": [
+        {
+          "offset": 932,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 392
+        }
+      ],
+      "source_sha256": "6b1d8b95191ad82920e45914019de18b0a8905ede4d29d7ef25044efa69fb8ef",
+      "effects_fully_modeled": false,
+      "target_offset": 392
+    },
+    {
+      "offset": 936,
+      "end_exclusive": 942,
+      "opcode": 81,
+      "operands": [
+        {
+          "offset": 938,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 676
+        }
+      ],
+      "source_sha256": "99c97c53dad707d7b77fa56225546830955ba6961ad33c8944e7072a027553a5",
+      "effects_fully_modeled": false,
+      "target_offset": 676
+    },
+    {
+      "offset": 942,
+      "end_exclusive": 948,
+      "opcode": 128,
+      "operands": [
+        {
+          "offset": 944,
+          "tag": 178,
+          "extent_bytes": 4,
+          "value": 1000
+        }
+      ],
+      "source_sha256": "55c3aa4a5b27ce19ec01f5e9eed4065c355b9c60eeae879384c57317fc8644cf",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 948,
+      "end_exclusive": 954,
+      "opcode": 131,
+      "operands": [
+        {
+          "offset": 950,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 129
+        }
+      ],
+      "source_sha256": "6d8dea8391f56c00ffc7b52559132968ff55936147e955cf69d95c5ec2555c6e",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 954,
+      "end_exclusive": 956,
+      "opcode": 82,
+      "operands": [],
+      "source_sha256": "4f82d2d4702d95b60ed4e752df221c56b0fb2de94af5889d016578e6db8afb7a",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10050,
+      "end_exclusive": 10060,
+      "opcode": 32,
+      "operands": [
+        {
+          "offset": 10052,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10056,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 65287
+        }
+      ],
+      "source_sha256": "a23fb00ca718f15463d509eb614e540f8d632d8c2e0faed0c7563b67f55a088f",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10060,
+      "end_exclusive": 10066,
+      "opcode": 80,
+      "operands": [
+        {
+          "offset": 10062,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 10184
+        }
+      ],
+      "source_sha256": "b24e605a17fdbdd9dce70876bdfdbc1a8622ac8edf9f47a89b43f3b4ae608024",
+      "effects_fully_modeled": false,
+      "target_offset": 10184
+    },
+    {
+      "offset": 10066,
+      "end_exclusive": 10076,
+      "opcode": 48,
+      "operands": [
+        {
+          "offset": 10068,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 1
+        },
+        {
+          "offset": 10072,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 8522
+        }
+      ],
+      "source_sha256": "295b5cb267542257a15aa81ba638be466fa35dc3176d116c5ba61c1e4f5621c2",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10076,
+      "end_exclusive": 10082,
+      "opcode": 67,
+      "operands": [
+        {
+          "offset": 10078,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 10276
+        }
+      ],
+      "source_sha256": "84316a8d1e7bf7c1cd6bfeb8bb91716c65e69d0c2902ef2025f4660c45c372c7",
+      "effects_fully_modeled": false,
+      "target_offset": 10276,
+      "branch_condition": {
+        "flags_mask": 4,
+        "branch_if_nonzero": true
+      }
+    },
+    {
+      "offset": 10082,
+      "end_exclusive": 10092,
+      "opcode": 32,
+      "operands": [
+        {
+          "offset": 10084,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 1
+        },
+        {
+          "offset": 10088,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 8522
+        }
+      ],
+      "source_sha256": "67c5a5ec6b8b9d10af7333f5d6866668af0be5e2df59d0896ad0d0bc111d20f5",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10092,
+      "end_exclusive": 10102,
+      "opcode": 48,
+      "operands": [
+        {
+          "offset": 10094,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10098,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 65285
+        }
+      ],
+      "source_sha256": "bcc95aa85d7e1085b8f4b691cc41ed6ab9b060f6e6cd52a33741a3d32af941a4",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10102,
+      "end_exclusive": 10108,
+      "opcode": 67,
+      "operands": [
+        {
+          "offset": 10104,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 10128
+        }
+      ],
+      "source_sha256": "fcda6967ac428fbf6620b942467084643c3577b44e6528269497544415da8149",
+      "effects_fully_modeled": false,
+      "target_offset": 10128,
+      "branch_condition": {
+        "flags_mask": 4,
+        "branch_if_nonzero": true
+      }
+    },
+    {
+      "offset": 10108,
+      "end_exclusive": 10118,
+      "opcode": 32,
+      "operands": [
+        {
+          "offset": 10110,
+          "tag": 178,
+          "extent_bytes": 4,
+          "value": 768
+        },
+        {
+          "offset": 10114,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 65287
+        }
+      ],
+      "source_sha256": "07a5e54897f1afb68883c4e7ba2a8619d181919f003aec489fd2fcb937fd0003",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10118,
+      "end_exclusive": 10128,
+      "opcode": 17,
+      "operands": [
+        {
+          "offset": 10120,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 65285
+        },
+        {
+          "offset": 10124,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 65287
+        }
+      ],
+      "source_sha256": "55b95ac28c44fe7bac1c3bf040bb0cf413e50060c2eff51883ff2c83c63dc142",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10128,
+      "end_exclusive": 10134,
+      "opcode": 132,
+      "operands": [
+        {
+          "offset": 10130,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 65287
+        }
+      ],
+      "source_sha256": "7b0e92f9e6a4981bf2bcec0f1adc1a72513606264a800af0644d6ead1dd2fd7e",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10134,
+      "end_exclusive": 10184,
+      "opcode": 9,
+      "operands": [
+        {
+          "offset": 10136,
+          "tag": 176,
+          "payload_bytes": 6,
+          "capacity_word": 6,
+          "extent_bytes": 12,
+          "payload_sha256": "907d4883cd4a82ba4409064cd83a1659a672e4c392eb0e34bbbc56077d3c0dc6"
+        },
+        {
+          "offset": 10148,
+          "tag": 176,
+          "payload_bytes": 7,
+          "capacity_word": 7,
+          "extent_bytes": 14,
+          "payload_sha256": "1a1a1ac739ef999fa2304bbd20b53c74971e413aa5ab4fc4081a4b4eafb1f084"
+        },
+        {
+          "offset": 10162,
+          "tag": 176,
+          "payload_bytes": 15,
+          "capacity_word": 15,
+          "extent_bytes": 22,
+          "payload_sha256": "08ce10da3d69bc5e3c9ddc45bb2d4d8ada09b49fc4757ade5decb7e8ee0e83ff"
+        }
+      ],
+      "source_sha256": "8b8aa040ec7903a5eb338ebc631d0345d8313da4a3e7915bddbee9b884d24f77",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10184,
+      "end_exclusive": 10194,
+      "opcode": 32,
+      "operands": [
+        {
+          "offset": 10186,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 65287
+        },
+        {
+          "offset": 10190,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 112
+        }
+      ],
+      "source_sha256": "f516a10cd07ecdda7fd6675b0cff8cdaa677cb7921dc8a2b000cd07cfc17990c",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10194,
+      "end_exclusive": 10204,
+      "opcode": 32,
+      "operands": [
+        {
+          "offset": 10196,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9352
+        },
+        {
+          "offset": 10200,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 9342
+        }
+      ],
+      "source_sha256": "6a60c0d0ee118525c0ddb7742263f3a85b09782b5a6e57c53b72b15347900df7",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10204,
+      "end_exclusive": 10222,
+      "opcode": 153,
+      "operands": [
+        {
+          "offset": 10206,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10210,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10214,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10218,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        }
+      ],
+      "source_sha256": "8dd48edc57a6d8f64edbc78f3c3b76b2f74f0352f919303b34b471cabc495e72",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10222,
+      "end_exclusive": 10240,
+      "opcode": 147,
+      "operands": [
+        {
+          "offset": 10224,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10228,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 1
+        },
+        {
+          "offset": 10232,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10236,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        }
+      ],
+      "source_sha256": "4254be056358e84681a94f088ee50450a8eaa177934c7490500dedca4abbe7aa",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10240,
+      "end_exclusive": 10258,
+      "opcode": 147,
+      "operands": [
+        {
+          "offset": 10242,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 1
+        },
+        {
+          "offset": 10246,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 1
+        },
+        {
+          "offset": 10250,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10254,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        }
+      ],
+      "source_sha256": "31b9a33dd026cad93a54da5a80be23034606e196fb0aa8362bedd0fa5e72b38b",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10258,
+      "end_exclusive": 10260,
+      "opcode": 100,
+      "operands": [],
+      "source_sha256": "4658d6abbbaf7748c172ed5a3e003cdb8997648f88724834e41f75e54520e142",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10260,
+      "end_exclusive": 10270,
+      "opcode": 32,
+      "operands": [
+        {
+          "offset": 10262,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10266,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 8518
+        }
+      ],
+      "source_sha256": "7daa6a69d57bb62c168d2c5e0c690ed540e62cf93664289967e754a69c6b9636",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10270,
+      "end_exclusive": 10276,
+      "opcode": 81,
+      "operands": [
+        {
+          "offset": 10272,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 10780
+        }
+      ],
+      "source_sha256": "979d91fe288ac3f480bf74832f748e26639c4e5017f9eb189d01b761703c1683",
+      "effects_fully_modeled": false,
+      "target_offset": 10780
+    },
+    {
+      "offset": 10276,
+      "end_exclusive": 10282,
+      "opcode": 129,
+      "operands": [
+        {
+          "offset": 10278,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 112
+        }
+      ],
+      "source_sha256": "f9864d5992988c89191caaab694aba95fed7dcb898d9994d3d145998a8ae2e6b",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10492,
+      "end_exclusive": 10510,
+      "opcode": 153,
+      "operands": [
+        {
+          "offset": 10494,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10498,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10502,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10506,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        }
+      ],
+      "source_sha256": "8dd48edc57a6d8f64edbc78f3c3b76b2f74f0352f919303b34b471cabc495e72",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10510,
+      "end_exclusive": 10520,
+      "opcode": 32,
+      "operands": [
+        {
+          "offset": 10512,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10516,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 8526
+        }
+      ],
+      "source_sha256": "176cf41546d1348ff3092daae2f6c20846a509ca580072a0fd6f17a1d8b75ba2",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10520,
+      "end_exclusive": 10530,
+      "opcode": 32,
+      "operands": [
+        {
+          "offset": 10522,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 8538
+        },
+        {
+          "offset": 10526,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 8586
+        }
+      ],
+      "source_sha256": "548b77b346858e74f939fa4d2b896a0ccc756753914906796a2b2aafc049eaad",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10530,
+      "end_exclusive": 10536,
+      "opcode": 81,
+      "operands": [
+        {
+          "offset": 10532,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 6762
+        }
+      ],
+      "source_sha256": "af7f01e5750e93be68b0f412925b5c2b2b09280550195388809d35469131a992",
+      "effects_fully_modeled": false,
+      "target_offset": 6762
+    },
+    {
+      "offset": 10536,
+      "end_exclusive": 10542,
+      "opcode": 75,
+      "operands": [
+        {
+          "offset": 10538,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 10066
+        }
+      ],
+      "source_sha256": "351200fd28dc273c07e9f29e769b348e8035c8c445765e6efa5016a33f0eabcc",
+      "effects_fully_modeled": false,
+      "target_offset": 10066,
+      "branch_condition": {
+        "flags_mask": 128,
+        "branch_if_nonzero": true
+      }
+    },
+    {
+      "offset": 10542,
+      "end_exclusive": 10548,
+      "opcode": 81,
+      "operands": [
+        {
+          "offset": 10544,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 7418
+        }
+      ],
+      "source_sha256": "1de27f8822987f70c5df4c292d0f65dd08c039eb18b172002ad79a9eea1f1605",
+      "effects_fully_modeled": false,
+      "target_offset": 7418
+    },
+    {
+      "offset": 10548,
+      "end_exclusive": 10566,
+      "opcode": 115,
+      "operands": [
+        {
+          "offset": 10550,
+          "tag": 180,
+          "extent_bytes": 6,
+          "value": 524286
+        },
+        {
+          "offset": 10556,
+          "tag": 178,
+          "extent_bytes": 4,
+          "value": 19196
+        },
+        {
+          "offset": 10560,
+          "tag": 180,
+          "extent_bytes": 6,
+          "value": 524288
+        }
+      ],
+      "source_sha256": "6bb08002862d8cb9ddbd9f9ab35207304e0106ccb366a10f4e69926e1ddc2f38",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10566,
+      "end_exclusive": 10572,
+      "opcode": 75,
+      "operands": [
+        {
+          "offset": 10568,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 10066
+        }
+      ],
+      "source_sha256": "351200fd28dc273c07e9f29e769b348e8035c8c445765e6efa5016a33f0eabcc",
+      "effects_fully_modeled": false,
+      "target_offset": 10066,
+      "branch_condition": {
+        "flags_mask": 128,
+        "branch_if_nonzero": true
+      }
+    },
+    {
+      "offset": 10572,
+      "end_exclusive": 10578,
+      "opcode": 81,
+      "operands": [
+        {
+          "offset": 10574,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 7480
+        }
+      ],
+      "source_sha256": "5d94b2ccef26da1a4f744721d8b5c1d5d1e979b90b9da39527715bba85d45d8d",
+      "effects_fully_modeled": false,
+      "target_offset": 7480
+    },
+    {
+      "offset": 10578,
+      "end_exclusive": 10584,
+      "opcode": 118,
+      "operands": [
+        {
+          "offset": 10580,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 138
+        }
+      ],
+      "source_sha256": "f313a0e3adc5533afdd1f6eb724229a29dfe5772a88899d48fe754fe51ff3b70",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10584,
+      "end_exclusive": 10590,
+      "opcode": 75,
+      "operands": [
+        {
+          "offset": 10586,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 10066
+        }
+      ],
+      "source_sha256": "351200fd28dc273c07e9f29e769b348e8035c8c445765e6efa5016a33f0eabcc",
+      "effects_fully_modeled": false,
+      "target_offset": 10066,
+      "branch_condition": {
+        "flags_mask": 128,
+        "branch_if_nonzero": true
+      }
+    },
+    {
+      "offset": 10590,
+      "end_exclusive": 10596,
+      "opcode": 80,
+      "operands": [
+        {
+          "offset": 10592,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 10050
+        }
+      ],
+      "source_sha256": "81543cc3ec87026a5f02adff35852130257e6d3f774cc6c9785840199b65a954",
+      "effects_fully_modeled": false,
+      "target_offset": 10050
+    },
+    {
+      "offset": 10780,
+      "end_exclusive": 10786,
+      "opcode": 81,
+      "operands": [
+        {
+          "offset": 10782,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 868
+        }
+      ],
+      "source_sha256": "6b1682ddcc78d061b99ffca3d2f2fd2fab4609b9cdaf8173e63035b3e1693fa4",
+      "effects_fully_modeled": false,
+      "target_offset": 868
+    },
+    {
+      "offset": 10786,
+      "end_exclusive": 10792,
+      "opcode": 81,
+      "operands": [
+        {
+          "offset": 10788,
+          "tag": 161,
+          "extent_bytes": 4,
+          "value": 794
+        }
+      ],
+      "source_sha256": "24e9e12f17510d3475226c9e1434895aef16004e1cec219861af40f03902c9ba",
+      "effects_fully_modeled": false,
+      "target_offset": 794
+    },
+    {
+      "offset": 10792,
+      "end_exclusive": 10798,
+      "opcode": 89,
+      "operands": [
+        {
+          "offset": 10794,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 15
+        }
+      ],
+      "source_sha256": "781bf6cfa45576da08a04bf2ade56fc5beb558c4b24c5158f2897a38f3e55911",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10798,
+      "end_exclusive": 10800,
+      "opcode": 82,
+      "operands": [],
+      "source_sha256": "4f82d2d4702d95b60ed4e752df221c56b0fb2de94af5889d016578e6db8afb7a",
+      "effects_fully_modeled": false
+    }
+  ],
+  "initial_code_descriptors": [
+    {
+      "offset": 64,
+      "tag": 176,
+      "payload_bytes": 3,
+      "capacity_word": 3,
+      "extent_bytes": 10,
+      "payload_sha256": "04ebff55678013c5c567192f392d6ba825eab10a2cb26486c09df8f4f14e846e",
+      "raw_hex": "b000030003006c10f0ff",
+      "runtime_value_proven": false,
+      "payload_hex": "6c10f0"
+    },
+    {
+      "offset": 112,
+      "tag": 178,
+      "extent_bytes": 4,
+      "value": 0,
+      "raw_hex": "b2000000",
+      "runtime_value_proven": false
+    },
+    {
+      "offset": 8518,
+      "tag": 177,
+      "extent_bytes": 4,
+      "value": 0,
+      "raw_hex": "b1000000",
+      "runtime_value_proven": false
+    },
+    {
+      "offset": 8522,
+      "tag": 177,
+      "extent_bytes": 4,
+      "value": 0,
+      "raw_hex": "b1000000",
+      "runtime_value_proven": false
+    },
+    {
+      "offset": 9334,
+      "tag": 177,
+      "extent_bytes": 4,
+      "value": 1,
+      "raw_hex": "b1000100",
+      "runtime_value_proven": false
+    },
+    {
+      "offset": 9338,
+      "tag": 177,
+      "extent_bytes": 4,
+      "value": 1,
+      "raw_hex": "b1000100",
+      "runtime_value_proven": false
+    },
+    {
+      "offset": 9342,
+      "tag": 180,
+      "extent_bytes": 6,
+      "value": 0,
+      "raw_hex": "b40000000000",
+      "runtime_value_proven": false
+    },
+    {
+      "offset": 9348,
+      "tag": 178,
+      "extent_bytes": 4,
+      "value": 250,
+      "raw_hex": "b200fa00",
+      "runtime_value_proven": false
+    },
+    {
+      "offset": 9352,
+      "tag": 180,
+      "extent_bytes": 6,
+      "value": 250,
+      "raw_hex": "b400fa000000",
+      "runtime_value_proven": false
+    },
+    {
+      "offset": 9390,
+      "tag": 177,
+      "extent_bytes": 4,
+      "value": 20,
+      "raw_hex": "b1001400",
+      "runtime_value_proven": false
+    },
+    {
+      "offset": 9398,
+      "tag": 176,
+      "payload_bytes": 3,
+      "capacity_word": 3,
+      "extent_bytes": 10,
+      "payload_sha256": "9cedc39c98bce9920dbb1a84398aee569326d3182a08f742c28b7689b4eb59f8",
+      "raw_hex": "b000030003006cfef0ff",
+      "runtime_value_proven": false,
+      "payload_hex": "6cfef0"
+    },
+    {
+      "offset": 9408,
+      "tag": 176,
+      "payload_bytes": 3,
+      "capacity_word": 3,
+      "extent_bytes": 10,
+      "payload_sha256": "9749faf5afad54877db57af86d825afd74c641e6f784761dd0314c174508188f",
+      "raw_hex": "b00003000300686af0ff",
+      "runtime_value_proven": false,
+      "payload_hex": "686af0"
+    }
+  ],
+  "native_windows": [
+    {
+      "role": "opcode81_raw_status_and_stop_marker",
+      "source": {
+        "source": "vm",
+        "va": "0x40387a",
+        "file_offset": 11898,
+        "bytes": 22,
+        "sha256": "b336f98307cdaade7306388d81487ef102363813c7f622d82066c9a262bd3c00"
+      },
+      "lookahead": {
+        "source": "vm",
+        "va": "0x40387a",
+        "file_offset": 11898,
+        "bytes": 38,
+        "sha256": "86e1872c4168485676d0cea72f4a2bf761aeebdc93996fbabf0fb2390ffa807c"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x40387a,0x40389f",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll"
+      ],
+      "instructions": [
+        "0040387A: mov         byte ptr ds:[004274C4h],1",
+        "00403881: mov         edx,dword ptr ds:[0042A618h]",
+        "00403887: mov         ax,word ptr [edx+2]",
+        "0040388B: jmp         004044A1"
+      ]
+    },
+    {
+      "role": "ordinary_step_status_510",
+      "source": {
+        "source": "vm",
+        "va": "0x40449d",
+        "file_offset": 15005,
+        "bytes": 11,
+        "sha256": "d0ebf9d5d946de050eb676e4669b4667cb25fc98d4c4eb4f0e20beaa6bc416ff"
+      },
+      "lookahead": {
+        "source": "vm",
+        "va": "0x40449d",
+        "file_offset": 15005,
+        "bytes": 27,
+        "sha256": "39e8a73895d908b924f960510edfcc593c4124f2ece056a10529e8d1ea193e50"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x40449d,0x4044b7",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll"
+      ],
+      "instructions": [
+        "0040449D: mov         ax,510h",
+        "004044A1: add         esp,10h",
+        "004044A4: pop         esi",
+        "004044A5: pop         ebx",
+        "004044A6: ret",
+        "004044A7: nop"
+      ]
+    },
+    {
+      "role": "opcode59_countdown_store",
+      "source": {
+        "source": "vm",
+        "va": "0x403c3c",
+        "file_offset": 12860,
+        "bytes": 40,
+        "sha256": "5fd608549b49d923c7a6100905837f3b756ae3df62ec60f444e30443cf273e94"
+      },
+      "lookahead": {
+        "source": "vm",
+        "va": "0x403c3c",
+        "file_offset": 12860,
+        "bytes": 56,
+        "sha256": "5b097139789812b13733b6e53f30222b85c1aa01143a31354d8ca2d1cbe461e1"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x403c3c,0x403c73",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll"
+      ],
+      "instructions": [
+        "00403C3C: mov         eax,dword ptr ds:[0042A618h]",
+        "00403C41: push        eax",
+        "00403C42: call        00404AF8",
+        "00403C47: mov         byte ptr ds:[004274C6h],al",
+        "00403C4C: push        0",
+        "00403C4E: call        00415D8C",
+        "00403C53: pop         ecx",
+        "00403C54: sub         eax,dword ptr ds:[004275B8h]",
+        "00403C5A: mov         dword ptr ds:[004275B8h],eax",
+        "00403C5F: jmp         0040449D"
+      ]
+    },
+    {
+      "role": "countdown_export",
+      "source": {
+        "source": "vm",
+        "va": "0x40b93c",
+        "file_offset": 44860,
+        "bytes": 8,
+        "sha256": "158625a1e5720414bdcaf09e9577f83f1985e6bfa8e1a2449ad8ca315d452f7a"
+      },
+      "lookahead": {
+        "source": "vm",
+        "va": "0x40b93c",
+        "file_offset": 44860,
+        "bytes": 24,
+        "sha256": "9242334878fa130f2e82b8050f99cf8332065d46d83f31738318bf1bf22dec4b"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x40b93c,0x40b953",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll"
+      ],
+      "instructions": [
+        "0040B93C: xor         eax,eax",
+        "0040B93E: mov         al,byte ptr ds:[004274C6h]",
+        "0040B943: ret"
+      ]
+    },
+    {
+      "role": "vm_step_export",
+      "source": {
+        "source": "vm",
+        "va": "0x40b4d4",
+        "file_offset": 43732,
+        "bytes": 91,
+        "sha256": "2858d78805bfdc76af08e7a5a3b546f025035d58571342ff2beca28cae19980f"
+      },
+      "lookahead": {
+        "source": "vm",
+        "va": "0x40b4d4",
+        "file_offset": 43732,
+        "bytes": 107,
+        "sha256": "0ce38efe1bdaa2ae7bd4d4e9e5208bfe1449758df4cded30ec876d5d1cc7c4b8"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x40b4d4,0x40b53e",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll"
+      ],
+      "instructions": [
+        "0040B4D4: push        ebp",
+        "0040B4D5: mov         ebp,esp",
+        "0040B4D7: push        ebx",
+        "0040B4D8: mov         ebx,dword ptr [ebp+14h]",
+        "0040B4DB: mov         ax,word ptr [ebx]",
+        "0040B4DE: mov         word ptr ds:[00427650h],ax",
+        "0040B4E4: call        00403690",
+        "0040B4E9: mov         ecx,dword ptr [ebp+8]",
+        "0040B4EC: mov         edx,dword ptr ds:[00427534h]",
+        "0040B4F2: sub         edx,435618h",
+        "0040B4F8: mov         word ptr [ecx],dx",
+        "0040B4FB: mov         edx,dword ptr [ebp+0Ch]",
+        "0040B4FE: mov         cl,byte ptr ds:[0042757Ah]",
+        "0040B504: mov         byte ptr [edx],cl",
+        "0040B506: mov         cx,word ptr ds:[0042757Ch]",
+        "0040B50D: mov         edx,dword ptr [ebp+10h]",
+        "0040B510: mov         word ptr [edx],cx",
+        "0040B513: mov         dx,word ptr ds:[00427650h]",
+        "0040B51A: mov         word ptr [ebx],dx",
+        "0040B51D: mov         dx,word ptr ds:[00427578h]",
+        "0040B524: mov         ecx,dword ptr [ebp+18h]",
+        "0040B527: mov         word ptr [ecx],dx",
+        "0040B52A: pop         ebx",
+        "0040B52B: pop         ebp",
+        "0040B52C: ret         14h"
+      ]
+    },
+    {
+      "role": "vm_done_export",
+      "source": {
+        "source": "vm",
+        "va": "0x40b2a4",
+        "file_offset": 43172,
+        "bytes": 8,
+        "sha256": "c1c9d60cc893edfe367dbccd8c624d1f7dbcf80fc0506cc0af6ecf2ef7b8fadf"
+      },
+      "lookahead": {
+        "source": "vm",
+        "va": "0x40b2a4",
+        "file_offset": 43172,
+        "bytes": 24,
+        "sha256": "bbfd284b4265f69355949376377af2d26df7063df8411889eed70c8ac7a8ada2"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x40b2a4,0x40b2bb",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll"
+      ],
+      "instructions": [
+        "0040B2A4: call        00402FF0",
+        "0040B2A9: ret",
+        "0040B2AA: nop",
+        "0040B2AB: nop"
+      ]
+    },
+    {
+      "role": "vm_done_body",
+      "source": {
+        "source": "vm",
+        "va": "0x402ff0",
+        "file_offset": 9712,
+        "bytes": 27,
+        "sha256": "467c41958985f83538bb9cfed7ad3a43031445f41467d2bcd373382c74d4e118"
+      },
+      "lookahead": {
+        "source": "vm",
+        "va": "0x402ff0",
+        "file_offset": 9712,
+        "bytes": 43,
+        "sha256": "7538f3ff750aaf63cb309ee19e4574627a4adcdac5018c9b8d075dcb829f2f18"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x402ff0,0x40301a",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll"
+      ],
+      "instructions": [
+        "00402FF0: mov         eax,dword ptr ds:[0042A3D6h]",
+        "00402FF5: mov         dword ptr ds:[00427598h],eax",
+        "00402FFA: xor         eax,eax",
+        "00402FFC: mov         dx,word ptr ds:[0042A3D2h]",
+        "00403003: mov         word ptr ds:[00427594h],dx",
+        "0040300A: ret"
+      ]
+    },
+    {
+      "role": "vm_closeall_export",
+      "source": {
+        "source": "vm",
+        "va": "0x40b4cc",
+        "file_offset": 43724,
+        "bytes": 8,
+        "sha256": "64ae1085bf7ac378246ff0e0fa0060445e1a53e85c0b712c182099840146eb26"
+      },
+      "lookahead": {
+        "source": "vm",
+        "va": "0x40b4cc",
+        "file_offset": 43724,
+        "bytes": 24,
+        "sha256": "06a08cb5539dff0463b5198876e6c70ed9a74bb18f95272c842ecba30443d1df"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x40b4cc,0x40b4e3",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll"
+      ],
+      "instructions": [
+        "0040B4CC: call        0040360C",
+        "0040B4D1: ret",
+        "0040B4D2: nop",
+        "0040B4D3: nop"
+      ]
+    },
+    {
+      "role": "vm_closeall_body",
+      "source": {
+        "source": "vm",
+        "va": "0x40360c",
+        "file_offset": 11276,
+        "bytes": 119,
+        "sha256": "b95f5fa395c99db3d2acda737ba211f9e3e154b8c65b5bee0fcdca6231c2262d"
+      },
+      "lookahead": {
+        "source": "vm",
+        "va": "0x40360c",
+        "file_offset": 11276,
+        "bytes": 135,
+        "sha256": "2875547238a5006c8c058c26e14ec5f0042596a922de4f0186947739daa0c187"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x40360c,0x403692",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll"
+      ],
+      "instructions": [
+        "0040360C: mov         eax,dword ptr ds:[0042A5A8h]",
+        "00403611: test        eax,eax",
+        "00403613: je          00403624",
+        "00403615: push        eax",
+        "00403616: call        0040F060",
+        "0040361B: pop         ecx",
+        "0040361C: xor         edx,edx",
+        "0040361E: mov         dword ptr ds:[0042A5A8h],edx",
+        "00403624: mov         eax,dword ptr ds:[0042A5ACh]",
+        "00403629: test        eax,eax",
+        "0040362B: je          0040363C",
+        "0040362D: push        eax",
+        "0040362E: call        0040F060",
+        "00403633: pop         ecx",
+        "00403634: xor         edx,edx",
+        "00403636: mov         dword ptr ds:[0042A5ACh],edx",
+        "0040363C: mov         eax,dword ptr ds:[0042A5B0h]",
+        "00403641: test        eax,eax",
+        "00403643: je          00403654",
+        "00403645: push        eax",
+        "00403646: call        0040F060",
+        "0040364B: pop         ecx",
+        "0040364C: xor         edx,edx",
+        "0040364E: mov         dword ptr ds:[0042A5B0h],edx",
+        "00403654: mov         eax,dword ptr ds:[0042A5B4h]",
+        "00403659: test        eax,eax",
+        "0040365B: je          0040366C",
+        "0040365D: push        eax",
+        "0040365E: call        0040F060",
+        "00403663: pop         ecx",
+        "00403664: xor         edx,edx",
+        "00403666: mov         dword ptr ds:[0042A5B4h],edx",
+        "0040366C: cmp         dword ptr ds:[00420468h],0",
+        "00403673: je          00403682",
+        "00403675: call        00401424",
+        "0040367A: xor         ecx,ecx",
+        "0040367C: mov         dword ptr ds:[00420468h],ecx",
+        "00403682: ret"
+      ]
+    },
+    {
+      "role": "error_status_and_flag80",
+      "source": {
+        "source": "vm",
+        "va": "0x4034d4",
+        "file_offset": 10964,
+        "bytes": 35,
+        "sha256": "aff0b3cf4dd736726b46262599f741a7a664dc6de1f5991a9c0e5dd0f3072e75"
+      },
+      "lookahead": {
+        "source": "vm",
+        "va": "0x4034d4",
+        "file_offset": 10964,
+        "bytes": 51,
+        "sha256": "67305e1e937cfb902aa9f0edcbd56d43f29eab049ffe4937435d26d1605727e5"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x4034d4,0x403506",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll"
+      ],
+      "instructions": [
+        "004034D4: push        ebp",
+        "004034D5: mov         ebp,esp",
+        "004034D7: mov         word ptr ds:[00427644h],0",
+        "004034E0: mov         ax,word ptr [ebp+8]",
+        "004034E4: mov         word ptr ds:[0042764Ch],ax",
+        "004034EA: or          word ptr ds:[0042757Ch],80h",
+        "004034F3: pop         ebp",
+        "004034F4: ret         4"
+      ]
+    },
+    {
+      "role": "vm_import_thunks",
+      "source": {
+        "source": "scan",
+        "va": "0xbb0018",
+        "file_offset": 8057880,
+        "bytes": 56,
+        "sha256": "57fdb97c90f3e5640be0e70a3df4022f2d959d84e379f3f36e80290ddfa01c68"
+      },
+      "lookahead": {
+        "source": "scan",
+        "va": "0xbb0018",
+        "file_offset": 8057880,
+        "bytes": 72,
+        "sha256": "764f0720ce883868995b9229175a2775424ab591f8a1499f040f8c1ad30c8aed"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0xbb0018,0xbb005f",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_ScanAndTune.exe"
+      ],
+      "instructions": [
+        "00BB0018: jmp         dword ptr ds:[0174A44Ch]",
+        "00BB001E: mov         eax,eax",
+        "00BB0020: jmp         dword ptr ds:[0174A450h]",
+        "00BB0026: mov         eax,eax",
+        "00BB0028: jmp         dword ptr ds:[0174A42Ch]",
+        "00BB002E: mov         eax,eax",
+        "00BB0030: jmp         dword ptr ds:[0174A428h]",
+        "00BB0036: mov         eax,eax",
+        "00BB0038: jmp         dword ptr ds:[0174A444h]",
+        "00BB003E: mov         eax,eax",
+        "00BB0040: jmp         dword ptr ds:[0174A424h]",
+        "00BB0046: mov         eax,eax",
+        "00BB0048: jmp         dword ptr ds:[0174A43Ch]",
+        "00BB004E: mov         eax,eax"
+      ]
+    },
+    {
+      "role": "host_step_loop_and_bailout_setup",
+      "source": {
+        "source": "scan",
+        "va": "0xed84a7",
+        "file_offset": 11368615,
+        "bytes": 110,
+        "sha256": "ca28c87e0142efb01e323bf1cbdd1136464e29eafd492ea0fc3cb6edaf9bb218"
+      },
+      "lookahead": {
+        "source": "scan",
+        "va": "0xed84a7",
+        "file_offset": 11368615,
+        "bytes": 126,
+        "sha256": "ef91b0bfd8257f95c965ec6d942e9637de01e7138df030055baa56286600ce79"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0xed84a7,0xed8524",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_ScanAndTune.exe"
+      ],
+      "instructions": [
+        "00ED84A7: mov         eax,dword ptr ds:[01552024h]",
+        "00ED84AC: mov         eax,dword ptr [eax]",
+        "00ED84AE: call        006959F4",
+        "00ED84B3: lea         eax,[ebp-22h]",
+        "00ED84B6: push        eax",
+        "00ED84B7: mov         eax,dword ptr [ebp-10h]",
+        "00ED84BA: add         eax,0A0h",
+        "00ED84BF: push        eax",
+        "00ED84C0: lea         eax,[ebp-20h]",
+        "00ED84C3: push        eax",
+        "00ED84C4: lea         eax,[ebp-23h]",
+        "00ED84C7: push        eax",
+        "00ED84C8: lea         eax,[ebp-1Eh]",
+        "00ED84CB: push        eax",
+        "00ED84CC: call        00BB0030",
+        "00ED84D1: movsx       ebx,ax",
+        "00ED84D4: cmp         ebx,510h",
+        "00ED84DA: jne         00ED84E8",
+        "00ED84DC: mov         eax,dword ptr [ebp-10h]",
+        "00ED84DF: cmp         byte ptr [eax+000000DDh],0",
+        "00ED84E6: je          00ED84A7",
+        "00ED84E8: mov         eax,dword ptr [ebp-10h]",
+        "00ED84EB: cmp         byte ptr [eax+000000DDh],0",
+        "00ED84F2: je          00ED8506",
+        "00ED84F4: mov         ebx,508h",
+        "00ED84F9: push        0",
+        "00ED84FB: push        0",
+        "00ED84FD: push        0",
+        "00ED84FF: push        0",
+        "00ED8501: call        00BB0A14",
+        "00ED8506: mov         edx,dword ptr [ebp-10h]",
+        "00ED8509: mov         eax,ebx",
+        "00ED850B: mov         dword ptr [edx+000000D8h],eax",
+        "00ED8511: test        eax,eax",
+        "00ED8513: jne         00ED8528"
+      ]
+    },
+    {
+      "role": "host_completion_and_cleanup_calls",
+      "source": {
+        "source": "scan",
+        "va": "0xed8583",
+        "file_offset": 11368835,
+        "bytes": 130,
+        "sha256": "4fa41534a3ab14b23f21fe342eae86ec1e5a504631e26b01981d278ca6675115"
+      },
+      "lookahead": {
+        "source": "scan",
+        "va": "0xed8583",
+        "file_offset": 11368835,
+        "bytes": 146,
+        "sha256": "cb6b547f987655c25a028517285ca8e900be5fca73004e52e8dfe7eba402ef8b"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0xed8583,0xed8614",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_ScanAndTune.exe"
+      ],
+      "instructions": [
+        "00ED8583: xor         eax,eax",
+        "00ED8585: pop         edx",
+        "00ED8586: pop         ecx",
+        "00ED8587: pop         ecx",
+        "00ED8588: mov         dword ptr fs:[eax],edx",
+        "00ED858B: push        0ED85E9h",
+        "00ED8590: mov         eax,dword ptr ds:[01551418h]",
+        "00ED8595: mov         eax,dword ptr [eax]",
+        "00ED8597: xor         edx,edx",
+        "00ED8599: call        00BBAD7C",
+        "00ED859E: call        00BB0018",
+        "00ED85A3: mov         eax,dword ptr [ebp-8]",
+        "00ED85A6: call        00BB0458",
+        "00ED85AB: mov         eax,dword ptr [ebp-10h]",
+        "00ED85AE: add         eax,100h",
+        "00ED85B3: push        eax",
+        "00ED85B4: mov         eax,dword ptr [ebp-10h]",
+        "00ED85B7: lea         ecx,[eax+000000FCh]",
+        "00ED85BD: mov         eax,dword ptr [ebp-10h]",
+        "00ED85C0: lea         edx,[eax+000000F8h]",
+        "00ED85C6: mov         eax,dword ptr [ebp-10h]",
+        "00ED85C9: add         eax,0FAh",
+        "00ED85CE: call        00BB0168",
+        "00ED85D3: mov         eax,dword ptr ds:[01551418h]",
+        "00ED85D8: mov         eax,dword ptr [eax]",
+        "00ED85DA: call        00BBB864",
+        "00ED85DF: pop         eax",
+        "00ED85E0: jmp         eax",
+        "00ED85E2: jmp         0040C880",
+        "00ED85E7: jmp         00ED8590",
+        "00ED85E9: xor         eax,eax",
+        "00ED85EB: pop         edx",
+        "00ED85EC: pop         ecx",
+        "00ED85ED: pop         ecx",
+        "00ED85EE: mov         dword ptr fs:[eax],edx",
+        "00ED85F1: push        0ED8605h",
+        "00ED85F6: call        00BB0028",
+        "00ED85FB: pop         eax",
+        "00ED85FC: jmp         eax",
+        "00ED85FE: jmp         0040C880",
+        "00ED8603: jmp         00ED85F6"
+      ]
+    },
+    {
+      "role": "get_countdown_to_ui_handler",
+      "source": {
+        "source": "scan",
+        "va": "0x119327c",
+        "file_offset": 14231164,
+        "bytes": 32,
+        "sha256": "9dfacf3d7641b1a495e33c2acec6e7ca3e5447e9423017661e948d80a80ffe19"
+      },
+      "lookahead": {
+        "source": "scan",
+        "va": "0x119327c",
+        "file_offset": 14231164,
+        "bytes": 48,
+        "sha256": "3f5e946db6b47c24b69730ee07daf07b03a45511b1c0a626b081491f2e637732"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x119327c,0x11932ab",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_ScanAndTune.exe"
+      ],
+      "instructions": [
+        "0119327C: mov         eax,dword ptr [ebp-2Ch]",
+        "0119327F: mov         eax,dword ptr [eax+00000888h]",
+        "01193285: xor         edx,edx",
+        "01193287: call        005E68CC",
+        "0119328C: call        00BB0048",
+        "01193291: movzx       edx,al",
+        "01193294: mov         eax,dword ptr [ebp-2Ch]",
+        "01193297: call        01194DFC"
+      ]
+    },
+    {
+      "role": "countdown_ui_handler",
+      "source": {
+        "source": "scan",
+        "va": "0x1194dfc",
+        "file_offset": 14238204,
+        "bytes": 163,
+        "sha256": "9950df23a3161f12667574fed0f1081e9259f5e30f4ed5a1bf18708502fb072f"
+      },
+      "lookahead": {
+        "source": "scan",
+        "va": "0x1194dfc",
+        "file_offset": 14238204,
+        "bytes": 179,
+        "sha256": "0463ab39302cd24cb4cff40e25564f41a676d071a774227d84fc8eb0a5a9be63"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x1194dfc,0x1194eae",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_ScanAndTune.exe"
+      ],
+      "instructions": [
+        "01194DFC: push        ebp",
+        "01194DFD: mov         ebp,esp",
+        "01194DFF: push        ebx",
+        "01194E00: push        esi",
+        "01194E01: mov         esi,edx",
+        "01194E03: mov         ebx,eax",
+        "01194E05: test        esi,esi",
+        "01194E07: jle         01194E9B",
+        "01194E0D: mov         eax,dword ptr [ebx+000005A4h]",
+        "01194E13: xor         edx,edx",
+        "01194E15: call        00EDDA30",
+        "01194E1A: mov         eax,dword ptr [ebx+000005A4h]",
+        "01194E20: mov         edx,esi",
+        "01194E22: call        00EDDC80",
+        "01194E27: mov         eax,dword ptr [ebx+000005A4h]",
+        "01194E2D: mov         edx,0C8h",
+        "01194E32: call        0057B07C",
+        "01194E37: mov         eax,dword ptr [ebx+000005A4h]",
+        "01194E3D: mov         edx,96h",
+        "01194E42: call        0057B0B0",
+        "01194E47: mov         eax,dword ptr [ebx+000005A4h]",
+        "01194E4D: mov         dl,1",
+        "01194E4F: call        0057BD18",
+        "01194E54: mov         eax,dword ptr [ebx+000005A4h]",
+        "01194E5A: call        0057C0FC",
+        "01194E5F: mov         eax,dword ptr [ebx+000005A4h]",
+        "01194E65: mov         eax,dword ptr [eax+00000310h]",
+        "01194E6B: mov         edx,dword ptr [eax]",
+        "01194E6D: call        dword ptr [edx+0000017Ch]",
+        "01194E73: jmp         01194E88",
+        "01194E75: mov         eax,dword ptr ds:[01552024h]",
+        "01194E7A: mov         eax,dword ptr [eax]",
+        "01194E7C: call        006959F4",
+        "01194E81: push        0Ah",
+        "01194E83: call        0043C508",
+        "01194E88: mov         eax,dword ptr [ebx+000005A4h]",
+        "01194E8E: movzx       eax,byte ptr [eax+00000314h]",
+        "01194E95: add         al,0FEh",
+        "01194E97: sub         al,2",
+        "01194E99: jae         01194E75",
+        "01194E9B: pop         esi",
+        "01194E9C: pop         ebx",
+        "01194E9D: pop         ebp",
+        "01194E9E: ret"
+      ]
+    }
+  ],
+  "scan_import_bindings": {
+    "vmStep": 24421416,
+    "vmCloseAll": 24421420,
+    "vmGetCountdown": 24421436,
+    "vmDone": 24421452
+  },
+  "vm_export_bindings": {
+    "vmCloseAll": 4240588,
+    "vmDone": 4240036,
+    "vmGetCountdown": 4241724,
+    "vmStep": 4240596
+  },
+  "saved_trace_events": [
+    {
+      "record_ordinal": 1182,
+      "decoded_record_offset": 611525,
+      "kind": 84,
+      "channel": 0,
+      "saved_text": "Timeout changed to: 1000ms"
+    },
+    {
+      "record_ordinal": 1183,
+      "decoded_record_offset": 611569,
+      "kind": 66,
+      "channel": 1,
+      "direction": "host_tx_candidate",
+      "envelope_prefix_hex": "015404860700000000000600",
+      "payload_hex": "000000000000",
+      "outer_crc_valid": true
+    },
+    {
+      "record_ordinal": 1184,
+      "decoded_record_offset": 611607,
+      "kind": 66,
+      "channel": 2,
+      "direction": "device_rx_candidate",
+      "envelope_prefix_hex": "015204860000000000000000",
+      "payload_hex": "",
+      "outer_crc_valid": true
+    },
+    {
+      "record_ordinal": 1185,
+      "decoded_record_offset": 611640,
+      "kind": 84,
+      "channel": 0,
+      "saved_text": "Timeout changed to: 250ms"
+    },
+    {
+      "record_ordinal": 1186,
+      "decoded_record_offset": 611683,
+      "kind": 66,
+      "channel": 1,
+      "direction": "host_tx_candidate",
+      "envelope_prefix_hex": "0154018b0700000000000400",
+      "payload_hex": "00010000",
+      "outer_crc_valid": true
+    },
+    {
+      "record_ordinal": 1187,
+      "decoded_record_offset": 611719,
+      "kind": 66,
+      "channel": 2,
+      "direction": "device_rx_candidate",
+      "envelope_prefix_hex": "0152018b0000000000000100",
+      "payload_hex": "01",
+      "outer_crc_valid": true
+    },
+    {
+      "record_ordinal": 1188,
+      "decoded_record_offset": 611753,
+      "kind": 66,
+      "channel": 1,
+      "direction": "host_tx_candidate",
+      "envelope_prefix_hex": "0154018b0700000000000400",
+      "payload_hex": "01010000",
+      "outer_crc_valid": true
+    },
+    {
+      "record_ordinal": 1189,
+      "decoded_record_offset": 611789,
+      "kind": 66,
+      "channel": 2,
+      "direction": "device_rx_candidate",
+      "envelope_prefix_hex": "0152018b0000000000000100",
+      "payload_hex": "01",
+      "outer_crc_valid": true
+    },
+    {
+      "record_ordinal": 1190,
+      "decoded_record_offset": 611823,
+      "kind": 84,
+      "channel": 0,
+      "saved_text": "Timeout changed to: 1000ms"
+    },
+    {
+      "record_ordinal": 1191,
+      "decoded_record_offset": 611867,
+      "kind": 66,
+      "channel": 1,
+      "direction": "host_tx_candidate",
+      "envelope_prefix_hex": "015404860700000000000600",
+      "payload_hex": "000000000000",
+      "outer_crc_valid": true
+    },
+    {
+      "record_ordinal": 1192,
+      "decoded_record_offset": 611905,
+      "kind": 66,
+      "channel": 2,
+      "direction": "device_rx_candidate",
+      "envelope_prefix_hex": "015204860000000000000000",
+      "payload_hex": "",
+      "outer_crc_valid": true
+    },
+    {
+      "record_ordinal": 1193,
+      "decoded_record_offset": 611938,
+      "kind": 66,
+      "channel": 1,
+      "direction": "host_tx_candidate",
+      "envelope_prefix_hex": "0154008a0700100000000500",
+      "payload_hex": "6c10f03c55",
+      "outer_crc_valid": true
+    },
+    {
+      "record_ordinal": 1194,
+      "decoded_record_offset": 611975,
+      "kind": 84,
+      "channel": 4,
+      "saved_text": "RX Looping"
+    },
+    {
+      "record_ordinal": 1195,
+      "decoded_record_offset": 612003,
+      "kind": 84,
+      "channel": 4,
+      "saved_text": "RX Looping"
+    },
+    {
+      "record_ordinal": 1196,
+      "decoded_record_offset": 612031,
+      "kind": 84,
+      "channel": 4,
+      "saved_text": "RX Looping"
+    },
+    {
+      "record_ordinal": 1197,
+      "decoded_record_offset": 612059,
+      "kind": 84,
+      "channel": 4,
+      "saved_text": "RX Looping"
+    },
+    {
+      "record_ordinal": 1198,
+      "decoded_record_offset": 612087,
+      "kind": 84,
+      "channel": 4,
+      "saved_text": "Timed Out"
+    },
+    {
+      "record_ordinal": 1199,
+      "decoded_record_offset": 612114,
+      "kind": 84,
+      "channel": 0,
+      "saved_text": "Timeout changed to: 250ms"
+    },
+    {
+      "record_ordinal": 1200,
+      "decoded_record_offset": 612157,
+      "kind": 66,
+      "channel": 1,
+      "direction": "host_tx_candidate",
+      "envelope_prefix_hex": "0154008a0700100000000500",
+      "payload_hex": "6c10f03c55",
+      "outer_crc_valid": true
+    },
+    {
+      "record_ordinal": 1201,
+      "decoded_record_offset": 612194,
+      "kind": 84,
+      "channel": 0,
+      "saved_text": "Timeout changed to: 1000ms"
+    },
+    {
+      "record_ordinal": 1202,
+      "decoded_record_offset": 612238,
+      "kind": 66,
+      "channel": 2,
+      "direction": "device_rx_candidate",
+      "envelope_prefix_hex": "015210000000160000000700",
+      "payload_hex": "6cf0107f3c5531",
+      "outer_crc_valid": true
+    },
+    {
+      "record_ordinal": 1203,
+      "decoded_record_offset": 612278,
+      "kind": 66,
+      "channel": 1,
+      "direction": "host_tx_candidate",
+      "envelope_prefix_hex": "0154008a0700100000000400",
+      "payload_hex": "6cfef020",
+      "outer_crc_valid": true
+    },
+    {
+      "record_ordinal": 1204,
+      "decoded_record_offset": 612314,
+      "kind": 84,
+      "channel": 0,
+      "saved_text": "Timeout changed to: 250ms"
+    },
+    {
+      "record_ordinal": 1205,
+      "decoded_record_offset": 612357,
+      "kind": 66,
+      "channel": 2,
+      "direction": "device_rx_candidate",
+      "envelope_prefix_hex": "0152100000000c0000000400",
+      "payload_hex": "6cf01060",
+      "outer_crc_valid": true
+    },
+    {
+      "record_ordinal": 1206,
+      "decoded_record_offset": 612394,
+      "kind": 84,
+      "channel": 4,
+      "saved_text": "RX Looping"
+    },
+    {
+      "record_ordinal": 1207,
+      "decoded_record_offset": 612422,
+      "kind": 84,
+      "channel": 4,
+      "saved_text": "Timed Out"
+    },
+    {
+      "record_ordinal": 1208,
+      "decoded_record_offset": 612449,
+      "kind": 66,
+      "channel": 1,
+      "direction": "host_tx_candidate",
+      "envelope_prefix_hex": "0154008a0700100000000400",
+      "payload_hex": "686af004",
+      "outer_crc_valid": true
+    },
+    {
+      "record_ordinal": 1209,
+      "decoded_record_offset": 612485,
+      "kind": 66,
+      "channel": 2,
+      "direction": "device_rx_candidate",
+      "envelope_prefix_hex": "015210000000130000000400",
+      "payload_hex": "486b1044",
+      "outer_crc_valid": true
+    },
+    {
+      "record_ordinal": 1210,
+      "decoded_record_offset": 612522,
+      "kind": 84,
+      "channel": 4,
+      "saved_text": "RX Looping"
+    },
+    {
+      "record_ordinal": 1211,
+      "decoded_record_offset": 612550,
+      "kind": 84,
+      "channel": 4,
+      "saved_text": "Timed Out"
+    },
+    {
+      "record_ordinal": 1212,
+      "decoded_record_offset": 612577,
+      "kind": 66,
+      "channel": 1,
+      "direction": "host_tx_candidate",
+      "envelope_prefix_hex": "0154008a0700100000000400",
+      "payload_hex": "6cfef014",
+      "outer_crc_valid": true
+    },
+    {
+      "record_ordinal": 1213,
+      "decoded_record_offset": 612613,
+      "kind": 66,
+      "channel": 2,
+      "direction": "device_rx_candidate",
+      "envelope_prefix_hex": "015210000000250000000400",
+      "payload_hex": "6cf01054",
+      "outer_crc_valid": true
+    },
+    {
+      "record_ordinal": 1214,
+      "decoded_record_offset": 612650,
+      "kind": 84,
+      "channel": 4,
+      "saved_text": "RX Looping"
+    },
+    {
+      "record_ordinal": 1215,
+      "decoded_record_offset": 612678,
+      "kind": 84,
+      "channel": 4,
+      "saved_text": "Timed Out"
+    }
+  ],
+  "al5_structural_comparison": {
+    "e54_cleanup_entry": 10184,
+    "al5_cleanup_entry": 10870,
+    "identical_helper_instruction_hashes": [
+      {
+        "start": 258,
+        "end_exclusive": 324,
+        "e54_nodes": 9,
+        "al5_nodes": 9,
+        "instruction_hash_sequences_equal": true
+      },
+      {
+        "start": 392,
+        "end_exclusive": 654,
+        "e54_nodes": 33,
+        "al5_nodes": 33,
+        "instruction_hash_sequences_equal": true
+      },
+      {
+        "start": 794,
+        "end_exclusive": 956,
+        "e54_nodes": 19,
+        "al5_nodes": 19,
+        "instruction_hash_sequences_equal": true
+      }
+    ],
+    "al5_selected_nodes": [
+      {
+        "offset": 10870,
+        "end_exclusive": 10880,
+        "opcode": 32,
+        "operands": [
+          {
+            "offset": 10872,
+            "tag": 160,
+            "extent_bytes": 4,
+            "value": 65287
+          },
+          {
+            "offset": 10876,
+            "tag": 160,
+            "extent_bytes": 4,
+            "value": 112
+          }
+        ],
+        "source_sha256": "f516a10cd07ecdda7fd6675b0cff8cdaa677cb7921dc8a2b000cd07cfc17990c",
+        "effects_fully_modeled": false
+      },
+      {
+        "offset": 10880,
+        "end_exclusive": 10890,
+        "opcode": 32,
+        "operands": [
+          {
+            "offset": 10882,
+            "tag": 160,
+            "extent_bytes": 4,
+            "value": 9352
+          },
+          {
+            "offset": 10886,
+            "tag": 160,
+            "extent_bytes": 4,
+            "value": 9342
+          }
+        ],
+        "source_sha256": "6a60c0d0ee118525c0ddb7742263f3a85b09782b5a6e57c53b72b15347900df7",
+        "effects_fully_modeled": false
+      },
+      {
+        "offset": 10890,
+        "end_exclusive": 10908,
+        "opcode": 153,
+        "operands": [
+          {
+            "offset": 10892,
+            "tag": 177,
+            "extent_bytes": 4,
+            "value": 0
+          },
+          {
+            "offset": 10896,
+            "tag": 177,
+            "extent_bytes": 4,
+            "value": 0
+          },
+          {
+            "offset": 10900,
+            "tag": 177,
+            "extent_bytes": 4,
+            "value": 0
+          },
+          {
+            "offset": 10904,
+            "tag": 177,
+            "extent_bytes": 4,
+            "value": 0
+          }
+        ],
+        "source_sha256": "8dd48edc57a6d8f64edbc78f3c3b76b2f74f0352f919303b34b471cabc495e72",
+        "effects_fully_modeled": false
+      },
+      {
+        "offset": 10908,
+        "end_exclusive": 10926,
+        "opcode": 147,
+        "operands": [
+          {
+            "offset": 10910,
+            "tag": 177,
+            "extent_bytes": 4,
+            "value": 0
+          },
+          {
+            "offset": 10914,
+            "tag": 177,
+            "extent_bytes": 4,
+            "value": 1
+          },
+          {
+            "offset": 10918,
+            "tag": 177,
+            "extent_bytes": 4,
+            "value": 0
+          },
+          {
+            "offset": 10922,
+            "tag": 177,
+            "extent_bytes": 4,
+            "value": 0
+          }
+        ],
+        "source_sha256": "4254be056358e84681a94f088ee50450a8eaa177934c7490500dedca4abbe7aa",
+        "effects_fully_modeled": false
+      },
+      {
+        "offset": 10926,
+        "end_exclusive": 10944,
+        "opcode": 147,
+        "operands": [
+          {
+            "offset": 10928,
+            "tag": 177,
+            "extent_bytes": 4,
+            "value": 1
+          },
+          {
+            "offset": 10932,
+            "tag": 177,
+            "extent_bytes": 4,
+            "value": 1
+          },
+          {
+            "offset": 10936,
+            "tag": 177,
+            "extent_bytes": 4,
+            "value": 0
+          },
+          {
+            "offset": 10940,
+            "tag": 177,
+            "extent_bytes": 4,
+            "value": 0
+          }
+        ],
+        "source_sha256": "31b9a33dd026cad93a54da5a80be23034606e196fb0aa8362bedd0fa5e72b38b",
+        "effects_fully_modeled": false
+      },
+      {
+        "offset": 10944,
+        "end_exclusive": 10946,
+        "opcode": 100,
+        "operands": [],
+        "source_sha256": "4658d6abbbaf7748c172ed5a3e003cdb8997648f88724834e41f75e54520e142",
+        "effects_fully_modeled": false
+      },
+      {
+        "offset": 10946,
+        "end_exclusive": 10956,
+        "opcode": 32,
+        "operands": [
+          {
+            "offset": 10948,
+            "tag": 177,
+            "extent_bytes": 4,
+            "value": 0
+          },
+          {
+            "offset": 10952,
+            "tag": 160,
+            "extent_bytes": 4,
+            "value": 8518
+          }
+        ],
+        "source_sha256": "7daa6a69d57bb62c168d2c5e0c690ed540e62cf93664289967e754a69c6b9636",
+        "effects_fully_modeled": false
+      },
+      {
+        "offset": 10956,
+        "end_exclusive": 10962,
+        "opcode": 81,
+        "operands": [
+          {
+            "offset": 10958,
+            "tag": 161,
+            "extent_bytes": 4,
+            "value": 11372
+          }
+        ],
+        "source_sha256": "8df649741507391b97fce51369654caad42b4321f1ac6bb7dd512c2e9923af1d",
+        "effects_fully_modeled": false,
+        "target_offset": 11372
+      },
+      {
+        "offset": 10962,
+        "end_exclusive": 10968,
+        "opcode": 129,
+        "operands": [
+          {
+            "offset": 10964,
+            "tag": 160,
+            "extent_bytes": 4,
+            "value": 112
+          }
+        ],
+        "source_sha256": "f9864d5992988c89191caaab694aba95fed7dcb898d9994d3d145998a8ae2e6b",
+        "effects_fully_modeled": false
+      },
+      {
+        "offset": 11372,
+        "end_exclusive": 11378,
+        "opcode": 81,
+        "operands": [
+          {
+            "offset": 11374,
+            "tag": 161,
+            "extent_bytes": 4,
+            "value": 868
+          }
+        ],
+        "source_sha256": "6b1682ddcc78d061b99ffca3d2f2fd2fab4609b9cdaf8173e63035b3e1693fa4",
+        "effects_fully_modeled": false,
+        "target_offset": 868
+      },
+      {
+        "offset": 11378,
+        "end_exclusive": 11384,
+        "opcode": 81,
+        "operands": [
+          {
+            "offset": 11380,
+            "tag": 161,
+            "extent_bytes": 4,
+            "value": 794
+          }
+        ],
+        "source_sha256": "24e9e12f17510d3475226c9e1434895aef16004e1cec219861af40f03902c9ba",
+        "effects_fully_modeled": false,
+        "target_offset": 794
+      },
+      {
+        "offset": 11384,
+        "end_exclusive": 11390,
+        "opcode": 89,
+        "operands": [
+          {
+            "offset": 11386,
+            "tag": 177,
+            "extent_bytes": 4,
+            "value": 30
+          }
+        ],
+        "source_sha256": "72a8d0b6ebe0a877c7baf4cee971e43a8e805112217f5bbb500ee823f001aa3d",
+        "effects_fully_modeled": false
+      },
+      {
+        "offset": 11390,
+        "end_exclusive": 11392,
+        "opcode": 82,
+        "operands": [],
+        "source_sha256": "4f82d2d4702d95b60ed4e752df221c56b0fb2de94af5889d016578e6db8afb7a",
+        "effects_fully_modeled": false
+      }
+    ],
+    "e54_countdown_literal": 15,
+    "al5_countdown_literal": 30,
+    "al5_code_pool_values_independently_revalidated": false,
+    "physical_controller_behavior_equivalent": false
+  },
+  "observations": [
+    "Normal path295E branches2742, writes zeroFF07, then branches shared cleanup27C8. It savesFF07 into code descriptor70 before further cleanup calls.",
+    "Error entry2752 checks code byte214A. If equal1 it jumps directly2824 and returns saved70. Otherwise it writes1, preservesFF07 ifFF05 is zero, or writes0x300+FF05 toFF07, invokes opcode84, then falls through27C8.",
+    "Shared27C8 restores the receive timeout, requests zero8604, requests8B01(00010000), requests8B01(01010000), invokes purge selector0A, clears2146 and calls2A1C.",
+    "Helper2A1C calls364, then31A, then sets opcode59 value15 and returns. Helper364 itself clears2146, requests another zero8604, constructs6C10F03C55, sets receive timeout1000 and calls retry helper188.",
+    "Helper188 calls the send helper44, then sets inner receive budget8 and calls opcode61. Flag1 branches to the negative-service check before the flag80 test. Matching byte4=expected3C returns via278 without requiring positive7C55.",
+    "Unmatched responses decrement the inner receive budget. Exhaustion or receive flag80 decrements transmit budget2476; if nonzero it purges, requests Sleep(100), and resends. If exhausted it setsflag80. Exit278 restores transmit budget3 and the default timeout250.",
+    "Helper364 does not branch on the returned3C55 result. It next calls broadcast20 helper2A4, requests Sleep(1000), explicitly clears flags0x81 and returns.",
+    "Helper31A constructs686AF004 and6CFEF014 using initial code headers, sends each through44 and drains through102. The drain does not validate a specific response payload.",
+    "Read12 cleanup records show first3C55 followed by timeout text, second3C55 followed by negative6CF0107F3C5531, then20/60,686AF004/486B1044 and6CFEF014/6CF01054. These are observed exchanges, not positive reset acknowledgements.",
+    "Opcode59 stores its low byte in4274C6. vmGetCountdown returns that byte; Scan imports it throughBB0048 and passes it to countdown UI helper1194DFC. E54 supplies15; the compared AL5_W structure supplies30.",
+    "Opcode81 at2824 sets the native stop marker4274C4 and returns raw status word70. The ordinary step route returns0x510. Scan ED84CC callsvmStep, continues only while status0x510 and host object byteDD is zero, and records the terminating signed status.",
+    "If the host object byteDD is nonzero, the shown host path forcesstatus0x508 and invokesBB0A14 with four zero arguments before completion. This bailout can stop the VM before remaining script cleanup executes.",
+    "The shown completion path calls vmDone, additional host cleanup helpers, then vmCloseAll. vmDone itself copies two stored values and returns; vmGetCountdown itself only reads a byte. Neither export contains an adapter command."
+  ],
+  "derivations": [
+    "The3C55 exchange can terminate with a negative-response flag; the following20,04,14 commands are attempted under ordinary return assumptions even if3C55 did not receive a positive service/PID match.",
+    "Shared VM cleanup, guarded script-error reentry and host bailout are different paths. There is no single unconditional cleanup sequence covering all failures.",
+    "Pending VM return frames are not cleared by the shown direct error branches. Newly called cleanup helpers return normally to2824; opcode81 terminates without requiring older pending frames to unwind.",
+    "The existing AL5_W report has exactly matching instruction hashes for the selected drain, exchange and cleanup helper ranges, but the final countdown literal differs. Shared implementation is not controller-specific speed or recovery proof."
+  ],
+  "inferences": [
+    "The observed negative3C55 followed by the remaining cleanup commands is consistent with the matching-negative terminal branch; saved trace data does not expose the exact VM flag state.",
+    "The tail commands and zero8604/8B01 forms are candidates for restoring communication state. Their physical1x effects require firmware or linked bench evidence."
+  ],
+  "unknowns": [
+    "Which command or firmware behavior restores physical1x, and whether it does so after every interrupted operation, remain unproven.",
+    "The report does not execute the VM or fully resolve native callback redirects, exceptions, host helper side effects, indirect descriptor writes or all pending-stack states.",
+    "The initial transmit budget depends on preceding VM state. The generic exit resets it to3, but this does not prove3 attempts on every path.",
+    "The meanings of20,04,14 and3C55 at the particular controller and adapter are not inferred solely from generic service names or matching shared code.",
+    "A negative3C55 reply, successful host completion, countdown value or disabled setup is not proof of a safe reset, valid programming recovery or flash readiness.",
+    "The host byteDD bailout meaning is not independently mapped to a UI event. Untraced host cleanup helpers and countdown virtual calls may have effects beyond the shown bounded windows."
+  ],
+  "modeled_route_cases": [
+    {
+      "entry": "normal",
+      "shared_cleanup_selected": true,
+      "status_word": 0,
+      "entered_byte_after_gate": 0,
+      "direct_host_zero_setup_requested": false,
+      "existing_pending_frames_unwound": false,
+      "hardware_reset_proven": false,
+      "would_send": false
+    },
+    {
+      "entry": "script_error",
+      "shared_cleanup_selected": true,
+      "status_word": 291,
+      "entered_byte_after_gate": 1,
+      "direct_host_zero_setup_requested": false,
+      "existing_pending_frames_unwound": false,
+      "hardware_reset_proven": false,
+      "would_send": false
+    },
+    {
+      "entry": "script_error",
+      "shared_cleanup_selected": true,
+      "status_word": 817,
+      "entered_byte_after_gate": 1,
+      "direct_host_zero_setup_requested": false,
+      "existing_pending_frames_unwound": false,
+      "hardware_reset_proven": false,
+      "would_send": false
+    },
+    {
+      "entry": "script_error",
+      "shared_cleanup_selected": false,
+      "status_word": 1110,
+      "entered_byte_after_gate": 1,
+      "direct_host_zero_setup_requested": false,
+      "existing_pending_frames_unwound": false,
+      "hardware_reset_proven": false,
+      "would_send": false
+    },
+    {
+      "entry": "host_error_entry",
+      "shared_cleanup_selected": true,
+      "status_word": 1334,
+      "entered_byte_after_gate": 0,
+      "direct_host_zero_setup_requested": false,
+      "existing_pending_frames_unwound": false,
+      "hardware_reset_proven": false,
+      "would_send": false
+    },
+    {
+      "entry": "host_bailout",
+      "shared_cleanup_selected": false,
+      "status_word": 1288,
+      "entered_byte_after_gate": 0,
+      "direct_host_zero_setup_requested": true,
+      "existing_pending_frames_unwound": false,
+      "hardware_reset_proven": false,
+      "would_send": false
+    }
+  ],
+  "modeled_reply_cases": [
+    {
+      "supplied_flags": 1,
+      "payload_hex": "6cf0107f3c5531",
+      "next_branch": "return_with_negative_flag",
+      "matching_positive_service_pid": false,
+      "controller_acknowledgement_verified": false,
+      "automatic_retry_performed": false,
+      "would_send": false
+    },
+    {
+      "supplied_flags": 128,
+      "payload_hex": "",
+      "next_branch": "decrement_transmit_budget",
+      "matching_positive_service_pid": false,
+      "controller_acknowledgement_verified": false,
+      "automatic_retry_performed": false,
+      "would_send": false
+    },
+    {
+      "supplied_flags": 0,
+      "payload_hex": "6cf0107c55",
+      "next_branch": "return_with_matching_service_pid",
+      "matching_positive_service_pid": true,
+      "controller_acknowledgement_verified": false,
+      "automatic_retry_performed": false,
+      "would_send": false
+    }
+  ],
+  "adapter_opened": false,
+  "target_executed": false,
+  "return_to_1x_proven": false,
+  "physical_recovery_verified": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "would_send": false
+}

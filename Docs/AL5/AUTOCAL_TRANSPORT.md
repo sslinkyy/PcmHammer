@@ -407,8 +407,7 @@ The actual PcmLibrary build passed with the same three pre-existing CS1998
 warnings. The setup-response harness passed 144 boundary assertions and all
 17 saved setup replies, for 284 assertions in the saved-corpus run. All 89
 focused Python tests passed; 28 current source/helper digests matched the
-reports. Its corpus
-chooses command context explicitly for field testing; it does not infer a
+reports. Its corpus chooses command context explicitly for field testing; it does not infer a
 transaction match. Source digests and validation are recorded in the
 [offline test receipt](AUTOCAL_SETUP_SPEED_TEST_20261030.json).
 
@@ -416,6 +415,81 @@ transaction match. Source digests and validation are recorded in the
 dotnet run --project Tools/AL5/AutoCalSetupResponseTest.csproj --verbosity quiet
 python -B -m unittest discover -s Tools/AL5 -p test_autocal_speed_trace.py
 python -B -m unittest discover -s Tools/AL5 -p test_autocal_speed_vm.py
+```
+
+## Polling configuration, cleanup exits and firmware containers
+
+The [native configuration trace](AUTOCAL_SPEED_CONFIGURATION_STATIC.json)
+identifies another setup producer, Scan `BB497C`. Two callers pass the named
+`TProperties.Logging_PollTime` field as the value split into the `8603` words.
+RTTI, the property setter, construction and the global object reference agree
+on that field. This establishes the host source of the value. Firmware timer
+units and any effect on VPW timing remain unknown.
+
+This producer uses a signed 32-bit polling value and narrows its positive
+quotient/remainder to 16 bits. It differs from the previously traced VM
+producer's argument widths and range guard. Its offline model therefore stays
+separate. Its observed `8604` forms include mode 1 with polling, mode 6 with
+zero remaining arguments, and all zeros; they cannot yet be assigned 1x/4x
+meanings. The receiver slots used by the two producers can refer to the same
+receiver object.
+
+The [cleanup trace](AUTOCAL_CLEANUP_VM_STATIC.json) distinguishes normal
+completion, first script error, repeated error, direct host error entry and
+host cancellation. Under the modeled ordinary-call assumptions:
+
+- Normal completion clears the error before common cleanup. A first script
+  error prepares an error status; a repeated script error can return its cached
+  status without running common cleanup again. Pending VM frames are not
+  presumed unwound.
+- The `3C55` exchange helper returns on a matching negative response as well as
+  a matching positive service/PID. The saved read has a timeout, another `3C55`
+  attempt and negative `7F 3C 55 31`, followed by the later cleanup messages.
+  Proceeding past this exchange does not establish successful controller reset.
+- Host cancellation can bypass remaining script steps, assign status `0508`,
+  and request the zero-form `8604` directly before VM teardown.
+- Opcode `59` writes the value exposed by `vmGetCountdown` to the host UI.
+  The E54 read uses 15; the compared AL5 write structure uses 30. The countdown
+  value is not an adapter speed command.
+
+Several helper instruction hashes match the existing AL5 structural report.
+That comparison does not revalidate the AL5 code pool, dynamic execution,
+physical return to 1x, or recovery from interrupted programming.
+
+Four installed V2 `.efw` artifacts now have a
+[container inventory](AUTOCAL_FIRMWARE_CONTAINER_STATIC.json). Each program
+file has three positive LE32-length regions; each boot file has one. Exact
+framing covers every byte. The bytes remain opaque: measured entropy, common
+prefixes and periodic tails do not establish a codec or processor architecture.
+Installed package names do not establish the firmware running on an adapter.
+
+The [native firmware loader](AUTOCAL_FIRMWARE_LOADER_STATIC.json) independently
+binds program-file handling to `TFileStream` and `kernel32!ReadFile`. It reads
+and concatenates a first region bounded by `0x20000`, an optional `0x8000`
+middle region, and a final region bounded by `0x40000`. The later chunk routine
+copies up to 256 source bytes unchanged into its exchange buffer. These stages
+expose no plaintext instruction decoder. Later transport or device-side
+transformation remains unknown.
+
+The new program-layout model emits offsets, lengths and digests only. It
+requires complete framing and EOF, rejects missing regions and oversized
+lengths, and does not emulate the native code's unchecked stream-read counts.
+No firmware image is exported and no update path is implemented. REA's firmware
+signature provider is unavailable on this Windows session; the work uses
+bounded file parsing and pinned native disassembly, with that limitation kept
+explicit.
+
+All 50 focused offline tests passed. Real collection covered 38 new native
+windows, 111 selected cleanup nodes and four installed firmware artifacts.
+The [validation receipt](AUTOCAL_CONFIGURATION_CLEANUP_TEST_20261030.json)
+records source hashes and scope. PcmLibrary, its model-only USB probe, device
+selection, the working reader and live-write gates were not changed.
+
+```powershell
+python -B -m unittest discover -s Tools/AL5 -p test_autocal_speed_configuration.py
+python -B -m unittest discover -s Tools/AL5 -p test_autocal_cleanup_vm.py
+python -B -m unittest discover -s Tools/AL5 -p test_autocal_firmware_container.py
+python -B -m unittest discover -s Tools/AL5 -p test_autocal_firmware_loader.py
 ```
 
 ## Remaining integration work

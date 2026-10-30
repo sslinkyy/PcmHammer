@@ -1,0 +1,1103 @@
+{
+  "schema": "autocal-speed-configuration-static-v1",
+  "scope": "Native setup producer callers and host configuration names; no firmware behavior or physical speed qualification",
+  "sources": {
+    "hapi": {
+      "path": "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_Hapi.exe",
+      "sha256": "c51bbf4795c2ee0ac54b95114e1d5ae509d7f53d35a160b35115085f444fbcf8",
+      "bytes": 9890672
+    },
+    "scan": {
+      "path": "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_ScanAndTune.exe",
+      "sha256": "9d3aad921df7ac8848b7d7cdb82fea0fd7695070f1c4d1f6bf9f68f0a0f34a3a",
+      "bytes": 27302768
+    }
+  },
+  "generator_sha256": "f424482c01e2d285a250d23e21e665941d91e956032a794e44765747b2e42c5b",
+  "dependency": {
+    "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_autocal_setup_responses.py",
+    "sha256": "7538dda0648a6585693daca53d93308609da63e1f6b33d6863273b180c881001"
+  },
+  "disassembler": {
+    "path": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+    "sha256": "6ad86f7fa61936301fddafa97de7c8f0ac5c3cb225569dca68edfa021cce5919"
+  },
+  "prior_evidence": [
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\AUTOCAL_SETUP_CALLBACK_STATIC.json",
+      "sha256": "244511cb52211c2424614f42f6a0d320b846229b6be7c69409b00e5e7bba15b0"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\AUTOCAL_SETUP_NATIVE_STATIC.json",
+      "sha256": "973c72a8f72069abde76bf538fbb3c9319a73c732f1410fd858e8779cdb01088"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\AUTOCAL_SETUP_RESPONSES_STATIC.json",
+      "sha256": "70e6aca5bd5397c94b2e2ec1129cb2c4ecf73aeb7ea96f3698c25a60da07d3fd"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\AUTOCAL_SPEED_VM_STATIC.json",
+      "sha256": "707007048f3b47ed25c153892ad71e4adb7b62ae4181c860ea83a63b81fee680"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\EFILIVE_HOST_IPC.json",
+      "sha256": "2d7846ea73bf723dccd0318cfa0ad440c1fbf814a07d6785549c013af466e4ae"
+    }
+  ],
+  "input_stability": "All targets, generator, dependency, prior reports and disassembler compared before and after; transient replacement is not prevented by locking",
+  "disassembly_windows": [
+    {
+      "role": "poll_setup_arguments_and_signed_division",
+      "source": {
+        "va": "0xbb497c",
+        "rva": "0x7b497c",
+        "file_offset": 8076668,
+        "bytes": 95,
+        "sha256": "1a2320ff2280c26ea407e111983d63e5f7c4c3db880e1cc40841560d6d68281e",
+        "section": ".text"
+      },
+      "end_exclusive_va": "0xbb49db",
+      "lookahead_source": {
+        "va": "0xbb497c",
+        "rva": "0x7b497c",
+        "file_offset": 8076668,
+        "bytes": 111,
+        "sha256": "e0bde7da78c4e9a3894fb35567a1ee39c83741596ea5afa3df83a9a572970928",
+        "section": ".text"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0xbb497c,0xbb49ea",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_ScanAndTune.exe"
+      ],
+      "instructions": [
+        "00BB497C: push        ebp",
+        "00BB497D: mov         ebp,esp",
+        "00BB497F: push        0",
+        "00BB4981: push        0",
+        "00BB4983: push        0",
+        "00BB4985: push        ebx",
+        "00BB4986: push        esi",
+        "00BB4987: push        edi",
+        "00BB4988: mov         ecx,dword ptr [ebp+0Ch]",
+        "00BB498B: xor         eax,eax",
+        "00BB498D: push        ebp",
+        "00BB498E: push        0BB4BB6h",
+        "00BB4993: push        dword ptr fs:[eax]",
+        "00BB4996: mov         dword ptr fs:[eax],esp",
+        "00BB4999: xor         eax,eax",
+        "00BB499B: push        ebp",
+        "00BB499C: push        0BB4B82h",
+        "00BB49A1: push        dword ptr fs:[eax]",
+        "00BB49A4: mov         dword ptr fs:[eax],esp",
+        "00BB49A7: test        ecx,ecx",
+        "00BB49A9: jle         00BB4A9B",
+        "00BB49AF: mov         eax,10624DD3h",
+        "00BB49B4: imul        ecx",
+        "00BB49B6: sar         edx,6",
+        "00BB49B9: mov         ebx,edx",
+        "00BB49BB: shr         ebx,1Fh",
+        "00BB49BE: add         ebx,edx",
+        "00BB49C0: mov         eax,10624DD3h",
+        "00BB49C5: imul        ecx",
+        "00BB49C7: sar         edx,6",
+        "00BB49CA: mov         eax,edx",
+        "00BB49CC: shr         eax,1Fh",
+        "00BB49CF: add         edx,eax",
+        "00BB49D1: imul        edx,edx,3E8h",
+        "00BB49D7: mov         esi,ecx",
+        "00BB49D9: sub         esi,edx"
+      ]
+    },
+    {
+      "role": "poll_setup_interval_bytes_and_8603",
+      "source": {
+        "va": "0xbb49db",
+        "rva": "0x7b49db",
+        "file_offset": 8076763,
+        "bytes": 192,
+        "sha256": "24d83a041f73348adde0bd6f40f411a0bdd930cfca4476c459899b7780547dc3",
+        "section": ".text"
+      },
+      "end_exclusive_va": "0xbb4a9b",
+      "lookahead_source": {
+        "va": "0xbb49db",
+        "rva": "0x7b49db",
+        "file_offset": 8076763,
+        "bytes": 208,
+        "sha256": "903a1f39aeaf3c8767779e6bcad9d792b285b860f68f3bd9ba16e396daa22489",
+        "section": ".text"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0xbb49db,0xbb4aaa",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_ScanAndTune.exe"
+      ],
+      "instructions": [
+        "00BB49DB: xor         eax,eax",
+        "00BB49DD: mov         dword ptr [ebp-8],eax",
+        "00BB49E0: xor         eax,eax",
+        "00BB49E2: push        ebp",
+        "00BB49E3: push        0BB4A74h",
+        "00BB49E8: push        dword ptr fs:[eax]",
+        "00BB49EB: mov         dword ptr fs:[eax],esp",
+        "00BB49EE: lea         eax,[ebp-8]",
+        "00BB49F1: mov         edx,dword ptr ds:[00404F68h]",
+        "00BB49F7: call        00410F24",
+        "00BB49FC: push        4",
+        "00BB49FE: lea         eax,[ebp-8]",
+        "00BB4A01: mov         ecx,1",
+        "00BB4A06: mov         edx,dword ptr ds:[00404F68h]",
+        "00BB4A0C: call        00410DF8",
+        "00BB4A11: add         esp,4",
+        "00BB4A14: mov         eax,ebx",
+        "00BB4A16: and         al,0FFh",
+        "00BB4A18: mov         edx,dword ptr [ebp-8]",
+        "00BB4A1B: mov         byte ptr [edx],al",
+        "00BB4A1D: movzx       eax,bx",
+        "00BB4A20: shr         eax,8",
+        "00BB4A23: and         al,0FFh",
+        "00BB4A25: mov         edx,dword ptr [ebp-8]",
+        "00BB4A28: mov         byte ptr [edx+1],al",
+        "00BB4A2B: mov         eax,esi",
+        "00BB4A2D: and         al,0FFh",
+        "00BB4A2F: mov         edx,dword ptr [ebp-8]",
+        "00BB4A32: mov         byte ptr [edx+2],al",
+        "00BB4A35: movzx       eax,si",
+        "00BB4A38: shr         eax,8",
+        "00BB4A3B: and         al,0FFh",
+        "00BB4A3D: mov         edx,dword ptr [ebp-8]",
+        "00BB4A40: mov         byte ptr [edx+3],al",
+        "00BB4A43: lea         edx,[ebp-8]",
+        "00BB4A46: mov         edx,dword ptr [edx]",
+        "00BB4A48: lea         eax,[ebp-4]",
+        "00BB4A4B: mov         ecx,dword ptr ds:[00404F68h]",
+        "00BB4A51: call        00410F68",
+        "00BB4A56: xor         eax,eax",
+        "00BB4A58: pop         edx",
+        "00BB4A59: pop         ecx",
+        "00BB4A5A: pop         ecx",
+        "00BB4A5B: mov         dword ptr fs:[eax],edx",
+        "00BB4A5E: push        0BB4A7Bh",
+        "00BB4A63: lea         eax,[ebp-8]",
+        "00BB4A66: mov         edx,dword ptr ds:[00404F68h]",
+        "00BB4A6C: call        00410F24",
+        "00BB4A71: pop         eax",
+        "00BB4A72: jmp         eax",
+        "00BB4A74: jmp         0040C880",
+        "00BB4A79: jmp         00BB4A63",
+        "00BB4A7B: push        4",
+        "00BB4A7D: push        64h",
+        "00BB4A7F: lea         eax,[ebp-4]",
+        "00BB4A82: push        eax",
+        "00BB4A83: push        0",
+        "00BB4A85: push        0",
+        "00BB4A87: push        0",
+        "00BB4A89: mov         cx,8603h",
+        "00BB4A8D: mov         dx,0Ch",
+        "00BB4A91: mov         eax,dword ptr ds:[0155BA00h]",
+        "00BB4A96: call        00BBC380"
+      ]
+    },
+    {
+      "role": "poll_setup_mode_flags_and_8604",
+      "source": {
+        "va": "0xbb4a9b",
+        "rva": "0x7b4a9b",
+        "file_offset": 8076955,
+        "bytes": 221,
+        "sha256": "0d9c1fa8d14aa87f84a6a65e775a6438b8c2c88e1c4c2e8b3f09ce3c3e77ddc2",
+        "section": ".text"
+      },
+      "end_exclusive_va": "0xbb4b78",
+      "lookahead_source": {
+        "va": "0xbb4a9b",
+        "rva": "0x7b4a9b",
+        "file_offset": 8076955,
+        "bytes": 237,
+        "sha256": "5dfb52d104627ae919cb476fd498e2e0d6077e9228c4b9aebd59ae5af6a9cb1b",
+        "section": ".text"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0xbb4a9b,0xbb4b87",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_ScanAndTune.exe"
+      ],
+      "instructions": [
+        "00BB4A9B: xor         eax,eax",
+        "00BB4A9D: mov         dword ptr [ebp-0Ch],eax",
+        "00BB4AA0: xor         eax,eax",
+        "00BB4AA2: push        ebp",
+        "00BB4AA3: push        0BB4B4Eh",
+        "00BB4AA8: push        dword ptr fs:[eax]",
+        "00BB4AAB: mov         dword ptr fs:[eax],esp",
+        "00BB4AAE: lea         eax,[ebp-0Ch]",
+        "00BB4AB1: mov         edx,dword ptr ds:[00404F68h]",
+        "00BB4AB7: call        00410F24",
+        "00BB4ABC: push        6",
+        "00BB4ABE: lea         eax,[ebp-0Ch]",
+        "00BB4AC1: mov         ecx,1",
+        "00BB4AC6: mov         edx,dword ptr ds:[00404F68h]",
+        "00BB4ACC: call        00410DF8",
+        "00BB4AD1: add         esp,4",
+        "00BB4AD4: mov         eax,dword ptr [ebp-0Ch]",
+        "00BB4AD7: movzx       edx,byte ptr [ebp+8]",
+        "00BB4ADB: mov         byte ptr [eax],dl",
+        "00BB4ADD: mov         eax,dword ptr [ebp-0Ch]",
+        "00BB4AE0: movzx       edx,byte ptr [ebp+10h]",
+        "00BB4AE4: mov         byte ptr [eax+1],dl",
+        "00BB4AE7: movzx       eax,byte ptr [ebp+14h]",
+        "00BB4AEB: and         al,0FFh",
+        "00BB4AED: mov         edx,dword ptr [ebp-0Ch]",
+        "00BB4AF0: mov         byte ptr [edx+2],al",
+        "00BB4AF3: mov         eax,dword ptr [ebp+14h]",
+        "00BB4AF6: shr         eax,8",
+        "00BB4AF9: and         al,0FFh",
+        "00BB4AFB: mov         edx,dword ptr [ebp-0Ch]",
+        "00BB4AFE: mov         byte ptr [edx+3],al",
+        "00BB4B01: mov         eax,dword ptr [ebp+14h]",
+        "00BB4B04: shr         eax,10h",
+        "00BB4B07: and         al,0FFh",
+        "00BB4B09: mov         edx,dword ptr [ebp-0Ch]",
+        "00BB4B0C: mov         byte ptr [edx+4],al",
+        "00BB4B0F: mov         eax,dword ptr [ebp+14h]",
+        "00BB4B12: shr         eax,18h",
+        "00BB4B15: and         al,0FFh",
+        "00BB4B17: mov         edx,dword ptr [ebp-0Ch]",
+        "00BB4B1A: mov         byte ptr [edx+5],al",
+        "00BB4B1D: lea         edx,[ebp-0Ch]",
+        "00BB4B20: mov         edx,dword ptr [edx]",
+        "00BB4B22: lea         eax,[ebp-4]",
+        "00BB4B25: mov         ecx,dword ptr ds:[00404F68h]",
+        "00BB4B2B: call        00410F68",
+        "00BB4B30: xor         eax,eax",
+        "00BB4B32: pop         edx",
+        "00BB4B33: pop         ecx",
+        "00BB4B34: pop         ecx",
+        "00BB4B35: mov         dword ptr fs:[eax],edx",
+        "00BB4B38: push        0BB4B55h",
+        "00BB4B3D: lea         eax,[ebp-0Ch]",
+        "00BB4B40: mov         edx,dword ptr ds:[00404F68h]",
+        "00BB4B46: call        00410F24",
+        "00BB4B4B: pop         eax",
+        "00BB4B4C: jmp         eax",
+        "00BB4B4E: jmp         0040C880",
+        "00BB4B53: jmp         00BB4B3D",
+        "00BB4B55: push        6",
+        "00BB4B57: push        5DCh",
+        "00BB4B5C: lea         eax,[ebp-4]",
+        "00BB4B5F: push        eax",
+        "00BB4B60: push        0",
+        "00BB4B62: push        0",
+        "00BB4B64: push        0",
+        "00BB4B66: mov         cx,8604h",
+        "00BB4B6A: mov         dx,0Ch",
+        "00BB4B6E: mov         eax,dword ptr ds:[0155BA00h]",
+        "00BB4B73: call        00BBC380"
+      ]
+    },
+    {
+      "role": "poll_setup_return",
+      "source": {
+        "va": "0xbb4bbd",
+        "rva": "0x7b4bbd",
+        "file_offset": 8077245,
+        "bytes": 9,
+        "sha256": "3b369881bc3139d93d15c2e2034c698523212f9576c1d320e45ef0c5ada56e60",
+        "section": ".text"
+      },
+      "end_exclusive_va": "0xbb4bc6",
+      "lookahead_source": {
+        "va": "0xbb4bbd",
+        "rva": "0x7b4bbd",
+        "file_offset": 8077245,
+        "bytes": 25,
+        "sha256": "9262872811b1a68e9930e5f061d2e1133e2338076fed0be762099b2e20a38c4d",
+        "section": ".text"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0xbb4bbd,0xbb4bd5",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_ScanAndTune.exe"
+      ],
+      "instructions": [
+        "00BB4BBD: pop         edi",
+        "00BB4BBE: pop         esi",
+        "00BB4BBF: pop         ebx",
+        "00BB4BC0: mov         esp,ebp",
+        "00BB4BC2: pop         ebp",
+        "00BB4BC3: ret         10h"
+      ]
+    },
+    {
+      "role": "zero_metadata_ipc_wrapper",
+      "source": {
+        "va": "0xbbc380",
+        "rva": "0x7bc380",
+        "file_offset": 8107904,
+        "bytes": 51,
+        "sha256": "08e0ebb372ddb7587657e48db26bcb64249ece26a4d89680c3f3b9c3abfc7902",
+        "section": ".text"
+      },
+      "end_exclusive_va": "0xbbc3b3",
+      "lookahead_source": {
+        "va": "0xbbc380",
+        "rva": "0x7bc380",
+        "file_offset": 8107904,
+        "bytes": 67,
+        "sha256": "4283315fa007e7eff1ef6a5eea506ef28f54ad821adc79d31472bab7d539e049",
+        "section": ".text"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0xbbc380,0xbbc3c2",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_ScanAndTune.exe"
+      ],
+      "instructions": [
+        "00BBC380: push        ebp",
+        "00BBC381: mov         ebp,esp",
+        "00BBC383: push        ecx",
+        "00BBC384: push        ebx",
+        "00BBC385: xor         ebx,ebx",
+        "00BBC387: mov         dword ptr [ebp-4],ebx",
+        "00BBC38A: movzx       ebx,word ptr [ebp+1Ch]",
+        "00BBC38E: push        ebx",
+        "00BBC38F: mov         ebx,dword ptr [ebp+18h]",
+        "00BBC392: push        ebx",
+        "00BBC393: lea         ebx,[ebp-4]",
+        "00BBC396: push        ebx",
+        "00BBC397: mov         ebx,dword ptr [ebp+14h]",
+        "00BBC39A: push        ebx",
+        "00BBC39B: movzx       ebx,byte ptr [ebp+10h]",
+        "00BBC39F: push        ebx",
+        "00BBC3A0: mov         ebx,dword ptr [ebp+0Ch]",
+        "00BBC3A3: push        ebx",
+        "00BBC3A4: mov         ebx,dword ptr [ebp+8]",
+        "00BBC3A7: push        ebx",
+        "00BBC3A8: call        00BBC3B4",
+        "00BBC3AD: pop         ebx",
+        "00BBC3AE: pop         ecx",
+        "00BBC3AF: pop         ebp",
+        "00BBC3B0: ret         18h"
+      ]
+    },
+    {
+      "role": "conditional_poll_or_mode6_caller",
+      "source": {
+        "va": "0x12a87f7",
+        "rva": "0xea87f7",
+        "file_offset": 15367159,
+        "bytes": 115,
+        "sha256": "d7387cb15b5132b49f1811f6ed1a93d24e40250896f556650d65eec4f402efd1",
+        "section": ".text"
+      },
+      "end_exclusive_va": "0x12a886a",
+      "lookahead_source": {
+        "va": "0x12a87f7",
+        "rva": "0xea87f7",
+        "file_offset": 15367159,
+        "bytes": 131,
+        "sha256": "8b82368494e6066a0ac77d28a50539c92fb1c1d3ff93caad9b2f36692415f3fb",
+        "section": ".text"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x12a87f7,0x12a8879",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_ScanAndTune.exe"
+      ],
+      "instructions": [
+        "012A87F7: mov         eax,dword ptr ds:[015525DCh]",
+        "012A87FC: mov         eax,dword ptr [eax]",
+        "012A87FE: cmp         byte ptr [eax+00000730h],6",
+        "012A8805: je          012A8853",
+        "012A8807: push        1",
+        "012A8809: mov         eax,dword ptr ds:[015525DCh]",
+        "012A880E: mov         eax,dword ptr [eax]",
+        "012A8810: mov         cl,1",
+        "012A8812: mov         dx,1",
+        "012A8816: call        014A5B60",
+        "012A881B: test        al,al",
+        "012A881D: je          012A886A",
+        "012A881F: mov         eax,dword ptr [ebx+000004A8h]",
+        "012A8825: cmp         byte ptr [eax+44h],0",
+        "012A8829: je          012A8846",
+        "012A882B: push        0",
+        "012A882D: push        0",
+        "012A882F: mov         eax,dword ptr ds:[01551F2Ch]",
+        "012A8834: mov         eax,dword ptr [eax]",
+        "012A8836: mov         eax,dword ptr [eax+000001E8h]",
+        "012A883C: push        eax",
+        "012A883D: push        1",
+        "012A883F: call        00BB497C",
+        "012A8844: jmp         012A8853",
+        "012A8846: push        0",
+        "012A8848: push        0",
+        "012A884A: push        0",
+        "012A884C: push        6",
+        "012A884E: call        00BB497C",
+        "012A8853: mov         eax,dword ptr [ebx+000004A8h]",
+        "012A8859: movzx       ecx,byte ptr [eax+44h]",
+        "012A885D: mov         edx,dword ptr [ebx+0000044Ch]",
+        "012A8863: mov         eax,ebx",
+        "012A8865: call        012A965C"
+      ]
+    },
+    {
+      "role": "cleanup_zero_and_mode6_callers",
+      "source": {
+        "va": "0x12acaee",
+        "rva": "0xeacaee",
+        "file_offset": 15384302,
+        "bytes": 36,
+        "sha256": "bc28607b521ffe3355b1009f4105f018bba730138d392a71a58aed7ebb21110c",
+        "section": ".text"
+      },
+      "end_exclusive_va": "0x12acb12",
+      "lookahead_source": {
+        "va": "0x12acaee",
+        "rva": "0xeacaee",
+        "file_offset": 15384302,
+        "bytes": 52,
+        "sha256": "0b5703e72848f9252a5123304386a8099891abb079837b033a2723d99f64765a",
+        "section": ".text"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x12acaee,0x12acb21",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_ScanAndTune.exe"
+      ],
+      "instructions": [
+        "012ACAEE: mov         eax,dword ptr [ebp-0Ch]",
+        "012ACAF1: cmp         word ptr [eax+7Eh],5",
+        "012ACAF6: je          012ACB05",
+        "012ACAF8: push        0",
+        "012ACAFA: push        0",
+        "012ACAFC: push        0",
+        "012ACAFE: push        0",
+        "012ACB00: call        00BB497C",
+        "012ACB05: push        0",
+        "012ACB07: push        0",
+        "012ACB09: push        0",
+        "012ACB0B: push        6",
+        "012ACB0D: call        00BB497C"
+      ]
+    },
+    {
+      "role": "poll_start_caller",
+      "source": {
+        "va": "0x12af79f",
+        "rva": "0xeaf79f",
+        "file_offset": 15395743,
+        "bytes": 35,
+        "sha256": "fb5ab5781e0999f65021f85c111b890768540835411a3bfb00459ec32bc0bf87",
+        "section": ".text"
+      },
+      "end_exclusive_va": "0x12af7c2",
+      "lookahead_source": {
+        "va": "0x12af79f",
+        "rva": "0xeaf79f",
+        "file_offset": 15395743,
+        "bytes": 51,
+        "sha256": "19a9be1e828ecb3e32cfa93038b084f993e60be77faf9872d4747e5b70aa28c2",
+        "section": ".text"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x12af79f,0x12af7d1",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_ScanAndTune.exe"
+      ],
+      "instructions": [
+        "012AF79F: cmp         byte ptr [esi+55h],0",
+        "012AF7A3: jne         012AFAAC",
+        "012AF7A9: push        0",
+        "012AF7AB: push        0",
+        "012AF7AD: mov         eax,dword ptr ds:[01551F2Ch]",
+        "012AF7B2: mov         eax,dword ptr [eax]",
+        "012AF7B4: mov         eax,dword ptr [eax+000001E8h]",
+        "012AF7BA: push        eax",
+        "012AF7BB: push        1",
+        "012AF7BD: call        00BB497C"
+      ]
+    },
+    {
+      "role": "vm_abort_calls_zero_setup",
+      "source": {
+        "va": "0xed84e8",
+        "rva": "0xad84e8",
+        "file_offset": 11368680,
+        "bytes": 30,
+        "sha256": "4a17d67f63b97585fcabf6aa0e74a261152eea10a17b9c2de1dbf60e46324529",
+        "section": ".text"
+      },
+      "end_exclusive_va": "0xed8506",
+      "lookahead_source": {
+        "va": "0xed84e8",
+        "rva": "0xad84e8",
+        "file_offset": 11368680,
+        "bytes": 46,
+        "sha256": "84888a18a302a31c13ac9eb6135bf34035d0dead9dcfd1ca55fe6d132b1aaa44",
+        "section": ".text"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0xed84e8,0xed8515",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_ScanAndTune.exe"
+      ],
+      "instructions": [
+        "00ED84E8: mov         eax,dword ptr [ebp-10h]",
+        "00ED84EB: cmp         byte ptr [eax+000000DDh],0",
+        "00ED84F2: je          00ED8506",
+        "00ED84F4: mov         ebx,508h",
+        "00ED84F9: push        0",
+        "00ED84FB: push        0",
+        "00ED84FD: push        0",
+        "00ED84FF: push        0",
+        "00ED8501: call        00BB0A14"
+      ]
+    },
+    {
+      "role": "properties_constructor_and_global_binding",
+      "source": {
+        "va": "0x14a757a",
+        "rva": "0x10a757a",
+        "file_offset": 17459578,
+        "bytes": 28,
+        "sha256": "40c0b5e8f0516f04b7d4c46859d1ddea1bb5f8c7b89ad5b0bff8e78f1e9f0c17",
+        "section": ".text"
+      },
+      "end_exclusive_va": "0x14a7596",
+      "lookahead_source": {
+        "va": "0x14a757a",
+        "rva": "0x10a757a",
+        "file_offset": 17459578,
+        "bytes": 44,
+        "sha256": "a54973bf3510b0571deae0612e3192a1c1ec77a8dcc1ccc79f3e5c3c716dff4c",
+        "section": ".text"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x14a757a,0x14a75a5",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_ScanAndTune.exe"
+      ],
+      "instructions": [
+        "014A757A: mov         ecx,dword ptr ds:[01552B6Ch]",
+        "014A7580: mov         ecx,dword ptr [ecx]",
+        "014A7582: mov         dl,1",
+        "014A7584: mov         eax,dword ptr ds:[00BBDD18h]",
+        "014A7589: call        00BC3744",
+        "014A758E: mov         edx,dword ptr ds:[01551F2Ch]",
+        "014A7594: mov         dword ptr [edx],eax"
+      ]
+    },
+    {
+      "role": "logging_poll_time_setter",
+      "source": {
+        "va": "0xbcb794",
+        "rva": "0x7cb794",
+        "file_offset": 8170388,
+        "bytes": 26,
+        "sha256": "fa0e377b494f07ed181fef151b587926329b0a81e16d98bf7d69565c85829e25",
+        "section": ".text"
+      },
+      "end_exclusive_va": "0xbcb7ae",
+      "lookahead_source": {
+        "va": "0xbcb794",
+        "rva": "0x7cb794",
+        "file_offset": 8170388,
+        "bytes": 42,
+        "sha256": "81726411c97150cf3e58fbb1762beb02971ede1d3eedfaef2e19d33e4ad5162d",
+        "section": ".text"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0xbcb794,0xbcb7bd",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_ScanAndTune.exe"
+      ],
+      "instructions": [
+        "00BCB794: push        ebp",
+        "00BCB795: mov         ebp,esp",
+        "00BCB797: cmp         edx,dword ptr [eax+000001E8h]",
+        "00BCB79D: je          00BCB7AC",
+        "00BCB79F: mov         dword ptr [eax+000001E8h],edx",
+        "00BCB7A5: mov         dl,1",
+        "00BCB7A7: call        00BCB678",
+        "00BCB7AC: pop         ebp",
+        "00BCB7AD: ret"
+      ]
+    }
+  ],
+  "rtti_and_pointer_evidence": [
+    {
+      "role": "logging_poll_time_property",
+      "source": {
+        "va": "0xbc33eb",
+        "rva": "0x7c33eb",
+        "file_offset": 8136683,
+        "bytes": 43,
+        "sha256": "33ec7efb6a9ab400ff7dd50d2808c4bdc22efb9aa3da014e74ebf0f96000a1af",
+        "section": ".text"
+      },
+      "raw_hex": "9c104000e80100ff94b7bc00010000000000008000000080ffff104c6f6767696e675f506f6c6c54696d65",
+      "name": "Logging_PollTime",
+      "type_pointer": "0x40109c",
+      "getproc_raw": "0xff0001e8",
+      "direct_field_offset": "0x1E8",
+      "setter_va": "0xbcb794",
+      "storedproc_raw": "0x1",
+      "index_raw": "0x80000000",
+      "default_raw": "0x80000000",
+      "name_index": 65535
+    },
+    {
+      "role": "properties_class_pointer_and_typeinfo",
+      "source": {
+        "va": "0xbbdd18",
+        "rva": "0x7bdd18",
+        "file_offset": 8114456,
+        "bytes": 24,
+        "sha256": "c81aa7413fd9f5f067ac10a809c44c176c199aa74cfcd179f67339e2ce874d2c",
+        "section": ".text"
+      },
+      "raw_hex": "70ddbb00000000000000000070ddbb002806bc00cbddbb00"
+    },
+    {
+      "role": "properties_typeinfo_name",
+      "source": {
+        "va": "0xbc0628",
+        "rva": "0x7c0628",
+        "file_offset": 8124968,
+        "bytes": 17,
+        "sha256": "2533be30efe309b8ed634ce8521503c498cfbfc2aa0c8ddd22ca92278f6b1362",
+        "section": ".text"
+      },
+      "raw_hex": "070b5450726f7065727469657370ddbb00"
+    },
+    {
+      "role": "properties_global_pointer_cell",
+      "source": {
+        "va": "0x1551f2c",
+        "rva": "0x1151f2c",
+        "file_offset": 18153260,
+        "bytes": 4,
+        "sha256": "fb79ed516b45dcd840514ea5ecb9a8203f4291aead45c76ef5eaa13b9a96257d",
+        "section": ".data"
+      },
+      "raw_hex": "08ba5501"
+    },
+    {
+      "role": "logging_poll_time_named_field_entry",
+      "source": {
+        "va": "0xbbfc46",
+        "rva": "0x7bfc46",
+        "file_offset": 8122438,
+        "bytes": 29,
+        "sha256": "17621b2c08293d539a90adc0a1691212270378ea3433ff3c43219ccb4b8fbe7a",
+        "section": ".text"
+      },
+      "raw_hex": "0200009c104000e801000011464c6f6767696e675f506f6c6c54696d65"
+    },
+    {
+      "role": "vpw4x_separate_named_field",
+      "source": {
+        "va": "0xbbed52",
+        "rva": "0x7bed52",
+        "file_offset": 8118610,
+        "bytes": 41,
+        "sha256": "8238880f5e399a2e69768ab7bc630cdf214bf8c7f167028c6b4855a075daab42",
+        "section": ".text"
+      },
+      "raw_hex": "02000000104000b30000001d4654756e655f52656164466c6173685f44656661756c745f5670773478"
+    },
+    {
+      "role": "todo_vpw_speed_separate_record_field",
+      "source": {
+        "va": "0xbbd04e",
+        "rva": "0x7bd04e",
+        "file_offset": 8111182,
+        "bytes": 27,
+        "sha256": "99a6a1666d3344d27211fa572448017f826f8216b86efe3135b22a65218c1214",
+        "section": ".text"
+      },
+      "raw_hex": "0200cc10400056000000020d746f646f5f76707753706565640200"
+    }
+  ],
+  "bounded_immediate_form_searches": {
+    "hapi": [
+      {
+        "command": "0x8603",
+        "patterns_hex": [
+          "66b80386",
+          "66b90386",
+          "66ba0386",
+          "66bb0386",
+          "66bc0386",
+          "66bd0386",
+          "66be0386",
+          "66bf0386",
+          "b803860000",
+          "b903860000",
+          "ba03860000",
+          "bb03860000",
+          "bc03860000",
+          "bd03860000",
+          "be03860000",
+          "bf03860000",
+          "6803860000"
+        ],
+        "matches": [],
+        "instruction_boundaries_verified_by_search": false
+      },
+      {
+        "command": "0x8604",
+        "patterns_hex": [
+          "66b80486",
+          "66b90486",
+          "66ba0486",
+          "66bb0486",
+          "66bc0486",
+          "66bd0486",
+          "66be0486",
+          "66bf0486",
+          "b804860000",
+          "b904860000",
+          "ba04860000",
+          "bb04860000",
+          "bc04860000",
+          "bd04860000",
+          "be04860000",
+          "bf04860000",
+          "6804860000"
+        ],
+        "matches": [
+          {
+            "va": "0xa16a64",
+            "pattern_hex": "66ba0486",
+            "file_offset": 6381156
+          },
+          {
+            "va": "0xa16adc",
+            "pattern_hex": "66ba0486",
+            "file_offset": 6381276
+          }
+        ],
+        "instruction_boundaries_verified_by_search": false
+      },
+      {
+        "command": "0x8b01",
+        "patterns_hex": [
+          "66b8018b",
+          "66b9018b",
+          "66ba018b",
+          "66bb018b",
+          "66bc018b",
+          "66bd018b",
+          "66be018b",
+          "66bf018b",
+          "b8018b0000",
+          "b9018b0000",
+          "ba018b0000",
+          "bb018b0000",
+          "bc018b0000",
+          "bd018b0000",
+          "be018b0000",
+          "bf018b0000",
+          "68018b0000"
+        ],
+        "matches": [],
+        "instruction_boundaries_verified_by_search": false
+      }
+    ],
+    "scan": [
+      {
+        "command": "0x8603",
+        "patterns_hex": [
+          "66b80386",
+          "66b90386",
+          "66ba0386",
+          "66bb0386",
+          "66bc0386",
+          "66bd0386",
+          "66be0386",
+          "66bf0386",
+          "b803860000",
+          "b903860000",
+          "ba03860000",
+          "bb03860000",
+          "bc03860000",
+          "bd03860000",
+          "be03860000",
+          "bf03860000",
+          "6803860000"
+        ],
+        "matches": [
+          {
+            "va": "0xbb0b7b",
+            "pattern_hex": "6803860000",
+            "file_offset": 8060795
+          },
+          {
+            "va": "0xbb4a89",
+            "pattern_hex": "66b90386",
+            "file_offset": 8076937
+          }
+        ],
+        "instruction_boundaries_verified_by_search": false
+      },
+      {
+        "command": "0x8604",
+        "patterns_hex": [
+          "66b80486",
+          "66b90486",
+          "66ba0486",
+          "66bb0486",
+          "66bc0486",
+          "66bd0486",
+          "66be0486",
+          "66bf0486",
+          "b804860000",
+          "b904860000",
+          "ba04860000",
+          "bb04860000",
+          "bc04860000",
+          "bd04860000",
+          "be04860000",
+          "bf04860000",
+          "6804860000"
+        ],
+        "matches": [
+          {
+            "va": "0xbb0cad",
+            "pattern_hex": "6804860000",
+            "file_offset": 8061101
+          },
+          {
+            "va": "0xbb4b66",
+            "pattern_hex": "66b90486",
+            "file_offset": 8077158
+          }
+        ],
+        "instruction_boundaries_verified_by_search": false
+      },
+      {
+        "command": "0x8b01",
+        "patterns_hex": [
+          "66b8018b",
+          "66b9018b",
+          "66ba018b",
+          "66bb018b",
+          "66bc018b",
+          "66bd018b",
+          "66be018b",
+          "66bf018b",
+          "b8018b0000",
+          "b9018b0000",
+          "ba018b0000",
+          "bb018b0000",
+          "bc018b0000",
+          "bd018b0000",
+          "be018b0000",
+          "bf018b0000",
+          "68018b0000"
+        ],
+        "matches": [],
+        "instruction_boundaries_verified_by_search": false
+      }
+    ]
+  },
+  "direct_call_candidates": [
+    {
+      "target": "0xbb497c",
+      "candidate_call_sites": [
+        "0x12a883f",
+        "0x12a884e",
+        "0x12acb00",
+        "0x12acb0d",
+        "0x12af7bd"
+      ],
+      "scope": "E8 rel32 byte candidates across executable sections; verified callsites have separate disassembly windows. Indirect references are not included."
+    },
+    {
+      "target": "0xbb0a14",
+      "candidate_call_sites": [
+        "0xed8501"
+      ],
+      "scope": "E8 rel32 byte candidates across executable sections; verified callsites have separate disassembly windows. Indirect references are not included."
+    },
+    {
+      "target": "0xbc3744",
+      "candidate_call_sites": [
+        "0x14a7589"
+      ],
+      "scope": "E8 rel32 byte candidates across executable sections; verified callsites have separate disassembly windows. Indirect references are not included."
+    }
+  ],
+  "observations": [
+    {
+      "classification": "observation",
+      "finding": "A second Scan producer at BB497C emits optional8603 and six-byte8604. It is distinct from the VM callback BB0A14.",
+      "evidence": [
+        "poll_setup_arguments_and_signed_division",
+        "poll_setup_interval_bytes_and_8603",
+        "poll_setup_mode_flags_and_8604"
+      ]
+    },
+    {
+      "classification": "derived",
+      "finding": "BB497C argument2 is signed Int32. When positive, it splits by1000 into quotient and remainder, narrows both to UInt16 and sends8603. Unlike BB0A14, it has no quotient range guard in the straight-line construction.",
+      "evidence": [
+        "poll_setup_arguments_and_signed_division",
+        "poll_setup_interval_bytes_and_8603"
+      ]
+    },
+    {
+      "classification": "derived",
+      "finding": "BB497C always constructs8604 as BYTE(arg1), BYTE(arg3), LE32(arg4); its host call argument4 is1500. BB0A14 instead selects1000 or2000 for that host parameter. These are host-call differences, not evidence of baud rate.",
+      "evidence": [
+        "poll_setup_mode_flags_and_8604",
+        "AUTOCAL_SETUP_CALLBACK_STATIC.json:setup_fourth_argument_dword_and_8604_call"
+      ]
+    },
+    {
+      "classification": "derived",
+      "finding": "Callsites12A883F and12AF7BD pass (1, TProperties.Logging_PollTime, 0, 0). The class is loaded throughBBDD18 at14A7584, constructed byBC3744 and stored through1551F2C. Its named property and setter both identify field1E8.",
+      "evidence": [
+        "conditional_poll_or_mode6_caller",
+        "poll_start_caller",
+        "properties_constructor_and_global_binding",
+        "logging_poll_time_property",
+        "logging_poll_time_setter"
+      ]
+    },
+    {
+      "classification": "observation",
+      "finding": "Other direct calls pass (6,0,0,0) at12A884E and12ACB0D, and (0,0,0,0) at12ACB00. ED8501 calls the VM callbackBB0A14 with all zeros after the caller observes its+DD byte and stores status0508.",
+      "evidence": [
+        "conditional_poll_or_mode6_caller",
+        "cleanup_zero_and_mode6_callers",
+        "vm_abort_calls_zero_setup"
+      ]
+    },
+    {
+      "classification": "derived",
+      "finding": "BB497C calls BBC380 using receiver slot155BA00; BBC380 supplies initial metadata0 and forwards toBBC3B4. This is a different slot from VM155B988, but the prior IPC evidence binds VM155B988 to that same main receiver during VM setup. It does not establish a separate adapter.",
+      "evidence": [
+        "poll_setup_interval_bytes_and_8603",
+        "poll_setup_mode_flags_and_8604",
+        "zero_metadata_ipc_wrapper",
+        "EFILIVE_HOST_IPC.json:pointer_chain"
+      ]
+    },
+    {
+      "classification": "bounded_negative_observation",
+      "finding": "The enumerated immediate forms find only HAPI one-byte8604 initialization calls, Scan BB0A14 andBB497C setup producers, and no HAPI/Scan8B01 producer. The existing8B01 producer is in the separate VM artifact. Computed commands, data tables, indirect producers and other encodings remain outside the search.",
+      "evidence": [
+        "bounded_immediate_form_searches",
+        "AUTOCAL_SETUP_NATIVE_STATIC.json",
+        "AUTOCAL_SETUP_RESPONSES_STATIC.json"
+      ]
+    }
+  ],
+  "speed_conclusion": {
+    "supported_host_meaning": "The second producer receives the named Logging_PollTime setting as its8603 split input. That is not an explicit host baud-rate selector.",
+    "separate_names": "FTune_ReadFlash_Default_Vpw4x is a separate TProperties byte fieldB3. todo_vpwSpeed appears in a different record at offset56. Their names alone do not bind either to8604 bytes.",
+    "native_caller_variation": "Observed native logging calls use8604 flag DWORD0; the saved E54 VM setup example uses flag DWORD0x10. Different caller context prevents interpreting this difference as1x versus4x.",
+    "existing_speed_path": "Prior AUTOCAL_SPEED_VM_STATIC.json resolves the E54 A0/A1 path followed by Sleep1000 and local FTDI queue purge; no8603/8604/8B01 command occurs between those two traced bus requests.",
+    "unresolved": "No explicit1x/4x firmware selector or autonomous speed-following behavior is proved by these native callers."
+  },
+  "modeled_examples": [
+    {
+      "native_arguments": [
+        1,
+        1500,
+        0,
+        0
+      ],
+      "commands": [
+        {
+          "command": "0x8603",
+          "payload_hex": "0100f401",
+          "host_call_argument4": 100
+        },
+        {
+          "command": "0x8604",
+          "payload_hex": "010000000000",
+          "host_call_argument4": 1500
+        }
+      ]
+    },
+    {
+      "native_arguments": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "commands": [
+        {
+          "command": "0x8604",
+          "payload_hex": "060000000000",
+          "host_call_argument4": 1500
+        }
+      ]
+    },
+    {
+      "native_arguments": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "commands": [
+        {
+          "command": "0x8604",
+          "payload_hex": "000000000000",
+          "host_call_argument4": 1500
+        }
+      ]
+    },
+    {
+      "native_arguments": [
+        1,
+        65536000,
+        0,
+        0
+      ],
+      "commands": [
+        {
+          "command": "0x8603",
+          "payload_hex": "00000000",
+          "host_call_argument4": 100
+        },
+        {
+          "command": "0x8604",
+          "payload_hex": "010000000000",
+          "host_call_argument4": 1500
+        }
+      ]
+    }
+  ],
+  "unknowns": [
+    "Firmware meanings of8604 mode/option/flag fields, including mode1 versus6 and flag0x10.",
+    "Firmware timing units, timer behavior and relevance of8603 to the bus rather than internal polling.",
+    "Whether adapter firmware recognizes A0/A1 and follows speed autonomously.",
+    "Physical1x/4x transitions, bus quietness, programming, verification and recovery.",
+    "Execution of the new static callers in the particular saved read, and unenumerated computed/indirect producers."
+  ],
+  "target_executed": false,
+  "adapter_opened": false,
+  "vehicle_transmissions_enabled": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "would_send": []
+}

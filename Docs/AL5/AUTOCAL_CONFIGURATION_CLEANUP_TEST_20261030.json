@@ -1,0 +1,116 @@
+{
+  "schema": "autocal-configuration-cleanup-offline-test-v1",
+  "recorded_date": "2026-10-30",
+  "base_commit": "523abcc71f515a1bf9bb0dbb981b46263f26add1",
+  "scope": "Pinned native file analysis, existing reconstructed script comparison, installed firmware container framing and pure supplied-state models. No target execution or hardware access.",
+  "source_files": [
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_autocal_speed_configuration.py",
+      "bytes": 16172,
+      "sha256": "f424482c01e2d285a250d23e21e665941d91e956032a794e44765747b2e42c5b"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\test_autocal_speed_configuration.py",
+      "bytes": 1635,
+      "sha256": "7255e023ec5acff9c9f28bfb7ec046c643736d7d97e47d5714cd57651b0649cb"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_autocal_cleanup_vm.py",
+      "bytes": 20079,
+      "sha256": "fd7aaf15d457a43e91bb6798d7a874f8a981718ea06e9a01af7fc1cb3742ace0"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\test_autocal_cleanup_vm.py",
+      "bytes": 4876,
+      "sha256": "7f68bf6a58991a975c1834bcc66db916571e46952ef4ca7b8b0a373afa91ab66"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_autocal_firmware_container.py",
+      "bytes": 11521,
+      "sha256": "2e5796983880a3d9236f69b8aaae2aee3388eee3f8c80886e2c3e49d85ce0c2b"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\test_autocal_firmware_container.py",
+      "bytes": 5054,
+      "sha256": "b5309d825f6f1089c6ee1833e5eb48e1a819e18b296943af9d908c582f971046"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_autocal_firmware_loader.py",
+      "bytes": 11252,
+      "sha256": "ff473092f864d49a0b35acef355b69a54a084398cbedf865bf4802536848c01e"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\test_autocal_firmware_loader.py",
+      "bytes": 3338,
+      "sha256": "228edd9600bc2163c9472987a7c084c0b79012cb6fb236ee9a5a9050e6d03b40"
+    }
+  ],
+  "evidence_reports": [
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\AUTOCAL_SPEED_CONFIGURATION_STATIC.json",
+      "bytes": 39720,
+      "sha256": "41048f95f7e8f456a27a137bdac880c0082b33a23ededaf3c3ef17ba6920f6b9"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\AUTOCAL_CLEANUP_VM_STATIC.json",
+      "bytes": 109782,
+      "sha256": "3f77b4fcfe9f5446b5cf42e56f8cdfaab4d3b293ed74559cfdcf1fde89e474f0"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\AUTOCAL_FIRMWARE_CONTAINER_STATIC.json",
+      "bytes": 22016,
+      "sha256": "f6b1393a6ddbb5a67417beb853a8954d542217029958f79953c46ec1a3a0bb8a"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\AUTOCAL_FIRMWARE_LOADER_STATIC.json",
+      "bytes": 30860,
+      "sha256": "398e65ced2d98283f521388513547062b0d211106c2346b21cea948cc9c621a0"
+    }
+  ],
+  "verification": {
+    "python_command": "python -B -m unittest test_autocal_speed_configuration test_autocal_cleanup_vm test_autocal_firmware_container test_autocal_firmware_loader test_autocal_vm_setup test_autocal_speed_vm test_autocal_speed_trace test_autocal_completion",
+    "working_directory": "Tools/AL5",
+    "test_count": 50,
+    "new_test_count": 26,
+    "exit_code": 0,
+    "real_native_windows": {
+      "configuration": 11,
+      "cleanup": 15,
+      "firmware_loader": 12
+    },
+    "selected_cleanup_nodes": 111,
+    "firmware_artifacts": 4,
+    "unique_current_input_helper_paths_hash_verified": 35,
+    "configuration_generator_sha_verified": true,
+    "pcm_library_changed": false,
+    "model_probe_changed": false,
+    "csharp_rebuilt": false,
+    "csharp_rebuild_reason": "No C# source or project changes in this increment."
+  },
+  "provider_limit": {
+    "rea_firmware_signature_provider_available": false,
+    "reported_reason": "provider_missing",
+    "supported_host_for_provider": "Linux",
+    "fallback": "Exact file framing and pinned native dumpbin ranges; no provider installation or target execution."
+  },
+  "review": {
+    "firmware_layout": "No actionable findings in native layout model, guards and preserved output after independent review.",
+    "cleanup": "Selected script branches, native countdown and AL5 comparison reviewed; no actionable findings.",
+    "configuration": "RTTI field binding, native narrowing and bounded candidate coverage reviewed; no actionable findings."
+  },
+  "limits": [
+    "Logging_PollTime identifies a host setting passed to8603; firmware units and bus timing effect remain unproved.",
+    "8604 forms and caller differences cannot yet be interpreted as a1x/4x selector.",
+    "Cleanup projections assume supplied state and ordinary callback returns, without complete dynamic VM execution or pending-frame recovery.",
+    "AL5 instruction hashes match selected helper ranges; code pool, timing, controller reset and physical recovery are not requalified.",
+    "Firmware region framing and native size checks do not validate firmware contents, compatibility, codec, architecture or currently running device version.",
+    "TFileStream-to-ReadFile binding and unchanged chunk copying establish only the traced stages; later transport or device transforms remain unknown.",
+    "No raw firmware export, adapter updater, general AutoCal backend, vehicle send path or live writer is added."
+  ],
+  "adapter_opened": false,
+  "target_executed": false,
+  "firmware_update_enabled": false,
+  "vehicle_transmissions_enabled": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false
+}

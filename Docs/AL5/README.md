@@ -43,6 +43,10 @@ The [setup-response and speed trace](AUTOCAL_TRANSPORT.md#setup-responses-and-th
 adds an offline PcmLibrary reply projector and follows the conditional
 A0/drain/A1/delay/purge sequence. Empty replies return a length of zero;
 firmware speed switching and restoration to 1x remain unqualified.
+The [polling, cleanup and firmware follow-up](AUTOCAL_TRANSPORT.md#polling-configuration-cleanup-exits-and-firmware-containers)
+connects `8603` to the host polling setting, separates cleanup failure paths,
+and validates the installed firmware-container layout without decoding or
+executing its opaque firmware regions.
 
 [Public-source research dated 2026-10-06](ONLINE_RESEARCH_20261006.md) records
 AL5-specific vendor programming/recovery guidance, conditional hardware leads

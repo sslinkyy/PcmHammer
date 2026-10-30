@@ -1,0 +1,567 @@
+{
+  "schema": "autocal-v2-efw-container-static-v1",
+  "artifacts": [
+    {
+      "role": "autocal_program",
+      "source_path": "C:\\Program Files (x86)\\EFILive\\V8\\Firmware\\ACProgV2_08_221.efw",
+      "source_bytes": 357388,
+      "source_sha256": "9886721c6d6ca919bad833192cc147f2f4657328b4024b0ac4aa5af28c2cb07c",
+      "source_prefix_up_to_16_bytes_hex": "008e0100b07b0c6774778430bb309be5",
+      "region_count": 3,
+      "regions": [
+        {
+          "region_ordinal_zero_based": 0,
+          "length_field_file_offset": 0,
+          "length_field_le32_hex": "008e0100",
+          "payload_file_offset": 4,
+          "payload_bytes": 101888,
+          "end_file_offset_exclusive": 101892,
+          "payload_sha256": "bfec60477df4623b860e30a7ab57620e124c91ab4eabdec5527aa1a0ea048d88",
+          "payload_prefix_up_to_16_bytes_hex": "b07b0c6774778430bb309be5fa85024b",
+          "length_multiple_of_256": true,
+          "byte_entropy_bits": 7.997847999842476,
+          "distinct_byte_values": 256,
+          "zero_bytes": 407,
+          "ff_bytes": 385,
+          "recognized_prefix_signature_candidates": [],
+          "known_string_counts": [
+            {
+              "literal": "EFILive",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "AutoCal",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "FlashScan",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "J1850",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            }
+          ],
+          "bounded_tail_period": null,
+          "instruction_architecture": null,
+          "compression_format": null,
+          "encryption_format": null,
+          "firmware_load_address": null,
+          "region_purpose": null
+        },
+        {
+          "region_ordinal_zero_based": 1,
+          "length_field_file_offset": 101892,
+          "length_field_le32_hex": "00800000",
+          "payload_file_offset": 101896,
+          "payload_bytes": 32768,
+          "end_file_offset_exclusive": 134664,
+          "payload_sha256": "165c3108342541879d09d752b7f515eda704034d33985bfdc8c3473053256e5d",
+          "payload_prefix_up_to_16_bytes_hex": "e2ac4bca4556398803e3a80bf0c621ba",
+          "length_multiple_of_256": true,
+          "byte_entropy_bits": 7.079882228223023,
+          "distinct_byte_values": 256,
+          "zero_bytes": 120,
+          "ff_bytes": 84,
+          "recognized_prefix_signature_candidates": [],
+          "known_string_counts": [
+            {
+              "literal": "EFILive",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "AutoCal",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "FlashScan",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "J1850",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            }
+          ],
+          "bounded_tail_period": {
+            "period_bytes": 4,
+            "matched_suffix_bytes": 4096,
+            "suffix_offset_within_region": 28672,
+            "examined_tail_bytes": 4096
+          },
+          "instruction_architecture": null,
+          "compression_format": null,
+          "encryption_format": null,
+          "firmware_load_address": null,
+          "region_purpose": null
+        },
+        {
+          "region_ordinal_zero_based": 2,
+          "length_field_file_offset": 134664,
+          "length_field_le32_hex": "00660300",
+          "payload_file_offset": 134668,
+          "payload_bytes": 222720,
+          "end_file_offset_exclusive": 357388,
+          "payload_sha256": "24e4cbe4dc2b5ed2e62166418cbbdaa219ab25452551a4d8199499a2db6e3165",
+          "payload_prefix_up_to_16_bytes_hex": "e2ac4bcab9598e0106c9b66c1ffa9502",
+          "length_multiple_of_256": true,
+          "byte_entropy_bits": 7.999181098844812,
+          "distinct_byte_values": 256,
+          "zero_bytes": 848,
+          "ff_bytes": 849,
+          "recognized_prefix_signature_candidates": [],
+          "known_string_counts": [
+            {
+              "literal": "EFILive",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "AutoCal",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "FlashScan",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "J1850",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            }
+          ],
+          "bounded_tail_period": {
+            "period_bytes": 4,
+            "matched_suffix_bytes": 74,
+            "suffix_offset_within_region": 222646,
+            "examined_tail_bytes": 4096
+          },
+          "instruction_architecture": null,
+          "compression_format": null,
+          "encryption_format": null,
+          "firmware_load_address": null,
+          "region_purpose": null
+        }
+      ],
+      "framing": "Observed positive LE32 byte length followed immediately by that many opaque bytes, repeated to exact EOF",
+      "framing_covers_complete_file": true,
+      "byte_entropy_bits": 7.978305408304694,
+      "physical_protocol_or_handler_identified": false
+    },
+    {
+      "role": "flashscan_program",
+      "source_path": "C:\\Program Files (x86)\\EFILive\\V8\\Firmware\\FSProgV2_08_221.efw",
+      "source_bytes": 408332,
+      "source_sha256": "1ba8677d15772e7dcfc569f301dcbaea521f0eccc2f22785b64cf473e418ad7b",
+      "source_prefix_up_to_16_bytes_hex": "00bc0100b07b564c0f9c9f2be0eb803e",
+      "region_count": 3,
+      "regions": [
+        {
+          "region_ordinal_zero_based": 0,
+          "length_field_file_offset": 0,
+          "length_field_le32_hex": "00bc0100",
+          "payload_file_offset": 4,
+          "payload_bytes": 113664,
+          "end_file_offset_exclusive": 113668,
+          "payload_sha256": "c3ac75ded3b3e1908d9464ce68f80d741fe45370e6dfb492c3bfe8a5f67ce3f8",
+          "payload_prefix_up_to_16_bytes_hex": "b07b564c0f9c9f2be0eb803eb16e3970",
+          "length_multiple_of_256": true,
+          "byte_entropy_bits": 7.998388827811674,
+          "distinct_byte_values": 256,
+          "zero_bytes": 436,
+          "ff_bytes": 459,
+          "recognized_prefix_signature_candidates": [],
+          "known_string_counts": [
+            {
+              "literal": "EFILive",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "AutoCal",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "FlashScan",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "J1850",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            }
+          ],
+          "bounded_tail_period": {
+            "period_bytes": 16,
+            "matched_suffix_bytes": 161,
+            "suffix_offset_within_region": 113503,
+            "examined_tail_bytes": 4096
+          },
+          "instruction_architecture": null,
+          "compression_format": null,
+          "encryption_format": null,
+          "firmware_load_address": null,
+          "region_purpose": null
+        },
+        {
+          "region_ordinal_zero_based": 1,
+          "length_field_file_offset": 113668,
+          "length_field_le32_hex": "00800000",
+          "payload_file_offset": 113672,
+          "payload_bytes": 32768,
+          "end_file_offset_exclusive": 146440,
+          "payload_sha256": "a0744a996df95f31cf3d0073e339ca75b7d165551ea5e1f8fbcdf873fc784348",
+          "payload_prefix_up_to_16_bytes_hex": "e2ac4bca4556398803e3a80bf0c621ba",
+          "length_multiple_of_256": true,
+          "byte_entropy_bits": 7.079135363858561,
+          "distinct_byte_values": 256,
+          "zero_bytes": 80,
+          "ff_bytes": 94,
+          "recognized_prefix_signature_candidates": [],
+          "known_string_counts": [
+            {
+              "literal": "EFILive",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "AutoCal",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "FlashScan",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "J1850",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            }
+          ],
+          "bounded_tail_period": {
+            "period_bytes": 4,
+            "matched_suffix_bytes": 4096,
+            "suffix_offset_within_region": 28672,
+            "examined_tail_bytes": 4096
+          },
+          "instruction_architecture": null,
+          "compression_format": null,
+          "encryption_format": null,
+          "firmware_load_address": null,
+          "region_purpose": null
+        },
+        {
+          "region_ordinal_zero_based": 2,
+          "length_field_file_offset": 146440,
+          "length_field_le32_hex": "00ff0300",
+          "payload_file_offset": 146444,
+          "payload_bytes": 261888,
+          "end_file_offset_exclusive": 408332,
+          "payload_sha256": "b35974e53f27fe6c5b7c6851f3a8a774d4df647a426b7d08ab04e04526ac5a69",
+          "payload_prefix_up_to_16_bytes_hex": "e2ac4bcab9598e0106c9b66c1ffa9502",
+          "length_multiple_of_256": true,
+          "byte_entropy_bits": 7.999263583016821,
+          "distinct_byte_values": 256,
+          "zero_bytes": 965,
+          "ff_bytes": 961,
+          "recognized_prefix_signature_candidates": [],
+          "known_string_counts": [
+            {
+              "literal": "EFILive",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "AutoCal",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "FlashScan",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "J1850",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            }
+          ],
+          "bounded_tail_period": {
+            "period_bytes": 2,
+            "matched_suffix_bytes": 178,
+            "suffix_offset_within_region": 261710,
+            "examined_tail_bytes": 4096
+          },
+          "instruction_architecture": null,
+          "compression_format": null,
+          "encryption_format": null,
+          "firmware_load_address": null,
+          "region_purpose": null
+        }
+      ],
+      "framing": "Observed positive LE32 byte length followed immediately by that many opaque bytes, repeated to exact EOF",
+      "framing_covers_complete_file": true,
+      "byte_entropy_bits": 7.983043867370222,
+      "physical_protocol_or_handler_identified": false
+    },
+    {
+      "role": "autocal_boot",
+      "source_path": "C:\\Program Files (x86)\\EFILive\\V8\\Firmware\\Boot Block\\ACBootV2_08_009.efw",
+      "source_bytes": 8196,
+      "source_sha256": "2c3ae5fce085d40c937bf9756c32e5490d425cf860a26eb202f78fe267b73885",
+      "source_prefix_up_to_16_bytes_hex": "00200000b07bba31804b5c9f7ac5c8dd",
+      "region_count": 1,
+      "regions": [
+        {
+          "region_ordinal_zero_based": 0,
+          "length_field_file_offset": 0,
+          "length_field_le32_hex": "00200000",
+          "payload_file_offset": 4,
+          "payload_bytes": 8192,
+          "end_file_offset_exclusive": 8196,
+          "payload_sha256": "d5aed91392f24b4b4c120fcc51a54f6902cfd53030b98358836f774401998def",
+          "payload_prefix_up_to_16_bytes_hex": "b07bba31804b5c9f7ac5c8ddb47770bb",
+          "length_multiple_of_256": true,
+          "byte_entropy_bits": 7.973161952205613,
+          "distinct_byte_values": 256,
+          "zero_bytes": 33,
+          "ff_bytes": 29,
+          "recognized_prefix_signature_candidates": [],
+          "known_string_counts": [
+            {
+              "literal": "EFILive",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "AutoCal",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "FlashScan",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "J1850",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            }
+          ],
+          "bounded_tail_period": {
+            "period_bytes": 16,
+            "matched_suffix_bytes": 198,
+            "suffix_offset_within_region": 7994,
+            "examined_tail_bytes": 4096
+          },
+          "instruction_architecture": null,
+          "compression_format": null,
+          "encryption_format": null,
+          "firmware_load_address": null,
+          "region_purpose": null
+        }
+      ],
+      "framing": "Observed positive LE32 byte length followed immediately by that many opaque bytes, repeated to exact EOF",
+      "framing_covers_complete_file": true,
+      "byte_entropy_bits": 7.973162351380219,
+      "physical_protocol_or_handler_identified": false
+    },
+    {
+      "role": "flashscan_boot",
+      "source_path": "C:\\Program Files (x86)\\EFILive\\V8\\Firmware\\Boot Block\\FSBootV2_08_009.efw",
+      "source_bytes": 8196,
+      "source_sha256": "ea2551a99c0ca2bb433fbc313ea97b9ab3bc775eae5a61fd61add8e98887a670",
+      "source_prefix_up_to_16_bytes_hex": "00200000b07bba31804b5c9f7ac55e47",
+      "region_count": 1,
+      "regions": [
+        {
+          "region_ordinal_zero_based": 0,
+          "length_field_file_offset": 0,
+          "length_field_le32_hex": "00200000",
+          "payload_file_offset": 4,
+          "payload_bytes": 8192,
+          "end_file_offset_exclusive": 8196,
+          "payload_sha256": "60452e62a0099bf1c4355dc703c9f6f5f903d0c1d1fae3d58a6c0e57c2c90a58",
+          "payload_prefix_up_to_16_bytes_hex": "b07bba31804b5c9f7ac55e4732fd2ea1",
+          "length_multiple_of_256": true,
+          "byte_entropy_bits": 7.96979878933499,
+          "distinct_byte_values": 256,
+          "zero_bytes": 26,
+          "ff_bytes": 26,
+          "recognized_prefix_signature_candidates": [],
+          "known_string_counts": [
+            {
+              "literal": "EFILive",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "AutoCal",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "FlashScan",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            },
+            {
+              "literal": "J1850",
+              "ascii_occurrences": 0,
+              "utf16le_occurrences": 0
+            }
+          ],
+          "bounded_tail_period": {
+            "period_bytes": 32,
+            "matched_suffix_bytes": 152,
+            "suffix_offset_within_region": 8040,
+            "examined_tail_bytes": 4096
+          },
+          "instruction_architecture": null,
+          "compression_format": null,
+          "encryption_format": null,
+          "firmware_load_address": null,
+          "region_purpose": null
+        }
+      ],
+      "framing": "Observed positive LE32 byte length followed immediately by that many opaque bytes, repeated to exact EOF",
+      "framing_covers_complete_file": true,
+      "byte_entropy_bits": 7.969908319406031,
+      "physical_protocol_or_handler_identified": false
+    }
+  ],
+  "comparisons": [
+    {
+      "left_role": "autocal_program",
+      "right_role": "flashscan_program",
+      "regions_compared_by_ordinal": [
+        {
+          "region_ordinal_zero_based": 0,
+          "left_payload_file_offset": 4,
+          "right_payload_file_offset": 4,
+          "left_bytes": 101888,
+          "right_bytes": 113664,
+          "exact_region_bytes_equal": false,
+          "common_prefix_bytes": 2,
+          "common_suffix_bytes": 0,
+          "same_offset_overlap_bytes_examined": 101888,
+          "equal_bytes_at_same_region_offset": 371,
+          "common_prefix_sha256": "c8a625f434b64aeba48858a18b5a036c7120ceebfdf7da466b4ce32329829d7d"
+        },
+        {
+          "region_ordinal_zero_based": 1,
+          "left_payload_file_offset": 101896,
+          "right_payload_file_offset": 113672,
+          "left_bytes": 32768,
+          "right_bytes": 32768,
+          "exact_region_bytes_equal": false,
+          "common_prefix_bytes": 9312,
+          "common_suffix_bytes": 0,
+          "same_offset_overlap_bytes_examined": 32768,
+          "equal_bytes_at_same_region_offset": 9312,
+          "common_prefix_sha256": "d304eb1d4950a65f521d9b38219b21c22c5c904370056452b744cd43f1e1a4c1"
+        },
+        {
+          "region_ordinal_zero_based": 2,
+          "left_payload_file_offset": 134668,
+          "right_payload_file_offset": 146444,
+          "left_bytes": 222720,
+          "right_bytes": 261888,
+          "exact_region_bytes_equal": false,
+          "common_prefix_bytes": 18,
+          "common_suffix_bytes": 0,
+          "same_offset_overlap_bytes_examined": 222720,
+          "equal_bytes_at_same_region_offset": 949,
+          "common_prefix_sha256": "c8e67d5ea04ff51c0621379fb01d7d9efcebcb3c59fcf4d99c462bdfe7eebaf1"
+        }
+      ],
+      "unpaired_left_regions": [],
+      "unpaired_right_regions": [],
+      "same_function_or_memory_mapping_inferred": false
+    },
+    {
+      "left_role": "autocal_boot",
+      "right_role": "flashscan_boot",
+      "regions_compared_by_ordinal": [
+        {
+          "region_ordinal_zero_based": 0,
+          "left_payload_file_offset": 4,
+          "right_payload_file_offset": 4,
+          "left_bytes": 8192,
+          "right_bytes": 8192,
+          "exact_region_bytes_equal": false,
+          "common_prefix_bytes": 10,
+          "common_suffix_bytes": 0,
+          "same_offset_overlap_bytes_examined": 8192,
+          "equal_bytes_at_same_region_offset": 35,
+          "common_prefix_sha256": "5832e5558cbef33ed26a81c6969357b1db0272a7025385c39a85dedc854e45e1"
+        }
+      ],
+      "unpaired_left_regions": [],
+      "unpaired_right_regions": [],
+      "same_function_or_memory_mapping_inferred": false
+    }
+  ],
+  "implementation": [
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_autocal_firmware_container.py",
+      "bytes": 11521,
+      "sha256": "2e5796983880a3d9236f69b8aaae2aee3388eee3f8c80886e2c3e49d85ce0c2b"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\al5_segment.py",
+      "bytes": 1710,
+      "sha256": "c391085ae14ed3f8c762c0ad2baf174474d2287fc17d95b3a5bb4ba3fe169edb"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\validate_vm_buffers.py",
+      "bytes": 3869,
+      "sha256": "198c7b1a1fd0e69b73a90be502bd642a405bb0b6d52bca8cf054c24126a21f62"
+    }
+  ],
+  "observations": [
+    "Each pinned program file has three LE32-length regions; each pinned boot file has one. Framing consumes every source byte.",
+    "The first payloads begin with bytes B0 7B. Program payloads at ordinals1 and2 begin E2 AC 4B CA.",
+    "All eight observed payload lengths are multiples of256; this does not establish flash page size or target alignment.",
+    "AutoCal and FlashScan program middle regions share a9312-byte prefix but are not identical. The remaining same-offset bytes differ.",
+    "The final4096 bytes of both middle regions are periodic with period4. Other bounded periodic tails are reported per region."
+  ],
+  "derivations": [
+    "The exact outer lengths expose stable byte ranges that a native EFW reader could consume independently.",
+    "High byte entropy coexists with repeated suffix patterns. Entropy is a measurement, not evidence sufficient to choose compression, encryption, obfuscation or machine architecture."
+  ],
+  "unknowns": [
+    "No decode transform, cryptographic mode/key, compression format, checksums or signatures have been established by this collector.",
+    "No raw executable region, instruction architecture, load address or purpose is established.",
+    "8603/8604/A1 firmware handler locations and physical1x/4x behavior remain unknown; short random byte-pattern matches would not establish handlers.",
+    "Missing known strings and unrecognized leading signatures do not prove encrypted content or exclude compression.",
+    "Installed filenames and pinned package versions do not establish the firmware currently running on a connected adapter."
+  ],
+  "limits": [
+    "Only four exact local artifacts are accepted; this is not a general EFW parser.",
+    "No raw region export, target execution, decompression, update or device I/O occurs.",
+    "Public output contains lengths, offsets, digests, scalar statistics, <=16-byte prefixes and fixed-string counts only.",
+    "Tail tests cover at most4096 bytes and periods1..256; same-ordinal comparisons do not establish same function or memory mapping."
+  ],
+  "adapter_opened": false,
+  "firmware_executed": false,
+  "firmware_update_attempted": false,
+  "physical_protocol_validation": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false
+}
