@@ -1,0 +1,239 @@
+{
+  "schema": "autocal-ack-prefix-success-v1",
+  "inputs": [
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\AutoCalBackendProbe\\e54_read_prefix_ack_gt_01.json",
+      "bytes": 11888,
+      "sha256": "a4019faef69297465ea3b5f6031d559421d20080e41e08c1011c385ff8bdd457"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\AutoCalBackendProbe\\e54_read_prefix_ack_gt_01.json.journal.jsonl",
+      "bytes": 22869,
+      "sha256": "e671e238dac00d3357e9b0b12452e267e18c22d6199b73255d6dc47722bf4e7b"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\AutoCalBackendProbe\\gt_e54_read_prefix_ack_1x_01.jsonl",
+      "bytes": 1315523,
+      "sha256": "d43c7d360e67859fcc18ad13fc93e054a35cd9a228a149073d10116fb9f2f039"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\AutoCalBackendProbe\\e54_read_prefix_ack_gt_01.json.readback.bin",
+      "bytes": 64,
+      "sha256": "5b20a24c0d5c5618de617dd929c4baffe7ba4cf151648398f68f0105bd43a5d9"
+    }
+  ],
+  "implementation": {
+    "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\audit_ack_prefix_success.py",
+    "bytes": 3953,
+    "sha256": "baa47abac912b14a5d9da99c758222d17f3c7b6a624f2463defcb85af471a6e7"
+  },
+  "gt": {
+    "strict_replay_complete": true,
+    "original_serial_chunks": 1029,
+    "adapter_tx_frames": 87,
+    "adapter_rx_frames": 87,
+    "network_frames": 3261,
+    "adapter_errors": 0,
+    "outgoing_guard_violations": 0,
+    "message_prefix_counts": {
+      "49921001": 3020,
+      "08ff1003": 53,
+      "6cf0107c": 2,
+      "6cf01068": 1,
+      "6cf01067": 2,
+      "6cf01074": 1,
+      "6cf01076": 2,
+      "6cf0107d": 2,
+      "6df01075": 1,
+      "6df01036": 1,
+      "6cf01060": 1,
+      "88531004": 9,
+      "49fe1006": 1,
+      "68131011": 1,
+      "88151001": 7,
+      "88291001": 1,
+      "881b1010": 1,
+      "28931002": 8,
+      "a8b31011": 1,
+      "8883100a": 1,
+      "a8831012": 1,
+      "68491010": 1,
+      "884b1011": 1,
+      "a80b1020": 1,
+      "a84b1014": 2,
+      "c83b103c": 1,
+      "883b103d": 1,
+      "c8531022": 1,
+      "683310a1": 7,
+      "a8f31011": 1,
+      "882b100b": 7,
+      "88291002": 1,
+      "a9241003": 7,
+      "e93b1022": 7,
+      "c9141010": 7,
+      "c93a1003": 7,
+      "a93a1005": 7,
+      "c9321003": 7,
+      "c8831016": 1,
+      "8aea1020": 70,
+      "8aea10a0": 7
+    },
+    "all_network_vpw_crcs_valid": true,
+    "checked_physical_crc_frames": 3261,
+    "context": {
+      "network_frames": 3261,
+      "capture_started_source_line_one_based": 239,
+      "network_frames_before_capture_started": [
+        {
+          "network_ordinal": 0,
+          "missing_checked_context": [
+            "31:02"
+          ]
+        },
+        {
+          "network_ordinal": 1,
+          "missing_checked_context": [
+            "31:02"
+          ]
+        },
+        {
+          "network_ordinal": 2,
+          "missing_checked_context": [
+            "31:02"
+          ]
+        },
+        {
+          "network_ordinal": 3,
+          "missing_checked_context": [
+            "31:02"
+          ]
+        }
+      ],
+      "checked_network_ordinal_ranges_zero_based": [
+        {
+          "start": 4,
+          "end_exclusive": 3261
+        }
+      ],
+      "checked_network_frame_count": 3257,
+      "all_post_start_network_frames_have_checked_context": true,
+      "fixed_speed_setting": "1x",
+      "physical_speed_measured": false,
+      "exact_source": 16,
+      "crc_display_and_validation_enabled": true,
+      "final_network_off_get_verified": true,
+      "all_nine_saved_settings_separately_restored_and_read_back": true,
+      "hidden_coupled_filter_state_proven": false,
+      "counter_snapshots": [
+        {
+          "counter_semantics_verified": false,
+          "counts_raw": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            97,
+            0,
+            0
+          ],
+          "kind": "vpw_error_counter_snapshot",
+          "phase": "before_listener_configuration",
+          "read_clears_counter": true,
+          "requested_indices": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "success": true
+        },
+        {
+          "counter_semantics_verified": false,
+          "counts_raw": [
+            4,
+            0,
+            0,
+            0,
+            0,
+            16,
+            0,
+            0,
+            0,
+            0,
+            157,
+            0,
+            0
+          ],
+          "kind": "vpw_error_counter_snapshot",
+          "phase": "after_network_off",
+          "read_clears_counter": true,
+          "requested_indices": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "success": true
+        }
+      ],
+      "correlated_setting_get_count": 38
+    },
+    "source_reported_success": true,
+    "monotonic_timing_scope": "GT serial receipt time, not physical edge time; no shared origin with AutoCal elapsed_ms."
+  },
+  "application_tx": 23,
+  "application_rx": 20,
+  "ordered_shared_vpw_replies": 13,
+  "gt_reply_ordinals": [
+    573,
+    577,
+    578,
+    579,
+    580,
+    581,
+    582,
+    583,
+    584,
+    585,
+    586,
+    587,
+    996
+  ],
+  "ack_elapsed_ms": 3197,
+  "data_elapsed_ms": 3197,
+  "readback_length": 64,
+  "readback_sha256": "5b20a24c0d5c5618de617dd929c4baffe7ba4cf151648398f68f0105bd43a5d9",
+  "raw_block_checksum_valid": true,
+  "exit_and_post_exit_os_verified": true,
+  "host_cleanup_verified": true,
+  "full_image_verified": false,
+  "flashing_enabled": false,
+  "limits": [
+    "One fixed prefix experiment; no full-image, 4x, losslessness, flash or recovery qualification.",
+    "Supports the preliminary acknowledgement hypothesis; does not establish internal AutoCal firmware logic."
+  ]
+}

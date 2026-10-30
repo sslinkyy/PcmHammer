@@ -915,7 +915,18 @@ read phase, and permits the data response only afterward. Prefix checksum,
 baseline hash, exit and ordinary identity remain required. Already queued bytes
 after the prefix prevent an exit in this experiment. All these checks are
 offline evidence; actual two-frame timing, AutoCal delivery, complete image
-reads and programming remain unqualified. No ACK variant has run on hardware.
+reads and programming remain unqualified. The subsequent
+[acknowledged-prefix bench test](AUTOCAL_E54_ACK_PREFIX_SUCCESS_20261030.json)
+passed: AutoCal delivered the exact Mode75 acknowledgement and the correct
+64-byte submode-zero reply, both observed in the native journal at 3,197 ms.
+The shared timestamp is a host-read timestamp, not a physical inter-frame delay.
+All 13 AutoCal VPW replies match the independently replayed GT capture in order.
+The prefix checksum and baseline digest pass. Kernel exit and post-exit OS
+15189044 pass, recorded adapter cleanup succeeds, and native owners close.
+The GT verified OFF and restored its settings. This supports the preliminary
+acknowledgement hypothesis for this fixed request; internal AutoCal firmware
+logic, complete-image reads, 4x transitions, programming and recovery remain
+unqualified.
 
 ## Remaining integration work
 

@@ -303,8 +303,13 @@ checksum-valid submode-zero prefix. Missing, changed, repeated or out-of-phase
 acknowledgements stop the session. Already queued receive bytes after a valid
 prefix also prevent exit in this profile; that check does not establish future
 bus silence. Adapter configuration, request extent and command budgets remain
-the same as the zero-submode control. This candidate has offline validation only
-until a separate physical receipt exists. No flash operation is enabled.
+the same as the zero-submode control. The first
+[physical acknowledged-prefix test](../../../Docs/AL5/AUTOCAL_E54_ACK_PREFIX_SUCCESS_20261030.json)
+passed: exact ACK, valid 64-byte baseline prefix, kernel exit and ordinary
+OS 15189044. All 13 received VPW replies also match the GT capture in order.
+The GT returned OFF and restored settings; AutoCal closed with zero retained
+owners. This qualifies only the fixed prefix experiment. Full-image reads,
+4x operation, flashing and recovery remain unqualified. No flash operation is enabled.
 
 The pinned RAM-kernel version/exit/ordinary-identity sequence has passed on the
 isolated E54 bench. Full flash readback, the backend's 4x transition, programming
