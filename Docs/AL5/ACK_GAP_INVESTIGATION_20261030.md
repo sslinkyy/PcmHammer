@@ -18,6 +18,12 @@ The findings below were derived from saved files. The additional offline
 instrumentation does not enable controller writes or flash operations. Live AL5
 writes remain disabled. Any subsequent adapter check is recorded separately.
 
+The next investigation step is the
+[USB/serial comparison](USB_CAPTURE_COMPARISON.md). USBPcap 1.5.4.0 was installed
+and its files/signatures verified with the bench OFF. A Windows restart and the
+first simultaneous USB/serial capture remain pending; no new hardware result is
+implied by the offline comparator or its fixture tests.
+
 ## What the existing evidence establishes
 
 The earlier all-source run omitted block ACKs associated with `0x025000` and

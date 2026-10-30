@@ -383,6 +383,11 @@ It therefore establishes reception in both directions, not a complete capture.
 
 ## Separating recorded-byte completeness from electrical behavior
 
+The [USB/serial comparison workflow](USB_CAPTURE_COMPARISON.md) adds an offline
+classic-PCAP comparator and records the USBPcap setup/restart checkpoint. It
+compares selected USB bulk-IN data with the entire raw serial log without
+trimming or repairing either stream. Actual USB capture remains to be validated.
+
 `analyze_capture_delivery.py` reuses strict replay and accounts for every saved
 receive byte against the reconstructed DVI frames. It maps network frames to
 their original `serial_rx` lines and byte offsets, preserving host timestamps
