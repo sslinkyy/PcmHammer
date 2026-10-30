@@ -13,6 +13,7 @@ dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --
 dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-ram-copy
 dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-kernel-info
 dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-read-baseline
+dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-read-prefix
 ```
 
 The USB-only profile requires the OBD cable physically disconnected and EFILive,
@@ -48,10 +49,19 @@ Live invocation forms (not automatic test steps):
 --e54-ram-copy --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
 --e54-kernel-info --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
 --e54-read-baseline --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
+--e54-read-prefix --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
 ```
 
 Each receipt must be a new direct child of `LocalOnly/AutoCalBackendProbe`.
 All profiles journal raw TX/RX and source, assembly, and native-library hashes.
+The prefix-read profile reserves a private `.readback.bin` sibling and reads
+only 64 bytes at address zero, after the same kernel and flash-ID checks.
+It requires the pinned prefix SHA-256
+`5b20a24c0d5c5618de617dd929c4baffe7ba4cf151648398f68f0105bd43a5d9`
+before exit and the final OS-ID. It sends no CRC queries, cannot retry the
+read, and cannot qualify a full image. Its limits are 44 VPW payload commands,
+51 host commands and 180 seconds. This diagnostic changes only the requested
+read extent; adapter setup, kernel and speed remain as in the full-read attempt.
 The exact request guard rejects any unlisted command, different payload,
 reordered request, replay, or incorrect continuation after a partial write.
 There are no arbitrary payload, file, address, retry, security algorithm,
@@ -134,8 +144,26 @@ The command budget is 392 VPW payloads and 399 host commands, with a 900-second
 overall deadline. A new `.readback.bin` sibling is reserved before opening USB;
 an image is usable only when its receipt reports verified completion. Failure
 stops protocol traffic and closes owned host resources; it does not reset or
-re-upload automatically. Before its first bench run, this mode has only offline
-qualification. Flash programming and speed changes remain blocked.
+re-upload automatically. Flash programming and speed changes remain blocked.
+
+The first physical baseline-read attempt **failed at its first data request**;
+see the [failed-read audit](../../../Docs/AL5/AUTOCAL_E54_FULL_READ_BLOCKED_20261030.json).
+Setup, initial OS identity, pinned kernel version and flash ID `00894471` passed.
+The single `6D 10 F0 35 01 10 00 00 00 00` request was submitted at 3,130 ms.
+No bytes were returned by subsequent D2XX reads over five logical 10-second
+receive windows. The generic reader's attempted resend was blocked before
+native submission. Zero data blocks and CRC ranges completed; the reserved
+readback file is empty. No exit/reset or adapter protocol cleanup followed, and
+the native owner closed with zero retained owners. A bench power cycle was
+required at the stopped session's boundary.
+
+The journal contains eighteen TX and thirteen RX host envelopes, all 31 outer
+CRCs valid, including fourteen VPW requests and nine replies before the data
+wait. It has 475 zero-byte native reads after the data request; this is separate
+from the five logical timeouts. These host observations do not identify whether
+the kernel or adapter caused the missing data. The full-read path remains
+unqualified, and the previous successful kernel-info result does not change
+that conclusion.
 
 After failure the tool sends no additional protocol cleanup and closes only
 owned host resources. A native operation still running at its deadline remains

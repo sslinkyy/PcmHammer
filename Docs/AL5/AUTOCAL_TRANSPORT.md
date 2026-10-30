@@ -737,6 +737,57 @@ This qualifies the observed version/exit/identity sequence for this pinned
 kernel on this bench attachment. It does not establish full flash readback,
 other kernels, physical 4x behavior, programming or interrupted-flash recovery.
 
+## First full-read attempt: no data reply
+
+The [failed full-read audit](AUTOCAL_E54_FULL_READ_BLOCKED_20261030.json)
+records the first physical `e54-read-baseline` attempt from commit `19ff0fb`.
+All 22 recorded source hashes match that commit, and both runtime assembly
+hashes match the archived build under `LocalOnly/AutoCalBackendProbe/builds/19ff0fb`.
+Adapter setup, initial OS `15189044`,
+both pinned RAM uploads, the exact kernel version, and flash ID `00894471`
+(Intel 28F400B) passed. This run did **not** complete a flash image read.
+
+At journal time 3,130 ms, the probe submitted one request for 4,096 bytes at
+address zero: `6D 10 F0 35 01 10 00 00 00 00`. No bytes were subsequently
+delivered by native D2XX reads. The journal records 475 zero-byte native read
+completions after that request, through 53,189 ms. The five logical receive
+windows each used the configured 10-second timeout. When the shared reader
+attempted to resend the request, the policy rejected it before host submission.
+There was exactly one submitted data request and no further protocol traffic.
+
+The audit independently reconstructed eighteen TX and thirteen RX application
+envelopes (2,380 and 267 bytes), with all 31 outer CRCs valid and no short write.
+Fourteen TX and nine RX envelopes carried VPW payloads. The entire run contains
+502 native read completions, including 489 zero-byte reads; those native calls
+must not be confused with the five logical receive timeouts. Both outgoing RAM
+fragments match the pinned kernel and have valid block checksums.
+
+Zero data blocks and zero controller CRC ranges completed. The reserved
+`.readback.bin` file is empty, and no image hash or comparison to the GT baseline
+was obtained. The receipt's top-level `received_vpw_frames = 0` and null identity
+fields are success-only defaults: the journal and nested `kernel_result` retain
+the nine actual replies and the successful initial identity. They do not mean
+the adapter returned nothing during the whole session.
+
+No exit/reset, post-exit identity, DTC clear, speed change, flash erase/program
+or recorded adapter cleanup followed the failure. Native transport disposal
+completed with zero retained owners and no channel or cleanup fault. The run
+ended requiring a bench power cycle; a later reset or identity result must be
+recorded separately. Physical speed remains unmeasured.
+
+The repeatable [saved-read comparison](AUTOCAL_READ_GAP_20261030.json) finds
+that the failed first request matches EFILive read 12 record 158 byte for byte,
+including the outer wrapper and CRC. The saved read returned short acknowledgements
+and data for all 128 requests. Its earlier adapter state and different kernel
+remain relevant differences; an identical request alone does not identify why
+the independent attempt returned no data.
+
+This establishes a failure at the first data exchange, not its cause. The D2XX
+journal cannot distinguish missing kernel transmission from adapter reception,
+setup, filtering, timing or framing behavior. No independent bus capture belongs
+to this run. The earlier successful kernel version/exit session remains separate
+evidence; the independent AutoCal full-read path is still unqualified.
+
 ## Remaining integration work
 
 The developer probe now has a separate fixed baseline-read profile. It reuses
@@ -747,7 +798,9 @@ the new running-kernel entry point leaves those responsibilities with its caller
 The AutoCal coordinator allows successful exit only after verified readback;
 any failure stops without another RAM upload or controller reset. Offline tests
 cover corrupt blocks, mismatched baseline/CRCs, wrong flash identity and
-cancellation. This implementation is not yet evidence of a physical full read.
+cancellation. Its first physical attempt reached the known kernel and flash ID
+but returned no data for the first block, as recorded above. Offline passing
+tests do not qualify the failed physical read path.
 
 The bounded setup, ordinary identity, COPY-only observation, post-reset identity
 and pinned-kernel version/exit sequence have passed. Full image readback and

@@ -15,7 +15,7 @@ using PcmHacking;
 internal enum AutoCalKernelProbeStage
 {
     NotStarted, InitialIdentity, SuppressChatter, Unlock, RamUpload,
-    KernelVersion, ExitKernel, PostExitIdentity, Complete, RamCopyObserved, FullRead
+    KernelVersion, ExitKernel, PostExitIdentity, Complete, RamCopyObserved, FullRead, ShortRead
 }
 
 internal sealed class AutoCalKernelProbeResult
@@ -37,6 +37,8 @@ internal sealed class AutoCalKernelProbeResult
     public bool RamCopyBytesVerified => false;
     public int ReadbackLength { get; internal set; }
     public string? ReadbackSha256 { get; internal set; }
+    // BaselineMatched applies only to this scope, never to unread bytes.
+    public string? ReadbackScope { get; internal set; }
     public bool ReadbackCrcVerified { get; internal set; }
     public bool BaselineMatched { get; internal set; }
     [JsonIgnore]
@@ -58,19 +60,23 @@ internal sealed class AutoCalKernelProbeSession
     private readonly CancellationToken cancellation;
     private readonly bool copyOnly;
     private readonly bool fullRead;
+    private readonly bool shortRead;
     private int started;
 
     public AutoCalKernelProbeSession(AutoCalDevice device, ILogger logger,
-        AutoCalKernelProbePolicy policy, CancellationToken cancellationToken, bool copyOnly = false, bool fullRead = false)
+        AutoCalKernelProbePolicy policy, CancellationToken cancellationToken, bool copyOnly = false, bool fullRead = false, bool shortRead = false)
     {
         inner = device ?? throw new ArgumentNullException(nameof(device));
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         this.policy = policy ?? throw new ArgumentNullException(nameof(policy));
         cancellation = cancellationToken;
         this.copyOnly = copyOnly;
-        if (copyOnly && fullRead) throw new ArgumentException("Copy-only and full-read modes are mutually exclusive.");
-        if (policy.FullReadEnabled != fullRead) throw new ArgumentException("Policy and session read modes differ.");
+        if (copyOnly && (fullRead || shortRead) || fullRead && shortRead)
+            throw new ArgumentException("Copy-only, full-image and short-prefix modes are mutually exclusive.");
+        if (policy.FullReadEnabled != fullRead || policy.ShortReadEnabled != shortRead)
+            throw new ArgumentException("Policy and session read modes differ.");
         this.fullRead = fullRead;
+        this.shortRead = shortRead;
     }
 
     public async Task<AutoCalKernelProbeResult> RunAsync()
@@ -153,6 +159,7 @@ internal sealed class AutoCalKernelProbeSession
             if (fullRead)
             {
                 result.Stage = AutoCalKernelProbeStage.FullRead;
+                result.ReadbackScope = "full-image";
                 var reader = new CKernelReader(vehicle, info, logger);
                 Response<Stream> read = await reader.ReadRunningKernelContents(cancellation).ConfigureAwait(false);
                 if (read.Value != null)
@@ -175,6 +182,36 @@ internal sealed class AutoCalKernelProbeSession
                     && result.ReadbackSha256 == AutoCalKernelProbePolicy.ExpectedBaselineSha256;
                 if (!result.BaselineMatched)
                     throw new InvalidDataException("Readback differs from the pinned GT baseline; no programming or automatic controller cleanup will follow.");
+            }
+            else if (shortRead)
+            {
+                result.Stage = AutoCalKernelProbeStage.ShortRead;
+                result.ReadbackScope = "baseline-prefix";
+                await vehicle.SendToolPresentNotification().ConfigureAwait(false);
+                Response<uint> flashId = await vehicle.QueryFlashChipId(cancellation).ConfigureAwait(false);
+                cancellation.ThrowIfCancellationRequested();
+                if (flashId.Status != ResponseStatus.Success || !policy.IsFlashIdentityVerified)
+                    throw new InvalidDataException("Short read did not verify the expected flash identity.");
+                await guarded.SetTimeout(TimeoutScenario.ReadMemoryBlock).ConfigureAwait(false);
+                await vehicle.ForceSendToolPresentNotification().ConfigureAwait(false);
+                // Exactly one memory request. Receive attempts are passive; no
+                // outer TryReadBlock retry or generic cleanup is involved.
+                Response<byte[]> read = await vehicle.ReadMemory(
+                    () => protocol.CreateReadRequest(0, AutoCalKernelProbePolicy.ShortReadLength),
+                    reply => protocol.ParsePayload(reply, AutoCalKernelProbePolicy.ShortReadLength, 0), cancellation).ConfigureAwait(false);
+                cancellation.ThrowIfCancellationRequested();
+                if (read.Status != ResponseStatus.Success || !policy.IsShortReadVerified)
+                    throw new InvalidDataException("Short read did not return the pinned baseline prefix: " + read.Status);
+                result.ReadbackBytes = (byte[])read.Value.Clone();
+                result.ReadbackLength = result.ReadbackBytes.Length;
+                result.ReadbackSha256 = Convert.ToHexString(SHA256.HashData(result.ReadbackBytes)).ToLowerInvariant();
+                result.BaselineMatched = result.ReadbackLength == AutoCalKernelProbePolicy.ShortReadLength
+                    && result.ReadbackSha256 == AutoCalKernelProbePolicy.ExpectedShortReadSha256;
+                if (!result.BaselineMatched)
+                    throw new InvalidDataException("The 64-byte prefix differs from the pinned GT baseline.");
+                // A valid transfer checksum and prefix digest establish no
+                // controller range CRC or full-image verification.
+                result.ReadbackCrcVerified = false;
             }
 
             // Exit only follows a verified kernel. Failure at any earlier step
@@ -287,7 +324,8 @@ internal sealed class AutoCalKernelProbeSession
         {
             Check();
             if (scenario != TimeoutScenario.Minimum && scenario != TimeoutScenario.ReadProperty && scenario != TimeoutScenario.SendKernel
-                && !(policy.FullReadEnabled && (scenario == TimeoutScenario.ReadMemoryBlock || scenario == TimeoutScenario.ReadCrc)))
+                && !(policy.ReadEnabled && scenario == TimeoutScenario.ReadMemoryBlock)
+                && !(policy.FullReadEnabled && scenario == TimeoutScenario.ReadCrc))
                 throw new NotSupportedException("Timeout scenario is outside the bounded RAM-kernel session.");
             TimeoutScenario previous = currentTimeoutScenario;
             await inner.SetTimeout(scenario).ConfigureAwait(false);

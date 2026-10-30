@@ -55,6 +55,10 @@ internal static partial class AutoCalKernelProbePolicyTest
         Run("full-read CRC response correlation and values are strict", FullReadCrcFailures);
         Run("full-read CRC polls and notifications have derived bounds", FullReadBudgets);
         Run("full-read host guard keeps cleanup behind entire verified read", FullReadHostBoundary);
+        Run("short read exact prefix preserves distinct full-image state", ShortReadSuccess);
+        Run("short read rejects ambiguous mode alternate reads CRC and replay", ShortReadRequests);
+        Run("short read rejects malformed blocks checksum and wrong baseline prefix", ShortReadResponses);
+        Run("short read native host guard gates entire fixed prefix exchange", ShortReadHostBoundary);
         Console.WriteLine(JsonSerializer.Serialize(new { assertions, passed, failed, kernelPath = path,
             kernelSha256 = AutoCalKernelProbePolicy.ExpectedKernelSha256,
             hardwareAccess = false, liveWriteEnabled = false, hardwareQualificationClaimedByThisRun = false,

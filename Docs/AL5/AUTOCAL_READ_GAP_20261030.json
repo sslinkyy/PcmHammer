@@ -1,0 +1,451 @@
+{
+  "schema": "autocal-saved-read-gap-v1",
+  "scope": "Exact first-read host-envelope comparison and saved receive observations; file-only.",
+  "actual": {
+    "journal_record_count": 544,
+    "first_request": {
+      "journal_line_one_based": 65,
+      "elapsed_ms": 3130,
+      "direction": "host_to_device",
+      "header_hex": "0154008a0700100000000a00",
+      "wrapper_bytes": 24,
+      "wrapper_sha256": "a412082f56aa79d52e32d7210382ebafcd148521ee612f4ace51e75b074b3062",
+      "payload_bytes": 10,
+      "payload_sha256": "a6a91aba484c75f2ddbed9a370e1a582fdd49d3da81627c01de7c85bcb70b97d",
+      "outer_crc_matches": true,
+      "command_hex": "8A00",
+      "vpw_prefix_hex": "6d10f035",
+      "literal_fixed_diagnostic_payload_hex": "6d10f035011000000000"
+    },
+    "first_request_completed_elapsed_ms": 3130,
+    "application_tx_count": 18,
+    "application_rx_count": 13,
+    "vpw_tx_count": 14,
+    "vpw_rx_count": 9,
+    "all_completed_wrapper_crcs_valid": true,
+    "uncompleted_writes": 0,
+    "partial_rx_bytes": 0,
+    "vpw_tx_prefix_counts": {
+      "6c10f03c": 1,
+      "6cfef028": 1,
+      "8cfef03f": 4,
+      "6c10f027": 2,
+      "6c10f034": 1,
+      "6d10f036": 2,
+      "6c10f03d": 2,
+      "6d10f035": 1
+    },
+    "vpw_rx_prefix_counts": {
+      "6cf0107c": 1,
+      "8cf01068": 1,
+      "6cf01067": 2,
+      "6cf01074": 1,
+      "6cf01076": 2,
+      "6cf0107d": 2
+    },
+    "setup_before_first_request": [
+      {
+        "journal_line_one_based": 6,
+        "elapsed_ms": 134,
+        "direction": "host_to_device",
+        "header_hex": "015404860700000000000100",
+        "wrapper_bytes": 15,
+        "wrapper_sha256": "1afd9e9bc59bba4642c5072de347ac88650fe4e1667378ccffe36d56f4af987f",
+        "payload_bytes": 1,
+        "payload_sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "outer_crc_matches": true,
+        "command_hex": "8604",
+        "literal_small_setup_payload_hex": "00"
+      },
+      {
+        "journal_line_one_based": 9,
+        "elapsed_ms": 246,
+        "direction": "host_to_device",
+        "header_hex": "015400880700000000000200",
+        "wrapper_bytes": 16,
+        "wrapper_sha256": "221b342ac2f0a748bc3f47b1897a11af6a467e07be1f7e93d10d2a96fc35915c",
+        "payload_bytes": 2,
+        "payload_sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+        "outer_crc_matches": true,
+        "command_hex": "8800",
+        "literal_small_setup_payload_hex": "0000"
+      },
+      {
+        "journal_line_one_based": 12,
+        "elapsed_ms": 355,
+        "direction": "host_to_device",
+        "header_hex": "015404860700000000000600",
+        "wrapper_bytes": 20,
+        "wrapper_sha256": "4b7aeffc8e91f85330bbe0b7d588ac09617fc80a70d4b4df60847aea0bb436b1",
+        "payload_bytes": 6,
+        "payload_sha256": "b0f66adc83641586656866813fd9dd0b8ebb63796075661ba45d1aa8089e1d44",
+        "outer_crc_matches": true,
+        "command_hex": "8604",
+        "literal_small_setup_payload_hex": "000000000000"
+      }
+    ],
+    "last_small_setup_before_first_request": {
+      "journal_line_one_based": 12,
+      "elapsed_ms": 355,
+      "direction": "host_to_device",
+      "header_hex": "015404860700000000000600",
+      "wrapper_bytes": 20,
+      "wrapper_sha256": "4b7aeffc8e91f85330bbe0b7d588ac09617fc80a70d4b4df60847aea0bb436b1",
+      "payload_bytes": 6,
+      "payload_sha256": "b0f66adc83641586656866813fd9dd0b8ebb63796075661ba45d1aa8089e1d44",
+      "outer_crc_matches": true,
+      "command_hex": "8604",
+      "literal_small_setup_payload_hex": "000000000000"
+    },
+    "after_first_request_native_reads": {
+      "completion_count": 475,
+      "total_returned_bytes": 0,
+      "first_completion_elapsed_ms": 3245,
+      "last_completion_elapsed_ms": 53189,
+      "last_completion_from_request_ms": 50059,
+      "every_completion_returned_zero": true,
+      "bus_reply_absence_proven": false
+    }
+  },
+  "saved_efilive": {
+    "decoded_bytes": 612705,
+    "decoded_sha256": "396923a67f56f2658798a05531ed53a8ae7f0a2e91e56634baf2efbfc53727a9",
+    "record_count": 1216,
+    "binary_wrapper_count": 526,
+    "all_binary_wrappers_validated": true,
+    "timestamp_regression_record_ordinals": [],
+    "first_request": {
+      "record_ordinal_zero_based": 158,
+      "record_decoded_offset": 49223,
+      "wrapper_decoded_offset": 49241,
+      "elapsed_ms": 6793.999811634421,
+      "saved_date_f64_le_hex": "494c9f57a39ee640",
+      "direction": "host_to_device",
+      "header_hex": "0154008a0700100000000a00",
+      "wrapper_bytes": 24,
+      "wrapper_sha256": "a412082f56aa79d52e32d7210382ebafcd148521ee612f4ace51e75b074b3062",
+      "payload_bytes": 10,
+      "payload_sha256": "a6a91aba484c75f2ddbed9a370e1a582fdd49d3da81627c01de7c85bcb70b97d",
+      "outer_crc_matches": true,
+      "command_hex": "8A00",
+      "vpw_prefix_hex": "6d10f035",
+      "literal_fixed_diagnostic_payload_hex": "6d10f035011000000000"
+    },
+    "first_data_window": [
+      {
+        "record_ordinal_zero_based": 158,
+        "record_decoded_offset": 49223,
+        "wrapper_decoded_offset": 49241,
+        "elapsed_ms": 6793.999811634421,
+        "saved_date_f64_le_hex": "494c9f57a39ee640",
+        "direction": "host_to_device",
+        "header_hex": "0154008a0700100000000a00",
+        "wrapper_bytes": 24,
+        "wrapper_sha256": "a412082f56aa79d52e32d7210382ebafcd148521ee612f4ace51e75b074b3062",
+        "payload_bytes": 10,
+        "payload_sha256": "a6a91aba484c75f2ddbed9a370e1a582fdd49d3da81627c01de7c85bcb70b97d",
+        "outer_crc_matches": true,
+        "command_hex": "8A00",
+        "vpw_prefix_hex": "6d10f035",
+        "literal_fixed_diagnostic_payload_hex": "6d10f035011000000000"
+      },
+      {
+        "record_ordinal_zero_based": 160,
+        "record_decoded_offset": 49308,
+        "wrapper_decoded_offset": 49326,
+        "elapsed_ms": 6799.999577924609,
+        "saved_date_f64_le_hex": "91719f57a39ee640",
+        "direction": "device_to_host",
+        "header_hex": "015210000000050000000600",
+        "wrapper_bytes": 21,
+        "wrapper_sha256": "528df713fc069a511d1a5263650d9f4550d0f0a40cb112d3140665fab032a2b0",
+        "payload_bytes": 6,
+        "payload_sha256": "50af0ba05d21a908e0646360252f2fbc697ce23d04a82b23873e0250c227a994",
+        "outer_crc_matches": true,
+        "vpw_prefix_hex": "6df01075",
+        "literal_fixed_diagnostic_payload_hex": "6df010750154"
+      },
+      {
+        "record_ordinal_zero_based": 165,
+        "record_decoded_offset": 49475,
+        "wrapper_decoded_offset": 49493,
+        "elapsed_ms": 7669.99963670969,
+        "saved_date_f64_le_hex": "8f8fb457a39ee640",
+        "direction": "device_to_host",
+        "header_hex": "015200000000530300000c10",
+        "wrapper_bytes": 4123,
+        "wrapper_sha256": "5b2ce036de92d4b59755cf60233ca933ac51d68d4925e20160d2855b795db09b",
+        "payload_bytes": 4108,
+        "payload_sha256": "0d5236d599e984e095ba128260f19b8867e8de866c735a8879337b879f3911a5",
+        "outer_crc_matches": true,
+        "vpw_prefix_hex": "6df01036"
+      }
+    ],
+    "first_data_saved_log_delay_ms": 875.9998250752687,
+    "setup_before_first_request": [
+      {
+        "record_ordinal_zero_based": 59,
+        "record_decoded_offset": 44273,
+        "wrapper_decoded_offset": 44291,
+        "elapsed_ms": 2311.9996301829815,
+        "saved_date_f64_le_hex": "1b823257a39ee640",
+        "direction": "host_to_device",
+        "header_hex": "015404860700000000000600",
+        "wrapper_bytes": 20,
+        "wrapper_sha256": "4b7aeffc8e91f85330bbe0b7d588ac09617fc80a70d4b4df60847aea0bb436b1",
+        "payload_bytes": 6,
+        "payload_sha256": "b0f66adc83641586656866813fd9dd0b8ebb63796075661ba45d1aa8089e1d44",
+        "outer_crc_matches": true,
+        "command_hex": "8604",
+        "literal_small_setup_payload_hex": "000000000000"
+      },
+      {
+        "record_ordinal_zero_based": 104,
+        "record_decoded_offset": 46030,
+        "wrapper_decoded_offset": 46048,
+        "elapsed_ms": 4231.999651528895,
+        "saved_date_f64_le_hex": "921c6157a39ee640",
+        "direction": "host_to_device",
+        "header_hex": "015403860700000000000400",
+        "wrapper_bytes": 18,
+        "wrapper_sha256": "93456f649a3cf0aced506bb3e2e314648d0b676c4bac038e1f7351664f184485",
+        "payload_bytes": 4,
+        "payload_sha256": "f91ab0ca2ac669c0ba8470be5924b5f9409d5b7478ea884e48e7d8c5d8329c90",
+        "outer_crc_matches": true,
+        "command_hex": "8603",
+        "literal_small_setup_payload_hex": "0100f401"
+      },
+      {
+        "record_ordinal_zero_based": 107,
+        "record_decoded_offset": 46143,
+        "wrapper_decoded_offset": 46161,
+        "elapsed_ms": 4233.999992720783,
+        "saved_date_f64_le_hex": "00296157a39ee640",
+        "direction": "host_to_device",
+        "header_hex": "015404860700000000000600",
+        "wrapper_bytes": 20,
+        "wrapper_sha256": "c6d11b6451c9cdf4b88f483d4e87839b68f7393e824f09ebe16bff6f77e78241",
+        "payload_bytes": 6,
+        "payload_sha256": "e90357a19beb965e02b9a4fa2020acbdbf7264746536efc158ef328d661a5eca",
+        "outer_crc_matches": true,
+        "command_hex": "8604",
+        "literal_small_setup_payload_hex": "010010000000"
+      },
+      {
+        "record_ordinal_zero_based": 156,
+        "record_decoded_offset": 49152,
+        "wrapper_decoded_offset": 49170,
+        "elapsed_ms": 6759.999669156969,
+        "saved_date_f64_le_hex": "04799e57a39ee640",
+        "direction": "host_to_device",
+        "header_hex": "015404860700000000000600",
+        "wrapper_bytes": 20,
+        "wrapper_sha256": "4b7aeffc8e91f85330bbe0b7d588ac09617fc80a70d4b4df60847aea0bb436b1",
+        "payload_bytes": 6,
+        "payload_sha256": "b0f66adc83641586656866813fd9dd0b8ebb63796075661ba45d1aa8089e1d44",
+        "outer_crc_matches": true,
+        "command_hex": "8604",
+        "literal_small_setup_payload_hex": "000000000000"
+      }
+    ],
+    "last_small_setup_before_first_request": {
+      "record_ordinal_zero_based": 156,
+      "record_decoded_offset": 49152,
+      "wrapper_decoded_offset": 49170,
+      "elapsed_ms": 6759.999669156969,
+      "saved_date_f64_le_hex": "04799e57a39ee640",
+      "direction": "host_to_device",
+      "header_hex": "015404860700000000000600",
+      "wrapper_bytes": 20,
+      "wrapper_sha256": "4b7aeffc8e91f85330bbe0b7d588ac09617fc80a70d4b4df60847aea0bb436b1",
+      "payload_bytes": 6,
+      "payload_sha256": "b0f66adc83641586656866813fd9dd0b8ebb63796075661ba45d1aa8089e1d44",
+      "outer_crc_matches": true,
+      "command_hex": "8604",
+      "literal_small_setup_payload_hex": "000000000000"
+    },
+    "preceding_execute_wrappers": [
+      {
+        "record_ordinal_zero_based": 125,
+        "record_decoded_offset": 46788,
+        "wrapper_decoded_offset": 46806,
+        "elapsed_ms": 5944.999563507736,
+        "saved_date_f64_le_hex": "c8b08a57a39ee640",
+        "direction": "host_to_device",
+        "header_hex": "0154008a070010000000a204",
+        "wrapper_bytes": 1200,
+        "wrapper_sha256": "b7489bbc5cb1f6b20be5fd08bc58b4ffec87708e0668a8fa5c647c173f87ef5a",
+        "payload_bytes": 1186,
+        "payload_sha256": "5617c0df0bc74f09bb09def0131d9b58f5788bc6f3dcf19bac46bdc5b4950ff9",
+        "outer_crc_matches": true,
+        "command_hex": "8A00",
+        "vpw_prefix_hex": "6d10f036"
+      }
+    ],
+    "preceding_a0_a1_markers": [
+      {
+        "record_ordinal_zero_based": 118,
+        "record_decoded_offset": 46542,
+        "wrapper_decoded_offset": 46560,
+        "elapsed_ms": 4631.9999964907765,
+        "saved_date_f64_le_hex": "16d26a57a39ee640",
+        "direction": "host_to_device",
+        "header_hex": "0154008a0700100000000400",
+        "wrapper_bytes": 18,
+        "wrapper_sha256": "b2e5c49519dc7745343cb08d6e143c54304cd9bf8b595fb09e619c5c0b971b8c",
+        "payload_bytes": 4,
+        "payload_sha256": "0967290b63808317f5f9a286a1f46a45abe6fce4638b39669bb8842ebaeb30ea",
+        "outer_crc_matches": true,
+        "command_hex": "8A00",
+        "vpw_prefix_hex": "6cfef0a0"
+      },
+      {
+        "record_ordinal_zero_based": 122,
+        "record_decoded_offset": 46671,
+        "wrapper_decoded_offset": 46689,
+        "elapsed_ms": 4909.999645315111,
+        "saved_date_f64_le_hex": "84917157a39ee640",
+        "direction": "host_to_device",
+        "header_hex": "0154008a0700100000000400",
+        "wrapper_bytes": 18,
+        "wrapper_sha256": "c61c0986d29223f6335f413e065a8a9b67c80df329ddc01a0c424b9633d67244",
+        "payload_bytes": 4,
+        "payload_sha256": "3efd0b08a39993e588e3078ae0234ad0c69a51805fc395a12745c375684c17fa",
+        "outer_crc_matches": true,
+        "command_hex": "8A00",
+        "vpw_prefix_hex": "6cfef0a1"
+      }
+    ],
+    "data_phase": {
+      "first_record": 158,
+      "last_data_record": 1181,
+      "request_35_count": 128,
+      "short_75_count": 128,
+      "data_36_count": 128,
+      "exact_known_short_75_count": 128,
+      "data_vpw_length_counts": {
+        "4106": 1,
+        "4108": 127
+      },
+      "data_returned_metadata_le32_hex_counts": {
+        "00000000": 128
+      },
+      "request_caller_metadata_le32_hex_counts": {
+        "10000000": 128
+      },
+      "nonbus_host_commands": [],
+      "no_additional_nonbus_host_poll_observed": true,
+      "request_reply_pairing": null
+    }
+  },
+  "comparison": {
+    "first_request_vpw_equal": true,
+    "first_request_complete_outer_wrapper_equal": true,
+    "same_last_small_setup_command_and_payload": true,
+    "physical_setup_state_equivalence_proven": false,
+    "kernel_equivalence_proven": false,
+    "actual_kernel_pin_from_plan": {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\PcmHammer_E54_RAM_Survey_Bench_v0_1\\Kernel-E54.bin",
+      "sha256": "8294b899c153b513cd1307ac4c6654c2720832779f40c19aac7100a4b864929a",
+      "length": 2027,
+      "expected_version": 458244025398,
+      "ram_messages_sha256": [
+        "FFBA8BC6CFC4B08499FF8E8225B5AEC546FB9D46A03C4D3C942B90E0B58270EE",
+        "C79FAF4F381A08B51229E053379C219C30F03E80E2220A69F2D2064A75063FE6"
+      ]
+    },
+    "saved_kernel_scope": "Saved preceding Execute wrappers are hashed above; they are not the actual PcmHammer kernel.",
+    "short75_scope": "Saved EFILive read has short75 observations. Zero bytes after the actual request cannot establish what its kernel sent on VPW."
+  },
+  "receipt_observations": {
+    "setup_accepted": true,
+    "recorded_cleanup_accepted": false,
+    "readback_saved_bytes": 0,
+    "transport_disposed": true,
+    "retained_native_owners": 0,
+    "channel_fault": null,
+    "cleanup_exception": null
+  },
+  "kernel_result_observations": {
+    "Success": false,
+    "InitialIdentityVerified": true,
+    "KernelVersionVerified": true,
+    "ExitAcknowledged": false,
+    "PostExitIdentityVerified": false,
+    "ReadbackLength": 0,
+    "ReadbackCrcVerified": false,
+    "BaselineMatched": false,
+    "BenchPowerCycleRequired": true,
+    "FlashWriteEnabled": false
+  },
+  "policy_observations": {
+    "CurrentPhase": "ReadBlockReply",
+    "Failure": "VPW request is outside the fixed RAM-kernel probe at ReadBlockReply: 6D10F035011000000000",
+    "ReadBlockAttempts": 1,
+    "ReadBlockReplies": 0,
+    "CrcQueryAttempts": 0,
+    "VerifiedCrcRanges": 0
+  },
+  "limits": [
+    "Native USB writes establish host submission only, not physical VPW transmission or ECU processing.",
+    "Zero returned USB bytes do not distinguish absent ECU output, invalid physical frames, adapter filtering or firmware withholding.",
+    "The same final8604 command does not establish the same persistent adapter state; earlier8603/8604 and A0/A1 paths differ.",
+    "No request/reply association is inferred solely from saved record adjacency. Saved host times are not wire timings.",
+    "The saved EFILive loader and actual PcmHammer kernel differ. A short75-dependent receive path is a hypothesis, not proven firmware behavior.",
+    "Large data bodies and kernel payloads remain private. The analyzer exports lengths, checksums and hashes, not firmware bytes.",
+    "No adapter, native target, vehicle, flash programming or recovery test is performed by this analyzer."
+  ],
+  "adapter_opened": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "inputs": {
+    "receipt": {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\AutoCalBackendProbe\\e54_read_baseline_01.json",
+      "bytes": 9441,
+      "sha256": "5f4b215ce05963493c7046b14ff9d9e1f8ee0b49344e651980228ca8b14be43c"
+    },
+    "journal": {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\AutoCalBackendProbe\\e54_read_baseline_01.json.journal.jsonl",
+      "bytes": 55668,
+      "sha256": "9762d5287eb13b8e3fad6aa3f129b6695e438f316901c77035953b7dac8e75c8"
+    },
+    "trace": {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\usb_capture_setup_20261030\\e54_usb_read_01\\crc_retained_E54_R.htx",
+      "bytes": 200276,
+      "sha256": "49e0b14e2e5deb3581baca6c00f8ac29e264e2006d999aa017e4c736c448987f"
+    }
+  },
+  "implementation": [
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_autocal_read_gap.py",
+      "bytes": 19267,
+      "sha256": "ebaeeef7eec6159b8f547a48028c68f05bd243506efc98e51b82f36326899076"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\al5_segment.py",
+      "bytes": 1710,
+      "sha256": "c391085ae14ed3f8c762c0ad2baf174474d2287fc17d95b3a5bb4ba3fe169edb"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\audit_trace_wrappers.py",
+      "bytes": 5198,
+      "sha256": "c824d113b63244d7e5d56b7bd53e3870fc155e666d897c12a570f1bdd69bd608"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\checksum.py",
+      "bytes": 1841,
+      "sha256": "b057805b2f5dc141141be5ce747ee78be98e441746a05d3a4a0cb3911bf2ef93"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\decode_trace_containers.py",
+      "bytes": 5780,
+      "sha256": "ab2feac05c102f3616c444889c428608e8466084bb7661743d5cd85e02cae382"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_trace_containers.py",
+      "bytes": 4793,
+      "sha256": "540b1d3a013ed7d0bff0fbf382a3393856accc5b0344de0d322e79b42ca3026f"
+    }
+  ],
+  "input_stability": "All inputs and implementation files compared before and after analysis; no hardware or file locking."
+}

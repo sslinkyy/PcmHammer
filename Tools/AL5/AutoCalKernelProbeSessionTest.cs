@@ -57,28 +57,34 @@ internal static class AutoCalKernelProbeSessionTest
         await Case("full read wrong flash identity stops before data transfer", FullReadWrongIdentity);
         await Case("full read cancellation during data stops further traffic", FullReadCancellation);
         await Case("full read cancellation on final CRC cannot succeed or exit", FullReadFinalCrcCancellation);
+        await Case("short read returns only the pinned 64-byte prefix without CRC", ShortReadSuccess);
+        await Case("short read checksum failure blocks exit and replay", () => ShortReadFailure("short-corrupt"));
+        await Case("short read different valid prefix blocks exit and replay", () => ShortReadFailure("short-different"));
+        await Case("short read missing matching payload cannot retransmit or exit", () => ShortReadFailure("short-missing"));
+        await Case("short read cancellation retains uncertain controller state", ShortReadCancellation);
+        await Case("short read mode mismatch and copy combination rejected before traffic", ShortReadModeBinding);
         Console.WriteLine(JsonSerializer.Serialize(new { assertions, passed, failed,
             adapterOpened = false, liveWriteEnabled = false, hardwareQualified = false,
             scope = "Production Vehicle + AutoCalDevice/Channel under the bounded policy, scripted byte transport only" }));
         return failed.Count == 0 ? 0 : 1;
     }
 
-    static async Task<(Fake adapter, AutoCalDevice device, AutoCalKernelProbePolicy policy, AutoCalKernelProbeSession session)> Fixture(string failure = "", CancellationTokenSource? cancel = null, bool copyOnly = false, bool fullRead = false)
+    static async Task<(Fake adapter, AutoCalDevice device, AutoCalKernelProbePolicy policy, AutoCalKernelProbeSession session)> Fixture(string failure = "", CancellationTokenSource? cancel = null, bool copyOnly = false, bool fullRead = false, bool shortRead = false)
     {
-        var adapter = new Fake(kernel, failure, cancel, fullRead);
+        var adapter = new Fake(kernel, failure, cancel, fullRead, shortRead);
         var token = cancel?.Token ?? CancellationToken.None;
         var device = new AutoCalDevice(new AutoCalChannel(adapter), new Log(), token, AutoCalSetupProfile.RecordedOrdinaryIdentification);
         Require(await device.Initialize(), "ordinary host setup accepted by fake adapter");
-        var policy = new AutoCalKernelProbePolicy(kernel, fullRead);
-        var session = new AutoCalKernelProbeSession(device, new Log(), policy, token, copyOnly, fullRead);
+        var policy = new AutoCalKernelProbePolicy(kernel, fullRead, shortRead);
+        var session = new AutoCalKernelProbeSession(device, new Log(), policy, token, copyOnly, fullRead, shortRead);
         return (adapter, device, policy, session);
     }
     static void Ownership(Fake fake, AutoCalDevice device)
     {
         Require(fake.DisposeCalls == 0 && !device.Channel.IsTransportDisposed, "session leaves transport ownership with caller");
         Require(fake.Commands.All(f => f.Command == 0x8A00 || f.Command == 0x8201 || f.Command == 0x8604 || f.Command == 0x8800), "no adapter cleanup/reset or extra host command");
-        Require(fake.Vpw.All(v => v.Length < 4 || (v[3] != 0x04 && v[3] != 0x14 && (v[3] != 0x35 || fake.FullRead) && v[3] != 0xA0 && v[3] != 0xA1)), "no DTC clear, unrequested memory read or speed command");
-        Require(!fake.Vpw.Any(v => v.Length >= 5 && v[3] == 0x3D && v[4] > (fake.FullRead ? 2 : 0)), "only mode-permitted kernel information/CRC queries, no erase");
+        Require(fake.Vpw.All(v => v.Length < 4 || (v[3] != 0x04 && v[3] != 0x14 && (v[3] != 0x35 || fake.FullRead || fake.ShortRead) && v[3] != 0xA0 && v[3] != 0xA1)), "no DTC clear, unrequested memory read or speed command");
+        Require(!fake.Vpw.Any(v => v.Length >= 5 && v[3] == 0x3D && v[4] > (fake.FullRead ? 2 : fake.ShortRead ? 1 : 0)), "only mode-permitted kernel information/CRC queries, no erase");
         device.Dispose();
         Require(fake.DisposeCalls == 1, "caller alone disposes the transport");
     }
@@ -257,6 +263,7 @@ internal static class AutoCalKernelProbeSessionTest
             && result.ReadbackBytes!.SequenceEqual(baseline), "full returned snapshot equals the independently captured GT baseline byte for byte");
         Require(result.ReadbackCrcVerified && result.BaselineMatched && f.policy.IsImageVerified && f.policy.VerifiedCrcRanges == 7,
             "both production reader and policy verified all seven captured controller CRCs");
+        Require(result.ReadbackScope == "full-image", "full-image match has explicit coverage scope");
         Require(f.adapter.ReadRequests == 128 && f.adapter.CrcRequests == 7 && f.policy.ReadBlockReplies == 128,
             "exact block coverage and seven CRC exchanges without retries");
         Require(result.ExitAcknowledged && result.PostExitIdentityVerified && !result.BenchPowerCycleRequired,
@@ -309,6 +316,54 @@ internal static class AutoCalKernelProbeSessionTest
             "cancellation at final CRC prevents a successful result and exit"); Ownership(f.adapter, f.device);
     }
 
+    static async Task ShortReadSuccess()
+    {
+        var f = await Fixture(shortRead: true); var result = await f.session.RunAsync();
+        Require(result.Success, result.Error ?? "expected prefix read success");
+        Require(result.ReadbackScope == "baseline-prefix" && result.BaselineMatched && result.ReadbackLength == 64
+            && result.ReadbackBytes!.SequenceEqual(baseline.Take(64)) && result.ReadbackSha256 == AutoCalKernelProbePolicy.ExpectedShortReadSha256,
+            "only the first64 baseline bytes and their scoped digest are returned");
+        Require(!result.ReadbackCrcVerified && f.policy.IsShortReadVerified && !f.policy.IsImageVerified && !f.policy.IsImageReadComplete && !f.policy.BaselineShaMatched,
+            "prefix success makes no controller CRC or full-image claim");
+        Require(f.adapter.ReadRequests == 1 && f.adapter.CrcRequests == 0 && Has(f.adapter, "6D10F035010040000000"),
+            "one exact64-byte request and no range CRC");
+        Require(result.ExitAcknowledged && result.PostExitIdentityVerified && !result.BenchPowerCycleRequired,
+            "successful prefix permits explicit exit and ordinary identity");
+        Require(!JsonSerializer.Serialize(result).Contains("ReadbackBytes"), "private prefix excluded from receipt");
+        FullReadUploadBoundary(f.adapter); Ownership(f.adapter, f.device);
+    }
+    static async Task ShortReadFailure(string failure, CancellationTokenSource? cancel = null)
+    {
+        var f = await Fixture(failure, cancel, shortRead: true); var result = await f.session.RunAsync();
+        Require(!result.Success && result.Stage == AutoCalKernelProbeStage.ShortRead && result.KernelVersionVerified && result.BenchPowerCycleRequired,
+            "prefix failure retains running-kernel state and needs caller recovery");
+        Require(result.ReadbackScope == "baseline-prefix" && !result.ReadbackCrcVerified && !result.BaselineMatched && result.ReadbackBytes == null,
+            "failed prefix never produces readback or image verification claims");
+        Require(f.adapter.ReadRequests == 1 && f.adapter.CrcRequests == 0 && !Has(f.adapter, "6C10F020")
+            && f.adapter.Vpw.Count(v => v.SequenceEqual(Hex("6C10F03C0A"))) == 1,
+            "one read only, no retry, CRC, exit or post-exit query");
+        Require(!f.policy.IsShortReadVerified && !f.policy.IsImageVerified, "no verification on failed prefix");
+        if (cancel != null) Require(result.Cancelled, "cancellation retained in result");
+        if (failure == "short-missing") Require(f.policy.UnrelatedReceiveCount == 6 && f.policy.LastReceive!.SequenceEqual(Hex("6CF0116800")),
+            "five unrelated data-window replies plus the earlier suppression reply were retained without replay");
+        FullReadUploadBoundary(f.adapter); Ownership(f.adapter, f.device);
+    }
+    static async Task ShortReadCancellation()
+    {
+        using var cancel = new CancellationTokenSource();
+        await ShortReadFailure("short-cancel", cancel);
+    }
+    static async Task ShortReadModeBinding()
+    {
+        var f = await Fixture(shortRead: true);
+        int rejected = 0;
+        try { _ = new AutoCalKernelProbeSession(f.device, new Log(), f.policy, CancellationToken.None); } catch (ArgumentException) { rejected++; }
+        try { _ = new AutoCalKernelProbeSession(f.device, new Log(), f.policy, CancellationToken.None, copyOnly: true, shortRead: true); } catch (ArgumentException) { rejected++; }
+        try { _ = new AutoCalKernelProbeSession(f.device, new Log(), f.policy, CancellationToken.None, fullRead: true, shortRead: true); } catch (ArgumentException) { rejected++; }
+        Require(rejected == 3 && f.adapter.Vpw.Count == 0, "mode mismatch rejected before any VPW command");
+        Ownership(f.adapter, f.device);
+    }
+
     // Independent wire constructors for the fake's fixed responses/expected RAM
     // chunks. Production Frame/Protocol encoders are deliberately not called.
     static byte[] Block(byte[] source, int offset, int length, int address, byte mode)
@@ -334,9 +389,9 @@ internal static class AutoCalKernelProbeSessionTest
         readonly Queue<byte> input = new(); readonly List<byte> output = new(); readonly byte[] image; readonly string failure; readonly CancellationTokenSource? cancel;
         int identityCount;
         public int DisposeCalls, ReadRequests, CrcRequests; public List<(ushort Command, byte[] Payload)> Commands = new(); public List<byte[]> Vpw = new();
-        public readonly bool FullRead;
+        public readonly bool FullRead, ShortRead;
         public int PendingByteCount => input.Count;
-        public Fake(byte[] kernel, string failure, CancellationTokenSource? cancel, bool fullRead) { image = kernel; this.failure = failure; this.cancel = cancel; FullRead = fullRead; }
+        public Fake(byte[] kernel, string failure, CancellationTokenSource? cancel, bool fullRead, bool shortRead) { image = kernel; this.failure = failure; this.cancel = cancel; FullRead = fullRead; ShortRead = shortRead; }
         public void Enqueue(byte[] bytes) { foreach (byte b in bytes) input.Enqueue(b); }
         public Task<int> Read(byte[] buffer, int offset, int count, int timeoutMs, CancellationToken token)
         {
@@ -391,11 +446,25 @@ internal static class AutoCalKernelProbeSessionTest
                     break;
                 case "6C10F03D00": reply = Hex(failure == "version" ? "6CF0107D006AB178EC37" : "6CF0107D006AB178EC36"); break;
                 case "6C10F03D01":
-                    if (!FullRead) throw new Exception("Flash ID requested outside full-read mode");
+                    if (!FullRead && !ShortRead) throw new Exception("Flash ID requested outside read mode");
                     reply = Hex(failure == "read-flash-id" ? "6CF0107D0100894472" : "6CF0107D0100894471"); break;
                 case "6C10F020": reply = Hex("6CF01060"); break;
                 default:
-                    if (FullRead && bytes.Length == 10 && bytes.AsSpan(0, 5).SequenceEqual(Hex("6D10F03501")))
+                    if (ShortRead && bytes.SequenceEqual(Hex("6D10F035010040000000")))
+                    {
+                        if (++ReadRequests != 1) throw new Exception("Repeated prefix request");
+                        if (failure == "short-cancel") { cancel!.Cancel(); return; }
+                        if (failure == "short-missing")
+                        {
+                            for (int i = 0; i < 5; i++) Enqueue(Packet(0x10, Hex("6CF0116800")));
+                            return;
+                        }
+                        byte[] data = (byte[])baseline.Clone();
+                        if (failure == "short-different") data[0] ^= 1;
+                        reply = Block(data, 0, 64, 0, 1); reply[1] = 0xF0; reply[2] = 0x10;
+                        if (failure == "short-corrupt") reply[^1] ^= 1;
+                    }
+                    else if (FullRead && bytes.Length == 10 && bytes.AsSpan(0, 5).SequenceEqual(Hex("6D10F03501")))
                     {
                         int length = bytes[5] << 8 | bytes[6]; int address = bytes[7] << 16 | bytes[8] << 8 | bytes[9];
                         if (length != 4096 || address != ReadRequests * 4096 || address + length > baseline.Length) throw new Exception("Read coverage differs from fixed ascending blocks");

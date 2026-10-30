@@ -1,0 +1,183 @@
+{
+  "schema": "autocal-e54-full-read-blocked-v1",
+  "observation_date": "2026-10-30",
+  "source_commit": "19ff0fb4405b4643ea510e6168dc0d35f0ebf3ea",
+  "recorded_source_hash_count": 22,
+  "recorded_source_hashes_match_commit_blobs": true,
+  "adapter": "EFILive AutoCal V2",
+  "serial": "AC3NCHH5",
+  "controller": "Isolated spare E54/LB7 bench",
+  "profile": "e54-read-baseline",
+  "outcome": "FAILED: no data reply for the first 4096-byte read; no full-read qualification",
+  "scope": "Offline audit of the private D2XX journal and receipt. No additional hardware access.",
+  "application_tx_frames": 18,
+  "application_rx_frames": 13,
+  "submitted_application_bytes": 2380,
+  "received_application_bytes": 267,
+  "all_31_outer_crcs_valid": true,
+  "short_writes_observed": 0,
+  "native_read_completions": 502,
+  "zero_byte_native_reads": 489,
+  "vpw_payload_commands_started": 14,
+  "vpw_payload_commands_completed": 14,
+  "received_vpw_frames": 9,
+  "passed_before_failure": {
+    "adapter_setup_accepted": true,
+    "initial_operating_system": 15189044,
+    "initial_identity_reply_hex": "6CF0107C0A00E7C434444E",
+    "ram_uploads": [
+      {
+        "submode_hex": "00",
+        "data_bytes": 267,
+        "ram_address_hex": "FF97E0",
+        "submitted_payload_matches_pinned_kernel": true,
+        "block_checksum_valid": true,
+        "vpw_message_sha256": "ffba8bc6cfc4b08499ff8e8225b5aec546fb9d46a03c4d3c942b90e0b58270ee",
+        "host_write_elapsed_ms": 1097
+      },
+      {
+        "submode_hex": "80",
+        "data_bytes": 1760,
+        "ram_address_hex": "FF9100",
+        "submitted_payload_matches_pinned_kernel": true,
+        "block_checksum_valid": true,
+        "vpw_message_sha256": "c79faf4f381a08b51229e053379c219c30f03e80e2220a69f2d2064a75063fe6",
+        "host_write_elapsed_ms": 1494
+      }
+    ],
+    "ram_copy_reply_hex": "6CF010760078",
+    "ram_execute_reply_hex": "6CF010768078",
+    "kernel_version_reply_hex": "6CF0107D006AB178EC36",
+    "kernel_version_matches_pinned_asset": true,
+    "flash_identity_reply_hex": "6CF0107D0100894471",
+    "flash_identity_hex": "00894471",
+    "flash_identity": "Intel 28F400B"
+  },
+  "first_read": {
+    "request_hex": "6D10F035011000000000",
+    "start_address_hex": "000000",
+    "requested_data_bytes": 4096,
+    "host_write_event_elapsed_ms": 3130,
+    "host_submission_count": 1,
+    "positive_native_read_completions_after_request": 0,
+    "zero_byte_native_reads_after_request": 475,
+    "last_native_read_elapsed_ms": 53189,
+    "host_interval_to_last_native_read_ms": 50059,
+    "logical_receive_windows_exhausted": 5,
+    "configured_receive_timeout_ms": 10000,
+    "logical_timeout_evidence": "Five No payload following read request messages plus Vehicle.ReadMemory MaxReceiveAttempts=5 and AutoCal ReadMemoryBlock timeout=10000ms.",
+    "subsequent_protocol_tx_frames": 0,
+    "read_block_replies": 0,
+    "data_bytes_returned": 0,
+    "shared_reader_replay_rejected_before_host_submission": true,
+    "guard_failure": "VPW request is outside the fixed RAM-kernel probe at ReadBlockReply: 6D10F035011000000000"
+  },
+  "verification": {
+    "planned_image_bytes": 524288,
+    "read_blocks_completed": 0,
+    "planned_read_blocks": 128,
+    "controller_crc_requests": 0,
+    "verified_crc_ranges": 0,
+    "readback_saved_bytes": 0,
+    "baseline_compared": false,
+    "baseline_sha256": "a3b010af7e04df03be699198920aac26ba0645c2ad608e72eacf0bc3970beb58",
+    "readback_qualified": false
+  },
+  "session_end": {
+    "success": false,
+    "cancelled": false,
+    "stage": "FullRead",
+    "policy_phase": "ReadBlockReply",
+    "controller_exit_requests": 0,
+    "post_exit_identity_verified": false,
+    "recorded_protocol_cleanup_sent": false,
+    "flash_erase_requests": 0,
+    "flash_program_requests": 0,
+    "dtc_clear_requests": 0,
+    "speed_change_requests": 0,
+    "last_timed_journal_event_elapsed_ms": 53245,
+    "transport_disposed_reported": true,
+    "retained_native_owners_reported": 0,
+    "channel_fault": null,
+    "cleanup_exception": null,
+    "bench_power_cycle_required_at_stop": true,
+    "power_cycle_or_post_reset_identity_part_of_this_session": false
+  },
+  "receipt_field_interpretation": {
+    "top_level_received_vpw_frames": 0,
+    "authoritative_observed_vpw_frames": 9,
+    "note": "Top-level operating_system/identity_reply/received_vpw_frames are populated only after overall session success; their null/zero defaults do not negate the initial identity and nine VPW replies retained in the journal and kernel_result."
+  },
+  "source_sha256": {
+    "Apps/PcmLibrary/AutoCalHostFrame.cs": "b87cd99d6adea75374609efdcda3cd16760836d293580e7952f0d0e6b3226600",
+    "Apps/PcmLibrary/AutoCalChannel.cs": "4a62652602f3fe26f23ed7dfdb13db82e2b8ac0d7ec3161c4930c42485629ff4",
+    "Apps/PcmLibrary/AutoCalVpwEnvelope.cs": "c3367d1b972061b2662b227e608d9278e466b6b30f50d7bbef70c62554c0074f",
+    "Apps/PcmLibrary/AutoCalSetupResponse.cs": "cb582c8b049d212c9aa8e603bc77a9cb0ad06d162f905e949bacf02108f78007",
+    "Apps/PcmLibrary/Devices/AutoCalDevice.cs": "d63017ffd5f2c916ac37c1bddc625e2e673a026c8a9867a852b3d010a6594757",
+    "Apps/PcmLibraryWindowsApi/Ports/AutoCalD2xxTransport.cs": "80decc39ac396ff86aeebfadff0e33c2395f802171e01d89407cb28a4f948614",
+    "Tools/AL5/AutoCalBackendProbe/Program.cs": "1332e91df738854f058a9d1c5f575cbcfbb7eb7fe14c43ac14113186e210cc26",
+    "Tools/AL5/AutoCalBackendProbe/ProbeProfile.cs": "d758251ef1a5a236fc0bfeeffd60b531a2463adacc48990dc41aab0aea5dcd0d",
+    "Tools/AL5/AutoCalBackendProbe/KernelRequestGuard.cs": "1dc4f2ef2a932efb504e504a280bce7a628449a0301d36236f71408c9d53c0a1",
+    "Tools/AL5/AutoCalKernelProbePolicy.cs": "b291b3c39f49973ada40422a4f0bf2052ac9fa07ba776b31cad40f13ed684ec5",
+    "Tools/AL5/AutoCalKernelProbeSession.cs": "4ef25a566c7749f7f0b72c335e8cdd66009253b74b382fe889e28c0d62bf692d",
+    "Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj": "1e2828586357c0e739aa3a6e8095db036ebb1c26d8f4515644a2274f9d2ed7dc",
+    "Apps/PcmLibrary/CKernelReader.cs": "6ca5cb53f324ce53f3c4fd3b84b4512f5c7627d2d090d6fcffbb8746bdd8d4e2",
+    "Apps/PcmLibrary/CKernelVerifier.cs": "8fb21615467e27f31fafc374d87b27002706a25f584e77f3b6bb446ab86dbc27",
+    "Apps/PcmLibrary/Misc/Crc.cs": "da4cd970a78568fcabbf7ad7f8012ea35b95d063c24207697c08da7933d85538",
+    "Apps/PcmLibrary/Misc/Query.cs": "bb12ce829d277aebaeee0ec33c36c90c27afc5238381f38978d8c5e9516af73d",
+    "Apps/PcmLibrary/Misc/FlashChip.cs": "1b10acfa6df00b768fed607cbb32169e50ed3e2205a298df35122cf51f0c2aef",
+    "Apps/PcmLibrary/Misc/ToolPresentNotifier.cs": "62fd88d3d7c1cacb5af32b96486a46d71a0296d3e182377cbc27033c3c4fb779",
+    "Apps/PcmLibrary/Vehicle.Kernel.cs": "f4b33c05d26b1d522d873ef361cfea7024988ff10319a9e155a04987431d2591",
+    "Apps/PcmLibrary/Vehicle.cs": "a6ac56c0d3c5e98a3e9e2059e8ff3b61c85c41ae3f4a8728a08906c71d42d121",
+    "Apps/PcmLibrary/Messages/Protocol.ReadWrite.cs": "b09d11ef7948c14480c375e33e65b8c4f0acd63071dbd9b73b73cb20e295efda",
+    "Apps/PcmLibrary/Messages/Protocol.Kernel.cs": "f277b2ce7bca2944968f37c9724370fad8ea7df8aac44cd88c22f1254904c236"
+  },
+  "runtime_artifacts": {
+    "probe_sha256": "8dcbeda4324fee2a0fe1734ca23cdd70bc33038afc08d232f5e7272289c2c2a1",
+    "pcmlibrary_sha256": "45b945439550d31106134a243cdb487c0feac0c54e34720995e446fdfb1c2cd9",
+    "archived_build_directory": "LocalOnly/AutoCalBackendProbe/builds/19ff0fb",
+    "archived_artifacts_match_recorded_hashes_at_audit": {
+      "probe": true,
+      "pcmlibrary": true
+    },
+    "native_dll_sha256": "91185415e0a1cd8ad09a5b644130554867ee4c4975c7aa71ee6da15d2645d9a2",
+    "native_header_sha256": "cf2ad290c68137373b26629bf9feed6f4847f4e9e5cde4b980a212cebeb4ff6a"
+  },
+  "kernel": {
+    "length": 2027,
+    "sha256": "8294b899c153b513cd1307ac4c6654c2720832779f40c19aac7100a4b864929a"
+  },
+  "private_inputs": [
+    {
+      "path": "LocalOnly/AutoCalBackendProbe/e54_read_baseline_01.json",
+      "size": 9441,
+      "sha256": "5f4b215ce05963493c7046b14ff9d9e1f8ee0b49344e651980228ca8b14be43c"
+    },
+    {
+      "path": "LocalOnly/AutoCalBackendProbe/e54_read_baseline_01.json.journal.jsonl",
+      "size": 55668,
+      "sha256": "9762d5287eb13b8e3fad6aa3f129b6695e438f316901c77035953b7dac8e75c8"
+    },
+    {
+      "path": "LocalOnly/AutoCalBackendProbe/e54_read_baseline_01.json.readback.bin",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "qualification": {
+    "physical_speed": "unmeasured",
+    "physical_bus_transmissions": "unmeasured",
+    "full_flash_readback": false,
+    "hardware_programming": false,
+    "interrupted_flash_recovery": false,
+    "al5_live_writes_enabled": false
+  },
+  "limitations": [
+    "No data was delivered by the adapter-local D2XX capture after the read request. This does not determine whether the kernel transmitted a reply on VPW or whether adapter setup, filtering, framing, timing or kernel behavior caused the absence.",
+    "Outer host CRCs and outgoing RAM block checksums validate recorded host bytes only; they do not establish electrical delivery or equality of all uploaded RAM bytes.",
+    "No scope, independent USBPcap or second-adapter capture belongs to this run. Physical speed and lossless monitoring are not established.",
+    "Initial identity, kernel version and flash identity passed. The prior separate successful kernel exit/OS-ID run remains valid, but exit and post-exit identity were not attempted here.",
+    "The reserved readback file is zero bytes and must not be treated as an image. No controller CRC range or whole-image baseline comparison completed.",
+    "The policy rejected the generic reader resend before native submission. The stopped run sent no automatic exit/reset/cleanup; a later user-attested power cycle or identity check must be recorded separately."
+  ]
+}

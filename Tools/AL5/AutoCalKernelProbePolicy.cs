@@ -23,6 +23,8 @@ public sealed class AutoCalKernelProbePolicy
     public const int FullReadLength = 512 * 1024;
     public const int ReadBlockLength = 4096;
     public const int ReadBlockCount = FullReadLength / ReadBlockLength;
+    public const int ShortReadLength = 64;
+    public const string ExpectedShortReadSha256 = "5b20a24c0d5c5618de617dd929c4baffe7ba4cf151648398f68f0105bd43a5d9";
     public const string ExpectedBaselineSha256 = "a3b010af7e04df03be699198920aac26ba0645c2ad608e72eacf0bc3970beb58";
     public const string DefaultBaselinePath = @"C:\Codex Projects\Car Tuning\To tune\AL5 Transmission Work\PcmHammer\LocalOnly\usb_capture_setup_20261030\e54_gt_pcmhammer_write_01\E54_before_test.bin";
     public const int MaximumCrcQueriesPerRange = 6;
@@ -65,6 +67,9 @@ public sealed class AutoCalKernelProbePolicy
     public bool IsExitConfirmed { get; private set; }
     public bool IsPostExitIdentityVerified { get; private set; }
     public bool FullReadEnabled { get; }
+    public bool ShortReadEnabled { get; }
+    public bool ReadEnabled => FullReadEnabled || ShortReadEnabled;
+    public bool IsShortReadVerified { get; private set; }
     public bool IsFlashIdentityVerified { get; private set; }
     public bool IsImageReadComplete => FullReadEnabled && ReadBlockReplies == ReadBlockCount;
     public bool IsImageVerified { get; private set; }
@@ -100,12 +105,14 @@ public sealed class AutoCalKernelProbePolicy
     public byte[]? InitialIdentityReply => Clone(initialIdentity);
     public byte[]? PostExitIdentityReply => Clone(finalIdentity);
 
-    public AutoCalKernelProbePolicy(byte[] pinnedKernel, bool fullRead = false)
+    public AutoCalKernelProbePolicy(byte[] pinnedKernel, bool fullRead = false, bool shortRead = false)
     {
         if (pinnedKernel == null) throw new ArgumentNullException(nameof(pinnedKernel));
+        if (fullRead && shortRead) throw new ArgumentException("Full-image and short-prefix read modes are mutually exclusive.");
         kernel = (byte[])pinnedKernel.Clone();
         FullReadEnabled = fullRead;
-        readImage = fullRead ? new byte[FullReadLength] : Array.Empty<byte>();
+        ShortReadEnabled = shortRead;
+        readImage = fullRead ? new byte[FullReadLength] : shortRead ? new byte[ShortReadLength] : Array.Empty<byte>();
         if (kernel.Length != ExpectedKernelLength ||
             !Convert.ToHexString(SHA256.HashData(kernel)).Equals(ExpectedKernelSha256, StringComparison.OrdinalIgnoreCase))
             throw new InvalidDataException("Kernel bytes do not match the previously captured E54 asset.");
@@ -199,7 +206,8 @@ public sealed class AutoCalKernelProbePolicy
                 if (permitted) phase = Phase.FlashIdentityReply;
                 break;
             case Phase.ReadBlock:
-                permitted = bytes.SequenceEqual(protocol.CreateReadRequest(ReadBlockReplies * ReadBlockLength, ReadBlockLength).GetBytes());
+                int length = ShortReadEnabled ? ShortReadLength : ReadBlockLength;
+                permitted = bytes.SequenceEqual(protocol.CreateReadRequest(ReadBlockReplies * length, length).GetBytes());
                 if (permitted) { phase = Phase.ReadBlockReply; ReadBlockAttempts++; }
                 break;
             case Phase.ReadCrc:
@@ -237,16 +245,27 @@ public sealed class AutoCalKernelProbePolicy
         Healthy();
         if (phase == Phase.ReadBlockReply && Starts(bytes, "6DF01036"))
         {
-            int address = ReadBlockReplies * ReadBlockLength;
-            byte[] expected = protocol.CreateReadRequest(address, ReadBlockLength).GetBytes();
+            int length = ShortReadEnabled ? ShortReadLength : ReadBlockLength;
+            int address = ReadBlockReplies * length;
+            byte[] expected = protocol.CreateReadRequest(address, length).GetBytes();
             expected[1] = 0xF0; expected[2] = 0x10; expected[3] = 0x36;
-            if (bytes.Length != ReadBlockLength + 12 || !bytes.AsSpan(0, 10).SequenceEqual(expected))
+            if (bytes.Length != length + 12 || !bytes.AsSpan(0, 10).SequenceEqual(expected))
                 Reject("Read block has an unexpected exact extent, submode, length or address.");
-            Response<byte[]> decoded = protocol.ParsePayload(new Message(bytes), ReadBlockLength, address);
-            if (decoded.Status != ResponseStatus.Success || decoded.Value.Length != ReadBlockLength)
+            Response<byte[]> decoded = protocol.ParsePayload(new Message(bytes), length, address);
+            if (decoded.Status != ResponseStatus.Success || decoded.Value.Length != length)
                 Reject("Read block failed production payload/checksum validation.");
-            Buffer.BlockCopy(decoded.Value, 0, readImage, address, ReadBlockLength);
+            Buffer.BlockCopy(decoded.Value, 0, readImage, address, length);
             ReadBlockReplies++;
+            if (ShortReadEnabled)
+            {
+                ComputedImageSha256 = Convert.ToHexString(SHA256.HashData(readImage)).ToLowerInvariant();
+                if (!ComputedImageSha256.Equals(ExpectedShortReadSha256, StringComparison.Ordinal))
+                    Reject("Short read differs from the exact first64 bytes of the pinned E54 baseline.");
+                IsShortReadVerified = true;
+                // A matching prefix establishes neither a complete image nor its CRCs.
+                phase = Phase.Exit;
+                return;
+            }
             if (ReadBlockReplies == ReadBlockCount)
             {
                 ComputedImageSha256 = Convert.ToHexString(SHA256.HashData(readImage)).ToLowerInvariant();
@@ -312,7 +331,7 @@ public sealed class AutoCalKernelProbePolicy
                 return;
             case Phase.KernelVersionReply:
                 if (!Equal(bytes, "6CF0107D006AB178EC36")) Reject("Kernel identity differs from the pinned asset: " + Convert.ToHexString(bytes));
-                IsKernelVerified = true; phase = FullReadEnabled ? Phase.FlashIdentity : Phase.Exit; return;
+                IsKernelVerified = true; phase = ReadEnabled ? Phase.FlashIdentity : Phase.Exit; return;
             case Phase.FlashIdentityReply:
                 if (!Equal(bytes, "6CF0107D0100894471")) Reject("Flash identity differs from the pinned Intel 28F400B baseline.");
                 IsFlashIdentityVerified = true; phase = Phase.ReadBlock; return;
