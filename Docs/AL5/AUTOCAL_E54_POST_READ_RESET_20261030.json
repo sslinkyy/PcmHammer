@@ -1,0 +1,147 @@
+{
+  "schema": "autocal-e54-post-read-reset-identity-v1",
+  "observation_date": "2026-10-30",
+  "scope": "One ordinary OS-ID exchange after the user-reported reset following the failed full-read experiment. No kernel or short-read experiment is included.",
+  "adapter": "EFILive AutoCal V2",
+  "serial": "AC3NCHH5",
+  "controller": "Isolated spare E54/LB7 bench",
+  "profile": "e54-osid-read",
+  "reset_context": {
+    "user_reported_reset": true,
+    "journal_independently_measures_power_removal": false,
+    "preceding_failed_read_receipt": {
+      "path": "LocalOnly/AutoCalBackendProbe/e54_read_baseline_01.json",
+      "bytes": 9441,
+      "sha256": "5f4b215ce05963493c7046b14ff9d9e1f8ee0b49344e651980228ca8b14be43c"
+    }
+  },
+  "source_checkout_at_audit": {
+    "head": "d1389475c76311d5488ffb1eabfac63787323774",
+    "recorded_source_count": 22,
+    "all_recorded_source_hashes_match_worktree_bytes": true,
+    "recorded_files_differing_from_head_blobs": [],
+    "commit_scope": "HEAD is the checkout base at audit time; hardware provenance is the explicit source hashes below."
+  },
+  "application_tx_frames": 8,
+  "application_rx_frames": 8,
+  "submitted_application_bytes": 140,
+  "received_application_bytes": 139,
+  "all_16_outer_crcs_valid": true,
+  "ordinary_command_echoes_matched": 7,
+  "exact_planned_request_order_matches": true,
+  "short_transfers_observed": 0,
+  "host_replays_observed": 0,
+  "vpw_payload_commands_started": 1,
+  "vpw_payload_commands_completed": 1,
+  "received_vpw_frames": 1,
+  "vpw_request_hex": "6C10F03C0A",
+  "vpw_reply_hex": "6CF0107C0A00E7C434444E",
+  "operating_system": 15189044,
+  "operating_system_bytes_hex": "00E7C434",
+  "operating_system_byte_order": "big-endian",
+  "opaque_reply_suffix_hex": "444E",
+  "returned_metadata_le32_hex": "10000000",
+  "opaque_vpw_header_bytes_6_to_9_hex": "44000000",
+  "host_tx_to_rx_journal_interval_ms": 113,
+  "request_journal_line_one_based": 16,
+  "reply_journal_line_one_based": 18,
+  "setup_accepted": true,
+  "recorded_cleanup_accepted": true,
+  "final_journal_elapsed_ms": 915,
+  "final_buffered_bytes": 0,
+  "final_pending_bytes": 0,
+  "transport_disposed_reported": true,
+  "retained_native_owners_reported": 0,
+  "failure": null,
+  "channel_fault": null,
+  "cleanup_exception": null,
+  "post_reported_reset_identity_observed": true,
+  "kernel_execution_in_this_session": false,
+  "memory_read_in_this_session": false,
+  "flash_operations_submitted": 0,
+  "interrupted_flash_recovery_qualified": false,
+  "hardware_programming_qualified": false,
+  "al5_live_writes_enabled": false,
+  "physical_speed": "unmeasured",
+  "physical_bus_transmission_count": "unmeasured",
+  "exact_host_request_sequence_hex": [
+    "0154018207000000000000008177",
+    "01540486070000000000010000B6B9",
+    "0154008807000000000002000000FDD5",
+    "015404860700000000000600000000000000AD60",
+    "0154008A07001000000005006C10F03C0AEB5F",
+    "015404860700000000000600000000000000AD60",
+    "0154018B070000000000040000010000D5AB",
+    "0154018B070000000000040001010000D457"
+  ],
+  "input_evidence": [
+    {
+      "path": "LocalOnly/AutoCalBackendProbe/e54_osid_post_read_reset_01.json",
+      "bytes": 6053,
+      "sha256": "c4ecfbba4f29b7e4f33141fda090a598aef65964a3f531113b78ea403949046c"
+    },
+    {
+      "path": "LocalOnly/AutoCalBackendProbe/e54_osid_post_read_reset_01.json.journal.jsonl",
+      "bytes": 7491,
+      "sha256": "62f7b9ce2cd5bc80779908d0999a79d6c5612875467662448d62dc8b08e0814f"
+    }
+  ],
+  "hardware_tested_source_sha256": {
+    "Apps/PcmLibrary/AutoCalHostFrame.cs": "b87cd99d6adea75374609efdcda3cd16760836d293580e7952f0d0e6b3226600",
+    "Apps/PcmLibrary/AutoCalChannel.cs": "4a62652602f3fe26f23ed7dfdb13db82e2b8ac0d7ec3161c4930c42485629ff4",
+    "Apps/PcmLibrary/AutoCalVpwEnvelope.cs": "c3367d1b972061b2662b227e608d9278e466b6b30f50d7bbef70c62554c0074f",
+    "Apps/PcmLibrary/AutoCalSetupResponse.cs": "cb582c8b049d212c9aa8e603bc77a9cb0ad06d162f905e949bacf02108f78007",
+    "Apps/PcmLibrary/Devices/AutoCalDevice.cs": "d63017ffd5f2c916ac37c1bddc625e2e673a026c8a9867a852b3d010a6594757",
+    "Apps/PcmLibraryWindowsApi/Ports/AutoCalD2xxTransport.cs": "80decc39ac396ff86aeebfadff0e33c2395f802171e01d89407cb28a4f948614",
+    "Tools/AL5/AutoCalBackendProbe/Program.cs": "2f1012b707e213d02bc6dcd993a8583a94edde5cda2dcbbf4c8dd70ed5706c36",
+    "Tools/AL5/AutoCalBackendProbe/ProbeProfile.cs": "d758251ef1a5a236fc0bfeeffd60b531a2463adacc48990dc41aab0aea5dcd0d",
+    "Tools/AL5/AutoCalBackendProbe/KernelRequestGuard.cs": "1dc4f2ef2a932efb504e504a280bce7a628449a0301d36236f71408c9d53c0a1",
+    "Tools/AL5/AutoCalKernelProbePolicy.cs": "d60386fc2e3b9b82d71b72c731008cb54c08269ce8d0614e375e79def7491c4d",
+    "Tools/AL5/AutoCalKernelProbeSession.cs": "4fef5bbf4ac6eb5dbdc0d14f5e3e3a7cb2f0598bd80fdd997f84c4a7633111c4",
+    "Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj": "1e2828586357c0e739aa3a6e8095db036ebb1c26d8f4515644a2274f9d2ed7dc",
+    "Apps/PcmLibrary/CKernelReader.cs": "6ca5cb53f324ce53f3c4fd3b84b4512f5c7627d2d090d6fcffbb8746bdd8d4e2",
+    "Apps/PcmLibrary/CKernelVerifier.cs": "8fb21615467e27f31fafc374d87b27002706a25f584e77f3b6bb446ab86dbc27",
+    "Apps/PcmLibrary/Misc/Crc.cs": "da4cd970a78568fcabbf7ad7f8012ea35b95d063c24207697c08da7933d85538",
+    "Apps/PcmLibrary/Misc/Query.cs": "bb12ce829d277aebaeee0ec33c36c90c27afc5238381f38978d8c5e9516af73d",
+    "Apps/PcmLibrary/Misc/FlashChip.cs": "1b10acfa6df00b768fed607cbb32169e50ed3e2205a298df35122cf51f0c2aef",
+    "Apps/PcmLibrary/Misc/ToolPresentNotifier.cs": "62fd88d3d7c1cacb5af32b96486a46d71a0296d3e182377cbc27033c3c4fb779",
+    "Apps/PcmLibrary/Vehicle.Kernel.cs": "f4b33c05d26b1d522d873ef361cfea7024988ff10319a9e155a04987431d2591",
+    "Apps/PcmLibrary/Vehicle.cs": "a6ac56c0d3c5e98a3e9e2059e8ff3b61c85c41ae3f4a8728a08906c71d42d121",
+    "Apps/PcmLibrary/Messages/Protocol.ReadWrite.cs": "b09d11ef7948c14480c375e33e65b8c4f0acd63071dbd9b73b73cb20e295efda",
+    "Apps/PcmLibrary/Messages/Protocol.Kernel.cs": "f277b2ce7bca2944968f37c9724370fad8ea7df8aac44cd88c22f1254904c236"
+  },
+  "hardware_tested_artifacts": {
+    "probe_sha256": "60a3092a4e61f88091e9e490db1215b543b7841ebe4fd262d12791f51ffe4730",
+    "pcmlibrary_sha256": "45b945439550d31106134a243cdb487c0feac0c54e34720995e446fdfb1c2cd9",
+    "native_dll": "C:\\Program Files (x86)\\EFILive\\Drivers\\EFILive\\Win-7-8-10\\amd64\\ftd2xx64.dll",
+    "native_sha256": "91185415e0a1cd8ad09a5b644130554867ee4c4975c7aa71ee6da15d2645d9a2",
+    "header_sha256": "cf2ad290c68137373b26629bf9feed6f4847f4e9e5cde4b980a212cebeb4ff6a"
+  },
+  "audit_implementation": [
+    {
+      "path": "Tools/AL5/inspect_autocal_read_gap.py",
+      "bytes": 19267,
+      "sha256": "ebaeeef7eec6159b8f547a48028c68f05bd243506efc98e51b82f36326899076"
+    },
+    {
+      "path": "Tools/AL5/audit_trace_wrappers.py",
+      "bytes": 5198,
+      "sha256": "c824d113b63244d7e5d56b7bd53e3870fc155e666d897c12a570f1bdd69bd608"
+    },
+    {
+      "path": "Tools/AL5/checksum.py",
+      "bytes": 1841,
+      "sha256": "b057805b2f5dc141141be5ce747ee78be98e441746a05d3a4a0cb3911bf2ef93"
+    }
+  ],
+  "audit_method": "Independently decoded all16 wrappers, validated exact extents/CRC, paired serial write completions and ordinary command echoes, compared request order and OS bytes, checked all22 source hashes against the working files. Host closure is retained as reported evidence.",
+  "limitations": [
+    "Reset is user-reported, not measured by the application journal; no new supply-voltage or waveform measurement is claimed.",
+    "The identity reply proves an ordinary matching response after the reported reset, not all controller state, RAM contents or firmware execution state.",
+    "No unlock, RAM upload/execute, kernel query, flash identification, memory-block read, CRC query, erase/program or speed transition ran in this identity profile.",
+    "The failed full read remains failed. This identity-only exchange does not qualify full-read delivery, a later small-read experiment, writing or interrupted-flash recovery.",
+    "Counts and times describe D2XX application events. No independent USBPcap or VPW waveform observation is included.",
+    "Recorded cleanup and reported native disposal do not establish electrical bus OFF or return to1x.",
+    "Historical raw files and earlier public receipts were not modified."
+  ]
+}

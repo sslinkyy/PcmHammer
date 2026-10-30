@@ -165,6 +165,28 @@ the kernel or adapter caused the missing data. The full-read path remains
 unqualified, and the previous successful kernel-info result does not change
 that conclusion.
 
+The separate `--e54-read-prefix` profile requests exactly 64 bytes at address
+zero after the same kernel-version and flash-ID checks. Its baseline match is
+explicitly scoped to `baseline-prefix`; it permits no CRC query or data replay,
+and does not establish full-image verification. A matching checksum and pinned
+prefix hash are required before exit and the ordinary OS-ID check.
+
+Its [first physical attempt also failed](../../../Docs/AL5/AUTOCAL_E54_PREFIX_READ_BLOCKED_20261030.json),
+from source `d138947`. The single request `6D 10 F0 35 01 00 40 00 00 00` was
+submitted at 3,150 ms. No bytes reached D2XX afterward: 285 native reads returned
+empty through 33,193 ms, about 30 seconds after the request. Two ordinary empty
+receive windows completed; a still-pending native read hit the third window's
+deadline and faulted the channel. That late transfer completed empty with no
+error, and disposal finished with zero retained owners. This differs from the
+full-read run's five empty windows followed by a blocked resend. Neither stop
+reason explains the missing memory reply.
+
+The prefix run again passed setup, initial identity, exact kernel version and
+flash ID. It recorded eighteen TX and thirteen RX host envelopes, all outer
+CRCs valid, containing fourteen VPW requests and nine replies. No data, prefix
+comparison, CRC, exit/reset or protocol cleanup followed; its reserved readback
+file is empty. Both prefix and full-image reads remain unqualified.
+
 After failure the tool sends no additional protocol cleanup and closes only
 owned host resources. A native operation still running at its deadline remains
 owned until completion; a close failure retains ownership for explicit retry.

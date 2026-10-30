@@ -1,0 +1,202 @@
+{
+  "schema": "autocal-e54-prefix-read-blocked-v1",
+  "observation_date": "2026-10-30",
+  "source_commit": "d1389475c76311d5488ffb1eabfac63787323774",
+  "recorded_source_hash_count": 22,
+  "recorded_source_hashes_match_commit_blobs": true,
+  "adapter": "EFILive AutoCal V2",
+  "serial": "AC3NCHH5",
+  "controller": "Isolated spare E54/LB7 bench",
+  "profile": "e54-read-prefix",
+  "outcome": "FAILED: no data reply for the single 64-byte read; prefix and full-image reads remain unqualified",
+  "scope": "Offline independent audit of private D2XX journal and receipt. No additional hardware access.",
+  "application_tx_frames": 18,
+  "application_rx_frames": 13,
+  "submitted_application_bytes": 2380,
+  "received_application_bytes": 267,
+  "all_31_outer_crcs_valid": true,
+  "short_writes_observed": 0,
+  "native_read_completions": 312,
+  "zero_byte_native_reads": 299,
+  "vpw_payload_commands_started": 14,
+  "vpw_payload_commands_completed": 14,
+  "received_vpw_frames": 9,
+  "passed_before_failure": {
+    "adapter_setup_accepted": true,
+    "initial_operating_system": 15189044,
+    "initial_identity_reply_hex": "6CF0107C0A00E7C434444E",
+    "ram_uploads": [
+      {
+        "submode_hex": "00",
+        "data_bytes": 267,
+        "ram_address_hex": "FF97E0",
+        "submitted_payload_matches_pinned_kernel": true,
+        "block_checksum_valid": true,
+        "vpw_message_sha256": "ffba8bc6cfc4b08499ff8e8225b5aec546fb9d46a03c4d3c942b90e0b58270ee",
+        "host_write_elapsed_ms": 1079
+      },
+      {
+        "submode_hex": "80",
+        "data_bytes": 1760,
+        "ram_address_hex": "FF9100",
+        "submitted_payload_matches_pinned_kernel": true,
+        "block_checksum_valid": true,
+        "vpw_message_sha256": "c79faf4f381a08b51229e053379c219c30f03e80e2220a69f2d2064a75063fe6",
+        "host_write_elapsed_ms": 1464
+      }
+    ],
+    "ram_copy_reply_hex": "6CF010760078",
+    "ram_execute_reply_hex": "6CF010768078",
+    "kernel_version_reply_hex": "6CF0107D006AB178EC36",
+    "kernel_version_matches_pinned_asset": true,
+    "flash_identity_reply_hex": "6CF0107D0100894471",
+    "flash_identity_hex": "00894471"
+  },
+  "first_read": {
+    "request_hex": "6D10F035010040000000",
+    "start_address_hex": "000000",
+    "requested_data_bytes": 64,
+    "host_write_event_elapsed_ms": 3150,
+    "host_write_completed_elapsed_ms": 3151,
+    "submitted_count": 1,
+    "host_wrapper_hex": "0154008A0700100000000A006D10F035010040000000FE69",
+    "host_wrapper_sha256": "520a86a386d0dca699dc3bb279dd7e2558c079dc6fd759f3c10edb1a1edad36a",
+    "zero_byte_native_reads_after_request": 285,
+    "positive_native_reads_after_request": 0,
+    "last_native_read_elapsed_ms": 33193,
+    "observed_empty_read_interval_ms": 30043,
+    "completed_empty_logical_receive_windows": 2,
+    "configured_receive_timeout_ms": 10000,
+    "third_window_outcome": "Deadline expired while a native read task was still in flight; channel faulted conservatively.",
+    "kernel_result_elapsed_ms": 33214,
+    "no_further_host_transmission_after_request": true,
+    "matching_data_replies": 0,
+    "short_75_acknowledgements": 0,
+    "controller_crc_queries": 0
+  },
+  "deadline_and_cleanup": {
+    "cancelled": false,
+    "channel_fault": "Deadline/cancellation interrupted an in-flight read; receipt reports Cancelled=false.",
+    "late_transfer": {
+      "Operation": "read",
+      "RequestedByteCount": 4096,
+      "ReturnedByteCount": 0,
+      "IsCompleted": true,
+      "hex": "",
+      "error": null,
+      "native": null
+    },
+    "native_status_error_observed": false,
+    "buffered_bytes_hex": "",
+    "recorded_adapter_cleanup_accepted": false,
+    "transport_disposed": true,
+    "retained_native_owners": 0,
+    "cleanup_exception": null,
+    "bench_power_cycle_required_at_stop": true,
+    "interpretation": "The deadline fault preserves ownership of a pending call. Its later successful zero-byte completion does not explain the preceding lack of data or justify a successful read claim."
+  },
+  "readback": {
+    "scope": "baseline-prefix",
+    "saved_bytes": 0,
+    "prefix_sha_verified": false,
+    "controller_crc_verified": false,
+    "full_image_verified": false
+  },
+  "not_submitted": {
+    "data_replay": true,
+    "controller_crc_query": true,
+    "kernel_exit_or_reset": true,
+    "post_exit_identity": true,
+    "dtc_clear": true,
+    "speed_transition": true,
+    "flash_erase_or_program": true,
+    "recorded_adapter_cleanup_after_failure": true
+  },
+  "comparison_to_full_read_attempt": {
+    "public_receipt": "AUTOCAL_E54_FULL_READ_BLOCKED_20261030.json",
+    "full_read_request_bytes": 4096,
+    "prefix_request_bytes": 64,
+    "full_read_empty_native_interval_ms": 50059,
+    "prefix_empty_native_interval_ms": 30043,
+    "full_read_stop": "Five ordinary empty receive windows, then rejected generic resend before submission.",
+    "prefix_stop": "Two ordinary empty receive windows, then in-flight read deadline fault in the third window.",
+    "shared_observation": "Known kernel and flash ID replied; neither first data request produced any later D2XX payload."
+  },
+  "source_sha256": {
+    "Apps/PcmLibrary/AutoCalHostFrame.cs": "b87cd99d6adea75374609efdcda3cd16760836d293580e7952f0d0e6b3226600",
+    "Apps/PcmLibrary/AutoCalChannel.cs": "4a62652602f3fe26f23ed7dfdb13db82e2b8ac0d7ec3161c4930c42485629ff4",
+    "Apps/PcmLibrary/AutoCalVpwEnvelope.cs": "c3367d1b972061b2662b227e608d9278e466b6b30f50d7bbef70c62554c0074f",
+    "Apps/PcmLibrary/AutoCalSetupResponse.cs": "cb582c8b049d212c9aa8e603bc77a9cb0ad06d162f905e949bacf02108f78007",
+    "Apps/PcmLibrary/Devices/AutoCalDevice.cs": "d63017ffd5f2c916ac37c1bddc625e2e673a026c8a9867a852b3d010a6594757",
+    "Apps/PcmLibraryWindowsApi/Ports/AutoCalD2xxTransport.cs": "80decc39ac396ff86aeebfadff0e33c2395f802171e01d89407cb28a4f948614",
+    "Tools/AL5/AutoCalBackendProbe/Program.cs": "2f1012b707e213d02bc6dcd993a8583a94edde5cda2dcbbf4c8dd70ed5706c36",
+    "Tools/AL5/AutoCalBackendProbe/ProbeProfile.cs": "d758251ef1a5a236fc0bfeeffd60b531a2463adacc48990dc41aab0aea5dcd0d",
+    "Tools/AL5/AutoCalBackendProbe/KernelRequestGuard.cs": "1dc4f2ef2a932efb504e504a280bce7a628449a0301d36236f71408c9d53c0a1",
+    "Tools/AL5/AutoCalKernelProbePolicy.cs": "d60386fc2e3b9b82d71b72c731008cb54c08269ce8d0614e375e79def7491c4d",
+    "Tools/AL5/AutoCalKernelProbeSession.cs": "4fef5bbf4ac6eb5dbdc0d14f5e3e3a7cb2f0598bd80fdd997f84c4a7633111c4",
+    "Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj": "1e2828586357c0e739aa3a6e8095db036ebb1c26d8f4515644a2274f9d2ed7dc",
+    "Apps/PcmLibrary/CKernelReader.cs": "6ca5cb53f324ce53f3c4fd3b84b4512f5c7627d2d090d6fcffbb8746bdd8d4e2",
+    "Apps/PcmLibrary/CKernelVerifier.cs": "8fb21615467e27f31fafc374d87b27002706a25f584e77f3b6bb446ab86dbc27",
+    "Apps/PcmLibrary/Misc/Crc.cs": "da4cd970a78568fcabbf7ad7f8012ea35b95d063c24207697c08da7933d85538",
+    "Apps/PcmLibrary/Misc/Query.cs": "bb12ce829d277aebaeee0ec33c36c90c27afc5238381f38978d8c5e9516af73d",
+    "Apps/PcmLibrary/Misc/FlashChip.cs": "1b10acfa6df00b768fed607cbb32169e50ed3e2205a298df35122cf51f0c2aef",
+    "Apps/PcmLibrary/Misc/ToolPresentNotifier.cs": "62fd88d3d7c1cacb5af32b96486a46d71a0296d3e182377cbc27033c3c4fb779",
+    "Apps/PcmLibrary/Vehicle.Kernel.cs": "f4b33c05d26b1d522d873ef361cfea7024988ff10319a9e155a04987431d2591",
+    "Apps/PcmLibrary/Vehicle.cs": "a6ac56c0d3c5e98a3e9e2059e8ff3b61c85c41ae3f4a8728a08906c71d42d121",
+    "Apps/PcmLibrary/Messages/Protocol.ReadWrite.cs": "b09d11ef7948c14480c375e33e65b8c4f0acd63071dbd9b73b73cb20e295efda",
+    "Apps/PcmLibrary/Messages/Protocol.Kernel.cs": "f277b2ce7bca2944968f37c9724370fad8ea7df8aac44cd88c22f1254904c236"
+  },
+  "runtime_artifacts": {
+    "probe_sha256": "c94c0ab0b7ab6b1383662ce2cbfeabc16b96ccaa66454c371c77331bded582a6",
+    "pcmlibrary_sha256": "45b945439550d31106134a243cdb487c0feac0c54e34720995e446fdfb1c2cd9",
+    "local_bin_artifacts_match_recorded_hashes_at_audit": {
+      "AutoCalBackendProbe.dll": true,
+      "PcmLibrary.dll": true
+    },
+    "native_dll_sha256": "91185415e0a1cd8ad09a5b644130554867ee4c4975c7aa71ee6da15d2645d9a2",
+    "native_header_sha256": "cf2ad290c68137373b26629bf9feed6f4847f4e9e5cde4b980a212cebeb4ff6a",
+    "archived_build_directory": "LocalOnly/AutoCalBackendProbe/builds/d138947",
+    "archived_artifacts_match_recorded_hashes_at_audit": {
+      "AutoCalBackendProbe.dll": true,
+      "PcmLibrary.dll": true
+    }
+  },
+  "kernel": {
+    "length": 2027,
+    "sha256": "8294b899c153b513cd1307ac4c6654c2720832779f40c19aac7100a4b864929a"
+  },
+  "private_inputs": [
+    {
+      "path": "LocalOnly/AutoCalBackendProbe/e54_read_prefix_01.json",
+      "size": 15481,
+      "sha256": "a702c24dfa1b9da586814e986975e3fa3b4f7a435bbb339de5cf4ee2a0e8c5fb"
+    },
+    {
+      "path": "LocalOnly/AutoCalBackendProbe/e54_read_prefix_01.json.journal.jsonl",
+      "size": 43609,
+      "sha256": "cfd96065880ef3095edb273d63ba659c25566af0c3fb334c335b373be82be4cd"
+    },
+    {
+      "path": "LocalOnly/AutoCalBackendProbe/e54_read_prefix_01.json.readback.bin",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "qualification": {
+    "physical_speed": "unmeasured",
+    "physical_bus_transmissions": "unmeasured",
+    "baseline_prefix_readback": false,
+    "full_flash_readback": false,
+    "hardware_programming": false,
+    "interrupted_flash_recovery": false,
+    "al5_live_writes_enabled": false
+  },
+  "limitations": [
+    "D2XX delivered no bytes after the request. No independent VPW, scope or USBPcap capture belongs to this run; the absence cannot be assigned to kernel transmission, adapter reception/filtering/setup, or bus delivery.",
+    "The pending-I/O deadline fault terminated the third receive window. It does not prove a transport error caused the absence of the memory response; the same absence preceded the fault by about thirty seconds.",
+    "The late transfer requested 4096 host-buffer bytes and returned zero. That host-buffer capacity is unrelated to the requested64 flash bytes and is not evidence that a4096-byte VPW response was requested.",
+    "Outgoing outer CRCs and RAM block checksums validate recorded host bytes, not electrical transmission or equality of every uploaded RAM byte.",
+    "Prefix-only mode cannot qualify the complete512KiB image even if its read succeeds. In this run no prefix was received and the reserved readback is empty.",
+    "No automatic controller exit/reset or adapter protocol cleanup followed failure. Later power-cycle or identity evidence must be recorded separately."
+  ]
+}

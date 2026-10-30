@@ -788,6 +788,45 @@ setup, filtering, timing or framing behavior. No independent bus capture belongs
 to this run. The earlier successful kernel version/exit session remains separate
 evidence; the independent AutoCal full-read path is still unqualified.
 
+## Prefix-read attempt: no data reply
+
+The separate `--e54-read-prefix` profile limits the data exchange to one
+64-byte request at address zero. It checks the same kernel and flash identity,
+then requires an exact transfer checksum and the pinned baseline-prefix digest
+before allowing exit. It does not query controller CRCs or verify the full
+image. Its receipt distinguishes `baseline-prefix` from `full-image` coverage.
+
+The [first prefix-read audit](AUTOCAL_E54_PREFIX_READ_BLOCKED_20261030.json)
+records a physical attempt from commit `d138947`. All 22 recorded source hashes
+match that commit; runtime hashes match the archived build under
+`LocalOnly/AutoCalBackendProbe/builds/d138947` at audit.
+Setup, initial OS identity, the exact RAM-kernel version and flash identity
+passed again. The request `6D 10 F0 35 01 00 40 00 00 00` was submitted once at
+3,150 ms and its host write completed at 3,151 ms. No further host command was
+submitted, and no response bytes were delivered after it.
+
+The journal has eighteen TX and thirteen RX host envelopes, all 31 outer CRCs
+valid, containing fourteen VPW requests and nine replies. Of 312 native read
+completions, 299 returned zero bytes. There were 285 empty native reads after
+the data request, through 33,193 ms: an observed interval of 30,043 ms. Two
+logical receive windows ended normally without a payload. During the third
+10-second window, the channel deadline expired while a native read was still
+pending, and the session stopped conservatively at 33,214 ms.
+
+The retained pending transfer subsequently completed with zero bytes and no
+error. Its 4,096-byte host buffer is unrelated to the requested 64 flash bytes.
+The native owner closed successfully with zero retained owners. The deadline
+fault explains the stop boundary; it does not locate the missing data, which
+had already been absent for about thirty seconds. Unlike the earlier full-read
+attempt, this run did not reach five ordinary timeouts or an attempted resend.
+
+The reserved prefix file is empty. No prefix digest, controller CRC or full-image
+comparison passed, and no exit/reset, post-exit identity, speed change, flash
+erase/program or adapter protocol cleanup followed the failure. A later bench
+reset is separate evidence. Both read profiles remain unqualified; neither
+host-only capture establishes whether the kernel transmitted the missing reply
+or whether the adapter, setup, filtering or bus path prevented its delivery.
+
 ## Remaining integration work
 
 The developer probe now has a separate fixed baseline-read profile. It reuses
@@ -800,10 +839,12 @@ any failure stops without another RAM upload or controller reset. Offline tests
 cover corrupt blocks, mismatched baseline/CRCs, wrong flash identity and
 cancellation. Its first physical attempt reached the known kernel and flash ID
 but returned no data for the first block, as recorded above. Offline passing
-tests do not qualify the failed physical read path.
+tests do not qualify the failed physical read path. The separate 64-byte prefix
+profile also reached the kernel and flash identity but returned no data, as
+recorded above; reducing the request length alone did not resolve the gap.
 
 The bounded setup, ordinary identity, COPY-only observation, post-reset identity
-and pinned-kernel version/exit sequence have passed. Full image readback and
+and pinned-kernel version/exit sequence have passed. Prefix and full image readback and
 comparison, sustained exchanges, physical speed, filters and programming
 completion still require qualification for the independent AutoCal backend.
 No independent RAM readback or interrupted-flash recovery has been established.
