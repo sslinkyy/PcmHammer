@@ -22,8 +22,9 @@ These responses establish host protocol acceptance, not physical bus behavior.
 
 The separate E54 identity profile passed one ordinary query on the isolated
 spare E54/LB7 bench. Confirm its current physical connection and power state
-before invoking it again. It uses the observed ordinary identification setup, submits exactly one
-`6C 10 F0 3C 0A` request, then only receives for a bounded interval. It accepts a
+before invoking it again. It uses the observed ordinary identification setup,
+submits exactly one `6C 10 F0 3C 0A` request, then only receives for a bounded
+interval. It accepts a
 matching OS-ID reply for the saved bench baseline `15189044`, preserving the
 observed nine- or eleven-byte response. The two extra bytes in the latter are
 opaque; neither reply proves which firmware execution state produced it.
@@ -46,7 +47,7 @@ Live invocation forms (not automatic test steps):
 ```
 
 Each receipt must be a new direct child of `LocalOnly/AutoCalBackendProbe`.
-Both profiles journal raw TX/RX and source, assembly, and native-library hashes.
+All profiles journal raw TX/RX and source, assembly, and native-library hashes.
 The exact request guard rejects any unlisted command, different payload,
 reordered request, replay, or incorrect continuation after a partial write.
 There are no arbitrary payload, file, address, retry, security algorithm,
@@ -61,12 +62,26 @@ correctly. The experiment stops without executing code, querying a kernel, or
 sending controller/adapter protocol cleanup. A bench power cycle is required
 before a future attempt. Native USB resources are still closed explicitly.
 
+The first real COPY-only run submitted the exact 267-byte tail and received
+`6C F0 10 76 00 78`. It recorded eight VPW requests and six VPW replies, with no
+`36 80` execute, flash operation, DTC clear, controller exit or speed change.
+All twelve application TX and ten RX envelopes passed their outer CRCs; the
+copy packet also passed its block checksum and matched the pinned source tail.
+The native owner closed with zero retained owners. See the
+[COPY-only receipt](../../../Docs/AL5/AUTOCAL_E54_RAM_COPY_20261030.json).
+
+This establishes the reply shape, not the copied RAM bytes. The final `78`
+remains opaque. The tool stopped without further protocol traffic and required
+a bench power cycle; that session contains no subsequent cold-reset identity
+check. It did not execute uploaded code or query a kernel version.
+
 The full RAM-kernel coordinator is tested offline, including exact kernel
 version, exit and post-exit identity. Its live `--e54-kernel-info` invocation is
-blocked before loading a native driver; `--plan-e54-kernel-info` remains available
-for inspection. Existing traces contain no stock RAM-copy acknowledgement,
-so live execution must not proceed just because a simulated copy succeeds.
-See [the evidence gap](../../../Docs/AL5/AUTOCAL_STOCK_RAM_COPY_ACK_GAP_20261030.json).
+still blocked before loading a native driver; `--plan-e54-kernel-info` remains
+available for inspection. The earlier
+[evidence-gap inventory](../../../Docs/AL5/AUTOCAL_STOCK_RAM_COPY_ACK_GAP_20261030.json)
+remains unchanged and covers its original saved traces. The new COPY-only
+observation is separate evidence and does not enable full kernel execution.
 
 After failure the tool sends no additional protocol cleanup and closes only
 owned host resources. A native operation still running at its deadline remains
@@ -87,7 +102,7 @@ dotnet run --project Tools/AL5/AutoCalKernelProbeSessionTest.csproj --verbosity 
 ```
 
 The backend's 4x transition and physical programming remain unqualified. The
-existing AL5 direct reader and write gates are unchanged. The successful
-identity test establishes one matching exchange only; it does not qualify
-kernel transfer, full readback, programming acknowledgements, verification or
-interrupted-write recovery. AutoCal remains absent from normal adapter selection.
+existing AL5 direct reader and write gates are unchanged. The identity and
+COPY-only observations do not qualify complete kernel transfer/execution,
+full readback, programming acknowledgements, verification or interrupted-write
+recovery. AutoCal remains absent from normal adapter selection.

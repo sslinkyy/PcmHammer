@@ -143,7 +143,16 @@ public sealed class AutoCalKernelProbePolicy
                 break;
             case Phase.RamExecute:
                 permitted = bytes.SequenceEqual(upload[1]);
-                if (permitted) { phase = Phase.RamExecuteReply; RamExecuteAttempts++; }
+                if (permitted)
+                {
+                    // Pinned by the independent AutoCal copy-only experiment
+                    // e54_ram_copy_01.json (2026-10-30). Unknown suffixes may be
+                    // observed by copy-only mode, but never authorize Execute.
+                    // This is an observed-response prerequisite, not RAM readback.
+                    if (copyAck == null || !Equal(copyAck, "6CF010760078"))
+                        Reject("RAM execution requires the exact observed stock Copy reply 6CF010760078.");
+                    phase = Phase.RamExecuteReply; RamExecuteAttempts++;
+                }
                 break;
             case Phase.KernelVersion:
                 permitted = Equal(bytes, "6C10F03D00");
@@ -211,13 +220,19 @@ public sealed class AutoCalKernelProbePolicy
                 byte expectedSubmode = phase == Phase.RamCopyReply ? (byte)0 : (byte)0x80;
                 if (bytes.Length != 6 || bytes[4] != expectedSubmode)
                     Reject("RAM-upload response has wrong extent or submode: " + Convert.ToHexString(bytes));
-                // The stock-ROM final byte is opaque (single Execute previously
-                // returned 0x78). Do not equate it with running-kernel flash status.
-                // No programming or execution success is claimed from this ACK.
+                // The stock-ROM final byte's meaning remains opaque. Copy-only
+                // observation preserves all values; Execute requires the exact
+                // observed reply above. A post-Execute reply is also pinned to
+                // earlier captures. Neither ACK proves execution or RAM equality.
                 if (phase == Phase.RamCopyReply)
                 { copyAck = (byte[])bytes.Clone(); phase = Phase.RamExecute; }
                 else
-                { executeAck = (byte[])bytes.Clone(); phase = Phase.KernelVersion; }
+                {
+                    executeAck = (byte[])bytes.Clone();
+                    if (!Equal(bytes, "6CF010768078"))
+                        Reject("RAM Execute reply differs from the previously observed 6CF010768078.");
+                    phase = Phase.KernelVersion;
+                }
                 return;
             case Phase.KernelVersionReply:
                 if (!Equal(bytes, "6CF0107D006AB178EC36")) Reject("Kernel identity differs from the pinned asset: " + Convert.ToHexString(bytes));

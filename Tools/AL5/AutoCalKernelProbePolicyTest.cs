@@ -36,7 +36,7 @@ internal static class AutoCalKernelProbePolicyTest
         catch (Exception error) { Console.Error.WriteLine(error); return 2; }
         Run("pinned asset and production upload-plan equivalence", PlanAndPin);
         Run("complete positive-seed session and exact provenance", CompletePositive);
-        Run("zero seed omits key and opaque stock RAM ack is not kernel proof", ZeroSeed);
+        Run("unknown copy suffix is observable but cannot authorize execution", ZeroSeed);
         Run("wrong identity and malformed security responses fail closed", InvalidIdentitySecurity);
         Run("flash erase/read/copy/speed/DTC and modified RAM bytes refused", ForbiddenRequests);
         Run("uncertain command cannot replay or skip phase", ReplayAndOrdering);
@@ -124,8 +124,19 @@ internal static class AutoCalKernelProbePolicyTest
         p.BeforeTransmit(p.UploadPermissionMessage); Rx(p, "6CF010740044");
         p.BeforeTransmit(p.UploadMessages[0]); Rx(p, "6CF0107600FF");
         Require(p.RamCopyAcknowledgement![5] == 0xFF && !p.IsKernelVerified, "opaque copy suffix retained, not execution status");
-        p.BeforeTransmit(p.UploadMessages[1]); Rx(p, "6CF0107680AB");
-        Require(p.RamExecuteAcknowledgement![5] == 0xAB && !p.IsKernelVerified, "opaque execute suffix retained, no success claim");
+        int count = p.AuthorizedTransmitCount;
+        Reject(() => p.BeforeTransmit(p.UploadMessages[1]), "unobserved copy suffix cannot authorize execution");
+        Require(p.AuthorizedTransmitCount == count && p.RamExecuteAttempts == 0,
+            "unqualified Copy reply stops before host Execute authorization");
+        foreach (byte suffix in new byte[] { 0, 0xAB, 0xFF })
+        {
+            var q = CopyReady(); q.BeforeTransmit(q.UploadMessages[0]); Rx(q, "6CF010760078");
+            q.BeforeTransmit(q.UploadMessages[1]);
+            Reject(() => q.ObserveReceive(new byte[] { 0x6C, 0xF0, 0x10, 0x76, 0x80, suffix }), "unobserved Execute suffix");
+            Require(q.RamExecuteAcknowledgement![5] == suffix && !q.IsKernelVerified,
+                "failed Execute evidence retained without execution proof");
+            Reject(() => Tx(q, "6C10F03D00"), "wrong Execute reply cannot advance to version query");
+        }
     }
     private static void InvalidIdentitySecurity()
     {
@@ -285,6 +296,16 @@ internal static class AutoCalKernelProbePolicyTest
                 "only identity/seed/permission/267-byte RAM copy crossed host boundary");
             Require(p.RamCopyAcknowledgement![5] == suffix && !p.IsKernelVerified && !p.IsExitConfirmed,
                 "copy reply observed with opaque suffix; no execution or restoration proof");
+            if (suffix != 0x78)
+            {
+                Reject(() => p.BeforeTransmit(p.UploadMessages[1]),
+                    "unobserved copy suffix cannot authorize Execute even in full offline policy");
+                Reject(() => HostFinish(g, AutoCalHostFrame.EncodeLongHeader(0x8A00, 7, 0x10, p.UploadMessages[1])),
+                    "copy-only host boundary also refuses unqualified Execute");
+                Require(g.VpwPayloadCommandsCompleted == 4 && p.RamExecuteAttempts == 0,
+                    "unknown suffix observation remains copy-only");
+                continue;
+            }
             // Even though the offline full-session policy would permit its next
             // exact frame, live copy-only host scope blocks it before native I/O.
             byte[] execute = p.UploadMessages[1]; p.BeforeTransmit(execute);

@@ -2,9 +2,10 @@
 
 PcmHammer now contains an experimental AutoCal V2 device backend, a bounded
 host channel and a Windows D2XX transport. The actual backend completed an
-isolated USB setup and then one ordinary OS-ID exchange with the spare E54/LB7.
-The reply matched OS 15189044. General transport, physical speed, programming
-and recovery remain unqualified. AutoCal is absent from the ordinary device
+isolated USB setup, an ordinary OS-ID exchange with the spare E54/LB7, and a
+single pinned RAM-copy observation. The identity matched OS 15189044; the copy
+received a matching reply without executing the kernel. Copied RAM bytes,
+general transport, physical speed, programming and recovery remain unqualified. AutoCal is absent from the ordinary device
 factory and CLI selection; the working AL5 reader and AL5 live-write gates
 remain unchanged.
 
@@ -622,18 +623,58 @@ bytes is `02`. The meaning of `78` remains unknown.
 At the existing AutoCal transmit cap, PcmHammer divides the pinned 2,027-byte
 kernel into a 267-byte RAM copy at `FF97E0`, then a 1,760-byte execute packet at
 `FF9100`. A reply with an opaque final byte cannot prove that the first copy
-succeeded before execution. The next bounded experiment therefore stops after
-one copy packet and records its reply. It does not execute the kernel or prove
-that RAM contains the requested bytes. Full kernel execution remains disabled
-for live use; a bench power cycle is required after preparation. The inventory
-pins its private inputs and script and contains no kernel payload.
+succeeded before execution. The bounded COPY-only experiment described below
+has now recorded one such reply, without executing the kernel or verifying RAM
+contents. Full kernel execution remains disabled for live use; a bench power
+cycle is required after preparation. The historical inventory remains unchanged:
+it pins its earlier private inputs and script and contains no kernel payload.
+
+## Independent COPY-only RAM observation
+
+The [COPY-only result](AUTOCAL_E54_RAM_COPY_20261030.json) records a later
+isolated E54 bench session from source commit `92eb11b`. All twelve recorded
+source hashes match that commit. After the fixed identity, suppression,
+seed/key and upload-permission sequence, the probe submitted one mode `36 00`
+packet containing the pinned kernel's final 267 bytes at `FF97E0..FF98EA`.
+The submitted payload exactly matches file offset 1,760, and its block checksum
+passes. These checks establish the outgoing bytes, not their contents in RAM.
+
+The corresponding reply was:
+
+```text
+6C F0 10 76 00 78
+```
+
+The service/copy fields match the request. The final `78` remains opaque;
+there was no RAM readback or CRC. This is a successful observation of the copy
+reply, with `RamCopyBytesVerified = false`. The policy's recorded next phase
+`RamExecute` does not mean execution occurred: mode `36 80` submissions were
+zero, and no kernel-version query was sent.
+
+The journal contains twelve complete application TX and ten RX envelopes
+(496 and 197 bytes respectively), all twenty-two outer CRCs valid. Eight TX
+and six RX carry VPW payloads. One native read returned zero bytes before the
+copy reply arrived; there was no copy replay or short write. The copy reply
+arrived 233 ms after its host write event, with physical speed unmeasured.
+
+The probe stopped after the reply. It sent no flash read, CRC, erase or program
+request, no DTC clear, controller exit, speed change, or later protocol cleanup.
+At the last event, 1,338 ms into the journal, both receive queues were empty.
+The native owner reports successful disposal and zero retained owners. Raw
+bytes remain in `LocalOnly/AutoCalBackendProbe/e54_ram_copy_01.json` and its
+`.journal.jsonl` sibling; the public result pins them and the tested build.
+This is a D2XX journal audit, not an independent electrical capture.
+
+The session ended with a bench power cycle required. A subsequent cold-reset
+identity check is separate evidence and is not established by this receipt.
+Full kernel execution, programming and AL5 live writes remain disabled.
 
 ## Remaining integration work
 
-The bounded model/setup/recorded-cleanup sequence and one ordinary E54 identity
-exchange have passed. Kernel transfer, full readback, larger or sustained VPW
-exchanges, physical speed, filters, programming completion and authorization
-still require qualification for the independent AutoCal backend.
+The bounded setup, ordinary E54 identity and COPY-only reply observation have
+passed. Copied RAM contents, complete kernel transfer/execution, full readback,
+larger or sustained VPW exchanges, physical speed, filters and programming
+completion still require qualification for the independent AutoCal backend.
 An ordinary PcmHammer factory/CLI integration must also explicitly own and
 close the native device: the current Vehicle disposal path alone does not
 unconditionally dispose its Device. Cancellation must cover initialization as

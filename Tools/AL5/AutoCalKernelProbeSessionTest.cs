@@ -42,6 +42,9 @@ internal static class AutoCalKernelProbeSessionTest
         await Case("copy-only observation stops after267 RAM bytes without executing", CopyOnly);
         await Case("copy-only malformed response performs no cleanup or execute", CopyOnlyFailure);
         await Case("copy-only cancellation retains uncertain RAM submission", CopyOnlyCancellation);
+        await Case("unknown Copy suffix cannot authorize Execute", UnknownCopyBlocksExecute);
+        await Case("copy-only retains unknown suffix as observation without qualification", UnknownCopyObservation);
+        await Case("unknown Execute suffix cannot authorize kernel query", UnknownExecuteStops);
         Console.WriteLine(JsonSerializer.Serialize(new { assertions, passed, failed,
             adapterOpened = false, liveWriteEnabled = false, hardwareQualified = false,
             scope = "Production Vehicle + AutoCalDevice/Channel under the bounded policy, scripted byte transport only" }));
@@ -191,6 +194,32 @@ internal static class AutoCalKernelProbeSessionTest
             "cancelled RAM-copy submission stays uncertain and requires power cycle");
         CopyOnlyBoundary(f.adapter, result); Ownership(f.adapter, f.device);
     }
+    static async Task UnknownCopyBlocksExecute()
+    {
+        var f = await Fixture("copy-unknown"); var result = await f.session.RunAsync();
+        Require(!result.Success && result.RamCopyReplyObserved && !result.RamCopyBytesVerified && !result.RamExecuteSubmitted && result.BenchPowerCycleRequired,
+            "unobserved Copy suffix remains a raw observation and prevents execution");
+        Require(f.policy.RamCopyAcknowledgement!.SequenceEqual(Hex("6CF010760000")) && f.policy.RamExecuteAttempts == 0,
+            "unknown Copy reply is preserved and Execute is rejected before submission");
+        Require(f.adapter.Vpw.Count(v => v[3] == 0x36) == 1 && !Has(f.adapter, "6C10F03D00") && !Has(f.adapter, "6C10F020"),
+            "no second upload or subsequent kernel operation"); Ownership(f.adapter, f.device);
+    }
+    static async Task UnknownCopyObservation()
+    {
+        var f = await Fixture("copy-unknown", copyOnly: true); var result = await f.session.RunAsync();
+        Require(result.Success && result.ObservationOnly && result.RamCopyReplyObserved && result.BenchPowerCycleRequired,
+            "copy-only can complete observation of an unknown suffix");
+        Require(f.policy.RamCopyAcknowledgement!.SequenceEqual(Hex("6CF010760000")), "unknown suffix preserved verbatim");
+        CopyOnlyBoundary(f.adapter, result); Ownership(f.adapter, f.device);
+    }
+    static async Task UnknownExecuteStops()
+    {
+        var f = await Fixture("execute-unknown"); var result = await f.session.RunAsync();
+        Require(!result.Success && result.RamExecuteSubmitted && !result.KernelVersionVerified && result.BenchPowerCycleRequired,
+            "unknown Execute suffix retains uncertain execution and fails closed");
+        Require(f.policy.LastReceive!.SequenceEqual(Hex("6CF010768000")) && !Has(f.adapter, "6C10F03D00") && !Has(f.adapter, "6C10F020"),
+            "raw Execute reply preserved with no kernel query or reset"); Ownership(f.adapter, f.device);
+    }
 
     // Independent wire constructors for the fake's fixed responses/expected RAM
     // chunks. Production Frame/Protocol encoders are deliberately not called.
@@ -277,7 +306,7 @@ internal static class AutoCalKernelProbeSessionTest
                     if (bytes.SequenceEqual(Block(image, 1760, 267, 0xFF97E0, 0)))
                     {
                         if (failure == "cancel-copy") { cancel!.Cancel(); return; }
-                        reply = Hex(failure == "copy" || failure == "unlocked-copy" ? "6CF010768078" : "6CF010760078");
+                        reply = Hex(failure == "copy" || failure == "unlocked-copy" ? "6CF010768078" : failure == "copy-unknown" ? "6CF010760000" : "6CF010760078");
                     }
                     else if (bytes.SequenceEqual(Block(image, 0, 1760, 0xFF9100, 0x80)))
                     {
@@ -290,7 +319,7 @@ internal static class AutoCalKernelProbeSessionTest
                             for (int i = 0; i < 5; i++) Enqueue(Packet(0x10, Hex("6CF0116800")));
                             return;
                         }
-                        reply = Hex("6CF010768078");
+                        reply = Hex(failure == "execute-unknown" ? "6CF010768000" : "6CF010768078");
                     }
                     else throw new Exception("Unexpected VPW payload: " + text.Substring(0, Math.Min(text.Length, 40)));
                     break;
