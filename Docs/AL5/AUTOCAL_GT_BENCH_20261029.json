@@ -1,0 +1,165 @@
+{
+  "schema": "autocal-gt-e54-bench-v1",
+  "client_local_date": "2026-10-29",
+  "source_checkout": "74f2f05",
+  "setup": {
+    "controller": "isolated bench E54/LB7",
+    "os": 15189044,
+    "hardware": 12209950,
+    "calibration_id": 15189043,
+    "interfaces": "AutoCal V2 and OBDX Pro GT through Y splitter",
+    "baseline_gt_physically_attached": true,
+    "baseline_gt_network": "OFF",
+    "autocal_firmware": "2.08.221",
+    "efilive": "8.4.93; application build 808, HAPI/trace build 770",
+    "gt_firmware": "1.0.2.0",
+    "gt_hardware": "1.0.0.0"
+  },
+  "capture": {
+    "network": "LISTEN ONLY",
+    "fixed_speed": "4x",
+    "source_filter": 16,
+    "seconds": 300,
+    "automatic_speed_tracking": false,
+    "observed_network_frames": 260,
+    "crc_checked": 260,
+    "crc_failures": 0,
+    "long_data_blocks": 128,
+    "block_acknowledgments": 128,
+    "other_session_replies": 4,
+    "ordered_messages_equal_to_host_trace": true,
+    "missing_relative_to_host_trace": 0,
+    "extra_relative_to_host_trace": 0,
+    "ordered_sequence_sha256": "247f9c6bce8ca62c7efc535c3779bf032e1fca99c31a90f2e300cb4f3358e072",
+    "physical_crc_included_length_histogram": {
+      "7": 130,
+      "8": 1,
+      "10": 1,
+      "4107": 1,
+      "4109": 127
+    }
+  },
+  "reads": {
+    "baseline_ui_elapsed": "02:00",
+    "monitored_ui_elapsed": "01:59",
+    "baseline_data_requests": 129,
+    "monitored_data_requests": 128,
+    "baseline_data_responses": 128,
+    "monitored_data_responses": 128,
+    "baseline_duplicate_requests": [
+      {
+        "request_hex": "6d10f035011000021000",
+        "address": 135168,
+        "occurrences": 2
+      }
+    ],
+    "monitored_duplicate_requests": [],
+    "baseline_trace_seconds": 124.741,
+    "monitored_trace_seconds": 123.762,
+    "data_coverage_start": 0,
+    "data_coverage_end_exclusive": 524286,
+    "covered_data_equal": true,
+    "reference_mt09_prefix_equal": true,
+    "last_two_bytes_verified": false,
+    "partial_sha256": "a53bef772ac8f176296c5923fd3f93ca862ab5148cff292b7fb63eee37dd58ed"
+  },
+  "replay": {
+    "replay_complete": true,
+    "source_fully_read": true,
+    "network_frames": 260,
+    "adapter_frames": 57,
+    "adapter_errors": 0,
+    "outgoing_guard_violations": 0,
+    "undecoded_dvi_hex": "",
+    "examined_lines": 837,
+    "examined_bytes": 3244124
+  },
+  "cleanup": {
+    "capture_succeeded": true,
+    "network_off_verified": true,
+    "all_nine_saved_settings_restored": true,
+    "final_speed": "1x"
+  },
+  "authority": {
+    "gt_vehicle_send_enabled": false,
+    "autocal_standard_read_security_and_ram_loader_used": true,
+    "flash_erase_program_requested": false,
+    "live_al5_write_enabled": false,
+    "al5_recovery_qualified": false
+  },
+  "limits": [
+    "No physical waveform measurement or proof of electrical silence/loading.",
+    "No AutoCal request direction or 1x startup/return capture; fixed4x source10 only.",
+    "No missing or additional duplicate frames relative to HTX. Identical short acknowledgments have no unique identity; comparison cannot rule out offsetting physical loss/duplication.",
+    "HTX wrapper checksums and physical-bus trace completeness not independently qualified.",
+    "The final2flash bytes are absent from this read, not filled or inferred.",
+    "This read test establishes no AL5 programming, interrupted-flash recovery or write readiness."
+  ],
+  "evidence": [
+    {
+      "path": "LocalOnly/autocal_usb_20261029_bad23509/baseline_E54_R.htx",
+      "bytes": 200325,
+      "sha256": "d2e80d42faa15323e8591e9acc6db139f536cb98318aad01d658a5fc36c582b9"
+    },
+    {
+      "path": "LocalOnly/autocal_usb_20261029_bad23509/monitored_E54_R.htx",
+      "bytes": 200311,
+      "sha256": "83a297e4492cede2fae302ad4770c1c27abdecb8f1be1d4bcf04c270f64fa4c4"
+    },
+    {
+      "path": "LocalOnly/autocal_usb_20261029_bad23509/gt_ecm_4x.jsonl",
+      "bytes": 3244124,
+      "sha256": "b06503ac9c6f853c24f45771c85dcc1c1f65b30a11db84a257fdff5ae919d13f"
+    },
+    {
+      "path": "LocalOnly/autocal_usb_20261029_bad23509/gt_ecm_4x_replay.jsonl",
+      "bytes": 2181969,
+      "sha256": "2ce9f39aebd2095c5050586eccf2d6ed86d251867b9feb487d74dc24069d0966"
+    },
+    {
+      "path": "LocalOnly/autocal_usb_20261029_bad23509/baseline_trace_analysis.json",
+      "bytes": 5121,
+      "sha256": "a3c73696277eea9aaafd3efba9e044cc788ef5b394e50d54547f6de95b1f118b"
+    },
+    {
+      "path": "LocalOnly/autocal_usb_20261029_bad23509/monitored_trace_analysis.json",
+      "bytes": 4902,
+      "sha256": "440172b4dd610d589344a81a07e745635e9b4a9abbf249b1ef42604fd4f8898f"
+    },
+    {
+      "path": "LocalOnly/autocal_usb_20261029_bad23509/gt_autocal_comparison.json",
+      "bytes": 5337,
+      "sha256": "2eb6cb1108086431de518e679b022e5459ab55a8270991f9684f359179be8383"
+    },
+    {
+      "path": "LocalOnly/autocal_usb_20261029_bad23509/baseline_E54_000000_07fffd.partial.bin",
+      "bytes": 524286,
+      "sha256": "a53bef772ac8f176296c5923fd3f93ca862ab5148cff292b7fb63eee37dd58ed"
+    },
+    {
+      "path": "LocalOnly/autocal_usb_20261029_bad23509/monitored_E54_000000_07fffd.partial.bin",
+      "bytes": 524286,
+      "sha256": "a53bef772ac8f176296c5923fd3f93ca862ab5148cff292b7fb63eee37dd58ed"
+    },
+    {
+      "path": "LocalOnly/autocal_usb_20261029_bad23509/baseline_LB7_E54_0000.ctz",
+      "bytes": 332337,
+      "sha256": "f7fd507ed00fd98e7346410f86fd1f4ae327411f5752c58c25f990725b19547b"
+    },
+    {
+      "path": "LocalOnly/autocal_usb_20261029_bad23509/analyze_baseline_trace.py",
+      "bytes": 7594,
+      "sha256": "935876345ef5fb326bc4db52195d081db2f2dd352fd06ac3832a21b4194f7d25"
+    },
+    {
+      "path": "LocalOnly/autocal_usb_20261029_bad23509/analyze_monitored_trace.py",
+      "bytes": 7700,
+      "sha256": "e80a25b2ffc8c097af030cd7f20eac240369f31a505a81821739005d9ef1c316"
+    },
+    {
+      "path": "LocalOnly/autocal_usb_20261029_bad23509/compare_gt_autocal.py",
+      "bytes": 9254,
+      "sha256": "f24abf7b2213cf3d90f3a29e462135c6c8377c61bdf9346172fe1b3ff8711adf"
+    }
+  ]
+}

@@ -41,8 +41,11 @@ The [powered bench battery](DUAL_ADAPTER_BATTERY_20261022.md) established that
 an explicit source filter receives traffic on this GT, whereas all-filters-off
 received none. For example, `--source-id 0x10` receives ECM-originated frames;
 it does not also capture the tester's requests. Exact source/destination
-reception is demonstrated at 1x; unfiltered, range-filter, 4x and full
-two-direction capture remain unqualified.
+reception is demonstrated at 1x. The [AutoCal/E54 bench read comparison](AUTOCAL_GT_BENCH_20261029.md)
+also establishes fixed-4x ECM-direction reception of all 260 responses in the
+covered host-trace window, including 128 long data blocks. Unfiltered,
+range-filter, continuous speed-transition and full two-direction capture
+remain unqualified.
 
 The manufacturer [OBDX VT reference, v1.06](https://obdxpro.com/Downloads/ReferenceManuals/OBDX%20Pro%20VT%20Reference%20Guide%20v2.pdf)
 documents the DVI framing, adapter queries, timestamp field, filters, speed
@@ -71,10 +74,12 @@ py -3.13 obdx_capture.py replay --input GT_identity_new.jsonl --output replay_ne
 py -3.13 obdx_capture.py probe --port COM9 --api dvi --output GT_probe_new.jsonl
 ```
 
-The capture command is implemented but has **not been run on hardware**:
+The capture command has been run on the confirmed isolated bench with an
+explicit exact-source filter. For a new run, first verify the adapter port/API,
+bench setup and independent traffic source:
 
 ```powershell
-py -3.13 obdx_capture.py capture --port COM9 --api dvi --speed 1x --seconds 60 --output capture_new.jsonl
+py -3.13 obdx_capture.py capture --port COM9 --api dvi --speed 1x --source-id 0x10 --seconds 60 --output capture_new.jsonl
 ```
 
 Do not use this example as a verified programming-capture procedure. Live testing

@@ -3,13 +3,18 @@
 Continued from `d335b6efd5362bcb9c3f57e3f56647b16ba16df5` on
 `imob/2.0-al5-readonly-probe`. The handoff was read completely before changes.
 The existing direct reader, identity probe and their UI code were preserved.
-All new reverse engineering and validation were offline.
+Protocol reconstruction and writer validation remain offline. Adapter bench
+observations are linked below.
 
 The next truck session is specified in [the read-only vehicle session plan](READ_ONLY_VEHICLE_SESSION_PLAN.md).
 The existing direct calibration reader is available now. The standalone
 [OBDX GT capture-only tool](OBDX_CAPTURE.md) now has offline protocol/guard
-tests and adapter-local firmware inspection. Actual listen-only bus capture,
-speed-transition coverage and complete programming capture remain unverified.
+tests and adapter-local firmware inspection. The [1x bench battery](DUAL_ADAPTER_BATTERY_20261022.md)
+and [AutoCal/E54 4x read comparison](AUTOCAL_GT_BENCH_20261029.md) establish
+bounded, filtered listen-only reception. The latter matched all 260 ECM
+responses, including 128 long data blocks, against the independent host trace.
+Continuous speed transitions, both directions and programming capture remain
+unqualified; live AL5 writes remain disabled.
 
 [Public-source research dated 2026-10-06](ONLINE_RESEARCH_20261006.md) records
 AL5-specific vendor programming/recovery guidance, conditional hardware leads
