@@ -230,6 +230,11 @@ namespace PcmHacking
                         startTime,
                         cancellationToken,
                         progress);
+                    if (cancellationToken.IsCancellationRequested || readResponse.Status == ResponseStatus.Cancelled)
+                    {
+                        return Response.Create(ResponseStatus.Cancelled, (Stream)null!);
+                    }
+
                     if (readResponse.Status != ResponseStatus.Success)
                     {
                         logger.AddUserMessage(
@@ -267,10 +272,17 @@ namespace PcmHacking
 
                     logger.StatusUpdateReset();
 
-                    CrcVerificationResult verificationResult = await verifier.CompareRanges(
+                    CrcVerificationResult verificationResult = await CompareRanges(
+                        verifier,
                         image,
-                        BlockType.All,
                         cancellationToken);
+
+                    // Cancellation can arrive with the final CRC reply. It must
+                    // not turn a cancelled read into a successful or unverified file.
+                    if (cancellationToken.IsCancellationRequested || verificationResult == CrcVerificationResult.Cancelled)
+                    {
+                        return Response.Create(ResponseStatus.Cancelled, (Stream)null!);
+                    }
 
                     if (verificationResult == CrcVerificationResult.Verified)
                     {
@@ -286,11 +298,21 @@ namespace PcmHacking
                         logger.AddUserMessage("##############################################################################");
                         logger.AddUserMessage("There are errors in the data that was read from the PCM. Do not use this file.");
                         logger.AddUserMessage("##############################################################################");
+                        return Response.Create(ResponseStatus.Error, (Stream)null!);
                     }
+                }
+
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    return Response.Create(ResponseStatus.Cancelled, (Stream)null!);
                 }
 
                 MemoryStream stream = new MemoryStream(image);
                 return new Response<Stream>(ResponseStatus.Success, stream);
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                return Response.Create(ResponseStatus.Cancelled, (Stream)null!);
             }
             catch(Exception exception)
             {
@@ -303,6 +325,13 @@ namespace PcmHacking
                 await this.vehicle.Cleanup();
                 logger.StatusUpdateReset();
             }
+        }
+
+        // Keep verification's result boundary observable without replacing the
+        // reader's upload, block parsing, CRC orchestration or cleanup in tests.
+        protected virtual Task<CrcVerificationResult> CompareRanges(CKernelVerifier verifier, byte[] image, CancellationToken cancellationToken)
+        {
+            return verifier.CompareRanges(image, BlockType.All, cancellationToken);
         }
 
         /// <summary>
