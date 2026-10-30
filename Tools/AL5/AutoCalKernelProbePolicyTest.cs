@@ -64,6 +64,12 @@ internal static partial class AutoCalKernelProbePolicyTest
         Run("zero-submode RAM upload uses exact effective bytes and recalculated checksum", ZeroSubmodeUpload);
         Run("zero-submode reply validates raw checksum exact prefix and explicit exit", ZeroSubmodeReply);
         Run("zero-submode option rejects other modes inputs submodes and extra operations", ZeroSubmodeRestrictions);
+        Run("acknowledged kernel exact derivation and exclusive prefix mode", AcknowledgedKernelPin);
+        Run("acknowledged kernel preserves exact two production RAM uploads", AcknowledgedKernelUpload);
+        Run("acknowledged prefix requires exact ACK then raw zero data", AcknowledgedReadSuccess);
+        Run("missing malformed or negative read ACK cannot authorize data", AcknowledgedReadMissingOrMalformed);
+        Run("read ACK rejects replay wrong phase and privilege in existing modes", AcknowledgedReadOrderingAndIsolation);
+        Run("acknowledged prefix host boundary retains unchanged request scope", AcknowledgedReadHostBoundary);
         Console.WriteLine(JsonSerializer.Serialize(new { assertions, passed, failed, kernelPath = path,
             kernelSha256 = AutoCalKernelProbePolicy.ExpectedKernelSha256,
             hardwareAccess = false, liveWriteEnabled = false, hardwareQualificationClaimedByThisRun = false,

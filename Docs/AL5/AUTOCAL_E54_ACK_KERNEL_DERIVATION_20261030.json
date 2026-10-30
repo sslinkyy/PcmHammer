@@ -1,0 +1,269 @@
+{
+  "schema": "autocal-e54-ack-kernel-derivation-v1",
+  "source_kernel": {
+    "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\PcmHammer_E54_RAM_Survey_Bench_v0_1\\Kernel-E54.bin",
+    "bytes": 2027,
+    "sha256": "8294b899c153b513cd1307ac4c6654c2720832779f40c19aac7100a4b864929a"
+  },
+  "derivation": {
+    "source_sha256": "8294b899c153b513cd1307ac4c6654c2720832779f40c19aac7100a4b864929a",
+    "zero_only_control_sha256": "17a351715bbdd366cf77e33ad5d0b801fa0747f2d31c57478ad3bb409ee58fe3",
+    "effective_sha256": "eca54a2661baa317c02f96cd19a4e4bdac5a79a4c264f5154662e12e1c519664",
+    "length": 2027,
+    "changed_bytes_vs_original": 25,
+    "changed_bytes_vs_zero_only_control": 24,
+    "patches": [
+      {
+        "file_offset": 144,
+        "ram_address": 16748944,
+        "length": 4,
+        "old_hex": "67000448",
+        "new_hex": "67000702"
+      },
+      {
+        "file_offset": 1940,
+        "ram_address": 16750740,
+        "length": 22,
+        "old_hex": "286329323032362070636d6861636b696e672e6e6574",
+        "new_hex": "41fa000c70066100fe4c6000fd3a6df0107501544e71"
+      },
+      {
+        "file_offset": 1966,
+        "ram_address": 16750766,
+        "length": 1,
+        "old_hex": "01",
+        "new_hex": "00"
+      }
+    ],
+    "derived_targets": {
+      "mode35_dispatch": 16750740,
+      "ack_data": 16750754,
+      "existing_vpw_send": 16750312,
+      "original_mode35": 16750042
+    },
+    "stub_code_bytes": 14,
+    "ack_data_bytes": 6,
+    "trailing_nop_fill_bytes": 2,
+    "ack_payload_hex": "6df010750154",
+    "expected_read_reply_submode": 0,
+    "message_buffer_address_unchanged": 16750827,
+    "kernel_end_exclusive_unchanged": 16750827,
+    "uploaded_ram_extents_unchanged": [
+      {
+        "start": 16750560,
+        "bytes": 267
+      },
+      {
+        "start": 16748800,
+        "bytes": 1760
+      }
+    ],
+    "effective_ram_messages": [
+      {
+        "operation": "copy",
+        "bytes": 279,
+        "sha256": "8801bee9702b6bce2817d6a51a7b93252f3991d007bf48a5b05e6de1f88e8dc8",
+        "block_checksum_hex": "6af2"
+      },
+      {
+        "operation": "execute",
+        "bytes": 1772,
+        "sha256": "003103cde3eb0b4e33aa898f1c02172708e605bbf453140b5588685bfd84615e",
+        "block_checksum_hex": "9261"
+      }
+    ],
+    "source_file_modified": false,
+    "binary_output_supported": false
+  },
+  "decoder_audit": {
+    "decoder": "Capstone M68K020 (covers the original CPU32 long branch)",
+    "version": "5.0.6",
+    "python_module": {
+      "path": "C:\\Codex Projects\\Car Tuning\\private_builds\\e54_offline_python_20261015\\capstone\\__init__.py",
+      "bytes": 43729,
+      "sha256": "6bc741ee656f346900fe808c272e10efd98f974e6767f560a2ed1d449aa63973"
+    },
+    "native_decoder": {
+      "path": "C:\\Codex Projects\\Car Tuning\\private_builds\\e54_offline_python_20261015\\capstone\\lib\\capstone.dll",
+      "bytes": 7574016,
+      "sha256": "651096794b3c3c2a1df24345e22844a0311fca56a4f74ea1cfa29107983760e1"
+    },
+    "original_executable_bytes": 1938,
+    "decoded_instructions": 516,
+    "undecoded_words": 0,
+    "literal_address_references_to_metadata": [],
+    "alignment_bytes_excluded_from_instruction_scan": {
+      "offset": 1938,
+      "hex": "0000"
+    },
+    "stub": [
+      {
+        "address": 16750740,
+        "bytes_hex": "41fa000c",
+        "mnemonic": "lea.l",
+        "operands": "$ff98a2(pc), a0"
+      },
+      {
+        "address": 16750744,
+        "bytes_hex": "7006",
+        "mnemonic": "moveq",
+        "operands": "#$6, d0"
+      },
+      {
+        "address": 16750746,
+        "bytes_hex": "6100fe4c",
+        "mnemonic": "bsr.w",
+        "operands": "$ff96e8"
+      },
+      {
+        "address": 16750750,
+        "bytes_hex": "6000fd3a",
+        "mnemonic": "bra.w",
+        "operands": "$ff95da"
+      }
+    ],
+    "reference_scope": "All decoded literal operands/branch targets; not a proof about arbitrary runtime-derived pointers."
+  },
+  "source_provenance": [
+    {
+      "git_commit": "fe8e3a9804c42e236e3326fb46e5555af27e5f3b",
+      "path": "Kernels/68k-VPW-Asm/Kernel.S",
+      "bytes": 57610,
+      "sha256": "582eeb77dcf703c1398ad63999e3f4d8304312fb23a60bb963992ebba8055d1f"
+    },
+    {
+      "git_commit": "fe8e3a9804c42e236e3326fb46e5555af27e5f3b",
+      "path": "Kernels/68k-VPW-Asm/Common-Assembly.h",
+      "bytes": 4528,
+      "sha256": "53acc2ae5e7de4ca20f7651f894bc0e2b9d4fdfea4e495b21d47f4c11f8f2790"
+    },
+    {
+      "git_commit": "fe8e3a9804c42e236e3326fb46e5555af27e5f3b",
+      "path": "Kernels/68k-VPW-Asm/Kernel.ld",
+      "bytes": 207,
+      "sha256": "e0bc65744327fea2eaa62df770e385b16ac7471ce6849abd0f042433587146d3"
+    },
+    {
+      "git_commit": "fe8e3a9804c42e236e3326fb46e5555af27e5f3b",
+      "path": "Kernels/Build.cmd",
+      "bytes": 13244,
+      "sha256": "0e050029ecc80adedb4b8a0dc15aab9d6bf734b977b8265bc53b5f9314dc3ab6"
+    }
+  ],
+  "recorded_efilive_evidence": {
+    "input": {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\usb_capture_setup_20261030\\e54_usb_read_01\\crc_retained_E54_R.htx",
+      "bytes": 200276,
+      "sha256": "49e0b14e2e5deb3581baca6c00f8ac29e264e2006d999aa017e4c736c448987f"
+    },
+    "ordered_request_ack_data_triplets": 128,
+    "host_commands_between_ack_and_data": 0,
+    "first_triplet_record_ordinals": [
+      158,
+      160,
+      165
+    ],
+    "last_triplet_record_ordinals": [
+      1174,
+      1176,
+      1181
+    ],
+    "uploaded_kernel_bytes": 1174,
+    "uploaded_kernel_sha256": "e2726849cc006ee7602c3391e7c39182627639edbb98d99f1392642ed5bee2a6",
+    "uploaded_kernel_address": 16749056,
+    "checked_instruction_windows": [
+      {
+        "role": "accepted_read_status54",
+        "ram_address": 16749704,
+        "uploaded_kernel_offset": 648,
+        "bytes_hex": "103c0054",
+        "instruction": "move.b #0x54,d0"
+      },
+      {
+        "role": "mode75_payload_builder",
+        "ram_address": 16749926,
+        "uploaded_kernel_offset": 870,
+        "bytes_hex": "31fc750191d0",
+        "instruction": "move.w #0x7501,0x91D0.w"
+      },
+      {
+        "role": "data_send_branch_after_ack",
+        "ram_address": 16749960,
+        "uploaded_kernel_offset": 904,
+        "bytes_hex": "6600ff0c",
+        "instruction": "bne.w 0xFF9496 after D7.bit0 test"
+      },
+      {
+        "role": "zero_submode_load",
+        "ram_address": 16749742,
+        "uploaded_kernel_offset": 686,
+        "bytes_hex": "103c0000",
+        "instruction": "move.b #0,d0"
+      }
+    ],
+    "firmware_requires_ack": "unknown",
+    "raw_kernel_or_tune_exported": false
+  },
+  "attribution_preserved": "(c)2026 pcmhacking.net; Antus / Gampy collaboration; GPL-3.0-only source.",
+  "register_and_stack_reasoning": [
+    "Dispatch uses BEQ, not BSR; entering the metadata stub adds no return address.",
+    "Stub overwrites A0/D0 and existing VPWSend/WaitForTXFIFO clobber A0/D0/D2.",
+    "VPWSend tail-branches to its existing completion flush, whose RTS balances the stub BSR.",
+    "Final stub BRA enters original ProcessMode35 with no pending stub frame.",
+    "ProcessMode35 clears D0 and reloads absolute MessageBuffer address/length into A0/D0.",
+    "VPWSendBlock initializes D1 and clears D2 before calculating the data checksum.",
+    "ACK send and data send occur sequentially, reusing existing nested call depth and stack location."
+  ],
+  "limits": [
+    "Offline byte derivation and decode only; this variant has not been executed by this tool.",
+    "The original asset was not rebuilt. Source commit is pinned provenance corroborated by decoded bytes, not a reproducible-build claim.",
+    "Only the metadata and dispatch spans are repurposed; no new RAM region, buffer relocation or image-length change.",
+    "The preliminary54 reply precedes request parsing and is scoped to the one policy-pinned64-byte,address-zero request. No arbitrary-request negative-response implementation is claimed.",
+    "No extra guessed delay is added. Existing VPWSend FIFO/completion waits remain hardware-dependent and are not made bounded by this patch.",
+    "EFILive also uses its own timing and kernel implementation. Observed ACK ordering does not prove AutoCal firmware requires it.",
+    "The unchanged version reply cannot distinguish the variant. Exact upload hashes and observed ACK/data wire sequence are required evidence.",
+    "Live host-policy, parser and native-boundary integration require separate review; no write or recovery qualification is established."
+  ],
+  "adapter_opened": false,
+  "kernel_executed": false,
+  "binary_exported": false,
+  "flash_programming_enabled": false,
+  "ready_to_flash": false,
+  "implementation": [
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\derive_autocal_ack_kernel.py",
+      "bytes": 16323,
+      "sha256": "4ae9740fcf6ca020265fc51d4c2154207fbe33f051a01923a2612baf1c687d24"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\decode_trace_containers.py",
+      "bytes": 5780,
+      "sha256": "ab2feac05c102f3616c444889c428608e8466084bb7661743d5cd85e02cae382"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_autocal_read_gap.py",
+      "bytes": 19267,
+      "sha256": "ebaeeef7eec6159b8f547a48028c68f05bd243506efc98e51b82f36326899076"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\audit_trace_wrappers.py",
+      "bytes": 5198,
+      "sha256": "c824d113b63244d7e5d56b7bd53e3870fc155e666d897c12a570f1bdd69bd608"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\checksum.py",
+      "bytes": 1841,
+      "sha256": "b057805b2f5dc141141be5ce747ee78be98e441746a05d3a4a0cb3911bf2ef93"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\al5_segment.py",
+      "bytes": 1710,
+      "sha256": "c391085ae14ed3f8c762c0ad2baf174474d2287fc17d95b3a5bb4ba3fe169edb"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_trace_containers.py",
+      "bytes": 4793,
+      "sha256": "540b1d3a013ed7d0bff0fbf382a3393856accc5b0344de0d322e79b42ca3026f"
+    }
+  ]
+}

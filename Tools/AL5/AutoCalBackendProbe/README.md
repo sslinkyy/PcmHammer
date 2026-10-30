@@ -16,6 +16,7 @@ dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --
 dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-read-prefix
 dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-read-prefix-recorded-setup
 dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-read-prefix-submode-zero
+dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-read-prefix-acknowledged
 ```
 
 The USB-only profile requires the OBD cable physically disconnected and EFILive,
@@ -54,6 +55,7 @@ Live invocation forms (not automatic test steps):
 --e54-read-prefix --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
 --e54-read-prefix-recorded-setup --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
 --e54-read-prefix-submode-zero --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
+--e54-read-prefix-acknowledged --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
 ```
 
 Each receipt must be a new direct child of `LocalOnly/AutoCalBackendProbe`.
@@ -80,7 +82,7 @@ data through AutoCal; the paired result is described below.
 The exact request guard rejects any unlisted command, different payload,
 reordered request, replay, or incorrect continuation after a partial write.
 There are no arbitrary payload, file, address, retry, security algorithm,
-speed-change, kernel-selection, erase, or flash-programming options.
+speed-change, arbitrary kernel-selection, erase, or flash-programming options.
 
 The RAM-copy profile is a separate bounded experiment. It verifies the fixed
 OS-ID, suppresses normal chatter, uses PcmHammer's existing E54 seed/key and RAM
@@ -218,6 +220,7 @@ dotnet run --project Tools/AL5/AutoCalDeviceTest.csproj --verbosity quiet
 dotnet run --project Tools/AL5/AutoCalProbeProfileTest.csproj --verbosity quiet
 dotnet run --project Tools/AL5/AutoCalKernelProbePolicyTest.csproj --verbosity quiet
 dotnet run --project Tools/AL5/AutoCalKernelProbeSessionTest.csproj --verbosity quiet
+python -m unittest discover -s Tools/AL5 -p test_derive_autocal_ack_kernel.py
 ```
 
 The [paired GT observation](../../../Docs/AL5/AUTOCAL_E54_GT_PREFIX_20261030.json)
@@ -270,6 +273,38 @@ windows, and closed without a channel fault or retained owner. The GT completed
 capture, verified OFF and restored its saved settings. No prefix was received
 through AutoCal, so no exit/reset or ordinary post-exit identity followed.
 Another bench power cycle is required before a subsequent live experiment.
+
+The separate `--e54-read-prefix-acknowledged` experiment keeps the zero-submode
+control and adds a fixed `6D F0 10 75 01 54` response before its data reply.
+The [offline derivation audit](../../../Docs/AL5/AUTOCAL_E54_ACK_KERNEL_DERIVATION_20261030.json)
+records the exact three checked patch regions and their source evidence.
+The Mode35 dispatch branches through a stub within the existing 22-byte
+metadata region at file `0x794`; the stub calls the unchanged short-frame
+sender, then branches to the original Mode35 handler before address and length
+extraction. The image stays 2,027 bytes and MessageBuffer stays at `0xFF98EB`.
+The original source file is unchanged. Attribution from the repurposed metadata
+is preserved here and in the plan/audit: `(c)2026 pcmhacking.net`, an Antus /
+Gampy collaboration, GPL-3.0-only.
+
+The exact ACK-plus-zero image SHA-256 is
+`eca54a2661baa317c02f96cd19a4e4bdac5a79a4c264f5154662e12e1c519664`.
+Twenty-five bytes differ from the original asset, or twenty-four from the
+zero-submode control. No receive-buffer relocation or additional RAM extent is
+used. The short sender returns before the original handler reconstructs its
+address/length registers. Its physical completion and back-to-back frame timing
+remain unqualified.
+
+The stub emits `54` before the original parser and relies on the host's exact
+64-byte, address-zero request guard. It does not reproduce EFILive's general
+length/address validation or negative `51`/`52`/`53` responses.
+
+The host requires exactly one matching Mode75 acknowledgement before the
+checksum-valid submode-zero prefix. Missing, changed, repeated or out-of-phase
+acknowledgements stop the session. Already queued receive bytes after a valid
+prefix also prevent exit in this profile; that check does not establish future
+bus silence. Adapter configuration, request extent and command budgets remain
+the same as the zero-submode control. This candidate has offline validation only
+until a separate physical receipt exists. No flash operation is enabled.
 
 The pinned RAM-kernel version/exit/ordinary-identity sequence has passed on the
 isolated E54 bench. Full flash readback, the backend's 4x transition, programming

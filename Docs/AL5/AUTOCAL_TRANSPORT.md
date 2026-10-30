@@ -898,6 +898,25 @@ controller exit/reset followed the missing reply, so the next experiment
 requires a bench power cycle. Submode alone therefore did not resolve this
 delivery gap; the need for EFILive's separate Mode75 response remains unproven.
 
+The next isolated experiment is `--e54-read-prefix-acknowledged`. It retains
+the zero-submode control and adds exactly `6D F0 10 75 01 54` before the data
+reply. Its [offline kernel derivation audit](AUTOCAL_E54_ACK_KERNEL_DERIVATION_20261030.json)
+pins three changes: the Mode35 branch, a short acknowledgement stub occupying
+existing metadata space, and the previously tested submode byte. The stub
+returns through the original Mode35 handler before address/length extraction;
+it does not append code into MessageBuffer. Image size, receive buffer and
+stack location are unchanged, and the original file is never modified.
+The derived image hash is
+`eca54a2661baa317c02f96cd19a4e4bdac5a79a4c264f5154662e12e1c519664`.
+Metadata attribution remains preserved in the audit and plan.
+
+The new policy accepts the acknowledgement only once, in its exact pending
+read phase, and permits the data response only afterward. Prefix checksum,
+baseline hash, exit and ordinary identity remain required. Already queued bytes
+after the prefix prevent an exit in this experiment. All these checks are
+offline evidence; actual two-frame timing, AutoCal delivery, complete image
+reads and programming remain unqualified. No ACK variant has run on hardware.
+
 ## Remaining integration work
 
 The developer probe now has a separate fixed baseline-read profile. It reuses

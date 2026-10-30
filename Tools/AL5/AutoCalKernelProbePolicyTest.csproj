@@ -19,6 +19,7 @@
     <Compile Include="AutoCalFullReadPolicyTest.cs" />
     <Compile Include="AutoCalShortReadPolicyTest.cs" />
     <Compile Include="AutoCalZeroSubmodePolicyTest.cs" />
+    <Compile Include="AutoCalAcknowledgedReadPolicyTest.cs" />
     <Compile Include="AutoCalBackendProbe/ProbeProfile.cs" Link="ProbeProfile.cs" />
     <Compile Include="AutoCalBackendProbe/KernelRequestGuard.cs" Link="KernelRequestGuard.cs" />
     <ProjectReference Include="../../Apps/PcmLibrary/PcmLibrary.csproj" />

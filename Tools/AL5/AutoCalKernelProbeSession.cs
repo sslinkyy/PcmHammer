@@ -31,6 +31,9 @@ internal sealed class AutoCalKernelProbeResult
     public string? EffectiveKernelSha256 { get; internal set; }
     public byte ReadReplySubmode { get; internal set; }
     public bool UsesZeroSubmodeKernel { get; internal set; }
+    public bool PrependReadAcknowledgement { get; internal set; }
+    public bool ReadAcknowledgementObserved { get; internal set; }
+    public string? ReadAcknowledgementHex { get; internal set; }
     public bool ExitAcknowledged { get; internal set; }
     public bool PostExitIdentityVerified { get; internal set; }
     public bool RamExecuteSubmitted { get; internal set; }
@@ -100,7 +103,8 @@ internal sealed class AutoCalKernelProbeSession
             throw new InvalidOperationException("The bounded kernel probe was already attempted.");
         var result = new AutoCalKernelProbeResult { ObservationOnly = copyOnly,
             EffectiveKernelSha256 = policy.EffectiveKernelSha256, ReadReplySubmode = policy.ReadReplySubmode,
-            UsesZeroSubmodeKernel = policy.UsesZeroSubmodeKernel };
+            UsesZeroSubmodeKernel = policy.UsesZeroSubmodeKernel,
+            PrependReadAcknowledgement = policy.PrependReadAcknowledgement };
         var guarded = new GuardedDevice(inner, logger, policy, cancellation);
         try
         {
@@ -243,6 +247,16 @@ internal sealed class AutoCalKernelProbeSession
                     && result.ReadbackSha256 == AutoCalKernelProbePolicy.ExpectedShortReadSha256;
                 if (!result.BaselineMatched)
                     throw new InvalidDataException("The 64-byte prefix differs from the pinned GT baseline.");
+                if (policy.PrependReadAcknowledgement)
+                {
+                    if (!policy.ReadAcknowledgementObserved)
+                        throw new InvalidDataException("The required read acknowledgement was not observed.");
+                    // Sample only already available host buffers. Preserve any
+                    // trailing frame/fragment and do not send Exit ahead of it.
+                    // This establishes no future bus-silence guarantee.
+                    if (inner.ReceivedMessageCount != 0 || inner.Channel.BufferedByteCount != 0 || inner.Channel.PendingByteCount != 0)
+                        throw new InvalidDataException("Pending bytes remain after the acknowledged prefix; preserved without exit or purge.");
+                }
                 // A valid transfer checksum and prefix digest establish no
                 // controller range CRC or full-image verification.
                 result.ReadbackCrcVerified = false;
@@ -287,6 +301,9 @@ internal sealed class AutoCalKernelProbeSession
             result.PostExitIdentityVerified = policy.IsPostExitIdentityVerified;
             result.RamExecuteSubmitted = guarded.RamExecuteSubmitted;
             result.RamCopyReplyObserved = policy.RamCopyAcknowledgement != null;
+            result.ReadAcknowledgementObserved = policy.ReadAcknowledgementObserved;
+            byte[]? readAcknowledgement = policy.ReadAcknowledgement;
+            result.ReadAcknowledgementHex = readAcknowledgement == null ? null : Convert.ToHexString(readAcknowledgement);
             result.VpwTransmissions = guarded.Transmissions;
             result.VpwReceivedFrames = guarded.ReceivedFrames;
             result.RetainedQueueClearRequests = guarded.ClearRequests;

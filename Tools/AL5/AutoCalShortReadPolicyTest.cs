@@ -8,9 +8,10 @@ using PcmHacking;
 internal static partial class AutoCalKernelProbePolicyTest
 {
     private const string ShortRequest = "6D10F035010040000000";
-    private static AutoCalKernelProbePolicy ShortDataReady(bool zeroSubmode = false)
+    private static AutoCalKernelProbePolicy ShortDataReady(bool zeroSubmode = false, bool acknowledged = false)
     {
-        var p = new AutoCalKernelProbePolicy(kernel, shortRead: true, useZeroSubmodeKernel: zeroSubmode);
+        var p = new AutoCalKernelProbePolicy(kernel, shortRead: true, useZeroSubmodeKernel: zeroSubmode,
+            prependReadAcknowledgement: acknowledged);
         Tx(p, "6C10F03C0A"); Rx(p, "6CF0107C0A00E7C434444E");
         Tx(p, "6C10F02701"); Rx(p, "6CF01067010000");
         p.BeforeTransmit(p.UploadPermissionMessage); Rx(p, "6CF010740044");

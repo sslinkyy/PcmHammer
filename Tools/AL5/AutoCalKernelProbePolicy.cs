@@ -20,6 +20,7 @@ public sealed class AutoCalKernelProbePolicy
     public const int KernelBaseAddress = 0xFF9100;
     public const string ExpectedKernelSha256 = "8294b899c153b513cd1307ac4c6654c2720832779f40c19aac7100a4b864929a";
     public const string ExpectedZeroSubmodeKernelSha256 = "17a351715bbdd366cf77e33ad5d0b801fa0747f2d31c57478ad3bb409ee58fe3";
+    public const string ExpectedAcknowledgedKernelSha256 = "eca54a2661baa317c02f96cd19a4e4bdac5a79a4c264f5154662e12e1c519664";
     public const string DefaultKernelPath = @"C:\Codex Projects\Car Tuning\To tune\My Original Stock Tunes\iMob Racing MultiMap OS\PcmHammer_E54_RAM_Survey_Bench_v0_1\Kernel-E54.bin";
     public const int FullReadLength = 512 * 1024;
     public const int ReadBlockLength = 4096;
@@ -43,7 +44,7 @@ public sealed class AutoCalKernelProbePolicy
         InitialIdentity, InitialIdentityReply, Preparation, SeedReply, Key,
         KeyReply, UploadPermission, UploadPermissionReply, RamCopy, RamCopyReply,
         RamExecute, RamExecuteReply, KernelVersion, KernelVersionReply,
-        FlashIdentity, FlashIdentityReply, ReadBlock, ReadBlockReply, ReadCrc, ReadCrcReply,
+        FlashIdentity, FlashIdentityReply, ReadBlock, ReadAcknowledgementReply, ReadBlockReply, ReadCrc, ReadCrcReply,
         Exit, ExitReply, FinalIdentity, FinalIdentityReply, Complete
     }
     private Phase phase;
@@ -56,6 +57,7 @@ public sealed class AutoCalKernelProbePolicy
     private byte[]? executeAck;
     private byte[]? initialIdentity;
     private byte[]? finalIdentity;
+    private byte[]? readAcknowledgement;
     private byte[]? lastAuthorizedTransmit;
     private readonly byte[] readImage;
     private readonly int[] crcQueryAttemptsByRange = new int[7];
@@ -70,6 +72,9 @@ public sealed class AutoCalKernelProbePolicy
     public bool FullReadEnabled { get; }
     public bool ShortReadEnabled { get; }
     public bool UsesZeroSubmodeKernel { get; }
+    public bool PrependReadAcknowledgement { get; }
+    public bool ReadAcknowledgementObserved => readAcknowledgement != null;
+    public byte[]? ReadAcknowledgement => Clone(readAcknowledgement);
     public byte ReadReplySubmode => UsesZeroSubmodeKernel ? (byte)0 : (byte)1;
     public string EffectiveKernelSha256 { get; }
     public bool ReadEnabled => FullReadEnabled || ShortReadEnabled;
@@ -110,16 +115,19 @@ public sealed class AutoCalKernelProbePolicy
     public byte[]? PostExitIdentityReply => Clone(finalIdentity);
 
     public AutoCalKernelProbePolicy(byte[] pinnedKernel, bool fullRead = false, bool shortRead = false,
-        bool useZeroSubmodeKernel = false)
+        bool useZeroSubmodeKernel = false, bool prependReadAcknowledgement = false)
     {
         if (pinnedKernel == null) throw new ArgumentNullException(nameof(pinnedKernel));
         if (fullRead && shortRead) throw new ArgumentException("Full-image and short-prefix read modes are mutually exclusive.");
         if (useZeroSubmodeKernel && !shortRead)
             throw new ArgumentException("The zero-submode kernel is restricted to the fixed short-prefix experiment.");
+        if (prependReadAcknowledgement && (!useZeroSubmodeKernel || !shortRead || fullRead))
+            throw new ArgumentException("The acknowledged kernel requires the exclusive zero-submode short-prefix experiment.");
         kernel = (byte[])pinnedKernel.Clone();
         FullReadEnabled = fullRead;
         ShortReadEnabled = shortRead;
         UsesZeroSubmodeKernel = useZeroSubmodeKernel;
+        PrependReadAcknowledgement = prependReadAcknowledgement;
         readImage = fullRead ? new byte[FullReadLength] : shortRead ? new byte[ShortReadLength] : Array.Empty<byte>();
         if (kernel.Length != ExpectedKernelLength ||
             !Convert.ToHexString(SHA256.HashData(kernel)).Equals(ExpectedKernelSha256, StringComparison.OrdinalIgnoreCase))
@@ -135,8 +143,20 @@ public sealed class AutoCalKernelProbePolicy
                 throw new InvalidDataException("Pinned E54 read-reply template context differs.");
             kernel[0x7AE] = 0;
         }
+        if (prependReadAcknowledgement)
+        {
+            // Exact fixed-length clone: redirect only the Mode35 branch to a
+            // metadata-slot stub, send the six-byte75 reply, then enter the
+            // original handler before it extracts the read length/address.
+            if (!kernel.AsSpan(0x90, 4).SequenceEqual(Convert.FromHexString("67000448"))
+                || !kernel.AsSpan(0x794, 22).SequenceEqual(Convert.FromHexString("286329323032362070636D6861636B696E672E6E6574")))
+                throw new InvalidDataException("Pinned E54 acknowledged-kernel patch context differs.");
+            Convert.FromHexString("67000702").CopyTo(kernel, 0x90);
+            Convert.FromHexString("41FA000C70066100FE4C6000FD3A6DF0107501544E71").CopyTo(kernel, 0x794);
+        }
         EffectiveKernelSha256 = Convert.ToHexString(SHA256.HashData(kernel)).ToLowerInvariant();
-        if (EffectiveKernelSha256 != (useZeroSubmodeKernel ? ExpectedZeroSubmodeKernelSha256 : ExpectedKernelSha256))
+        if (EffectiveKernelSha256 != (prependReadAcknowledgement ? ExpectedAcknowledgedKernelSha256
+                : useZeroSubmodeKernel ? ExpectedZeroSubmodeKernelSha256 : ExpectedKernelSha256))
             throw new InvalidDataException("Effective E54 kernel differs from the selected exact asset pin.");
 
         var info = new OSIDInfo(ExpectedOperatingSystem);
@@ -230,7 +250,8 @@ public sealed class AutoCalKernelProbePolicy
             case Phase.ReadBlock:
                 int length = ShortReadEnabled ? ShortReadLength : ReadBlockLength;
                 permitted = bytes.SequenceEqual(protocol.CreateReadRequest(ReadBlockReplies * length, length).GetBytes());
-                if (permitted) { phase = Phase.ReadBlockReply; ReadBlockAttempts++; }
+                if (permitted)
+                { phase = PrependReadAcknowledgement ? Phase.ReadAcknowledgementReply : Phase.ReadBlockReply; ReadBlockAttempts++; }
                 break;
             case Phase.ReadCrc:
             case Phase.ReadCrcReply:
@@ -265,6 +286,17 @@ public sealed class AutoCalKernelProbePolicy
         if (bytes == null) throw new ArgumentNullException(nameof(bytes));
         lastReceive = (byte[])bytes.Clone(); ReceiveCount++;
         Healthy();
+        if (bytes.Length >= 4 && bytes[3] == 0x75)
+        {
+            if (!PrependReadAcknowledgement || phase != Phase.ReadAcknowledgementReply
+                || ReadBlockAttempts != 1 || ReadAcknowledgementObserved || !Equal(bytes, "6DF010750154"))
+                Reject("Read acknowledgement is wrong, repeated, out of phase or disabled for this experiment.");
+            readAcknowledgement = (byte[])bytes.Clone(); phase = Phase.ReadBlockReply;
+            return;
+        }
+        if (phase == Phase.ReadAcknowledgementReply
+            && (Starts(bytes, "6DF01036") || (bytes.Length == 3 && (Starts(bytes, "6DF010") || Starts(bytes, "6CF010")))))
+            Reject("The exact read acknowledgement must precede a complete data reply.");
         if (phase == Phase.ReadBlockReply && Starts(bytes, "6DF01036"))
         {
             int length = ShortReadEnabled ? ShortReadLength : ReadBlockLength;
@@ -388,7 +420,7 @@ public sealed class AutoCalKernelProbePolicy
             case Phase.RamCopyReply: case Phase.RamExecuteReply: return 0x36;
             case Phase.KernelVersionReply: return 0x3D;
             case Phase.FlashIdentityReply: case Phase.ReadCrcReply: return 0x3D;
-            case Phase.ReadBlockReply: return 0x35;
+            case Phase.ReadAcknowledgementReply: case Phase.ReadBlockReply: return 0x35;
             case Phase.ExitReply: return 0x20;
             default: return -1;
         }

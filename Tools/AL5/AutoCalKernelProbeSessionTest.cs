@@ -75,23 +75,31 @@ internal static class AutoCalKernelProbeSessionTest
         await Case("zero-submode kernel returns scoped prefix with exact changed RAM upload", ZeroSubmodeSuccess);
         await Case("zero-submode kernel rejects a normal-one reply without exit", () => ZeroSubmodeFailure("short-wrong-submode"));
         await Case("zero-submode kernel rejects checksum corruption without exit", () => ZeroSubmodeFailure("short-corrupt"));
+        await Case("acknowledged prefix receives exact75 then raw00 data before explicit exit", AcknowledgedReadSuccess);
+        await Case("acknowledged prefix cannot accept data without the required75", () => AcknowledgedReadFailure("ack-missing"));
+        await Case("acknowledged prefix preserves and rejects a wrong75", () => AcknowledgedReadFailure("ack-wrong"));
+        await Case("acknowledged prefix rejects a repeated75 before data", () => AcknowledgedReadFailure("ack-duplicate"));
+        await Case("acknowledged prefix rejects75 before the read request", () => AcknowledgedReadFailure("ack-early"));
+        await Case("acknowledged prefix retains trailing75 bytes and blocks exit", () => AcknowledgedReadFailure("ack-trailing"));
+        await Case("acknowledgement survives a later payload checksum failure", () => AcknowledgedReadFailure("short-corrupt"));
+        await Case("ordinary zero-submode mode cannot silently admit75", UnexpectedAcknowledgement);
         Console.WriteLine(JsonSerializer.Serialize(new { assertions, passed, failed,
             adapterOpened = false, liveWriteEnabled = false, hardwareQualified = false,
             scope = "Production Vehicle + AutoCalDevice/Channel under the bounded policy, scripted byte transport only" }));
         return failed.Count == 0 ? 0 : 1;
     }
 
-    static async Task<(Fake adapter, AutoCalDevice device, AutoCalKernelProbePolicy policy, AutoCalKernelProbeSession session)> Fixture(string failure = "", CancellationTokenSource? cancel = null, bool copyOnly = false, bool fullRead = false, bool shortRead = false, bool recordedReadSetup = false, bool useZeroSubmodeKernel = false)
+    static async Task<(Fake adapter, AutoCalDevice device, AutoCalKernelProbePolicy policy, AutoCalKernelProbeSession session)> Fixture(string failure = "", CancellationTokenSource? cancel = null, bool copyOnly = false, bool fullRead = false, bool shortRead = false, bool recordedReadSetup = false, bool useZeroSubmodeKernel = false, bool prependReadAcknowledgement = false)
     {
-        var adapter = new Fake(IndependentKernel(useZeroSubmodeKernel), failure, cancel, fullRead, shortRead, recordedReadSetup, useZeroSubmodeKernel);
+        var adapter = new Fake(IndependentKernel(useZeroSubmodeKernel, prependReadAcknowledgement), failure, cancel, fullRead, shortRead, recordedReadSetup, useZeroSubmodeKernel, prependReadAcknowledgement);
         var token = cancel?.Token ?? CancellationToken.None;
         var device = new AutoCalDevice(new AutoCalChannel(adapter), new Log(), token, AutoCalSetupProfile.RecordedOrdinaryIdentification);
         Require(await device.Initialize(), "ordinary host setup accepted by fake adapter");
-        var policy = new AutoCalKernelProbePolicy(kernel, fullRead, shortRead, useZeroSubmodeKernel);
+        var policy = new AutoCalKernelProbePolicy(kernel, fullRead, shortRead, useZeroSubmodeKernel, prependReadAcknowledgement);
         var session = new AutoCalKernelProbeSession(device, new Log(), policy, token, copyOnly, fullRead, shortRead, recordedReadSetup);
         return (adapter, device, policy, session);
     }
-    static byte[] IndependentKernel(bool zeroSubmode)
+    static byte[] IndependentKernel(bool zeroSubmode, bool prependReadAcknowledgement = false)
     {
         byte[] value = (byte[])kernel.Clone();
         if (zeroSubmode)
@@ -99,6 +107,16 @@ internal static class AutoCalKernelProbeSessionTest
             if (!value.AsSpan(0x7AA, 10).SequenceEqual(Hex("6DF01036010000000000")))
                 throw new Exception("Private kernel fixture differs from the independently pinned reply-template bytes.");
             value[0x7AE] = 0;
+        }
+        if (prependReadAcknowledgement)
+        {
+            if (!zeroSubmode || !value.AsSpan(0x90, 4).SequenceEqual(Hex("67000448"))
+                || !value.AsSpan(0x794, 22).SequenceEqual(System.Text.Encoding.ASCII.GetBytes("(c)2026 pcmhacking.net")))
+                throw new Exception("Private kernel differs from the independently reviewed dispatch and metadata bytes.");
+            // Independent exact fixture: dispatch to the22-byte metadata stub,
+            // emit the six-byte ACK, then branch to unchanged Mode35 parsing.
+            value[0x92] = 7; value[0x93] = 2;
+            Hex("41FA000C70066100FE4C6000FD3A6DF0107501544E71").CopyTo(value, 0x794);
         }
         return value;
     }
@@ -537,6 +555,84 @@ internal static class AutoCalKernelProbeSessionTest
         ZeroSubmodeUploadBoundary(f.adapter); Ownership(f.adapter, f.device);
     }
 
+    static void AcknowledgedUploadBoundary(Fake adapter)
+    {
+        byte[] derived = IndependentKernel(true, true);
+        Require(derived.Length == kernel.Length && Convert.ToHexString(SHA256.HashData(derived)).Equals(
+            "eca54a2661baa317c02f96cd19a4e4bdac5a79a4c264f5154662e12e1c519664", StringComparison.OrdinalIgnoreCase),
+            "independent acknowledgement fixture has the reviewed exact extent and hash");
+        Require(Enumerable.Range(0, kernel.Length).Where(i => derived[i] != kernel[i]).All(i =>
+            i == 0x92 || i == 0x93 || i == 0x7AE || i >= 0x794 && i < 0x7AA),
+            "fixture changes only dispatch, owned metadata and the retained zero template");
+        byte[][] uploads = adapter.Vpw.Where(v => v[3] == 0x36).ToArray();
+        Require(uploads.Length == 2 && uploads[0].SequenceEqual(Block(derived, 1760, 267, 0xFF97E0, 0))
+            && uploads[1].SequenceEqual(Block(derived, 0, 1760, 0xFF9100, 0x80)),
+            "both changed RAM chunks carry exact independent payloads and regenerated checksums");
+        Require(adapter.Vpw.Count(v => v[3] == 0x34) == 1 && adapter.CrcRequests == 0 && adapter.ConfigurationCommands == 0
+            && !adapter.Vpw.Any(v => v[3] == 0x75), "ACK originates in scripted ECU, never a host transmit or configuration command");
+    }
+
+    static async Task AcknowledgedReadSuccess()
+    {
+        var f = await Fixture(shortRead: true, useZeroSubmodeKernel: true, prependReadAcknowledgement: true);
+        var result = await f.session.RunAsync();
+        Require(result.Success, result.Error ?? "expected acknowledged prefix success");
+        Require(result.PrependReadAcknowledgement && result.ReadAcknowledgementObserved && result.ReadAcknowledgementHex == "6DF010750154"
+            && result.UsesZeroSubmodeKernel && result.ReadReplySubmode == 0
+            && result.EffectiveKernelSha256 == "eca54a2661baa317c02f96cd19a4e4bdac5a79a4c264f5154662e12e1c519664",
+            "result records the exact derived asset and observed raw acknowledgement");
+        Require(result.ReadbackScope == "baseline-prefix" && result.BaselineMatched && result.ReadbackLength == 64
+            && result.ReadbackBytes!.SequenceEqual(baseline.Take(64)) && !result.ReadbackCrcVerified && !f.policy.IsImageVerified,
+            "acknowledged data verifies only the requested prefix");
+        Require(result.ExitAcknowledged && result.PostExitIdentityVerified && !result.BenchPowerCycleRequired && f.adapter.ReadRequests == 1,
+            "only exact ACK plus data permits one normal explicit exit");
+        AcknowledgedUploadBoundary(f.adapter); Ownership(f.adapter, f.device);
+    }
+
+    static async Task AcknowledgedReadFailure(string failure)
+    {
+        var f = await Fixture(failure, shortRead: true, useZeroSubmodeKernel: true, prependReadAcknowledgement: true);
+        var result = await f.session.RunAsync();
+        Require(!result.Success && result.Stage == AutoCalKernelProbeStage.ShortRead && result.KernelVersionVerified
+            && result.BenchPowerCycleRequired && result.PrependReadAcknowledgement,
+            "acknowledgement failure retains the uncertain controller state");
+        Require(!result.ExitAcknowledged && !result.PostExitIdentityVerified && !Has(f.adapter, "6C10F020")
+            && f.adapter.Vpw.Count(v => v.SequenceEqual(Hex("6C10F03C0A"))) == 1,
+            "missing, wrong, repeated or early ACK cannot cause exit or post-exit identity");
+        bool acceptedAck = failure == "ack-duplicate" || failure == "ack-trailing" || failure == "short-corrupt";
+        Require(result.ReadAcknowledgementObserved == acceptedAck && result.ReadAcknowledgementHex == (acceptedAck ? "6DF010750154" : null),
+            "accepted acknowledgement is retained even when a later phase fails");
+        if (failure == "ack-trailing")
+        {
+            Require(result.BaselineMatched && result.ReadbackLength == 64 && f.policy.IsShortReadVerified,
+                "valid prefix remains a partial observation when pending bytes block exit");
+            Require(f.device.ReceivedMessageCount + f.device.Channel.BufferedByteCount + f.device.Channel.PendingByteCount > 0,
+                "trailing acknowledgement bytes remain owned and unconsumed");
+            Require(result.Error!.Contains("Pending bytes remain"), "failure identifies the sampled buffer boundary");
+        }
+        else
+        {
+            Require(!result.BaselineMatched && result.ReadbackBytes == null && !f.policy.IsShortReadVerified,
+                "no prefix result is inferred from incomplete or rejected exchange");
+            Require(f.policy.LastReceive != null && (failure == "ack-missing" || failure == "short-corrupt"
+                ? f.policy.LastReceive.Length == 76 : f.policy.LastReceive[3] == 0x75),
+                "rejected original response remains available as evidence");
+        }
+        Require(f.adapter.ReadRequests == (failure == "ack-early" ? 0 : 1), "no read request retry follows any acknowledgement failure");
+        AcknowledgedUploadBoundary(f.adapter); Ownership(f.adapter, f.device);
+    }
+
+    static async Task UnexpectedAcknowledgement()
+    {
+        var f = await Fixture("ack-unexpected", shortRead: true, useZeroSubmodeKernel: true);
+        var result = await f.session.RunAsync();
+        Require(!result.Success && !result.PrependReadAcknowledgement && !result.ReadAcknowledgementObserved
+            && result.ReadAcknowledgementHex == null && !Has(f.adapter, "6C10F020"),
+            "an unexpected75 cannot broaden the existing zero-only profile");
+        Require(f.policy.LastReceive!.SequenceEqual(Hex("6DF010750154")), "unexpected acknowledgement raw bytes retained");
+        ZeroSubmodeUploadBoundary(f.adapter); Ownership(f.adapter, f.device);
+    }
+
     // Independent wire constructors for the fake's fixed responses/expected RAM
     // chunks. Production Frame/Protocol encoders are deliberately not called.
     static byte[] Block(byte[] source, int offset, int length, int address, byte mode)
@@ -564,10 +660,10 @@ internal static class AutoCalKernelProbeSessionTest
         bool partialConfiguration;
         public int DisposeCalls, ReadRequests, CrcRequests; public List<(ushort Command, byte[] Payload)> Commands = new(); public List<byte[]> Vpw = new();
         public int ConfigurationCommands, PartialConfigurationBytes;
-        public readonly bool FullRead, ShortRead, RecordedReadSetup, ZeroSubmodeKernel;
+        public readonly bool FullRead, ShortRead, RecordedReadSetup, ZeroSubmodeKernel, PrependReadAcknowledgement;
         public int PendingByteCount => input.Count;
-        public Fake(byte[] kernel, string failure, CancellationTokenSource? cancel, bool fullRead, bool shortRead, bool recordedReadSetup, bool zeroSubmodeKernel)
-        { image = kernel; this.failure = failure; this.cancel = cancel; FullRead = fullRead; ShortRead = shortRead; RecordedReadSetup = recordedReadSetup; ZeroSubmodeKernel = zeroSubmodeKernel; }
+        public Fake(byte[] kernel, string failure, CancellationTokenSource? cancel, bool fullRead, bool shortRead, bool recordedReadSetup, bool zeroSubmodeKernel, bool prependReadAcknowledgement)
+        { image = kernel; this.failure = failure; this.cancel = cancel; FullRead = fullRead; ShortRead = shortRead; RecordedReadSetup = recordedReadSetup; ZeroSubmodeKernel = zeroSubmodeKernel; PrependReadAcknowledgement = prependReadAcknowledgement; }
         public void Enqueue(byte[] bytes) { foreach (byte b in bytes) input.Enqueue(b); }
         public Task<int> Read(byte[] buffer, int offset, int count, int timeoutMs, CancellationToken token)
         {
@@ -647,6 +743,7 @@ internal static class AutoCalKernelProbeSessionTest
                 case "6C10F03D00": reply = Hex(failure == "version" ? "6CF0107D006AB178EC37" : "6CF0107D006AB178EC36"); break;
                 case "6C10F03D01":
                     if (!FullRead && !ShortRead) throw new Exception("Flash ID requested outside read mode");
+                    if (failure == "ack-early") { Enqueue(Packet(0x10, Hex("6DF010750154"))); return; }
                     reply = Hex(failure == "read-flash-id" ? "6CF0107D0100894472" : "6CF0107D0100894471"); break;
                 case "6C10F020": reply = Hex("6CF01060"); break;
                 default:
@@ -665,6 +762,14 @@ internal static class AutoCalKernelProbeSessionTest
                         if (failure == "short-wrong-submode") submode = submode == 0 ? (byte)1 : (byte)0;
                         reply = Block(data, 0, 64, 0, submode); reply[1] = 0xF0; reply[2] = 0x10;
                         if (failure == "short-corrupt") reply[^1] ^= 1;
+                        if (PrependReadAcknowledgement || failure == "ack-unexpected")
+                        {
+                            if (failure != "ack-missing") Enqueue(Packet(0x10, Hex(failure == "ack-wrong" ? "6DF010750155" : "6DF010750154")));
+                            if (failure == "ack-duplicate") Enqueue(Packet(0x10, Hex("6DF010750154")));
+                            Enqueue(Packet(0x10, reply));
+                            if (failure == "ack-trailing") Enqueue(Packet(0x10, Hex("6DF010750154")));
+                            return;
+                        }
                     }
                     else if (FullRead && bytes.Length == 10 && bytes.AsSpan(0, 5).SequenceEqual(Hex("6D10F03501")))
                     {
