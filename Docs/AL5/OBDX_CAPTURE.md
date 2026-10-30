@@ -414,9 +414,9 @@ rounded falling tails in both conditions. No obvious gross waveform
 deterioration is apparent in these sampled windows. These are different pulse
 sequences photographed at different angles and exposures; exact edge-time or
 small voltage changes cannot be determined. Shared-bus photos cannot attribute
-transmission or exclude disturbances elsewhere. A GT-disconnected read was
-subsequently completed below; its waveform photographs have not yet been compared,
-so loading from physical attachment remains unresolved.
+transmission or exclude disturbances elsewhere. The subsequent GT-disconnected
+read and three-condition waveform comparison are recorded below; small loading
+changes from physical attachment remain unresolved.
 Neither electrical noninterference nor lossless monitoring is established.
 Live AL5 writes remain disabled.
 
@@ -448,7 +448,31 @@ remain unobserved.
 This control shows matching read data and retry counts across the three
 conditions in the compared software traces. It does not establish electrical
 noninterference, and the GT all-source capture still misses acknowledgments.
-Disconnected-GT scope photographs are pending. Private evidence remains under
+Private evidence remains under
 `LocalOnly/scoped_unplugged_20261029_01`; the reproducible comparison receipt
 `unplugged_vs_off_and_listen.json` has SHA256
 `008452a01e0e3debd49212199797531d20a675fab5bbf402beb3891b3b22dda0`.
+
+The user subsequently supplied disconnected-GT photographs labeled `24.bmp`
+and `26.bmp` at 20 us/div, and `28.bmp` and `31.bmp` at 100 us/div. CH1 remains
+5 V/div, X10, DC. At matching scales, the high plateaus are approximately
+1.4-1.6 vertical divisions above low, about 7-8 V if physical probe attenuation
+matches the menu. Leading overshoot, rounded falling tails and return near the
+displayed reference remain present with the GT physically absent. No obvious
+gross amplitude collapse, clipping or persistent level shift is apparent across
+the unplugged, attached/OFF and LISTEN windows.
+
+The mere presence of these peaks and tails therefore cannot be attributed to
+GT monitoring. A smaller GT contribution is not excluded. These are different
+packet windows photographed at different perspectives and exposures, so exact
+edge-time, overshoot and small voltage differences cannot be established. Nor
+can short photographed windows exclude rare unwanted transmissions elsewhere.
+
+The bounded outcome is no observed read-data or retry degradation and no obvious
+gross waveform deterioration in these isolated-bench E54 high-speed read tests.
+All-source monitoring still fails the strict lossless comparison; this work
+does not qualify AL5 programming or recovery. No further hardware action was
+performed during the photograph analysis. Original photographs and the combined
+scope/software evidence receipt `scope_three_condition_comparison.json` are
+retained in the same private directory; the receipt has SHA256
+`4e24b83a29a3b15fb35f157e704b40c96183c05e9af04085f2b458bad114a58b`.
