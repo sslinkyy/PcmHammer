@@ -1,5 +1,12 @@
 # AL5 direct read status — OS 15184109 / calibration 15183960
 
+## Related monitoring evidence — October 29, 2026
+
+The [E54 VPW monitoring report](AL5/E54_VPW_MONITORING_20261029.md) adds twelve
+scope photographs and a three-condition read comparison for AL5 capture research.
+It records incomplete all-source capture and does not establish AL5 write or recovery
+support. The direct-read results below are a separate experiment.
+
 ## Live-read breakthrough
 
 The AL5 at VPW module `0x18` responds to stock-firmware Mode `0x23` memory reads at normal VPW 1X speed without requiring a security-key exchange or RAM kernel.
