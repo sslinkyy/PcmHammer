@@ -403,9 +403,21 @@ where upstream loss occurred.
 
 The capture ended normally, all nine setting readbacks matched their original
 values, and a separate inspection verified the GT was already OFF. The user
-confirmed ignition OFF and the shutdown countdown completed. Matching LISTEN
-waveform photographs remain pending; neither electrical noninterference nor
-lossless monitoring is established. Live AL5 writes remain disabled.
+confirmed ignition OFF and the shutdown countdown completed. The corrected
+LISTEN waveform photographs, labeled `16.bmp` through `19.bmp`, are retained at
+20 and 100 us/div. An earlier submitted batch was confirmed by the user to be
+reopened baseline images and is excluded from LISTEN evidence.
+
+At matching scales, the corrected photographs show approximately 7-8 V high
+plateaus and a return near the low/reference level, with leading overshoot and
+rounded falling tails in both conditions. No obvious gross waveform
+deterioration is apparent in these sampled windows. These are different pulse
+sequences photographed at different angles and exposures; exact edge-time or
+small voltage changes cannot be determined. Shared-bus photos cannot attribute
+transmission or exclude disturbances elsewhere. The GT-disconnected control
+has not yet been performed, so loading from physical attachment is unresolved.
+Neither electrical noninterference nor lossless monitoring is established.
+Live AL5 writes remain disabled.
 
 Raw evidence and reproducible receipts remain under
 `LocalOnly/scoped_listen_20261029_01`. The strict comparison receipt
