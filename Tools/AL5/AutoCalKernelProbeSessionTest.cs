@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ internal static class AutoCalKernelProbeSessionTest
     static readonly List<string> passed = new();
     static readonly List<object> failed = new();
     static byte[] kernel = Array.Empty<byte>();
+    static byte[] baseline = Array.Empty<byte>();
     static byte[] Hex(string value) => Convert.FromHexString(value);
     static void Require(bool value, string text) { assertions++; if (!value) throw new Exception(text); }
     static async Task Case(string name, Func<Task> action)
@@ -26,6 +28,9 @@ internal static class AutoCalKernelProbeSessionTest
     public static async Task<int> Main(string[] args)
     {
         kernel = File.ReadAllBytes(args.Length == 1 ? args[0] : AutoCalKernelProbePolicy.DefaultKernelPath);
+        baseline = File.ReadAllBytes(AutoCalKernelProbePolicy.DefaultBaselinePath);
+        Require(baseline.Length == 524288 && Convert.ToHexString(SHA256.HashData(baseline)).Equals(AutoCalKernelProbePolicy.ExpectedBaselineSha256, StringComparison.OrdinalIgnoreCase),
+            "private GT readback fixture matches its pinned size and digest");
         await Case("production Vehicle RAM upload, exact version and successful exit", Success);
         await Case("incorrect initial identity sends no preparation or cleanup", WrongIdentity);
         await Case("lockout cannot become unlocked or trigger retry", Lockout);
@@ -45,28 +50,35 @@ internal static class AutoCalKernelProbeSessionTest
         await Case("unknown Copy suffix cannot authorize Execute", UnknownCopyBlocksExecute);
         await Case("copy-only retains unknown suffix as observation without qualification", UnknownCopyObservation);
         await Case("unknown Execute suffix cannot authorize kernel query", UnknownExecuteStops);
+        await Case("full read returns exact GT baseline with seven independent CRC replies", FullReadSuccess);
+        await Case("full read rejects bad block checksum without exit or reupload", FullReadCorruptBlock);
+        await Case("full read rejects a different checksum-valid image before CRC or exit", FullReadDifferentBaseline);
+        await Case("full read CRC mismatch prevents exit and successful image", FullReadCrcMismatch);
+        await Case("full read wrong flash identity stops before data transfer", FullReadWrongIdentity);
+        await Case("full read cancellation during data stops further traffic", FullReadCancellation);
+        await Case("full read cancellation on final CRC cannot succeed or exit", FullReadFinalCrcCancellation);
         Console.WriteLine(JsonSerializer.Serialize(new { assertions, passed, failed,
             adapterOpened = false, liveWriteEnabled = false, hardwareQualified = false,
             scope = "Production Vehicle + AutoCalDevice/Channel under the bounded policy, scripted byte transport only" }));
         return failed.Count == 0 ? 0 : 1;
     }
 
-    static async Task<(Fake adapter, AutoCalDevice device, AutoCalKernelProbePolicy policy, AutoCalKernelProbeSession session)> Fixture(string failure = "", CancellationTokenSource? cancel = null, bool copyOnly = false)
+    static async Task<(Fake adapter, AutoCalDevice device, AutoCalKernelProbePolicy policy, AutoCalKernelProbeSession session)> Fixture(string failure = "", CancellationTokenSource? cancel = null, bool copyOnly = false, bool fullRead = false)
     {
-        var adapter = new Fake(kernel, failure, cancel);
+        var adapter = new Fake(kernel, failure, cancel, fullRead);
         var token = cancel?.Token ?? CancellationToken.None;
         var device = new AutoCalDevice(new AutoCalChannel(adapter), new Log(), token, AutoCalSetupProfile.RecordedOrdinaryIdentification);
         Require(await device.Initialize(), "ordinary host setup accepted by fake adapter");
-        var policy = new AutoCalKernelProbePolicy(kernel);
-        var session = new AutoCalKernelProbeSession(device, new Log(), policy, token, copyOnly);
+        var policy = new AutoCalKernelProbePolicy(kernel, fullRead);
+        var session = new AutoCalKernelProbeSession(device, new Log(), policy, token, copyOnly, fullRead);
         return (adapter, device, policy, session);
     }
     static void Ownership(Fake fake, AutoCalDevice device)
     {
         Require(fake.DisposeCalls == 0 && !device.Channel.IsTransportDisposed, "session leaves transport ownership with caller");
         Require(fake.Commands.All(f => f.Command == 0x8A00 || f.Command == 0x8201 || f.Command == 0x8604 || f.Command == 0x8800), "no adapter cleanup/reset or extra host command");
-        Require(fake.Vpw.All(v => v.Length < 4 || (v[3] != 0x04 && v[3] != 0x14 && v[3] != 0x35 && v[3] != 0xA0 && v[3] != 0xA1)), "no DTC clear, memory read or speed command");
-        Require(!fake.Vpw.Any(v => v.Length >= 5 && v[3] == 0x3D && v[4] != 0), "only kernel-version3D00, no erase/flashID/CRC");
+        Require(fake.Vpw.All(v => v.Length < 4 || (v[3] != 0x04 && v[3] != 0x14 && (v[3] != 0x35 || fake.FullRead) && v[3] != 0xA0 && v[3] != 0xA1)), "no DTC clear, unrequested memory read or speed command");
+        Require(!fake.Vpw.Any(v => v.Length >= 5 && v[3] == 0x3D && v[4] > (fake.FullRead ? 2 : 0)), "only mode-permitted kernel information/CRC queries, no erase");
         device.Dispose();
         Require(fake.DisposeCalls == 1, "caller alone disposes the transport");
     }
@@ -220,6 +232,82 @@ internal static class AutoCalKernelProbeSessionTest
         Require(f.policy.LastReceive!.SequenceEqual(Hex("6CF010768000")) && !Has(f.adapter, "6C10F03D00") && !Has(f.adapter, "6C10F020"),
             "raw Execute reply preserved with no kernel query or reset"); Ownership(f.adapter, f.device);
     }
+    static void FullReadUploadBoundary(Fake adapter)
+    {
+        byte[][] uploads = adapter.Vpw.Where(v => v[3] == 0x36).ToArray();
+        Require(uploads.Length == 2 && uploads[0].SequenceEqual(Block(kernel, 1760, 267, 0xFF97E0, 0)) && uploads[1].SequenceEqual(Block(kernel, 0, 1760, 0xFF9100, 0x80)),
+            "only the initial two pinned RAM uploads, never a flash write or reupload");
+        Require(adapter.Vpw.Count(v => v[3] == 0x34) == 1, "one initial upload-permission request");
+    }
+    static void FullReadFailureBoundary(Fake adapter, AutoCalKernelProbeResult result)
+    {
+        Require(!result.Success && result.Stage == AutoCalKernelProbeStage.FullRead && result.KernelVersionVerified && result.BenchPowerCycleRequired,
+            "read failure retains known running-kernel state and requires recovery by caller");
+        Require(!result.ReadbackCrcVerified && !result.BaselineMatched && result.ReadbackBytes == null && !result.ExitAcknowledged && !result.PostExitIdentityVerified,
+            "failed transfer never exposes a successful image or exit claim");
+        Require(!Has(adapter, "6C10F020") && adapter.Vpw.Count(v => v.SequenceEqual(Hex("6C10F03C0A"))) == 1,
+            "no automatic exit or post-exit identity after read failure");
+        FullReadUploadBoundary(adapter);
+    }
+    static async Task FullReadSuccess()
+    {
+        var f = await Fixture(fullRead: true); var result = await f.session.RunAsync();
+        Require(result.Success, result.Error ?? "expected full-read success");
+        Require(result.ReadbackLength == 524288 && result.ReadbackSha256 == AutoCalKernelProbePolicy.ExpectedBaselineSha256
+            && result.ReadbackBytes!.SequenceEqual(baseline), "full returned snapshot equals the independently captured GT baseline byte for byte");
+        Require(result.ReadbackCrcVerified && result.BaselineMatched && f.policy.IsImageVerified && f.policy.VerifiedCrcRanges == 7,
+            "both production reader and policy verified all seven captured controller CRCs");
+        Require(f.adapter.ReadRequests == 128 && f.adapter.CrcRequests == 7 && f.policy.ReadBlockReplies == 128,
+            "exact block coverage and seven CRC exchanges without retries");
+        Require(result.ExitAcknowledged && result.PostExitIdentityVerified && !result.BenchPowerCycleRequired,
+            "exit and return to ordinary identity only after successful full verification");
+        Require(!JsonSerializer.Serialize(result).Contains("ReadbackBytes"), "private firmware bytes are excluded from receipt JSON");
+        FullReadUploadBoundary(f.adapter); Ownership(f.adapter, f.device);
+    }
+    static async Task FullReadCorruptBlock()
+    {
+        var f = await Fixture("read-corrupt", fullRead: true); var result = await f.session.RunAsync();
+        FullReadFailureBoundary(f.adapter, result);
+        Require(f.adapter.ReadRequests == 1 && f.adapter.CrcRequests == 0 && f.policy.ReadBlockReplies == 0,
+            "checksum failure blocks subsequent read requests and CRCs"); Ownership(f.adapter, f.device);
+    }
+    static async Task FullReadDifferentBaseline()
+    {
+        var f = await Fixture("read-different", fullRead: true); var result = await f.session.RunAsync();
+        FullReadFailureBoundary(f.adapter, result);
+        Require(f.adapter.ReadRequests == 128 && f.adapter.CrcRequests == 0 && f.policy.IsImageReadComplete && !f.policy.BaselineShaMatched,
+            "complete checksum-valid but changed image fails baseline pin before CRC or exit"); Ownership(f.adapter, f.device);
+    }
+    static async Task FullReadCrcMismatch()
+    {
+        var f = await Fixture("read-crc", fullRead: true); var result = await f.session.RunAsync();
+        FullReadFailureBoundary(f.adapter, result);
+        Require(f.adapter.ReadRequests == 128 && f.adapter.CrcRequests == 4 && f.policy.VerifiedCrcRanges == 3,
+            "first mismatching CRC halts remaining ranges without losing prior coverage"); Ownership(f.adapter, f.device);
+    }
+    static async Task FullReadWrongIdentity()
+    {
+        var f = await Fixture("read-flash-id", fullRead: true); var result = await f.session.RunAsync();
+        FullReadFailureBoundary(f.adapter, result);
+        Require(f.adapter.ReadRequests == 0 && f.adapter.CrcRequests == 0 && !f.policy.IsFlashIdentityVerified,
+            "wrong physical flash ID blocks every memory read"); Ownership(f.adapter, f.device);
+    }
+    static async Task FullReadCancellation()
+    {
+        using var cancel = new CancellationTokenSource();
+        var f = await Fixture("read-cancel", cancel, fullRead: true); var result = await f.session.RunAsync();
+        FullReadFailureBoundary(f.adapter, result);
+        Require(result.Cancelled && f.adapter.ReadRequests == 64 && f.adapter.CrcRequests == 0,
+            "data cancellation stops at submitted block64 and sends no further requests"); Ownership(f.adapter, f.device);
+    }
+    static async Task FullReadFinalCrcCancellation()
+    {
+        using var cancel = new CancellationTokenSource();
+        var f = await Fixture("read-crc-cancel", cancel, fullRead: true); var result = await f.session.RunAsync();
+        FullReadFailureBoundary(f.adapter, result);
+        Require(result.Cancelled && f.adapter.ReadRequests == 128 && f.adapter.CrcRequests == 7 && f.policy.VerifiedCrcRanges == 6,
+            "cancellation at final CRC prevents a successful result and exit"); Ownership(f.adapter, f.device);
+    }
 
     // Independent wire constructors for the fake's fixed responses/expected RAM
     // chunks. Production Frame/Protocol encoders are deliberately not called.
@@ -245,9 +333,10 @@ internal static class AutoCalKernelProbeSessionTest
     {
         readonly Queue<byte> input = new(); readonly List<byte> output = new(); readonly byte[] image; readonly string failure; readonly CancellationTokenSource? cancel;
         int identityCount;
-        public int DisposeCalls; public List<(ushort Command, byte[] Payload)> Commands = new(); public List<byte[]> Vpw = new();
+        public int DisposeCalls, ReadRequests, CrcRequests; public List<(ushort Command, byte[] Payload)> Commands = new(); public List<byte[]> Vpw = new();
+        public readonly bool FullRead;
         public int PendingByteCount => input.Count;
-        public Fake(byte[] kernel, string failure, CancellationTokenSource? cancel) { image = kernel; this.failure = failure; this.cancel = cancel; }
+        public Fake(byte[] kernel, string failure, CancellationTokenSource? cancel, bool fullRead) { image = kernel; this.failure = failure; this.cancel = cancel; FullRead = fullRead; }
         public void Enqueue(byte[] bytes) { foreach (byte b in bytes) input.Enqueue(b); }
         public Task<int> Read(byte[] buffer, int offset, int count, int timeoutMs, CancellationToken token)
         {
@@ -301,9 +390,36 @@ internal static class AutoCalKernelProbeSessionTest
                     if (failure == "stale-copy") { Enqueue(Packet(0x10, reply)); Enqueue(Packet(0x10, Hex("6CF010768078"))); return; }
                     break;
                 case "6C10F03D00": reply = Hex(failure == "version" ? "6CF0107D006AB178EC37" : "6CF0107D006AB178EC36"); break;
+                case "6C10F03D01":
+                    if (!FullRead) throw new Exception("Flash ID requested outside full-read mode");
+                    reply = Hex(failure == "read-flash-id" ? "6CF0107D0100894472" : "6CF0107D0100894471"); break;
                 case "6C10F020": reply = Hex("6CF01060"); break;
                 default:
-                    if (bytes.SequenceEqual(Block(image, 1760, 267, 0xFF97E0, 0)))
+                    if (FullRead && bytes.Length == 10 && bytes.AsSpan(0, 5).SequenceEqual(Hex("6D10F03501")))
+                    {
+                        int length = bytes[5] << 8 | bytes[6]; int address = bytes[7] << 16 | bytes[8] << 8 | bytes[9];
+                        if (length != 4096 || address != ReadRequests * 4096 || address + length > baseline.Length) throw new Exception("Read coverage differs from fixed ascending blocks");
+                        ReadRequests++;
+                        if (failure == "read-cancel" && ReadRequests == 64) { cancel!.Cancel(); return; }
+                        byte[] data = baseline;
+                        if (failure == "read-different" && address == 0) { data = (byte[])baseline.Clone(); data[0] ^= 1; }
+                        reply = Block(data, address, length, address, 1); reply[1] = 0xF0; reply[2] = 0x10;
+                        if (failure == "read-corrupt") reply[^1] ^= 1;
+                    }
+                    else if (FullRead && bytes.Length == 11 && bytes.AsSpan(0, 5).SequenceEqual(Hex("6C10F03D02")))
+                    {
+                        // Golden replies from the independent GT full read log
+                        // (baseline a3b010af...), not calculated by production Crc.
+                        string[] replies = { "6CF0107D02020000060000D6703728", "6CF0107D0202000004000057DBDAAF", "6CF0107D020200000200004E3F92B0",
+                            "6CF0107D02018000008000712EFE11", "6CF0107D0200200000600085B5BB36", "6CF0107D020020000040007D830D3E", "6CF0107D02004000000000CED58D53" };
+                        if (CrcRequests >= replies.Length) throw new Exception("Unexpected repeated CRC request");
+                        reply = Hex(replies[CrcRequests]); byte[] expected = reply.Take(11).ToArray(); expected[1] = 0x10; expected[2] = 0xF0; expected[3] = 0x3D;
+                        if (!bytes.SequenceEqual(expected)) throw new Exception("CRC request order or range differs from independent GT log");
+                        CrcRequests++;
+                        if (failure == "read-crc-cancel" && CrcRequests == 7) { cancel!.Cancel(); return; }
+                        if (failure == "read-crc" && CrcRequests == 4) reply[^1] ^= 1;
+                    }
+                    else if (bytes.SequenceEqual(Block(image, 1760, 267, 0xFF97E0, 0)))
                     {
                         if (failure == "cancel-copy") { cancel!.Cancel(); return; }
                         reply = Hex(failure == "copy" || failure == "unlocked-copy" ? "6CF010768078" : failure == "copy-unknown" ? "6CF010760000" : "6CF010760078");

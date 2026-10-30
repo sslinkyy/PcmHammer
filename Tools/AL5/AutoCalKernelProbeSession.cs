@@ -1,10 +1,13 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Managed, bounded E54 RAM-kernel qualification. The caller owns AutoCal setup,
-// native transport lifetime, journaling and physical bench power. No full read,
-// flash identification, erase/program, DTC clear or speed transition is allowed.
+// native transport lifetime, journaling and physical bench power. The optional
+// baseline-read mode permits fixed flash identification, image reads and CRCs.
+// No erase/program, DTC clear or speed transition is allowed.
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Security.Cryptography;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using PcmHacking;
@@ -12,7 +15,7 @@ using PcmHacking;
 internal enum AutoCalKernelProbeStage
 {
     NotStarted, InitialIdentity, SuppressChatter, Unlock, RamUpload,
-    KernelVersion, ExitKernel, PostExitIdentity, Complete, RamCopyObserved
+    KernelVersion, ExitKernel, PostExitIdentity, Complete, RamCopyObserved, FullRead
 }
 
 internal sealed class AutoCalKernelProbeResult
@@ -32,6 +35,12 @@ internal sealed class AutoCalKernelProbeResult
     // retained by policy; neither the copied bytes nor execution are verified.
     public bool RamCopyReplyObserved { get; internal set; }
     public bool RamCopyBytesVerified => false;
+    public int ReadbackLength { get; internal set; }
+    public string? ReadbackSha256 { get; internal set; }
+    public bool ReadbackCrcVerified { get; internal set; }
+    public bool BaselineMatched { get; internal set; }
+    [JsonIgnore]
+    public byte[]? ReadbackBytes { get; internal set; }
     public bool BenchPowerCycleRequired { get; internal set; }
     public int VpwTransmissions { get; internal set; }
     public int VpwReceivedFrames { get; internal set; }
@@ -48,16 +57,20 @@ internal sealed class AutoCalKernelProbeSession
     private readonly AutoCalKernelProbePolicy policy;
     private readonly CancellationToken cancellation;
     private readonly bool copyOnly;
+    private readonly bool fullRead;
     private int started;
 
     public AutoCalKernelProbeSession(AutoCalDevice device, ILogger logger,
-        AutoCalKernelProbePolicy policy, CancellationToken cancellationToken, bool copyOnly = false)
+        AutoCalKernelProbePolicy policy, CancellationToken cancellationToken, bool copyOnly = false, bool fullRead = false)
     {
         inner = device ?? throw new ArgumentNullException(nameof(device));
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         this.policy = policy ?? throw new ArgumentNullException(nameof(policy));
         cancellation = cancellationToken;
         this.copyOnly = copyOnly;
+        if (copyOnly && fullRead) throw new ArgumentException("Copy-only and full-read modes are mutually exclusive.");
+        if (policy.FullReadEnabled != fullRead) throw new ArgumentException("Policy and session read modes differ.");
+        this.fullRead = fullRead;
     }
 
     public async Task<AutoCalKernelProbeResult> RunAsync()
@@ -136,6 +149,33 @@ internal sealed class AutoCalKernelProbeSession
             cancellation.ThrowIfCancellationRequested();
             if (!policy.IsKernelVerified || result.KernelVersion != AutoCalKernelProbePolicy.ExpectedKernelVersion)
                 throw new InvalidDataException("The running RAM kernel did not return the exact pinned E54 version.");
+
+            if (fullRead)
+            {
+                result.Stage = AutoCalKernelProbeStage.FullRead;
+                var reader = new CKernelReader(vehicle, info, logger);
+                Response<Stream> read = await reader.ReadRunningKernelContents(cancellation).ConfigureAwait(false);
+                if (read.Value != null)
+                {
+                    using (read.Value)
+                    using (var snapshot = new MemoryStream())
+                    {
+                        read.Value.Position = 0;
+                        await read.Value.CopyToAsync(snapshot).ConfigureAwait(false);
+                        result.ReadbackBytes = snapshot.ToArray();
+                        result.ReadbackLength = result.ReadbackBytes.Length;
+                        result.ReadbackSha256 = Convert.ToHexString(SHA256.HashData(result.ReadbackBytes)).ToLowerInvariant();
+                    }
+                }
+                cancellation.ThrowIfCancellationRequested();
+                if (read.Status != ResponseStatus.Success || !policy.IsImageVerified)
+                    throw new InvalidDataException("Full read did not complete with verified controller CRCs: " + read.Status);
+                result.ReadbackCrcVerified = true;
+                result.BaselineMatched = result.ReadbackLength == 524288
+                    && result.ReadbackSha256 == AutoCalKernelProbePolicy.ExpectedBaselineSha256;
+                if (!result.BaselineMatched)
+                    throw new InvalidDataException("Readback differs from the pinned GT baseline; no programming or automatic controller cleanup will follow.");
+            }
 
             // Exit only follows a verified kernel. Failure at any earlier step
             // deliberately performs no reset/exit/cleanup protocol operations.
@@ -246,7 +286,8 @@ internal sealed class AutoCalKernelProbeSession
         public override async Task<TimeoutScenario> SetTimeout(TimeoutScenario scenario)
         {
             Check();
-            if (scenario != TimeoutScenario.Minimum && scenario != TimeoutScenario.ReadProperty && scenario != TimeoutScenario.SendKernel)
+            if (scenario != TimeoutScenario.Minimum && scenario != TimeoutScenario.ReadProperty && scenario != TimeoutScenario.SendKernel
+                && !(policy.FullReadEnabled && (scenario == TimeoutScenario.ReadMemoryBlock || scenario == TimeoutScenario.ReadCrc)))
                 throw new NotSupportedException("Timeout scenario is outside the bounded RAM-kernel session.");
             TimeoutScenario previous = currentTimeoutScenario;
             await inner.SetTimeout(scenario).ConfigureAwait(false);

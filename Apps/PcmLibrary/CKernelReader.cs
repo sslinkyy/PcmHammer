@@ -125,6 +125,36 @@ namespace PcmHacking
 
                 logger.AddUserMessage("Kernel uploaded to PCM successfully. Requesting data...");
 
+                return await ReadRunningKernelContents(cancellationToken, progress);
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                return Response.Create(ResponseStatus.Cancelled, (Stream)null!);
+            }
+            catch (Exception exception)
+            {
+                logger.AddUserMessage("Something went wrong. " + exception.Message);
+                logger.AddDebugMessage(exception.ToString());
+                return new Response<Stream>(ResponseStatus.Error, null!);
+            }
+            finally
+            {
+                await this.vehicle.Cleanup();
+                logger.StatusUpdateReset();
+            }
+        }
+
+        /// <summary>
+        /// Read and verify the full image using an already running, compatible
+        /// kernel. The caller must establish the controller/kernel identity and
+        /// owns kernel exit, failure recovery and adapter lifetime. This method
+        /// does not unlock, upload, switch speed, reset or clear trouble codes.
+        /// A verification timeout returns Unverified, never verified success.
+        /// </summary>
+        public async Task<Response<Stream>> ReadRunningKernelContents(CancellationToken cancellationToken, IProgress<ProgressUpdate>? progress = null)
+        {
+            try
+            {
                 if (cancellationToken.IsCancellationRequested)
                 {
                     return Response.Create(ResponseStatus.Cancelled, (Stream)null!);
@@ -319,11 +349,6 @@ namespace PcmHacking
                 logger.AddUserMessage("Something went wrong. " + exception.Message);
                 logger.AddDebugMessage(exception.ToString());
                 return new Response<Stream>(ResponseStatus.Error, null!);
-            }
-            finally
-            {
-                await this.vehicle.Cleanup();
-                logger.StatusUpdateReset();
             }
         }
 

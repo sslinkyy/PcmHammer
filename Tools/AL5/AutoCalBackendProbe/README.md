@@ -12,6 +12,7 @@ dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --
 dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-osid-read
 dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-ram-copy
 dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-kernel-info
+dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-read-baseline
 ```
 
 The USB-only profile requires the OBD cable physically disconnected and EFILive,
@@ -46,6 +47,7 @@ Live invocation forms (not automatic test steps):
 --e54-osid-read --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
 --e54-ram-copy --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
 --e54-kernel-info --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
+--e54-read-baseline --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
 ```
 
 Each receipt must be a new direct child of `LocalOnly/AutoCalBackendProbe`.
@@ -94,12 +96,46 @@ Copy reply before Execute, and requires the exact Execute reply before the known
 kernel-version query. Only a matching version permits exit; the exact exit ACK
 and one ordinary OS-ID check after a 10-second settling margin must also pass.
 Failures stop without another upload or controller cleanup. Flash erase/program,
-arbitrary kernels, full image reads and speed transitions remain absent.
+arbitrary kernels and speed transitions remain absent. Full image reads are
+confined to the separate baseline-read mode described below.
+The first actual kernel-info session completed successfully. Its COPY and
+EXECUTE packets exactly matched the pinned 2,027-byte asset. The replies were
+`6C F0 10 76 00 78` and `6C F0 10 76 80 78`, followed by exact known version
+`6C F0 10 7D 00 6A B1 78 EC 36`. Exit returned `6C F0 10 60`; an ordinary OS-ID
+request 10,018 ms later returned `15189044`. Recorded adapter cleanup and native
+closure succeeded. See the
+[kernel execution receipt](../../../Docs/AL5/AUTOCAL_E54_KERNEL_EXECUTION_20261030.json).
+
+The journal contains twelve VPW requests and ten VPW replies within nineteen
+TX/seventeen RX host envelopes, all with valid outer CRCs. Fourteen zero-byte
+native reads occurred while waiting for the two upload replies; no upload was
+replayed. The known version establishes execution of the relevant pinned kernel
+path, without independently verifying every RAM byte. No flash read, CRC,
+erase/program, DTC-clear or speed-change operation ran.
+
 The earlier
 [evidence-gap inventory](../../../Docs/AL5/AUTOCAL_STOCK_RAM_COPY_ACK_GAP_20261030.json)
-remains unchanged and covers its original saved traces. The new COPY-only
-observation is separate evidence. Enabling the bounded experiment does not claim
-that kernel execution or flashing has already been qualified.
+remains unchanged and covers its original saved traces. COPY-only, post-reset
+identity and kernel execution are separate observations. None qualifies flash
+programming or interrupted-flash recovery.
+
+The separate `--e54-read-baseline` profile reuses the production
+`CKernelReader.ReadRunningKernelContents` after the same pinned kernel-version
+check. Its policy admits only flash ID `00894471`, 128 sequential 4,096-byte
+reads covering `000000..07FFFF`, and seven controller CRC ranges. Every data
+reply must have the exact route, mode, address, length and block checksum.
+The assembled image must match the saved GT baseline SHA-256
+`a3b010af7e04df03be699198920aac26ba0645c2ad608e72eacf0bc3970beb58`.
+All seven CRCs must also match before exit and the ordinary OS-ID check.
+
+Data reads cannot replay. Only the current CRC query may repeat, up to six
+submissions per range, as required by the existing verifier's polling loop.
+The command budget is 392 VPW payloads and 399 host commands, with a 900-second
+overall deadline. A new `.readback.bin` sibling is reserved before opening USB;
+an image is usable only when its receipt reports verified completion. Failure
+stops protocol traffic and closes owned host resources; it does not reset or
+re-upload automatically. Before its first bench run, this mode has only offline
+qualification. Flash programming and speed changes remain blocked.
 
 After failure the tool sends no additional protocol cleanup and closes only
 owned host resources. A native operation still running at its deadline remains
@@ -119,8 +155,8 @@ dotnet run --project Tools/AL5/AutoCalKernelProbePolicyTest.csproj --verbosity q
 dotnet run --project Tools/AL5/AutoCalKernelProbeSessionTest.csproj --verbosity quiet
 ```
 
-The backend's 4x transition and physical programming remain unqualified. The
-existing AL5 direct reader and write gates are unchanged. The identity and
-COPY-only observations do not qualify complete kernel transfer/execution,
-full readback, programming acknowledgements, verification or interrupted-write
-recovery. AutoCal remains absent from normal adapter selection.
+The pinned RAM-kernel version/exit/ordinary-identity sequence has passed on the
+isolated E54 bench. Full flash readback, the backend's 4x transition, programming
+and interrupted-write recovery remain unqualified. The existing AL5 direct
+reader and write gates are unchanged. AutoCal remains absent from normal
+adapter selection.

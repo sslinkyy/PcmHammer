@@ -20,6 +20,18 @@ public sealed class AutoCalKernelProbePolicy
     public const int KernelBaseAddress = 0xFF9100;
     public const string ExpectedKernelSha256 = "8294b899c153b513cd1307ac4c6654c2720832779f40c19aac7100a4b864929a";
     public const string DefaultKernelPath = @"C:\Codex Projects\Car Tuning\To tune\My Original Stock Tunes\iMob Racing MultiMap OS\PcmHammer_E54_RAM_Survey_Bench_v0_1\Kernel-E54.bin";
+    public const int FullReadLength = 512 * 1024;
+    public const int ReadBlockLength = 4096;
+    public const int ReadBlockCount = FullReadLength / ReadBlockLength;
+    public const string ExpectedBaselineSha256 = "a3b010af7e04df03be699198920aac26ba0645c2ad608e72eacf0bc3970beb58";
+    public const string DefaultBaselinePath = @"C:\Codex Projects\Car Tuning\To tune\AL5 Transmission Work\PcmHammer\LocalOnly\usb_capture_setup_20261030\e54_gt_pcmhammer_write_01\E54_before_test.bin";
+    public const int MaximumCrcQueriesPerRange = 6;
+    // Existing verifier: one range-start notification, then up to six polls;
+    // two CRC-boundary notifications plus one per data block, and startup budget.
+    public const int MaximumFullReadToolPresentAttempts = 32 + ReadBlockCount + 2 + 7 * (1 + MaximumCrcQueriesPerRange);
+    // Intel 28F400B order, pinned by actual GT read/CRC transcript and FlashChip.
+    private static readonly uint[] crcAddresses = { 0x60000, 0x40000, 0x20000, 0x8000, 0x6000, 0x4000, 0 };
+    private static readonly uint[] crcSizes = { 0x20000, 0x20000, 0x20000, 0x18000, 0x2000, 0x2000, 0x4000 };
 
     // A developer-operation budget, not a protocol or firmware capacity claim.
     public const int MaximumToolPresentAttempts = 32;
@@ -28,6 +40,7 @@ public sealed class AutoCalKernelProbePolicy
         InitialIdentity, InitialIdentityReply, Preparation, SeedReply, Key,
         KeyReply, UploadPermission, UploadPermissionReply, RamCopy, RamCopyReply,
         RamExecute, RamExecuteReply, KernelVersion, KernelVersionReply,
+        FlashIdentity, FlashIdentityReply, ReadBlock, ReadBlockReply, ReadCrc, ReadCrcReply,
         Exit, ExitReply, FinalIdentity, FinalIdentityReply, Complete
     }
     private Phase phase;
@@ -41,6 +54,9 @@ public sealed class AutoCalKernelProbePolicy
     private byte[]? initialIdentity;
     private byte[]? finalIdentity;
     private byte[]? lastAuthorizedTransmit;
+    private readonly byte[] readImage;
+    private readonly int[] crcQueryAttemptsByRange = new int[7];
+    private readonly Protocol protocol = new Protocol();
 
     public string? Failure { get; private set; }
     public string CurrentPhase => phase.ToString();
@@ -48,6 +64,22 @@ public sealed class AutoCalKernelProbePolicy
     public bool IsKernelVerified { get; private set; }
     public bool IsExitConfirmed { get; private set; }
     public bool IsPostExitIdentityVerified { get; private set; }
+    public bool FullReadEnabled { get; }
+    public bool IsFlashIdentityVerified { get; private set; }
+    public bool IsImageReadComplete => FullReadEnabled && ReadBlockReplies == ReadBlockCount;
+    public bool IsImageVerified { get; private set; }
+    public bool BaselineShaMatched { get; private set; }
+    public string? ComputedImageSha256 { get; private set; }
+    public int ReadBlockAttempts { get; private set; }
+    public int ReadBlockReplies { get; private set; }
+    public int CrcQueryAttempts { get; private set; }
+    public int VerifiedCrcRanges { get; private set; }
+    public int ToolPresentAttemptLimit => FullReadEnabled ? MaximumFullReadToolPresentAttempts : MaximumToolPresentAttempts;
+    // The counters describe valid coverage of this defensive image snapshot.
+    // Partial images must not be represented as a completed read by callers.
+    public byte[] ReadImage => (byte[])readImage.Clone();
+    public byte[][] CrcRequests => crcAddresses.Select((address, index) =>
+        protocol.CreateCrcQuery(address, crcSizes[index]).GetBytes()).ToArray();
     public int TransmitAttempts { get; private set; }
     public int AuthorizedTransmitCount => TransmitAttempts;
     public byte[]? LastAuthorizedTransmit => Clone(lastAuthorizedTransmit);
@@ -68,10 +100,12 @@ public sealed class AutoCalKernelProbePolicy
     public byte[]? InitialIdentityReply => Clone(initialIdentity);
     public byte[]? PostExitIdentityReply => Clone(finalIdentity);
 
-    public AutoCalKernelProbePolicy(byte[] pinnedKernel)
+    public AutoCalKernelProbePolicy(byte[] pinnedKernel, bool fullRead = false)
     {
         if (pinnedKernel == null) throw new ArgumentNullException(nameof(pinnedKernel));
         kernel = (byte[])pinnedKernel.Clone();
+        FullReadEnabled = fullRead;
+        readImage = fullRead ? new byte[FullReadLength] : Array.Empty<byte>();
         if (kernel.Length != ExpectedKernelLength ||
             !Convert.ToHexString(SHA256.HashData(kernel)).Equals(ExpectedKernelSha256, StringComparison.OrdinalIgnoreCase))
             throw new InvalidDataException("Kernel bytes do not match the previously captured E54 asset.");
@@ -85,7 +119,8 @@ public sealed class AutoCalKernelProbePolicy
             throw new InvalidDataException("Current PcmHammer upload-permission encoding differs from the probe contract.");
 
         // Mirror PCMExecute's descending RAM chunks at the observed AutoCal TX cap.
-        // These exact two fragments have NOT yet been physically qualified on AutoCal.
+        // These two fragments were exercised by e54_kernel_info_01.json;
+        // this file-only policy does not itself establish physical qualification.
         const int firstLength = MaximumTransmitBytes - 12; // 1760 / 0x6E0
         upload = new[] {
             protocol.CreateBlockMessage(kernel, firstLength, kernel.Length - firstLength,
@@ -100,7 +135,8 @@ public sealed class AutoCalKernelProbePolicy
 
     /// <summary>
     /// Authorize one complete VPW submission. Every identity/security/upload/query/
-    /// exit command is allowed once. Shared Vehicle retry loops therefore cannot
+    /// exit command is allowed once; only fixed current-range CRC polls may repeat.
+    /// Shared Vehicle retry loops therefore cannot
     /// replay an uncertain RAM copy or execution. Native partial writes remain the
     /// AutoCalChannel's responsibility and must not call this method again.
     /// </summary>
@@ -110,7 +146,7 @@ public sealed class AutoCalKernelProbePolicy
         if (bytes == null) throw new ArgumentNullException(nameof(bytes));
         if (Equal(bytes, "8CFEF03F") && IsInitialIdentityVerified && phase < Phase.ExitReply)
         {
-            if (ToolPresentAttempts >= MaximumToolPresentAttempts) Reject("Tool-present attempt budget exhausted.");
+            if (ToolPresentAttempts >= ToolPresentAttemptLimit) Reject("Tool-present attempt budget exhausted.");
             ToolPresentAttempts++; Authorize(bytes); return;
         }
         if (Equal(bytes, "6CFEF02800") && phase == Phase.Preparation && SuppressionAttempts == 0)
@@ -158,6 +194,24 @@ public sealed class AutoCalKernelProbePolicy
                 permitted = Equal(bytes, "6C10F03D00");
                 if (permitted) phase = Phase.KernelVersionReply;
                 break;
+            case Phase.FlashIdentity:
+                permitted = Equal(bytes, "6C10F03D01");
+                if (permitted) phase = Phase.FlashIdentityReply;
+                break;
+            case Phase.ReadBlock:
+                permitted = bytes.SequenceEqual(protocol.CreateReadRequest(ReadBlockReplies * ReadBlockLength, ReadBlockLength).GetBytes());
+                if (permitted) { phase = Phase.ReadBlockReply; ReadBlockAttempts++; }
+                break;
+            case Phase.ReadCrc:
+            case Phase.ReadCrcReply:
+                permitted = bytes.SequenceEqual(protocol.CreateCrcQuery(crcAddresses[VerifiedCrcRanges], crcSizes[VerifiedCrcRanges]).GetBytes());
+                if (permitted)
+                {
+                    if (crcQueryAttemptsByRange[VerifiedCrcRanges] >= MaximumCrcQueriesPerRange)
+                        Reject("CRC query budget exhausted for the fixed current range.");
+                    crcQueryAttemptsByRange[VerifiedCrcRanges]++; CrcQueryAttempts++; phase = Phase.ReadCrcReply;
+                }
+                break;
             case Phase.Exit:
                 permitted = Equal(bytes, "6C10F020");
                 if (permitted) phase = Phase.ExitReply;
@@ -181,6 +235,28 @@ public sealed class AutoCalKernelProbePolicy
         if (bytes == null) throw new ArgumentNullException(nameof(bytes));
         lastReceive = (byte[])bytes.Clone(); ReceiveCount++;
         Healthy();
+        if (phase == Phase.ReadBlockReply && Starts(bytes, "6DF01036"))
+        {
+            int address = ReadBlockReplies * ReadBlockLength;
+            byte[] expected = protocol.CreateReadRequest(address, ReadBlockLength).GetBytes();
+            expected[1] = 0xF0; expected[2] = 0x10; expected[3] = 0x36;
+            if (bytes.Length != ReadBlockLength + 12 || !bytes.AsSpan(0, 10).SequenceEqual(expected))
+                Reject("Read block has an unexpected exact extent, submode, length or address.");
+            Response<byte[]> decoded = protocol.ParsePayload(new Message(bytes), ReadBlockLength, address);
+            if (decoded.Status != ResponseStatus.Success || decoded.Value.Length != ReadBlockLength)
+                Reject("Read block failed production payload/checksum validation.");
+            Buffer.BlockCopy(decoded.Value, 0, readImage, address, ReadBlockLength);
+            ReadBlockReplies++;
+            if (ReadBlockReplies == ReadBlockCount)
+            {
+                ComputedImageSha256 = Convert.ToHexString(SHA256.HashData(readImage)).ToLowerInvariant();
+                BaselineShaMatched = ComputedImageSha256.Equals(ExpectedBaselineSha256, StringComparison.Ordinal);
+                if (!BaselineShaMatched) Reject("Full read differs from the exact pre-test E54 baseline.");
+                phase = Phase.ReadCrc;
+            }
+            else phase = Phase.ReadBlock;
+            return;
+        }
         int expectedMode = ExpectedMode();
         if (expectedMode < 0 || !Starts(bytes, "6CF010")) { UnrelatedReceiveCount++; return; }
         if (bytes.Length >= 5 && bytes[3] == 0x7F && bytes[4] == expectedMode)
@@ -236,7 +312,22 @@ public sealed class AutoCalKernelProbePolicy
                 return;
             case Phase.KernelVersionReply:
                 if (!Equal(bytes, "6CF0107D006AB178EC36")) Reject("Kernel identity differs from the pinned asset: " + Convert.ToHexString(bytes));
-                IsKernelVerified = true; phase = Phase.Exit; return;
+                IsKernelVerified = true; phase = FullReadEnabled ? Phase.FlashIdentity : Phase.Exit; return;
+            case Phase.FlashIdentityReply:
+                if (!Equal(bytes, "6CF0107D0100894471")) Reject("Flash identity differs from the pinned Intel 28F400B baseline.");
+                IsFlashIdentityVerified = true; phase = Phase.ReadBlock; return;
+            case Phase.ReadCrcReply:
+                byte[] expectedCrc = protocol.CreateCrcQuery(crcAddresses[VerifiedCrcRanges], crcSizes[VerifiedCrcRanges]).GetBytes();
+                expectedCrc[1] = 0xF0; expectedCrc[2] = 0x10; expectedCrc[3] = 0x7D;
+                if (bytes.Length != 15 || !bytes.AsSpan(0, 11).SequenceEqual(expectedCrc))
+                    Reject("CRC reply differs from the exact requested range/extent.");
+                uint observedCrc = ((uint)bytes[11] << 24) | ((uint)bytes[12] << 16) | ((uint)bytes[13] << 8) | bytes[14];
+                uint calculatedCrc = new Crc().GetCrc(readImage, crcAddresses[VerifiedCrcRanges], crcSizes[VerifiedCrcRanges]);
+                if (observedCrc != calculatedCrc) Reject("Controller CRC differs from the completed baseline-matching read.");
+                VerifiedCrcRanges++;
+                if (VerifiedCrcRanges == crcAddresses.Length) { IsImageVerified = true; phase = Phase.Exit; }
+                else phase = Phase.ReadCrc;
+                return;
             case Phase.ExitReply:
                 if (!Equal(bytes, "6CF01060")) Reject("Unexpected exit acknowledgement: " + Convert.ToHexString(bytes));
                 IsExitConfirmed = true; phase = Phase.FinalIdentity; return;
@@ -254,6 +345,8 @@ public sealed class AutoCalKernelProbePolicy
             case Phase.UploadPermissionReply: return 0x34;
             case Phase.RamCopyReply: case Phase.RamExecuteReply: return 0x36;
             case Phase.KernelVersionReply: return 0x3D;
+            case Phase.FlashIdentityReply: case Phase.ReadCrcReply: return 0x3D;
+            case Phase.ReadBlockReply: return 0x35;
             case Phase.ExitReply: return 0x20;
             default: return -1;
         }

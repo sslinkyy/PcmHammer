@@ -1,0 +1,311 @@
+{
+  "schema": "autocal-e54-bounded-kernel-execution-v1",
+  "observation_date": "2026-10-30",
+  "source_commit": "6891836594bfc180f3047b1b0ff5d3201d747014",
+  "all_12_recorded_source_hashes_match_commit_blobs": true,
+  "adapter": "EFILive AutoCal V2",
+  "serial": "AC3NCHH5",
+  "controller": "Isolated spare E54/LB7 bench",
+  "profile": "e54-kernel-info",
+  "scope": "Two pinned RAM upload fragments followed by the exact known kernel-version reply, acknowledged exit and matching ordinary OS-ID after a bounded settling interval. No flash read, CRC, erase or program.",
+  "application_tx_frames": 19,
+  "application_rx_frames": 17,
+  "submitted_application_bytes": 2394,
+  "received_application_bytes": 335,
+  "all_36_outer_crcs_valid": true,
+  "ordinary_command_echoes_matched": 7,
+  "vpw_payload_commands_started": 12,
+  "vpw_payload_commands_completed": 12,
+  "received_vpw_frames": 10,
+  "short_writes_observed": 0,
+  "ram_upload_replays_observed": 0,
+  "zero_byte_native_reads": 14,
+  "zero_byte_read_elapsed_ms": [
+    1199,
+    1316,
+    1632,
+    1734,
+    1849,
+    1950,
+    2066,
+    2179,
+    2281,
+    2383,
+    2499,
+    2601,
+    2716,
+    2817
+  ],
+  "zero_byte_read_scope": "Two before COPY reply; twelve before EXECUTE reply. No payload replay or receive-envelope failure.",
+  "initial_identity_reply_hex": "6CF0107C0A00E7C434444E",
+  "initial_operating_system": 15189044,
+  "ram_upload": [
+    {
+      "kind": "COPY",
+      "attempts": 1,
+      "source_offset": 1760,
+      "data_bytes": 267,
+      "destination_start_inclusive_hex": "FF97E0",
+      "destination_end_inclusive_hex": "FF98EA",
+      "vpw_message_bytes": 279,
+      "host_envelope_bytes": 293,
+      "header_hex": "6D10F03600010BFF97E0",
+      "block_checksum_hex": "6A26",
+      "block_checksum_valid": true,
+      "submitted_bytes_match_pinned_asset": true,
+      "vpw_message_sha256": "ffba8bc6cfc4b08499ff8e8225b5aec546fb9d46a03c4d3c942b90e0b58270ee",
+      "data_sha256": "33e3d34375898334152cf612b7dd1ec43f6db0a8e1f720473d88f211fe97bf02",
+      "tx_elapsed_ms": 1082
+    },
+    {
+      "kind": "EXECUTE",
+      "attempts": 1,
+      "source_offset": 0,
+      "data_bytes": 1760,
+      "destination_start_inclusive_hex": "FF9100",
+      "destination_end_inclusive_hex": "FF97DF",
+      "vpw_message_bytes": 1772,
+      "host_envelope_bytes": 1786,
+      "header_hex": "6D10F0368006E0FF9100",
+      "block_checksum_hex": "92A4",
+      "block_checksum_valid": true,
+      "submitted_bytes_match_pinned_asset": true,
+      "vpw_message_sha256": "c79faf4f381a08b51229e053379c219c30f03e80e2220a69f2d2064a75063fe6",
+      "data_sha256": "b1ac5e8fc997cd26d5999eccd31640d96cfbb9f980b93684bef4b361ba6588ce",
+      "tx_elapsed_ms": 1498
+    }
+  ],
+  "ram_copy_reply_hex": "6CF010760078",
+  "ram_execute_reply_hex": "6CF010768078",
+  "reply_final_byte_hex": "78",
+  "reply_final_byte_meaning": "opaque; kernel execution evidence comes from the later exact version reply",
+  "kernel_version": {
+    "request_hex": "6C10F03D00",
+    "reply_hex": "6CF0107D006AB178EC36",
+    "encoded_value_hex": "6AB178EC36",
+    "value": 458244025398,
+    "matches_pinned_expected_version": true,
+    "request_elapsed_ms": 2937,
+    "reply_elapsed_ms": 3049
+  },
+  "return_to_ordinary_identity": {
+    "exit_request_hex": "6C10F020",
+    "exit_reply_hex": "6CF01060",
+    "exit_request_elapsed_ms": 3053,
+    "exit_reply_elapsed_ms": 3164,
+    "post_exit_identity_request_hex": "6C10F03C0A",
+    "post_exit_identity_request_elapsed_ms": 13182,
+    "post_exit_identity_reply_hex": "6CF0107C0A00E7C434444E",
+    "post_exit_identity_reply_elapsed_ms": 13283,
+    "host_elapsed_ms_between_exit_reply_and_identity_request": 10018,
+    "required_settling_ms": 10000,
+    "operating_system": 15189044,
+    "matches_initial_operating_system": true
+  },
+  "completion": {
+    "setup_accepted": true,
+    "recorded_cleanup_accepted": true,
+    "policy_phase": "Complete",
+    "final_journal_elapsed_ms": 13630,
+    "final_buffered_bytes": 0,
+    "final_pending_bytes": 0,
+    "transport_disposed_reported": true,
+    "retained_native_owners_reported": 0,
+    "failure": null,
+    "channel_fault": null,
+    "cleanup_exception": null,
+    "bench_power_cycle_required_reported": false
+  },
+  "qualification": {
+    "pinned_kernel_version_exchange_observed": true,
+    "acknowledged_exit_and_ordinary_identity_observed": true,
+    "ram_bytes_independently_read_back": false,
+    "complete_flash_read_performed": false,
+    "flash_crc_queries_submitted": 0,
+    "flash_erase_requests_submitted": 0,
+    "flash_program_requests_submitted": 0,
+    "dtc_clear_requests_submitted": 0,
+    "speed_change_requests_submitted": 0,
+    "physical_speed": "unmeasured",
+    "physical_bus_transmission_count": "unmeasured",
+    "general_kernel_images_qualified": false,
+    "hardware_programming_qualified": false,
+    "interrupted_flash_recovery_qualified": false,
+    "al5_live_writes_enabled": false,
+    "normal_autocal_factory_entry_present": false
+  },
+  "vpw_transmit_ledger": [
+    {
+      "elapsed_ms": 456,
+      "message_bytes": 5,
+      "payload_hex": "6C10F03C0A",
+      "payload_sha256": "93b0760cc8050c6cef551938d841fc08a39ce96616f0bd196c226a566aec0398"
+    },
+    {
+      "elapsed_ms": 573,
+      "message_bytes": 5,
+      "payload_hex": "6CFEF02800",
+      "payload_sha256": "93fc79f7a7dbc1c54642c656da86a1b534b3f4b2e19dc2a241e0ef8b6addcb9f"
+    },
+    {
+      "elapsed_ms": 574,
+      "message_bytes": 4,
+      "payload_hex": "8CFEF03F",
+      "payload_sha256": "74c3716572d12617e262114190fabeccc4371404b3052f1ec363ee29c18492b3"
+    },
+    {
+      "elapsed_ms": 688,
+      "message_bytes": 5,
+      "payload_hex": "6C10F02701",
+      "payload_sha256": "e0ca0a725b7549e8e81d2b71eedd90e766aaa4debf33507db32ca9a225317d77"
+    },
+    {
+      "elapsed_ms": 804,
+      "message_bytes": 7,
+      "payload_hex": "6C10F027027C21",
+      "payload_sha256": "c4b3717ba3417557ba14cddc978d9e85c5bb17d191183ee9d3f94eef25a504d8"
+    },
+    {
+      "elapsed_ms": 905,
+      "message_bytes": 10,
+      "payload_hex": "6C10F0340007EBFF9100",
+      "payload_sha256": "e9347ee4d5cf2eb42cdc1c6d0fb3aef4b230f2eb36d0fd5c20e9ca5c3f81c83f"
+    },
+    {
+      "elapsed_ms": 1021,
+      "message_bytes": 4,
+      "payload_hex": "8CFEF03F",
+      "payload_sha256": "74c3716572d12617e262114190fabeccc4371404b3052f1ec363ee29c18492b3"
+    },
+    {
+      "elapsed_ms": 1082,
+      "message_bytes": 279,
+      "payload_hex": null,
+      "payload_sha256": "ffba8bc6cfc4b08499ff8e8225b5aec546fb9d46a03c4d3c942b90e0b58270ee"
+    },
+    {
+      "elapsed_ms": 1498,
+      "message_bytes": 1772,
+      "payload_hex": null,
+      "payload_sha256": "c79faf4f381a08b51229e053379c219c30f03e80e2220a69f2d2064a75063fe6"
+    },
+    {
+      "elapsed_ms": 2937,
+      "message_bytes": 5,
+      "payload_hex": "6C10F03D00",
+      "payload_sha256": "81e8eb3bfc7de8df031fd1760722ba7f40c7dc404c5a2ea399faac7cac42839a"
+    },
+    {
+      "elapsed_ms": 3053,
+      "message_bytes": 4,
+      "payload_hex": "6C10F020",
+      "payload_sha256": "127edc7bc02009e8a47b65c0950272ad3090819fc3a46456336611330a3cc165"
+    },
+    {
+      "elapsed_ms": 13182,
+      "message_bytes": 5,
+      "payload_hex": "6C10F03C0A",
+      "payload_sha256": "93b0760cc8050c6cef551938d841fc08a39ce96616f0bd196c226a566aec0398"
+    }
+  ],
+  "vpw_receive_ledger": [
+    {
+      "elapsed_ms": 567,
+      "payload_hex": "6CF0107C0A00E7C434444E",
+      "opaque_header_bytes_6_to_9_hex": "4C000000"
+    },
+    {
+      "elapsed_ms": 683,
+      "payload_hex": "6CF0106800",
+      "opaque_header_bytes_6_to_9_hex": "0E000000"
+    },
+    {
+      "elapsed_ms": 800,
+      "payload_hex": "6CF010670143B1",
+      "opaque_header_bytes_6_to_9_hex": "1B000000"
+    },
+    {
+      "elapsed_ms": 902,
+      "payload_hex": "6CF010670234",
+      "opaque_header_bytes_6_to_9_hex": "16000000"
+    },
+    {
+      "elapsed_ms": 1015,
+      "payload_hex": "6CF010740044",
+      "opaque_header_bytes_6_to_9_hex": "1E000000"
+    },
+    {
+      "elapsed_ms": 1432,
+      "payload_hex": "6CF010760078",
+      "opaque_header_bytes_6_to_9_hex": "DF000000"
+    },
+    {
+      "elapsed_ms": 2932,
+      "payload_hex": "6CF010768078",
+      "opaque_header_bytes_6_to_9_hex": "51050000"
+    },
+    {
+      "elapsed_ms": 3049,
+      "payload_hex": "6CF0107D006AB178EC36",
+      "opaque_header_bytes_6_to_9_hex": "10000000"
+    },
+    {
+      "elapsed_ms": 3164,
+      "payload_hex": "6CF01060",
+      "opaque_header_bytes_6_to_9_hex": "0A000000"
+    },
+    {
+      "elapsed_ms": 13283,
+      "payload_hex": "6CF0107C0A00E7C434444E",
+      "opaque_header_bytes_6_to_9_hex": "16000000"
+    }
+  ],
+  "input_evidence": [
+    {
+      "path": "LocalOnly/AutoCalBackendProbe/e54_kernel_info_01.json",
+      "bytes": 6247,
+      "sha256": "65ba88043ada2d2801853c3565775ed4869bba255e2eb687c909f7bd17d9955d"
+    },
+    {
+      "path": "LocalOnly/AutoCalBackendProbe/e54_kernel_info_01.json.journal.jsonl",
+      "bytes": 15303,
+      "sha256": "0ac06f18d5761d819c0dab8c66d06c0e9f8d92779f194673edfa66744e8cfac9"
+    }
+  ],
+  "pinned_kernel_asset": {
+    "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\PcmHammer_E54_RAM_Survey_Bench_v0_1\\Kernel-E54.bin",
+    "bytes": 2027,
+    "sha256": "8294b899c153b513cd1307ac4c6654c2720832779f40c19aac7100a4b864929a"
+  },
+  "hardware_tested_source_sha256": {
+    "Apps/PcmLibrary/AutoCalHostFrame.cs": "b87cd99d6adea75374609efdcda3cd16760836d293580e7952f0d0e6b3226600",
+    "Apps/PcmLibrary/AutoCalChannel.cs": "4a62652602f3fe26f23ed7dfdb13db82e2b8ac0d7ec3161c4930c42485629ff4",
+    "Apps/PcmLibrary/AutoCalVpwEnvelope.cs": "c3367d1b972061b2662b227e608d9278e466b6b30f50d7bbef70c62554c0074f",
+    "Apps/PcmLibrary/AutoCalSetupResponse.cs": "cb582c8b049d212c9aa8e603bc77a9cb0ad06d162f905e949bacf02108f78007",
+    "Apps/PcmLibrary/Devices/AutoCalDevice.cs": "d63017ffd5f2c916ac37c1bddc625e2e673a026c8a9867a852b3d010a6594757",
+    "Apps/PcmLibraryWindowsApi/Ports/AutoCalD2xxTransport.cs": "80decc39ac396ff86aeebfadff0e33c2395f802171e01d89407cb28a4f948614",
+    "Tools/AL5/AutoCalBackendProbe/Program.cs": "b304930d2b85f317f6f59d282f1340de42f03f65481e300bef1e7e7aa6e93872",
+    "Tools/AL5/AutoCalBackendProbe/ProbeProfile.cs": "d758251ef1a5a236fc0bfeeffd60b531a2463adacc48990dc41aab0aea5dcd0d",
+    "Tools/AL5/AutoCalBackendProbe/KernelRequestGuard.cs": "1dc4f2ef2a932efb504e504a280bce7a628449a0301d36236f71408c9d53c0a1",
+    "Tools/AL5/AutoCalKernelProbePolicy.cs": "56a75658de513b275201ec855328b4093eaa444db4b7a5ef8c80445047433368",
+    "Tools/AL5/AutoCalKernelProbeSession.cs": "8f935d285ab1a5f6d688b5119791621b98aa3d2d6e79a45584e5847331087375",
+    "Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj": "1e2828586357c0e739aa3a6e8095db036ebb1c26d8f4515644a2274f9d2ed7dc"
+  },
+  "hardware_tested_artifacts": {
+    "probe_sha256": "40cbd3a1582b84c7a43cca55abfb2b52b40f71a65125ee0e400761c34b17e0bc",
+    "pcmlibrary_sha256": "88834317215cac2e4a9de4e1f24db990ccf1b69bbd48393947824f9adf41f71f",
+    "native_dll": "C:\\Program Files (x86)\\EFILive\\Drivers\\EFILive\\Win-7-8-10\\amd64\\ftd2xx64.dll",
+    "native_sha256": "91185415e0a1cd8ad09a5b644130554867ee4c4975c7aa71ee6da15d2645d9a2",
+    "header_sha256": "cf2ad290c68137373b26629bf9feed6f4847f4e9e5cde4b980a212cebeb4ff6a"
+  },
+  "limitations": [
+    "This bounded success applies to the pinned 2027-byte kernel and this reported bench attachment; it does not qualify arbitrary kernels or all protocol operations.",
+    "Exact outgoing fragment bytes and the observed known version demonstrate successful execution of the relevant kernel path, not independent readback of every RAM byte.",
+    "No flash image was read or changed; no interrupted-flash recovery was attempted.",
+    "Counts and timing come from the D2XX journal; no independent USBPcap or waveform audit is claimed.",
+    "A matching ordinary identity after acknowledged exit does not verify every ECU state.",
+    "Opaque final reply byte 78, opaque header fields and physical speed remain unresolved.",
+    "Recorded adapter cleanup and native closure do not establish physical bus OFF or 1x.",
+    "Earlier COPY-only, reset and gap-inventory receipts remain unchanged."
+  ]
+}

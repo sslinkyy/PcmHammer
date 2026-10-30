@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text.Json;
 using PcmHacking;
 
-internal static class AutoCalKernelProbePolicyTest
+internal static partial class AutoCalKernelProbePolicyTest
 {
     private static byte[] kernel = Array.Empty<byte>();
     private static int assertions;
@@ -47,9 +47,17 @@ internal static class AutoCalKernelProbePolicyTest
         Run("host guard exact setup and completion-gated cleanup", HostSetupCleanup);
         Run("host guard owns partial command without consuming authorization twice", HostPartialWrites);
         Run("copy-only host boundary stops before execute version and cleanup", CopyOnlyBoundary);
+        Run("full-read plan matches pinned baseline and actual GT blocks", FullReadSourcePins);
+        Run("full-read exact image seven CRC ranges and restoration", FullReadSuccess);
+        Run("full-read requests cannot skip replay change length or write flash", FullReadRequestRestrictions);
+        Run("full-read rejects malformed blocks before accepting coverage", FullReadMalformedResponses);
+        Run("full-read image SHA mismatch cannot reach CRC or exit", FullReadBaselineMismatch);
+        Run("full-read CRC response correlation and values are strict", FullReadCrcFailures);
+        Run("full-read CRC polls and notifications have derived bounds", FullReadBudgets);
+        Run("full-read host guard keeps cleanup behind entire verified read", FullReadHostBoundary);
         Console.WriteLine(JsonSerializer.Serialize(new { assertions, passed, failed, kernelPath = path,
             kernelSha256 = AutoCalKernelProbePolicy.ExpectedKernelSha256,
-            hardwareAccess = false, liveWriteEnabled = false, splitUploadPhysicallyQualified = false,
+            hardwareAccess = false, liveWriteEnabled = false, hardwareQualificationClaimedByThisRun = false,
             scope = "Pinned-file plan and fail-closed VPW policy; production Protocol generation; no native transport" }));
         return failed.Count == 0 ? 0 : 1;
     }

@@ -16,21 +16,38 @@ internal static class Program
     {
         readonly byte[] image;
         public readonly List<(uint Address, int Length)> Reads = new();
+        public readonly List<byte[]> Sent = new();
         public int CrcQueries, Resets, StubUploads;
+        public int ForbiddenRunningAttempts, SpeedChanges, DisposeCalls;
         public Func<int, bool?> CrcMatches = _ => true;
         public Action<int>? AfterCrc, AfterRead;
-        public bool DropReadReplies, CorruptReadChecksum;
+        public bool DropReadReplies, CorruptReadChecksum, RunningKernelOnly, FailFlashId;
         public ScriptedDevice(byte[] image, ILogger log) : base(log)
         { this.image = image; MaxSendSize = 1772; MaxReceiveSize = 4108; Supports4X = false; Enable4xReadWrite = false; }
         public override Task<bool> SendMessage(Message message)
         {
             byte[] b = message.GetBytes();
+            Sent.Add((byte[])b.Clone());
+            if (RunningKernelOnly)
+            {
+                bool toolPresent = b.SequenceEqual(Convert.FromHexString("8CFEF03F"));
+                bool flashId = b.SequenceEqual(Convert.FromHexString("6C10F03D01"));
+                bool crc = b.Length == 11 && b.AsSpan(0, 5).SequenceEqual(Convert.FromHexString("6C10F03D02"));
+                bool read = b.Length == 10 && b.AsSpan(0, 5).SequenceEqual(Convert.FromHexString("6D10F03501"));
+                if (!toolPresent && !flashId && !crc && !read)
+                {
+                    ForbiddenRunningAttempts++;
+                    throw new InvalidOperationException("Already-running reader attempted setup/upload/cleanup: " + Convert.ToHexString(b));
+                }
+            }
             if (b.Length >= 5 && b[3] == 0x3D)
             {
                 switch (b[4])
                 {
                     case 0: Reply(Convert.FromHexString("6CF0107D006AB178EC36")); break;
-                    case 1: Reply(Convert.FromHexString("6CF0107D0100894471")); break;
+                    case 1:
+                        if (FailFlashId) throw new IOException("Synthetic transport failure during flash-ID query");
+                        Reply(Convert.FromHexString("6CF0107D0100894471")); break;
                     case 2:
                         CrcQueries++; bool? matches = CrcMatches(CrcQueries);
                         if (matches.HasValue)
@@ -83,9 +100,9 @@ internal static class Program
         public override string GetDeviceType() => "In-memory reader test device";
         public override Task<bool> CheckDeviceConnection() => Task.FromResult(true);
         public override void ClearMessageBuffer() { }
-        protected override Task<bool> SetVpwSpeedInternal(VpwSpeed speed) => Task.FromResult(false);
+        protected override Task<bool> SetVpwSpeedInternal(VpwSpeed speed) { SpeedChanges++; return Task.FromResult(false); }
         protected override Task Receive() => Task.CompletedTask;
-        protected override void Dispose(bool disposing) { }
+        protected override void Dispose(bool disposing) { if (disposing) DisposeCalls++; }
     }
 
     sealed class Fixture : IDisposable
@@ -111,11 +128,23 @@ internal static class Program
         public ReadManager Manager() => new(Log, Vehicle, a => { a(); return Task.CompletedTask; },
             () => Task.FromResult<string?>(null), () => Task.FromResult(15189044u),
             (_, _) => Task.CompletedTask, (_, _) => Task.FromResult(false), Cancel.Token) { CrcPollingDelayMs = 0 };
-        public void CheckFullRead()
+        public void PrepareRunningKernelOnly()
+        {
+            Device.RunningKernelOnly = true;
+            File.Delete(kernel); // No kernel file is available to the extracted read stage.
+        }
+        public void CheckRunningOwnership()
+        {
+            Check(Device.ForbiddenRunningAttempts == 0 && Device.StubUploads == 0 && Device.Resets == 0,
+                "already-running reader never attempts upload, reset, DTC clear or other setup");
+            Check(Device.SpeedChanges == 0 && Device.DisposeCalls == 0, "already-running reader does not switch speed or dispose its caller's device");
+        }
+        public void CheckFullRead(bool runningOnly = false)
         {
             Check(Device.Reads.Count == 128 && Device.Reads.Select(x => x.Address).SequenceEqual(
                 Enumerable.Range(0, 128).Select(n => (uint)n * 4096)), "exact 512KiB coverage");
-            Check(Device.StubUploads == 1 && Device.Resets == 1, "one synthetic upload and one existing cleanup reset");
+            if (runningOnly) CheckRunningOwnership();
+            else Check(Device.StubUploads == 1 && Device.Resets == 1, "one synthetic upload and one existing cleanup reset");
         }
         public void Dispose()
         {
@@ -133,9 +162,10 @@ internal static class Program
         protected override Task<CrcVerificationResult> CompareRanges(CKernelVerifier verifier, byte[] image, CancellationToken token)
             => Task.FromResult(compare());
     }
-    static async Task Status(Fixture f, ResponseStatus expected, CKernelReader? reader = null, bool full = true)
+    static async Task Status(Fixture f, ResponseStatus expected, CKernelReader? reader = null, bool full = true, bool runningOnly = false)
     {
-        var result = await (reader ?? f.Reader()).ReadContents(f.Cancel.Token);
+        CKernelReader active = reader ?? f.Reader();
+        var result = runningOnly ? await active.ReadRunningKernelContents(f.Cancel.Token) : await active.ReadContents(f.Cancel.Token);
         Check(result.Status == expected, "expected " + expected + ", got " + result.Status);
         if (expected == ResponseStatus.Success || expected == ResponseStatus.Unverified)
         {
@@ -144,7 +174,8 @@ internal static class Program
             await stream.CopyToAsync(copy); Check(copy.ToArray().SequenceEqual(f.Data), "exact synthetic image");
         }
         else Check(result.Value == null, "failed/cancelled verification exposes no successful stream");
-        if (full) f.CheckFullRead();
+        if (full) f.CheckFullRead(runningOnly);
+        if (runningOnly) f.CheckRunningOwnership();
     }
 
     static IEnumerable<(string, Func<Task>)> Cases()
@@ -181,6 +212,30 @@ internal static class Program
         { using var f = new Fixture(); f.Device.CrcMatches = _ => null; Check(await f.Manager().Read(f.Output, PcmType.E54), "manager retains diagnostic read"); Check(!File.Exists(f.Output) && File.ReadAllBytes(f.BadRead).SequenceEqual(f.Data), "only exact _badread image saved"); });
         yield return ("ReadManager verified read saves normal file", async () =>
         { using var f = new Fixture(); Check(await f.Manager().Read(f.Output, PcmType.E54), "manager reports success"); Check(File.ReadAllBytes(f.Output).SequenceEqual(f.Data) && !File.Exists(f.BadRead), "exact normal file only"); });
+        yield return ("running kernel reads exact512KiB and7CRC without upload or cleanup", async () =>
+        {
+            using var f = new Fixture(); f.PrepareRunningKernelOnly();
+            await Status(f, ResponseStatus.Success, runningOnly: true);
+            Check(f.Device.CrcQueries == 7, "seven real CRC request/response comparisons");
+            Check(f.Device.Sent.Count(b => b.SequenceEqual(Convert.FromHexString("6C10F03D01"))) == 1, "one flash-ID query");
+            Check(f.Device.Sent.Count(b => b.SequenceEqual(Convert.FromHexString("8CFEF03F"))) >= 128, "per-block tool-present behavior retained");
+        });
+        yield return ("running kernel CRC mismatch fails without exit or DTC cleanup", async () =>
+        { using var f = new Fixture(); f.PrepareRunningKernelOnly(); f.Device.CrcMatches = n => n != 4; await Status(f, ResponseStatus.Error, runningOnly: true); });
+        yield return ("running kernel CRC timeout stays Unverified without cleanup", async () =>
+        { using var f = new Fixture(); f.PrepareRunningKernelOnly(); f.Device.CrcMatches = _ => null; await Status(f, ResponseStatus.Unverified, runningOnly: true); Check(f.Device.CrcQueries == 42, "same bounded generic CRC timeout behavior"); });
+        yield return ("running kernel pre-cancellation sends nothing", async () =>
+        { using var f = new Fixture(); f.PrepareRunningKernelOnly(); f.Cancel.Cancel(); await Status(f, ResponseStatus.Cancelled, full: false, runningOnly: true); Check(f.Device.Sent.Count == 0, "no traffic after cancellation"); });
+        yield return ("running kernel final-block cancellation cannot produce verified image", async () =>
+        { using var f = new Fixture(); f.PrepareRunningKernelOnly(); f.Device.AfterRead = n => { if (n == 128) f.Cancel.Cancel(); }; await Status(f, ResponseStatus.Cancelled, runningOnly: true); Check(f.Device.CrcQueries == 0, "no CRC or cleanup after transfer cancellation"); });
+        yield return ("running kernel final-CRC cancellation fails without cleanup", async () =>
+        { using var f = new Fixture(); f.PrepareRunningKernelOnly(); f.Device.AfterCrc = n => { if (n == 7) f.Cancel.Cancel(); }; await Status(f, ResponseStatus.Cancelled, runningOnly: true); });
+        yield return ("running kernel corrupt data never reaches CRC or cleanup", async () =>
+        { using var f = new Fixture(); f.PrepareRunningKernelOnly(); f.Device.CorruptReadChecksum = true; await Status(f, ResponseStatus.Error, full: false, runningOnly: true); Check(f.Device.CrcQueries == 0, "no CRC on corrupt/incomplete image"); });
+        yield return ("running kernel missing block remains bounded without cleanup", async () =>
+        { using var f = new Fixture(); f.PrepareRunningKernelOnly(); f.Device.DropReadReplies = true; await Status(f, ResponseStatus.Error, full: false, runningOnly: true); Check(f.Device.Reads.Count == Vehicle.MaxSendAttempts && f.Device.CrcQueries == 0, "existing block retry count retained"); });
+        yield return ("running kernel transport failure leaves recovery and close to caller", async () =>
+        { using var f = new Fixture(); f.PrepareRunningKernelOnly(); f.Device.FailFlashId = true; await Status(f, ResponseStatus.Error, full: false, runningOnly: true); Check(f.Device.Reads.Count == 0, "no data request after flash-ID transport failure"); });
     }
 
     static async Task<int> Main(string[] args)

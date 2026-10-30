@@ -1,13 +1,11 @@
 # AutoCal V2 transport reconstruction, 2026-10-30
 
 PcmHammer now contains an experimental AutoCal V2 device backend, a bounded
-host channel and a Windows D2XX transport. The actual backend completed an
-isolated USB setup, an ordinary OS-ID exchange with the spare E54/LB7, and a
-single pinned RAM-copy observation. The identity matched OS 15189044; the copy
-received a matching reply without executing the kernel. Copied RAM bytes,
-general transport, physical speed, programming and recovery remain unqualified. AutoCal is absent from the ordinary device
-factory and CLI selection; the working AL5 reader and AL5 live-write gates
-remain unchanged.
+host channel and a Windows D2XX transport. The pinned 2,027-byte E54 RAM kernel
+has now returned its exact expected version through that backend, acknowledged
+exit, and returned ordinary OS 15189044 after the settling interval. Full flash
+readback, physical speed, programming and recovery remain unqualified. AutoCal
+is absent from ordinary device selection; AL5 live writes remain disabled.
 
 ## Static evidence
 
@@ -625,9 +623,10 @@ kernel into a 267-byte RAM copy at `FF97E0`, then a 1,760-byte execute packet at
 `FF9100`. A reply with an opaque final byte cannot prove that the first copy
 succeeded before execution. The bounded COPY-only experiment described below
 has now recorded one such reply, without executing the kernel or verifying RAM
-contents. Full kernel execution remains disabled for live use; a bench power
-cycle is required after preparation. The historical inventory remains unchanged:
-it pins its earlier private inputs and script and contains no kernel payload.
+contents. At that checkpoint full kernel execution remained disabled, and the
+COPY-only profile required a bench power cycle. The later pinned-kernel result
+below is separate evidence. The historical inventory remains unchanged: it pins
+its earlier private inputs and script and contains no kernel payload.
 
 ## Independent COPY-only RAM observation
 
@@ -668,8 +667,9 @@ This is a D2XX journal audit, not an independent electrical capture.
 The COPY-only session ended with a bench power cycle required. The subsequent
 [post-reset identity check](AUTOCAL_E54_POST_COPY_RESET_20261030.json) is separate
 evidence, described below; the original COPY-only receipt remains unchanged.
-Full kernel execution, programming and AL5 live writes remain disabled at this
-checkpoint.
+Full kernel execution was disabled at that COPY-only checkpoint. Programming
+and AL5 live writes remain disabled; the subsequent kernel-info experiment is
+recorded separately below.
 
 ## Ordinary identity after the reported power cycle
 
@@ -693,13 +693,67 @@ bytes, full kernel execution, flash programming or interrupted-flash recovery.
 No such operation ran in this identity session, and physical speed remains
 unmeasured. Earlier receipts retain their original scope and hashes.
 
+## Independent pinned RAM-kernel execution
+
+The [kernel execution result](AUTOCAL_E54_KERNEL_EXECUTION_20261030.json) records
+a successful fixed `e54-kernel-info` session from commit `6891836`. All twelve
+recorded source hashes match that commit. The outgoing 267-byte COPY and
+1,760-byte EXECUTE fragments exactly match the pinned 2,027-byte kernel, with
+valid block checksums and destinations `FF97E0` and `FF9100`. Each was submitted
+once, with its expected reply required before the next step.
+
+The observed sequence then established:
+
+- COPY reply `6C F0 10 76 00 78`, followed by EXECUTE reply
+  `6C F0 10 76 80 78`.
+- Exact kernel-version reply `6C F0 10 7D 00 6A B1 78 EC 36`, matching the
+  pinned expected value `458244025398`.
+- Exit acknowledgment `6C F0 10 60`, then ordinary OS `15189044`. The final
+  identity request occurred 10,018 ms after the exit reply, satisfying the
+  configured 10-second settling margin.
+
+The exact known version is evidence that the relevant uploaded kernel path
+executed. The opaque `78` alone was not treated as proof. No independent RAM
+readback verified every uploaded byte, and no flash image read, CRC query,
+erase, program, DTC clear or speed change ran in this profile.
+
+The audit found nineteen application TX and seventeen RX envelopes (2,394 and
+335 bytes), all thirty-six outer CRCs valid. Twelve TX and ten RX carried VPW
+payloads. Fourteen native reads returned zero bytes while waiting: two before
+the COPY reply and twelve before the EXECUTE reply. They did not cause an
+upload replay or a short write; both replies arrived and the bounded sequence
+completed. These are host-journal observations, not electrical timing or
+lossless-monitoring claims.
+
+Recorded adapter cleanup succeeded. At the last journal event, 13,630 ms into
+the session, the receive queues were empty; the native owner reports disposal,
+zero retained owners and no error. The result required no additional bench
+power cycle. Private raw files are
+`LocalOnly/AutoCalBackendProbe/e54_kernel_info_01.json` and its `.journal.jsonl`
+sibling; the public receipt pins them, the source, both runtime assemblies and
+the kernel asset. Prior receipts retain their original scope and hashes.
+
+This qualifies the observed version/exit/identity sequence for this pinned
+kernel on this bench attachment. It does not establish full flash readback,
+other kernels, physical 4x behavior, programming or interrupted-flash recovery.
+
 ## Remaining integration work
 
-The bounded setup, ordinary E54 identity, COPY-only reply observation and
-ordinary identity after the reported power cycle have passed. Copied RAM
-contents, complete kernel transfer/execution, full readback,
-larger or sustained VPW exchanges, physical speed, filters and programming
+The developer probe now has a separate fixed baseline-read profile. It reuses
+the production reader after verified kernel execution and checks 128 sequential
+4,096-byte blocks, the pinned 512 KiB GT baseline hash, and seven controller CRC
+ranges. The normal reader retains its existing upload and cleanup ownership;
+the new running-kernel entry point leaves those responsibilities with its caller.
+The AutoCal coordinator allows successful exit only after verified readback;
+any failure stops without another RAM upload or controller reset. Offline tests
+cover corrupt blocks, mismatched baseline/CRCs, wrong flash identity and
+cancellation. This implementation is not yet evidence of a physical full read.
+
+The bounded setup, ordinary identity, COPY-only observation, post-reset identity
+and pinned-kernel version/exit sequence have passed. Full image readback and
+comparison, sustained exchanges, physical speed, filters and programming
 completion still require qualification for the independent AutoCal backend.
+No independent RAM readback or interrupted-flash recovery has been established.
 An ordinary PcmHammer factory/CLI integration must also explicitly own and
 close the native device: the current Vehicle disposal path alone does not
 unconditionally dispose its Device. Cancellation must cover initialization as

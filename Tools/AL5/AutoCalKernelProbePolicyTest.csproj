@@ -16,6 +16,7 @@
   <ItemGroup>
     <Compile Include="AutoCalKernelProbePolicy.cs" />
     <Compile Include="AutoCalKernelProbePolicyTest.cs" />
+    <Compile Include="AutoCalFullReadPolicyTest.cs" />
     <Compile Include="AutoCalBackendProbe/ProbeProfile.cs" Link="ProbeProfile.cs" />
     <Compile Include="AutoCalBackendProbe/KernelRequestGuard.cs" Link="KernelRequestGuard.cs" />
     <ProjectReference Include="../../Apps/PcmLibrary/PcmLibrary.csproj" />
