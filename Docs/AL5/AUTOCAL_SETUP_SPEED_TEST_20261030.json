@@ -1,0 +1,151 @@
+{
+  "schema": "autocal-setup-speed-offline-test-v1",
+  "recorded_date": "2026-10-30",
+  "base_commit": "4cd21fd099f36a270fabde187039f6d98df85536",
+  "scope": "Offline setup reply projection in the actual PcmLibrary build; pinned native source, reconstructed E54 read script and saved trace analysis. No hardware access.",
+  "source_files": [
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Apps\\PcmLibrary\\AutoCalSetupResponse.cs",
+      "bytes": 6089,
+      "sha256": "cb582c8b049d212c9aa8e603bc77a9cb0ad06d162f905e949bacf02108f78007"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Apps\\PcmLibrary\\AutoCalHostFrame.cs",
+      "bytes": 4622,
+      "sha256": "b1f2416eab2ff595c6dfe21608e3fbe2a06a07beecc98c211b00ab43afd83750"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\AutoCalSetupResponseTest.cs",
+      "bytes": 11188,
+      "sha256": "978b3bd047bcb1a4337f99083529daebf245735402a5d2e32f32e40a2794fe64"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\AutoCalSetupResponseTest.csproj",
+      "bytes": 930,
+      "sha256": "4c86e22175b55e96a272f1f277fe6e0ec8a2ef7f1460d875909138dc19372efb"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_autocal_setup_responses.py",
+      "bytes": 16327,
+      "sha256": "7538dda0648a6585693daca53d93308609da63e1f6b33d6863273b180c881001"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_autocal_speed_trace.py",
+      "bytes": 13567,
+      "sha256": "04aacc415e395cbf110174871377e283cdeafe6fcc5eee2e4ce7a421811bebda"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\test_autocal_speed_trace.py",
+      "bytes": 7867,
+      "sha256": "9e87dd10bf95acc6a55cb5674a9c9b7e24af5c494a1a4637cfaf2f46790581aa"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_autocal_speed_vm.py",
+      "bytes": 17189,
+      "sha256": "75656bff58c5856e592c230bffd891f25ebd76f1c84b64099d99306c297b4e14"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\test_autocal_speed_vm.py",
+      "bytes": 4105,
+      "sha256": "b211158945c37e79df684d8fffd726a46fd30c14af5d285bea4562efddbee6b3"
+    }
+  ],
+  "static_and_saved_evidence": [
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\AUTOCAL_SETUP_RESPONSES_STATIC.json",
+      "bytes": 31490,
+      "sha256": "70e6aca5bd5397c94b2e2ec1129cb2c4ecf73aeb7ea96f3698c25a60da07d3fd"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\AUTOCAL_SPEED_VM_STATIC.json",
+      "bytes": 58793,
+      "sha256": "707007048f3b47ed25c153892ad71e4adb7b62ae4181c860ea83a63b81fee680"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\AUTOCAL_SPEED_TRACE_20261030.json",
+      "bytes": 178479,
+      "sha256": "649882ee9c89d78e2f57d011027ee7b249a8d8b8907588e7f0969303edb628e7"
+    }
+  ],
+  "private_corpus": {
+    "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\autocal_speed_setup_20261030\\setup_response_corpus.json",
+    "bytes": 23522,
+    "sha256": "ceab7c4f00f068eca31e788afc1e339cb8a0783b0cb5e8250d321a9e01adef14",
+    "receive_cases": 17,
+    "empty_payload_cases": 13,
+    "opaque_01_payload_cases": 4,
+    "rx_context_assumed": true,
+    "request_pairing_established": false,
+    "publish": false
+  },
+  "build": {
+    "command": "dotnet run --project Tools/AL5/AutoCalSetupResponseTest.csproj --verbosity quiet",
+    "exit_code": 0,
+    "project_reference": "Apps/PcmLibrary/PcmLibrary.csproj",
+    "warnings": [
+      {
+        "code": "CS1998",
+        "path": "Apps/PcmLibrary/Vehicle.cs",
+        "lines": [
+          166
+        ]
+      },
+      {
+        "code": "CS1998",
+        "path": "Apps/PcmLibrary/Devices/MockDevice.cs",
+        "lines": [
+          131,
+          141
+        ]
+      }
+    ],
+    "warning_sources_changed": false,
+    "pcm_library_assembly": {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\AutoCalSetupResponseTest\\bin\\PcmLibrary.dll",
+      "bytes": 620032,
+      "sha256": "d62c8a0750e700176dc1c5e17944ae8717fb813cc30e8c5457befedfcc2d9ec3"
+    },
+    "test_assembly": {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\AutoCalSetupResponseTest\\bin\\AutoCalSetupResponseTest.dll",
+      "bytes": 18944,
+      "sha256": "8fcb864c0ceb015edb218fd681c55e8f52d43a556043dd88d746cb2d6b9503dc"
+    }
+  },
+  "tests": {
+    "csharp_boundary_assertions": 144,
+    "csharp_saved_cases": 17,
+    "csharp_total_assertions_including_boundaries": 284,
+    "csharp_saved_command": "dotnet run --project Tools/AL5/AutoCalSetupResponseTest.csproj --no-build -- LocalOnly/autocal_speed_setup_20261030/setup_response_corpus.json",
+    "csharp_exit_code": 0,
+    "python_command": "python -B -m unittest test_autocal_transport test_autocal_usb test_inspect_autocal_transport test_compare_vpw_read_capture test_object_transforms test_autocal_vpw_trace test_inspect_autocal_vpw_transport test_autocal_vm_setup test_autocal_completion test_autocal_speed_trace test_autocal_speed_vm",
+    "python_working_directory": "Tools/AL5",
+    "python_test_count": 89,
+    "python_exit_code": 0,
+    "real_source_collection": {
+      "setup_response_native_windows": 11,
+      "speed_vm_native_windows": 13,
+      "speed_vm_selected_structural_nodes": 41,
+      "saved_traces": 2,
+      "unique_current_input_helper_paths_hash_verified": 28
+    }
+  },
+  "review": {
+    "setup_projector_contract_review": "No remaining actionable findings; exact native contract reviewed independently.",
+    "speed_collector_review": "Existing-output overwrite path fixed; exclusive create and source-preservation test pass. No remaining actionable findings."
+  },
+  "limits": [
+    "Setup normal replies carry opaque payload bytes; received length and CRC do not establish firmware success or physical configuration.",
+    "Zero-length stale-array copying and zero-status-error IPC ambiguity are conditional static derivations, not observed firmware faults.",
+    "Command context in saved setup tests is explicitly selected from echo headers; no independent request pairing is claimed.",
+    "The A0/A1 helper models fixed initial descriptors and caller-supplied state only. Full VM execution, indirect mutation, callback exceptions and dynamic reachability remain unmodeled.",
+    "Sleep and purge are host requests; logged intervals do not measure physical bus timing.",
+    "The failed-license W trace is not a successful flash or interrupted-flash recovery observation.",
+    "An independent AutoCal backend still needs firmware setup/speed semantics, reliable completion handling and physical qualification; no live backend was added."
+  ],
+  "adapter_opened": false,
+  "target_executed": false,
+  "vehicle_transmissions_enabled": false,
+  "active_autocal_backend_added": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false
+}

@@ -39,6 +39,10 @@ now connects script callbacks to the recorded setup/cleanup payloads and
 identifies unchecked host status and conditional partial-transfer returns.
 Payload construction is established; physical setup and completion remain
 unqualified. Live writes stay disabled.
+The [setup-response and speed trace](AUTOCAL_TRANSPORT.md#setup-responses-and-the-speed-request-path)
+adds an offline PcmLibrary reply projector and follows the conditional
+A0/drain/A1/delay/purge sequence. Empty replies return a length of zero;
+firmware speed switching and restoration to 1x remain unqualified.
 
 [Public-source research dated 2026-10-06](ONLINE_RESEARCH_20261006.md) records
 AL5-specific vendor programming/recovery guidance, conditional hardware leads

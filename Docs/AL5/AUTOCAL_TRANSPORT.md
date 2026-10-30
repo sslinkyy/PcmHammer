@@ -344,6 +344,80 @@ python -B -m unittest discover -s Tools/AL5 -p test_autocal_vm_setup.py
 python -B -m unittest discover -s Tools/AL5 -p test_autocal_completion.py
 ```
 
+## Setup responses and the speed-request path
+
+The [setup-response trace](AUTOCAL_SETUP_RESPONSES_STATIC.json) follows ordinary
+replies for explicit commands `8603`, `8604`, `8800` and `8B01`. Their command
+echo must match the caller's requested command. Header bytes 4-9 remain opaque.
+The common callback returns received payload **length**, including zero for an
+empty normal reply; it does not return a decoded firmware-success byte. The
+saved read and failed-license W traces contain thirteen empty setup replies
+and four one-byte `01` cleanup replies. Neither contains an `8800` envelope.
+
+`Apps/PcmLibrary/AutoCalSetupResponse.cs` now projects that contract without
+opening a device. It requires explicit supported command context and a complete
+CRC-valid RX envelope, retains opaque bytes, and distinguishes command mismatch,
+malformed errors and matching command errors. A `00 FF` error marker remains an
+error even when its status is zero. No accepted envelope establishes physical
+configuration, speed, or transaction pairing.
+
+Two static host caveats matter for future integration. On a zero-length reply,
+Scan's IPC helper skips resizing its request array, so an optional copy can
+retain request bytes while the callback returns zero. A hypothetical error
+reply with status zero can also collide with HAPI's zero-valued IPC success
+result. Neither behavior has been observed in a hardware test. The independent
+projector uses the complete received extent and rejects error markers regardless
+of status, rather than reproducing these ambiguities.
+
+The [E54 read VM speed trace](AUTOCAL_SPEED_VM_STATIC.json) narrows the path:
+
+- A script enable descriptor and a `0x10` mask on caller-supplied VM step state
+  gate entry to the helper. This is a gate for attempting the sequence, not
+  proof that AutoCal has changed speed.
+- The helper sends `6C FE F0 A0`, then invokes a bounded receive/drain helper.
+  That helper requests up to twenty receives with a callback argument of 250,
+  stopping on its `0x80` flag. It does not inspect the `E0 AA` response bytes
+  as a speed acknowledgement.
+- It sends `6C FE F0 A1`, requests `KERNEL32!Sleep(1000)`, then opcode `64`.
+  The latter reaches callback selector `0A` and, on the traced FTDI backend,
+  queue purge with mask 3 (receive and transmit). It is not a separate adapter
+  speed-setting command.
+
+These are bounded static paths from the pinned reconstructed E54 read object;
+full VM execution and dynamic reachability are not established. They do not
+establish the AL5 programming script's behavior.
+
+The [saved timeline](AUTOCAL_SPEED_TRACE_20261030.json) independently preserves
+record order, offsets, raw saved timestamps, wrapper CRCs and payload digests.
+The A0-to-A1 logged intervals are about 278 ms in read 12 and 267 ms in the
+failed-license W trace. A1-to-first-mode-34 intervals are about 1,015 and
+1,014 ms. There is no adapter-local TX between A0 and A1, or between A1 and
+that next request. These are host-log intervals, not measured wire timings.
+Unchanged TX metadata `0x10` cannot identify physical speed. The absence of an
+explicit speed command suggests firmware or pre-existing state may participate,
+but that mechanism remains unresolved.
+
+Cleanup still consists of the recorded zero-form `8604` and two `8B01` forms;
+their firmware effects do not yet establish a return to 1x. PcmHammer's device
+API expects `SetVpwSpeedInternal` to establish the selected adapter speed before
+updating its speed cache. The traced host sequence cannot yet supply that
+implementation. No AutoCal device backend or live send path was added.
+
+The actual PcmLibrary build passed with the same three pre-existing CS1998
+warnings. The setup-response harness passed 144 boundary assertions and all
+17 saved setup replies, for 284 assertions in the saved-corpus run. All 89
+focused Python tests passed; 28 current source/helper digests matched the
+reports. Its corpus
+chooses command context explicitly for field testing; it does not infer a
+transaction match. Source digests and validation are recorded in the
+[offline test receipt](AUTOCAL_SETUP_SPEED_TEST_20261030.json).
+
+```powershell
+dotnet run --project Tools/AL5/AutoCalSetupResponseTest.csproj --verbosity quiet
+python -B -m unittest discover -s Tools/AL5 -p test_autocal_speed_trace.py
+python -B -m unittest discover -s Tools/AL5 -p test_autocal_speed_vm.py
+```
+
 ## Remaining integration work
 
 USB packetization and independent adapter discovery are corroborated for the
