@@ -14,6 +14,7 @@ dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --
 dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-kernel-info
 dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-read-baseline
 dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-read-prefix
+dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-read-prefix-recorded-setup
 ```
 
 The USB-only profile requires the OBD cable physically disconnected and EFILive,
@@ -50,6 +51,7 @@ Live invocation forms (not automatic test steps):
 --e54-kernel-info --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
 --e54-read-baseline --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
 --e54-read-prefix --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
+--e54-read-prefix-recorded-setup --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
 ```
 
 Each receipt must be a new direct child of `LocalOnly/AutoCalBackendProbe`.
@@ -62,6 +64,16 @@ before exit and the final OS-ID. It sends no CRC queries, cannot retry the
 read, and cannot qualify a full image. Its limits are 44 VPW payload commands,
 51 host commands and 180 seconds. This diagnostic changes only the requested
 read extent; adapter setup, kernel and speed remain as in the full-read attempt.
+The separate recorded-setup experiment keeps that prefix request and kernel
+unchanged. After ordinary identity it sends `8603{0100F401}` then
+`8604{010010000000}`; after verified kernel execution it sends
+`8604{000000000000}` before flash identification and the prefix read. These
+three fixed adapter commands follow the configuration lifecycle in saved
+EFILive reads. Their firmware meaning and effect on reception remain unknown.
+Both the device and native request guard reject replay, changed commands and
+incorrect phase ordering. The limit becomes 54 host commands; the 44 VPW
+payload and 180-second limits remain unchanged. This mode has offline checks
+only until a separately recorded bench experiment is completed.
 The exact request guard rejects any unlisted command, different payload,
 reordered request, replay, or incorrect continuation after a partial write.
 There are no arbitrary payload, file, address, retry, security algorithm,
@@ -204,6 +216,17 @@ dotnet run --project Tools/AL5/AutoCalProbeProfileTest.csproj --verbosity quiet
 dotnet run --project Tools/AL5/AutoCalKernelProbePolicyTest.csproj --verbosity quiet
 dotnet run --project Tools/AL5/AutoCalKernelProbeSessionTest.csproj --verbosity quiet
 ```
+
+The [paired GT observation](../../../Docs/AL5/AUTOCAL_E54_GT_PREFIX_20261030.json)
+captures the missing prefix reply independently. With checked 1x/source-`10`
+LISTEN ONLY settings, the GT received a 77-byte physical frame whose VPW CRC,
+block checksum and 64-byte baseline digest all match. Nine earlier ECM replies
+match AutoCal's journal in order. AutoCal delivered zero bytes in 477 subsequent
+native reads over 50.053 seconds. The GT returned OFF and restored its saved
+settings; AutoCal closed without a channel fault or retained owner. This
+establishes that the prefix response appeared on VPW but was not delivered by
+AutoCal under the tested configuration. It does not identify the firmware cause,
+qualify arbitrary reception or establish complete/lossless monitoring.
 
 The pinned RAM-kernel version/exit/ordinary-identity sequence has passed on the
 isolated E54 bench. Full flash readback, the backend's 4x transition, programming

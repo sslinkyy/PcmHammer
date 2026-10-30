@@ -59,6 +59,7 @@ internal static partial class AutoCalKernelProbePolicyTest
         Run("short read rejects ambiguous mode alternate reads CRC and replay", ShortReadRequests);
         Run("short read rejects malformed blocks checksum and wrong baseline prefix", ShortReadResponses);
         Run("short read native host guard gates entire fixed prefix exchange", ShortReadHostBoundary);
+        Run("recorded read configuration is bound to exact session phases", RecordedReadHostBoundary);
         Console.WriteLine(JsonSerializer.Serialize(new { assertions, passed, failed, kernelPath = path,
             kernelSha256 = AutoCalKernelProbePolicy.ExpectedKernelSha256,
             hardwareAccess = false, liveWriteEnabled = false, hardwareQualificationClaimedByThisRun = false,
@@ -343,5 +344,59 @@ internal static partial class AutoCalKernelProbePolicyTest
         Tx(notify, "8CFEF03F");
         Reject(() => HostFinish(ng, AutoCalHostFrame.EncodeLongHeader(0x8A00, 7, 0x10, Hex("8CFEF03F"))),
             "even keepalive stops after copy reply observation");
+    }
+
+    private static void RecordedReadHostBoundary()
+    {
+        byte[] interval = AutoCalHostFrame.EncodeLongHeader(0x8603, 7, 0, Hex("0100F401"));
+        byte[] mode = AutoCalHostFrame.EncodeLongHeader(0x8604, 7, 0, Hex("010010000000"));
+        byte[] zero = new ProbeProfile(true).Requests[5];
+        (AutoCalKernelProbePolicy p, KernelRequestGuard g) Begin(bool atKernel = false)
+        {
+            var p = new AutoCalKernelProbePolicy(kernel, shortRead: true);
+            var g = new KernelRequestGuard(p, recordedReadSetup: true);
+            foreach (byte[] frame in new ProbeProfile(true).Requests.Take(4)) HostFinish(g, frame);
+            HostTx(p, g, "6C10F03C0A"); Rx(p, "6CF0107C0A00E7C434");
+            if (atKernel)
+            {
+                HostFinish(g, interval); HostFinish(g, mode);
+                HostTx(p, g, "6C10F02701"); Rx(p, "6CF01067010000");
+                HostTx(p, g, p.UploadPermissionMessage); Rx(p, "6CF010740044");
+                HostTx(p, g, p.UploadMessages[0]); Rx(p, "6CF010760078");
+                HostTx(p, g, p.UploadMessages[1]); Rx(p, "6CF010768078");
+                HostTx(p, g, "6C10F03D00"); Rx(p, "6CF0107D006AB178EC36");
+            }
+            return (p, g);
+        }
+        var early = Begin();
+        Reject(() => HostTx(early.p, early.g, "6C10F02701"), "cannot skip recorded preparation pair");
+        var order = Begin();
+        Reject(() => HostFinish(order.g, mode), "cannot reverse recorded pair");
+        Reject(() => HostFinish(order.g, zero), "cannot substitute zero for preparation");
+        order.g.BeforeWrite(interval, 0, interval.Length); order.g.CompleteWrite(3);
+        Reject(() => order.g.BeforeWrite(interval, 0, interval.Length), "configuration partial frame cannot restart");
+        order.g.BeforeWrite(interval, 3, interval.Length - 3); order.g.CompleteWrite(interval.Length - 3);
+        Reject(() => HostFinish(order.g, interval), "completed interval configuration cannot replay");
+        HostFinish(order.g, mode);
+        Require(order.g.CommandsStarted == 7, "four setup one identity and two preparation commands");
+        var skip = Begin(true);
+        Reject(() => HostTx(skip.p, skip.g, "6C10F03D01"), "flash identity cannot skip post-kernel zero configuration");
+        var success = Begin(true);
+        Reject(() => HostFinish(success.g, mode), "post-kernel configuration cannot repeat active form");
+        HostFinish(success.g, zero);
+        Reject(() => HostFinish(success.g, zero), "post-kernel configuration cannot replay");
+        HostTx(success.p, success.g, "6C10F03D01"); Rx(success.p, "6CF0107D0100894471");
+        HostTx(success.p, success.g, ShortRequest); success.p.ObserveReceive(ShortReply());
+        HostTx(success.p, success.g, "6C10F020"); Rx(success.p, "6CF01060");
+        HostTx(success.p, success.g, "6C10F03C0A"); Rx(success.p, "6CF0107C0A00E7C434");
+        foreach (byte[] frame in new ProbeProfile(true).Requests.Skip(5)) HostFinish(success.g, frame);
+        Require(success.g.CommandsStarted == 20 && success.g.VpwPayloadCommandsCompleted == 10,
+            "only three fixed adapter commands added; VPW unchanged");
+        var ordinary = new AutoCalKernelProbePolicy(kernel, shortRead: true); var og = HostReady(ordinary);
+        HostTx(ordinary, og, "6C10F03C0A"); Rx(ordinary, "6CF0107C0A00E7C434");
+        Reject(() => HostFinish(og, interval), "ordinary profile cannot gain recorded configuration");
+        bool rejected = false;
+        try { new KernelRequestGuard(New(), recordedReadSetup: true); } catch (ArgumentException) { rejected = true; }
+        Require(rejected, "configuration experiment cannot expand kernel-info or copy-only modes");
     }
 }

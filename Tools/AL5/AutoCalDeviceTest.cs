@@ -28,6 +28,12 @@ internal static class AutoCalDeviceTest
         await Case("receive and broadcast reject oversized payloads", Oversize);
         await Case("4x refused and recorded cleanup stops traffic", SpeedAndStop);
         await Case("dispose request blocks sends while I/O or cleanup remains owned", Disposal);
+        await Case("recorded configuration lifecycle sends only the fixed commands once", RecordedConfiguration);
+        await Case("recorded configuration requires initialized ordinary profile and empty queues", ConfigurationPreconditions);
+        await Case("partial preparation and restore failures stop traffic without replay", ConfigurationFailures);
+        await Case("configuration transition blocks interleaved device I/O", ConfigurationExclusion);
+        await Case("disposal during preparation preserves ownership and blocks the second command", ConfigurationDisposal);
+        await Case("cancellation during preparation halts without replay or implicit cleanup", ConfigurationCancellation);
         Console.WriteLine(JsonSerializer.Serialize(new {
             assertions, passed, failed, syntheticProgramFrames = 96, syntheticAcknowledgements = 98,
             adapterOpened = false, liveWriteEnabled = false, hardwareQualified = false,
@@ -82,7 +88,7 @@ internal static class AutoCalDeviceTest
     private static byte[] Error(ushort command, ushort status) => Rx(0xFF00,
         new byte[] { (byte)command, (byte)(command >> 8), (byte)status, (byte)(status >> 8) });
 
-    private static Script AdapterWithStartup(byte[]? model = null, bool firstSetupError = false)
+    private static Script AdapterWithStartup(byte[]? model = null, bool firstSetupError = false, bool ordinary = false)
     {
         var adapter = new Script();
         adapter.Expect(Tx(0x8201, Array.Empty<byte>()), Rx(0x8201, model ?? ModelPayload));
@@ -90,11 +96,160 @@ internal static class AutoCalDeviceTest
         adapter.Expect(Tx(0x8604, new byte[] { 0 }), firstSetupError ? Error(0x8604, 0) : Rx(0x8604, Array.Empty<byte>()));
         if (firstSetupError) return adapter;
         adapter.Expect(Tx(0x8800, new byte[] { 0, 0 }), Rx(0x8800, Array.Empty<byte>()));
-        adapter.Expect(Tx(0x8603, Hex("0100F401")), Rx(0x8603, Array.Empty<byte>()));
-        adapter.Expect(Tx(0x8604, Hex("010010000000")), Rx(0x8604, Array.Empty<byte>()));
+        if (ordinary) adapter.Expect(Tx(0x8604, new byte[6]), Rx(0x8604, Array.Empty<byte>()));
+        else
+        {
+            adapter.Expect(Tx(0x8603, Hex("0100F401")), Rx(0x8603, Array.Empty<byte>()));
+            adapter.Expect(Tx(0x8604, Hex("010010000000")), Rx(0x8604, Array.Empty<byte>()));
+        }
         return adapter;
     }
-    private static AutoCalDevice Device(Script adapter) => new AutoCalDevice(new AutoCalChannel(adapter), new Log());
+    private static AutoCalDevice Device(Script adapter, bool ordinary = false) => new AutoCalDevice(new AutoCalChannel(adapter), new Log(),
+        setupProfile: ordinary ? AutoCalSetupProfile.RecordedOrdinaryIdentification : AutoCalSetupProfile.RecordedE54Read);
+
+    private static void ExpectPreparation(Script adapter)
+    {
+        adapter.Expect(Tx(0x8603, Hex("0100F401")), Rx(0x8603, Array.Empty<byte>()));
+        adapter.Expect(Tx(0x8604, Hex("010010000000")), Rx(0x8604, Array.Empty<byte>()));
+    }
+
+    private static async Task RecordedConfiguration()
+    {
+        using var adapter = AdapterWithStartup(ordinary: true); using var device = Device(adapter, ordinary: true);
+        adapter.ReadChunk = 1; adapter.WriteChunk = 3;
+        Require(await device.Initialize() && adapter.Completed.Count == 4, "ordinary initialization remains the exact four-command sequence");
+        Require(!device.RecordedReadPreparationAccepted && !device.RecordedOrdinaryConfigurationRestored, "transitions initially unattempted");
+        await Throws<InvalidOperationException>(() => device.RestoreRecordedOrdinaryConfigurationAsync(), "restore before preparation");
+        ExpectPreparation(adapter);
+        await device.ApplyRecordedReadPreparationAsync();
+        Require(device.RecordedReadPreparationAccepted && !device.RecordedOrdinaryConfigurationRestored && device.AdapterSetupAccepted,
+            "both preparation replies accepted without claiming restore");
+        await Throws<InvalidOperationException>(() => device.ApplyRecordedReadPreparationAsync(), "duplicate preparation");
+        Require(adapter.Completed.Count == 6 && adapter.ExpectedRemaining == 0, "exact preparation pair without replay");
+        adapter.Expect(Tx(0x8604, new byte[6]), Rx(0x8604, Array.Empty<byte>()));
+        await device.RestoreRecordedOrdinaryConfigurationAsync();
+        Require(device.RecordedOrdinaryConfigurationRestored && device.AdapterSetupAccepted, "zero-form restore accepted");
+        await Throws<InvalidOperationException>(() => device.RestoreRecordedOrdinaryConfigurationAsync(), "duplicate restore");
+        Require(adapter.Completed.Count == 7 && adapter.ExpectedRemaining == 0 && adapter.DisposeCalls == 0,
+            "exact seven host commands, no bus command or implicit disposal");
+        Require(adapter.Completed.All(b => !(b[2] == 0 && b[3] == 0x8A)), "configuration lifecycle submits no VPW payload");
+    }
+
+    private static async Task ConfigurationPreconditions()
+    {
+        using (var adapter = AdapterWithStartup(ordinary: true))
+        using (var device = Device(adapter, ordinary: true))
+        {
+            await Throws<InvalidOperationException>(() => device.ApplyRecordedReadPreparationAsync(), "preparation before initialize");
+            await Throws<InvalidOperationException>(() => device.RestoreRecordedOrdinaryConfigurationAsync(), "restore before initialize");
+            Require(adapter.WriteCalls == 0, "no startup bypass");
+            await device.Initialize();
+            byte[] pending = Rx(0x10, Hex("6CF01060")); adapter.Enqueue(pending);
+            await Throws<InvalidOperationException>(() => device.ApplyRecordedReadPreparationAsync(), "pending data before configuration");
+            Require(adapter.PendingByteCount == pending.Length && adapter.Completed.Count == 4,
+                "pending bytes are preserved without setup or drain");
+            device.Dispose();
+            await Throws<InvalidOperationException>(() => device.ApplyRecordedReadPreparationAsync(), "preparation after dispose");
+            await Throws<InvalidOperationException>(() => device.RestoreRecordedOrdinaryConfigurationAsync(), "restore after dispose");
+            Require(adapter.Completed.Count == 4, "disposed device emits no configuration");
+        }
+        using (var adapter = AdapterWithStartup())
+        using (var device = Device(adapter))
+        {
+            await device.Initialize();
+            await Throws<InvalidOperationException>(() => device.ApplyRecordedReadPreparationAsync(), "already read-profile device");
+            await Throws<InvalidOperationException>(() => device.RestoreRecordedOrdinaryConfigurationAsync(), "wrong profile restore");
+            Require(adapter.Completed.Count == 5 && device.AdapterSetupAccepted, "profile rejection leaves existing setup unchanged");
+        }
+    }
+
+    private static async Task ConfigurationFailures()
+    {
+        foreach (int failedStep in new[] { 1, 2, 3 })
+        {
+            using var adapter = AdapterWithStartup(ordinary: true); using var device = Device(adapter, ordinary: true);
+            await device.Initialize();
+            adapter.Expect(Tx(0x8603, Hex("0100F401")), failedStep == 1 ? Error(0x8603, 0) : Rx(0x8603, Array.Empty<byte>()));
+            if (failedStep != 1)
+                adapter.Expect(Tx(0x8604, Hex("010010000000")), failedStep == 2 ? Error(0x8604, 0) : Rx(0x8604, Array.Empty<byte>()));
+            if (failedStep < 3) await Throws<InvalidOperationException>(() => device.ApplyRecordedReadPreparationAsync(), "error in preparation");
+            else
+            {
+                await device.ApplyRecordedReadPreparationAsync();
+                adapter.Expect(Tx(0x8604, new byte[6]), Error(0x8604, 0));
+                await Throws<InvalidOperationException>(() => device.RestoreRecordedOrdinaryConfigurationAsync(), "error in restore");
+            }
+            Require(!device.AdapterSetupAccepted && !device.RecordedOrdinaryConfigurationRestored
+                && device.RecordedReadPreparationAccepted == (failedStep == 3), "partial acceptance never becomes a successful transition");
+            int writes = adapter.WriteCalls;
+            await Throws<InvalidOperationException>(() => device.ApplyRecordedReadPreparationAsync(), "failed preparation cannot retry");
+            await Throws<InvalidOperationException>(() => device.RestoreRecordedOrdinaryConfigurationAsync(), "failed transition cannot restore/replay");
+            await Throws<InvalidOperationException>(() => device.SendMessage(new Message(Hex("6C10F020"))), "configuration failure blocks VPW");
+            await Throws<InvalidOperationException>(() => device.StopRecordedSessionAsync(), "configuration failure blocks protocol cleanup");
+            Require(!await device.CheckDeviceConnection() && !await device.Initialize(), "failed transition blocks model query and reinitialization");
+            Require(adapter.WriteCalls == writes && adapter.Completed.Count == 4 + failedStep && adapter.ExpectedRemaining == 0
+                && adapter.DisposeCalls == 0, "failure stops exact sequence with caller ownership retained");
+        }
+    }
+
+    private static async Task ConfigurationExclusion()
+    {
+        using var adapter = AdapterWithStartup(ordinary: true); using var device = Device(adapter, ordinary: true);
+        await device.Initialize(); ExpectPreparation(adapter);
+        adapter.WriteBarrier = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        Task preparation = device.ApplyRecordedReadPreparationAsync(); await adapter.WriteStarted.Task;
+        int writes = adapter.WriteCalls;
+        Require(!device.AdapterSetupAccepted, "transition blocks session traffic while in progress");
+        await Throws<InvalidOperationException>(() => device.ApplyRecordedReadPreparationAsync(), "concurrent preparation");
+        await Throws<InvalidOperationException>(() => device.RestoreRecordedOrdinaryConfigurationAsync(), "concurrent restore");
+        await Throws<InvalidOperationException>(() => device.SendMessage(new Message(Hex("6C10F020"))), "interleaved VPW");
+        await Throws<InvalidOperationException>(() => device.ReceiveMessage(), "interleaved VPW receive");
+        await Throws<InvalidOperationException>(() => device.StopRecordedSessionAsync(), "interleaved cleanup");
+        Require(!await device.CheckDeviceConnection() && !await device.Initialize() && adapter.WriteCalls == writes,
+            "model query and initialize cannot interleave the pair");
+        adapter.WriteBarrier.SetResult(true); await preparation;
+        Require(device.RecordedReadPreparationAccepted && device.AdapterSetupAccepted && adapter.Completed.Count == 6,
+            "in-progress rejections did not corrupt the owning transition");
+    }
+
+    private static async Task ConfigurationDisposal()
+    {
+        var adapter = AdapterWithStartup(ordinary: true); var device = Device(adapter, ordinary: true);
+        await device.Initialize(); ExpectPreparation(adapter);
+        adapter.WriteBarrier = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        Task preparation = device.ApplyRecordedReadPreparationAsync(); await adapter.WriteStarted.Task;
+        device.Dispose();
+        Require(!device.AdapterSetupAccepted && adapter.DisposeCalls == 0, "configuration I/O remains owned after dispose request");
+        await Throws<InvalidOperationException>(() => device.RestoreRecordedOrdinaryConfigurationAsync(), "restore after in-flight dispose");
+        adapter.WriteBarrier.SetResult(true);
+        await Throws<Exception>(() => preparation, "disposed preparation cannot complete acceptance");
+        await Task.Delay(20);
+        Require(!device.RecordedReadPreparationAccepted && !device.RecordedOrdinaryConfigurationRestored
+            && adapter.Completed.Count == 5 && adapter.ExpectedRemaining == 1, "second preparation command blocked after disposal");
+        Require(device.Channel.IsTransportDisposed && adapter.DisposeCalls == 1, "native ownership released only after active I/O completion");
+        int writes = adapter.WriteCalls; device.Dispose();
+        Require(adapter.WriteCalls == writes, "repeated disposal sends no cleanup commands");
+    }
+
+    private static async Task ConfigurationCancellation()
+    {
+        using var cancel = new CancellationTokenSource();
+        using var adapter = AdapterWithStartup(ordinary: true);
+        using var device = new AutoCalDevice(new AutoCalChannel(adapter), new Log(), cancel.Token, AutoCalSetupProfile.RecordedOrdinaryIdentification);
+        await device.Initialize(); ExpectPreparation(adapter);
+        adapter.WriteBarrier = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        Task preparation = device.ApplyRecordedReadPreparationAsync(); await adapter.WriteStarted.Task;
+        cancel.Cancel();
+        await Throws<AutoCalChannelException>(() => preparation, "pending preparation cancellation");
+        Require(!device.AdapterSetupAccepted && !device.RecordedReadPreparationAccepted && !device.RecordedOrdinaryConfigurationRestored,
+            "cancelled transition never grants acceptance");
+        int writes = adapter.WriteCalls;
+        await Throws<InvalidOperationException>(() => device.ApplyRecordedReadPreparationAsync(), "cancelled preparation replay");
+        await Throws<InvalidOperationException>(() => device.RestoreRecordedOrdinaryConfigurationAsync(), "cancelled restore");
+        adapter.WriteBarrier.SetResult(true); await Task.Delay(20);
+        Require(adapter.WriteCalls == writes && adapter.Completed.Count == 5 && adapter.ExpectedRemaining == 1 && adapter.DisposeCalls == 0,
+            "late first-command completion is retained with no second command or implicit disposal");
+    }
 
     private static async Task Startup()
     {

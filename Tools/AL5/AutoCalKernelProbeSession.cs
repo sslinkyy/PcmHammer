@@ -15,7 +15,8 @@ using PcmHacking;
 internal enum AutoCalKernelProbeStage
 {
     NotStarted, InitialIdentity, SuppressChatter, Unlock, RamUpload,
-    KernelVersion, ExitKernel, PostExitIdentity, Complete, RamCopyObserved, FullRead, ShortRead
+    KernelVersion, ExitKernel, PostExitIdentity, Complete, RamCopyObserved, FullRead, ShortRead,
+    RecordedReadPreparation, RecordedOrdinaryRestore
 }
 
 internal sealed class AutoCalKernelProbeResult
@@ -41,6 +42,9 @@ internal sealed class AutoCalKernelProbeResult
     public string? ReadbackScope { get; internal set; }
     public bool ReadbackCrcVerified { get; internal set; }
     public bool BaselineMatched { get; internal set; }
+    public bool RecordedReadSetupAttempted { get; internal set; }
+    public bool RecordedReadSetupApplied { get; internal set; }
+    public bool RecordedOrdinaryConfigurationRestored { get; internal set; }
     [JsonIgnore]
     public byte[]? ReadbackBytes { get; internal set; }
     public bool BenchPowerCycleRequired { get; internal set; }
@@ -61,10 +65,12 @@ internal sealed class AutoCalKernelProbeSession
     private readonly bool copyOnly;
     private readonly bool fullRead;
     private readonly bool shortRead;
+    private readonly bool recordedReadSetup;
     private int started;
 
     public AutoCalKernelProbeSession(AutoCalDevice device, ILogger logger,
-        AutoCalKernelProbePolicy policy, CancellationToken cancellationToken, bool copyOnly = false, bool fullRead = false, bool shortRead = false)
+        AutoCalKernelProbePolicy policy, CancellationToken cancellationToken, bool copyOnly = false, bool fullRead = false,
+        bool shortRead = false, bool recordedReadSetup = false)
     {
         inner = device ?? throw new ArgumentNullException(nameof(device));
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -75,8 +81,11 @@ internal sealed class AutoCalKernelProbeSession
             throw new ArgumentException("Copy-only, full-image and short-prefix modes are mutually exclusive.");
         if (policy.FullReadEnabled != fullRead || policy.ShortReadEnabled != shortRead)
             throw new ArgumentException("Policy and session read modes differ.");
+        if (recordedReadSetup && !shortRead)
+            throw new ArgumentException("Recorded read preparation is restricted to the fixed short-prefix experiment.");
         this.fullRead = fullRead;
         this.shortRead = shortRead;
+        this.recordedReadSetup = recordedReadSetup;
     }
 
     public async Task<AutoCalKernelProbeResult> RunAsync()
@@ -112,6 +121,16 @@ internal sealed class AutoCalKernelProbeSession
 
             result.Stage = AutoCalKernelProbeStage.InitialIdentity;
             await FixedIdentity(guarded, protocol, () => policy.IsInitialIdentityVerified).ConfigureAwait(false);
+
+            if (recordedReadSetup)
+            {
+                result.Stage = AutoCalKernelProbeStage.RecordedReadPreparation;
+                cancellation.ThrowIfCancellationRequested();
+                result.RecordedReadSetupAttempted = true;
+                await inner.ApplyRecordedReadPreparationAsync().ConfigureAwait(false);
+                result.RecordedReadSetupApplied = true;
+                cancellation.ThrowIfCancellationRequested();
+            }
 
             result.Stage = AutoCalKernelProbeStage.SuppressChatter;
             await guarded.SetTimeout(TimeoutScenario.Minimum).ConfigureAwait(false);
@@ -155,6 +174,14 @@ internal sealed class AutoCalKernelProbeSession
             cancellation.ThrowIfCancellationRequested();
             if (!policy.IsKernelVerified || result.KernelVersion != AutoCalKernelProbePolicy.ExpectedKernelVersion)
                 throw new InvalidDataException("The running RAM kernel did not return the exact pinned E54 version.");
+
+            if (recordedReadSetup)
+            {
+                result.Stage = AutoCalKernelProbeStage.RecordedOrdinaryRestore;
+                await inner.RestoreRecordedOrdinaryConfigurationAsync().ConfigureAwait(false);
+                result.RecordedOrdinaryConfigurationRestored = true;
+                cancellation.ThrowIfCancellationRequested();
+            }
 
             if (fullRead)
             {
@@ -258,7 +285,8 @@ internal sealed class AutoCalKernelProbeSession
             result.RetainedQueueClearRequests = guarded.ClearRequests;
             // After a failed preparation/upload, a fresh bench power cycle is a
             // user action required for a future attempt, never done automatically.
-            result.BenchPowerCycleRequired = guarded.PreparationStarted && (copyOnly || !result.Success);
+            result.BenchPowerCycleRequired = (guarded.PreparationStarted || result.RecordedReadSetupAttempted)
+                && (copyOnly || !result.Success);
         }
         return result;
     }

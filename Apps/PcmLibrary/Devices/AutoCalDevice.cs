@@ -33,6 +33,9 @@ namespace PcmHacking
         private bool stopped;
         private bool disposed;
         private int initializationAttempted;
+        private int readPreparationAttempted;
+        private int ordinaryRestoreAttempted;
+        private bool configurationInProgress;
         private int receiveTimeout = 3000;
 
         public AutoCalDevice(AutoCalChannel channel, ILogger logger, CancellationToken cancellationToken = default(CancellationToken),
@@ -52,14 +55,16 @@ namespace PcmHacking
             currentTimeoutScenario = TimeoutScenario.ReadProperty;
         }
 
-        public bool AdapterSetupAccepted => initialized && !stopped && !disposed && !channel.IsFaulted;
+        public bool AdapterSetupAccepted => initialized && !stopped && !disposed && !configurationInProgress && !channel.IsFaulted;
+        public bool RecordedReadPreparationAccepted { get; private set; }
+        public bool RecordedOrdinaryConfigurationRestored { get; private set; }
         public bool HardwareProgrammingQualified => false;
         public AutoCalChannel Channel => channel;
         public override string GetDeviceType() => DeviceType;
 
         public override async Task<bool> Initialize()
         {
-            if (disposed || stopped || channel.IsFaulted) return false;
+            if (disposed || stopped || configurationInProgress || channel.IsFaulted) return false;
             if (initialized) return true;
             if (Interlocked.Exchange(ref initializationAttempted, 1) != 0)
                 throw new InvalidOperationException("AutoCal initialization was already attempted; do not replay a partial setup sequence.");
@@ -92,11 +97,69 @@ namespace PcmHacking
 
         public override async Task<bool> CheckDeviceConnection()
         {
-            if (disposed || channel.IsFaulted) return false;
+            if (disposed || stopped || configurationInProgress || channel.IsFaulted) return false;
             AutoCalChannelReply reply = await channel.ExchangeAsync(0x8201, Selector, 0,
                 Array.Empty<byte>(), 3000, cancellation).ConfigureAwait(false);
             return !reply.IsCommandError && reply.Payload != null
                 && reply.Payload.SequenceEqual(new byte[] { 0x41, 0x43, 0x56, 0x32, 0 });
+        }
+
+        /// <summary>
+        /// Fixed read-12 setup observed before the RAM upload. This records host
+        /// acceptance only; firmware filter, polling and speed effects are unknown.
+        /// The caller must authorize the phase and own the surrounding bus session.
+        /// </summary>
+        public async Task ApplyRecordedReadPreparationAsync()
+        {
+            RequireOrdinaryConfigurationSession();
+            if (Interlocked.Exchange(ref readPreparationAttempted, 1) != 0)
+                throw new InvalidOperationException("Recorded read preparation was already attempted; it cannot be replayed.");
+            configurationInProgress = true;
+            try
+            {
+                await Setup(0x8603, new byte[] { 1, 0, 0xF4, 1 }).ConfigureAwait(false);
+                RequireConfigurationContinuation();
+                await Setup(0x8604, new byte[] { 1, 0, 0x10, 0, 0, 0 }).ConfigureAwait(false);
+                RequireConfigurationContinuation();
+                RecordedReadPreparationAccepted = true;
+            }
+            catch { stopped = true; throw; }
+            finally { configurationInProgress = false; }
+        }
+
+        /// <summary>Fixed six-zero 8604 observed before data reads, once after accepted preparation.</summary>
+        public async Task RestoreRecordedOrdinaryConfigurationAsync()
+        {
+            RequireOrdinaryConfigurationSession();
+            if (!RecordedReadPreparationAccepted)
+                throw new InvalidOperationException("Recorded read preparation must be accepted before restoring the ordinary configuration.");
+            if (Interlocked.Exchange(ref ordinaryRestoreAttempted, 1) != 0)
+                throw new InvalidOperationException("Recorded ordinary configuration restore was already attempted; it cannot be replayed.");
+            configurationInProgress = true;
+            try
+            {
+                await Setup(0x8604, new byte[6]).ConfigureAwait(false);
+                RequireConfigurationContinuation();
+                RecordedOrdinaryConfigurationRestored = true;
+            }
+            catch { stopped = true; throw; }
+            finally { configurationInProgress = false; }
+        }
+
+        private void RequireOrdinaryConfigurationSession()
+        {
+            RequireSession();
+            if (setupProfile != AutoCalSetupProfile.RecordedOrdinaryIdentification)
+                throw new InvalidOperationException("Recorded configuration transitions require the ordinary identification setup profile.");
+            if (ReceivedMessageCount != 0 || channel.BufferedByteCount != 0 || channel.PendingByteCount != 0)
+                throw new InvalidOperationException("Pending AutoCal bytes must be preserved and inspected before a configuration transition.");
+        }
+
+        private void RequireConfigurationContinuation()
+        {
+            if (disposed || stopped || channel.IsFaulted)
+                throw new InvalidOperationException("AutoCal became unavailable during the recorded configuration transition.");
+            cancellation.ThrowIfCancellationRequested();
         }
 
         private async Task Setup(ushort command, byte[] payload)

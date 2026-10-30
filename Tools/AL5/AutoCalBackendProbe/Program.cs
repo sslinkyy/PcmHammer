@@ -32,7 +32,7 @@ internal static class Program
             if (File.Exists(Path.Combine(item.FullName, "Tools", "AL5", "AutoCalBackendProbe", "AutoCalBackendProbe.csproj"))) return item.FullName;
         throw new InvalidOperationException("Run the in-checkout build so source provenance can be recorded.");
     }
-    static object Plan(string root, ProbeProfile profile, AutoCalKernelProbePolicy? kernelPolicy, bool copyOnly)
+    static object Plan(string root, ProbeProfile profile, AutoCalKernelProbePolicy? kernelPolicy, bool copyOnly, bool recordedReadSetup)
     {
         string[] sources = { "Apps/PcmLibrary/AutoCalHostFrame.cs", "Apps/PcmLibrary/AutoCalChannel.cs",
             "Apps/PcmLibrary/AutoCalVpwEnvelope.cs", "Apps/PcmLibrary/AutoCalSetupResponse.cs",
@@ -55,16 +55,18 @@ internal static class Program
         int fullReadVpwLimit = AutoCalKernelProbePolicy.MaximumFullReadToolPresentAttempts + 11
             + AutoCalKernelProbePolicy.ReadBlockCount + 7 * AutoCalKernelProbePolicy.MaximumCrcQueriesPerRange;
         return new { schema = "autocal-backend-bounded-probe-plan-v4",
-            profile = kernelPolicy == null ? profile.Name : (copyOnly ? "e54-ram-copy" : fullRead ? "e54-read-baseline" : shortRead ? "e54-read-prefix" : "e54-kernel-info"),
+            profile = kernelPolicy == null ? profile.Name : (copyOnly ? "e54-ram-copy" : fullRead ? "e54-read-baseline"
+                : recordedReadSetup ? "e54-read-prefix-recorded-setup" : shortRead ? "e54-read-prefix" : "e54-kernel-info"),
             source_sha256 = sources.ToDictionary(x => x, x => Hash(Path.Combine(root, x))),
             native_dll = Dll, native_sha256 = DllHash, header_sha256 = HeaderHash,
             probe_sha256 = Hash(Assembly.GetExecutingAssembly().Location), pcmlibrary_sha256 = Hash(typeof(AutoCalDevice).Assembly.Location),
-            maximum_application_commands = kernelPolicy == null ? profile.Requests.Length : (copyOnly ? 42 : fullRead ? fullReadVpwLimit + 7 : shortRead ? 51 : 49),
+            maximum_application_commands = kernelPolicy == null ? profile.Requests.Length : (copyOnly ? 42 : fullRead ? fullReadVpwLimit + 7 : shortRead ? 51 + (recordedReadSetup ? 3 : 0) : 49),
             maximum_vpw_payload_commands = kernelPolicy == null ? (profile.ReadsE54Identity ? 1 : 0) : (copyOnly ? 38 : fullRead ? fullReadVpwLimit : shortRead ? 44 : 42),
             overall_timeout_seconds = fullRead ? 900 : kernelPolicy != null ? 180 : 45,
             live_kernel_execution_enabled = kernelPolicy != null && !copyOnly,
             full_baseline_read_enabled = fullRead,
             baseline_prefix_read_enabled = shortRead,
+            recorded_read_setup_experiment = recordedReadSetup,
             flash_programming_enabled = false,
             physical_bus_transmissions = "unmeasured", requires_obd_disconnected = !profile.ReadsE54Identity,
             requires_isolated_e54_bench = profile.ReadsE54Identity,
@@ -73,10 +75,13 @@ internal static class Program
                 : copyOnly ? new[] { "Exact ordinary-profile model/setup", "Fixed initial OS-ID", "One suppression and bounded tool-present",
                     "One seed/key exchange using existing E54 algorithm", "One pinned RAM upload permission request",
                     "Pinned 279-byte RAM Copy of 267 bytes at FF97E0", "Receive acknowledgement; stop without execute or protocol cleanup; bench power cycle required" }
-                : new[] { "Exact ordinary-profile model/setup", "Fixed initial OS-ID", "One suppression and bounded tool-present",
+                : new[] { "Exact ordinary-profile model/setup", "Fixed initial OS-ID",
+                    recordedReadSetup ? "Fixed 8603{0100F401} then 8604{010010000000} after identity, before preparation" : "Retain ordinary configuration",
+                    "One suppression and bounded tool-present",
                     "One seed/key exchange using existing E54 algorithm", "One pinned RAM upload permission request",
                     "Pinned 279-byte RAM Copy at FF97E0", "Pinned 1772-byte RAM Execute at FF9100",
                     "Exact kernel-version query/reply",
+                    recordedReadSetup ? "Fixed 8604{000000000000} after kernel verification, before flash identity" : "No additional adapter configuration",
                     fullRead ? "Pinned flash ID, 128 sequential 4096-byte reads, pinned image SHA and seven controller CRC ranges"
                         : shortRead ? "Pinned flash ID, one 64-byte read at address zero and pinned baseline-prefix SHA; no CRC query" : "No flash read or CRC query",
                     "One kernel exit and final OS-ID", "Exact recorded adapter cleanup after confirmed exit" },
@@ -96,6 +101,7 @@ internal static class Program
                     : shortRead ? "The prefix-read mode admits only the fixed flash ID and one 64-byte read at address zero. No data retry or CRC query is permitted; success does not verify the full image."
                         : "Flash identification, CRC and image reads are absent from this mode.",
                 "Kernel-info is a fixed RAM-only experiment: exact observed Copy/Execute replies gate the known version, exit and final identity. Copy-only mode stops before execution and requires a bench power cycle.",
+                "Recorded-setup prefix mode tests the observed configuration lifecycle; firmware meanings, persistence and receive effect remain unproven. Kernel, read address/length and VPW requests are unchanged.",
                 "Replies do not establish physical VPW speed, programming or recovery. No speed change is requested.",
                 "Partial/ambiguous transfers stop the session; cleanup only closes owned host resources after failure.", "Close failure retains owner; EOF does not release it." } };
     }
@@ -135,21 +141,24 @@ internal static class Program
         {
             bool copyOnly = args.Length > 0 && (args[0] == "--e54-ram-copy" || args[0] == "--plan-e54-ram-copy");
             bool fullRead = args.Length > 0 && (args[0] == "--e54-read-baseline" || args[0] == "--plan-e54-read-baseline");
-            bool shortRead = args.Length > 0 && (args[0] == "--e54-read-prefix" || args[0] == "--plan-e54-read-prefix");
+            bool recordedReadSetup = args.Length > 0 && (args[0] == "--e54-read-prefix-recorded-setup" || args[0] == "--plan-e54-read-prefix-recorded-setup");
+            bool shortRead = recordedReadSetup || (args.Length > 0 && (args[0] == "--e54-read-prefix" || args[0] == "--plan-e54-read-prefix"));
             bool kernelInfo = copyOnly || fullRead || shortRead || (args.Length > 0 && (args[0] == "--e54-kernel-info" || args[0] == "--plan-e54-kernel-info"));
             bool identity = kernelInfo || (args.Length > 0 && (args[0] == "--e54-osid-read" || args[0] == "--plan-e54-osid-read"));
             ProbeProfile profile = new(identity);
             AutoCalKernelProbePolicy? kernelPolicy = kernelInfo
                 ? new(File.ReadAllBytes(AutoCalKernelProbePolicy.DefaultKernelPath), fullRead, shortRead) : null;
-            string operation = kernelInfo ? (copyOnly ? "e54-ram-copy" : fullRead ? "e54-read-baseline" : shortRead ? "e54-read-prefix" : "e54-kernel-info") : profile.Name;
-            string root = Root(); object plan = Plan(root, profile, kernelPolicy, copyOnly);
+            string operation = kernelInfo ? (copyOnly ? "e54-ram-copy" : fullRead ? "e54-read-baseline"
+                : recordedReadSetup ? "e54-read-prefix-recorded-setup" : shortRead ? "e54-read-prefix" : "e54-kernel-info") : profile.Name;
+            string root = Root(); object plan = Plan(root, profile, kernelPolicy, copyOnly, recordedReadSetup);
             if (args.Length == 0 || args.SequenceEqual(new[] { "--plan" }) || args.SequenceEqual(new[] { "--plan-e54-osid-read" })
                 || args.SequenceEqual(new[] { "--plan-e54-kernel-info" }) || args.SequenceEqual(new[] { "--plan-e54-ram-copy" })
-                || args.SequenceEqual(new[] { "--plan-e54-read-baseline" }) || args.SequenceEqual(new[] { "--plan-e54-read-prefix" }))
+                || args.SequenceEqual(new[] { "--plan-e54-read-baseline" }) || args.SequenceEqual(new[] { "--plan-e54-read-prefix" })
+                || args.SequenceEqual(new[] { "--plan-e54-read-prefix-recorded-setup" }))
             { Console.WriteLine(JsonSerializer.Serialize(plan, new JsonSerializerOptions { WriteIndented = true })); return 0; }
             if (args.Length != 6 || args[0] != "--" + operation
                 || args[1] != (identity ? "--isolated-e54-bench" : "--obd-disconnected") || args[2] != "--serial" || args[4] != "--receipt")
-                throw new ArgumentException("Use --plan, --plan-e54-osid-read, --plan-e54-ram-copy, --plan-e54-kernel-info, --plan-e54-read-baseline, --plan-e54-read-prefix, or a listed live mode with its physical-state flag, --serial SERIAL and --receipt NEW.json.");
+                throw new ArgumentException("Use a listed --plan mode, or a listed live mode with its physical-state flag, --serial SERIAL and --receipt NEW.json.");
             // The separate copy-only and post-reset experiments established the
             // exact reply prerequisites (AUTOCAL_E54_RAM_COPY_20261030.json and
             // AUTOCAL_E54_POST_COPY_RESET_20261030.json). The fixed kernel-info
@@ -179,7 +188,7 @@ internal static class Program
             try
             {
                 native = AutoCalD2xxTransport.OpenPinned(args[3], Dll, DllHash);
-                RequestWriteGuard guard = kernelPolicy == null ? new ExactRequestGuard(profile) : new KernelRequestGuard(kernelPolicy, copyOnly);
+                RequestWriteGuard guard = kernelPolicy == null ? new ExactRequestGuard(profile) : new KernelRequestGuard(kernelPolicy, copyOnly, recordedReadSetup);
                 transport = new(native, journalWriter, guard);
                 transport.Event("opened", new { native.Serial, native.Description, pending = native.PendingByteCount });
                 channel = new(transport);
@@ -192,7 +201,7 @@ internal static class Program
                     if (channel.BufferedByteCount != 0 || channel.PendingByteCount != 0)
                         throw new IOException("Unconsumed bytes precede the kernel experiment; no purge or transmit is allowed.");
                     var sessionLogger = new TestLogger();
-                    var session = new AutoCalKernelProbeSession(device, sessionLogger, kernelPolicy, cancel.Token, copyOnly, fullRead, shortRead);
+                    var session = new AutoCalKernelProbeSession(device, sessionLogger, kernelPolicy, cancel.Token, copyOnly, fullRead, shortRead, recordedReadSetup);
                     kernelResult = await session.RunAsync();
                     transport.Event("kernel_result", kernelResult);
                     transport.Event("session_messages", new { user = sessionLogger.UserMessages.ToString(), debug = sessionLogger.DebugMessages.ToString() });
@@ -218,6 +227,8 @@ internal static class Program
                         throw new IOException("Full read did not match the pinned baseline and all controller CRCs.");
                     if (shortRead && (!kernelPolicy.IsShortReadVerified || !kernelResult.BaselineMatched))
                         throw new IOException("Prefix read did not match the pinned 64-byte baseline prefix.");
+                    if (recordedReadSetup && (!device.RecordedReadPreparationAccepted || !device.RecordedOrdinaryConfigurationRestored))
+                        throw new IOException("Recorded configuration experiment did not complete both checked phases.");
                 }
                 else if (identity)
                 {

@@ -63,26 +63,35 @@ internal static class AutoCalKernelProbeSessionTest
         await Case("short read missing matching payload cannot retransmit or exit", () => ShortReadFailure("short-missing"));
         await Case("short read cancellation retains uncertain controller state", ShortReadCancellation);
         await Case("short read mode mismatch and copy combination rejected before traffic", ShortReadModeBinding);
+        await Case("recorded preparation and restore occur at exact prefix-session boundaries", RecordedSetupSuccess);
+        await Case("partial recorded configuration blocks all further VPW and requires power cycle", () => RecordedSetupFailure("config-partial"));
+        await Case("recorded preparation command error blocks suppression", () => RecordedSetupFailure("config-error"));
+        await Case("recorded restore failure blocks flash ID and read", () => RecordedSetupFailure("restore-error"));
+        await Case("wrong kernel prevents recorded restoration and prefix read", () => RecordedSetupFailure("version"));
+        await Case("recorded preparation cancellation blocks continuation", () => RecordedSetupCancellation("config-cancel"));
+        await Case("recorded restore cancellation blocks continuation", () => RecordedSetupCancellation("restore-cancel"));
+        await Case("recorded setup is restricted to short read before any I/O", RecordedSetupModeBinding);
         Console.WriteLine(JsonSerializer.Serialize(new { assertions, passed, failed,
             adapterOpened = false, liveWriteEnabled = false, hardwareQualified = false,
             scope = "Production Vehicle + AutoCalDevice/Channel under the bounded policy, scripted byte transport only" }));
         return failed.Count == 0 ? 0 : 1;
     }
 
-    static async Task<(Fake adapter, AutoCalDevice device, AutoCalKernelProbePolicy policy, AutoCalKernelProbeSession session)> Fixture(string failure = "", CancellationTokenSource? cancel = null, bool copyOnly = false, bool fullRead = false, bool shortRead = false)
+    static async Task<(Fake adapter, AutoCalDevice device, AutoCalKernelProbePolicy policy, AutoCalKernelProbeSession session)> Fixture(string failure = "", CancellationTokenSource? cancel = null, bool copyOnly = false, bool fullRead = false, bool shortRead = false, bool recordedReadSetup = false)
     {
-        var adapter = new Fake(kernel, failure, cancel, fullRead, shortRead);
+        var adapter = new Fake(kernel, failure, cancel, fullRead, shortRead, recordedReadSetup);
         var token = cancel?.Token ?? CancellationToken.None;
         var device = new AutoCalDevice(new AutoCalChannel(adapter), new Log(), token, AutoCalSetupProfile.RecordedOrdinaryIdentification);
         Require(await device.Initialize(), "ordinary host setup accepted by fake adapter");
         var policy = new AutoCalKernelProbePolicy(kernel, fullRead, shortRead);
-        var session = new AutoCalKernelProbeSession(device, new Log(), policy, token, copyOnly, fullRead, shortRead);
+        var session = new AutoCalKernelProbeSession(device, new Log(), policy, token, copyOnly, fullRead, shortRead, recordedReadSetup);
         return (adapter, device, policy, session);
     }
     static void Ownership(Fake fake, AutoCalDevice device)
     {
         Require(fake.DisposeCalls == 0 && !device.Channel.IsTransportDisposed, "session leaves transport ownership with caller");
-        Require(fake.Commands.All(f => f.Command == 0x8A00 || f.Command == 0x8201 || f.Command == 0x8604 || f.Command == 0x8800), "no adapter cleanup/reset or extra host command");
+        Require(fake.Commands.All(f => f.Command == 0x8A00 || f.Command == 0x8201 || f.Command == 0x8604 || f.Command == 0x8800
+            || fake.RecordedReadSetup && f.Command == 0x8603), "no adapter cleanup/reset or extra host command");
         Require(fake.Vpw.All(v => v.Length < 4 || (v[3] != 0x04 && v[3] != 0x14 && (v[3] != 0x35 || fake.FullRead || fake.ShortRead) && v[3] != 0xA0 && v[3] != 0xA1)), "no DTC clear, unrequested memory read or speed command");
         Require(!fake.Vpw.Any(v => v.Length >= 5 && v[3] == 0x3D && v[4] > (fake.FullRead ? 2 : fake.ShortRead ? 1 : 0)), "only mode-permitted kernel information/CRC queries, no erase");
         device.Dispose();
@@ -364,6 +373,74 @@ internal static class AutoCalKernelProbeSessionTest
         Ownership(f.adapter, f.device);
     }
 
+    static async Task RecordedSetupSuccess()
+    {
+        var f = await Fixture(shortRead: true, recordedReadSetup: true); var result = await f.session.RunAsync();
+        Require(result.Success, result.Error ?? "expected configured prefix success");
+        Require(result.RecordedReadSetupAttempted && result.RecordedReadSetupApplied && result.RecordedOrdinaryConfigurationRestored,
+            "preparation attempt acceptance and restoration are distinct observations");
+        Require(result.ReadbackScope == "baseline-prefix" && result.ReadbackLength == 64 && result.BaselineMatched
+            && !result.ReadbackCrcVerified && !f.policy.IsImageVerified && !result.BenchPowerCycleRequired,
+            "recorded setup does not widen verified data or claim controller CRC");
+        var commands = f.adapter.Commands;
+        Require(commands[4].Command == 0x8A00 && commands[4].Payload.SequenceEqual(Hex("6C10F03C0A"))
+            && commands[5].Command == 0x8603 && commands[5].Payload.SequenceEqual(Hex("0100F401"))
+            && commands[6].Command == 0x8604 && commands[6].Payload.SequenceEqual(Hex("010010000000"))
+            && commands[7].Command == 0x8A00 && commands[7].Payload.SequenceEqual(Hex("6CFEF02800")),
+            "exact recorded pair is between initial identity and suppression");
+        int version = commands.FindIndex(c => c.Command == 0x8A00 && c.Payload.SequenceEqual(Hex("6C10F03D00")));
+        int flash = commands.FindIndex(c => c.Command == 0x8A00 && c.Payload.SequenceEqual(Hex("6C10F03D01")));
+        Require(commands[version + 1].Command == 0x8604 && commands[version + 1].Payload.SequenceEqual(new byte[6])
+            && flash > version + 1 && f.adapter.ConfigurationCommands == 3,
+            "one zero restore after valid kernel version precedes flash identification");
+        Require(f.adapter.ReadRequests == 1 && f.adapter.CrcRequests == 0 && result.PostExitIdentityVerified,
+            "same one-shot prefix and ordinary exit follow configuration");
+        FullReadUploadBoundary(f.adapter); Ownership(f.adapter, f.device);
+    }
+    static async Task RecordedSetupFailure(string failure, CancellationTokenSource? cancel = null)
+    {
+        var f = await Fixture(failure, cancel, shortRead: true, recordedReadSetup: true);
+        var result = await f.session.RunAsync();
+        Require(!result.Success && result.InitialIdentityVerified && result.RecordedReadSetupAttempted && result.BenchPowerCycleRequired,
+            "attempted configuration failure conservatively requires caller power cycle");
+        Require(!result.RecordedOrdinaryConfigurationRestored && !Has(f.adapter, "6C10F03D01") && f.adapter.ReadRequests == 0
+            && f.adapter.CrcRequests == 0 && !Has(f.adapter, "6C10F020"), "failed configuration or prerequisite never sends later read/CRC/exit");
+        bool prepareFailure = failure.StartsWith("config-", StringComparison.Ordinal);
+        Require(result.RecordedReadSetupApplied == !prepareFailure, "accepted configuration survives later failure without conflating partial setup");
+        if (prepareFailure)
+        {
+            Require(result.Stage == AutoCalKernelProbeStage.RecordedReadPreparation && f.adapter.Vpw.Count == 1
+                && !result.RamExecuteSubmitted, "preparation failure sends no suppression, key or kernel");
+            Require(f.adapter.ConfigurationCommands == 1, "first configuration complete; second absent or partial without replay");
+            if (failure == "config-partial") Require(f.adapter.PartialConfigurationBytes == 7 && f.device.Channel.IsFaulted,
+                "partial mode command is retained as uncertain and stops channel");
+        }
+        else if (failure == "version")
+        {
+            Require(result.Stage == AutoCalKernelProbeStage.KernelVersion && !result.KernelVersionVerified
+                && f.adapter.ConfigurationCommands == 2, "wrong kernel does not authorize zero restoration");
+        }
+        else Require(result.Stage == AutoCalKernelProbeStage.RecordedOrdinaryRestore && result.KernelVersionVerified
+            && f.adapter.ConfigurationCommands == 3, "restoration failure follows known kernel and stops before flash ID");
+        if (cancel != null) Require(result.Cancelled, "configuration cancellation remains explicit");
+        Ownership(f.adapter, f.device);
+    }
+    static async Task RecordedSetupCancellation(string failure)
+    {
+        using var cancel = new CancellationTokenSource(); await RecordedSetupFailure(failure, cancel);
+    }
+    static async Task RecordedSetupModeBinding()
+    {
+        var f = await Fixture(); int rejected = 0;
+        try { _ = new AutoCalKernelProbeSession(f.device, new Log(), f.policy, CancellationToken.None, recordedReadSetup: true); }
+        catch (ArgumentException) { rejected++; }
+        var fullPolicy = new AutoCalKernelProbePolicy(kernel, fullRead: true);
+        try { _ = new AutoCalKernelProbeSession(f.device, new Log(), fullPolicy, CancellationToken.None, fullRead: true, recordedReadSetup: true); }
+        catch (ArgumentException) { rejected++; }
+        Require(rejected == 2 && f.adapter.Vpw.Count == 0, "recorded setup cannot enable ordinary or full-image variant");
+        Ownership(f.adapter, f.device);
+    }
+
     // Independent wire constructors for the fake's fixed responses/expected RAM
     // chunks. Production Frame/Protocol encoders are deliberately not called.
     static byte[] Block(byte[] source, int offset, int length, int address, byte mode)
@@ -388,10 +465,12 @@ internal static class AutoCalKernelProbeSessionTest
     {
         readonly Queue<byte> input = new(); readonly List<byte> output = new(); readonly byte[] image; readonly string failure; readonly CancellationTokenSource? cancel;
         int identityCount;
+        bool partialConfiguration;
         public int DisposeCalls, ReadRequests, CrcRequests; public List<(ushort Command, byte[] Payload)> Commands = new(); public List<byte[]> Vpw = new();
-        public readonly bool FullRead, ShortRead;
+        public int ConfigurationCommands, PartialConfigurationBytes;
+        public readonly bool FullRead, ShortRead, RecordedReadSetup;
         public int PendingByteCount => input.Count;
-        public Fake(byte[] kernel, string failure, CancellationTokenSource? cancel, bool fullRead, bool shortRead) { image = kernel; this.failure = failure; this.cancel = cancel; FullRead = fullRead; ShortRead = shortRead; }
+        public Fake(byte[] kernel, string failure, CancellationTokenSource? cancel, bool fullRead, bool shortRead, bool recordedReadSetup) { image = kernel; this.failure = failure; this.cancel = cancel; FullRead = fullRead; ShortRead = shortRead; RecordedReadSetup = recordedReadSetup; }
         public void Enqueue(byte[] bytes) { foreach (byte b in bytes) input.Enqueue(b); }
         public Task<int> Read(byte[] buffer, int offset, int count, int timeoutMs, CancellationToken token)
         {
@@ -400,7 +479,12 @@ internal static class AutoCalKernelProbeSessionTest
         }
         public Task<int> Write(byte[] buffer, int offset, int count, int timeoutMs, CancellationToken token)
         {
-            token.ThrowIfCancellationRequested(); int n = Math.Min(113, count); output.AddRange(buffer.Skip(offset).Take(n));
+            token.ThrowIfCancellationRequested();
+            if (partialConfiguration) throw new IOException("Scripted failure after the first seven configuration bytes.");
+            int n = Math.Min(113, count);
+            if (failure == "config-partial" && offset == 0 && count >= 18 && buffer[2] == 4 && buffer[3] == 0x86 && buffer[12] == 1)
+            { n = 7; partialConfiguration = true; PartialConfigurationBytes = n; }
+            output.AddRange(buffer.Skip(offset).Take(n));
             if (output.Count >= 12)
             {
                 int total = 14 + output[10] + (output[11] << 8);
@@ -418,10 +502,29 @@ internal static class AutoCalKernelProbeSessionTest
                     }
                     else
                     {
-                        var expected = new[] { (0x8201, ""), (0x8604, "00"), (0x8800, "0000"), (0x8604, "000000000000") };
                         int index = Commands.Count - 1;
-                        if (index >= expected.Length || command != expected[index].Item1 || !payload.SequenceEqual(Hex(expected[index].Item2))) throw new Exception("Unexpected setup or cleanup command");
-                        Enqueue(Packet(command, command == 0x8201 ? Hex("4143563200") : Array.Empty<byte>()));
+                        if (index < 4)
+                        {
+                            var expected = new[] { (0x8201, ""), (0x8604, "00"), (0x8800, "0000"), (0x8604, "000000000000") };
+                            if (command != expected[index].Item1 || !payload.SequenceEqual(Hex(expected[index].Item2))) throw new Exception("Unexpected initial setup command");
+                            Enqueue(Packet(command, command == 0x8201 ? Hex("4143563200") : Array.Empty<byte>()));
+                        }
+                        else
+                        {
+                            var expected = new[] { (0x8603, "0100F401"), (0x8604, "010010000000"), (0x8604, "000000000000") };
+                            if (!RecordedReadSetup || ConfigurationCommands >= expected.Length || command != expected[ConfigurationCommands].Item1
+                                || !payload.SequenceEqual(Hex(expected[ConfigurationCommands].Item2))) throw new Exception("Unexpected session configuration or cleanup command");
+                            if (ConfigurationCommands < 2 && (Vpw.Count != 1 || !Vpw[0].SequenceEqual(Hex("6C10F03C0A"))))
+                                throw new Exception("Recorded preparation must immediately follow initial identity.");
+                            if (ConfigurationCommands == 2 && !Vpw.Last().SequenceEqual(Hex("6C10F03D00")))
+                                throw new Exception("Recorded restoration must immediately follow kernel version.");
+                            ConfigurationCommands++;
+                            bool error = failure == "config-error" && ConfigurationCommands == 1 || failure == "restore-error" && ConfigurationCommands == 3;
+                            if (error) Enqueue(Packet(0xFF00, new byte[] { (byte)command, (byte)(command >> 8), 0, 0 }));
+                            else Enqueue(Packet(command, Array.Empty<byte>()));
+                            if (failure == "config-cancel" && ConfigurationCommands == 1 || failure == "restore-cancel" && ConfigurationCommands == 3)
+                                cancel!.Cancel();
+                        }
                     }
                 }
             }

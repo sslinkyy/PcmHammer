@@ -827,6 +827,41 @@ reset is separate evidence. Both read profiles remain unqualified; neither
 host-only capture establishes whether the kernel transmitted the missing reply
 or whether the adapter, setup, filtering or bus path prevented its delivery.
 
+## Paired GT observation locates the missing prefix response
+
+The [paired capture audit](AUTOCAL_E54_GT_PREFIX_20261030.json) compares a new
+AutoCal prefix run with simultaneous OBDX Pro GT capture. The GT was checked
+in LISTEN ONLY at the 1x setting with exact source `10`, CRC validation enabled,
+and no vehicle-send command path. Its raw serial replay contains nine ECM
+responses matching AutoCal's responses in order, followed by the missing data
+response: 77 physical bytes, header `6D F0 10 36 01 00 40 00 00 00`, and 64 bytes
+matching the pinned baseline prefix. Both the VPW CRC and block checksum pass.
+The complete data body stays private.
+
+AutoCal's corresponding request was followed by 477 native read completions,
+all returning zero bytes, across 50,053 ms. It exhausted the five receive
+windows without retry, exit or flash operation and closed with no channel or
+cleanup fault and zero retained owners. The GT completed its bounded capture,
+verified network OFF and restored all nine saved settings. All 832 GT network
+frames pass VPW CRC checks; seven frames before the capture-ready marker are
+excluded from the qualified comparison context. No losslessness or electrical
+non-interference claim follows from those observations.
+
+The ECM therefore emitted the expected prefix response, while AutoCal did not
+deliver it under the tested configuration. Firmware reception, configuration
+and host delivery remain possible locations within AutoCal; the application
+parser cannot discard data that the native reads never returned.
+
+All twelve saved EFILive reads include `8603{0100F401}` and
+`8604{010010000000}` before upload, then the six-zero `8604` before data reads.
+The independent ordinary profile omitted the middle pair. A separate bounded
+`--e54-read-prefix-recorded-setup` experiment now reproduces that lifecycle
+around the same identity, pinned kernel and 64-byte read. It adds three exact
+adapter commands and retains all flash-write and speed-change blocks. Its
+offline tests establish ordering and failure behavior; physical receive effects
+remain untested. `8B01` occurs only in saved cleanup and is not assigned an
+unsupported filter-enable meaning.
+
 ## Remaining integration work
 
 The developer probe now has a separate fixed baseline-read profile. It reuses
