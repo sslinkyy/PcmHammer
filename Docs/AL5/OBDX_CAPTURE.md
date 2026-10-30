@@ -349,3 +349,26 @@ glitches. These are bounded observations: screenshots do not prove every bus
 frame was captured, and a shared bus waveform alone does not identify which
 device drove it. No electrical qualification or additional live test is claimed
 by this offline tool. Live AL5 writes remain disabled.
+
+### First baseline with the scope connected, 2026-10-29
+
+The user reported the scope connected to the isolated E54 bench harness. AutoCal
+completed another ordinary high-speed read in 2:00, with all six segment
+checksums valid. GT was physically attached and separately verified OFF before
+and after the read; its nine setting readbacks were unchanged. The user saved
+`5 lb7 E54_0000.ctz`, confirmed ignition OFF, and the shutdown countdown completed.
+
+The matching HTX has the same 392-message transfer-window sequence as the earlier
+all-source run. All 128 unique data blocks have valid checksums, cover the same
+524,286 bytes, and match the earlier partial image; there are no repeated read
+requests or transfer-window timeout labels. Host-trace addressed-transfer time
+is 114.006 seconds versus 113.938 seconds previously. These individual runs do
+not establish a statistically meaningful timing difference or electrical effect.
+
+The user did not freeze the scope display. No waveform screenshot was retained
+for analysis, so this read establishes no measured pulse width, signal quality
+or electrical noninterference. A repeat needs the scope capture controls and
+settings checked first. Raw evidence and a reproducible comparison helper remain
+under `LocalOnly/scoped_bench_20261029_01`. The comparison receipt
+`gt_off_trace_comparison.json` has SHA256
+`8f88363db1d25291a418423f971685a4259db3efefbcf4b0a19d1e5412ed1cd5`.
