@@ -1,0 +1,131 @@
+{
+  "schema": "e54-gt-pcmhammer-test-write-usb-v1",
+  "observation_date": "2026-10-30",
+  "controller": "Isolated spare E54/LB7",
+  "osid": 15189044,
+  "adapter": "OBDX Pro GT",
+  "firmware": "1.0.2.0",
+  "operation": "PcmHammer non-erasing TestWrite at VPW 4x",
+  "actual_flash_erase_program_performed": false,
+  "independent_passive_monitor_used": false,
+  "test_transfer_requests": 96,
+  "test_transfer_bytes": 98304,
+  "test_block_checksums_valid": 96,
+  "observed_test_ack_count": 96,
+  "observed_loader_ack_count": 1,
+  "missing_logged_usb_replies": 0,
+  "extra_usb_cleanup_replies": 1,
+  "usb_tx_messages_match_log": true,
+  "usb_in_issues": 9,
+  "usb_pairing_issues": 0,
+  "strict_window_rx_qualification": false,
+  "baseline": {
+    "operation": "read",
+    "exit_code": 0,
+    "completed_at": "2026-10-30T12:46:53.7944548-07:00",
+    "backup_bytes": 524288,
+    "backup_sha256": "a3b010af7e04df03be699198920aac26ba0645c2ad608e72eacf0bc3970beb58"
+  },
+  "readback": {
+    "operation": "read-after-test",
+    "exit_code": 0,
+    "completed_at": "2026-10-30T12:50:39.0934695-07:00",
+    "readback_bytes": 524288,
+    "readback_sha256": "a3b010af7e04df03be699198920aac26ba0645c2ad608e72eacf0bc3970beb58",
+    "matches_before_hash": true
+  },
+  "before_after_byte_differences": 0,
+  "final_gt_network_state": "0200",
+  "capture_final_state": "exited_after_pipe_close",
+  "capture_exit_code": 0,
+  "capture_ownership_retained": false,
+  "evidence": [
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_pcmhammer_write_01/capture.pcap",
+      "bytes": 1841652,
+      "sha256": "30641e9e013c16f3407ffac9882ad40b7d01d4e9d2f71d8bee31e200db8dfbc3"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_pcmhammer_write_01/properties.log",
+      "bytes": 2564,
+      "sha256": "132c39747ff464a90fad07abd4a7510204dab7c397cb7bb3dd7acc3cda3335df"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_pcmhammer_write_01/baseline_read.log",
+      "bytes": 1634004,
+      "sha256": "95ef4177811136e21df4e0f3b62f01f041fa5f3c6697f463ceb46e7869c20fee"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_pcmhammer_write_01/test_write.log",
+      "bytes": 336606,
+      "sha256": "c8d004ece9066c1a3e3fed4eb63d6912a013b6afcafe6962f8b49e374026d955"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_pcmhammer_write_01/after_test_read.log",
+      "bytes": 1633981,
+      "sha256": "241e4448f7db13e5be611c6edbb87f533c117599f98744ef54a2617dc5484f91"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_pcmhammer_write_01/E54_before_test.bin",
+      "bytes": 524288,
+      "sha256": "a3b010af7e04df03be699198920aac26ba0645c2ad608e72eacf0bc3970beb58"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_pcmhammer_write_01/E54_after_test.bin",
+      "bytes": 524288,
+      "sha256": "a3b010af7e04df03be699198920aac26ba0645c2ad608e72eacf0bc3970beb58"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_pcmhammer_write_01/gt_final_off.jsonl",
+      "bytes": 6940,
+      "sha256": "5670eeeed91343c2f101a9ada843883e0a5cc43749fe6379580fb5a15d210fb2"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_pcmhammer_write_01/receipt.json",
+      "bytes": 3618,
+      "sha256": "025deca08145bede5cf3010cd7a2b551920075a74eaecfbcefaa7533b9070fb9"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_pcmhammer_write_01/analysis_final/audit_out_final.py",
+      "bytes": 7187,
+      "sha256": "9c9f7adecf0d52d3dcd91d8d0889e26f15b893b1919d680c9b10880502bfaa5a"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_pcmhammer_write_01/analysis_final/usb_phase_final.json",
+      "bytes": 145542,
+      "sha256": "c584983d31147a5dd526885052e9b549e9527be0f7e101a4160bea1b6bd1c2c1"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_pcmhammer_write_01/analysis_final/test_ack_order.json",
+      "bytes": 28788,
+      "sha256": "ce0a2b4997bc159505064d08b9637fb7bafee04147eb63bc4714db1d78c5f1c9"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_pcmhammer_write_01/analysis/root_test_phase_comparison.json",
+      "bytes": 617436,
+      "sha256": "28af8b205d2f5a60469af1aa2f029e05f536103fcfc5c46ac88700a8b24f9927"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_pcmhammer_write_01/analysis_final/boundary_annotation.json",
+      "bytes": 8789,
+      "sha256": "8373ebf47b80a3560dbf6190be6bba6a127dacc4fdf5a962beaee7c8cc337d00"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_pcmhammer_write_01/test_write_result.json",
+      "bytes": 243,
+      "sha256": "b0eacaa105cf0e1d4ef56969accbae3a0ea25c63a919c706c1eee774479de581"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/write_gt_preflight_01.json",
+      "bytes": 2265,
+      "sha256": "2d6e71435dd3d0f8eccf6308690ff16efe709ae51eea1e5e23033bfd1f348031"
+    }
+  ],
+  "limits": [
+    "Active GT interface, not passive all-source reception.",
+    "TestWrite uses subcommand 44 without flash erase/program.",
+    "EFILive Mode75 block ACKs were not exercised.",
+    "Nine zero-data USB non-success completions and the extra cleanup reply remain in qualification.",
+    "No AL5 programming, recovery, electrical noninterference or universal losslessness claim."
+  ]
+}

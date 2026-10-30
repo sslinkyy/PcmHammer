@@ -22,6 +22,10 @@ received both directions and all 128 data blocks, but missed three short replies
 present in its host trace. Lossless capture, continuous speed transitions and
 programming capture remain unqualified; live AL5 writes remain disabled.
 
+[PcmHammer active-interface USB test](PCMHAMMER_USB_WRITE_COMPARISON.md#isolated-e54-test-transfer-observation--october-30-2026)
+now records all 96 non-erasing test-transfer ACKs and the loader ACK at 4x,
+with matching full before/after reads. This is not passive capture or a flash.
+
 [AutoCal transport reconstruction](AUTOCAL_TRANSPORT.md) adds matching Python
 and PcmLibrary decoders for saved host envelopes, pins the native FTDI binding
 and outer CRC, and records an isolated USB settings read. An independent
