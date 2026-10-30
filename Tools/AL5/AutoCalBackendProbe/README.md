@@ -1,0 +1,63 @@
+# Experimental AutoCal backend probe
+
+This developer executable uses the production `AutoCalDevice` and `AutoCalChannel`
+with a pinned Windows D2XX transport. It is separate from normal adapter selection.
+Neither this probe nor the ordinary PcmHammer factory enables AutoCal flashing.
+
+Build and inspect the plan without loading a driver or opening USB:
+
+```powershell
+dotnet build Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --verbosity quiet
+dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan
+dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-osid-read
+```
+
+The USB-only profile requires the OBD cable physically disconnected and EFILive,
+its Control Panel, and other adapter owners closed. Its exact eight commands
+query the model, perform the reconstructed setup, and perform recorded cleanup.
+The first real run accepted all eight exchanges and closed the native owner;
+see [the setup receipt](../../../Docs/AL5/AUTOCAL_BACKEND_USB_SETUP_20261030.json).
+These responses establish host protocol acceptance, not physical bus behavior.
+
+The separate E54 identity profile is prepared for the isolated spare E54/LB7
+bench. Confirm its current physical connection and power state before invoking
+it. It uses the observed ordinary identification setup, submits exactly one
+`6C 10 F0 3C 0A` request, then only receives for a bounded interval. It accepts a
+matching OS-ID reply for the saved bench baseline `15189044`, preserving the
+observed nine- or eleven-byte response. The two extra bytes in the latter are
+opaque; neither reply proves which firmware execution state produced it.
+
+Live invocation forms (not automatic test steps):
+
+```text
+--usb-setup --obd-disconnected --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
+--e54-osid-read --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
+```
+
+Each receipt must be a new direct child of `LocalOnly/AutoCalBackendProbe`.
+Both profiles journal raw TX/RX and source, assembly, and native-library hashes.
+The exact request guard rejects any unlisted command, different payload,
+reordered request, replay, or incorrect continuation after a partial write.
+There are no arbitrary payload, file, address, retry, unlock, speed-change,
+kernel, erase, or programming options.
+
+After failure the tool sends no additional protocol cleanup and closes only
+owned host resources. A native operation still running at its deadline remains
+owned until completion; a close failure retains ownership for explicit retry.
+The successful recorded cleanup sequence is not proof that the physical bus is
+OFF or at 1x. The probe reports physical speed and bus transmission counts as
+unmeasured. `vpw_payload_commands_started/completed` refer to host command
+submission, not an electrical measurement.
+
+Offline tests:
+
+```powershell
+dotnet run --project Tools/AL5/AutoCalChannelTest.csproj --verbosity quiet
+dotnet run --project Tools/AL5/AutoCalDeviceTest.csproj --verbosity quiet
+dotnet run --project Tools/AL5/AutoCalProbeProfileTest.csproj --verbosity quiet
+```
+
+The backend's 4x transition and physical programming remain unqualified. The
+existing AL5 direct reader and write gates are unchanged. A successful identity
+test would establish one bidirectional exchange only; it would not qualify
+kernel transfer, programming acknowledgements, verification or recovery.

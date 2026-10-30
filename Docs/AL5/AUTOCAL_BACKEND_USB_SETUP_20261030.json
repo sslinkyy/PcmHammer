@@ -1,0 +1,201 @@
+{
+  "schema": "autocal-backend-usb-setup-audit-v1",
+  "observation_date": "2026-10-30",
+  "adapter": "EFILive AutoCal V2",
+  "serial": "AC3NCHH5",
+  "scope": "Independent PcmLibrary backend model/setup/recorded-cleanup exchange through pinned D2XX; host journal audit, no vehicle payload operation.",
+  "required_connection": "USB connected; OBD physically unplugged. Physical disconnection is an operator precondition, not measured by this receipt.",
+  "application_tx_frames": 8,
+  "application_rx_frames": 8,
+  "submitted_bytes": 139,
+  "received_bytes": 128,
+  "all_16_outer_crcs_valid": true,
+  "all_command_echoes_match": true,
+  "short_transfers_observed": 0,
+  "vpw_payload_commands_submitted": 0,
+  "physical_bus_transmissions_observed": null,
+  "legacy_field_interpretation": {
+    "raw_field": "vehicle_transmissions",
+    "raw_value": 0,
+    "bounded_meaning": "Zero host 8A00 VPW-payload command submissions. This does not measure autonomous firmware or setup-related physical effects."
+  },
+  "setup_accepted": true,
+  "recorded_cleanup_accepted": true,
+  "model_payload_hex": "4143563200",
+  "final_buffered_bytes": 0,
+  "final_pending_bytes": 0,
+  "final_journal_elapsed_ms": 853,
+  "transport_disposed_reported": true,
+  "retained_native_owners_reported": 0,
+  "failure": null,
+  "channel_fault": null,
+  "cleanup_exception": null,
+  "physical_vpw_qualified": false,
+  "hardware_programming_qualified": false,
+  "hardware_recovery_qualified": false,
+  "autocal_factory_entry_present": false,
+  "al5_live_writes_enabled": false,
+  "exchanges": [
+    {
+      "index": 1,
+      "command_hex": "8201",
+      "tx_payload_hex": "",
+      "rx_payload_hex": "4143563200",
+      "tx_bytes": 14,
+      "rx_bytes": 20,
+      "tx_elapsed_ms": 8,
+      "rx_elapsed_ms": 119,
+      "tx_crc_valid": true,
+      "rx_crc_valid": true,
+      "command_echo_matches": true
+    },
+    {
+      "index": 2,
+      "command_hex": "8604",
+      "tx_payload_hex": "00",
+      "rx_payload_hex": "",
+      "tx_bytes": 15,
+      "rx_bytes": 15,
+      "tx_elapsed_ms": 122,
+      "rx_elapsed_ms": 223,
+      "tx_crc_valid": true,
+      "rx_crc_valid": true,
+      "command_echo_matches": true
+    },
+    {
+      "index": 3,
+      "command_hex": "8800",
+      "tx_payload_hex": "0000",
+      "rx_payload_hex": "00",
+      "tx_bytes": 16,
+      "rx_bytes": 16,
+      "tx_elapsed_ms": 224,
+      "rx_elapsed_ms": 334,
+      "tx_crc_valid": true,
+      "rx_crc_valid": true,
+      "command_echo_matches": true
+    },
+    {
+      "index": 4,
+      "command_hex": "8603",
+      "tx_payload_hex": "0100F401",
+      "rx_payload_hex": "",
+      "tx_bytes": 18,
+      "rx_bytes": 15,
+      "tx_elapsed_ms": 334,
+      "rx_elapsed_ms": 434,
+      "tx_crc_valid": true,
+      "rx_crc_valid": true,
+      "command_echo_matches": true
+    },
+    {
+      "index": 5,
+      "command_hex": "8604",
+      "tx_payload_hex": "010010000000",
+      "rx_payload_hex": "",
+      "tx_bytes": 20,
+      "rx_bytes": 15,
+      "tx_elapsed_ms": 434,
+      "rx_elapsed_ms": 535,
+      "tx_crc_valid": true,
+      "rx_crc_valid": true,
+      "command_echo_matches": true
+    },
+    {
+      "index": 6,
+      "command_hex": "8604",
+      "tx_payload_hex": "000000000000",
+      "rx_payload_hex": "",
+      "tx_bytes": 20,
+      "rx_bytes": 15,
+      "tx_elapsed_ms": 537,
+      "rx_elapsed_ms": 651,
+      "tx_crc_valid": true,
+      "rx_crc_valid": true,
+      "command_echo_matches": true
+    },
+    {
+      "index": 7,
+      "command_hex": "8B01",
+      "tx_payload_hex": "00010000",
+      "rx_payload_hex": "01",
+      "tx_bytes": 18,
+      "rx_bytes": 16,
+      "tx_elapsed_ms": 651,
+      "rx_elapsed_ms": 751,
+      "tx_crc_valid": true,
+      "rx_crc_valid": true,
+      "command_echo_matches": true
+    },
+    {
+      "index": 8,
+      "command_hex": "8B01",
+      "tx_payload_hex": "01010000",
+      "rx_payload_hex": "01",
+      "tx_bytes": 18,
+      "rx_bytes": 16,
+      "tx_elapsed_ms": 751,
+      "rx_elapsed_ms": 852,
+      "tx_crc_valid": true,
+      "rx_crc_valid": true,
+      "command_echo_matches": true
+    }
+  ],
+  "input_evidence": [
+    {
+      "path": "LocalOnly/AutoCalBackendProbe/usb_setup_01.json",
+      "bytes": 2859,
+      "sha256": "639e95d284e63080762ada565ad3bb8b719dfcb88138f794ebe1e6c4bcb8c127"
+    },
+    {
+      "path": "LocalOnly/AutoCalBackendProbe/usb_setup_01.json.journal.jsonl",
+      "bytes": 4570,
+      "sha256": "1c68a8fad7c7c6d652b5b46e56ecc115e48a2f7923032f1fe4912458a52ecdb9"
+    }
+  ],
+  "hardware_tested_source_sha256": {
+    "Apps/PcmLibrary/AutoCalHostFrame.cs": "b87cd99d6adea75374609efdcda3cd16760836d293580e7952f0d0e6b3226600",
+    "Apps/PcmLibrary/AutoCalChannel.cs": "5b4b92294c9e9c330f5811082cd9aefe1e1241cb9d4686c9620ed1116005db55",
+    "Apps/PcmLibrary/AutoCalVpwEnvelope.cs": "c3367d1b972061b2662b227e608d9278e466b6b30f50d7bbef70c62554c0074f",
+    "Apps/PcmLibrary/AutoCalSetupResponse.cs": "cb582c8b049d212c9aa8e603bc77a9cb0ad06d162f905e949bacf02108f78007",
+    "Apps/PcmLibrary/Devices/AutoCalDevice.cs": "9039b5f3075bb04e413cafa33ac5e79aad6e584f352597f343d3dc0673985d9e",
+    "Apps/PcmLibraryWindowsApi/Ports/AutoCalD2xxTransport.cs": "80decc39ac396ff86aeebfadff0e33c2395f802171e01d89407cb28a4f948614",
+    "Tools/AL5/AutoCalBackendProbe/Program.cs": "facc3226d690b1af9b231d5954ceb154141038f1dd11d7c8cd8b6f2e7591f070",
+    "Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj": "2f51664e7ee34449e277268cd9701af6582363572c0acce7a36c538bedda886f"
+  },
+  "hardware_tested_artifacts": {
+    "probe_sha256": "0af406bb8e2f1670a7022674647af64e93cc825bc7b0bd55fecd6b4c884aa7c6",
+    "pcmlibrary_sha256": "a51f1492a842b8e6b1de916f2d22417cb48e6aaea088ca18ccccf3341180b881",
+    "native_dll": "C:\\Program Files (x86)\\EFILive\\Drivers\\EFILive\\Win-7-8-10\\amd64\\ftd2xx64.dll",
+    "native_sha256": "91185415e0a1cd8ad09a5b644130554867ee4c4975c7aa71ee6da15d2645d9a2",
+    "header_sha256": "cf2ad290c68137373b26629bf9feed6f4847f4e9e5cde4b980a212cebeb4ff6a"
+  },
+  "offline_test_scope": {
+    "channel": "Fragmentation, coalescing, exact suffix continuation, malformed/context errors, deadlines, cancellation and retained cleanup with in-memory transport.",
+    "device": "Nine scripted scenarios, including 96 program payloads and 98 synthetic acknowledgements (two erase plus 96 program); no ECU simulation or physical flash qualification.",
+    "writer": "26 production CKernelWriter/WriteManager cases using a scripted Device and synthetic image, including current CRC verification, final-pass verification, failed/cancelled writes and E54 uncertain-erase cleanup.",
+    "writer_receipt": {
+      "path": "LocalOnly/CKernelWriterSafetyTest/green_03.json",
+      "bytes": 2826,
+      "sha256": "5689edaa8078f057bbcfc80f06a684d9c86d532d01c8f5d5b0d31d8880270790"
+    },
+    "independent_repeat": {
+      "path": "LocalOnly/AutoCalBackendProbe/independent_offline_audit_01.json",
+      "bytes": 1542,
+      "sha256": "2baa5184fa4786c90957ad11d267b3360f061a84ffd3c0c5efbd15c7b2001896"
+    },
+    "repeat_result": "Corrected independent repeat: channel246 assertions, device9 scenarios/349 assertions and frame14 cases/146 assertions pass (all exit0). The earlier failure remains pinned; the hardware setup result retains its original tested-source hashes.",
+    "corrected_independent_repeat": {
+      "path": "LocalOnly/AutoCalBackendProbe/independent_offline_audit_02.json",
+      "bytes": 3809,
+      "sha256": "8155503a3679ea2ba3dbd87efcf78785784072b673e714333eb1f16f3b6a6fb1"
+    }
+  },
+  "limitations": [
+    "D2XX journal bytes, not an independent USBPcap or waveform capture.",
+    "Ordinary setup echoes and payload 00 or 01 are preserved; firmware success, physical bus state and return to 1x are not inferred.",
+    "Host close/dispose result is reported by the native owner; no separate handle census is claimed.",
+    "No AutoCal VPW identification, read, erase, program, verification or interrupted-write recovery was performed in this session.",
+    "No ordinary PcmHammer device-selection entry or 4x support was enabled."
+  ]
+}

@@ -1,10 +1,11 @@
 # AutoCal V2 transport reconstruction, 2026-10-30
 
-PcmHammer now contains a file-only decoder for complete AutoCal host envelopes.
-A separate, isolated developer probe also completed an independent USB model
-query with EFILive closed. PcmHammer does not yet contain an AutoCal device
-backend. The existing OBDX adapter,
-AL5 direct reader, adapter selection and AL5 write gates are unchanged.
+PcmHammer now contains an experimental AutoCal V2 device backend, a bounded
+host channel and a Windows D2XX transport. An isolated USB-only probe using
+the actual PcmLibrary backend completed eight model/setup/recorded-cleanup
+exchanges. Physical VPW operation, programming and recovery remain
+unqualified. AutoCal is absent from the ordinary device factory and CLI
+selection; the working AL5 reader and AL5 live-write gates remain unchanged.
 
 ## Static evidence
 
@@ -401,7 +402,8 @@ Cleanup still consists of the recorded zero-form `8604` and two `8B01` forms;
 their firmware effects do not yet establish a return to 1x. PcmHammer's device
 API expects `SetVpwSpeedInternal` to establish the selected adapter speed before
 updating its speed cache. The traced host sequence cannot yet supply that
-implementation. No AutoCal device backend or live send path was added.
+implementation. At that tracing checkpoint, no AutoCal device backend or live
+send path had been added.
 
 The actual PcmLibrary build passed with the same three pre-existing CS1998
 warnings. The setup-response harness passed 144 boundary assertions and all
@@ -492,14 +494,88 @@ python -B -m unittest discover -s Tools/AL5 -p test_autocal_firmware_container.p
 python -B -m unittest discover -s Tools/AL5 -p test_autocal_firmware_loader.py
 ```
 
+## Experimental backend and isolated setup execution
+
+`AutoCalChannel` now owns exact byte framing, serialized exchanges and bounded
+I/O. Successful partial writes continue only their remaining suffix. Ambiguous
+transfers, malformed envelopes and mismatched context stop the session; they
+are not replayed or silently purged. Pending native work and failed close
+operations retain their owner until cleanup succeeds.
+
+`AutoCalDevice` implements PcmHammer's existing message and timeout interface.
+Its current observed limits are 1,772 outgoing and 4,108 incoming VPW-message
+bytes. The ordinary writer still limits flash data blocks to 1,024 bytes plus
+12 bytes of framing. These are selected bounds, not established firmware
+maxima. `SendMessage` success means exact host submission; subsequent controller
+replies and verification determine operation success. The backend refuses 4x
+transitions, and its initial Standard speed cache does not prove physical 1x.
+
+The Windows transport uses the pinned bundled x64 D2XX DLL and explicit serial
+selection. It is deliberately separate from serial auto-detection. The
+standalone `AutoCalBackendProbe --usb-setup` mode exposes only an exact
+model/setup/cleanup sequence while OBD is physically unplugged. A separate fixed
+E54 identity profile admits one OS-ID query for isolated-bench qualification;
+that profile has not run in the setup result below. Neither profile accepts
+arbitrary VPW commands. The factory and ordinary CLI do not expose AutoCal.
+
+The [USB setup result](AUTOCAL_BACKEND_USB_SETUP_20261030.json) records the first
+actual execution through this backend. An independent audit of its saved
+journal found eight complete TX and eight complete RX envelopes: 139 bytes
+submitted, 128 received, all sixteen outer CRCs valid, and every command echo
+matching in order. There were no short transfers or host replays. The model
+reply was `ACV2\0`; `8800` returned payload `00`; the two `8B01` replies returned
+`01`; the other setup replies were empty. These payloads are retained without
+assigning firmware-success meanings.
+
+The last journal event at 853 ms reports empty host and adapter receive queues.
+The result reports transport disposal, zero retained native owners, and no
+channel or cleanup exception. The evidence comes from the D2XX journal; this
+session has no independently audited USB packet or waveform recording.
+Private raw files remain under `LocalOnly/AutoCalBackendProbe/usb_setup_01.json`
+and its `.journal.jsonl` sibling. The public result pins both files, the tested
+source and the exact probe, PcmLibrary and native-library builds.
+
+The historical raw receipt's `vehicle_transmissions = 0` means **zero submitted
+host `8A00` VPW-payload commands**. It does not establish zero autonomous adapter
+pulses or other physical effects of setup. This experiment does not establish
+bus initialization, filters, 1x/4x behavior, ECU communication or recovery.
+
+Offline tests use scripted in-memory transports. They exercise fragmentation,
+coalescing, errors, deadlines, cancellation, queue handling and retained
+cleanup. The device suite includes 96 program payloads and 98 synthetic replies
+(two erase replies plus 96 program replies); those are test fixtures, not a
+hardware flash transcript. A separate 26-case production-writer suite uses a
+synthetic image and scripted Device. It checks current-result CRC success,
+verification after the fifth allowed write pass, failure/cancellation handling,
+and E54 uncertain-erase preservation without another erase or kernel reset.
+`WriteManager` now propagates the writer's Boolean result.
+
+An independent repeat exposed an idle-receive deadline race: expiration between
+the receive loop and its next I/O guard incorrectly faulted an empty idle
+receive. The correction keeps idle expiration separate from partial bytes or
+an outstanding native operation. Fresh offline runs pass 246 channel assertions,
+all nine device scenarios with 349 assertions, and 14 frame cases with 146
+assertions. Both the earlier failure and corrected repeat remain pinned in the
+public result. The successful eight-command hardware setup above retains its
+original source/build hashes; it does not physically qualify the later build.
+
+The [fixed probe guide](../../Tools/AL5/AutoCalBackendProbe/README.md) describes
+the next ordinary identity experiment. Its additional offline harness passes
+84 assertions covering immutable command profiles, complete OS-ID validation,
+partial-write continuation and replay rejection. Both observed response extents
+run through the production ordinary-profile Device and Channel. This harness
+does not open native USB or a controller.
+
 ## Remaining integration work
 
-USB packetization and independent adapter discovery are corroborated for the
-documented sessions. The bounded local model query also passed after a
-user-reported USB power cycle. Raw VPW transport requires additional evidence.
-Bus initialization, filters, 1x/4x transitions, request completion, error
-handling and authorization behavior remain unresolved for an independent
-PcmHammer backend. No generic command replay or live writer is implemented.
+The bounded model/setup/recorded-cleanup sequence has passed on the isolated
+USB attachment. Independent VPW messaging, physical speed, filters, firmware
+completion behavior and programming authorization still require qualification.
+An ordinary PcmHammer factory/CLI integration must also explicitly own and
+close the native device: the current Vehicle disposal path alone does not
+unconditionally dispose its Device. Cancellation must cover initialization as
+well as the later vehicle operation.
 
-An AutoCal backend would also not prove the AL5 erase/program/verification or
-recovery path. `live_write_enabled` and `ready_to_flash` remain false.
+An AutoCal backend does not establish the AL5 erase/program/verification or
+interrupted-write recovery path. AL5 `live_write_enabled` and `ready_to_flash`
+remain false.

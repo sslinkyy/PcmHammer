@@ -52,6 +52,7 @@
     <Compile Include="Devices\J2534Device.cs" />
     <Compile Include="Devices\J2534DeviceFinder.cs" />
     <Compile Include="Ports\HttpPort.cs" />
+    <Compile Include="Ports\AutoCalD2xxTransport.cs" />
     <Compile Include="Ports\PortDiscovery.cs" />
     <Compile Include="Ports\StandardPort.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

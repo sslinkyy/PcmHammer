@@ -45,6 +45,34 @@ namespace PcmHacking
         public byte[] Payload => CopyBytes(12, PayloadLength);
 
         /// <summary>
+        /// Encode the traced long-header host-to-device layout. Explicit fields
+        /// preserve caller choices; this does not establish command support or
+        /// physical transmission. No VPW CRC is inserted into the payload.
+        /// </summary>
+        public static byte[] EncodeLongHeader(ushort command, byte selector, uint callerMetadata, byte[] payload)
+        {
+            if (payload == null) throw new ArgumentNullException(nameof(payload));
+            if (payload.Length > ushort.MaxValue)
+                throw new ArgumentOutOfRangeException(nameof(payload), "The host header has a 16-bit payload length.");
+            var result = new byte[payload.Length + 14];
+            result[0] = 0x01;
+            result[1] = 0x54;
+            result[2] = (byte)command;
+            result[3] = (byte)(command >> 8);
+            result[4] = selector;
+            result[5] = 0;
+            for (int index = 0; index < 4; index++)
+                result[6 + index] = (byte)(callerMetadata >> (8 * index));
+            result[10] = (byte)payload.Length;
+            result[11] = (byte)(payload.Length >> 8);
+            Array.Copy(payload, 0, result, 12, payload.Length);
+            ushort crc = ComputeCrc(result, result.Length - 2);
+            result[result.Length - 2] = (byte)crc;
+            result[result.Length - 1] = (byte)(crc >> 8);
+            return result;
+        }
+
+        /// <summary>
         /// Decode one complete 12-byte-header frame. The caller must select
         /// this format explicitly: short 8-byte headers and USB packet/stream
         /// boundaries are unsupported. Framing failures throw; CRC mismatches are data.
