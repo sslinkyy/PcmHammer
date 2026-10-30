@@ -414,8 +414,9 @@ rounded falling tails in both conditions. No obvious gross waveform
 deterioration is apparent in these sampled windows. These are different pulse
 sequences photographed at different angles and exposures; exact edge-time or
 small voltage changes cannot be determined. Shared-bus photos cannot attribute
-transmission or exclude disturbances elsewhere. The GT-disconnected control
-has not yet been performed, so loading from physical attachment is unresolved.
+transmission or exclude disturbances elsewhere. A GT-disconnected read was
+subsequently completed below; its waveform photographs have not yet been compared,
+so loading from physical attachment remains unresolved.
 Neither electrical noninterference nor lossless monitoring is established.
 Live AL5 writes remain disabled.
 
@@ -425,3 +426,29 @@ Raw evidence and reproducible receipts remain under
 `0fd5dbaeee14743cd66edea37eb5a15592bdc838c2540a15f3b5f5eccbb391a7`;
 the baseline comparison `listen_vs_scoped_off_02.json` has SHA256
 `9aec288560115d18e3163b5a28dad6b212dcfa2c001e4c4d8aa42e619585ba60`.
+
+### GT physically disconnected control, 2026-10-29
+
+The user confirmed unplugging only the GT OBD leg with ignition OFF, leaving
+AutoCal, the splitter and scope connected, then turning ignition ON for another
+ordinary high-speed E54 read. No GT serial session or capture was opened for this
+control. The read completed in 2:01 with all six segment checksums valid and was
+saved as `8 lb7 E54_0000.ctz`. Ignition OFF and the completed shutdown countdown
+were confirmed afterward.
+
+The HTX transfer contains exactly the same 392-message sequence, 128 unique
+addressed requests and data blocks as both the attached/OFF and LISTEN reads.
+The same 524,286 observed image bytes match, with valid block checksums and no
+repeated read requests. Seven literal timeout records occur outside the transfer
+window. Addressed transfer took 115.004 seconds, 1.046 seconds longer than the
+OFF control and 1.057 seconds longer than LISTEN. Individual runs cannot establish
+the cause or significance of this timing variation. The final two flash bytes
+remain unobserved.
+
+This control shows matching read data and retry counts across the three
+conditions in the compared software traces. It does not establish electrical
+noninterference, and the GT all-source capture still misses acknowledgments.
+Disconnected-GT scope photographs are pending. Private evidence remains under
+`LocalOnly/scoped_unplugged_20261029_01`; the reproducible comparison receipt
+`unplugged_vs_off_and_listen.json` has SHA256
+`008452a01e0e3debd49212199797531d20a675fab5bbf402beb3891b3b22dda0`.
