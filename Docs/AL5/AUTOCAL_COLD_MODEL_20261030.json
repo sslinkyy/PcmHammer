@@ -1,0 +1,178 @@
+{
+  "schema": "autocal-cold-model-query-summary-v1",
+  "scope": "One repeat of the fixed direct AutoCal V2 model query after a user-reported five-second USB power cycle, with OBD unplugged. Saved API/journal evidence only; no repeated USBPcap capture.",
+  "sources": {
+    "probe_receipt": {
+      "path": "LocalOnly/autocal_usb_setup_20261030/autocal_model_query_cold_01.json",
+      "bytes": 39179,
+      "sha256": "2731edce66c3f4f16b4fd82fc95fda53415ec53c2494c3de2d77573d4e694ece"
+    },
+    "probe_journal": {
+      "path": "LocalOnly/autocal_usb_setup_20261030/autocal_model_query_cold_01.worker.jsonl",
+      "bytes": 8781,
+      "sha256": "784e58ddd6e4905f34eac1783fe49f592a1a5b316dcf07da4fe632923848f774"
+    },
+    "probe_stderr": {
+      "path": "LocalOnly/autocal_usb_setup_20261030/autocal_model_query_cold_01.worker.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "probe_implementation": {
+      "path": "LocalOnly/autocal_usb_setup_20261030/autocal_model_query_probe.py",
+      "bytes": 26468,
+      "sha256": "407a1de47b24ed121df74c2e0aa59a6aa3815c2684926d82e80b47bce09adfaa"
+    },
+    "preceding_direct_query_report": {
+      "path": "Docs/AL5/AUTOCAL_DIRECT_MODEL_20261030.json",
+      "bytes": 10778,
+      "sha256": "e71f0b8c659b08cff5e1b594e73c0cd3c0434ed8751333d2e263236026e03c56"
+    },
+    "preceding_direct_query_receipt": {
+      "path": "LocalOnly/autocal_usb_setup_20261030/autocal_model_query_01.json",
+      "bytes": 39170,
+      "sha256": "ab4eee61f61f39ce15cd45686817818c093493d000336b03f4700459eeb4c154"
+    },
+    "d2xx_dll": {
+      "path": "C:\\Program Files (x86)\\EFILive\\Drivers\\EFILive\\Win-7-8-10\\amd64\\ftd2xx64.dll",
+      "bytes": 323216,
+      "sha256": "91185415e0a1cd8ad09a5b644130554867ee4c4975c7aa71ee6da15d2645d9a2"
+    }
+  },
+  "probe_dependencies_verified": [
+    {
+      "path": "LocalOnly/autocal_usb_setup_20261030/d2xx_enumeration_probe.py",
+      "bytes": 15832,
+      "sha256": "dbb3225f686e9758f53599bb3e36d663cef6a9cd81f97c4198fe8cd18e55a738",
+      "matches_probe_receipt": true
+    },
+    {
+      "path": "LocalOnly/autocal_usb_setup_20261030/receipt_io.py",
+      "bytes": 2145,
+      "sha256": "6b63b9499d2fc2a28719bf83ea1ac937c59b96f46815826979e187cd54127a8b",
+      "matches_probe_receipt": true
+    },
+    {
+      "path": "LocalOnly/autocal_usb_setup_20261030/hapi_ftdi_lifecycle.asm",
+      "bytes": 78217,
+      "sha256": "ac7c6e564192074a05363747a62a0839f057c3e93e311aa1c2ff37d16cba852c",
+      "matches_probe_receipt": true
+    },
+    {
+      "path": "LocalOnly/autocal_usb_setup_20261030/d2xx_enumeration_02.json",
+      "bytes": 23636,
+      "sha256": "81abdd341ad5b49b7fa900e4d578ad993a6a35c46bd5d143e69d589319dbbec3",
+      "matches_probe_receipt": true
+    }
+  ],
+  "context": {
+    "physical_setup": {
+      "source": "User confirmation relayed by root agent before execution",
+      "usb_power_removed_seconds_reported": 5,
+      "usb_reconnected": true,
+      "obd_unplugged": true,
+      "physical_power_removal_independently_tool_verified": false
+    },
+    "precall_environment": {
+      "source": "Root agent reports PowerShell observations immediately before this probe; no separate preflight file supplied to this analysis",
+      "exact_pnp_identity": "USB\\VID_0403&PID_E4A3\\AC3NCHH5",
+      "pnp_status_reported": "OK",
+      "efilive_processes_reported_absent": true,
+      "hapi_processes_reported_absent": true,
+      "usbpcap_processes_reported_absent": true,
+      "independently_requeried_by_this_analysis": false
+    },
+    "usbpcap_repeated": false,
+    "preceding_usb_capture_applies_to_this_repeat": false
+  },
+  "execution": {
+    "started_utc": "2026-10-30T15:10:12.420726+00:00",
+    "finished_utc": "2026-10-30T15:10:12.915262+00:00",
+    "elapsed_seconds": 0.4690000000009604,
+    "probe_sha256": "407a1de47b24ed121df74c2e0aa59a6aa3815c2684926d82e80b47bce09adfaa",
+    "same_probe_source_as_preceding_trial": true,
+    "fixed_request_hex": "0154018207000000000000008177",
+    "application_write_calls": 1,
+    "reported_written_bytes": 14,
+    "application_read_calls": 1,
+    "reported_read_bytes": 20,
+    "reply_hex": "015201820000000000000500414356320026b419",
+    "model_text": "ACV2",
+    "model_payload_bytes": 5,
+    "model_payload_terminated_by_nul": true,
+    "request_crc_independently_matches": true,
+    "reply_crc_independently_matches": true,
+    "reply_crc_le16_hex": "26b4",
+    "metadata_4_through_9_hex": "000000000000",
+    "uninterpreted_rx_trailer_hex": "19",
+    "prewrite_queue_bytes": 0,
+    "postread_queue_bytes": 0,
+    "read_timeout_ms": 250,
+    "write_timeout_ms": 1000,
+    "allowed_native_api_calls": [
+      "FT_CreateDeviceInfoList",
+      "FT_GetDeviceInfoDetail",
+      "FT_OpenEx",
+      "FT_SetTimeouts",
+      "FT_GetQueueStatus",
+      "FT_Write",
+      "FT_Read",
+      "FT_Close"
+    ]
+  },
+  "enumerated_identity": {
+    "source": "Cold-repeat worker journal FT_GetDeviceInfoDetail result",
+    "serial_ascii": "AC3NCHH5",
+    "vendor_product_id_hex": "0403e4a3",
+    "type": 5,
+    "flags": 0,
+    "status": 0,
+    "nul_terminated": true,
+    "preexisting_handle_present_unused": false
+  },
+  "cleanup": {
+    "close_status": 0,
+    "owned_handle_closed": true,
+    "cleanup_pending": false,
+    "supervisor_state": "complete",
+    "child_exit_code": 0,
+    "cleanup_proven": true,
+    "deadline_reached": false,
+    "owned_process_handle_retained": false,
+    "worker_finished_reports_success": true,
+    "stderr_bytes": 0
+  },
+  "independent_file_checks": {
+    "receipt_matches_root_supplied_sha256": true,
+    "journal_matches_receipt_sha256": true,
+    "journal_matches_embedded_raw_hex": true,
+    "parsed_journal_matches_receipt_events": true,
+    "no_unparsed_journal_lines": true,
+    "probe_and_all_recorded_dependencies_match_disk": true,
+    "dll_file_matches_recorded_sha256": true,
+    "request_matches_preceding_trial": true,
+    "reply_matches_preceding_trial": true,
+    "prior_public_report_matches_prior_private_receipt": true,
+    "prior_report_and_private_receipts_modified": false
+  },
+  "conclusion": "The same direct model query returned ACV2 successfully after the reported USB power cycle, without an intervening EFILive/HAPI session reported by the operator. This adds one observed power-cycle repeat of the fixed query to the preceding USB-corroborated trial.",
+  "limits": [
+    "The five-second removal of USB power and disconnected OBD plug are physical user attestations; no instrument verified voltage decay or internal reset.",
+    "No new USBPcap capture was made. This repeat is supported by the D2XX API receipt and worker journal; prior PCAP packet offsets and driver-control observations are not evidence of this repeat.",
+    "The root agent observed exact PnP identity and absence of EFILive/HAPI/USBPcap processes before the call; this analysis did not rerun those checks or receive a separately saved preflight artifact.",
+    "A successful model query after reported power removal does not establish pristine persistent EEPROM/configuration, every cold-start state, or initialization requirements for other commands.",
+    "No vehicle requests, VPW monitoring, security access, loader, erase, programming, controller recovery or general AutoCal transport were exercised.",
+    "API success, matching reply bytes and close success do not establish universal losslessness, electrical noninterference, or absence of internal driver/device side effects."
+  ],
+  "cold_model_query_repeat_observed_successful": true,
+  "physical_power_cycle_instrument_verified": false,
+  "usb_capture_for_this_repeat": false,
+  "clean_persistent_configuration_proven": false,
+  "general_autocal_transport_qualified": false,
+  "complete_capture_proven": false,
+  "noninterference_proven": false,
+  "vpw_monitoring_qualified": false,
+  "controller_programming_qualified": false,
+  "recovery_qualified": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false
+}

@@ -26,8 +26,9 @@ programming capture remain unqualified; live AL5 writes remain disabled.
 and PcmLibrary decoders for saved host envelopes, pins the native FTDI binding
 and outer CRC, and records an isolated USB settings read. An independent
 model query now returns `ACV2` with EFILive closed; a simultaneous USB capture
-matches the exact request and reply. This does not yet add an AutoCal device
-backend or enable AL5 programming.
+matches the exact request and reply. The same query also passed after a
+user-reported USB power cycle. This does not yet add an AutoCal device backend
+or enable AL5 programming.
 
 [Public-source research dated 2026-10-06](ONLINE_RESEARCH_20261006.md) records
 AL5-specific vendor programming/recovery guidance, conditional hardware leads

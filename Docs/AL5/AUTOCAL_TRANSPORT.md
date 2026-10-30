@@ -151,17 +151,38 @@ using no explicit reset API does not mean the driver sent no control traffic.
 See the [direct-query evidence](AUTOCAL_DIRECT_MODEL_20261030.json).
 
 This proves independent open/query/read/close for one model request on this
-attachment. AutoCal was not power-cycled between HAPI and the probe, so clean
-power-on initialization remains unqualified. Header metadata, request/reply
-correlation and general transport readiness remain unresolved. The host's
+attachment. In that first session AutoCal was not power-cycled between HAPI
+and the probe. The later model-only power-cycle check is described below.
+Header metadata, request/reply correlation and general transport readiness
+remain unresolved. The host's
 use of trailing `0x19` as an FTDI event character is statically established;
 its complete firmware semantics are not.
 
+## Model query after reported USB power cycle
+
+The owner confirmed the requested five-second USB disconnection and
+reconnection, with OBD unplugged and EFILive closed. Before opening the
+adapter, Windows again reported the exact AutoCal PnP identity as healthy;
+no EFILive, HAPI or USBPcap process was present. The reviewed probe and its
+source dependencies were byte-identical to those used for the first query.
+
+The same fixed request succeeded on the new attachment: one 14-byte write,
+one 20-byte read, and the exact same `ACV2\0` reply and valid outer CRC. Both
+queue checks were empty, `FT_Close` succeeded and the worker exited with code
+zero. The recorded session lasted 0.469 seconds. See the separate
+[power-cycle repeat evidence](AUTOCAL_COLD_MODEL_20261030.json).
+
+This qualifies the model query after the user-reported power cycle without
+reopening EFILive. No USBPcap recording was made for this repeat; its bytes
+come from the D2XX probe journal. Physical power removal was user-attested,
+and persistent adapter settings were not reset or inspected. General
+initialization, VPW messaging, programming and recovery remain unqualified.
+
 ## Remaining integration work
 
-USB packetization, independent adapter discovery and one bounded local model
-query are corroborated for these isolated sessions. Raw VPW transport requires
-additional evidence.
+USB packetization and independent adapter discovery are corroborated for the
+documented sessions. The bounded local model query also passed after a
+user-reported USB power cycle. Raw VPW transport requires additional evidence.
 Bus initialization, filters, 1x/4x transitions, request completion, error
 handling and authorization behavior remain unresolved for an independent
 PcmHammer backend. No generic command replay or live writer is implemented.
