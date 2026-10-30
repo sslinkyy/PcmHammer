@@ -367,14 +367,14 @@ namespace PcmHacking
                 writeType,
                 this.logger);
 
-            await writer.Write(
+            bool success = await writer.Write(
                 image,
                 kernelVersion,
                 validator,
                 needToCheckOperatingSystem,
                 this.cancellationToken);
             logger.AddUserMessage("Elapsed time " + DateTime.Now.Subtract(start));
-            return true;
+            return success;
         }
     }
 }

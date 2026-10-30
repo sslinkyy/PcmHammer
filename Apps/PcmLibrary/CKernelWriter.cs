@@ -34,6 +34,8 @@ namespace PcmHacking
         // How much of the flash chip we will verify and (re)write. Set once the chip is identified
         // in Write(). Normally the detected chip size, not the (possibly smaller) PCM-type default.
         private UInt32 effectiveImageSize;
+        // A failed E54 erase may already have reached the controller. Do not reset it.
+        private bool preserveE54KernelOnFailure;
 
         public CKernelWriter(Vehicle vehicle, OSIDInfo pcmInfo, Protocol protocol, WriteType writeType, ILogger logger)
         {
@@ -56,9 +58,17 @@ namespace PcmHacking
             CancellationToken cancellationToken)
         {
             bool success = false;
+            bool realWrite = this.writeType == WriteType.Calibration || this.writeType == WriteType.Parameters ||
+                this.writeType == WriteType.OsPlusCalibrationPlusBoot || this.writeType == WriteType.Full;
+            this.preserveE54KernelOnFailure = this.pcmInfo.HardwareType == PcmType.E54 &&
+                realWrite && kernelVersion != 0;
 
             try
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    return false;
+                }
                 // Start with known state.
                 await this.vehicle.ForceSendToolPresentNotification();
                 this.vehicle.ClearDeviceMessageQueue();
@@ -140,6 +150,10 @@ namespace PcmHacking
                 await this.vehicle.SendToolPresentNotification();
                 await this.vehicle.SetDeviceTimeout(TimeoutScenario.ReadProperty);
                 Response<UInt32> osidResponse = await this.vehicle.QueryOperatingSystemIdFromKernel(cancellationToken);
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    return false;
+                }
                 if (needToCheckOperatingSystem && (osidResponse.Status != ResponseStatus.Success))
                 {
                     // The kernel seems broken. This shouldn't happen, but if it does, halt.
@@ -161,7 +175,7 @@ namespace PcmHacking
                 // TODO: app should check kernel version (not just "is present") and reload only if version is lower than version in kernel file.
                 if (success)
                 {
-                    await this.vehicle.Cleanup();
+                    await this.CleanupIfSafe(true);
                 }
 
                 return success;
@@ -199,8 +213,18 @@ namespace PcmHacking
             }
             finally
             {
+                if (this.preserveE54KernelOnFailure && !success)
+                {
+                    logger.AddUserMessage("E54 flash contents are not verified. No additional erase or reset will be attempted; keep power connected for recovery.");
+                }
                 logger.StatusUpdateReset();
             }
+        }
+
+        private Task CleanupIfSafe(bool verifiedSuccess = false)
+        {
+            return this.preserveE54KernelOnFailure && !verifiedSuccess
+                ? Task.CompletedTask : this.vehicle.Cleanup();
         }
 
         /// <summary>
@@ -252,7 +276,7 @@ namespace PcmHacking
             Response<UInt32> chipIdResponse = await this.vehicle.QueryFlashChipId(cancellationToken);
             if (chipIdResponse.Status != ResponseStatus.Success)
             {
-                await this.vehicle.Cleanup();
+                await this.CleanupIfSafe();
                 return false;
             }
 
@@ -271,7 +295,7 @@ namespace PcmHacking
             else if (image.Length != flashChip.Size)
             {
                 logger.AddUserMessage(string.Format("File size {0:n0} does not match flash chip size {1:n0}. This image is not compatible with this PCM.", image.Length, flashChip.Size));
-                await this.vehicle.Cleanup();
+                await this.CleanupIfSafe();
                 return false;
             }
 
@@ -301,28 +325,40 @@ namespace PcmHacking
                 this.effectiveImageSize,
                 this.logger);
 
-            bool allRangesMatch = false;
             int messageRetryCount = 0;
             await this.vehicle.SendToolPresentNotification();
-            for (int attempt = 1; attempt <= 5; attempt++)
+            const int maximumWritePasses = 5;
+            // Verify before writing and after every pass, including the final allowed pass.
+            for (int attempt = 1; attempt <= maximumWritePasses + 1; attempt++)
             {
                 logger.StatusUpdateReset();
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    return false;
+                }
 
-                CrcVerificationResult verificationResult = await verifier.CompareRanges(
+                CrcVerificationResult verificationResult = await this.CompareRanges(verifier,
                     image,
                     relevantBlocks,
                     cancellationToken);
 
+                if (cancellationToken.IsCancellationRequested || verificationResult == CrcVerificationResult.Cancelled)
+                {
+                    return false;
+                }
                 if (verificationResult == CrcVerificationResult.Timeout)
                 {
                     logger.AddUserMessage("PCM stopped responding during write verification. Aborting.");
                     return false;
                 }
+                if (verificationResult != CrcVerificationResult.Verified && verificationResult != CrcVerificationResult.Mismatch)
+                {
+                    logger.AddUserMessage("Unrecognized write verification result. Aborting.");
+                    return false;
+                }
 
                 if (verificationResult == CrcVerificationResult.Verified)
                 {
-                    allRangesMatch = true;
-
                     // Don't stop here if the user just wants to test their cable.
                     if (this.writeType == WriteType.TestWrite)
                     {
@@ -338,7 +374,11 @@ namespace PcmHacking
                         {
                             Utility.ReportRetryCount("Write", messageRetryCount, pcmInfo.ImageSize, this.logger);
                         }
-                        break;
+                        if (this.writeType != WriteType.Compare)
+                        {
+                            logger.AddUserMessage("Flash successful!");
+                        }
+                        return true;
                     }
                 }
 
@@ -358,13 +398,18 @@ namespace PcmHacking
                     return true;
                 }
 
+                if (attempt > maximumWritePasses)
+                {
+                    break;
+                }
+
                 // Preflight policy gate: block before any erase/write if this PCM
                 // does not allow boot-sector writes and boot would be written.
                 if (!this.IsWritePlanAllowedByPcmInfo(flashChip, relevantBlocks))
                 {
                     logger.AddUserMessage("Boot sector write is required for this operation.");
                     logger.AddUserMessage($"Abort: The {this.pcmInfo.HardwareType} boot sector is write protected. This PCM is not compatible with this file.");
-                    await this.vehicle.Cleanup();
+                    await this.CleanupIfSafe();
                     return false;
                 }
 
@@ -398,6 +443,11 @@ namespace PcmHacking
                     }
                     else
                     {
+                        // Set before the call: rejection or an exception cannot prove no erase occurred.
+                        if (this.pcmInfo.HardwareType == PcmType.E54)
+                        {
+                            this.preserveE54KernelOnFailure = true;
+                        }
                         if (!await this.EraseMemoryRange(range, cancellationToken))
                         {
                             return false;
@@ -430,20 +480,12 @@ namespace PcmHacking
 
                     logger.StatusUpdateRetryCount((messageRetryCount > 0) ? messageRetryCount.ToString() + ((messageRetryCount > 1) ? " Retries" : " Retry") : string.Empty);
 
-                    if (writeResponse.Value)
+                    if (writeResponse.Status != ResponseStatus.Success || !writeResponse.Value)
                     {
-                        bytesRemaining -= range.Size;
+                        return false;
                     }
+                    bytesRemaining -= range.Size;
                 }
-            }
-
-            if (allRangesMatch)
-            {
-                if (this.writeType != WriteType.Compare && this.writeType != WriteType.TestWrite)
-                {
-                    logger.AddUserMessage("Flash successful!");
-                }
-                return true;
             }
 
             // During a test write, we will return from the middle of the loop above.
@@ -452,7 +494,7 @@ namespace PcmHacking
             logger.AddUserMessage("THE CHANGES WERE -NOT- WRITTEN SUCCESSFULLY");
             logger.AddUserMessage("===============================================");
 
-            if (this.writeType == WriteType.Calibration)
+            if (this.writeType == WriteType.Calibration && this.pcmInfo.HardwareType != PcmType.E54)
             {
                 logger.AddUserMessage("Erasing Calibration to force recovery mode.");
                 logger.AddUserMessage("");
@@ -484,6 +526,13 @@ namespace PcmHacking
             }
 
             return false;
+        }
+
+        /// <summary>Verification boundary; retains the production verifier and range state.</summary>
+        protected virtual Task<CrcVerificationResult> CompareRanges(
+            CKernelVerifier verifier, byte[] image, BlockType relevantBlocks, CancellationToken cancellationToken)
+        {
+            return verifier.CompareRanges(image, relevantBlocks, cancellationToken);
         }
 
         private UInt32 GetTotalSize(FlashChip chip, BlockType relevantBlocks)
@@ -596,7 +645,7 @@ namespace PcmHacking
         /// <summary>
         /// Copy a single memory range to the PCM.
         /// </summary>
-        private async Task<Response<bool>> WriteMemoryRange(
+        protected virtual async Task<Response<bool>> WriteMemoryRange(
             MemoryRange range,
             byte[] image,
             bool justTestWrite,
@@ -658,7 +707,7 @@ namespace PcmHacking
 
                 // WritePayload contains a retry loop, so if it fails, we don't need to retry at this layer.
                 Response<bool> response = await this.vehicle.WritePayload(payloadMessage, cancellationToken);
-                if (response.Status != ResponseStatus.Success)
+                if (response.Status != ResponseStatus.Success || !response.Value)
                 {
                     return Response.Create(ResponseStatus.Error, false, response.RetryCount);
                 }
