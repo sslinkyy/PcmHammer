@@ -26,6 +26,12 @@ programming capture remain unqualified; live AL5 writes remain disabled.
 now records all 96 non-erasing test-transfer ACKs and the loader ACK at 4x,
 with matching full before/after reads. This is not passive capture or a flash.
 
+The subsequent [E54 calibration rewrite](PCMHAMMER_USB_WRITE_COMPARISON.md#isolated-e54-calibration-rewrite--october-30-2026)
+records actual erase/programming, 98 captured loader/erase/program ACKs, and an
+exact full-image readback. Its [result receipt](E54_GT_ACTUAL_WRITE_USB_20261030.json)
+retains USB exceptions and readback query retries. This used a corrected separate
+recovery-checkout writer; passive EFILive capture and AL5 writes remain unqualified.
+
 [AutoCal transport reconstruction](AUTOCAL_TRANSPORT.md) adds matching Python
 and PcmLibrary decoders for saved host envelopes, pins the native FTDI binding
 and outer CRC, and records an isolated USB settings read. An independent

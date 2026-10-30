@@ -1,0 +1,555 @@
+{
+  "schema": "e54-gt-pcmhammer-actual-write-usb-v1",
+  "observation_date": "2026-10-30",
+  "controller": "Isolated spare E54/LB7",
+  "osid": 15189044,
+  "flash_chip": "Intel28F400B",
+  "adapter": "OBDX Pro GT",
+  "firmware": "1.0.2.0",
+  "vpw_speed": "4x",
+  "user_reported_supply_volts": 13.8,
+  "writer_reported_adapter_volts": 13.77,
+  "operation": "Forced same-image calibration erase/program with full independent readback",
+  "autocal_used": false,
+  "independent_passive_monitor_used": false,
+  "actual_flash_erase_program_performed": true,
+  "al5_live_writes_enabled": false,
+  "programming": {
+    "operation": "actual-calibration-erase-program",
+    "started_at": "2026-10-30T13:08:14.5201203-07:00",
+    "completed_at": "2026-10-30T13:09:07.2155413-07:00",
+    "exit_code": 0,
+    "autocal_used": false,
+    "logged_elapsed_seconds": 51.2235447,
+    "calibration_start_inclusive_hex": "008000",
+    "calibration_end_exclusive_hex": "020000",
+    "erase_requests": 1,
+    "erase_request_address_hex": "008000",
+    "program_blocks": 96,
+    "program_block_bytes": 1024,
+    "program_bytes": 98304,
+    "write_request_retries_reported": 0,
+    "post_program_calibration_crc_hex": "712EFE11",
+    "post_program_crc_matches": true
+  },
+  "readback": {
+    "operation": "full-independent-readback",
+    "reader_sha256": "c5884e156e422fb12996d2d2d788c5b5b323051d1ccf62a1edd860a0b5e5c0e8",
+    "started_at": "2026-10-30T13:09:22.7413393-07:00",
+    "completed_at": "2026-10-30T13:11:32.3616126-07:00",
+    "exit_code": 0,
+    "logged_elapsed_seconds": 126.6636531,
+    "bytes": 524288,
+    "sha256": "a3b010af7e04df03be699198920aac26ba0645c2ad608e72eacf0bc3970beb58",
+    "baseline_sha256": "a3b010af7e04df03be699198920aac26ba0645c2ad608e72eacf0bc3970beb58",
+    "byte_differences": 0,
+    "all_seven_crc_ranges_match": true,
+    "crc_no_response_requeries": 7,
+    "crc_requeries_by_address": {
+      "060000": 2,
+      "040000": 2,
+      "020000": 2,
+      "008000": 1
+    },
+    "additional_bootstrap_timeout_lines": 2,
+    "crc_mismatches_reported": 0
+  },
+  "host_fix": {
+    "source_root": "C:\\Codex Projects\\Car Tuning\\recovery_tmp\\PcmHammer-source",
+    "base_commit": "5bf98c8aa1a9f815eaf972040c75f7ec8f698eca",
+    "preexisting_local_changes": true,
+    "implemented_in_al5_checkout": false,
+    "task_changed_original_sources": [
+      "Apps/PcmLibrary/KernelWriter.cs",
+      "Apps/Tests/Tests.csproj"
+    ],
+    "new_source": "Apps/Tests/KernelWriterSessionTests.cs",
+    "other_original_pinned_sources_unchanged": 691,
+    "source_pins": {
+      "Apps\\PcmLibrary\\KernelWriter.cs": "58f6d053b6bc4380310b261282e5a1589f08ae489563ea0ebf9617ba50fb48de",
+      "Apps\\Tests\\Tests.csproj": "6a8139ab57c8b865ec3c42ee780c166a1c073a5ee9e337793dde939db90d2a4c",
+      "Apps\\Tests\\KernelWriterSessionTests.cs": "b583fa56a20995eebc4fc6a7da232f7edf968fba518ea3ea8f433172e76a1256"
+    },
+    "binary_pins": {
+      "bin\\pcmhammer-cli.exe": "b623c47ba99934f1f44d8109a0310b9f0c158472e593ad9e4fa65161ed89c0c8",
+      "bin\\PcmLibrary.dll": "7fdba116d1ba4adb4849dca6bcbd74cd2ad3ad1c8488c8e23829d08954cb7021"
+    },
+    "red_regression_cases": 21,
+    "red_failed_cases": 14,
+    "green_kernel_writer_cases": 21,
+    "green_existing_policy_cases": 20,
+    "green_failed_cases": 0,
+    "full_legacy_test_project_executed": false,
+    "cleanup_limit": "Host avoids extra erase/reset after uncertain E54 failure; no physical recovery guarantee."
+  },
+  "pinned_write_inputs": [
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\private_builds\\e54_forcecal_fix_20261030_01\\bin\\pcmhammer-cli.exe",
+      "hash": "b623c47ba99934f1f44d8109a0310b9f0c158472e593ad9e4fa65161ed89c0c8"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\private_builds\\e54_forcecal_fix_20261030_01\\bin\\PcmLibrary.dll",
+      "hash": "7fdba116d1ba4adb4849dca6bcbd74cd2ad3ad1c8488c8e23829d08954cb7021"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\PcmHammer_E54_RAM_Survey_Bench_v0_1\\Kernel-E54.bin",
+      "hash": "8294b899c153b513cd1307ac4c6654c2720832779f40c19aac7100a4b864929a"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\usb_capture_setup_20261030\\e54_gt_pcmhammer_write_01\\E54_before_test.bin",
+      "hash": "a3b010af7e04df03be699198920aac26ba0645c2ad608e72eacf0bc3970beb58"
+    }
+  ],
+  "write_arguments_recorded_in_private_preflight": [
+    "--write-calibration",
+    "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\usb_capture_setup_20261030\\e54_gt_pcmhammer_write_01\\E54_before_test.bin",
+    "--force",
+    "--device",
+    "COM9:xpro",
+    "--kernel-dir",
+    "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\PcmHammer_E54_RAM_Survey_Bench_v0_1",
+    "--debug"
+  ],
+  "usb": {
+    "capture_bytes": 1016188,
+    "capture_sha256": "56143d5b8008c642f121ae388dddf55cfc64571309277832df9f51128a4145bb",
+    "hub": "\\\\.\\USBPcap2",
+    "device_address": 4,
+    "bus": 2,
+    "in_endpoint_hex": "82",
+    "out_endpoint_hex": "01",
+    "stream_window_convention": "Zero-based byte offsets, start inclusive and end exclusive, in selected concatenated USB byte streams.",
+    "phases": [
+      {
+        "name": "prewrite_verify",
+        "windows": {
+          "in": [
+            55,
+            549
+          ],
+          "out": [
+            22,
+            2419
+          ]
+        },
+        "tx_log": 35,
+        "tx_usb": 35,
+        "tx_exact_order": true,
+        "rx_log": 20,
+        "rx_usb": 21,
+        "rx_exact_order": false,
+        "missing_usb_occurrences": 0,
+        "extra_usb_occurrences": 1,
+        "extra_usb_examples": [
+          {
+            "message": {
+              "bytes": 4,
+              "sha256": "6f278a60c7e4c71edc7c8ac5bfa02088cebe3b10d2a84e45da5f700c8870b0e1",
+              "prefix_hex": "8cf01054",
+              "literal_hex_if_short": "8cf01054"
+            },
+            "count": 1
+          }
+        ],
+        "negative_vpw_replies": 0
+      },
+      {
+        "name": "actual_write",
+        "windows": {
+          "in": [
+            604,
+            2318
+          ],
+          "out": [
+            2441,
+            104738
+          ]
+        },
+        "tx_log": 144,
+        "tx_usb": 144,
+        "tx_exact_order": true,
+        "rx_log": 112,
+        "rx_usb": 113,
+        "rx_exact_order": false,
+        "missing_usb_occurrences": 0,
+        "extra_usb_occurrences": 1,
+        "extra_usb_examples": [
+          {
+            "message": {
+              "bytes": 4,
+              "sha256": "6f278a60c7e4c71edc7c8ac5bfa02088cebe3b10d2a84e45da5f700c8870b0e1",
+              "prefix_hex": "8cf01054",
+              "literal_hex_if_short": "8cf01054"
+            },
+            "count": 1
+          }
+        ],
+        "negative_vpw_replies": 0
+      },
+      {
+        "name": "after_flash_read",
+        "windows": {
+          "in": [
+            2396,
+            530236
+          ],
+          "out": [
+            104774,
+            109816
+          ]
+        },
+        "tx_log": 297,
+        "tx_usb": 297,
+        "tx_exact_order": true,
+        "rx_log": 146,
+        "rx_usb": 146,
+        "rx_exact_order": true,
+        "missing_usb_occurrences": 0,
+        "extra_usb_occurrences": 0,
+        "extra_usb_examples": [],
+        "negative_vpw_replies": 0
+      }
+    ],
+    "actual_program_ack_count": 96,
+    "actual_erase_ack_count": 1,
+    "actual_loader_ack_count": 1,
+    "actual_total_short_upload_erase_program_acks": 98,
+    "all_97_erase_copy_requests_have_zero_status_ack_before_next": true,
+    "all_copy_routes_lengths_checksums_reference_valid": true,
+    "reference_matching_unique_submission_bytes": 98304,
+    "non_success_in_completions": 5,
+    "non_success_in_status_hex": "C0010000",
+    "non_success_in_payload_bytes_each": 0,
+    "in_urb_pairing_issues": 0,
+    "out_submissions": 549,
+    "out_completions": 549,
+    "out_issues": 0,
+    "adapter_local_cleanup": {
+      "in_window": [
+        530236,
+        530399
+      ],
+      "out_window": [
+        109816,
+        109901
+      ],
+      "serial_usb_exact": true,
+      "network_tx_commands": 0,
+      "carried_reply": "The first cleanup input is 8CF01054, also present in the cleanup serial log; it is retained as the second trailing reply to the preceding read cleanup. No cleanup tool network TX exists."
+    },
+    "crc_query_timing_observations": [
+      {
+        "phase": "prewrite_verify",
+        "query_count": 7,
+        "reply_count": 7,
+        "groups": [
+          {
+            "address": 393216,
+            "length": 131072,
+            "submissions": 1,
+            "seconds_from_first_complete_out_to_reply": 2.317827
+          },
+          {
+            "address": 262144,
+            "length": 131072,
+            "submissions": 1,
+            "seconds_from_first_complete_out_to_reply": 2.317864
+          },
+          {
+            "address": 131072,
+            "length": 131072,
+            "submissions": 1,
+            "seconds_from_first_complete_out_to_reply": 2.318009
+          },
+          {
+            "address": 32768,
+            "length": 98304,
+            "submissions": 1,
+            "seconds_from_first_complete_out_to_reply": 1.739558
+          },
+          {
+            "address": 24576,
+            "length": 8192,
+            "submissions": 1,
+            "seconds_from_first_complete_out_to_reply": 0.150635
+          },
+          {
+            "address": 16384,
+            "length": 8192,
+            "submissions": 1,
+            "seconds_from_first_complete_out_to_reply": 0.150364
+          },
+          {
+            "address": 0,
+            "length": 16384,
+            "submissions": 1,
+            "seconds_from_first_complete_out_to_reply": 0.295098
+          }
+        ]
+      },
+      {
+        "phase": "actual_write",
+        "query_count": 2,
+        "reply_count": 2,
+        "groups": [
+          {
+            "address": 32768,
+            "length": 98304,
+            "submissions": 1,
+            "seconds_from_first_complete_out_to_reply": 1.740239
+          },
+          {
+            "address": 32768,
+            "length": 98304,
+            "submissions": 1,
+            "seconds_from_first_complete_out_to_reply": 1.739553
+          }
+        ]
+      },
+      {
+        "phase": "after_flash_read",
+        "query_count": 14,
+        "reply_count": 7,
+        "groups": [
+          {
+            "address": 393216,
+            "length": 131072,
+            "submissions": 3,
+            "seconds_from_first_complete_out_to_reply": 2.317951
+          },
+          {
+            "address": 262144,
+            "length": 131072,
+            "submissions": 3,
+            "seconds_from_first_complete_out_to_reply": 2.317744
+          },
+          {
+            "address": 131072,
+            "length": 131072,
+            "submissions": 3,
+            "seconds_from_first_complete_out_to_reply": 2.317905
+          },
+          {
+            "address": 32768,
+            "length": 98304,
+            "submissions": 2,
+            "seconds_from_first_complete_out_to_reply": 1.739638
+          },
+          {
+            "address": 24576,
+            "length": 8192,
+            "submissions": 1,
+            "seconds_from_first_complete_out_to_reply": 0.150571
+          },
+          {
+            "address": 16384,
+            "length": 8192,
+            "submissions": 1,
+            "seconds_from_first_complete_out_to_reply": 0.150986
+          },
+          {
+            "address": 0,
+            "length": 16384,
+            "submissions": 1,
+            "seconds_from_first_complete_out_to_reply": 0.29484
+          }
+        ]
+      }
+    ],
+    "strict_whole_capture_lossless_qualification": false,
+    "bootstrap_adapter_error_replies_outside_write_phase": 4,
+    "actual_write_phase_adapter_error_replies": 0
+  },
+  "final_gt_network_state": "0200",
+  "final_gt_speed": "0600",
+  "capture_final_state": "exited_after_pipe_close",
+  "capture_exit_code": 0,
+  "capture_ownership_retained": false,
+  "capture_drain_limit": "unknown; peer close is not proof of complete driver-buffer drain",
+  "evidence": [
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_actual_write_01/capture.pcap",
+      "bytes": 1016188,
+      "sha256": "56143d5b8008c642f121ae388dddf55cfc64571309277832df9f51128a4145bb"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_pcmhammer_write_01/E54_before_test.bin",
+      "bytes": 524288,
+      "sha256": "a3b010af7e04df03be699198920aac26ba0645c2ad608e72eacf0bc3970beb58"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_actual_write_01/E54_after_actual_flash.bin",
+      "bytes": 524288,
+      "sha256": "a3b010af7e04df03be699198920aac26ba0645c2ad608e72eacf0bc3970beb58"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_actual_write_01/prewrite_verify.log",
+      "bytes": 13571,
+      "sha256": "1b6ac598b203e2dee77282ac9a859bd00cefeb10109cdc025de672f8f168cf12"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_actual_write_01/actual_write.log",
+      "bytes": 336906,
+      "sha256": "083f136230583426669d186131878eec6300132ba15f70e67eaa98f48ea65bc7"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_actual_write_01/after_flash_read.log",
+      "bytes": 1634055,
+      "sha256": "81ee71f8fa907ff7795397491d7ab9d05485aece755e5c21b371b3afb0855216"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_actual_write_01/gt_final_off.jsonl",
+      "bytes": 7015,
+      "sha256": "e6e520dcac0e53a8db8a425a190546b4c954a22e885b5ef508157afbf4b46074"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_actual_write_01/analysis_final/actual_usb_audit.json",
+      "bytes": 710761,
+      "sha256": "6e99c2eb100258d6a3d50955124ea7e72b20fa43c337bd25db3772577f8fd068"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_actual_write_01/analysis_final/supplement/session_supplement.json",
+      "bytes": 52318,
+      "sha256": "ab08692c6df42c0865e35f597a4c80ba953917980c71ad44e8ebf37d75fa5778"
+    },
+    {
+      "relative_path": "LocalOnly/pcmhammer_usb_actual_audit_20261030/audit_actual_capture.py",
+      "bytes": 19507,
+      "sha256": "e58d584405d1cd992db8824452788ef27f706b6531e09156db81aa9a0d3fa415"
+    },
+    {
+      "relative_path": "LocalOnly/pcmhammer_usb_actual_audit_20261030/final_session_supplement.py",
+      "bytes": 6322,
+      "sha256": "2f0fb37c76a05f06184b0481a0d8d384536880866310fec122b356bd444d2da6"
+    },
+    {
+      "relative_path": "LocalOnly/pcmhammer_usb_actual_audit_20261030/final_config.json",
+      "bytes": 1348,
+      "sha256": "db5a364503e8df52d06b8fa306f9c58893dfb0a7fa37de8cd044446c82eee9b4"
+    },
+    {
+      "relative_path": "LocalOnly/pcmhammer_usb_actual_audit_20261030/test_audit_actual_capture.py",
+      "bytes": 6804,
+      "sha256": "1e0e69701553946c0eff05972e7d45832738cc894de19bcdba3e878f50c47b6e"
+    },
+    {
+      "relative_path": "LocalOnly/pcmhammer_usb_actual_audit_20261030/write_final_receipt.py",
+      "bytes": 5736,
+      "sha256": "675df320660c21001ffd29205d3d7a0653d95dcc132cf24e1048c9ff8f40532f"
+    },
+    {
+      "relative_path": "Tools/AL5/compare_usb_serial_capture.py",
+      "bytes": 21819,
+      "sha256": "143c7af57baf7ad5e81476ae2ee1474b7d37f3d8b9f4614217ad97dd54ff71b4"
+    },
+    {
+      "relative_path": "Tools/AL5/pcmhammer_usb_capture.py",
+      "bytes": 14664,
+      "sha256": "84c8073169bbe7a961a53347ac1124d12502acaaa689fc04d103bfb6c8209bc9"
+    },
+    {
+      "relative_path": "Tools/AL5/obdx_capture.py",
+      "bytes": 44816,
+      "sha256": "9793411686438b7b12c9b74e2d862dd4aa3a16bc7b2296c0f4107b538e8764d0"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_actual_write_01/analysis_final/final_receipt.json",
+      "bytes": 16949,
+      "sha256": "eb5f2d4877edf90a26fe6125b6946961fae2133773e215f3b3743d43f539b37e"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_actual_write_01/preflight.json",
+      "bytes": 1783,
+      "sha256": "a2d6a97559a356ddce5b59666e30b6e01fa38cfa883e721069b0d4bbc56085d6"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_actual_write_01/actual_write_result.json",
+      "bytes": 212,
+      "sha256": "b9fc79d0c2f22d569ff8181082ca1f359b8a20b8f5708142cae526b793213e33"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_actual_write_01/prewrite_verify_result.json",
+      "bytes": 119,
+      "sha256": "c5b58801819403338e57928a227e0aee309e51e378bc7a05ff4e63e549ff291d"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_actual_write_01/after_flash_read_result.json",
+      "bytes": 267,
+      "sha256": "bd5b63bfb2414b586b3940891712fa0f1abc156daa036b57f4425c240fdc58a0"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_actual_write_01/readback_comparison.json",
+      "bytes": 721,
+      "sha256": "2961615e21fd8cd6983b669d26bfdad70dfd43e1113693ffa26b7c08a11da8dc"
+    },
+    {
+      "relative_path": "LocalOnly/usb_capture_setup_20261030/e54_gt_actual_write_01/receipt.json",
+      "bytes": 3613,
+      "sha256": "a47211b6b0ea0f264ad566a287b6aa0ae6d1d0815d14aa5d2e586b72d9fcc97a"
+    },
+    {
+      "private_absolute_path": "C:\\Codex Projects\\Car Tuning\\private_builds\\e54_forcecal_fix_20261030_01\\fix_receipt.json",
+      "bytes": 2905,
+      "sha256": "6464c2d2b3609abb6f0db3373652d084b1e9b6b18fcb72264499e55d93c9ba46"
+    },
+    {
+      "private_absolute_path": "C:\\Codex Projects\\Car Tuning\\private_builds\\e54_forcecal_fix_20261030_01\\only_this_fix.diff",
+      "bytes": 24328,
+      "sha256": "c8a83bbdb7323c7ea4874a901e1df586091dba1da40031e3576361c0feb4953d"
+    },
+    {
+      "private_absolute_path": "C:\\Codex Projects\\Car Tuning\\private_builds\\e54_forcecal_fix_20261030_01\\KernelWriter.before.cs",
+      "bytes": 17947,
+      "sha256": "ee43fa6052ac86d298d6da746b921e1df72c446dab86b117199eff2920289e43"
+    },
+    {
+      "private_absolute_path": "C:\\Codex Projects\\Car Tuning\\private_builds\\e54_forcecal_fix_20261030_01\\KernelWriter.after.cs",
+      "bytes": 19851,
+      "sha256": "58f6d053b6bc4380310b261282e5a1589f08ae489563ea0ebf9617ba50fb48de"
+    },
+    {
+      "private_absolute_path": "C:\\Codex Projects\\Car Tuning\\private_builds\\e54_forcecal_fix_20261030_01\\green_01\\results.json",
+      "bytes": 7445,
+      "sha256": "a1723623a16df4e272495e9ffbf170d4eb77dd097cfc333af49875e78fda4f50"
+    },
+    {
+      "private_absolute_path": "C:\\Codex Projects\\Car Tuning\\private_builds\\e54_forcecal_fix_20261030_01\\red_results.json",
+      "bytes": 14742,
+      "sha256": "ea9654ff1b36aaa2b0dcbdf558ffdbd6d562aef9a5f85a78283ee1aab266926b"
+    },
+    {
+      "private_absolute_path": "C:\\Codex Projects\\Car Tuning\\private_builds\\e54_forcecal_fix_20261030_01\\test_sources\\Apps\\Tests\\KernelWriterSessionTests.cs",
+      "bytes": 14467,
+      "sha256": "b583fa56a20995eebc4fc6a7da232f7edf968fba518ea3ea8f433172e76a1256"
+    },
+    {
+      "private_absolute_path": "C:\\Codex Projects\\Car Tuning\\private_builds\\e54_forcecal_fix_20261030_01\\test_sources\\Apps\\Tests\\CanKernelBootPolicyTests.cs",
+      "bytes": 13191,
+      "sha256": "a7c0c74029ecf96e92abd163baf6408b8c6620e1b8433b190b869e020e4977fd"
+    },
+    {
+      "private_absolute_path": "C:\\Codex Projects\\Car Tuning\\private_builds\\e54_forcecal_fix_20261030_01\\test_sources\\Apps\\Tests\\TestLogger.cs",
+      "bytes": 1391,
+      "sha256": "c60693b3531c9fe27756b9d552b71f62521c8f8f914caf382427a7b1bb475bac"
+    },
+    {
+      "private_absolute_path": "C:\\Codex Projects\\Car Tuning\\private_builds\\e54_forcecal_fix_20261030_01\\run_tests.ps1",
+      "bytes": 3539,
+      "sha256": "8ec12b68710b636b2956f6f19c1f525e2e889147050a04d2beffca88179ef2bf"
+    },
+    {
+      "private_absolute_path": "C:\\Codex Projects\\Car Tuning\\private_builds\\e54_forcecal_fix_20261030_01\\README.md",
+      "bytes": 3770,
+      "sha256": "4348b69cbeb349ff1095bf3d82361a75007b87b171ff81c07dc6ccec9f5327c1"
+    }
+  ],
+  "limits": [
+    "This was an active GT interface E54 calibration experiment; passive all-source EFILive monitoring was not exercised.",
+    "The loader short ACK is present, but the two EFILive Mode75 ACKs from the earlier passive gap were not exercised.",
+    "USB OUT payload coverage is submission evidence; paired completions, controller ACKs and readback are reported separately.",
+    "Five zero-data non-success IN completions and extra cleanup replies remain retained; no universal losslessness claim.",
+    "CRC readback retries are host no-response/requeries, not reported CRC mismatches; timing is consistent with the old receive timeout.",
+    "The host cleanup change does not prove an intact running kernel, reset recovery or interrupted-flash recovery.",
+    "No AL5 programming or recovery qualification, no AL5 writer enablement, and no electrical noninterference qualification."
+  ]
+}
