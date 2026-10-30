@@ -189,6 +189,80 @@ failure checks also passed. See its [evidence](AUTOCAL_CSHARP_MODEL_20261030.jso
 This developer CLI exposes one fixed model query. It does not add an AutoCal
 entry to PcmHammer's adapter selector or implement a general vehicle port.
 
+## Command 0x8A00: offline field projection
+
+The [focused native trace](AUTOCAL_VPW_TRANSPORT_STATIC.json) now follows
+HAPI's send arguments, receive context, length guard and error-envelope path
+through twelve bounded windows in the same pinned executable. The layouts
+are different in the two directions:
+
+- TX command `0x8A00` occupies bytes 2-3. Byte 4 is the low byte of HAPI's
+  object selector, byte 5 is written as zero, and bytes 6-9 carry a caller
+  metadata DWORD unchanged. The caller's payload is copied at byte 12.
+- Normal RX interpretation requires the requested-command context. For
+  `0x8A00`, bytes 2-5 are one returned metadata DWORD, not an echoed command
+  or a receive route. Bytes 6-9 remain opaque. The payload is copied unchanged.
+- RX bytes `00 FF` at offsets 2-3 select a separate host error envelope.
+  Its payload begins with an echoed command and a separate error-status word.
+  An echo mismatch is an error; this payload must never be treated as VPW data.
+- The inspected receive consumer rejects a positive payload length above
+  `0xC000`. This does not establish the same limit for transmitting.
+
+Metadata value `0x10` has no proven ACK, success or speed meaning. Native VM
+callbacks keep returned metadata separate from exception status. A nearby TX
+in an HTX file does not establish the context or pair a particular RX to it.
+Historical `route_*` fields in the earlier replay reports retain their raw
+byte meaning; their RX candidate groups are not a live dispatch rule.
+
+`Apps/PcmLibrary/AutoCalVpwEnvelope.cs` projects these fields only with an
+explicit `ExplicitVpwRequest8A00Context`. Missing or unsupported context,
+invalid outer CRC, wrong TX command, oversized RX payload and malformed or
+mismatched host errors retain raw evidence but expose no accepted bus payload.
+Normal metadata remains a raw number; error status is exposed only when the
+echoed command matches. Array properties return defensive copies. There is no
+stream reader, request matching, device opening, transmit method or adapter
+selector entry. An incorrectly supplied RX context cannot be detected from
+those bytes alone; this API is not a bus-message identification oracle.
+
+The [saved-trace inventory](AUTOCAL_VPW_TRACE_20261030.json) retains every
+binary wrapper's order, decoded offset, header, payload digest and outer CRC
+from read 12 and the failed-license-check W trace. It records small setup
+payloads separately and never searches local transform data for bus messages.
+There are 162 and 26 TX `0x8A00` envelopes respectively. Every one carries
+`10 00 00 00` in TX bytes 6-9, including before and after the recorded `A1`
+message. That observation cannot identify physical bus speed.
+
+The saved read includes a six-byte `0x8604` command before its first bus
+candidate. The W log reaches its first bus candidate before its first recorded
+`0x8604`, so these transcripts do not establish a complete independent
+initialization recipe. The meanings and requirements of `0x8603`, `0x8604`,
+filters, speed changes and completion flags still need evidence. The W file
+was a failed license check, not a successful flash or recovery demonstration.
+
+The comparison to the prior GT report reproduces 390 matching occurrences
+out of 392 expected messages, with two missing and five extra GT messages.
+The TX/RX payload digest sets are disjoint for this particular trace, so the
+132 TX and 258 RX matches are not double-counted. For other files, shared
+digests are explicit and per-channel upper bounds cannot be summed. These
+counts do not identify physical senders. They corroborate unchanged payload
+bytes for those matches after the prior GT parser's declared trailing-CRC
+removal, not a universal CRC policy or lossless monitoring.
+
+The actual PcmLibrary project built successfully with three existing CS1998
+warnings in `Vehicle.cs` and `Devices/MockDevice.cs`. The new C# harness passed
+55 boundary assertions, then 500 saved envelopes (188 TX, 312 RX), for 5,248
+assertions including the boundary cases. RX context in that private corpus is
+explicitly assumed for field testing, not proven by pairing. All 65 focused
+Python framing, replay, comparison and collector regressions passed. No
+adapter was opened or queried during this work. Source and artifact digests are
+recorded in the [offline test receipt](AUTOCAL_VPW_PROJECTION_TEST_20261030.json).
+
+```powershell
+python -B -m unittest discover -s Tools/AL5 -p test_autocal_vpw_trace.py
+python -B -m unittest discover -s Tools/AL5 -p test_inspect_autocal_vpw_transport.py
+dotnet run --project Tools/AL5/AutoCalVpwEnvelopeTest.csproj --verbosity quiet
+```
+
 ## Remaining integration work
 
 USB packetization and independent adapter discovery are corroborated for the

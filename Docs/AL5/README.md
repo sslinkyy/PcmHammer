@@ -28,8 +28,12 @@ and outer CRC, and records an isolated USB settings read. An independent
 model query now returns `ACV2` with EFILive closed; a simultaneous USB capture
 matches the exact request and reply. The same query also passed after a
 user-reported USB power cycle. A standalone [C# model test](AUTOCAL_MODEL_PROBE.md)
-now performs the same exchange using the built PcmLibrary decoder. This does
-not yet add a general AutoCal device backend or enable AL5 programming.
+now performs the same exchange using the built PcmLibrary decoder. The
+[offline VPW field decoder](AUTOCAL_TRANSPORT.md#command-0x8a00-offline-field-projection)
+now separates TX command fields, context-dependent RX metadata and host errors.
+Its saved-file tests cover 500 envelopes; setup exchanges remain observations
+rather than an initialization recipe. This does not yet add a general AutoCal
+device backend or enable AL5 programming.
 
 [Public-source research dated 2026-10-06](ONLINE_RESEARCH_20261006.md) records
 AL5-specific vendor programming/recovery guidance, conditional hardware leads

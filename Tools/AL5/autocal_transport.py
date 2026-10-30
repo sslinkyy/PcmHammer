@@ -18,8 +18,10 @@ from inspect_trace_containers import MAX_INPUT
 from validate_vm_buffers import read_bounded
 
 
-# Raw route bytes, not controller service identifiers. Route interpretation is
-# bounded to the supplied HTX evidence; unknown routes remain unknown.
+# Historical field names below retain raw bytes 2:4 for saved-report compatibility.
+# TX 008a is a command; RX 1000/0000 are empirical header groups, not routes.
+# In native 8A00 request context RX bytes 2:6 are returned metadata. This replay
+# does not recover that context; its candidate labels cannot dispatch a driver.
 BUS_ROUTES = {1: {b'\x00\x8a'}, 2: {b'\x10\x00', b'\x00\x00'}}
 ADAPTER_ROUTES = {
     bytes.fromhex(value) for value in (
@@ -43,7 +45,7 @@ def envelope_evidence(record, ordinal):
     """Describe one binary HTX record, including unsupported/malformed shapes.
 
     ``framed_message`` owns wrapper acceptance and payload extraction. This
-    function adds evidence fields, route classification, and the outer CRC.
+    function adds evidence fields, empirical header grouping, and the outer CRC.
     """
     if record['kind'] != 0x42:
         raise ValueError('A binary HTX record is required')
@@ -162,8 +164,8 @@ def report(trace, expected_sha256):
         'limits': [
             'HTX is host logging evidence, not a captured AutoCal USB byte stream.',
             'Stored outer CRC agreement does not prove device execution, VPW CRC, bus completeness, or absence of synthesized log messages.',
-            'Known bus-route classification does not decode controller services or identify physical transmitters.',
-            'Adapter-local routes do not imply requests are safe, read-only, or independently callable.',
+            'Legacy route fields retain raw header bytes 2:4; RX candidate groups are not command IDs and do not establish request context.',
+            'Candidate classification does not decode services, identify physical transmitters, or make local commands safe to replay.',
             'Opaque metadata and RX trailing bytes have no assigned sequence, time, status, or request/reply correlation semantics.',
             'Unknown routes and unsupported wrappers remain visible and are never repaired, filtered, or promoted to verified messages.',
             'This tool cannot open devices, transmit, perform firmware/object transforms, or authorize programming.',

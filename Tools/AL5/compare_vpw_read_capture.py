@@ -21,9 +21,10 @@ TRANSFER_END = FLASH_BYTES - 2  # Observed E54 read omits the final two bytes.
 A1 = bytes.fromhex('6cfef0a1')
 DATA_HEADER = bytes.fromhex('6df01036')
 VPW_HEADERS = (0x6c, 0x6d, 0x8c)
-# Wrapper route bytes observed around E54 read traffic. These other routes
-# contain device queries/control, not the 008A TX / 0010 or 0000 RX payloads.
-# Keep the exclusion explicit; new routes require review, not silent skipping.
+# Empirical wrapper groups for this saved E54 read profile. TX bytes 008a
+# identify command8A00; RX groups1000/0000 are part of returned metadata, not
+# command routes. Legacy names below preserve the report contract. This profile
+# cannot recover live request context. New groups require review, not skipping.
 LOCAL_ROUTES = {bytes.fromhex(s) for s in
                 ('0182', '0382', '0482', '0582', '0682', '2383', '2483', '2e83', '0486')}
 

@@ -1,0 +1,126 @@
+{
+  "schema": "autocal-vpw-offline-projection-test-v1",
+  "recorded_date": "2026-10-30",
+  "scope": "Offline host-field projection in actual PcmLibrary project build, static exact-HAPI evidence and saved HTX/GT analysis. No hardware access.",
+  "source_files": [
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Apps\\PcmLibrary\\AutoCalVpwEnvelope.cs",
+      "bytes": 6595,
+      "sha256": "c3367d1b972061b2662b227e608d9278e466b6b30f50d7bbef70c62554c0074f"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Apps\\PcmLibrary\\AutoCalHostFrame.cs",
+      "bytes": 4622,
+      "sha256": "b1f2416eab2ff595c6dfe21608e3fbe2a06a07beecc98c211b00ab43afd83750"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\AutoCalVpwEnvelopeTest.cs",
+      "bytes": 12589,
+      "sha256": "0ad9a1f1534349d653c218ac3af3f66f9fef55d6a4c7d5c57dd4445b08eb986b"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\AutoCalVpwEnvelopeTest.csproj",
+      "bytes": 924,
+      "sha256": "8b0316b51d240c1c7c4a5eab854985b086894b46783f830f42d9d1cdfeb55501"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_autocal_vpw_trace.py",
+      "bytes": 16708,
+      "sha256": "59b0584b1ec58206506031a01f817b468fcf4b86bcfd417003fd28593869b8f7"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_autocal_vpw_transport.py",
+      "bytes": 12292,
+      "sha256": "bf559624fab9564566008c2f8eda64828234b98ef1bfef08c91c64e156877058"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\test_autocal_vpw_trace.py",
+      "bytes": 7846,
+      "sha256": "ddbb4b45d95f16fa86410f83a024fd3b770802d6cfc2114ca6b9f905a7a018bc"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\test_inspect_autocal_vpw_transport.py",
+      "bytes": 2444,
+      "sha256": "21d9fbfacd05afe750b785db0b8156bb896325fbcfa32c33fd7bb2364f696e85"
+    }
+  ],
+  "static_evidence": {
+    "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\AUTOCAL_VPW_TRANSPORT_STATIC.json",
+    "bytes": 40996,
+    "sha256": "d2551b0df3e646469abde42324872b3b3b17a8fe162cccc99bc95db78d738f74"
+  },
+  "saved_trace_evidence": {
+    "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\AUTOCAL_VPW_TRACE_20261030.json",
+    "bytes": 265067,
+    "sha256": "4b927ebdf6777a89a7701f6401c3f8c8ad9bf80dcdce1377a6e1d23309d81bf0"
+  },
+  "private_corpus": {
+    "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\autocal_vpw_projection_20261030\\saved_vpw_context_corpus_v2.json",
+    "bytes": 1588716,
+    "sha256": "dd6ffb9d9d1d3883790f47567a9a1880e68f5caafb65d5ef801bd98ae5063571",
+    "cases": 500,
+    "tx_cases": 188,
+    "rx_cases": 312,
+    "contains_controller_data": true,
+    "publish": false,
+    "rx_context_assumed": true,
+    "request_pairing_established": false,
+    "case_bytes_unchanged_by_correlation_fix": true
+  },
+  "build": {
+    "command": "dotnet run --project Tools/AL5/AutoCalVpwEnvelopeTest.csproj --verbosity quiet",
+    "exit_code": 0,
+    "project_reference": "Apps/PcmLibrary/PcmLibrary.csproj",
+    "warnings": [
+      {
+        "code": "CS1998",
+        "path": "Apps/PcmLibrary/Vehicle.cs",
+        "lines": [
+          166
+        ]
+      },
+      {
+        "code": "CS1998",
+        "path": "Apps/PcmLibrary/Devices/MockDevice.cs",
+        "lines": [
+          131,
+          141
+        ]
+      }
+    ],
+    "warning_sources_changed": false,
+    "pcm_library_assembly": {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\AutoCalVpwEnvelopeTest\\bin\\PcmLibrary.dll",
+      "bytes": 617472,
+      "sha256": "4b89d7c7f9289b09def051c3a6d2b255e82d5bd23f71518a09fd92f71d46d1c0"
+    },
+    "test_assembly": {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\AutoCalVpwEnvelopeTest\\bin\\AutoCalVpwEnvelopeTest.dll",
+      "bytes": 19968,
+      "sha256": "3d899b0c20e9af6c8440788f37461d575866719f30aab42040765f689ecb6068"
+    }
+  },
+  "tests": {
+    "csharp_boundary_assertions": 55,
+    "csharp_saved_cases": 500,
+    "csharp_total_assertions_including_boundaries": 5248,
+    "csharp_saved_command": "dotnet run --project Tools/AL5/AutoCalVpwEnvelopeTest.csproj --no-build -- LocalOnly/autocal_vpw_projection_20261030/saved_vpw_context_corpus_v2.json",
+    "csharp_exit_code": 0,
+    "python_test_count": 65,
+    "python_exit_code": 0,
+    "python_working_directory": "Tools/AL5",
+    "python_command": "python -B -m unittest test_autocal_transport test_autocal_usb test_inspect_autocal_transport test_compare_vpw_read_capture test_object_transforms test_autocal_vpw_trace test_inspect_autocal_vpw_transport"
+  },
+  "limits": [
+    "RX context in the corpus is supplied for field tests; raw header groups do not prove request identity or pairing.",
+    "Synthetic errors and length boundaries exercise decoder behavior, not firmware responses.",
+    "Real-source bounded static disassembly is not a complete control-flow or runtime proof.",
+    "GT correspondence includes missing and extra messages; it is not a lossless capture qualification.",
+    "Bus setup, filters, speed transitions, completion flags, programming and recovery remain unqualified for an independent AutoCal backend."
+  ],
+  "adapter_opened": false,
+  "vehicle_transmissions_enabled": false,
+  "active_autocal_backend_added": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false
+}
