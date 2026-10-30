@@ -19,13 +19,22 @@ The first real run accepted all eight exchanges and closed the native owner;
 see [the setup receipt](../../../Docs/AL5/AUTOCAL_BACKEND_USB_SETUP_20261030.json).
 These responses establish host protocol acceptance, not physical bus behavior.
 
-The separate E54 identity profile is prepared for the isolated spare E54/LB7
-bench. Confirm its current physical connection and power state before invoking
-it. It uses the observed ordinary identification setup, submits exactly one
+The separate E54 identity profile passed one ordinary query on the isolated
+spare E54/LB7 bench. Confirm its current physical connection and power state
+before invoking it again. It uses the observed ordinary identification setup, submits exactly one
 `6C 10 F0 3C 0A` request, then only receives for a bounded interval. It accepts a
 matching OS-ID reply for the saved bench baseline `15189044`, preserving the
 observed nine- or eleven-byte response. The two extra bytes in the latter are
 opaque; neither reply proves which firmware execution state produced it.
+
+The first real identity run submitted one `6C 10 F0 3C 0A` and received
+`6C F0 10 7C 0A 00 E7 C4 34 44 4E`, matching OS `15189044`. Across the complete
+setup/query/cleanup session, all eight TX and eight RX envelopes passed outer
+CRC checks. The journal has no short transfers or replays; final receive queues
+were empty, native disposal completed and no native owner remained retained.
+See the [identity receipt](../../../Docs/AL5/AUTOCAL_E54_IDENTITY_20261030.json)
+for exact source/build hashes, command order and limitations. This is D2XX
+journal evidence, without an independent electrical speed measurement.
 
 Live invocation forms (not automatic test steps):
 
@@ -58,6 +67,7 @@ dotnet run --project Tools/AL5/AutoCalProbeProfileTest.csproj --verbosity quiet
 ```
 
 The backend's 4x transition and physical programming remain unqualified. The
-existing AL5 direct reader and write gates are unchanged. A successful identity
-test would establish one bidirectional exchange only; it would not qualify
-kernel transfer, programming acknowledgements, verification or recovery.
+existing AL5 direct reader and write gates are unchanged. The successful
+identity test establishes one matching exchange only; it does not qualify
+kernel transfer, full readback, programming acknowledgements, verification or
+interrupted-write recovery. AutoCal remains absent from normal adapter selection.

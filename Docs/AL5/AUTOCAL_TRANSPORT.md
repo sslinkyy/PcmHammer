@@ -1,11 +1,12 @@
 # AutoCal V2 transport reconstruction, 2026-10-30
 
 PcmHammer now contains an experimental AutoCal V2 device backend, a bounded
-host channel and a Windows D2XX transport. An isolated USB-only probe using
-the actual PcmLibrary backend completed eight model/setup/recorded-cleanup
-exchanges. Physical VPW operation, programming and recovery remain
-unqualified. AutoCal is absent from the ordinary device factory and CLI
-selection; the working AL5 reader and AL5 live-write gates remain unchanged.
+host channel and a Windows D2XX transport. The actual backend completed an
+isolated USB setup and then one ordinary OS-ID exchange with the spare E54/LB7.
+The reply matched OS 15189044. General transport, physical speed, programming
+and recovery remain unqualified. AutoCal is absent from the ordinary device
+factory and CLI selection; the working AL5 reader and AL5 live-write gates
+remain unchanged.
 
 ## Static evidence
 
@@ -515,7 +516,7 @@ selection. It is deliberately separate from serial auto-detection. The
 standalone `AutoCalBackendProbe --usb-setup` mode exposes only an exact
 model/setup/cleanup sequence while OBD is physically unplugged. A separate fixed
 E54 identity profile admits one OS-ID query for isolated-bench qualification;
-that profile has not run in the setup result below. Neither profile accepts
+its later successful execution is documented separately below. Neither accepts
 arbitrary VPW commands. The factory and ordinary CLI do not expose AutoCal.
 
 The [USB setup result](AUTOCAL_BACKEND_USB_SETUP_20261030.json) records the first
@@ -560,17 +561,58 @@ public result. The successful eight-command hardware setup above retains its
 original source/build hashes; it does not physically qualify the later build.
 
 The [fixed probe guide](../../Tools/AL5/AutoCalBackendProbe/README.md) describes
-the next ordinary identity experiment. Its additional offline harness passes
+the bounded ordinary identity experiment. Its additional offline harness passes
 84 assertions covering immutable command profiles, complete OS-ID validation,
 partial-write continuation and replay rejection. Both observed response extents
 run through the production ordinary-profile Device and Channel. This harness
 does not open native USB or a controller.
 
+## Independent E54 identity exchange
+
+The [E54 identity result](AUTOCAL_E54_IDENTITY_20261030.json) records a successful
+ordinary query on the isolated spare E54/LB7 using AutoCal directly through the
+production backend. The probe used source commit `47e7547`; all nine recorded
+source hashes match that commit's blobs. This was a separate execution from
+the USB-only setup above, with its own source, assembly and evidence pins.
+
+The saved journal contains eight complete TX and eight complete RX envelopes:
+140 bytes submitted and 139 received, all sixteen outer CRCs valid. The exact
+planned order matches. Seven ordinary replies echo their command; the remaining
+reply is interpreted in explicit `8A00` receive context. There are no short
+transfers or host replays in this journal.
+
+Exactly one VPW-payload request was submitted:
+
+```text
+TX payload: 6C 10 F0 3C 0A
+RX payload: 6C F0 10 7C 0A 00 E7 C4 34 44 4E
+```
+
+Bytes `00 E7 C4 34` decode to OS `15189044`. The trailing `44 4E`, receive
+header's remaining opaque bytes and returned metadata `0x10` are preserved;
+they do not identify physical speed or firmware execution state. The host
+journal places the reply 99 ms after the write event, which is not a wire-time
+measurement. This establishes one matching identity exchange on this bench
+attachment; it does not qualify arbitrary VPW traffic or programming.
+
+Recorded cleanup completed. At the final journal event, 891 ms after its clock
+started, both receive queues were empty. The result reports native transport
+disposal, zero retained native owners, and no channel or cleanup exception.
+Raw files remain under `LocalOnly/AutoCalBackendProbe/e54_osid_01.json` and its
+`.journal.jsonl` sibling. Their hashes and the exact tested builds are retained
+in the public result. No independent USBPcap or scope audit is claimed for this
+session, and cleanup does not prove physical bus OFF or return to 1x.
+
+No unlock, kernel upload, full image read, erase, program, verification or
+interrupted-write recovery operation ran in this fixed profile. The normal
+AutoCal factory entry and AL5 live writes remain disabled.
+
 ## Remaining integration work
 
-The bounded model/setup/recorded-cleanup sequence has passed on the isolated
-USB attachment. Independent VPW messaging, physical speed, filters, firmware
-completion behavior and programming authorization still require qualification.
+The bounded model/setup/recorded-cleanup sequence and one ordinary E54 identity
+exchange have passed. Kernel transfer, full readback, larger or sustained VPW
+exchanges, physical speed, filters, programming completion and authorization
+still require qualification for the independent AutoCal backend.
 An ordinary PcmHammer factory/CLI integration must also explicitly own and
 close the native device: the current Vehicle disposal path alone does not
 unconditionally dispose its Device. Cancellation must cover initialization as
