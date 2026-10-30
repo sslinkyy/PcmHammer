@@ -1,0 +1,341 @@
+{
+  "schema": "e54-vpw-monitoring-public-summary-v1",
+  "experiment_date": "2026-10-29",
+  "timezone": "America/Los_Angeles",
+  "scope": "Isolated E54/LB7 high-speed read monitoring; no flash operation",
+  "hardware": {
+    "controller": "E54/LB7 bench ECM",
+    "reported_os": "15189044",
+    "reader": "EFILive AutoCal V2",
+    "monitor": "OBDX Pro GT",
+    "monitor_firmware": "1.0.2.0",
+    "monitor_hardware": "1.0.0.0",
+    "scope": "FNIRSI 2C53P",
+    "bus": "J1850 VPW",
+    "monitor_rate": "fixed 4x",
+    "probe_settings": {
+      "channel": "CH1",
+      "volts_per_div": 5,
+      "probe_menu": "X10",
+      "coupling": "DC",
+      "trigger": "Auto rising edge CH1"
+    },
+    "physical_probe_attenuation_independently_verified": false
+  },
+  "condition_association": "User-reported physical setup and photo association; adapter GET records support OFF/LISTEN states. Scope screen filenames are not read numbers.",
+  "runs": [
+    {
+      "condition": "gt_attached_off",
+      "read_number": 6,
+      "ui_elapsed": "02:00",
+      "addressed_transfer_seconds": 113.958,
+      "trace_evidence_id": "off_htx"
+    },
+    {
+      "condition": "gt_attached_listen",
+      "read_number": 7,
+      "ui_elapsed": "01:59",
+      "addressed_transfer_seconds": 113.947,
+      "trace_evidence_id": "listen_htx"
+    },
+    {
+      "condition": "gt_unplugged",
+      "read_number": 8,
+      "ui_elapsed": "02:01",
+      "addressed_transfer_seconds": 115.004,
+      "trace_evidence_id": "unplugged_htx"
+    }
+  ],
+  "read_comparison": {
+    "scope": "Selected HTX window strictly after A1 through final E54 data response; known local wrapper-query records excluded",
+    "all_three_ordered_sequences_equal": true,
+    "messages_per_run": 392,
+    "host_request_candidates": 132,
+    "ecm_response_candidates": 260,
+    "unique_addressed_requests_per_run": 128,
+    "repeated_addressed_requests_per_run": 0,
+    "unique_data_blocks_per_run": 128,
+    "all_block_checksums_valid": true,
+    "observed_range_start": 0,
+    "observed_range_end_exclusive": 524286,
+    "observed_bytes": 524286,
+    "unobserved_final_bytes": 2,
+    "full_512_kib_image_observed": false,
+    "observed_data_sha256": "a53bef772ac8f176296c5923fd3f93ca862ab5148cff292b7fb63eee37dd58ed",
+    "all_six_segment_checksums_valid_each_run": true,
+    "segment_checksums_hex": [
+      "7288",
+      "BE72",
+      "6D21",
+      "A3D3",
+      "9F33",
+      "16FB"
+    ],
+    "literal_timeout_records_per_run": 7,
+    "literal_timeout_records_inside_transfer_window_per_run": 0
+  },
+  "listen_capture_comparison": {
+    "normalization": "Remove one final physical VPW CRC byte from each GT frame only",
+    "reference_is_an_independent_complete_bus_recording": false,
+    "strict_ordered_match": false,
+    "expected_messages": 392,
+    "captured_network_frames": 393,
+    "all_132_reference_host_requests_present_in_order": true,
+    "all_128_reference_data_blocks_present_with_valid_checksums": true,
+    "physical_crc_checked_frames": 393,
+    "physical_crc_failures": 0,
+    "missing_acknowledgments": [
+      {
+        "message_hex_without_physical_crc": "6cf010768078",
+        "count": 1,
+        "association": "read-loader acknowledgment"
+      },
+      {
+        "message_hex_without_physical_crc": "6df010750154",
+        "count": 2,
+        "nearest_preceding_requested_addresses_hex": [
+          "02d000",
+          "068000"
+        ]
+      }
+    ],
+    "acknowledgment_address_association": "Nearest preceding addressed request; an ordering association, not an address field inside the acknowledgment",
+    "extra_messages_hex_without_physical_crc": [
+      "6cfef13f",
+      "8cfef03f",
+      "6c10f03f",
+      "6c10f03c55"
+    ],
+    "extra_count_each": 1,
+    "source_header_counts": {
+      "f0": 135,
+      "10": 257,
+      "f1": 1
+    },
+    "source_headers_identify_physical_transmitters": false,
+    "serial_byte_accounting": {
+      "all_logged_rx_bytes_accounted_for": true,
+      "logged_rx_bytes": 532830,
+      "mapped_dvi_bytes": 532830,
+      "unaccounted_bytes": 0,
+      "mapped_dvi_frames": 467,
+      "mapped_network_frames": 393,
+      "logged_rx_sha256": "9a8111c13c24eaeac84dbd74cdac893646fe97dc8fb78c71946f52f89effdc5a"
+    },
+    "loss_location": "Missing acknowledgments are absent at the recorded serial_rx boundary; the physical bus, adapter, USB/driver and pre-logging host stages are not distinguished",
+    "observable_settings_restored": true,
+    "observable_settings_count": 9,
+    "hidden_settings_restored": null,
+    "final_network_off_verified": true,
+    "capture_tool_outgoing_guard_violations": 0
+  },
+  "scope_photographs": [
+    {
+      "condition": "gt_attached_off",
+      "path": "assets/vpw-monitoring-20261029/gt_off_scope_20us_4bmp_photo.jpg",
+      "screen_label": "4.bmp",
+      "microseconds_per_div": 20,
+      "bytes": 106950,
+      "sha256": "92e212a7e01d47c4327b0924cf325880dea720c313d93b8b184daa1a3552894a",
+      "image_transformed": false,
+      "acquisition_time_and_packet_identity": null
+    },
+    {
+      "condition": "gt_attached_off",
+      "path": "assets/vpw-monitoring-20261029/gt_off_scope_20us_5bmp_photo.jpg",
+      "screen_label": "5.bmp",
+      "microseconds_per_div": 20,
+      "bytes": 91605,
+      "sha256": "280981fc80c7314c16f8f8c2e877de1ff2ab3fb672e283c0cadb8d59c09e5994",
+      "image_transformed": false,
+      "acquisition_time_and_packet_identity": null
+    },
+    {
+      "condition": "gt_attached_off",
+      "path": "assets/vpw-monitoring-20261029/gt_off_scope_100us_6bmp_photo.jpg",
+      "screen_label": "6.bmp",
+      "microseconds_per_div": 100,
+      "bytes": 94253,
+      "sha256": "aa019080a0fdd7ed2e92510ea244d50daf56011473179a6647ce80ef0b3483f3",
+      "image_transformed": false,
+      "acquisition_time_and_packet_identity": null
+    },
+    {
+      "condition": "gt_attached_off",
+      "path": "assets/vpw-monitoring-20261029/gt_off_scope_100us_7bmp_photo.jpg",
+      "screen_label": "7.bmp",
+      "microseconds_per_div": 100,
+      "bytes": 97073,
+      "sha256": "f5be3d3bb2daa2b3dbdeb7fa1f36987b8ef76492eaf7da1920d433e12e701b2a",
+      "image_transformed": false,
+      "acquisition_time_and_packet_identity": null
+    },
+    {
+      "condition": "gt_attached_listen",
+      "path": "assets/vpw-monitoring-20261029/gt_listen_scope_20us_16bmp_photo.jpg",
+      "screen_label": "16.bmp",
+      "microseconds_per_div": 20,
+      "bytes": 102242,
+      "sha256": "70a949de78307cf343e56fe1931850ca0503905774107097f0e70e8d8d1c79ba",
+      "image_transformed": false,
+      "acquisition_time_and_packet_identity": null
+    },
+    {
+      "condition": "gt_attached_listen",
+      "path": "assets/vpw-monitoring-20261029/gt_listen_scope_20us_17bmp_photo.jpg",
+      "screen_label": "17.bmp",
+      "microseconds_per_div": 20,
+      "bytes": 98854,
+      "sha256": "8e96a692558e3b6faf99e9a62cb255f147e4b160d33f43234b833873752eedb0",
+      "image_transformed": false,
+      "acquisition_time_and_packet_identity": null
+    },
+    {
+      "condition": "gt_attached_listen",
+      "path": "assets/vpw-monitoring-20261029/gt_listen_scope_100us_18bmp_photo.jpg",
+      "screen_label": "18.bmp",
+      "microseconds_per_div": 100,
+      "bytes": 85318,
+      "sha256": "96dd7a324ebdf0d9c1772817123427f4ca72e7cb6b61ad9333f59c6a8c9dd95e",
+      "image_transformed": false,
+      "acquisition_time_and_packet_identity": null
+    },
+    {
+      "condition": "gt_attached_listen",
+      "path": "assets/vpw-monitoring-20261029/gt_listen_scope_100us_19bmp_photo.jpg",
+      "screen_label": "19.bmp",
+      "microseconds_per_div": 100,
+      "bytes": 83581,
+      "sha256": "0dd44db5d755a56a1ea56dafe2fb3ddba0ccb7ba0539efb0efc48e0380cb3dc7",
+      "image_transformed": false,
+      "acquisition_time_and_packet_identity": null
+    },
+    {
+      "condition": "gt_unplugged",
+      "path": "assets/vpw-monitoring-20261029/gt_unplugged_scope_20us_24bmp_photo.jpg",
+      "screen_label": "24.bmp",
+      "microseconds_per_div": 20,
+      "bytes": 96894,
+      "sha256": "08c0262af48b8336b2c9f0ca6860f40f16ac0f371353d5bde28261ed2a9f2cd1",
+      "image_transformed": false,
+      "acquisition_time_and_packet_identity": null
+    },
+    {
+      "condition": "gt_unplugged",
+      "path": "assets/vpw-monitoring-20261029/gt_unplugged_scope_20us_26bmp_photo.jpg",
+      "screen_label": "26.bmp",
+      "microseconds_per_div": 20,
+      "bytes": 96075,
+      "sha256": "51ff9cb91cd2f996090847f735e11fb17e2bb476d9c088522179d89610cb2eaf",
+      "image_transformed": false,
+      "acquisition_time_and_packet_identity": null
+    },
+    {
+      "condition": "gt_unplugged",
+      "path": "assets/vpw-monitoring-20261029/gt_unplugged_scope_100us_28bmp_photo.jpg",
+      "screen_label": "28.bmp",
+      "microseconds_per_div": 100,
+      "bytes": 99360,
+      "sha256": "95586861b33bae4af75a1272cefd419b42135d5912680053213279de3093433d",
+      "image_transformed": false,
+      "acquisition_time_and_packet_identity": null
+    },
+    {
+      "condition": "gt_unplugged",
+      "path": "assets/vpw-monitoring-20261029/gt_unplugged_scope_100us_31bmp_photo.jpg",
+      "screen_label": "31.bmp",
+      "microseconds_per_div": 100,
+      "bytes": 97946,
+      "sha256": "896c399edf2d5d5bfa07dbbb4059b1f7f81c7f7934d49c3d9d66d2c8b242832c",
+      "image_transformed": false,
+      "acquisition_time_and_packet_identity": null
+    }
+  ],
+  "visual_observations": [
+    "High plateaus are approximately 1.4-1.6 vertical divisions above low across the three conditions, about 7-8 V assuming physical probe attenuation matches the X10 menu",
+    "Rising-edge overshoot remains plainly visible with the GT physically absent at both 20 us/div and 100 us/div",
+    "Rounded falling tails and return near the displayed reference level persist with the GT absent",
+    "No obvious gross amplitude collapse, clipping or persistent level shift is visible between unplugged, attached/OFF and attached/LISTEN windows"
+  ],
+  "visual_derivation": "The mere presence of the peaks and rounded tails cannot be attributed to GT LISTEN, because they also occur with the GT physically absent. A smaller GT contribution is not excluded.",
+  "bounded_conclusion": "No observed read-data or retry degradation and no obvious gross waveform deterioration in these isolated-bench E54 high-speed read comparisons",
+  "limitations": [
+    "Different packets and bit patterns were photographed; pulse-width differences are not evidence of loading changes",
+    "Camera perspective, focus, exposure and scope rendering prevent reliable small voltage, overshoot or edge-time deltas",
+    "Probe compensation, calibration and physical attenuation were not independently verified",
+    "Short displayed windows cannot exclude rare disturbances or unintended pulses outside those windows",
+    "Shared bus voltage does not establish which device drove a particular pulse",
+    "Single matched condition runs do not establish statistically significant timing changes",
+    "Read-only tests do not qualify AL5 programming, recovery or monitoring during a flash",
+    "Fixed 4x monitoring does not establish continuity across 1x/4x transitions.",
+    "HTX comparison is relative to the decoded application trace, whose physical-bus completeness is unknown.",
+    "The photos are original camera images of the scope screen, not raw waveform sample records.",
+    "This experiment does not qualify MultiMap selector/latch logic, RAM ownership, interrupt/fault behavior, or engine operation.",
+    "Private trace inputs are identified by hashes but are not included, so the full packet comparison cannot be reproduced from this publication alone."
+  ],
+  "qualification": {
+    "electrical_noninterference_proven": false,
+    "absence_of_all_unintended_gt_transmissions_proven": false,
+    "complete_bus_capture_proven": false,
+    "speed_transition_capture_proven": false,
+    "al5_programming_or_recovery_qualified": false,
+    "live_al5_writes_enabled": false,
+    "ready_to_flash": false,
+    "multimap_runtime_qualified_by_this_experiment": false
+  },
+  "private_evidence_provenance": [
+    {
+      "evidence_id": "off_htx",
+      "bytes": 200293,
+      "sha256": "885c54aafda20c89b86a2755a80a7306167a9cc6a593cc1884c5d0ce757093ec",
+      "published": false
+    },
+    {
+      "evidence_id": "listen_htx",
+      "bytes": 200250,
+      "sha256": "cd259a71044c27f74c56538c27ac98836df076260de7d06fae38ec77c648ad9f",
+      "published": false
+    },
+    {
+      "evidence_id": "unplugged_htx",
+      "bytes": 200297,
+      "sha256": "f47eafabcc8439cad666bcc3e4744a936fc5b15543e094e498aa3d5a3c15bcd1",
+      "published": false
+    },
+    {
+      "evidence_id": "listen_capture",
+      "bytes": 3283314,
+      "sha256": "a23bae9373e27de0bc98a63bee215316826a38f69dbfe9394ff963491c1dceb6",
+      "published": false
+    },
+    {
+      "evidence_id": "listen_comparison_receipt",
+      "bytes": 124176,
+      "sha256": "0fd5dbaeee14743cd66edea37eb5a15592bdc838c2540a15f3b5f5eccbb391a7",
+      "published": false
+    },
+    {
+      "evidence_id": "serial_delivery_receipt",
+      "bytes": 584131,
+      "sha256": "47e33425b469d3d1b168b0cbd278686418e9b35550c753e62192e3fa9a06a565",
+      "published": false
+    },
+    {
+      "evidence_id": "three_read_comparison_receipt",
+      "bytes": 52604,
+      "sha256": "008452a01e0e3debd49212199797531d20a675fab5bbf402beb3891b3b22dda0",
+      "published": false
+    },
+    {
+      "evidence_id": "three_condition_scope_receipt",
+      "bytes": 6588,
+      "sha256": "4e24b83a29a3b15fb35f157e704b40c96183c05e9af04085f2b458bad114a58b",
+      "published": false
+    }
+  ],
+  "publication": {
+    "included": "12 unchanged original scope photographs, portable result summary and source hashes",
+    "excluded": "Tune images, CTZ/BIN files, raw HTX/serial logs, local absolute paths and unrelated unpublished implementation work",
+    "accidental_redisplays_of_baseline_photos_excluded": true
+  }
+}

@@ -1,5 +1,13 @@
 ## Overview
 
+### AL5 research update — October 29, 2026
+
+[E54 VPW monitoring results and twelve scope photographs](Docs/AL5/E54_VPW_MONITORING_20261029.md)
+compare the GT attached/OFF, LISTEN ONLY and physically unplugged during AutoCal reads.
+The observed read data match, but simultaneous GT capture missed three acknowledgments
+and is not lossless. This E54 monitoring experiment does not qualify AL5 programming
+or recovery; live AL5 writes remain disabled.
+
 PCM Hammer and tools support reading, writing, and data logging with General Motors P01, P04, P05 (VPW), P08, P10, P11, P12, P59, 4 connector 98-02 Black Box and E54 Powertrain Control Modules (PCMs).
 
 ```
