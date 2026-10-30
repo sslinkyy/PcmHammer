@@ -18,11 +18,17 @@ namespace PcmHacking
         private readonly OSIDInfo pcmInfo;
         private readonly Protocol protocol;
         private readonly ILogger logger;
+        private readonly byte readReplySubmode;
 
         public int CrcPollingDelayMs { get; set; } = 50;
 
         public CKernelReader(Vehicle vehicle, OSIDInfo pcmInfo, ILogger logger)
+            : this(vehicle, pcmInfo, logger, 1) { }
+
+        public CKernelReader(Vehicle vehicle, OSIDInfo pcmInfo, ILogger logger, byte readReplySubmode)
         {
+            if (readReplySubmode > 1) throw new ArgumentOutOfRangeException(nameof(readReplySubmode));
+            this.readReplySubmode = readReplySubmode;
             this.vehicle = vehicle;
             this.pcmInfo = pcmInfo;
 
@@ -382,7 +388,7 @@ namespace PcmHacking
 
                 Response<byte[]> readResponse = await this.vehicle.ReadMemory(
                     () => this.protocol.CreateReadRequest(startAddress, length),
-                    (payloadMessage) => this.protocol.ParsePayload(payloadMessage, length, startAddress),
+                    (payloadMessage) => this.protocol.ParsePayload(payloadMessage, length, startAddress, this.readReplySubmode),
                     cancellationToken);
 
                 if(readResponse.Status != ResponseStatus.Success)

@@ -316,3 +316,11 @@ isolated E54 bench. Full flash readback, the backend's 4x transition, programmin
 and interrupted-write recovery remain unqualified. The existing AL5 direct
 reader and write gates are unchanged. AutoCal remains absent from normal
 adapter selection.
+
+The separate `--plan-e54-read-baseline-acknowledged` previews the full-image
+ACK-plus-zero profile without opening USB. Its live form is
+`--e54-read-baseline-acknowledged --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json`.
+It uses the same exact RAM asset as the successful prefix test, but requests
+128 sequential 4096-byte blocks and seven CRC ranges. Every block requires
+its own ACK. The original full-read and prefix profiles remain separate.
+No full-image physical result exists yet; flashing remains unavailable.

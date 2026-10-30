@@ -81,8 +81,6 @@ internal sealed class AutoCalKernelProbeSession
         inner = device ?? throw new ArgumentNullException(nameof(device));
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         this.policy = policy ?? throw new ArgumentNullException(nameof(policy));
-        if (policy.FullReadEnabled && policy.PrependReadAcknowledgement)
-            throw new NotSupportedException("Acknowledged full-image mode is offline-only until the running reader handles its reply submode and per-block acknowledgement boundary.");
         cancellation = cancellationToken;
         this.copyOnly = copyOnly;
         if (copyOnly && (fullRead || shortRead) || fullRead && shortRead)
@@ -200,7 +198,7 @@ internal sealed class AutoCalKernelProbeSession
             {
                 result.Stage = AutoCalKernelProbeStage.FullRead;
                 result.ReadbackScope = "full-image";
-                var reader = new CKernelReader(vehicle, info, logger);
+                var reader = new CKernelReader(vehicle, info, logger, policy.ReadReplySubmode);
                 Response<Stream> read = await reader.ReadRunningKernelContents(cancellation).ConfigureAwait(false);
                 if (read.Value != null)
                 {
@@ -391,6 +389,9 @@ internal sealed class AutoCalKernelProbeSession
             Check();
             try
             {
+                if (policy.FullReadEnabled && policy.PrependReadAcknowledgement && policy.ReadBlockReplies > 0
+                    && (inner.ReceivedMessageCount != 0 || inner.Channel.BufferedByteCount != 0 || inner.Channel.PendingByteCount != 0))
+                    throw new InvalidDataException("Pending receive bytes after acknowledged block; no further transmit permitted.");
                 byte[] bytes = message.GetBytes();
                 policy.BeforeTransmit(bytes);
                 // Mark before submission: a failure can leave bytes in flight.

@@ -83,6 +83,19 @@ internal static class AutoCalKernelProbeSessionTest
         await Case("acknowledged prefix retains trailing75 bytes and blocks exit", () => AcknowledgedReadFailure("ack-trailing"));
         await Case("acknowledgement survives a later payload checksum failure", () => AcknowledgedReadFailure("short-corrupt"));
         await Case("ordinary zero-submode mode cannot silently admit75", UnexpectedAcknowledgement);
+        await Case("acknowledged full image uses128ACKs and seven CRCs", async () => {
+            var f = await Fixture(fullRead: true, useZeroSubmodeKernel: true, prependReadAcknowledgement: true);
+            var r = await f.session.RunAsync();
+            Require(r.Success && r.ReadbackLength == 524288 && r.ReadbackCrcVerified && r.BaselineMatched,
+                "complete acknowledged image and CRC verification");
+            Require(f.policy.ReadAcknowledgementCount == 128 && f.policy.VerifiedCrcRanges == 7 && r.PostExitIdentityVerified,
+                "per-block acknowledgements and explicit exit");
+        });
+        await Case("missing second full-read ACK blocks further traffic", async () => {
+            var f = await Fixture("full-ack-missing", fullRead: true, useZeroSubmodeKernel: true, prependReadAcknowledgement: true);
+            var r = await f.session.RunAsync();
+            Require(!r.Success && f.policy.ReadBlockReplies == 1 && !Has(f.adapter, "6C10F020"), "no reuse of earlier ACK or exit after failure");
+        });
         Console.WriteLine(JsonSerializer.Serialize(new { assertions, passed, failed,
             adapterOpened = false, liveWriteEnabled = false, hardwareQualified = false,
             scope = "Production Vehicle + AutoCalDevice/Channel under the bounded policy, scripted byte transport only" }));
@@ -95,7 +108,7 @@ internal static class AutoCalKernelProbeSessionTest
         var token = cancel?.Token ?? CancellationToken.None;
         var device = new AutoCalDevice(new AutoCalChannel(adapter), new Log(), token, AutoCalSetupProfile.RecordedOrdinaryIdentification);
         Require(await device.Initialize(), "ordinary host setup accepted by fake adapter");
-        var policy = new AutoCalKernelProbePolicy(kernel, fullRead, shortRead, useZeroSubmodeKernel, prependReadAcknowledgement);
+        var policy = new AutoCalKernelProbePolicy(kernel, fullRead, shortRead, useZeroSubmodeKernel, prependReadAcknowledgement, fullRead && prependReadAcknowledgement);
         var session = new AutoCalKernelProbeSession(device, new Log(), policy, token, copyOnly, fullRead, shortRead, recordedReadSetup);
         return (adapter, device, policy, session);
     }
@@ -779,7 +792,9 @@ internal static class AutoCalKernelProbeSessionTest
                         if (failure == "read-cancel" && ReadRequests == 64) { cancel!.Cancel(); return; }
                         byte[] data = baseline;
                         if (failure == "read-different" && address == 0) { data = (byte[])baseline.Clone(); data[0] ^= 1; }
-                        reply = Block(data, address, length, address, 1); reply[1] = 0xF0; reply[2] = 0x10;
+                        reply = Block(data, address, length, address, ZeroSubmodeKernel ? (byte)0 : (byte)1);
+                        if (PrependReadAcknowledgement && !(failure == "full-ack-missing" && ReadRequests == 2)) Enqueue(Packet(0x10, Hex("6DF010750154")));
+                        reply[1] = 0xF0; reply[2] = 0x10;
                         if (failure == "read-corrupt") reply[^1] ^= 1;
                     }
                     else if (FullRead && bytes.Length == 11 && bytes.AsSpan(0, 5).SequenceEqual(Hex("6C10F03D02")))

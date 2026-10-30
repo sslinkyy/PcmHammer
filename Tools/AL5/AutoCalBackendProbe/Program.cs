@@ -78,7 +78,7 @@ internal static class Program
         int fullReadVpwLimit = AutoCalKernelProbePolicy.MaximumFullReadToolPresentAttempts + 11
             + AutoCalKernelProbePolicy.ReadBlockCount + 7 * AutoCalKernelProbePolicy.MaximumCrcQueriesPerRange;
         return new { schema = "autocal-backend-bounded-probe-plan-v4",
-            profile = kernelPolicy == null ? profile.Name : (copyOnly ? "e54-ram-copy" : fullRead ? "e54-read-baseline"
+            profile = kernelPolicy == null ? profile.Name : (copyOnly ? "e54-ram-copy" : fullRead ? (acknowledgedRead ? "e54-read-baseline-acknowledged" : "e54-read-baseline")
                 : recordedReadSetup ? "e54-read-prefix-recorded-setup" : acknowledgedRead ? "e54-read-prefix-acknowledged" : zeroSubmode ? "e54-read-prefix-submode-zero"
                 : shortRead ? "e54-read-prefix" : "e54-kernel-info"),
             source_sha256 = sources.ToDictionary(x => x, x => Hash(Path.Combine(root, x))),
@@ -136,7 +136,7 @@ internal static class Program
                         : "Flash identification, CRC and image reads are absent from this mode.",
                 "Kernel-info is a fixed RAM-only experiment: exact observed Copy/Execute replies gate the known version, exit and final identity. Copy-only mode stops before execution and requires a bench power cycle.",
                 "Recorded-setup prefix mode tests the observed configuration lifecycle; firmware meanings, persistence and receive effect remain unproven. Kernel, read address/length and VPW requests are unchanged.",
-                acknowledgedRead ? "Acknowledged prefix mode adds one exact Mode75 reply before the zero-submode data. It uses a fixed reviewed stub within existing metadata space; image length and receive-buffer location are unchanged. The stub assumes the sole host-allowed 64-byte request and does not implement general Mode35 validation. Timing and delivery remain unqualified."
+                acknowledgedRead ? "Acknowledged prefix mode adds one exact Mode75 reply before the zero-submode data. It uses a fixed reviewed stub within existing metadata space; image length and receive-buffer location are unchanged. The stub assumes the host-allowed ascending fixed read requests and does not implement general Mode35 validation. Timing and delivery remain unqualified."
                     : "Zero-submode prefix mode changes one reply-template byte in the pinned RAM kernel clone. The raw reply checksum must validate with submode zero; ordinary configuration is retained. No extra acknowledgement is added.",
                 "Replies do not establish physical VPW speed, programming or recovery. No speed change is requested.",
                 "Partial/ambiguous transfers stop the session; cleanup only closes owned host resources after failure.", "Close failure retains owner; EOF does not release it." } };
@@ -176,17 +176,18 @@ internal static class Program
         try
         {
             bool copyOnly = args.Length > 0 && (args[0] == "--e54-ram-copy" || args[0] == "--plan-e54-ram-copy");
-            bool fullRead = args.Length > 0 && (args[0] == "--e54-read-baseline" || args[0] == "--plan-e54-read-baseline");
+            bool acknowledgedFullRead = args.Length > 0 && (args[0] == "--e54-read-baseline-acknowledged" || args[0] == "--plan-e54-read-baseline-acknowledged");
+            bool fullRead = acknowledgedFullRead || args.Length > 0 && (args[0] == "--e54-read-baseline" || args[0] == "--plan-e54-read-baseline");
             bool recordedReadSetup = args.Length > 0 && (args[0] == "--e54-read-prefix-recorded-setup" || args[0] == "--plan-e54-read-prefix-recorded-setup");
-            bool acknowledgedRead = args.Length > 0 && (args[0] == "--e54-read-prefix-acknowledged" || args[0] == "--plan-e54-read-prefix-acknowledged");
+            bool acknowledgedRead = acknowledgedFullRead || args.Length > 0 && (args[0] == "--e54-read-prefix-acknowledged" || args[0] == "--plan-e54-read-prefix-acknowledged");
             bool zeroSubmode = acknowledgedRead || (args.Length > 0 && (args[0] == "--e54-read-prefix-submode-zero" || args[0] == "--plan-e54-read-prefix-submode-zero"));
-            bool shortRead = recordedReadSetup || zeroSubmode || (args.Length > 0 && (args[0] == "--e54-read-prefix" || args[0] == "--plan-e54-read-prefix"));
+            bool shortRead = recordedReadSetup || (zeroSubmode && !fullRead) || (args.Length > 0 && (args[0] == "--e54-read-prefix" || args[0] == "--plan-e54-read-prefix"));
             bool kernelInfo = copyOnly || fullRead || shortRead || (args.Length > 0 && (args[0] == "--e54-kernel-info" || args[0] == "--plan-e54-kernel-info"));
             bool identity = kernelInfo || (args.Length > 0 && (args[0] == "--e54-osid-read" || args[0] == "--plan-e54-osid-read"));
             ProbeProfile profile = new(identity);
             AutoCalKernelProbePolicy? kernelPolicy = kernelInfo
-                ? new(File.ReadAllBytes(AutoCalKernelProbePolicy.DefaultKernelPath), fullRead, shortRead, zeroSubmode, acknowledgedRead) : null;
-            string operation = kernelInfo ? (copyOnly ? "e54-ram-copy" : fullRead ? "e54-read-baseline"
+                ? new(File.ReadAllBytes(AutoCalKernelProbePolicy.DefaultKernelPath), fullRead, shortRead, zeroSubmode, acknowledgedRead, acknowledgedFullRead) : null;
+            string operation = kernelInfo ? (copyOnly ? "e54-ram-copy" : fullRead ? (acknowledgedRead ? "e54-read-baseline-acknowledged" : "e54-read-baseline")
                 : recordedReadSetup ? "e54-read-prefix-recorded-setup" : acknowledgedRead ? "e54-read-prefix-acknowledged" : zeroSubmode ? "e54-read-prefix-submode-zero"
                 : shortRead ? "e54-read-prefix" : "e54-kernel-info") : profile.Name;
             string root = Root(); object plan = Plan(root, profile, kernelPolicy, copyOnly, recordedReadSetup);
@@ -195,7 +196,8 @@ internal static class Program
                 || args.SequenceEqual(new[] { "--plan-e54-read-baseline" }) || args.SequenceEqual(new[] { "--plan-e54-read-prefix" })
                 || args.SequenceEqual(new[] { "--plan-e54-read-prefix-recorded-setup" })
                 || args.SequenceEqual(new[] { "--plan-e54-read-prefix-submode-zero" })
-                || args.SequenceEqual(new[] { "--plan-e54-read-prefix-acknowledged" }))
+                || args.SequenceEqual(new[] { "--plan-e54-read-prefix-acknowledged" })
+                || args.SequenceEqual(new[] { "--plan-e54-read-baseline-acknowledged" }))
             { Console.WriteLine(JsonSerializer.Serialize(plan, new JsonSerializerOptions { WriteIndented = true })); return 0; }
             if (args.Length != 6 || args[0] != "--" + operation
                 || args[1] != (identity ? "--isolated-e54-bench" : "--obd-disconnected") || args[2] != "--serial" || args[4] != "--receipt")
@@ -352,7 +354,7 @@ internal static class Program
                     kernelPolicy.FullReadEnabled, kernelPolicy.ReadBlockAttempts, kernelPolicy.ReadBlockReplies,
                     kernelPolicy.ShortReadEnabled, kernelPolicy.IsShortReadVerified,
                     kernelPolicy.UsesZeroSubmodeKernel, kernelPolicy.EffectiveKernelSha256, kernelPolicy.ReadReplySubmode,
-                    kernelPolicy.PrependReadAcknowledgement, kernelPolicy.ReadAcknowledgementObserved,
+                    kernelPolicy.PrependReadAcknowledgement, kernelPolicy.ReadAcknowledgementObserved, kernelPolicy.ReadAcknowledgementCount,
                     read_acknowledgement = kernelPolicy.ReadAcknowledgement == null ? null : Convert.ToHexString(kernelPolicy.ReadAcknowledgement),
                     kernelPolicy.CrcQueryAttempts, kernelPolicy.VerifiedCrcRanges, kernelPolicy.IsImageVerified,
                     kernelPolicy.BaselineShaMatched, kernelPolicy.ComputedImageSha256,

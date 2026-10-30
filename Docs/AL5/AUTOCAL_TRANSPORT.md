@@ -935,9 +935,13 @@ the pinned full-image digest and all seven controller CRC ranges. Each block
 requires its own acknowledgement; the preceding block's ACK cannot authorize
 the next reply. The production-policy regression passes this complete sequence
 and rejects a missing second-block ACK. This uses saved baseline bytes and
-synthetic replies, not a physical full read. The live session explicitly rejects
-this mode until the running reader's submode selection and per-block receive
-boundaries are integrated. No hardware was accessed for this extension.
+synthetic replies, not a physical full read. The separate `--e54-read-baseline-acknowledged` profile now connects this
+policy to the production reader with explicit submode-zero parsing. Existing
+reader callers retain submode one. Pending receive bytes after a completed
+block prevent further transmission. The profile requires all 128 ACK/data
+pairs, the pinned image digest, seven controller CRC ranges, kernel exit and
+post-exit identity. Its bounds remain 392 VPW / 399 host commands and 900
+seconds. No hardware full read has yet qualified this profile.
 
 The developer probe now has a separate fixed baseline-read profile. It reuses
 the production reader after verified kernel execution and checks 128 sequential
