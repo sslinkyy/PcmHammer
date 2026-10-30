@@ -372,3 +372,44 @@ settings checked first. Raw evidence and a reproducible comparison helper remain
 under `LocalOnly/scoped_bench_20261029_01`. The comparison receipt
 `gt_off_trace_comparison.json` has SHA256
 `8f88363db1d25291a418423f971685a4259db3efefbcf4b0a19d1e5412ed1cd5`.
+
+### Repeat baseline and scoped LISTEN read, 2026-10-29
+
+The repeat GT-OFF read completed in 2:00 with six valid segment checksums and
+was saved as `6 lb7 E54_0000.ctz`. Its HTX contains the same 392-message transfer
+sequence and 128 data blocks as the preceding baseline. The user supplied two
+scope photographs, labeled `4.bmp` and `5.bmp` on the display, at CH1 5 V/div,
+20 us/div, X10, DC. Coarse visual estimates show a low near 0 V, plateau near
+7 V and brief leading peaks near 10 V, assuming the physical probe matches the
+X10 menu setting. Pulse durations are consistent with 4x VPW; these photographs
+are not calibrated cursor measurements or a timing-compliance result. They are
+retained with provenance under `LocalOnly/scoped_bench_20261029_02`.
+
+With the user confirming unchanged scope settings and probe placement, a
+matching ordinary AutoCal read ran with GT in the experimental all-source 4x
+LISTEN profile. It completed in 1:59 with six valid checksums and was saved as
+`7 lb7 E54_0000.ctz`. Its HTX transfer sequence and data match the repeat OFF
+baseline exactly. Addressed transfer took 113.947 seconds versus 113.958 seconds;
+there were no repeated read requests or transfer-window timeout labels.
+
+The GT again captured all 128 data blocks but missed three short acknowledgments:
+one loader acknowledgment and block acknowledgments associated with 0x02D000
+and 0x068000. The earlier all-source run missed block acknowledgments at different
+addresses. The same four extra messages remain visible. All 393 captured frames
+have valid physical CRCs; all 532,830 recorded receive bytes map to 467 DVI frames
+without unaccounted bytes. Strict comparison still fails, and the missing frames
+are absent before decoding the recorded serial input. This does not identify
+where upstream loss occurred.
+
+The capture ended normally, all nine setting readbacks matched their original
+values, and a separate inspection verified the GT was already OFF. The user
+confirmed ignition OFF and the shutdown countdown completed. Matching LISTEN
+waveform photographs remain pending; neither electrical noninterference nor
+lossless monitoring is established. Live AL5 writes remain disabled.
+
+Raw evidence and reproducible receipts remain under
+`LocalOnly/scoped_listen_20261029_01`. The strict comparison receipt
+`listen_capture_comparison.json` has SHA256
+`0fd5dbaeee14743cd66edea37eb5a15592bdc838c2540a15f3b5f5eccbb391a7`;
+the baseline comparison `listen_vs_scoped_off_02.json` has SHA256
+`9aec288560115d18e3163b5a28dad6b212dcfa2c001e4c4d8aa42e619585ba60`.
