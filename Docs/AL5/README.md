@@ -27,8 +27,9 @@ and PcmLibrary decoders for saved host envelopes, pins the native FTDI binding
 and outer CRC, and records an isolated USB settings read. An independent
 model query now returns `ACV2` with EFILive closed; a simultaneous USB capture
 matches the exact request and reply. The same query also passed after a
-user-reported USB power cycle. This does not yet add an AutoCal device backend
-or enable AL5 programming.
+user-reported USB power cycle. A standalone [C# model test](AUTOCAL_MODEL_PROBE.md)
+now performs the same exchange using the built PcmLibrary decoder. This does
+not yet add a general AutoCal device backend or enable AL5 programming.
 
 [Public-source research dated 2026-10-06](ONLINE_RESEARCH_20261006.md) records
 AL5-specific vendor programming/recovery guidance, conditional hardware leads

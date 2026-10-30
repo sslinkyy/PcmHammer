@@ -178,6 +178,17 @@ come from the D2XX probe journal. Physical power removal was user-attested,
 and persistent adapter settings were not reset or inspected. General
 initialization, VPW messaging, programming and recovery remain unqualified.
 
+## C# test using PcmLibrary
+
+The standalone [C# model test](AUTOCAL_MODEL_PROBE.md) now references and
+loads the actual PcmLibrary project build. Its isolated AutoCal query passed
+with the same request/reply as the Python tests, a valid CRC, empty receive
+queues and successful device/library cleanup. The project build and offline
+failure checks also passed. See its [evidence](AUTOCAL_CSHARP_MODEL_20261030.json).
+
+This developer CLI exposes one fixed model query. It does not add an AutoCal
+entry to PcmHammer's adapter selector or implement a general vehicle port.
+
 ## Remaining integration work
 
 USB packetization and independent adapter discovery are corroborated for the

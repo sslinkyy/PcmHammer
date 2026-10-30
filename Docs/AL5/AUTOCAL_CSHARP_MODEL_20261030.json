@@ -1,0 +1,205 @@
+{
+  "schema": "autocal-csharp-fixed-model-summary-v1",
+  "scope": "One direct USB-only C# model query from a standalone .NET 8 x64 developer probe referencing the actual PcmLibrary project. This is not a PcmHammer UI adapter backend or a vehicle protocol test.",
+  "sources": {
+    "receipt": {
+      "path": "LocalOnly/AutoCalModelProbe/model_query_01.json",
+      "bytes": 6743,
+      "sha256": "27e820d8d169dc92d353e9c81fe8d37ce3d05c57a7ef19a676657623879276fb"
+    },
+    "journal": {
+      "path": "LocalOnly/AutoCalModelProbe/model_query_01.json.journal.jsonl",
+      "bytes": 4156,
+      "sha256": "297548229312bfc0c927981f80245e61cf4914b6bb514ef01e28fd1d9974dc0f"
+    },
+    "offline_plan": {
+      "path": "LocalOnly/AutoCalModelProbe/csharp_plan_01.json",
+      "bytes": 3109,
+      "sha256": "42ee15a1a434465291b4cdbf84695e22fa779969226acbd28b1ed7663c6a4fb9"
+    },
+    "saved_preflight": {
+      "path": "LocalOnly/AutoCalModelProbe/csharp_preflight_01.json",
+      "bytes": 397,
+      "sha256": "28a827d5194423fb02327a0636397bc7974dbf057a5ffdd96a9bc4e1d3545694"
+    },
+    "preceding_python_cold_receipt": {
+      "path": "LocalOnly/autocal_usb_setup_20261030/autocal_model_query_cold_01.json",
+      "bytes": 39179,
+      "sha256": "2731edce66c3f4f16b4fd82fc95fda53415ec53c2494c3de2d77573d4e694ece"
+    },
+    "preceding_python_cold_report": {
+      "path": "Docs/AL5/AUTOCAL_COLD_MODEL_20261030.json",
+      "bytes": 8014,
+      "sha256": "358e72b7d942db28ecca7e69540f42fdf9e4ff2e76b855f048a8779c3f0f0b9d"
+    },
+    "pcm_library_project": {
+      "path": "Apps/PcmLibrary/PcmLibrary.csproj",
+      "bytes": 1549,
+      "sha256": "360f41062ae83fccd5e9a99dbaf46b333980f0cbbbefc9a0a4cb6d86d6369d13"
+    }
+  },
+  "implementation_sources_verified": [
+    {
+      "path": "Tools/AL5/AutoCalModelProbe/AutoCalModelProbe.csproj",
+      "bytes": 1112,
+      "sha256": "4a2e36329c46630c1bfa45efcb2163e8b73e5a399146fb7b53d1f7a6805d5ec9"
+    },
+    {
+      "path": "Tools/AL5/AutoCalModelProbe/Program.cs",
+      "bytes": 12079,
+      "sha256": "51df852406e51f6124063362d70bc09ae9bea0d0cd5f295b611d4249057fe6b6"
+    },
+    {
+      "path": "Tools/AL5/AutoCalModelProbe/ModelQuery.cs",
+      "bytes": 9434,
+      "sha256": "d8e91453e480430c9973533b4e6602ac2074ffd3994cd4cd1cde821917a30fb5"
+    },
+    {
+      "path": "Tools/AL5/AutoCalModelProbe/D2xxNative.cs",
+      "bytes": 10727,
+      "sha256": "501a6d5c9272f97e8f28c081d8a6c4dc25e2fc4081e8d74563764e5db04dcaea"
+    },
+    {
+      "path": "Tools/AL5/AutoCalModelProbe/SelfTests.cs",
+      "bytes": 16719,
+      "sha256": "1ab1313b12419e26861b213459362e86e05f6e6ad0389bb9e7f532e18e9ed112"
+    },
+    {
+      "path": "Apps/PcmLibrary/AutoCalHostFrame.cs",
+      "bytes": 4622,
+      "sha256": "b1f2416eab2ff595c6dfe21608e3fbe2a06a07beecc98c211b00ab43afd83750"
+    }
+  ],
+  "executed_assemblies_verified": {
+    "ProbeAssembly": {
+      "path": "LocalOnly/AutoCalModelProbe/bin/AutoCalModelProbe.dll",
+      "bytes": 89600,
+      "sha256": "439edf0fffabdc131d2ea7e5e43c7af34a0964a71844308bc969357d9c533bec"
+    },
+    "PcmLibraryAssembly": {
+      "path": "LocalOnly/AutoCalModelProbe/bin/PcmLibrary.dll",
+      "bytes": 613376,
+      "sha256": "b8b623ba2ed585821366651239f5b1a8419d9c558b77798048a5dcc7e9ded1c6"
+    }
+  },
+  "native_files_verified": {
+    "Dll": {
+      "path": "C:\\Program Files (x86)\\EFILive\\Drivers\\EFILive\\Win-7-8-10\\amd64\\ftd2xx64.dll",
+      "bytes": 323216,
+      "sha256": "91185415e0a1cd8ad09a5b644130554867ee4c4975c7aa71ee6da15d2645d9a2"
+    },
+    "Header": {
+      "path": "C:\\Program Files (x86)\\EFILive\\Drivers\\EFILive\\Win-7-8-10\\ftd2xx.h",
+      "bytes": 40993,
+      "sha256": "cf2ad290c68137373b26629bf9feed6f4847f4e9e5cde4b980a212cebeb4ff6a"
+    }
+  },
+  "project_relationship": {
+    "developer_project": "Tools/AL5/AutoCalModelProbe/AutoCalModelProbe.csproj",
+    "project_reference": "../../../Apps/PcmLibrary/PcmLibrary.csproj",
+    "resolved_project": "Apps/PcmLibrary/PcmLibrary.csproj",
+    "target_framework": "net8.0",
+    "platform_target": "x64",
+    "decoder_type": "PcmHacking.AutoCalHostFrame",
+    "decoder_entry": "ParseLongHeader(AutoCalHostDirection.DeviceToHost, received)",
+    "pcm_library_assembly_full_name": "PcmLibrary, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "actual_project_reference_verified": true,
+    "ui_adapter_backend_installed": false
+  },
+  "context": {
+    "pnp_process_preflight_observed_utc": "2026-10-30T15:29:53.8319537+00:00",
+    "preflight_scope": "PnP/process observation only; no adapter API opened",
+    "exact_pnp_identity": "USB\\VID_0403&PID_E4A3\\AC3NCHH5",
+    "pnp_status": "OK",
+    "recorded_matching_processes": [],
+    "root_describes_process_filter": "EFILive/HAPI and USBPcap processes",
+    "process_filter_expression_preserved_in_preflight": false,
+    "obd_disconnected_basis": "User-confirmed physical setup, no intervening reconnection reported",
+    "physical_setup_instrument_verified": false,
+    "additional_power_cycle_between_python_and_csharp": false,
+    "additional_power_cycle_basis": "Root reports no additional power cycle since the preceding user-attested Python cold repeat",
+    "usbpcap_repeated": false,
+    "prior_usb_capture_is_evidence_of_this_query": false
+  },
+  "observed_result": {
+    "started_utc": "2026-10-30T15:29:58.6937957+00:00",
+    "finished_utc": "2026-10-30T15:29:59.0640269+00:00",
+    "elapsed_from_receipt_timestamps_seconds": 0.370231,
+    "enumeration_count": 1,
+    "enumerated_serial_ascii": "AC3NCHH5",
+    "enumerated_id_hex": "0403e4a3",
+    "enumerated_type": 5,
+    "enumerated_flags": 0,
+    "application_write_attempts": 1,
+    "write_status": 0,
+    "written_bytes": 14,
+    "request_hex": "0154018207000000000000008177",
+    "read_calls": 1,
+    "read_status": 0,
+    "read_bytes": 20,
+    "reply_hex": "015201820000000000000500414356320026b419",
+    "model_text": "ACV2",
+    "model_payload_bytes": 5,
+    "terminal_payload_nul": true,
+    "request_crc_independently_valid": true,
+    "reply_crc_independently_valid": true,
+    "reply_crc_value": 46118,
+    "prewrite_queue_bytes": 0,
+    "postread_queue_bytes": 0,
+    "metadata_4_through_9_hex": "000000000000",
+    "uninterpreted_rx_trailer_hex": "19",
+    "model_verified": true,
+    "successful": true,
+    "error": null,
+    "telemetry_errors": []
+  },
+  "cleanup": {
+    "close_status": 0,
+    "owned_handle_closed": true,
+    "cleanup_pending": false,
+    "cleanup_proven": true,
+    "scope": "Receipt CleanupProven is computed after retained cleanup as no device handle and no native module/file pin remain owned.",
+    "reported_tool_exit_code": 0,
+    "exit_code_source": "Root execution tool result; receipt has no separate process exit field"
+  },
+  "independent_file_checks": {
+    "expected_receipt_hash_matches": true,
+    "journal_hash_matches_receipt": true,
+    "journal_preflight_matches_saved_plan": true,
+    "embedded_plan_matches_saved_plan": true,
+    "journal_session_events_match_receipt": true,
+    "all_six_recorded_source_hashes_match_disk": true,
+    "both_recorded_assembly_hashes_match_disk": true,
+    "native_dll_and_header_hashes_match_disk": true,
+    "actual_pcm_library_project_reference": true,
+    "request_and_reply_match_python_cold_trial": true,
+    "python_cold_receipt_matches_its_public_report": true
+  },
+  "offline_validation_reported": {
+    "build": "Succeeded with no warnings/errors, reported by build agent",
+    "self_test_assertions": 92,
+    "self_test_result": "Passed, reported by root/build agent",
+    "separate_build_or_test_log_pinned": false,
+    "scope": "Offline fake-device state machine, retained-cleanup tests, CLI boundaries, and actual evidence-file publication; not hardware failure qualification"
+  },
+  "conclusion": "The C# developer probe delivered the fixed model query and decoded the ACV2 response using PcmLibrary. API bytes exactly match the preceding Python cold repeat; this session reports successful device close and native module/file-pin release.",
+  "limits": [
+    "No new USBPcap capture was collected. The receipt and journal establish recorded API results; prior USB transfer offsets do not describe this C# query.",
+    "There was no additional power cycle between the successful Python cold repeat and this C# trial. Independent C# initialization immediately after power removal remains untested.",
+    "The OBD plug being physically disconnected is user-attested. The saved preflight records PnP identity and an empty process-match list, not physical wiring.",
+    "One fixed adapter model query does not establish a general PcmHammer AutoCal backend, other command semantics, persistent EEPROM state, or all startup states.",
+    "No VPW traffic, security access, loader, erase, flash programming, readback verification or controller recovery was exercised.",
+    "Cleanup success and identical API reply bytes do not prove lossless USB capture, electrical noninterference, or absence of internal driver/device side effects."
+  ],
+  "csharp_fixed_model_query_observed_successful": true,
+  "actual_pcm_library_decoder_used": true,
+  "general_autocal_transport_qualified": false,
+  "pcmhammer_ui_backend_enabled": false,
+  "complete_capture_proven": false,
+  "noninterference_proven": false,
+  "vpw_monitoring_qualified": false,
+  "controller_programming_qualified": false,
+  "recovery_qualified": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false
+}
