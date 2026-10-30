@@ -263,6 +263,87 @@ python -B -m unittest discover -s Tools/AL5 -p test_inspect_autocal_vpw_transpor
 dotnet run --project Tools/AL5/AutoCalVpwEnvelopeTest.csproj --verbosity quiet
 ```
 
+## Bus setup producers and transfer completion
+
+The [VM setup reconstruction](AUTOCAL_VM_SETUP_20261030.json) now binds the
+installed E54 read object to the exact transform requests and recorded replies
+in read 12. All sixteen transform envelopes pass outer CRC, every source chunk
+matches the object, and the reconstructed code/data pass the native buffer CRC
+(`D9CB`). Its 1,045 structurally grouped instructions include four opcode `99`
+setup sites, two opcode `93` cleanup sites and one opcode `90` selector site.
+This is saved-reply reconstruction, not independent firmware decryption or VM
+execution. The existing AL5 object admission rules were not broadened.
+
+The native path connects opcode `99` through VM helper `4074DC`, callback
+slot `4398CC`, and Scan callback `BB0A14`. The
+[Scan callback trace](AUTOCAL_SETUP_CALLBACK_STATIC.json) establishes:
+
+- For a positive second argument, command `8603` contains two little-endian
+  words: the argument divided by 1000 and its remainder. The arithmetic is
+  established; firmware units and effect remain unknown.
+- Command `8604` contains the first argument's low byte, the third argument's
+  low byte, and the fourth argument as a little-endian DWORD.
+- VM arguments `(1, 1500, 0, 16)` reproduce recorded `8603: 01 00 F4 01` and
+  `8604: 01 00 10 00 00 00`. Four zero arguments reproduce the recorded
+  six-zero-byte `8604`. These forms are observations, not a configuration recipe.
+- The setup callback omits optional exception/metadata outputs and does not
+  check returned status. Emitting both commands therefore does not establish
+  successful configuration.
+
+The script's initial code descriptor at `2142` contains 1500, and its copy at
+`283C` assigns 16 through special reference `FF04`. The native resolver maps
+that reference to descriptor `427652`. These facts explain the recorded form,
+but unmodeled calls and runtime changes prevent claiming complete dynamic
+argument provenance or a meaning for flag `0x10`.
+
+Opcode `90` also requires care. Its Scan callback conditionally sends `8800`
+only when receiver field `+7A` is 3, and updates a host cache only after a
+nonnegative result. The VM nevertheless writes its own routing globals after
+that callback without checking the result. A VM route value cannot establish
+that the adapter changed protocol, bus state or physical speed.
+
+Opcode `93` reaches helper `407350`, which packs four resolved low bytes into
+command `8B01` through the common callback. It does not check returned status.
+The read script's forms `(0,1,0,0)` and `(1,1,0,0)` match TX records 1186 and
+1188, after the final data response at 1181. This establishes cleanup ordering
+in that capture; it does not identify firmware filter or speed effects.
+
+A separate [HAPI initialization trace](AUTOCAL_SETUP_NATIVE_STATIC.json)
+shows a one-byte `8604` compatibility query, optional short-header fallback,
+then `8800`. Successful fallback retains the short-header mode. That path is
+distinct from the six-byte script command, and the current long-header decoder
+does not implement that fallback. The trace also identifies explicit receive
+and transmit queue purge calls and logical timeout caching. Neither is proof
+of a quiet physical bus or safe state recovery.
+
+The [transfer completion trace](AUTOCAL_COMPLETION_STATIC.json) identifies a
+conditional weakness in the inspected FTDI helpers: their final count guard
+compares remaining bytes with cumulative transferred bytes. Under a supplied
+zero-status partial return, the guard can pass while bytes remain. The shown
+HAPI callers do not independently verify the output count. This is a static
+conditional path demonstrated with synthetic counts, not an observed adapter
+failure and not an explanation proven for the GT's missing acknowledgments.
+
+For positive-byte requests, logical timeouts give a maximum driver-call budget
+of `ceil(read_timeout/250)` or `ceil(write_timeout/1000)`, stopping earlier on
+full transfer. The receive path scans up to fifty candidates and can drain
+some mismatched messages. These bounds are not a single elapsed deadline,
+lossless resynchronization, or controller acknowledgment. An independent
+backend must account for exact bytes and handle ambiguous delivery explicitly;
+these findings do not authorize copying host retries into a flash session.
+
+Real-source collection passed for 17 HAPI initialization windows, 11 Scan
+callback windows, 18 completion windows and nine VM bridge windows. The focused
+Python suite passed 74 tests, including malformed/reordered transform records,
+source mismatch, scalar narrowing and partial transfer counts. The new tools
+are file-only; PcmLibrary's active model-only probe, adapter selection and
+vehicle paths were not changed. No adapter or vehicle command ran.
+
+```powershell
+python -B -m unittest discover -s Tools/AL5 -p test_autocal_vm_setup.py
+python -B -m unittest discover -s Tools/AL5 -p test_autocal_completion.py
+```
+
 ## Remaining integration work
 
 USB packetization and independent adapter discovery are corroborated for the

@@ -1,0 +1,1017 @@
+{
+  "schema": "autocal-e54-read-vm-setup-v1",
+  "scope": "Exact saved-reply E54_R reconstruction and structural/native setup bridge; no VM, host callback or adapter execution",
+  "sources": [
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\usb_capture_setup_20261030\\e54_usb_read_01\\crc_retained_E54_R.htx",
+      "bytes": 200276,
+      "sha256": "49e0b14e2e5deb3581baca6c00f8ac29e264e2006d999aa017e4c736c448987f"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\EFILive\\V8\\Config\\E54_R.obj",
+      "bytes": 20490,
+      "sha256": "31f167ba34c13490675b2776f2a18b4472fa8fdf564d8c526ca79fbb0804d7e6"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll",
+      "bytes": 156016,
+      "sha256": "132832f80d7e5b642033fafc35df4ff3c0f3b19371081d23eacf696c4019ac00"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+      "bytes": 23512,
+      "sha256": "6ad86f7fa61936301fddafa97de7c8f0ac5c3cb225569dca68edfa021cce5919"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_autocal_vm_setup.py",
+      "bytes": 14871,
+      "sha256": "b7d1671f2c14b4e04365a9a7c410cbec143603b34c09f36ebf27efa87fc48c73"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_vm_flow.py",
+      "bytes": 9210,
+      "sha256": "664fbce5aba9fddcf47d2bee7c1d6680f82cb59839bc2859b553c3d6a099541e"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\replay_object_transform.py",
+      "bytes": 6183,
+      "sha256": "da862a5eadbc1d010298d471d0c2a3ecd2abd9bb802b683dcb5c2cf8f5f878aa"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\validate_vm_buffers.py",
+      "bytes": 3869,
+      "sha256": "198c7b1a1fd0e69b73a90be502bd642a405bb0b6d52bca8cf054c24126a21f62"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_vm_objects.py",
+      "bytes": 4400,
+      "sha256": "7c80250a3c2dbb259cc887e34dd613bf7c7ffa2c1def03f7ea734f3c62d528dd"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\audit_trace_wrappers.py",
+      "bytes": 5198,
+      "sha256": "c824d113b63244d7e5d56b7bd53e3870fc155e666d897c12a570f1bdd69bd608"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\checksum.py",
+      "bytes": 1841,
+      "sha256": "b057805b2f5dc141141be5ce747ee78be98e441746a05d3a4a0cb3911bf2ef93"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\decode_trace_containers.py",
+      "bytes": 5780,
+      "sha256": "ab2feac05c102f3616c444889c428608e8466084bb7661743d5cd85e02cae382"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\al5_segment.py",
+      "bytes": 1710,
+      "sha256": "c391085ae14ed3f8c762c0ad2baf174474d2287fc17d95b3a5bb4ba3fe169edb"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\EFILIVE_VM_DISPATCH.json",
+      "bytes": 73116,
+      "sha256": "418a2da13a80be14381e42b85eb3297bef4336ded131ab2fd521590f0e86bb4f"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\AUTOCAL_SETUP_CALLBACK_STATIC.json",
+      "bytes": 34661,
+      "sha256": "244511cb52211c2424614f42f6a0d320b846229b6be7c69409b00e5e7bba15b0"
+    }
+  ],
+  "reconstruction_stages": [
+    {
+      "section": "code",
+      "command_le16": 33812,
+      "tx_record": 24,
+      "rx_record": 25,
+      "tx_offset": 1935,
+      "rx_offset": 2001,
+      "tx_bytes": 34,
+      "rx_bytes": 1,
+      "tx_sha256": "c3ed3a20dc36fd8648d44f76642812d47e1e8db6a3fb97d3faa6647d913960f7",
+      "rx_sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+    },
+    {
+      "section": "code",
+      "command_le16": 33813,
+      "tx_record": 27,
+      "rx_record": 30,
+      "tx_offset": 2079,
+      "rx_offset": 6263,
+      "tx_bytes": 4096,
+      "rx_bytes": 4096,
+      "tx_sha256": "99d93dacbee0025dfe02657b8fe4710a91d1372f2cbcc4b7cc03f1ad29d58b18",
+      "rx_sha256": "f93229f85747b11558a41ee64d6f5ac192fe9f4ffa66af3e3b5b493637529257"
+    },
+    {
+      "section": "code",
+      "command_le16": 33813,
+      "tx_record": 31,
+      "rx_record": 33,
+      "tx_offset": 10392,
+      "rx_offset": 14548,
+      "tx_bytes": 4096,
+      "rx_bytes": 4096,
+      "tx_sha256": "b26388310a6f96f91107683a0db0c9cfdf4b03858ca0a690a99570a9be9f3b5c",
+      "rx_sha256": "404eea7a7cfbf0caa45ea59ec295d71e9550eec7d0aae15c3e8027e92786a849"
+    },
+    {
+      "section": "code",
+      "command_le16": 33813,
+      "tx_record": 34,
+      "rx_record": 35,
+      "tx_offset": 18677,
+      "rx_offset": 20149,
+      "tx_bytes": 1440,
+      "rx_bytes": 1440,
+      "tx_sha256": "4618bcb29363c1cf9a27584af06e4438c11b24c09e2081aad6a0316881830bfb",
+      "rx_sha256": "ab8eb6730351b02ccafc8e069780c8d47f27665b8b2658b2308e778728036963"
+    },
+    {
+      "section": "data",
+      "command_le16": 33812,
+      "tx_record": 37,
+      "rx_record": 38,
+      "tx_offset": 21666,
+      "rx_offset": 21732,
+      "tx_bytes": 34,
+      "rx_bytes": 1,
+      "tx_sha256": "c59225576bdbe9b2cfb78c978f810314ed834c8a579be74075e773dfc90df015",
+      "rx_sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+    },
+    {
+      "section": "data",
+      "command_le16": 33813,
+      "tx_record": 40,
+      "rx_record": 42,
+      "tx_offset": 21810,
+      "rx_offset": 25966,
+      "tx_bytes": 4096,
+      "rx_bytes": 4096,
+      "tx_sha256": "a1091747de202370904837b5a06d147fb67de490c6075750d764c64e23d5914d",
+      "rx_sha256": "2367260988ff9cabb9827385b10d541361e865ebdc61c25c30d36ca552f99aec"
+    },
+    {
+      "section": "data",
+      "command_le16": 33813,
+      "tx_record": 43,
+      "rx_record": 45,
+      "tx_offset": 30095,
+      "rx_offset": 34251,
+      "tx_bytes": 4096,
+      "rx_bytes": 4096,
+      "tx_sha256": "8db9f1f190aa9c3df03ae15c19569ce75609d9228baab053ee3bd1b5a48366f5",
+      "rx_sha256": "92306fc3e46993851b37e12be2a37a5299c0f51eff5b294eeb5aa33c8adde7d2"
+    },
+    {
+      "section": "data",
+      "command_le16": 33813,
+      "tx_record": 46,
+      "rx_record": 47,
+      "tx_offset": 38380,
+      "rx_offset": 41036,
+      "tx_bytes": 2624,
+      "rx_bytes": 2624,
+      "tx_sha256": "1c9888e3751ab7950d236bc2836461f7f3f17443c5bae2b62415b2e253c6f203",
+      "rx_sha256": "a71184346256a7abfd5aa8d6acb81cb2e34f20e37d30b5f0f921cc0ac0507cf3"
+    }
+  ],
+  "validation": {
+    "schema_version": 1,
+    "scope": "Caller-supplied post-transform buffers only; no object decoder, callbacks, IPC, execution or transport.",
+    "code_sha256": "fb9bc77f076cb5ee5c1e0228317bddd8448383bf1797d83154f40aced1568626",
+    "data_sha256": "c10236503cc23011df5e46c4f19e6ebc4e5d94059c1163488a899afe3235eceb",
+    "code_bytes": 9674,
+    "data_bytes": 10816,
+    "stages": [
+      {
+        "buffer": "code",
+        "offset": 2,
+        "end_exclusive": 48,
+        "seed": 45693,
+        "crc16": 25139,
+        "source_sha256": "4e89c3cc81cc85494b004a33a7676599d3a54a1060a03d2c1b49ca52278bcf84"
+      },
+      {
+        "buffer": "code",
+        "offset": 64,
+        "end_exclusive": 9674,
+        "seed": 25139,
+        "crc16": 45400,
+        "source_sha256": "5e01cd874a05e187043c6339f78292d2a367673e0114d8eed65b268b4cfe9842"
+      },
+      {
+        "buffer": "data",
+        "offset": 0,
+        "end_exclusive": 10816,
+        "seed": 45400,
+        "crc16": 55755,
+        "source_sha256": "c10236503cc23011df5e46c4f19e6ebc4e5d94059c1163488a899afe3235eceb"
+      }
+    ],
+    "stored_crc16_le": 55755,
+    "computed_crc16": 55755,
+    "supplied_buffer_crc_matches": true,
+    "buffer_transform_provenance_verified": false,
+    "object_contents_decoded": false,
+    "object_validation_verified": false,
+    "date_compatibility_verified": false,
+    "physical_recovery_verified": false,
+    "ready_to_flash": false,
+    "live_write_enabled": false,
+    "erase_scope": null,
+    "would_send": [],
+    "erase_packets": [],
+    "program_packets": []
+  },
+  "structural_instruction_count": 1045,
+  "entries": {
+    "initial_entry": 10282,
+    "host_error_entry": 10184
+  },
+  "setup_opcode99_nodes": [
+    {
+      "offset": 878,
+      "end_exclusive": 896,
+      "opcode": 153,
+      "operands": [
+        {
+          "offset": 880,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 884,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 888,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 892,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        }
+      ],
+      "source_sha256": "8dd48edc57a6d8f64edbc78f3c3b76b2f74f0352f919303b34b471cabc495e72",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10204,
+      "end_exclusive": 10222,
+      "opcode": 153,
+      "operands": [
+        {
+          "offset": 10206,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10210,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10214,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10218,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        }
+      ],
+      "source_sha256": "8dd48edc57a6d8f64edbc78f3c3b76b2f74f0352f919303b34b471cabc495e72",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10352,
+      "end_exclusive": 10370,
+      "opcode": 153,
+      "operands": [
+        {
+          "offset": 10354,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 1
+        },
+        {
+          "offset": 10358,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 8514
+        },
+        {
+          "offset": 10362,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10366,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 65284
+        }
+      ],
+      "source_sha256": "9d74ab93fafb65e27761f17872764902d9c07d35f6e46d2ed309afec362aea81",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10492,
+      "end_exclusive": 10510,
+      "opcode": 153,
+      "operands": [
+        {
+          "offset": 10494,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10498,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10502,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10506,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        }
+      ],
+      "source_sha256": "8dd48edc57a6d8f64edbc78f3c3b76b2f74f0352f919303b34b471cabc495e72",
+      "effects_fully_modeled": false
+    }
+  ],
+  "cleanup_opcode93_nodes": [
+    {
+      "offset": 10222,
+      "end_exclusive": 10240,
+      "opcode": 147,
+      "operands": [
+        {
+          "offset": 10224,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10228,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 1
+        },
+        {
+          "offset": 10232,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10236,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        }
+      ],
+      "source_sha256": "4254be056358e84681a94f088ee50450a8eaa177934c7490500dedca4abbe7aa",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10240,
+      "end_exclusive": 10258,
+      "opcode": 147,
+      "operands": [
+        {
+          "offset": 10242,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 1
+        },
+        {
+          "offset": 10246,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 1
+        },
+        {
+          "offset": 10250,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10254,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        }
+      ],
+      "source_sha256": "31b9a33dd026cad93a54da5a80be23034606e196fb0aa8362bedd0fa5e72b38b",
+      "effects_fully_modeled": false
+    }
+  ],
+  "selector_opcode90_nodes": [
+    {
+      "offset": 32,
+      "end_exclusive": 38,
+      "opcode": 144,
+      "operands": [
+        {
+          "offset": 34,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 1
+        }
+      ],
+      "source_sha256": "105e415c926f2a6c8b59b2413c7a244efbe8f5c0ebd75972d79d59dc30aa8b26",
+      "effects_fully_modeled": false
+    }
+  ],
+  "setup_related_reference_nodes": [
+    {
+      "offset": 10300,
+      "end_exclusive": 10310,
+      "opcode": 32,
+      "operands": [
+        {
+          "offset": 10302,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 16
+        },
+        {
+          "offset": 10306,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 65284
+        }
+      ],
+      "source_sha256": "b4f0e9288ba9959877111fc0866dba9dab50710a59af21995e7353f8ed30c3d9",
+      "effects_fully_modeled": false
+    },
+    {
+      "offset": 10352,
+      "end_exclusive": 10370,
+      "opcode": 153,
+      "operands": [
+        {
+          "offset": 10354,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 1
+        },
+        {
+          "offset": 10358,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 8514
+        },
+        {
+          "offset": 10362,
+          "tag": 177,
+          "extent_bytes": 4,
+          "value": 0
+        },
+        {
+          "offset": 10366,
+          "tag": 160,
+          "extent_bytes": 4,
+          "value": 65284
+        }
+      ],
+      "source_sha256": "9d74ab93fafb65e27761f17872764902d9c07d35f6e46d2ed309afec362aea81",
+      "effects_fully_modeled": false
+    }
+  ],
+  "initial_code_descriptor_at_2142": {
+    "offset": 8514,
+    "raw_hex": "b200dc05",
+    "initial_word_value": 1500,
+    "runtime_value_proven": false
+  },
+  "native_windows": [
+    {
+      "role": "fourth_descriptor_dispatch",
+      "source": {
+        "va": "0x4041b6",
+        "file_offset": 14262,
+        "bytes": 32,
+        "sha256": "07926b673f8dacc208c96d5a0d520d7c2ab4cbbea04bfe12f68fa6a995d204b8"
+      },
+      "lookahead": {
+        "va": "0x4041b6",
+        "file_offset": 14262,
+        "bytes": 48,
+        "sha256": "916cbaf34b0f0ff008b86db18dfe2df3a80c41d7b67d1e85c46411caaa2c494a"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x4041b6,0x4041e5",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll"
+      ],
+      "instructions": [
+        "004041B6: push        42A624h",
+        "004041BB: call        00404900",
+        "004041C0: movzx       edx,word ptr ds:[0042757Ah]",
+        "004041C7: cmp         edx,7Ah",
+        "004041CA: jg          00404251",
+        "004041D0: je          0040432D"
+      ]
+    },
+    {
+      "role": "fourth_descriptor_high_opcode_dispatch",
+      "source": {
+        "va": "0x404251",
+        "file_offset": 14417,
+        "bytes": 19,
+        "sha256": "d4600ba6203cc7506a1d7341472c4120cb99abc8564bea62a784f4a3223040b7"
+      },
+      "lookahead": {
+        "va": "0x404251",
+        "file_offset": 14417,
+        "bytes": 35,
+        "sha256": "4156d864e140ed3b11251868a6c7014b8ae8ddc71b564269f45a5690b1395895"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x404251,0x404273",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll"
+      ],
+      "instructions": [
+        "00404251: add         edx,0FFFFFF85h",
+        "00404254: cmp         edx,23h",
+        "00404257: ja          0040442D",
+        "0040425D: jmp         dword ptr [edx*4+00404264h]"
+      ]
+    },
+    {
+      "role": "opcode99_dispatch",
+      "source": {
+        "va": "0x404383",
+        "file_offset": 14723,
+        "bytes": 10,
+        "sha256": "7c41f0558109ae50be57693f562b3d70d4b7c43c882c94748e01aca079c85094"
+      },
+      "lookahead": {
+        "va": "0x404383",
+        "file_offset": 14723,
+        "bytes": 26,
+        "sha256": "3fb2e8f162ba0748322e275c474d2da29aa2dc4450b4d43c6980104e54f9070a"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x404383,0x40439c",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll"
+      ],
+      "instructions": [
+        "00404383: call        004074DC",
+        "00404388: jmp         0040449D"
+      ]
+    },
+    {
+      "role": "opcode99_resolved_argument_callback",
+      "source": {
+        "va": "0x4074dc",
+        "file_offset": 27356,
+        "bytes": 76,
+        "sha256": "f97bd1a7f67a038671ad6c7d5a6f9985416d4749b3a33c2b2624789cfe260b16"
+      },
+      "lookahead": {
+        "va": "0x4074dc",
+        "file_offset": 27356,
+        "bytes": 92,
+        "sha256": "f3c153b11f80b40aa792ef82e1f94492a0946d965d4dea51ec4c82fd310f77f9"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x4074dc,0x407537",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll"
+      ],
+      "instructions": [
+        "004074DC: push        ebx",
+        "004074DD: push        esi",
+        "004074DE: push        ecx",
+        "004074DF: mov         eax,dword ptr ds:[0042A618h]",
+        "004074E4: push        eax",
+        "004074E5: call        00404AF8",
+        "004074EA: mov         byte ptr [esp],al",
+        "004074ED: mov         edx,dword ptr ds:[0042A61Ch]",
+        "004074F3: push        edx",
+        "004074F4: call        00404AF8",
+        "004074F9: mov         esi,eax",
+        "004074FB: mov         eax,dword ptr ds:[0042A620h]",
+        "00407500: push        eax",
+        "00407501: call        00404AF8",
+        "00407506: mov         ebx,eax",
+        "00407508: mov         eax,dword ptr ds:[0042A624h]",
+        "0040750D: push        eax",
+        "0040750E: call        00404AF8",
+        "00407513: push        eax",
+        "00407514: push        ebx",
+        "00407515: movzx       edx,si",
+        "00407518: push        edx",
+        "00407519: mov         cl,byte ptr [esp+0Ch]",
+        "0040751D: push        ecx",
+        "0040751E: call        dword ptr ds:[004398CCh]",
+        "00407524: pop         edx",
+        "00407525: pop         esi",
+        "00407526: pop         ebx",
+        "00407527: ret"
+      ]
+    },
+    {
+      "role": "opcode93_dispatch",
+      "source": {
+        "va": "0x4042f4",
+        "file_offset": 14580,
+        "bytes": 10,
+        "sha256": "9703732c9187f3405511ac4be070e6c693ef367f6ea8a728a40c2dc04e283ce4"
+      },
+      "lookahead": {
+        "va": "0x4042f4",
+        "file_offset": 14580,
+        "bytes": 26,
+        "sha256": "ce3ad386925e9e51d78ab53cb7c51cc019712c2e1e6479f6fc44d4460e477ad9"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x4042f4,0x40430d",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll"
+      ],
+      "instructions": [
+        "004042F4: call        00407350",
+        "004042F9: jmp         0040449D"
+      ]
+    },
+    {
+      "role": "opcode93_byte_arguments_and_8b01_callback",
+      "source": {
+        "va": "0x407350",
+        "file_offset": 26960,
+        "bytes": 113,
+        "sha256": "8140921f116737bafb11e7e8b6a7bd23ce4461bd8443369f0049cefa8374921d"
+      },
+      "lookahead": {
+        "va": "0x407350",
+        "file_offset": 26960,
+        "bytes": 129,
+        "sha256": "10f3f21cd32346ebb405cdac04865d4d606850f981a46d3b6de0a6e3bd871af3"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x407350,0x4073d0",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll"
+      ],
+      "instructions": [
+        "00407350: and         word ptr ds:[0042757Ch],0FF7Eh",
+        "00407359: push        ecx",
+        "0040735A: mov         eax,dword ptr ds:[0042A618h]",
+        "0040735F: mov         dword ptr [esp],4277A4h",
+        "00407366: push        eax",
+        "00407367: call        00404AF8",
+        "0040736C: mov         edx,dword ptr [esp]",
+        "0040736F: mov         byte ptr [edx],al",
+        "00407371: mov         ecx,dword ptr ds:[0042A61Ch]",
+        "00407377: push        ecx",
+        "00407378: call        00404AF8",
+        "0040737D: mov         edx,dword ptr [esp]",
+        "00407380: mov         byte ptr [edx+1],al",
+        "00407383: mov         eax,dword ptr ds:[0042A620h]",
+        "00407388: push        eax",
+        "00407389: call        00404AF8",
+        "0040738E: mov         ecx,dword ptr [esp]",
+        "00407391: mov         byte ptr [ecx+2],al",
+        "00407394: mov         eax,dword ptr ds:[0042A624h]",
+        "00407399: push        eax",
+        "0040739A: call        00404AF8",
+        "0040739F: mov         edx,dword ptr [esp]",
+        "004073A2: mov         byte ptr [edx+3],al",
+        "004073A5: push        0",
+        "004073A7: push        0",
+        "004073A9: lea         ecx,[esp+8]",
+        "004073AD: push        ecx",
+        "004073AE: push        64h",
+        "004073B0: push        4",
+        "004073B2: push        8B01h",
+        "004073B7: push        0Ch",
+        "004073B9: call        dword ptr ds:[004398A0h]",
+        "004073BF: pop         edx",
+        "004073C0: ret"
+      ]
+    },
+    {
+      "role": "opcode90_callback_then_unchecked_vm_route_store",
+      "source": {
+        "va": "0x40392f",
+        "file_offset": 12079,
+        "bytes": 52,
+        "sha256": "771e8f889b2f45d9e422c5f9b66a69e30bc740e5c62e8dfe532d73a4fb45f41a"
+      },
+      "lookahead": {
+        "va": "0x40392f",
+        "file_offset": 12079,
+        "bytes": 68,
+        "sha256": "78d6a27b57c674824febaf84daae349795712acd7f45db8e1da6a55ad7962d47"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x40392f,0x403972",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll"
+      ],
+      "instructions": [
+        "0040392F: mov         ecx,dword ptr ds:[0042A618h]",
+        "00403935: push        ecx",
+        "00403936: call        00404AF8",
+        "0040393B: push        eax",
+        "0040393C: call        dword ptr ds:[004398BCh]",
+        "00403942: mov         eax,dword ptr ds:[0042A618h]",
+        "00403947: push        eax",
+        "00403948: call        00404AF8",
+        "0040394D: mov         dword ptr ds:[004398B8h],eax",
+        "00403952: mov         dl,byte ptr ds:[004398B8h]",
+        "00403958: mov         byte ptr ds:[00427648h],dl",
+        "0040395E: jmp         0040449D"
+      ]
+    },
+    {
+      "role": "callback_table_slot_registration",
+      "source": {
+        "va": "0x40b2ac",
+        "file_offset": 43180,
+        "bytes": 102,
+        "sha256": "e5a417daccc68945dcd811a6f44bbe70c7b61529750576fed14f5c821ae5310a"
+      },
+      "lookahead": {
+        "va": "0x40b2ac",
+        "file_offset": 43180,
+        "bytes": 118,
+        "sha256": "b717261804cc18d7b70ce3c590e230d6ff3336886d14ccf4d27c557fc832fc1a"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x40b2ac,0x40b321",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll"
+      ],
+      "instructions": [
+        "0040B2AC: push        ebp",
+        "0040B2AD: mov         ebp,esp",
+        "0040B2AF: push        ebx",
+        "0040B2B0: mov         ebx,dword ptr [ebp+8]",
+        "0040B2B3: mov         eax,dword ptr [ebx+4]",
+        "0040B2B6: mov         dword ptr ds:[004398A0h],eax",
+        "0040B2BB: mov         edx,dword ptr [ebx+8]",
+        "0040B2BE: mov         dword ptr ds:[004398A4h],edx",
+        "0040B2C4: mov         ecx,dword ptr [ebx+0Ch]",
+        "0040B2C7: mov         dword ptr ds:[004398A8h],ecx",
+        "0040B2CD: mov         ecx,dword ptr [ebx+10h]",
+        "0040B2D0: mov         dword ptr ds:[004398ACh],ecx",
+        "0040B2D6: mov         eax,dword ptr [ebx+14h]",
+        "0040B2D9: mov         dword ptr ds:[004398B0h],eax",
+        "0040B2DE: mov         edx,dword ptr [ebx+18h]",
+        "0040B2E1: mov         dword ptr ds:[004398B4h],edx",
+        "0040B2E7: mov         ecx,dword ptr [ebx+1Ch]",
+        "0040B2EA: mov         dword ptr ds:[004398BCh],ecx",
+        "0040B2F0: mov         eax,dword ptr [ebx+20h]",
+        "0040B2F3: mov         dword ptr ds:[004398C0h],eax",
+        "0040B2F8: mov         edx,dword ptr [ebx+24h]",
+        "0040B2FB: mov         dword ptr ds:[004398C4h],edx",
+        "0040B301: mov         ecx,dword ptr [ebx+28h]",
+        "0040B304: mov         dword ptr ds:[004398C8h],ecx",
+        "0040B30A: mov         eax,dword ptr [ebx+2Ch]",
+        "0040B30D: mov         dword ptr ds:[004398CCh],eax"
+      ]
+    },
+    {
+      "role": "special_reference_ff04",
+      "source": {
+        "va": "0x4044a8",
+        "file_offset": 15016,
+        "bytes": 54,
+        "sha256": "c61bec227395b1a39052141d72e8b3a4cd0e19ee19317e3b250d7c908bcf85ea"
+      },
+      "lookahead": {
+        "va": "0x4044a8",
+        "file_offset": 15016,
+        "bytes": 70,
+        "sha256": "4e4ff8cab9335b9affa34235513e3fa37f42a95f4e130d7bbf4e6b62754cd438"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x4044a8,0x4044ed",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_VM.dll"
+      ],
+      "instructions": [
+        "004044A8: push        ebp",
+        "004044A9: mov         ebp,esp",
+        "004044AB: mov         ecx,dword ptr [ebp+0Ch]",
+        "004044AE: mov         eax,dword ptr [ebp+8]",
+        "004044B1: xor         edx,edx",
+        "004044B3: mov         dword ptr [ecx],edx",
+        "004044B5: movzx       edx,ax",
+        "004044B8: cmp         edx,0FF03h",
+        "004044BE: jne         004044CB",
+        "004044C0: mov         dword ptr [ecx],427658h",
+        "004044C6: jmp         004048FC",
+        "004044CB: cmp         edx,0FF04h",
+        "004044D1: jne         004044DE",
+        "004044D3: mov         dword ptr [ecx],427652h",
+        "004044D9: jmp         004048FC"
+      ]
+    }
+  ],
+  "opcode_table_cells": [
+    {
+      "va": "0x4042dc",
+      "file_offset": 14556,
+      "bytes": 4,
+      "sha256": "a572a95b2efb2189ce769c196557405ac692c749f06b5fba55c3dcbe637753d2",
+      "opcode": 153,
+      "target_va": "0x404383"
+    },
+    {
+      "va": "0x4042c4",
+      "file_offset": 14532,
+      "bytes": 4,
+      "sha256": "77811c2e5d92908a8c2322494488eeb0bc84a7449a7e414394c60e154c36d0d2",
+      "opcode": 147,
+      "target_va": "0x4042f4"
+    }
+  ],
+  "bridge": [
+    "Opcode99 consumes four descriptors and reaches404383 then4074DC.",
+    "4074DC resolves each scalar, narrows arg1 to byte and arg2 to word, and invokes callback4398CC.",
+    "vmCallback copies caller table+2C to4398CC. The pinned Scan callback report binds that slot toBB0A14.",
+    "Opcode90 calls4398BC (table+1C, Scan BB07F4), then resolves its input again and writes4398B8/427648 without checking the callback return. Its VM route change is not proof that the conditional8800 exchange ran or configured hardware.",
+    "FF04 resolves to native descriptor427652. Initial code descriptor2142 contains1500; a structural copy at283C writes16 throughFF04.",
+    "Opcode93 reaches407350, packs four resolved low bytes, and invokes callback4398A0(selector0C, command8B01, length4, argument4=100) with null optional outputs. No returned-status test follows.",
+    "The two opcode93 nodes are at27EE and2800, within the structural host-error/cleanup region entered at27C8. Matching saved TX forms occur after the final data block; this does not identify firmware filter or speed effects.",
+    "The shown values reproduce saved setup payloads, but unmodeled calls and runtime state prevent proving a complete dynamic argument trace."
+  ],
+  "modeled_cases": [
+    {
+      "label": "four_zero_arguments",
+      "opcode": 153,
+      "supplied_scalar_arguments": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "payload_observations": [
+        {
+          "command_le16": 34308,
+          "payload_hex": "000000000000",
+          "callback_argument4": 1000,
+          "matching_saved_tx_records": [
+            {
+              "record_ordinal": 59,
+              "decoded_record_offset": 44273
+            },
+            {
+              "record_ordinal": 156,
+              "decoded_record_offset": 49152
+            },
+            {
+              "record_ordinal": 1183,
+              "decoded_record_offset": 611569
+            },
+            {
+              "record_ordinal": 1191,
+              "decoded_record_offset": 611867
+            }
+          ]
+        }
+      ],
+      "dynamic_vm_statement_attribution_proven": false,
+      "setup_success_proven": false
+    },
+    {
+      "label": "recorded_read_form",
+      "opcode": 153,
+      "supplied_scalar_arguments": [
+        1,
+        1500,
+        0,
+        16
+      ],
+      "payload_observations": [
+        {
+          "command_le16": 34307,
+          "payload_hex": "0100f401",
+          "callback_argument4": 100,
+          "matching_saved_tx_records": [
+            {
+              "record_ordinal": 104,
+              "decoded_record_offset": 46030
+            }
+          ]
+        },
+        {
+          "command_le16": 34308,
+          "payload_hex": "010010000000",
+          "callback_argument4": 1000,
+          "matching_saved_tx_records": [
+            {
+              "record_ordinal": 107,
+              "decoded_record_offset": 46143
+            }
+          ]
+        }
+      ],
+      "dynamic_vm_statement_attribution_proven": false,
+      "setup_success_proven": false
+    },
+    {
+      "label": "cleanup_first_form",
+      "opcode": 147,
+      "supplied_scalar_arguments": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "payload_observations": [
+        {
+          "command_le16": 35585,
+          "payload_hex": "00010000",
+          "callback_argument4": 100,
+          "matching_saved_tx_records": [
+            {
+              "record_ordinal": 1186,
+              "decoded_record_offset": 611683
+            }
+          ]
+        }
+      ],
+      "dynamic_vm_statement_attribution_proven": false,
+      "setup_success_proven": false
+    },
+    {
+      "label": "cleanup_second_form",
+      "opcode": 147,
+      "supplied_scalar_arguments": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "payload_observations": [
+        {
+          "command_le16": 35585,
+          "payload_hex": "01010000",
+          "callback_argument4": 100,
+          "matching_saved_tx_records": [
+            {
+              "record_ordinal": 1188,
+              "decoded_record_offset": 611753
+            }
+          ]
+        }
+      ],
+      "dynamic_vm_statement_attribution_proven": false,
+      "setup_success_proven": false
+    }
+  ],
+  "limits": [
+    "Transform replies are replayed from the exact saved file; independent firmware object transformation is not reproduced.",
+    "Strict transform pairing is file order and exact source-chunk association, not general wire request correlation.",
+    "Structural grouping does not establish full VM execution, reachability, retry behavior or all reference side effects.",
+    "Payload equality does not prove setup success, physical speed, filter meaning, or an initialization recipe.",
+    "The existing AL5 object profile is unchanged. This E54 read profile does not qualify AL5 programming or recovery."
+  ],
+  "adapter_opened": false,
+  "target_executed": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "would_send": []
+}

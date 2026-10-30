@@ -1,0 +1,1327 @@
+{
+  "schema": "autocal-host-completion-static-v1",
+  "scope": "File-only exact-HAPI FTDI count, timeout and host-envelope receive analysis; no target execution",
+  "source": {
+    "path": "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_Hapi.exe",
+    "bytes": 9890672,
+    "sha256": "c51bbf4795c2ee0ac54b95114e1d5ae509d7f53d35a160b35115085f444fbcf8"
+  },
+  "generator_sha256": "b3788927463bca446e7e7f75b46f9b18d398f6612420f09e188a7b3cd7a104e2",
+  "disassembler": {
+    "path": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+    "sha256": "6ad86f7fa61936301fddafa97de7c8f0ac5c3cb225569dca68edfa021cce5919"
+  },
+  "prior_evidence": [
+    {
+      "path": "Docs/AL5/AUTOCAL_TRANSPORT_STATIC.json",
+      "sha256": "fe791a6bd42a61ffc80fec8f77d2eebe7fdcd074ac1e37e466a4b1b114a647b7"
+    },
+    {
+      "path": "Docs/AL5/AUTOCAL_VPW_TRANSPORT_STATIC.json",
+      "sha256": "d2551b0df3e646469abde42324872b3b3b17a8fe162cccc99bc95db78d738f74"
+    },
+    {
+      "path": "Docs/AL5/VM_RETRY_HELPERS_STATIC.json",
+      "sha256": "de0179fb250a497b1e1beaaabbc36295b62ce50d3e8fcc705864488a95228d18"
+    }
+  ],
+  "input_stability": "Inputs, generator and prior reports compared before and after; transient replacement is not prevented by locking",
+  "windows": [
+    {
+      "role": "ftdi_status_raise",
+      "source": {
+        "va": "0x6eccf0",
+        "rva": "0x2eccf0",
+        "file_offset": 3064048,
+        "bytes": 16,
+        "sha256": "da45891d7ca4914ae634cd316ba2ca47c82843da56162612fd89317c7fecf9ce"
+      },
+      "end_exclusive_va": "0x6ecd00",
+      "lookahead_source": {
+        "va": "0x6eccf0",
+        "rva": "0x2eccf0",
+        "file_offset": 3064048,
+        "bytes": 32,
+        "sha256": "dfdd21ccf470101942f0d0bb9ec9718b03a7c8b98d56d0538a0c70a415e53004"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x6eccf0,0x6ecd0f",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_Hapi.exe"
+      ],
+      "instructions": [
+        "006ECCF0: push        ebp",
+        "006ECCF1: mov         ebp,esp",
+        "006ECCF3: test        edx,edx",
+        "006ECCF5: je          006ECCFE",
+        "006ECCF7: mov         eax,edx",
+        "006ECCF9: call        007EC124",
+        "006ECCFE: pop         ebp",
+        "006ECCFF: ret"
+      ]
+    },
+    {
+      "role": "fixed_driver_timeout_initialization",
+      "source": {
+        "va": "0x6edbb8",
+        "rva": "0x2edbb8",
+        "file_offset": 3067832,
+        "bytes": 83,
+        "sha256": "b3e43fda9450c6aea0f72f04e1690e383eaf7cb3b49a774253429eda76b5b2ac"
+      },
+      "end_exclusive_va": "0x6edc0b",
+      "lookahead_source": {
+        "va": "0x6edbb8",
+        "rva": "0x2edbb8",
+        "file_offset": 3067832,
+        "bytes": 99,
+        "sha256": "67558932ddce7fcb948bd679aa1d928889e1ee6f619dffe3db198b23ca2846c1"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x6edbb8,0x6edc1a",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_Hapi.exe"
+      ],
+      "instructions": [
+        "006EDBB8: push        ebp",
+        "006EDBB9: mov         ebp,esp",
+        "006EDBBB: push        ebx",
+        "006EDBBC: push        esi",
+        "006EDBBD: push        edi",
+        "006EDBBE: mov         esi,edx",
+        "006EDBC0: mov         ebx,eax",
+        "006EDBC2: push        2000h",
+        "006EDBC7: mov         edi,esi",
+        "006EDBC9: mov         edx,edi",
+        "006EDBCB: mov         ecx,2000h",
+        "006EDBD0: mov         eax,ebx",
+        "006EDBD2: call        006ED280",
+        "006EDBD7: mov         edx,edi",
+        "006EDBD9: mov         cl,2",
+        "006EDBDB: mov         eax,ebx",
+        "006EDBDD: call        006ED120",
+        "006EDBE2: push        1",
+        "006EDBE4: push        0",
+        "006EDBE6: push        0",
+        "006EDBE8: mov         edx,edi",
+        "006EDBEA: mov         cl,19h",
+        "006EDBEC: mov         eax,ebx",
+        "006EDBEE: call        006ED7B4",
+        "006EDBF3: push        3E8h",
+        "006EDBF8: mov         edx,edi",
+        "006EDBFA: mov         ecx,0FAh",
+        "006EDBFF: mov         eax,ebx",
+        "006EDC01: call        006ECF58",
+        "006EDC06: pop         edi",
+        "006EDC07: pop         esi",
+        "006EDC08: pop         ebx",
+        "006EDC09: pop         ebp",
+        "006EDC0A: ret"
+      ]
+    },
+    {
+      "role": "driver_timeout_api_call",
+      "source": {
+        "va": "0x6ecfc6",
+        "rva": "0x2ecfc6",
+        "file_offset": 3064774,
+        "bytes": 65,
+        "sha256": "df017abf40b28280ec6dc0334ee39104831ca4b13bb3ef037a2b09235a7d5382"
+      },
+      "end_exclusive_va": "0x6ed007",
+      "lookahead_source": {
+        "va": "0x6ecfc6",
+        "rva": "0x2ecfc6",
+        "file_offset": 3064774,
+        "bytes": 81,
+        "sha256": "c4608b7cf6048addb55c2d0eead6db85c029774ed3874b2f05eea2a53a3db10c"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x6ecfc6,0x6ed016",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_Hapi.exe"
+      ],
+      "instructions": [
+        "006ECFC6: lea         ecx,[ebp-28h]",
+        "006ECFC9: mov         edx,edi",
+        "006ECFCB: mov         eax,dword ptr [ebx+00000080h]",
+        "006ECFD1: call        006EBF98",
+        "006ECFD6: mov         eax,dword ptr [ebp-28h]",
+        "006ECFD9: mov         edx,dword ptr [ebp+8]",
+        "006ECFDC: push        edx",
+        "006ECFDD: push        esi",
+        "006ECFDE: push        eax",
+        "006ECFDF: call        dword ptr [ebx+2Ch]",
+        "006ECFE2: mov         esi,eax",
+        "006ECFE4: mov         eax,esi",
+        "006ECFE6: dec         eax",
+        "006ECFE7: sub         eax,4",
+        "006ECFEA: jae         006ECFF7",
+        "006ECFEC: mov         edx,edi",
+        "006ECFEE: mov         eax,ebx",
+        "006ECFF0: call        006EDB54",
+        "006ECFF5: mov         esi,eax",
+        "006ECFF7: mov         edx,esi",
+        "006ECFF9: mov         eax,ebx",
+        "006ECFFB: call        006ECCF0",
+        "006ED000: push        4Bh",
+        "006ED002: call        00438E58"
+      ]
+    },
+    {
+      "role": "read_count_initialization",
+      "source": {
+        "va": "0x6edd33",
+        "rva": "0x2edd33",
+        "file_offset": 3068211,
+        "bytes": 35,
+        "sha256": "353ec64bcc6e4fb53eff51cd8f2fa05168d79826b30bd8ea359d6fc5b7062c14"
+      },
+      "end_exclusive_va": "0x6edd56",
+      "lookahead_source": {
+        "va": "0x6edd33",
+        "rva": "0x2edd33",
+        "file_offset": 3068211,
+        "bytes": 51,
+        "sha256": "1709d8f317bf6cdb8b1d9dd5e0f71ae592a12558ea57f2c3db713153052c6a1b"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x6edd33,0x6edd65",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_Hapi.exe"
+      ],
+      "instructions": [
+        "006EDD33: mov         dword ptr [ebp-8],ecx",
+        "006EDD36: mov         word ptr [ebp-2],dx",
+        "006EDD3A: mov         ebx,eax",
+        "006EDD3C: mov         esi,dword ptr [ebp+0Ch]",
+        "006EDD3F: xor         eax,eax",
+        "006EDD41: push        ebp",
+        "006EDD42: push        6EDF8Dh",
+        "006EDD47: push        dword ptr fs:[eax]",
+        "006EDD4A: mov         dword ptr fs:[eax],esp",
+        "006EDD4D: xor         edx,edx",
+        "006EDD4F: mov         eax,ebx",
+        "006EDD51: call        006ECCC4"
+      ]
+    },
+    {
+      "role": "read_logical_attempt_budget",
+      "source": {
+        "va": "0x6edd87",
+        "rva": "0x2edd87",
+        "file_offset": 3068295,
+        "bytes": 140,
+        "sha256": "fd80cd7766c042ec9fb8a5fc2366d3688e1c9fada3cf507f9d62afefd41e0c1f"
+      },
+      "end_exclusive_va": "0x6ede13",
+      "lookahead_source": {
+        "va": "0x6edd87",
+        "rva": "0x2edd87",
+        "file_offset": 3068295,
+        "bytes": 156,
+        "sha256": "c583c85ccb2d78b714d0c5c95ac593e636159e17838318379a658c9bcde4a7a4"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x6edd87,0x6ede22",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_Hapi.exe"
+      ],
+      "instructions": [
+        "006EDD87: test        esi,esi",
+        "006EDD89: ja          006EDD9C",
+        "006EDD8B: mov         eax,dword ptr [ebp+8]",
+        "006EDD8E: xor         edx,edx",
+        "006EDD90: mov         dword ptr [eax],edx",
+        "006EDD92: xor         eax,eax",
+        "006EDD94: mov         dword ptr [ebp-0Ch],eax",
+        "006EDD97: jmp         006EDF57",
+        "006EDD9C: mov         eax,dword ptr [ebp+10h]",
+        "006EDD9F: add         eax,esi",
+        "006EDDA1: push        eax",
+        "006EDDA2: mov         eax,dword ptr [ebp-8]",
+        "006EDDA5: mov         ecx,1",
+        "006EDDAA: mov         edx,dword ptr ds:[00404EE8h]",
+        "006EDDB0: call        0040FBA4",
+        "006EDDB5: add         esp,4",
+        "006EDDB8: lea         ecx,[ebp-3Ch]",
+        "006EDDBB: movzx       edx,word ptr [ebp-2]",
+        "006EDDBF: mov         eax,dword ptr [ebx+00000080h]",
+        "006EDDC5: call        006EBF98",
+        "006EDDCA: mov         eax,dword ptr [ebp-3Ch]",
+        "006EDDCD: mov         dword ptr [ebp-10h],eax",
+        "006EDDD0: mov         dword ptr [ebp-0Ch],22h",
+        "006EDDD7: mov         eax,dword ptr [ebx+78h]",
+        "006EDDDA: dec         eax",
+        "006EDDDB: test        eax,eax",
+        "006EDDDD: jle         006EDDE3",
+        "006EDDDF: mov         ecx,eax",
+        "006EDDE1: jmp         006EDDE5",
+        "006EDDE3: xor         ecx,ecx",
+        "006EDDE5: mov         eax,10624DD3h",
+        "006EDDEA: imul        ecx",
+        "006EDDEC: sar         edx,4",
+        "006EDDEF: mov         eax,edx",
+        "006EDDF1: shr         eax,1Fh",
+        "006EDDF4: add         eax,edx",
+        "006EDDF6: mov         dword ptr [ebp-18h],eax",
+        "006EDDF9: mov         eax,dword ptr [ebp+8]",
+        "006EDDFC: xor         edx,edx",
+        "006EDDFE: mov         dword ptr [eax],edx",
+        "006EDE00: mov         edi,dword ptr [ebp-18h]",
+        "006EDE03: test        edi,edi",
+        "006EDE05: jl          006EDEA0",
+        "006EDE0B: inc         edi",
+        "006EDE0C: mov         dword ptr [ebp-14h],0"
+      ]
+    },
+    {
+      "role": "read_count_update_and_final_guard",
+      "source": {
+        "va": "0x6ede54",
+        "rva": "0x2ede54",
+        "file_offset": 3068500,
+        "bytes": 259,
+        "sha256": "3962acb7ccc7e776896c9a75a9760b433d0b7d30edefb4eb35cd912eec385f46"
+      },
+      "end_exclusive_va": "0x6edf57",
+      "lookahead_source": {
+        "va": "0x6ede54",
+        "rva": "0x2ede54",
+        "file_offset": 3068500,
+        "bytes": 275,
+        "sha256": "60d63f80b6bd0be07299a72708295db9717cec0a1c44afafe9e385fe7197e848"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x6ede54,0x6edf66",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_Hapi.exe"
+      ],
+      "instructions": [
+        "006EDE54: lea         eax,[ebp-1Ch]",
+        "006EDE57: push        eax",
+        "006EDE58: push        esi",
+        "006EDE59: mov         eax,dword ptr [ebp-8]",
+        "006EDE5C: mov         eax,dword ptr [eax]",
+        "006EDE5E: mov         edx,dword ptr [ebp+10h]",
+        "006EDE61: add         eax,edx",
+        "006EDE63: push        eax",
+        "006EDE64: mov         eax,dword ptr [ebp-10h]",
+        "006EDE67: push        eax",
+        "006EDE68: call        dword ptr [ebx+4Ch]",
+        "006EDE6B: mov         dword ptr [ebp-0Ch],eax",
+        "006EDE6E: mov         eax,dword ptr [ebp+8]",
+        "006EDE71: mov         edx,dword ptr [ebp-1Ch]",
+        "006EDE74: add         dword ptr [eax],edx",
+        "006EDE76: mov         eax,dword ptr [ebp-1Ch]",
+        "006EDE79: add         dword ptr [ebp+10h],eax",
+        "006EDE7C: sub         esi,dword ptr [ebp-1Ch]",
+        "006EDE7F: test        esi,esi",
+        "006EDE81: je          006EDEA0",
+        "006EDE83: movzx       eax,word ptr [ebp-2]",
+        "006EDE87: push        eax",
+        "006EDE88: mov         cl,4",
+        "006EDE8A: mov         edx,6EE024h",
+        "006EDE8F: mov         eax,ebx",
+        "006EDE91: call        006EC904",
+        "006EDE96: inc         dword ptr [ebp-14h]",
+        "006EDE99: dec         edi",
+        "006EDE9A: jne         006EDE13",
+        "006EDEA0: test        esi,esi",
+        "006EDEA2: jbe         006EDEBD",
+        "006EDEA4: cmp         byte ptr [ebx+6Dh],0",
+        "006EDEA8: je          006EDEBD",
+        "006EDEAA: movzx       eax,word ptr [ebp-2]",
+        "006EDEAE: push        eax",
+        "006EDEAF: mov         cl,4",
+        "006EDEB1: mov         edx,6EE048h",
+        "006EDEB6: mov         eax,ebx",
+        "006EDEB8: call        006EC904",
+        "006EDEBD: mov         eax,dword ptr [ebp-0Ch]",
+        "006EDEC0: dec         eax",
+        "006EDEC1: sub         eax,4",
+        "006EDEC4: jae         006EDED4",
+        "006EDEC6: movzx       edx,word ptr [ebp-2]",
+        "006EDECA: mov         eax,ebx",
+        "006EDECC: call        006EDB54",
+        "006EDED1: mov         dword ptr [ebp-0Ch],eax",
+        "006EDED4: mov         edx,dword ptr [ebp-0Ch]",
+        "006EDED7: mov         eax,ebx",
+        "006EDED9: call        006ECCF0",
+        "006EDEDE: mov         eax,dword ptr [ebp+8]",
+        "006EDEE1: cmp         esi,dword ptr [eax]",
+        "006EDEE3: jbe         006EDF3E",
+        "006EDEE5: cmp         byte ptr [ebx+6Dh],0",
+        "006EDEE9: je          006EDF34",
+        "006EDEEB: movzx       edi,word ptr [ebp-2]",
+        "006EDEEF: push        edi",
+        "006EDEF0: lea         eax,[ebp-54h]",
+        "006EDEF3: push        eax",
+        "006EDEF4: mov         eax,dword ptr [ebp+8]",
+        "006EDEF7: mov         eax,dword ptr [eax]",
+        "006EDEF9: mov         dword ptr [ebp-50h],eax",
+        "006EDEFC: mov         byte ptr [ebp-4Ch],0",
+        "006EDF00: mov         dword ptr [ebp-48h],esi",
+        "006EDF03: mov         byte ptr [ebp-44h],0",
+        "006EDF07: lea         edx,[ebp-50h]",
+        "006EDF0A: mov         ecx,1",
+        "006EDF0F: mov         eax,6EE068h",
+        "006EDF14: call        0042F360",
+        "006EDF19: mov         edx,dword ptr [ebp-54h]",
+        "006EDF1C: mov         cl,4",
+        "006EDF1E: mov         eax,ebx",
+        "006EDF20: call        006EC904",
+        "006EDF25: push        edi",
+        "006EDF26: mov         edx,dword ptr [ebp-8]",
+        "006EDF29: mov         edx,dword ptr [edx]",
+        "006EDF2B: mov         cl,2",
+        "006EDF2D: mov         eax,ebx",
+        "006EDF2F: call        006EC898",
+        "006EDF34: mov         eax,101h",
+        "006EDF39: call        007EC124",
+        "006EDF3E: cmp         byte ptr [ebx+6Dh],0",
+        "006EDF42: je          006EDF57",
+        "006EDF44: movzx       eax,word ptr [ebp-2]",
+        "006EDF48: push        eax",
+        "006EDF49: mov         cl,2",
+        "006EDF4B: mov         edx,6EE0A8h",
+        "006EDF50: mov         eax,ebx",
+        "006EDF52: call        006EC904"
+      ]
+    },
+    {
+      "role": "write_count_initialization",
+      "source": {
+        "va": "0x6ee0db",
+        "rva": "0x2ee0db",
+        "file_offset": 3069147,
+        "bytes": 43,
+        "sha256": "557f1b82c2ddd1cddc3653c6e5a82a181fc16bdb6f691cd2cd28f02fa123bb43"
+      },
+      "end_exclusive_va": "0x6ee106",
+      "lookahead_source": {
+        "va": "0x6ee0db",
+        "rva": "0x2ee0db",
+        "file_offset": 3069147,
+        "bytes": 59,
+        "sha256": "86702bd9bb33810e1ca5bdc99ae05ea87c00519e2b58e1ed5b4bb25d50d55592"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x6ee0db,0x6ee115",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_Hapi.exe"
+      ],
+      "instructions": [
+        "006EE0DB: mov         dword ptr [ebp-4],ecx",
+        "006EE0DE: mov         word ptr [ebp-6],dx",
+        "006EE0E2: mov         ebx,eax",
+        "006EE0E4: mov         esi,dword ptr [ebp+0Ch]",
+        "006EE0E7: mov         eax,dword ptr [ebp-4]",
+        "006EE0EA: call        0040FD50",
+        "006EE0EF: xor         eax,eax",
+        "006EE0F1: push        ebp",
+        "006EE0F2: push        6EE31Bh",
+        "006EE0F7: push        dword ptr fs:[eax]",
+        "006EE0FA: mov         dword ptr fs:[eax],esp",
+        "006EE0FD: xor         edx,edx",
+        "006EE0FF: mov         eax,ebx",
+        "006EE101: call        006ECCC4"
+      ]
+    },
+    {
+      "role": "write_logical_attempt_budget",
+      "source": {
+        "va": "0x6ee137",
+        "rva": "0x2ee137",
+        "file_offset": 3069239,
+        "bytes": 96,
+        "sha256": "d9ec0fde9e2dee2fc279ddfc0d7601d44b8657de8fb949998a1f665690dc2304"
+      },
+      "end_exclusive_va": "0x6ee197",
+      "lookahead_source": {
+        "va": "0x6ee137",
+        "rva": "0x2ee137",
+        "file_offset": 3069239,
+        "bytes": 112,
+        "sha256": "271f89dfc5e88cf511bedc1cff654fa44545e52dc05154aeab71343ff6af506c"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x6ee137,0x6ee1a6",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_Hapi.exe"
+      ],
+      "instructions": [
+        "006EE137: lea         ecx,[ebp-40h]",
+        "006EE13A: movzx       edx,word ptr [ebp-6]",
+        "006EE13E: mov         eax,dword ptr [ebx+00000080h]",
+        "006EE144: call        006EBF98",
+        "006EE149: mov         eax,dword ptr [ebp-40h]",
+        "006EE14C: mov         dword ptr [ebp-10h],eax",
+        "006EE14F: mov         dword ptr [ebp-0Ch],22h",
+        "006EE156: mov         eax,dword ptr [ebx+7Ch]",
+        "006EE159: dec         eax",
+        "006EE15A: test        eax,eax",
+        "006EE15C: jle         006EE162",
+        "006EE15E: mov         ecx,eax",
+        "006EE160: jmp         006EE164",
+        "006EE162: xor         ecx,ecx",
+        "006EE164: mov         eax,10624DD3h",
+        "006EE169: imul        ecx",
+        "006EE16B: sar         edx,6",
+        "006EE16E: mov         eax,edx",
+        "006EE170: shr         eax,1Fh",
+        "006EE173: add         eax,edx",
+        "006EE175: mov         dword ptr [ebp-18h],eax",
+        "006EE178: mov         eax,dword ptr [ebp+8]",
+        "006EE17B: xor         edx,edx",
+        "006EE17D: mov         dword ptr [eax],edx",
+        "006EE17F: xor         eax,eax",
+        "006EE181: mov         dword ptr [ebp-20h],eax",
+        "006EE184: mov         edi,dword ptr [ebp-18h]",
+        "006EE187: test        edi,edi",
+        "006EE189: jl          006EE222",
+        "006EE18F: inc         edi",
+        "006EE190: mov         dword ptr [ebp-14h],0"
+      ]
+    },
+    {
+      "role": "write_count_update_and_final_guard",
+      "source": {
+        "va": "0x6ee1d8",
+        "rva": "0x2ee1d8",
+        "file_offset": 3069400,
+        "bytes": 255,
+        "sha256": "87303a7723a2518bf67a16d04b487309c6316fa944853fd7fce2f29b976bfcfc"
+      },
+      "end_exclusive_va": "0x6ee2d7",
+      "lookahead_source": {
+        "va": "0x6ee1d8",
+        "rva": "0x2ee1d8",
+        "file_offset": 3069400,
+        "bytes": 271,
+        "sha256": "8f30077b4e56a456fb6ccac250688452385cb85462fc578f5051f0b741ec9865"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0x6ee1d8,0x6ee2e6",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_Hapi.exe"
+      ],
+      "instructions": [
+        "006EE1D8: lea         eax,[ebp-1Ch]",
+        "006EE1DB: push        eax",
+        "006EE1DC: push        esi",
+        "006EE1DD: mov         eax,dword ptr [ebp-4]",
+        "006EE1E0: mov         edx,dword ptr [ebp-20h]",
+        "006EE1E3: add         eax,edx",
+        "006EE1E5: push        eax",
+        "006EE1E6: mov         eax,dword ptr [ebp-10h]",
+        "006EE1E9: push        eax",
+        "006EE1EA: call        dword ptr [ebx+50h]",
+        "006EE1ED: mov         dword ptr [ebp-0Ch],eax",
+        "006EE1F0: mov         eax,dword ptr [ebp+8]",
+        "006EE1F3: mov         edx,dword ptr [ebp-1Ch]",
+        "006EE1F6: add         dword ptr [eax],edx",
+        "006EE1F8: mov         eax,dword ptr [ebp-1Ch]",
+        "006EE1FB: add         dword ptr [ebp-20h],eax",
+        "006EE1FE: sub         esi,dword ptr [ebp-1Ch]",
+        "006EE201: test        esi,esi",
+        "006EE203: je          006EE222",
+        "006EE205: movzx       eax,word ptr [ebp-6]",
+        "006EE209: push        eax",
+        "006EE20A: mov         cl,4",
+        "006EE20C: mov         edx,6EE3B4h",
+        "006EE211: mov         eax,ebx",
+        "006EE213: call        006EC904",
+        "006EE218: inc         dword ptr [ebp-14h]",
+        "006EE21B: dec         edi",
+        "006EE21C: jne         006EE197",
+        "006EE222: test        esi,esi",
+        "006EE224: jbe         006EE23F",
+        "006EE226: cmp         byte ptr [ebx+6Dh],0",
+        "006EE22A: je          006EE23F",
+        "006EE22C: movzx       eax,word ptr [ebp-6]",
+        "006EE230: push        eax",
+        "006EE231: mov         cl,4",
+        "006EE233: mov         edx,6EE3D8h",
+        "006EE238: mov         eax,ebx",
+        "006EE23A: call        006EC904",
+        "006EE23F: mov         eax,dword ptr [ebp-0Ch]",
+        "006EE242: dec         eax",
+        "006EE243: sub         eax,4",
+        "006EE246: jae         006EE256",
+        "006EE248: movzx       edx,word ptr [ebp-6]",
+        "006EE24C: mov         eax,ebx",
+        "006EE24E: call        006EDB54",
+        "006EE253: mov         dword ptr [ebp-0Ch],eax",
+        "006EE256: mov         edx,dword ptr [ebp-0Ch]",
+        "006EE259: mov         eax,ebx",
+        "006EE25B: call        006ECCF0",
+        "006EE260: mov         eax,dword ptr [ebp+8]",
+        "006EE263: cmp         esi,dword ptr [eax]",
+        "006EE265: jbe         006EE2BE",
+        "006EE267: cmp         byte ptr [ebx+6Dh],0",
+        "006EE26B: je          006EE2B4",
+        "006EE26D: movzx       edi,word ptr [ebp-6]",
+        "006EE271: push        edi",
+        "006EE272: lea         eax,[ebp-58h]",
+        "006EE275: push        eax",
+        "006EE276: mov         eax,dword ptr [ebp+8]",
+        "006EE279: mov         eax,dword ptr [eax]",
+        "006EE27B: mov         dword ptr [ebp-54h],eax",
+        "006EE27E: mov         byte ptr [ebp-50h],0",
+        "006EE282: mov         dword ptr [ebp-4Ch],esi",
+        "006EE285: mov         byte ptr [ebp-48h],0",
+        "006EE289: lea         edx,[ebp-54h]",
+        "006EE28C: mov         ecx,1",
+        "006EE291: mov         eax,6EE3F8h",
+        "006EE296: call        0042F360",
+        "006EE29B: mov         edx,dword ptr [ebp-58h]",
+        "006EE29E: mov         cl,4",
+        "006EE2A0: mov         eax,ebx",
+        "006EE2A2: call        006EC904",
+        "006EE2A7: push        edi",
+        "006EE2A8: mov         cl,1",
+        "006EE2AA: mov         edx,dword ptr [ebp-4]",
+        "006EE2AD: mov         eax,ebx",
+        "006EE2AF: call        006EC898",
+        "006EE2B4: mov         eax,101h",
+        "006EE2B9: call        007EC124",
+        "006EE2BE: cmp         byte ptr [ebx+6Dh],0",
+        "006EE2C2: je          006EE2D7",
+        "006EE2C4: movzx       eax,word ptr [ebp-6]",
+        "006EE2C8: push        eax",
+        "006EE2C9: mov         cl,1",
+        "006EE2CB: mov         edx,6EE438h",
+        "006EE2D0: mov         eax,ebx",
+        "006EE2D2: call        006EC904"
+      ]
+    },
+    {
+      "role": "hapi_send_caller_no_length_check",
+      "source": {
+        "va": "0xa16f7e",
+        "rva": "0x616f7e",
+        "file_offset": 6382462,
+        "bytes": 81,
+        "sha256": "d4141358e6907151f5874cb73350153a9e388ced0f8f93fca3bdb261a6a8a113"
+      },
+      "end_exclusive_va": "0xa16fcf",
+      "lookahead_source": {
+        "va": "0xa16f7e",
+        "rva": "0x616f7e",
+        "file_offset": 6382462,
+        "bytes": 97,
+        "sha256": "ec8e9620c7633bc9c2d13677e2dcbd8f830064eb42d5d0c2e3b5afe8a4423682"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0xa16f7e,0xa16fde",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_Hapi.exe"
+      ],
+      "instructions": [
+        "00A16F7E: movzx       eax,word ptr [ebp+8]",
+        "00A16F82: add         eax,dword ptr [ebp-18h]",
+        "00A16F85: add         eax,2",
+        "00A16F88: push        eax",
+        "00A16F89: lea         eax,[ebp-14h]",
+        "00A16F8C: push        eax",
+        "00A16F8D: mov         eax,dword ptr [ebp-0Ch]",
+        "00A16F90: movzx       edx,word ptr [eax+1Ch]",
+        "00A16F94: mov         eax,dword ptr ds:[00AD99A0h]",
+        "00A16F99: mov         eax,dword ptr [eax]",
+        "00A16F9B: mov         ecx,dword ptr [ebp-4]",
+        "00A16F9E: call        006EE0B8",
+        "00A16FA3: jmp         00A16FBD",
+        "00A16FA5: push        64h",
+        "00A16FA7: lea         ecx,[ebp-8]",
+        "00A16FAA: mov         eax,dword ptr [ebp-0Ch]",
+        "00A16FAD: movzx       edx,word ptr [eax+1Ch]",
+        "00A16FB1: mov         eax,dword ptr ds:[00AD9AA4h]",
+        "00A16FB6: mov         eax,dword ptr [eax]",
+        "00A16FB8: call        00A0DBF4",
+        "00A16FBD: mov         eax,dword ptr [ebp-0Ch]",
+        "00A16FC0: xor         edx,edx",
+        "00A16FC2: mov         dword ptr [eax+0Ch],edx",
+        "00A16FC5: xor         eax,eax",
+        "00A16FC7: pop         edx",
+        "00A16FC8: pop         ecx",
+        "00A16FC9: pop         ecx",
+        "00A16FCA: mov         dword ptr fs:[eax],edx",
+        "00A16FCD: jmp         00A17030"
+      ]
+    },
+    {
+      "role": "hapi_send_outer_attempt_setup",
+      "source": {
+        "va": "0xa16f12",
+        "rva": "0x616f12",
+        "file_offset": 6382354,
+        "bytes": 55,
+        "sha256": "0d9d55e68c05f933bb764bb4541b1aa98b91c062d0e195761e85c8e20fc05bae"
+      },
+      "end_exclusive_va": "0xa16f49",
+      "lookahead_source": {
+        "va": "0xa16f12",
+        "rva": "0x616f12",
+        "file_offset": 6382354,
+        "bytes": 71,
+        "sha256": "161a806214e795e33342abe9d3f7a4b3c05507abc24557482f2f1373961deb6e"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0xa16f12,0xa16f58",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_Hapi.exe"
+      ],
+      "instructions": [
+        "00A16F12: mov         eax,dword ptr [ebp-0Ch]",
+        "00A16F15: mov         eax,dword ptr [eax+3Ch]",
+        "00A16F18: test        eax,eax",
+        "00A16F1A: jl          00A17030",
+        "00A16F20: inc         eax",
+        "00A16F21: mov         dword ptr [ebp-1Ch],eax",
+        "00A16F24: mov         dword ptr [ebp-10h],0",
+        "00A16F2B: xor         ecx,ecx",
+        "00A16F2D: push        ebp",
+        "00A16F2E: push        0A16FD7h",
+        "00A16F33: push        dword ptr fs:[ecx]",
+        "00A16F36: mov         dword ptr fs:[ecx],esp",
+        "00A16F39: cmp         dword ptr [ebp-10h],0",
+        "00A16F3D: jle         00A16F49",
+        "00A16F3F: xor         edx,edx",
+        "00A16F41: mov         eax,dword ptr [ebp-0Ch]",
+        "00A16F44: call        00A13678"
+      ]
+    },
+    {
+      "role": "hapi_send_outer_exception_retry_tail",
+      "source": {
+        "va": "0xa1700f",
+        "rva": "0x61700f",
+        "file_offset": 6382607,
+        "bytes": 47,
+        "sha256": "f47aa049c1fb39ef60ce3f8e57e61e57c2f6fad4c2b333a302b155f7b2bd90f5"
+      },
+      "end_exclusive_va": "0xa1703e",
+      "lookahead_source": {
+        "va": "0xa1700f",
+        "rva": "0x61700f",
+        "file_offset": 6382607,
+        "bytes": 63,
+        "sha256": "f108eef66970ff544060b5b941c8942abd1a45aef04eecc4809f609a870abcb2"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0xa1700f,0xa1704d",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_Hapi.exe"
+      ],
+      "instructions": [
+        "00A1700F: mov         eax,dword ptr [ebp-0Ch]",
+        "00A17012: mov         eax,dword ptr [eax+3Ch]",
+        "00A17015: cmp         eax,dword ptr [ebp-10h]",
+        "00A17018: jne         00A1701F",
+        "00A1701A: call        0040BA9C",
+        "00A1701F: call        0040BAF0",
+        "00A17024: inc         dword ptr [ebp-10h]",
+        "00A17027: dec         dword ptr [ebp-1Ch]",
+        "00A1702A: jne         00A16F2B",
+        "00A17030: mov         eax,dword ptr [ebp-0Ch]",
+        "00A17033: xor         edx,edx",
+        "00A17035: mov         dword ptr [eax+30h],edx",
+        "00A17038: mov         eax,dword ptr [ebp-0Ch]",
+        "00A1703B: inc         dword ptr [eax+34h]"
+      ]
+    },
+    {
+      "role": "hapi_receive_prefix_scan",
+      "source": {
+        "va": "0xa173ca",
+        "rva": "0x6173ca",
+        "file_offset": 6383562,
+        "bytes": 97,
+        "sha256": "9a33d1ef928c5fe6a73bd0509b6805806aa96a5007e073024b59b2139b1eeb51"
+      },
+      "end_exclusive_va": "0xa1742b",
+      "lookahead_source": {
+        "va": "0xa173ca",
+        "rva": "0x6173ca",
+        "file_offset": 6383562,
+        "bytes": 113,
+        "sha256": "2b7520360a7e7a4c605299d1f33f19a4019b7bd91e6dce7d1ca19c65d430213d"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0xa173ca,0xa1743a",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_Hapi.exe"
+      ],
+      "instructions": [
+        "00A173CA: mov         eax,dword ptr [ebp-0Ch]",
+        "00A173CD: cmp         byte ptr [eax+51h],0",
+        "00A173D1: je          00A173D9",
+        "00A173D3: mov         si,8",
+        "00A173D7: jmp         00A173DD",
+        "00A173D9: mov         si,0Ch",
+        "00A173DD: xor         eax,eax",
+        "00A173DF: mov         dword ptr [ebp-24h],eax",
+        "00A173E2: movzx       eax,si",
+        "00A173E5: push        eax",
+        "00A173E6: lea         eax,[ebp-4]",
+        "00A173E9: mov         ecx,1",
+        "00A173EE: mov         edx,dword ptr ds:[00404EE8h]",
+        "00A173F4: call        0040FBA4",
+        "00A173F9: add         esp,4",
+        "00A173FC: push        0",
+        "00A173FE: push        1",
+        "00A17400: lea         eax,[ebp-18h]",
+        "00A17403: push        eax",
+        "00A17404: lea         ecx,[ebp-4]",
+        "00A17407: mov         eax,dword ptr [ebp-0Ch]",
+        "00A1740A: movzx       edx,word ptr [eax+1Ch]",
+        "00A1740E: mov         eax,dword ptr ds:[00AD99A0h]",
+        "00A17413: mov         eax,dword ptr [eax]",
+        "00A17415: call        006EDD10",
+        "00A1741A: mov         edi,1",
+        "00A1741F: mov         eax,dword ptr [ebp-4]",
+        "00A17422: cmp         byte ptr [eax],1",
+        "00A17425: je          00A174C4"
+      ]
+    },
+    {
+      "role": "hapi_receive_header_calls",
+      "source": {
+        "va": "0xa174c4",
+        "rva": "0x6174c4",
+        "file_offset": 6383812,
+        "bytes": 86,
+        "sha256": "89f0b2f1bd639d620bda5e3820a8663c9daabb83b655edca7e0f7c41e0637800"
+      },
+      "end_exclusive_va": "0xa1751a",
+      "lookahead_source": {
+        "va": "0xa174c4",
+        "rva": "0x6174c4",
+        "file_offset": 6383812,
+        "bytes": 102,
+        "sha256": "92f6b4ee7fed65187a27dfc03b72e78a2caaba88ed64b22226b26789708aa010"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0xa174c4,0xa17529",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_Hapi.exe"
+      ],
+      "instructions": [
+        "00A174C4: push        1",
+        "00A174C6: push        1",
+        "00A174C8: lea         eax,[ebp-18h]",
+        "00A174CB: push        eax",
+        "00A174CC: lea         ecx,[ebp-4]",
+        "00A174CF: mov         eax,dword ptr [ebp-0Ch]",
+        "00A174D2: movzx       edx,word ptr [eax+1Ch]",
+        "00A174D6: mov         eax,dword ptr ds:[00AD99A0h]",
+        "00A174DB: mov         eax,dword ptr [eax]",
+        "00A174DD: call        006EDD10",
+        "00A174E2: mov         eax,dword ptr [ebp-4]",
+        "00A174E5: cmp         byte ptr [eax+1],52h",
+        "00A174E9: jne         00A176F7",
+        "00A174EF: push        2",
+        "00A174F1: movzx       eax,si",
+        "00A174F4: sub         eax,2",
+        "00A174F7: push        eax",
+        "00A174F8: lea         eax,[ebp-18h]",
+        "00A174FB: push        eax",
+        "00A174FC: lea         ecx,[ebp-4]",
+        "00A174FF: mov         eax,dword ptr [ebp-0Ch]",
+        "00A17502: movzx       edx,word ptr [eax+1Ch]",
+        "00A17506: mov         eax,dword ptr ds:[00AD99A0h]",
+        "00A1750B: mov         eax,dword ptr [eax]",
+        "00A1750D: call        006EDD10",
+        "00A17512: mov         eax,dword ptr [ebp-0Ch]",
+        "00A17515: xor         edx,edx",
+        "00A17517: mov         dword ptr [eax+0Ch],edx"
+      ]
+    },
+    {
+      "role": "hapi_receive_other_command_drain",
+      "source": {
+        "va": "0xa175f5",
+        "rva": "0x6175f5",
+        "file_offset": 6384117,
+        "bytes": 181,
+        "sha256": "7db5604b2950c0bfa32558dd9a029e016df5071f46a06da9872a61066787634b"
+      },
+      "end_exclusive_va": "0xa176aa",
+      "lookahead_source": {
+        "va": "0xa175f5",
+        "rva": "0x6175f5",
+        "file_offset": 6384117,
+        "bytes": 197,
+        "sha256": "71300b717d32fb5112b26766e275dc0ed0a2da8dfed1e62710e6e1b6f1325179"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0xa175f5,0xa176b9",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_Hapi.exe"
+      ],
+      "instructions": [
+        "00A175F5: movzx       eax,si",
+        "00A175F8: mov         edx,dword ptr [ebp-4]",
+        "00A175FB: movzx       edi,byte ptr [edx+eax-2]",
+        "00A17600: mov         edx,dword ptr [ebp-4]",
+        "00A17603: movzx       eax,byte ptr [edx+eax-1]",
+        "00A17608: shl         eax,8",
+        "00A1760B: add         di,ax",
+        "00A1760E: test        di,di",
+        "00A17611: jbe         00A176F7",
+        "00A17617: cmp         di,0C000h",
+        "00A1761C: ja          00A176F7",
+        "00A17622: movzx       eax,si",
+        "00A17625: movzx       edx,di",
+        "00A17628: add         eax,edx",
+        "00A1762A: push        eax",
+        "00A1762B: lea         eax,[ebp-4]",
+        "00A1762E: mov         ecx,1",
+        "00A17633: mov         edx,dword ptr ds:[00404EE8h]",
+        "00A17639: call        0040FBA4",
+        "00A1763E: add         esp,4",
+        "00A17641: movzx       eax,si",
+        "00A17644: push        eax",
+        "00A17645: movzx       eax,di",
+        "00A17648: push        eax",
+        "00A17649: lea         eax,[ebp-18h]",
+        "00A1764C: push        eax",
+        "00A1764D: lea         ecx,[ebp-4]",
+        "00A17650: mov         eax,dword ptr [ebp-0Ch]",
+        "00A17653: movzx       edx,word ptr [eax+1Ch]",
+        "00A17657: mov         eax,dword ptr ds:[00AD99A0h]",
+        "00A1765C: mov         eax,dword ptr [eax]",
+        "00A1765E: call        006EDD10",
+        "00A17663: movzx       eax,si",
+        "00A17666: movzx       edx,di",
+        "00A17669: add         eax,edx",
+        "00A1766B: add         eax,3",
+        "00A1766E: push        eax",
+        "00A1766F: lea         eax,[ebp-4]",
+        "00A17672: mov         ecx,1",
+        "00A17677: mov         edx,dword ptr ds:[00404EE8h]",
+        "00A1767D: call        0040FBA4",
+        "00A17682: add         esp,4",
+        "00A17685: movzx       eax,si",
+        "00A17688: movzx       edx,di",
+        "00A1768B: add         eax,edx",
+        "00A1768D: push        eax",
+        "00A1768E: push        3",
+        "00A17690: lea         eax,[ebp-18h]",
+        "00A17693: push        eax",
+        "00A17694: lea         ecx,[ebp-4]",
+        "00A17697: mov         eax,dword ptr [ebp-0Ch]",
+        "00A1769A: movzx       edx,word ptr [eax+1Ch]",
+        "00A1769E: mov         eax,dword ptr ds:[00AD99A0h]",
+        "00A176A3: mov         eax,dword ptr [eax]",
+        "00A176A5: call        006EDD10"
+      ]
+    },
+    {
+      "role": "hapi_receive_candidate_limit",
+      "source": {
+        "va": "0xa176f7",
+        "rva": "0x6176f7",
+        "file_offset": 6384375,
+        "bytes": 81,
+        "sha256": "4c7a1871e23d5baa1c48fa075669a8ce9279fdc827dc7a959bcd9801e0f5e182"
+      },
+      "end_exclusive_va": "0xa17748",
+      "lookahead_source": {
+        "va": "0xa176f7",
+        "rva": "0x6176f7",
+        "file_offset": 6384375,
+        "bytes": 97,
+        "sha256": "e003cd28ce7106c1f93ff64980b68e0b9fb3aeb6b75f00467b609158af28f54c"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0xa176f7,0xa17757",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_Hapi.exe"
+      ],
+      "instructions": [
+        "00A176F7: inc         dword ptr [ebp-24h]",
+        "00A176FA: cmp         dword ptr [ebp-24h],32h",
+        "00A176FE: jne         00A173E2",
+        "00A17704: mov         eax,dword ptr [ebp-0Ch]",
+        "00A17707: xor         edx,edx",
+        "00A17709: mov         dword ptr [eax+30h],edx",
+        "00A1770C: cmp         byte ptr [ebp-25h],0",
+        "00A17710: je          00A17748",
+        "00A17712: mov         eax,dword ptr [ebp-0Ch]",
+        "00A17715: mov         eax,dword ptr [eax+18h]",
+        "00A17718: cmp         byte ptr [eax+18h],0",
+        "00A1771C: je          00A1773E",
+        "00A1771E: mov         eax,dword ptr [ebp-0Ch]",
+        "00A17721: movzx       eax,word ptr [eax+1Ch]",
+        "00A17725: push        eax",
+        "00A17726: mov         eax,dword ptr [ebp-0Ch]",
+        "00A17729: movzx       eax,word ptr [eax+56h]",
+        "00A1772D: push        eax",
+        "00A1772E: mov         eax,dword ptr [ebp-0Ch]",
+        "00A17731: mov         eax,dword ptr [eax+18h]",
+        "00A17734: mov         cl,4",
+        "00A17736: mov         edx,dword ptr [ebp-4]",
+        "00A17739: call        007EAE78",
+        "00A1773E: mov         eax,26h",
+        "00A17743: call        007EC124"
+      ]
+    },
+    {
+      "role": "hapi_receive_payload_and_trailer_calls",
+      "source": {
+        "va": "0xa177cf",
+        "rva": "0x6177cf",
+        "file_offset": 6384591,
+        "bytes": 177,
+        "sha256": "b20fda1b999048e21bf15c0a201ff4726dea27784c174a88ed1b3ae2028ca1fe"
+      },
+      "end_exclusive_va": "0xa17880",
+      "lookahead_source": {
+        "va": "0xa177cf",
+        "rva": "0x6177cf",
+        "file_offset": 6384591,
+        "bytes": 193,
+        "sha256": "e6daae3dba3e619e0e23413a1df86a39e6f2e3d04de0f750ba0af825e5846e9b"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0xa177cf,0xa1788f",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_Hapi.exe"
+      ],
+      "instructions": [
+        "00A177CF: movzx       eax,si",
+        "00A177D2: movzx       edx,di",
+        "00A177D5: add         eax,edx",
+        "00A177D7: add         eax,2",
+        "00A177DA: inc         eax",
+        "00A177DB: push        eax",
+        "00A177DC: lea         eax,[ebp-4]",
+        "00A177DF: mov         ecx,1",
+        "00A177E4: mov         edx,dword ptr ds:[00404EE8h]",
+        "00A177EA: call        0040FBA4",
+        "00A177EF: add         esp,4",
+        "00A177F2: movzx       eax,si",
+        "00A177F5: push        eax",
+        "00A177F6: movzx       eax,di",
+        "00A177F9: push        eax",
+        "00A177FA: lea         eax,[ebp-18h]",
+        "00A177FD: push        eax",
+        "00A177FE: lea         ecx,[ebp-4]",
+        "00A17801: mov         eax,dword ptr [ebp-0Ch]",
+        "00A17804: movzx       edx,word ptr [eax+1Ch]",
+        "00A17808: mov         eax,dword ptr ds:[00AD99A0h]",
+        "00A1780D: mov         eax,dword ptr [eax]",
+        "00A1780F: call        006EDD10",
+        "00A17814: movzx       edx,di",
+        "00A17817: movzx       eax,si",
+        "00A1781A: add         edx,eax",
+        "00A1781C: xor         ecx,ecx",
+        "00A1781E: mov         eax,dword ptr [ebp-4]",
+        "00A17821: call        006E2A64",
+        "00A17826: mov         word ptr [ebp-1Ah],ax",
+        "00A1782A: movzx       eax,si",
+        "00A1782D: movzx       edx,di",
+        "00A17830: add         eax,edx",
+        "00A17832: push        eax",
+        "00A17833: push        3",
+        "00A17835: lea         eax,[ebp-18h]",
+        "00A17838: push        eax",
+        "00A17839: lea         ecx,[ebp-4]",
+        "00A1783C: mov         eax,dword ptr [ebp-0Ch]",
+        "00A1783F: movzx       edx,word ptr [eax+1Ch]",
+        "00A17843: mov         eax,dword ptr ds:[00AD99A0h]",
+        "00A17848: mov         eax,dword ptr [eax]",
+        "00A1784A: call        006EDD10",
+        "00A1784F: movzx       eax,di",
+        "00A17852: movzx       edx,si",
+        "00A17855: add         eax,edx",
+        "00A17857: mov         edx,dword ptr [ebp-4]",
+        "00A1785A: movzx       eax,byte ptr [edx+eax]",
+        "00A1785E: movzx       edx,di",
+        "00A17861: movzx       ecx,si",
+        "00A17864: add         edx,ecx",
+        "00A17866: mov         ecx,dword ptr [ebp-4]",
+        "00A17869: movzx       edx,byte ptr [ecx+edx+1]",
+        "00A1786E: shl         edx,8",
+        "00A17871: add         ax,dx",
+        "00A17874: mov         word ptr [ebp-1Ch],ax",
+        "00A17878: movzx       eax,word ptr [ebp-1Ah]",
+        "00A1787C: cmp         ax,word ptr [ebp-1Ch]"
+      ]
+    },
+    {
+      "role": "hapi_receive_payload_return",
+      "source": {
+        "va": "0xa17a02",
+        "rva": "0x617a02",
+        "file_offset": 6385154,
+        "bytes": 63,
+        "sha256": "38562578845c65bf9870a48fe72a40da4a27551a01521ae83778f7462721ecb6"
+      },
+      "end_exclusive_va": "0xa17a41",
+      "lookahead_source": {
+        "va": "0xa17a02",
+        "rva": "0x617a02",
+        "file_offset": 6385154,
+        "bytes": 79,
+        "sha256": "7e049fd88810f2246cca89810501304ef8f0981543bfec9d5a7e3f7294417f6b"
+      },
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx64\\x64\\dumpbin.exe",
+        "/disasm:nobytes",
+        "/range:0xa17a02,0xa17a50",
+        "C:\\Program Files (x86)\\EFILive\\V8\\EFILive_Hapi.exe"
+      ],
+      "instructions": [
+        "00A17A02: mov         word ptr [ebp-12h],di",
+        "00A17A06: movzx       eax,di",
+        "00A17A09: push        eax",
+        "00A17A0A: mov         eax,dword ptr [ebp+0Ch]",
+        "00A17A0D: mov         ecx,1",
+        "00A17A12: mov         edx,dword ptr ds:[00404EE8h]",
+        "00A17A18: call        0040FBA4",
+        "00A17A1D: add         esp,4",
+        "00A17A20: test        di,di",
+        "00A17A23: jbe         00A17A3B",
+        "00A17A25: movzx       eax,si",
+        "00A17A28: mov         edx,dword ptr [ebp-4]",
+        "00A17A2B: lea         eax,[edx+eax]",
+        "00A17A2E: movzx       ecx,di",
+        "00A17A31: mov         edx,dword ptr [ebp+0Ch]",
+        "00A17A34: mov         edx,dword ptr [edx]",
+        "00A17A36: call        00407770",
+        "00A17A3B: mov         eax,dword ptr [ebp-0Ch]",
+        "00A17A3E: inc         dword ptr [eax+38h]"
+      ]
+    }
+  ],
+  "observations": [
+    {
+      "addresses": [
+        "0x6EDD3C",
+        "0x6EDDF9",
+        "0x6EDE6E",
+        "0x6EDE7C",
+        "0x6EDEDE"
+      ],
+      "fact": "FTDI read helper initializes ESI from requested count, zeros caller cumulative count, advances cumulative count and buffer offset by each returned count, and subtracts it from ESI. Final count check compares remaining ESI against cumulative count, not original requested count."
+    },
+    {
+      "addresses": [
+        "0x6EE0E4",
+        "0x6EE178",
+        "0x6EE1F0",
+        "0x6EE1FE",
+        "0x6EE260"
+      ],
+      "fact": "FTDI write helper has the equivalent remaining/cumulative update and final comparison. Zero remaining ends the loop early, but the final guard also passes any nonzero remaining value no greater than cumulative count."
+    },
+    {
+      "addresses": [
+        "0x6ECCF0",
+        "0x6EDED4",
+        "0x6EE256"
+      ],
+      "fact": "Driver status is checked separately: nonzero status reaches the exception helper. Status values1..4 first take helper6EDB54; that reconnect/recovery helper is not modeled by the synthetic zero-status count cases."
+    },
+    {
+      "addresses": [
+        "0xA16F89",
+        "0xA16F9E",
+        "0xA16FBD"
+      ],
+      "fact": "HAPI passes local[-14] as write count output, then clears host state without inspecting that count. This send path has no receive call or controller acknowledgement check."
+    },
+    {
+      "addresses": [
+        "0xA17400",
+        "0xA17415",
+        "0xA174C8",
+        "0xA174DD",
+        "0xA174F8",
+        "0xA1750D",
+        "0xA177CF",
+        "0xA17814"
+      ],
+      "fact": "The inspected HAPI receive call sites supply local[-18] as count output but do not compare it before continuing header/payload/trailer processing. Final return length is the declared payload length copied into local[-12], not accumulated driver bytes."
+    },
+    {
+      "addresses": [
+        "0x6EDDD7",
+        "0x6EE156",
+        "0x6EDBF3",
+        "0x6EDBFF",
+        "0x6ECFDF"
+      ],
+      "fact": "Logical read timeout field+78 yields floor(max(timeout-1,0)/250)+1 driver calls; write field+7C yields divisor1000. Initialization requests driver timeout arguments250 and1000 through6ECF58. No monotonic deadline or cancellation test appears in the inspected transfer loops."
+    },
+    {
+      "addresses": [
+        "0xA173DD",
+        "0xA17422",
+        "0xA174E5",
+        "0xA176F7",
+        "0xA1773E"
+      ],
+      "fact": "FTDI receive scans up to50 candidates for prefix01/52 and eligible header; exhaustion with rejection flag still set raises0x26. This is bounded skipping, not automatic lossless resynchronization."
+    },
+    {
+      "addresses": [
+        "0xA175F5",
+        "0xA17611",
+        "0xA1761C",
+        "0xA1765E",
+        "0xA176A5"
+      ],
+      "fact": "For a non-metadata command mismatch, positive declared payload lengths at mostC000 are drained plus three trailing bytes before trying another candidate. Zero or oversized lengths skip that drain. Command8A00 normally uses metadata interpretation instead of command equality."
+    },
+    {
+      "addresses": [
+        "0xA16F12",
+        "0xA16F20",
+        "0xA16F39",
+        "0xA1700F",
+        "0xA17024"
+      ],
+      "fact": "Outer send attempt count derives from host+3C plus one; caught failure can callA13678 before retry. A successful FTDI helper return exits that outer loop. This is host transport retry, not controller programming retry or bus acknowledgement."
+    }
+  ],
+  "conditional_count_path_conclusion": "Under synthetic zero-status partial returns, the native final count guard can pass with bytes still outstanding. This is a static conditional path, not an observed FTDI or firmware failure. A PcmHammer transport must require its own exact transfer accounting.",
+  "synthetic_count_examples": [
+    {
+      "requested_count": 10,
+      "logical_timeout_ms": 250,
+      "direction": "read",
+      "maximum_driver_calls": 1,
+      "steps": [
+        {
+          "returned_count": 4,
+          "cumulative_count": 4,
+          "remaining_count": 6
+        }
+      ],
+      "native_final_count_guard_passes": false,
+      "all_requested_bytes_accounted_for": false,
+      "synthetic_driver_status_for_every_call": 0,
+      "physical_transfer_observed": false
+    },
+    {
+      "requested_count": 10,
+      "logical_timeout_ms": 250,
+      "direction": "read",
+      "maximum_driver_calls": 1,
+      "steps": [
+        {
+          "returned_count": 5,
+          "cumulative_count": 5,
+          "remaining_count": 5
+        }
+      ],
+      "native_final_count_guard_passes": true,
+      "all_requested_bytes_accounted_for": false,
+      "synthetic_driver_status_for_every_call": 0,
+      "physical_transfer_observed": false
+    },
+    {
+      "requested_count": 10,
+      "logical_timeout_ms": 250,
+      "direction": "read",
+      "maximum_driver_calls": 1,
+      "steps": [
+        {
+          "returned_count": 10,
+          "cumulative_count": 10,
+          "remaining_count": 0
+        }
+      ],
+      "native_final_count_guard_passes": true,
+      "all_requested_bytes_accounted_for": true,
+      "synthetic_driver_status_for_every_call": 0,
+      "physical_transfer_observed": false
+    },
+    {
+      "requested_count": 14,
+      "logical_timeout_ms": 1000,
+      "direction": "write",
+      "maximum_driver_calls": 1,
+      "steps": [
+        {
+          "returned_count": 7,
+          "cumulative_count": 7,
+          "remaining_count": 7
+        }
+      ],
+      "native_final_count_guard_passes": true,
+      "all_requested_bytes_accounted_for": false,
+      "synthetic_driver_status_for_every_call": 0,
+      "physical_transfer_observed": false
+    },
+    {
+      "requested_count": 14,
+      "logical_timeout_ms": 2000,
+      "direction": "write",
+      "maximum_driver_calls": 2,
+      "steps": [
+        {
+          "returned_count": 5,
+          "cumulative_count": 5,
+          "remaining_count": 9
+        },
+        {
+          "returned_count": 9,
+          "cumulative_count": 14,
+          "remaining_count": 0
+        }
+      ],
+      "native_final_count_guard_passes": true,
+      "all_requested_bytes_accounted_for": true,
+      "synthetic_driver_status_for_every_call": 0,
+      "physical_transfer_observed": false
+    }
+  ],
+  "metadata_consumer_from_prior_vm_report": {
+    "evidence": "Docs/AL5/VM_RETRY_HELPERS_STATIC.json",
+    "addresses": [
+      "0x407087",
+      "0x40708A",
+      "0x4070EE",
+      "0x4070FD",
+      "0x407103",
+      "0x40710C",
+      "0x407127"
+    ],
+    "fact": "VM stores returned metadata at42765A. A conditional validation-selection path extracts bits16..23 and compares them withEF to choose selector2 or3; ordinary path chooses1. No low-bit0x10 ACK/success meaning is established by this consumer."
+  },
+  "unknowns": [
+    "Actual driver call timing, scheduling, device completion and bus delivery remain unobserved here.",
+    "No complete cancellation, reconnect, retry safety, or firmware queue model is established.",
+    "Linear disassembly windows preserve exact bytes but do not prove all paths reachable.",
+    "Candidate skipping can consume unrelated bytes; no lossless stream parser is implemented.",
+    "Logical timeouts and driver call budgets do not constitute a single end-to-end deadline.",
+    "Individual RX metadata flags, especially0x10, remain unresolved."
+  ],
+  "target_executed": false,
+  "adapter_opened": false,
+  "vehicle_transmissions_enabled": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false
+}

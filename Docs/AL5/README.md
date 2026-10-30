@@ -34,6 +34,11 @@ now separates TX command fields, context-dependent RX metadata and host errors.
 Its saved-file tests cover 500 envelopes; setup exchanges remain observations
 rather than an initialization recipe. This does not yet add a general AutoCal
 device backend or enable AL5 programming.
+The [setup and completion trace](AUTOCAL_TRANSPORT.md#bus-setup-producers-and-transfer-completion)
+now connects script callbacks to the recorded setup/cleanup payloads and
+identifies unchecked host status and conditional partial-transfer returns.
+Payload construction is established; physical setup and completion remain
+unqualified. Live writes stay disabled.
 
 [Public-source research dated 2026-10-06](ONLINE_RESEARCH_20261006.md) records
 AL5-specific vendor programming/recovery guidance, conditional hardware leads
