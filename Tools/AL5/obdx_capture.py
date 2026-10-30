@@ -31,6 +31,11 @@ EXPERIMENTAL_ALL_FILTERS = (b'\x00\x00\x01', b'\x01\x10\x01',
                             b'\x02\x00\x00\x00', b'\x03\x00\x00\x00',
                             b'\x04\x00\x00\x00\x01')
 
+# GT firmware 1.0.2.0 accepted these queries in the OFF-only 2026-10-30
+# preflight and rejected index 13. This is an observed query set, not a
+# complete counter inventory or verification of the counters' meanings.
+GT_OBSERVED_VPW_COUNTER_INDICES = tuple(range(13))
+
 
 def validate_filter_choice(source_id, all_sources):
     if source_id is not None and (type(source_id) is not int or not 0 <= source_id <= 255):
@@ -59,6 +64,10 @@ def permitted(command, payload):
                      b'\x02\x00', b'\x02\x02')  # VPW; OFF/LISTEN ONLY
     if command == 0x33:
         if len(p) == 1 and p[0] in (0, 1, 2, 3, 4, 6, 7, 8, 13):
+            return True
+        if len(p) == 2 and p[0] == 0x0E and p[1] <= 13:
+            # Retain the VT-documented range for historical command audits;
+            # capture queries only the narrower observed GT set below.
             return True
         return any(cmd == command and len(p) == size and p[0] == sub
                    and p[-1] in (0, 1) for cmd, sub, size, _ in SETTINGS)
@@ -113,11 +122,14 @@ class Decoder:
 
 class WindowsSerial:
     """115200 8N1; no reset, purge, DTR/RTS assertion or third-party dependency."""
-    def __init__(self, port):
+    def __init__(self, port, serial_diagnostics=False):
         if os.name != 'nt' or not re.fullmatch(r'COM[1-9][0-9]*', port):
             raise ValueError('An explicit Windows COM port is required')
         from ctypes import wintypes as w
         self.w = w
+        self.serial_diagnostics_enabled = bool(serial_diagnostics)
+        self.read_sequence = 0
+        self.last_read_diagnostics = None
         self.api = ctypes.WinDLL('kernel32', use_last_error=True)
         self.api.CreateFileW.argtypes = [w.LPCWSTR, w.DWORD, w.DWORD,
                                         w.LPVOID, w.DWORD, w.DWORD, w.HANDLE]
@@ -141,6 +153,11 @@ class WindowsSerial:
                         ('error', ctypes.c_char), ('eof', ctypes.c_char),
                         ('event', ctypes.c_char), ('reserved1', w.WORD)]
         try:
+            if self.serial_diagnostics_enabled:
+                self.api.ClearCommError.argtypes = [w.HANDLE, ctypes.POINTER(w.DWORD), w.LPVOID]
+                class COMSTAT(ctypes.Structure):
+                    _fields_ = [('flags', w.DWORD), ('in_queue', w.DWORD), ('out_queue', w.DWORD)]
+                self.comstat_type = COMSTAT
             dcb = DCB()
             dcb.length = ctypes.sizeof(dcb)
             self.check(self.api.GetCommState(self.handle, ctypes.byref(dcb)))
@@ -162,8 +179,46 @@ class WindowsSerial:
     def read(self):
         buf = ctypes.create_string_buffer(4096)
         count = self.w.DWORD()
-        self.check(self.api.ReadFile(self.handle, buf, 4096, ctypes.byref(count), None))
-        return buf.raw[:count.value]
+        if not self.serial_diagnostics_enabled:
+            self.check(self.api.ReadFile(self.handle, buf, 4096, ctypes.byref(count), None))
+            return buf.raw[:count.value]
+        self.last_read_diagnostics = None
+        self.read_sequence += 1
+        before = self.driver_status_snapshot()
+        started = time.monotonic_ns()
+        error = None
+        succeeded = False
+        try:
+            self.check(self.api.ReadFile(self.handle, buf, 4096, ctypes.byref(count), None))
+            succeeded = True
+            return buf.raw[:count.value]
+        except BaseException as failure:
+            error = {'win32_error': getattr(failure, 'winerror', None),
+                     'type': type(failure).__name__, 'message': str(failure)}
+            raise
+        finally:
+            ended = time.monotonic_ns()
+            after = self.driver_status_snapshot()
+            self.last_read_diagnostics = {
+                'read_sequence': self.read_sequence,
+                'read_start_monotonic_ns': started, 'read_end_monotonic_ns': ended,
+                'read_succeeded': succeeded, 'bytes_returned': count.value if succeeded else 0,
+                'bytes_reported_by_readfile': count.value,
+                'read_error': error, 'before': before, 'after': after,
+                'polling_clears_error_flags': True,
+            }
+
+    def driver_status_snapshot(self):
+        """Poll Windows driver state; ClearCommError clears error flags, not RX bytes."""
+        errors, status = self.w.DWORD(), self.comstat_type()
+        success = bool(self.api.ClearCommError(self.handle, ctypes.byref(errors), ctypes.byref(status)))
+        failure = None if success else ctypes.get_last_error()
+        return {'success': success, 'host_monotonic_ns': time.monotonic_ns(),
+                'error_mask_raw': errors.value if success else None,
+                'comstat_flags_raw': status.flags if success else None,
+                'cb_in_que': status.in_queue if success else None,
+                'cb_out_que': status.out_queue if success else None,
+                'win32_error': failure}
 
     def write(self, data):
         count = self.w.DWORD()
@@ -180,16 +235,86 @@ class WindowsSerial:
 
 class Session:
     def __init__(self, port, emit, timeout=2.0):
-        self.port, self.emit, self.timeout = port, emit, timeout
+        self.port, self._emit, self.timeout = port, emit, timeout
         self.decoder = Decoder()
         self.dvi = False
+        self._cleanup_logging = False
+        self._cleanup_log_failure = None
+
+    def emit(self, row):
+        try:
+            self._emit(row)
+        except Exception as error:
+            if not self._cleanup_logging:
+                raise
+            # A broken journal must not prevent the narrow OFF/GET cleanup.
+            if self._cleanup_log_failure is None:
+                self._cleanup_log_failure = error
 
     def read(self):
-        raw = self.port.read()
+        try:
+            raw = self.port.read()
+        except BaseException:
+            self.emit_read_diagnostics()
+            raise
         if raw:
-            self.emit({'kind': 'serial_rx', 'host_monotonic_ns': time.monotonic_ns(),
-                       'raw_hex': raw.hex()})
+            row = {'kind': 'serial_rx', 'host_monotonic_ns': time.monotonic_ns(),
+                   'raw_hex': raw.hex()}
+            if getattr(self.port, 'serial_diagnostics_enabled', False):
+                row['read_sequence'] = self.port.last_read_diagnostics['read_sequence']
+            self.emit(row)
+        self.emit_read_diagnostics()
         return raw
+
+    def emit_read_diagnostics(self):
+        if getattr(self.port, 'serial_diagnostics_enabled', False):
+            diagnostics = getattr(self.port, 'last_read_diagnostics', None)
+            if diagnostics is not None:
+                self.emit({'kind': 'serial_read_diagnostics', **diagnostics})
+
+    def disable_network_for_cleanup(self):
+        self._cleanup_logging = True
+        self._cleanup_log_failure = None
+        try:
+            try:
+                self.set_checked(0x31, [2, 0])
+                self.emit({'kind': 'cleanup', 'network_off_acknowledged': True})
+            except BaseException as error:
+                self.emit({'kind': 'cleanup', 'network_off_acknowledged': False,
+                           'error': str(error)})
+                raise
+        finally:
+            self._cleanup_logging = False
+        if self._cleanup_log_failure is not None:
+            raise self._cleanup_log_failure
+
+    def read_vpw_error_counters(self, phase):
+        """Query the observed GT set while OFF; counting semantics remain unqualified."""
+        counts = []
+        try:
+            if self.request(0x31, [2])['payload_hex'] != '0200':
+                raise ProtocolError('VPW error counter queries require verified network OFF')
+            for index in GT_OBSERVED_VPW_COUNTER_INDICES:
+                payload = bytes.fromhex(self.request(0x33, [0x0E, index])['payload_hex'])
+                if len(payload) != 3 or payload[:2] != bytes([0x0E, index]):
+                    raise ProtocolError('Unknown VPW error counter reply; capture blocked')
+                counts.append(payload[2])
+                self.emit({'kind': 'vpw_error_counter', 'phase': phase, 'index': index,
+                           'count_raw': payload[2], 'reply_payload_hex': payload.hex(),
+                           'read_clears_counter': True, 'counter_semantics_verified': False})
+            if self.request(0x31, [2])['payload_hex'] != '0200':
+                raise ProtocolError('Network was not OFF after VPW error counter queries')
+        except BaseException as error:
+            self.emit({'kind': 'vpw_error_counter_snapshot', 'phase': phase, 'success': False,
+                       'requested_indices': list(GT_OBSERVED_VPW_COUNTER_INDICES),
+                       'counts_raw': counts, 'read_clears_counter': True,
+                       'counter_semantics_verified': False, 'error': str(error)})
+            raise
+        self.emit({'kind': 'vpw_error_counter_snapshot', 'phase': phase, 'success': True,
+                   'requested_indices': list(GT_OBSERVED_VPW_COUNTER_INDICES),
+                   'counts_raw': counts, 'read_clears_counter': True,
+                   'counter_semantics_verified': False})
+        return counts
 
     def send(self, command, payload):
         if not self.dvi or not permitted(command, payload):
@@ -274,8 +399,10 @@ class Session:
                    'vehicle_transmit_commands_enabled': False})
         return identity
 
-    def configure_listener(self, speed, source_id=None, *, all_sources=False):
+    def configure_listener(self, speed, source_id=None, *, all_sources=False, retain_invalid_crc=False):
         validate_filter_choice(source_id, all_sources)
+        if type(retain_invalid_crc) is not bool:
+            raise ValueError('Invalid-CRC retention opt-in must be Boolean')
         # capture() has verified OFF before saving the original settings.
         self.set_checked(0x31, [1, 1])
         for p in ([0, 0, 0], [1, 0, 0], [2, 0, 0, 0], [3, 0, 0, 0]):
@@ -294,7 +421,7 @@ class Session:
             self.set_checked(0x33, [1, 0x10, 1])
             self.set_checked(0x33, [4, 0, 0, 0, 1])
         self.set_checked(0x33, [6, 0 if speed == '1x' else 1])
-        self.set_checked(0x33, [7, 1])
+        crc_readback = self.set_checked(0x33, [7, 0 if retain_invalid_crc else 1])
         self.set_checked(0x33, [8, 1])
         if self.decoder.buffer:
             raise ProtocolError('Pending bytes before timestamp layout change')
@@ -314,6 +441,7 @@ class Session:
         self.request(0x31, [2, 2], echo=True)
         if self.request(0x31, [2])['payload_hex'] != '0202':
             raise ProtocolError('LISTEN ONLY readback failed')
+        return crc_readback
 
     def set_checked(self, command, payload):
         self.request(command, payload, echo=True)
@@ -411,10 +539,16 @@ class Session:
                        'hidden_setting_state_restored': None, 'error': str(error)})
             raise
 
-    def capture(self, speed, seconds, source_id=None, *, all_sources=False):
+    def capture(self, speed, seconds, source_id=None, *, all_sources=False, vpw_error_counters=False,
+                retain_invalid_crc=False):
         validate_filter_choice(source_id, all_sources)
+        if type(vpw_error_counters) is not bool:
+            raise ValueError('VPW error counter opt-in must be Boolean')
+        if type(retain_invalid_crc) is not bool:
+            raise ValueError('Invalid-CRC retention opt-in must be Boolean')
         saved = []
         experimental_setup_started = False
+        listener_ready = False
         try:
             self.set_checked(0x31, [2, 0])
             # Preserve each exact filter and CRC policy, not inferred defaults.
@@ -425,16 +559,19 @@ class Session:
                 saved.append((command, p))
                 self.emit({'kind': 'saved_setting', 'label': label, 'command': command,
                            'payload_hex': p.hex()})
+            if vpw_error_counters:
+                self.read_vpw_error_counters('before_listener_configuration')
             if all_sources:
                 filters = {p[0]: p for command, p in saved if command == 0x33}
                 if len({filters[sub][-1] for sub in (0, 1, 4)}) != 1:
                     raise ProtocolError('Unknown original filter enable coupling; listener blocked')
                 experimental_setup_started = True
-                self.configure_listener(speed, all_sources=True)
+                crc_readback = self.configure_listener(speed, all_sources=True, retain_invalid_crc=retain_invalid_crc)
             elif source_id is None:
-                self.configure_listener(speed)
+                crc_readback = self.configure_listener(speed, retain_invalid_crc=retain_invalid_crc)
             else:
-                self.configure_listener(speed, source_id)
+                crc_readback = self.configure_listener(speed, source_id, retain_invalid_crc=retain_invalid_crc)
+            listener_ready = True
             self.emit({'kind': 'capture_started', 'fixed_speed': speed,
                        'automatic_speed_tracking': False,
                        'complete_programming_capture_proven': False,
@@ -443,6 +580,10 @@ class Session:
                                          'exact_source' if source_id is not None else
                                          'unqualified_all_filters_off'),
                        **({'live_receive_verified': False} if all_sources else {}),
+                       'retain_invalid_crc_requested': retain_invalid_crc,
+                       'adapter_crc_validation_requested': not retain_invalid_crc,
+                       'adapter_crc_validation_enabled': crc_readback == '0701',
+                       'adapter_crc_validation_readback_hex': crc_readback,
                        'crc_in_payload': True})
             deadline = time.monotonic() + seconds
             while time.monotonic() < deadline:
@@ -452,33 +593,31 @@ class Session:
                         raise ProtocolError('Adapter reported capture error')
         finally:
             # Required even if listener setup failed or Ctrl+C cancelled capture.
-            try:
-                self.set_checked(0x31, [2, 0])
-                self.emit({'kind': 'cleanup', 'network_off_acknowledged': True})
-            except BaseException as error:
-                self.emit({'kind': 'cleanup', 'network_off_acknowledged': False,
-                           'error': str(error)})
-                raise
+            self.disable_network_for_cleanup()
             self.decoder.finish()
             try:
-                if all_sources:
-                    if experimental_setup_started:
-                        self.restore_experimental_settings(saved)
+                if vpw_error_counters and listener_ready:
+                    self.read_vpw_error_counters('after_network_off')
+            finally:
+                try:
+                    if all_sources:
+                        if experimental_setup_started:
+                            self.restore_experimental_settings(saved)
+                        else:
+                            self.emit({'kind': 'settings_readback_restoration', 'success': None,
+                                       'attempted': False, 'reason': 'listener setup never started',
+                                       'hidden_setting_state_restored': None})
                     else:
-                        self.emit({'kind': 'settings_readback_restoration', 'success': None,
-                                   'attempted': False, 'reason': 'listener setup never started',
-                                   'hidden_setting_state_restored': None})
-                else:
-                    for command, p in saved:
-                        self.set_checked(command, p)
-                        if command == 0x24:
-                            self.decoder.timestamps = bool(p[1])
-                    self.emit({'kind': 'settings_restored', 'success': True})
-            except BaseException as error:
-                if not all_sources:
-                    self.emit({'kind': 'settings_restored', 'success': False,
-                               'error': str(error)})
-                raise
+                        for command, p in saved:
+                            self.set_checked(command, p)
+                            if command == 0x24:
+                                self.decoder.timestamps = bool(p[1])
+                        self.emit({'kind': 'settings_restored', 'success': True})
+                except BaseException as error:
+                    if not all_sources:
+                        self.emit({'kind': 'settings_restored', 'success': False,
+                                   'error': str(error)})
+                    raise
         self.decoder.finish()
 
 
@@ -613,6 +752,12 @@ def main():
         if mode == 'capture':
             p.add_argument('--speed', choices=('1x', '4x'), required=True)
             p.add_argument('--seconds', type=float, default=60)
+            p.add_argument('--serial-diagnostics', action='store_true',
+                           help='Poll Windows error flags/queue snapshots around reads; polling clears error flags, not receive bytes. Not a losslessness proof.')
+            p.add_argument('--vpw-error-counters', action='store_true',
+                           help='Read/clear observed GT 1.0.2.0 counter query set 0..12 only while network OFF before/after capture; inventory and counting semantics unqualified.')
+            p.add_argument('--retain-invalid-crc', action='store_true',
+                           help='Diagnostic only: disable adapter CRC rejection with checked readback while retaining CRC bytes. Raw frames may be invalid; strict capture qualification still fails closed.')
             filters = p.add_mutually_exclusive_group()
             filters.add_argument('--source-id', type=lambda value: int(value, 0),
                                  choices=range(256), metavar='BYTE',
@@ -659,10 +804,19 @@ def main():
                 emit({'kind': 'input', 'path': str(args.input.resolve()),
                       'sha256': digest.hexdigest()})
             else:
+                serial_diagnostics = getattr(args, 'serial_diagnostics', False)
                 emit({'kind': 'transport', 'port': args.port, 'api': args.api,
-                      'baud': 115200})
-                port = WindowsSerial(args.port)
+                      'baud': 115200, 'serial_diagnostics_enabled': serial_diagnostics,
+                      'vpw_error_counters_enabled': getattr(args, 'vpw_error_counters', False)})
+                port = WindowsSerial(args.port, serial_diagnostics=serial_diagnostics)
                 try:
+                    if serial_diagnostics:
+                        emit({'kind': 'serial_diagnostics_configuration', 'enabled': True,
+                              'api': 'Win32 ClearCommError/COMSTAT',
+                              'polling_clears_error_flags': True,
+                              'polling_clears_receive_queue': False,
+                              'scope': 'Sampled driver error flags and queue counts, not adapter buffers or continuous high-water marks',
+                              'zero_sampled_errors_proves_losslessness': False})
                     session = Session(port, emit)
                     session.connect(args.api)
                     if args.mode == 'inspect':
@@ -673,7 +827,9 @@ def main():
                         print(json.dumps(session.probe_mask(), indent=2))
                     else:
                         session.capture(args.speed, args.seconds, args.source_id,
-                                        all_sources=args.all_sources)
+                                        all_sources=args.all_sources,
+                                        vpw_error_counters=args.vpw_error_counters,
+                                        retain_invalid_crc=args.retain_invalid_crc)
                 finally:
                     port.close()
             emit({'kind': 'result', 'success': True,

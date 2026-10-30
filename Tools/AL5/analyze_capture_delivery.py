@@ -38,11 +38,130 @@ def e54_address(payload, crc_present):
     if len(message) < 10:
         return None
     size, address = int.from_bytes(message[5:7], 'big'), int.from_bytes(message[7:10], 'big')
-    shape = ((message[:4] == DATA_HEADER and len(message) == size + 12)
-             or (message[:4] == bytes.fromhex('6d10f035') and len(message) == 10))
-    if shape and message[4] == 0 and 0 < size <= 4096 and address + size <= 0x80000:
+    shape = ((message[:4] == DATA_HEADER and message[4] == 0 and len(message) == size + 12)
+             or (message[:4] == bytes.fromhex('6d10f035') and message[4] == 1 and len(message) == 10))
+    if shape and 0 < size <= 4096 and address + size <= 0x80000:
         return address
     return None
+
+
+def physical_crc(payload, crc_present):
+    """Check logged bytes only when the capture declares a trailing VPW CRC."""
+    checked = crc_present and len(payload) >= 2
+    expected = crc8_j1850(payload[:-1]) if checked else None
+    observed = payload[-1] if checked else None
+    return {'checked': checked, 'matches': observed == expected if checked else None,
+            'observed_crc_hex': f'{observed:02x}' if checked else None,
+            'calculated_crc_hex': f'{expected:02x}' if checked else None}
+
+
+def serial_diagnostics(rows):
+    """Summarize optional host observations, never infer absent error telemetry."""
+    transports = [r for _, r in rows if r.get('kind') == 'transport']
+    requested = transports[0].get('serial_diagnostics_enabled') if len(transports) == 1 else None
+    observations = [(line, r) for line, r in rows if r.get('kind') == 'serial_read_diagnostics']
+    rx_rows = [(line, r) for line, r in rows if r.get('kind') == 'serial_rx']
+    issues, samples, durations, gaps, sequences = [], [], [], [], []
+    by_sequence = {}
+    previous_end = None
+    for line, row in observations:
+        sequence = row.get('read_sequence')
+        if type(sequence) is not int or sequence != len(sequences) + 1:
+            issues.append(f'Non-contiguous diagnostic read sequence at line {line}')
+        sequences.append(sequence)
+        if type(sequence) is int:
+            by_sequence[sequence] = (line, row)
+        start, end = row.get('read_start_monotonic_ns'), row.get('read_end_monotonic_ns')
+        duration = elapsed(start, end)
+        if duration is None or start < 0:
+            issues.append(f'Missing or regressed read timing at line {line}')
+        else:
+            durations.append(duration)
+        if previous_end is not None:
+            gap = elapsed(previous_end, start)
+            if gap is None:
+                issues.append(f'Read observations overlap or regress at line {line}')
+            else:
+                gaps.append(gap)
+        previous_end = end
+        count = row.get('bytes_returned')
+        if type(count) is not int or count < 0 or type(row.get('read_succeeded')) is not bool:
+            issues.append(f'Invalid read result at line {line}')
+        error = row.get('read_error')
+        if row.get('read_succeeded') is True:
+            if error is not None:
+                issues.append(f'Successful read reports an error at line {line}')
+        elif row.get('read_succeeded') is False:
+            if count != 0 or not isinstance(error, dict) or not isinstance(error.get('message'), str):
+                issues.append(f'Failed read reports bytes or lacks error evidence at line {line}')
+        if row.get('polling_clears_error_flags') is not True:
+            issues.append(f'Unspecified error-flag polling semantics at line {line}')
+        for phase in ('before', 'after'):
+            sample = row.get(phase)
+            if not isinstance(sample, dict) or sample.get('success') is not True:
+                issues.append(f'Unavailable {phase} driver status at line {line}')
+                continue
+            fields = ('error_mask_raw', 'comstat_flags_raw', 'cb_in_que', 'cb_out_que')
+            if any(type(sample.get(k)) is not int or not 0 <= sample[k] <= 0xffffffff for k in fields):
+                issues.append(f'Invalid {phase} driver status at line {line}')
+                continue
+            timestamp = sample.get('host_monotonic_ns')
+            if (type(timestamp) is not int or timestamp < 0 or duration is None
+                    or (phase == 'before' and timestamp > start)
+                    or (phase == 'after' and timestamp < end)):
+                issues.append(f'Invalid {phase} snapshot chronology at line {line}')
+            samples.append(sample)
+    seen_rx = Counter()
+    for line, row in rx_rows:
+        sequence = row.get('read_sequence')
+        if not observations and requested is not True:
+            continue  # Legacy logs have no diagnostic coverage, not zero errors.
+        if type(sequence) is not int or sequence not in by_sequence:
+            issues.append(f'Receive bytes lack a diagnostic read at line {line}')
+            continue
+        seen_rx[sequence] += 1
+        observed_line, observed = by_sequence[sequence]
+        try:
+            count = len(bytes.fromhex(row['raw_hex']))
+        except (KeyError, TypeError, ValueError):
+            count = None
+        if count != observed.get('bytes_returned') or line >= observed_line:
+            issues.append(f'Receive bytes do not correlate with diagnostic read at line {line}')
+        timestamp = row.get('host_monotonic_ns')
+        after = observed.get('after')
+        after_time = after.get('host_monotonic_ns') if isinstance(after, dict) else None
+        if (type(timestamp) is not int or type(after_time) is not int or timestamp < after_time):
+            issues.append(f'Invalid receive/driver snapshot chronology at line {line}')
+        prior = by_sequence.get(sequence - 1)
+        if prior is not None and line <= prior[0]:
+            issues.append(f'Receive bytes precede the prior diagnostic read at line {line}')
+    for sequence, (line, row) in by_sequence.items():
+        wanted = 1 if type(row.get('bytes_returned')) is int and row['bytes_returned'] > 0 else 0
+        if seen_rx[sequence] != wanted:
+            issues.append(f'Diagnostic read byte coverage mismatch at line {line}')
+    if requested is True and not observations:
+        issues.append('Requested serial diagnostics are missing')
+    mask = None
+    if samples:
+        mask = 0
+        for sample in samples:
+            mask |= sample['error_mask_raw']
+    return {
+        'requested': requested, 'available': bool(observations),
+        'read_observation_count': len(observations), 'status_snapshot_count': len(samples),
+        'coverage_complete_for_logged_reads': bool(observations) and requested is True and not issues,
+        'issues': issues, 'observed_error_mask_or': mask,
+        'snapshots_reporting_errors': sum(s['error_mask_raw'] != 0 for s in samples) if samples else None,
+        'snapshots_reporting_rx_overflow_or_overrun': sum(bool(s['error_mask_raw'] & 3) for s in samples) if samples else None,
+        'max_observed_input_queue_bytes': max((s['cb_in_que'] for s in samples), default=None),
+        'max_observed_output_queue_bytes': max((s['cb_out_que'] for s in samples), default=None),
+        'failed_read_count': sum(r.get('read_succeeded') is False for _, r in observations) if observations else None,
+        'read_durations_ns': distribution(durations), 'between_read_calls_ns': distribution(gaps),
+        'limits': ['Snapshots are sampled Windows driver state, not a true queue high-water mark or adapter FIFO measurement.',
+                   'Polling clears driver error flags; error-bearing snapshots are not counts of lost bytes or frames.',
+                   'Zero sampled errors do not prove USB, driver, adapter or bus losslessness.',
+                   'Read timings cover the host session, including configuration and cleanup, not physical bus timing.'],
+    }
 
 
 def analyze(path, *, ordinals=(), addresses=(), radius=2):
@@ -138,6 +257,7 @@ def analyze(path, *, ordinals=(), addresses=(), radius=2):
                     'dvi_frame_sha256': sha256(raw),
                     'payload_bytes': len(payload), 'payload_sha256': sha256(payload),
                     'raw_vpw_prefix_hex': payload[:4].hex(),
+                    'physical_crc': physical_crc(payload, crc_present),
                     'e54_block_address_candidate': e54_address(payload, crc_present),
                     'raw_stream_start': cursor, 'raw_stream_end_exclusive': end,
                     'serial_chunk_spans': spans,
@@ -174,6 +294,17 @@ def analyze(path, *, ordinals=(), addresses=(), radius=2):
                             'unaccounted_bytes': len(stream) - cursor,
                             'mapped_dvi_frames': mapped_frames,
                             'mapped_network_frames': len(network), 'logged_rx_sha256': sha256(stream)},
+        'serial_diagnostics': serial_diagnostics(rows),
+        'physical_crc': {
+            'layout_basis': 'Single capture_started.crc_in_payload declaration; not independent bus evidence',
+            'trailing_crc_declared': crc_present,
+            'checked_frames': sum(f['physical_crc']['checked'] for f in network),
+            'matching_frames': sum(f['physical_crc']['matches'] is True for f in network),
+            'mismatching_frames': sum(f['physical_crc']['matches'] is False for f in network),
+            'unchecked_frames': sum(not f['physical_crc']['checked'] for f in network),
+            'mismatching_network_ordinals': [f['network_ordinal_zero_based'] for f in network
+                                            if f['physical_crc']['matches'] is False],
+            'interpretation': 'CRC mismatch is preserved as received; it does not locate corruption or repair bytes. Complete byte accounting can include CRC-invalid network frames.'},
         'serial_delivery': {'chunk_count': len(chunks),
                             'chunk_bytes': distribution([c['bytes'] for c in chunks]),
                             'chunk_size_histogram': dict(Counter(c['bytes'] for c in chunks)),

@@ -25,6 +25,8 @@ destination/source exact/range filters, sets a zero-bit header mask while preser
 optionally enables the caller's exact `--source-id` filter,
 selects the caller's fixed 1x/4x speed, enables CRC validation/CRC display and
 device timestamps, then requests **LISTEN ONLY (2)** and verifies its readback.
+The explicit diagnostic `--retain-invalid-crc` option instead disables adapter
+CRC validation while keeping CRC display enabled; the default remains enabled.
 Each configuration change requires both an echo acknowledgment and a separate
 matching status query before listening is enabled. It requests OFF and verifies
 readback on completion, cancellation, or configuration failure. A failed
@@ -90,6 +92,75 @@ setting; it does not make the AL5 switch speeds.
 
 ## Recording and offline validation
 
+For an otherwise unchanged bench read, `capture --serial-diagnostics` optionally
+records Windows driver status before and after every serial read, including empty
+and failed reads. It preserves raw error masks, queue snapshots, read durations
+and sequence numbers linking nonempty reads to `serial_rx` records. Polling uses
+`ClearCommError`, which clears error flags but does not clear received bytes.
+These are sampled driver values, not adapter-buffer measurements or continuous
+queue high-water marks; zero sampled errors cannot establish losslessness.
+The default transport, timeouts, filters and CRC policy are unchanged.
+
+The separate `capture --vpw-error-counters` option reads and clears counters
+at indices 0–12, only with verified network OFF before listener configuration
+and after capture cleanup. This query set was observed on GT firmware 1.0.2.0;
+index 13 from the VT reference was rejected. It is not a complete inventory of
+GT counters. Raw replies and requested indices are retained without assigning
+unverified GT fault meanings. Unsupported or malformed
+pre-capture replies prevent LISTEN; a post-capture query failure still attempts
+settings restoration. Verify query support on the specific adapter before using
+this option for a capture. Neither diagnostic option sends vehicle messages.
+The VT guide's DVI section 3.2 supplies a candidate map, including index 1
+`ReadSOFLongerThenMax` and index 4 `ReadCRCIncorrect`. Its ELM map differs after
+index 9, and its counter command advertises 0–13. The
+[investigation report](ACK_GAP_INVESTIGATION_20261030.md#manufacturer-counter-definitions-and-their-limits)
+records that discrepancy. The VT names do not establish GT-specific semantics;
+whole-run counts cannot identify an individual missing frame, especially across
+the initial 1x traffic seen by a fixed-4x listener.
+
+The separate diagnostic `capture --retain-invalid-crc` option requests adapter
+CRC validation OFF (`0700`) with a separate checked GET before LISTEN. CRC
+display remains ON (`0801`), preserving each received physical CRC byte for
+offline inspection; DVI framing/checksum validation is unchanged. The journal's
+`capture_started` record includes the requested policy, checked effective policy
+and raw CRC-validation readback. A mismatch blocks LISTEN. Normal completion
+restores the saved CRC policy after verified OFF. Cancellation and errors attempt
+the same cleanup; the log must establish what succeeded. An existing malformed
+or truncated DVI stream can prevent settings restoration after OFF cleanup, so
+restoration must not be assumed for failed captures. Vehicle transmissions remain blocked.
+
+This option tests whether adapter CRC rejection hides missing short ACKs. In the
+[completed ordinary E54 read](ACK_GAP_INVESTIGATION_20261030.md#all-source-read-with-invalid-crc-retention),
+395 frames included one ACK with an invalid physical CRC: logged body
+`6C F0 10 75 01 54` and received CRC `56`, versus HTX body `6D F0 10 75 01 54`.
+The actual logged body's calculated CRC is `10`; the HTX body's is `56`. The
+enclosing DVI frame remains checksum-valid. All 128 block slots had ACK-shaped
+responses (127 valid and one malformed), but the loader ACK was still missing.
+Cleanup verified network OFF and restored CRC validation ON (`0701`).
+
+This makes CRC rejection a plausible explanation for earlier block-ACK gaps;
+it does not locate the changed bit or prove the cause of each earlier omission.
+Invalid physical CRCs remain invalid evidence. Literal comparison still reports
+two missing messages and five extras, including the malformed ACK. The strict
+comparison rejects the validation-OFF profile and invalid frames; the option
+does not qualify a lossless capture or silently repair received data.
+
+`analyze_capture_delivery.py` summarizes optional driver telemetry and checks its
+association with logged bytes. Older logs report this telemetry as unavailable,
+not zero errors. Raw-byte accounting and diagnostic coverage remain separate.
+When the capture declares trailing CRC bytes, it also records each network
+frame's observed/calculated CRC, mismatch ordinals and unchecked frames. This
+layout declaration is not independent bus evidence. CRC-invalid payloads retain
+their original hashes and byte mappings; complete byte accounting does not make
+them valid messages or qualify reception.
+See the [short-ACK investigation](ACK_GAP_INVESTIGATION_20261030.md) for the
+repeatable three-message gap and the evidence still needed to locate it. Three
+all-source reads each miss one loader ACK and two block ACKs; both source-10
+controls capture all 260 expected ECM responses. The diagnostic control reports
+candidate CRC index 4 = 0 versus 2 in the all-source repeat, while index 1 = 1
+in both. The CRC-retention result narrows the block-ACK investigation while the
+loader-ACK omission and physical source of the malformed header remain unresolved.
+
 JSONL contains the UTC session start, tool SHA256, adapter-local outgoing bytes,
 raw serial receive chunks with host monotonic timestamps, decoded DVI packets,
 raw four-byte adapter timestamps, errors and cleanup status. The raw chunks
@@ -103,7 +174,9 @@ Timestamp byte order, wrap interpretation, physical CRC behavior, real sustained
 throughput and dropped-frame reporting are not independently validated. Host
 timestamps describe serial receipt, not the exact time on the bus. The fixed
 speed setting cannot automatically follow EFILive's potential 1x/4x transitions.
-CRC-invalid frames may be discarded by the adapter before the PC sees them.
+With default CRC validation, CRC-invalid frames may be discarded by the adapter
+before the PC sees them. Disabling that policy does not establish that every
+invalid frame will be forwarded or that no other rejection path exists.
 No output is described as a proven complete programming capture.
 
 Offline tests use a simulated transport, not a simulated AL5 flash. They cover
