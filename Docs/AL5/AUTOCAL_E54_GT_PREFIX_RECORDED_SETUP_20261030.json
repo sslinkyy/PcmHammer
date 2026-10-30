@@ -88,6 +88,12 @@
       ],
       "configuration_effect_on_firmware_or_physical_receive_path_proven": false
     },
+    "kernel_variant": {
+      "expected_read_reply_submode": 1,
+      "zero_submode_experiment": false,
+      "legacy_variant_fields_absent": true,
+      "submitted_kernel_reconstructed": false
+    },
     "recorded_kernel_pin": {
       "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\PcmHammer_E54_RAM_Survey_Bench_v0_1\\Kernel-E54.bin",
       "sha256": "8294b899c153b513cd1307ac4c6654c2720832779f40c19aac7100a4b864929a",
@@ -439,6 +445,8 @@
       "physical_message_sha256": "10ff17c3e4bf14062fba2f7d8aeee6d2991f5a9ce7dee5a33c2f6f64236906f1",
       "exact_submode_address_extent": true,
       "block_additive_checksum_valid": true,
+      "raw_reply_submode": 1,
+      "expected_raw_reply_submode": 1,
       "data_sha256": "5b20a24c0d5c5618de617dd929c4baffe7ba4cf151648398f68f0105bd43a5d9",
       "equals_saved_baseline_prefix": true,
       "same_message_in_autocal_rx": false,
@@ -477,6 +485,7 @@
     "A matching64-byte prefix does not verify the whole image, controller CRC ranges, erase/programming or interrupted-flash recovery.",
     "Successful GT software cleanup is checked separately from AutoCal failure closure; neither establishes electrical bus silence.",
     "Recorded setup acceptance proves only the exact acknowledged host-command lifecycle; its firmware semantics and receive-path effect remain unknown.",
+    "The zero-submode profile requires the exact submitted derived RAM kernel and validates the raw submode-zero checksum; other profiles remain submode one. No response byte or checksum is rewritten for comparison.",
     "No raw tune data, kernel bytes or complete data reply is exported. Inputs remain private and unchanged."
   ],
   "adapter_opened": false,
@@ -507,8 +516,8 @@
   "implementation": [
     {
       "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\compare_autocal_gt_prefix.py",
-      "bytes": 30342,
-      "sha256": "3bc0c37fa890b72e27054c2d68f065563b541fc110261a4e07ad83ed2b372ad4"
+      "bytes": 35999,
+      "sha256": "ccdefb9244ddec43123afa64ff0ddac082e7b92ef551514eef31db9c013a834d"
     },
     {
       "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_autocal_read_gap.py",

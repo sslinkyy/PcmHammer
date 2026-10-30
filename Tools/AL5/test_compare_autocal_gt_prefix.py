@@ -16,6 +16,19 @@ BASELINE = bytes(range(256)) * 2048
 ANCHOR = bytes.fromhex('6cf0107c0a00e7c434444e')
 KERNEL_ANCHOR = bytes.fromhex('6cf0107d006ab178ec36')
 FLASH_ANCHOR = bytes.fromhex('6cf0107d0100894471')
+COPY_ANCHOR = bytes.fromhex('6cf010760078')
+EXECUTE_ANCHOR = bytes.fromhex('6cf010768078')
+_kernel = bytearray(bytes(range(256)) * 8)[:2027]
+_kernel[0x7aa:0x7b4] = bytes.fromhex('6df01036010000000000')
+BASE_KERNEL = bytes(_kernel)
+_kernel[0x7ae] = 0
+ZERO_KERNEL = bytes(_kernel)
+
+
+def upload(kernel, copy=True):
+    header = bytes.fromhex('6d10f03600010bff97e0' if copy else '6d10f0368006e0ff9100')
+    body = header + (kernel[1760:] if copy else kernel[:1760])
+    return body + (sum(body[4:]) & 0xffff).to_bytes(2, 'big')
 
 
 def response(body=BASELINE[:64], submode=1, bad_sum=False):
@@ -45,17 +58,27 @@ def gt_log(messages, *, speed='1x', bad_physical_crc=False):
     return rows
 
 
-def auto_log(delivered=None, recorded=False):
-    plan = {'profile': tool.PROFILES[1 if recorded else 0], 'flash_programming_enabled': False,
+def auto_log(delivered=None, recorded=False, zero=False):
+    if recorded and zero: raise ValueError('Separate experiments')
+    plan = {'profile': tool.PROFILES[2 if zero else 1 if recorded else 0], 'flash_programming_enabled': False,
             'live_kernel_execution_enabled': True, 'full_baseline_read_enabled': False,
             'baseline_prefix_read_enabled': True, 'recorded_read_setup_experiment': recorded}
-    result = {'VpwTransmissions': 4 if recorded else 2,
-              'VpwReceivedFrames': (3 if recorded else 1) + bool(delivered),
+    result = {'VpwTransmissions': 4 if recorded or zero else 2,
+              'VpwReceivedFrames': (3 if recorded or zero else 1) + bool(delivered),
               'Success': False, 'FlashWriteEnabled': False, **{k: recorded for k in tool.RECORDED_FLAGS}}
     receipt = {'plan': plan, 'kernel_result': result, 'vpw_payload_commands_completed': result['VpwTransmissions'],
                'setup_accepted': True, 'recorded_cleanup_accepted': False,
                'late_transfer': {'Operation': 'read', 'RequestedByteCount': 4096, 'ReturnedByteCount': 0,
                                  'IsCompleted': True, 'hex': '', 'error': None}}
+    if zero:
+        plan['zero_submode_kernel_experiment'] = True
+        plan['kernel'] = {'sha256': tool.sha256(BASE_KERNEL), 'length': 2027,
+                          'expected_version': 0x6ab178ec36, 'effective_sha256': tool.sha256(ZERO_KERNEL),
+                          'expected_read_reply_submode': 0, 'derivation': dict(tool.ZERO_DERIVATION),
+                          'ram_messages_sha256': [tool.sha256(upload(ZERO_KERNEL, c)) for c in (True, False)]}
+        markers = {'UsesZeroSubmodeKernel': True, 'EffectiveKernelSha256': tool.sha256(ZERO_KERNEL), 'ReadReplySubmode': 0}
+        result.update(markers)
+        receipt['kernel_policy'] = dict(markers)
     rows = [{'kind': 'plan', 'data': plan}]
     def transfer(request, reply):
         time = len(rows) * 100
@@ -74,6 +97,9 @@ def auto_log(delivered=None, recorded=False):
         transfer(wrapper(bytes.fromhex('6c10f03d00')), wrapper(KERNEL_ANCHOR, 2))
         local(tool.RECORDED_SETUP[2])
         transfer(wrapper(bytes.fromhex('6c10f03d01')), wrapper(FLASH_ANCHOR, 2))
+    if zero:
+        transfer(wrapper(upload(ZERO_KERNEL)), wrapper(COPY_ANCHOR, 2))
+        transfer(wrapper(upload(ZERO_KERNEL, False)), wrapper(EXECUTE_ANCHOR, 2))
     transfer(wrapper(tool.REQUEST), wrapper(delivered, 2) if delivered else b'')
     rows.extend([{'kind': 'read_completed', 'elapsed_ms': len(rows) * 100, 'data': {'count': 0, 'hex': ''}},
                  {'kind': 'kernel_result', 'data': result}])
@@ -97,13 +123,15 @@ def lines(rows):
 
 
 class PairedPrefixTests(unittest.TestCase):
-    def run_case(self, gt=None, delivered=None, mutate_auto=None, recorded=False):
-        gt = gt_log(([ANCHOR, KERNEL_ANCHOR, FLASH_ANCHOR] if recorded else [ANCHOR]) + [response()]) if gt is None else gt
-        receipt, journal = auto_log(delivered, recorded)
+    def run_case(self, gt=None, delivered=None, mutate_auto=None, recorded=False, zero=False):
+        anchors = [ANCHOR, COPY_ANCHOR, EXECUTE_ANCHOR] if zero else [ANCHOR, KERNEL_ANCHOR, FLASH_ANCHOR] if recorded else [ANCHOR]
+        gt = gt_log(anchors + [response(submode=0 if zero else 1)]) if gt is None else gt
+        receipt, journal = auto_log(delivered, recorded, zero)
         if mutate_auto: mutate_auto(receipt, journal)
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'gt.jsonl'; source = lines(gt); path.write_bytes(source)
-            with patch.object(tool, 'BASELINE_SHA', tool.sha256(BASELINE)), patch.object(tool, 'PREFIX_SHA', tool.sha256(BASELINE[:64])):
+            with patch.object(tool, 'BASELINE_SHA', tool.sha256(BASELINE)), patch.object(tool, 'PREFIX_SHA', tool.sha256(BASELINE[:64])), \
+                    patch.object(tool, 'BASE_KERNEL_SHA', tool.sha256(BASE_KERNEL)), patch.object(tool, 'ZERO_KERNEL_SHA', tool.sha256(ZERO_KERNEL)):
                 return tool.compare_data(json.dumps(receipt).encode(), lines(journal), path, source, BASELINE)
 
     def test_valid_gt_only_reply_is_proven_without_exporting_data(self):
@@ -135,6 +163,65 @@ class PairedPrefixTests(unittest.TestCase):
         self.assertEqual(1, lifecycle['local_command_counts']['8604:010010000000'])
         self.assertTrue(result['comparison']['valid_prefix_observed_by_gt_but_not_delivered_to_autocal_host'])
         self.assertFalse(lifecycle['configuration_effect_on_firmware_or_physical_receive_path_proven'])
+
+    def test_zero_profile_verifies_derivation_from_original_upload_bytes(self):
+        result = self.run_case(zero=True)
+        variant = result['autocal']['kernel_variant']
+        self.assertEqual(0, variant['expected_read_reply_submode'])
+        self.assertEqual(tool.sha256(ZERO_KERNEL), variant['effective_sha256'])
+        self.assertEqual(tool.sha256(BASE_KERNEL), variant['base_sha256'])
+        self.assertTrue(variant['derived_base_sha256_matches'])
+        self.assertEqual(1, variant['changed_byte_count'])
+        self.assertFalse(variant['kernel_bytes_exported'])
+        self.assertNotIn(ZERO_KERNEL.hex(), json.dumps(result))
+        self.assertTrue(result['comparison']['valid_prefix_observed_by_gt_but_not_delivered_to_autocal_host'])
+        self.assertEqual(0, result['data_candidates'][0]['raw_reply_submode'])
+
+    def test_reply_submodes_are_never_rewritten_between_profiles(self):
+        for zero, recorded in ((True, False), (False, False), (False, True)):
+            anchors = [ANCHOR, COPY_ANCHOR, EXECUTE_ANCHOR] if zero else [ANCHOR, KERNEL_ANCHOR, FLASH_ANCHOR] if recorded else [ANCHOR]
+            result = self.run_case(gt_log(anchors + [response(submode=1 if zero else 0)]), zero=zero, recorded=recorded)
+            self.assertEqual(0, result['comparison']['matching_gt_prefix_reply_count'])
+            self.assertFalse(result['comparison']['valid_prefix_observed_by_gt_but_not_delivered_to_autocal_host'])
+
+    def test_zero_profile_markers_and_pins_fail_closed(self):
+        changes = [('plan', 'zero_submode_kernel_experiment', False), ('plan', 'recorded_read_setup_experiment', True),
+                   ('result', 'UsesZeroSubmodeKernel', False), ('policy', 'UsesZeroSubmodeKernel', False),
+                   ('result', 'ReadReplySubmode', 1), ('policy', 'ReadReplySubmode', False),
+                   ('result', 'EffectiveKernelSha256', '0' * 64), ('policy', 'EffectiveKernelSha256', '0' * 64),
+                   ('kernel', 'sha256', '0' * 64), ('kernel', 'effective_sha256', '0' * 64),
+                   ('kernel', 'length', 2028), ('kernel', 'expected_read_reply_submode', 1),
+                   ('kernel', 'derivation', None), ('kernel', 'ram_messages_sha256', ['0' * 64] * 2)]
+        for owner, key, value in changes:
+            def change(receipt, journal):
+                owners = {'plan': receipt['plan'], 'result': receipt['kernel_result'],
+                          'policy': receipt['kernel_policy'], 'kernel': receipt['plan']['kernel']}
+                owners[owner][key] = value
+            with self.subTest(owner=owner, key=key), self.assertRaises(ValueError):
+                self.run_case(zero=True, mutate_auto=change)
+        def incomplete(receipt, journal): del receipt['kernel_result']['UsesZeroSubmodeKernel']
+        with self.assertRaisesRegex(ValueError, 'markers are incomplete'):
+            self.run_case(zero=True, mutate_auto=incomplete)
+        def wrong_derivation(receipt, journal): receipt['plan']['kernel']['derivation']['file_offset'] += 1
+        with self.assertRaisesRegex(ValueError, 'derivation differs'):
+            self.run_case(zero=True, mutate_auto=wrong_derivation)
+
+    def test_zero_profile_checks_actual_upload_beyond_declared_pins(self):
+        def different_kernel(receipt, journal):
+            changed = bytearray(ZERO_KERNEL); changed[1800] ^= 1
+            body = upload(changed)
+            index = next(i for i, row in enumerate(journal) if row['kind'] == 'write_attempt'
+                         and tool.frame(bytes.fromhex(row['data']['hex']), 1)['payload'].startswith(bytes.fromhex('6d10f03600')))
+            replace_transfer(journal, index, wrapper(body), wrapper(COPY_ANCHOR, 2))
+            receipt['plan']['kernel']['ram_messages_sha256'][0] = tool.sha256(body)
+        with self.assertRaisesRegex(ValueError, 'Submitted kernel bytes'):
+            self.run_case(zero=True, mutate_auto=different_kernel)
+
+    def test_legacy_profiles_cannot_opt_into_zero_markers(self):
+        def zero_flag(receipt, journal): receipt['plan']['zero_submode_kernel_experiment'] = True
+        for recorded in (False, True):
+            with self.subTest(recorded=recorded), self.assertRaisesRegex(ValueError, 'markers are incomplete'):
+                self.run_case(recorded=recorded, mutate_auto=zero_flag)
 
     def test_profile_and_plan_result_flags_must_agree_exactly(self):
         for recorded in (False, True):
@@ -391,6 +478,32 @@ class PairedPrefixTests(unittest.TestCase):
         self.assertEqual(0, result['autocal']['receipt_observations']['retained_native_owners'])
         self.assertTrue(result['autocal']['receipt_observations']['transport_disposed'])
         self.assertEqual(0, result['autocal']['reported_late_transfer']['ReturnedByteCount'])
+
+    def test_actual_private_zero_submode_pair_when_available(self):
+        root = Path(__file__).resolve().parents[2]
+        paths = [root / p for p in (
+            'LocalOnly/AutoCalBackendProbe/e54_read_prefix_zero_gt_01.json',
+            'LocalOnly/AutoCalBackendProbe/e54_read_prefix_zero_gt_01.json.journal.jsonl',
+            'LocalOnly/AutoCalBackendProbe/gt_e54_read_prefix_zero_1x_01.jsonl',
+            'LocalOnly/usb_capture_setup_20261030/e54_gt_pcmhammer_write_01/E54_before_test.bin')]
+        if not all(p.is_file() for p in paths):
+            self.skipTest('Private bench evidence is not distributed with source')
+        result = tool.inspect(*paths)
+        self.assertEqual(9, result['comparison']['common_reply_count'])
+        self.assertEqual(1, result['comparison']['correlated_gt_prefix_reply_count'])
+        self.assertTrue(result['comparison']['valid_prefix_observed_by_gt_but_not_delivered_to_autocal_host'])
+        self.assertEqual(478, result['autocal']['post_request_native_reads']['completion_count'])
+        self.assertEqual(0, result['autocal']['post_request_native_reads']['returned_bytes'])
+        self.assertEqual(693, result['gt']['network_frames'])
+        self.assertEqual(692, result['data_candidates'][0]['gt_network_ordinal_zero_based'])
+        self.assertEqual(0, result['data_candidates'][0]['raw_reply_submode'])
+        self.assertEqual(tool.PREFIX_SHA, result['data_candidates'][0]['data_sha256'])
+        variant = result['autocal']['kernel_variant']
+        self.assertTrue(variant['submitted_kernel_reconstructed'])
+        self.assertTrue(variant['derived_base_sha256_matches'])
+        self.assertEqual(tool.ZERO_KERNEL_SHA, variant['effective_sha256'])
+        self.assertEqual(1, variant['changed_byte_count'])
+        self.assertEqual(0, result['autocal']['setup_lifecycle']['recorded_extra_commands'])
 
 
 if __name__ == '__main__':

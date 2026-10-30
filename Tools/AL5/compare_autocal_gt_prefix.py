@@ -20,7 +20,12 @@ REQUEST = bytes.fromhex('6d10f035010040000000')
 REPLY_HEADER = bytes.fromhex('6df01036010040000000')
 BASELINE_SHA = 'a3b010af7e04df03be699198920aac26ba0645c2ad608e72eacf0bc3970beb58'
 PREFIX_SHA = '5b20a24c0d5c5618de617dd929c4baffe7ba4cf151648398f68f0105bd43a5d9'
-PROFILES = ('e54-read-prefix', 'e54-read-prefix-recorded-setup')
+PROFILES = ('e54-read-prefix', 'e54-read-prefix-recorded-setup', 'e54-read-prefix-submode-zero')
+BASE_KERNEL_SHA = '8294b899c153b513cd1307ac4c6654c2720832779f40c19aac7100a4b864929a'
+ZERO_KERNEL_SHA = '17a351715bbdd366cf77e33ad5d0b801fa0747f2d31c57478ad3bb409ee58fe3'
+ZERO_DERIVATION = {'scope': 'owned-in-memory-clone-only', 'file_offset': 0x7ae,
+                   'ram_address': 0xff98ae, 'source_byte': 1, 'effective_byte': 0,
+                   'source_file_modified': False, 'changed_byte_count': 1}
 RECORDED_FLAGS = ('RecordedReadSetupAttempted', 'RecordedReadSetupApplied',
                   'RecordedOrdinaryConfigurationRestored')
 ORDINARY_SETUP = ((0x8201, b'', b'ACV2\0'), (0x8604, b'\0', b''),
@@ -47,7 +52,7 @@ def setup_lifecycle(plan, result, receipt, tx, rx, request):
     flag_keys = ['recorded_read_setup_experiment'] + list(RECORDED_FLAGS)
     flags = [plan.get(flag_keys[0])] + [result.get(k) for k in RECORDED_FLAGS]
     legacy = flag_keys[0] not in plan and all(k not in result for k in RECORDED_FLAGS)
-    if not (not recorded and legacy) and any(value is not recorded for value in flags):
+    if not (plan['profile'] == PROFILES[0] and legacy) and any(value is not recorded for value in flags):
         raise ValueError('AutoCal profile/recorded-setup flags disagree or are missing')
     if result.get('FlashWriteEnabled') is not False:
         raise ValueError('AutoCal result does not explicitly disable flash writing')
@@ -98,6 +103,70 @@ def setup_lifecycle(plan, result, receipt, tx, rx, request):
             'local_command_counts': dict(Counter(f'{r[0]:04X}:{r[1].hex()}' for r in expected)),
             'commands': evidence,
             'configuration_effect_on_firmware_or_physical_receive_path_proven': False}
+
+
+def kernel_variant(plan, result, receipt, vpw_tx):
+    """Explicit variant markers plus submitted RAM bytes, never a firmware file."""
+    zero = plan['profile'] == PROFILES[2]
+    kernel, policy = plan.get('kernel', {}), receipt.get('kernel_policy', {})
+    fields = ((plan, 'zero_submode_kernel_experiment'),
+              (kernel, 'effective_sha256'), (kernel, 'expected_read_reply_submode'), (kernel, 'derivation'),
+              (result, 'UsesZeroSubmodeKernel'), (result, 'EffectiveKernelSha256'), (result, 'ReadReplySubmode'),
+              (policy, 'UsesZeroSubmodeKernel'), (policy, 'EffectiveKernelSha256'), (policy, 'ReadReplySubmode'))
+    legacy = all(k not in owner for owner, k in fields)
+    if legacy and not zero:
+        return {'expected_read_reply_submode': 1, 'zero_submode_experiment': False,
+                'legacy_variant_fields_absent': True, 'submitted_kernel_reconstructed': False}
+    if any(k not in owner for owner, k in fields):
+        raise ValueError('Kernel variant markers are incomplete')
+    expected_hash, submode = (ZERO_KERNEL_SHA, 0) if zero else (BASE_KERNEL_SHA, 1)
+    if (plan['zero_submode_kernel_experiment'] is not zero
+            or result['UsesZeroSubmodeKernel'] is not zero or policy['UsesZeroSubmodeKernel'] is not zero):
+        raise ValueError('Kernel variant profile and plan/result/policy flags disagree')
+    for owner, key in ((kernel, 'expected_read_reply_submode'), (result, 'ReadReplySubmode'), (policy, 'ReadReplySubmode')):
+        if type(owner[key]) is not int or owner[key] != submode:
+            raise ValueError('Kernel expected raw reply submode disagrees with profile')
+    if (kernel.get('sha256') != BASE_KERNEL_SHA or type(kernel.get('length')) is not int or kernel['length'] != 2027
+            or type(kernel.get('expected_version')) is not int or kernel['expected_version'] != 0x6ab178ec36
+            or kernel['effective_sha256'] != expected_hash or result['EffectiveKernelSha256'] != expected_hash
+            or policy['EffectiveKernelSha256'] != expected_hash):
+        raise ValueError('Kernel base/effective pins disagree with exact variant')
+    if json.dumps(kernel['derivation'], sort_keys=True) != json.dumps(ZERO_DERIVATION if zero else None, sort_keys=True):
+        raise ValueError('Kernel derivation differs from the single permitted in-memory byte change')
+    uploads = [r for r in vpw_tx if r['payload'].startswith(bytes.fromhex('6d10f036'))]
+    if len(uploads) != 2:
+        raise ValueError('Kernel variant requires exactly two original RAM upload messages')
+    expected = ((bytes.fromhex('6d10f03600010bff97e0'), 279),
+                (bytes.fromhex('6d10f0368006e0ff9100'), 1772))
+    for item, (header, length) in zip(uploads, expected):
+        p = item['payload']
+        if (len(p) != length or p[:10] != header
+                or sum(p[4:-2]) & 0xffff != int.from_bytes(p[-2:], 'big')):
+            raise ValueError('Kernel RAM upload extent/address/submode/checksum differs')
+    submitted_pins = [sha256(r['payload']) for r in uploads]
+    declared_pins = kernel.get('ram_messages_sha256')
+    if (not isinstance(declared_pins, list) or len(declared_pins) != 2
+            or any(not isinstance(p, str) for p in declared_pins)
+            or [p.lower() for p in declared_pins] != submitted_pins):
+        raise ValueError('Kernel RAM upload message digests differ from plan')
+    effective = uploads[1]['payload'][10:-2] + uploads[0]['payload'][10:-2]
+    if sha256(effective) != expected_hash:
+        raise ValueError('Submitted kernel bytes do not match the exact effective pin')
+    base = bytearray(effective)
+    if zero:
+        if effective[0x7aa:0x7b4] != bytes.fromhex('6df01036000000000000'):
+            raise ValueError('Submitted zero-submode kernel template differs')
+        base[0x7ae] = 1
+    if sha256(base) != BASE_KERNEL_SHA:
+        raise ValueError('Reversing the permitted derivation did not recover the pinned base')
+    return {'expected_read_reply_submode': submode, 'zero_submode_experiment': zero,
+            'legacy_variant_fields_absent': False, 'plan_result_policy_markers_agree': True,
+            'submitted_kernel_reconstructed': True, 'submitted_kernel_length': len(effective),
+            'base_sha256': BASE_KERNEL_SHA, 'effective_sha256': expected_hash,
+            'derived_base_sha256_matches': True, 'changed_byte_count': 1 if zero else 0,
+            'derivation': ZERO_DERIVATION if zero else None, 'upload_payload_sha256': submitted_pins,
+            'source_file_opened_or_modification_independently_checked': False,
+            'kernel_bytes_exported': False}
 
 
 def late_read_coverage(receipt):
@@ -208,10 +277,12 @@ def autocal_audit(receipt_bytes, journal_bytes):
             or receipt.get('vpw_payload_commands_completed') != len(vpw_tx)):
         raise ValueError('AutoCal receipt counts differ from native journal')
     lifecycle = setup_lifecycle(plan, result, receipt, tx, rx, request)
+    variant = kernel_variant(plan, result, receipt, vpw_tx)
     late_observation, late_coverage = late_read_coverage(receipt)
     metadata = {
         'profile': plan['profile'], 'adapter_serial': receipt.get('serial'),
         'setup_lifecycle': lifecycle,
+        'kernel_variant': variant,
         'recorded_kernel_pin': plan.get('kernel'),
         'application_tx_frames': len(tx), 'application_rx_frames': len(rx),
         'vpw_tx_frames': len(vpw_tx), 'vpw_rx_frames': len(vpw_rx),
@@ -358,6 +429,8 @@ def compare_data(auto_receipt, auto_journal, gt_path, gt_source, baseline):
     if len(baseline) != 524288 or sha256(baseline) != BASELINE_SHA or sha256(baseline[:64]) != PREFIX_SHA:
         raise ValueError('Baseline does not match the pinned512KiB image and64-byte prefix')
     auto_rx, auto = autocal_audit(auto_receipt, auto_journal)
+    reply_header = bytearray(REPLY_HEADER)
+    reply_header[4] = auto['kernel_variant']['expected_read_reply_submode']
     gt_network, gt_messages, gt = audit_gt(gt_path, gt_source)
     expected = [r['payload'] for r in auto_rx]
     # Only exact whole messages match. The GT physical CRC was validated before
@@ -378,7 +451,7 @@ def compare_data(auto_receipt, auto_journal, gt_path, gt_source, baseline):
     for index, message in enumerate(gt_messages):
         if not message.startswith(bytes.fromhex('6df01036')):
             continue
-        extent = len(message) == 76 and message[:10] == REPLY_HEADER
+        extent = len(message) == 76 and message[:10] == reply_header
         checksum = extent and sum(message[4:-2]) & 0xffff == int.from_bytes(message[-2:], 'big')
         equal = extent and message[10:-2] == baseline[:64]
         candidates.append({'gt_network_ordinal_zero_based': index,
@@ -388,6 +461,8 @@ def compare_data(auto_receipt, auto_journal, gt_path, gt_source, baseline):
             'physical_vpw_bytes': len(message) + 1, 'message_bytes_without_physical_crc': len(message),
             'message_sha256': sha256(message), 'physical_message_sha256': sha256(message + bytes([crc8_j1850(message)])),
             'exact_submode_address_extent': extent, 'block_additive_checksum_valid': checksum,
+            'raw_reply_submode': message[4] if len(message) > 4 else None,
+            'expected_raw_reply_submode': reply_header[4],
             'data_sha256': sha256(message[10:-2]) if extent else None,
             'equals_saved_baseline_prefix': equal,
             'same_message_in_autocal_rx': any(r['payload'] == message for r in auto_rx),
@@ -431,6 +506,7 @@ def compare_data(auto_receipt, auto_journal, gt_path, gt_source, baseline):
             'A matching64-byte prefix does not verify the whole image, controller CRC ranges, erase/programming or interrupted-flash recovery.',
             'Successful GT software cleanup is checked separately from AutoCal failure closure; neither establishes electrical bus silence.',
             'Recorded setup acceptance proves only the exact acknowledged host-command lifecycle; its firmware semantics and receive-path effect remain unknown.',
+            'The zero-submode profile requires the exact submitted derived RAM kernel and validates the raw submode-zero checksum; other profiles remain submode one. No response byte or checksum is rewritten for comparison.',
             'No raw tune data, kernel bytes or complete data reply is exported. Inputs remain private and unchanged.',
         ], 'adapter_opened': False, 'al5_live_writes_enabled': False, 'ready_to_flash': False}
 

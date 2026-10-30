@@ -260,7 +260,16 @@ Only the fixed 64-byte prefix can be read, with the existing 44 VPW / 51 host
 command and 180-second bounds. Success still requires exact prefix validation,
 kernel exit and ordinary OS identity. The ordinary three-argument payload
 parser still requires submode `01`; only this explicit experiment selects `00`.
-This variant has offline validation only until its own bench receipt exists.
+The [paired zero-submode test](../../../Docs/AL5/AUTOCAL_E54_GT_PREFIX_SUBMODE_ZERO_20261030.json)
+confirmed that the changed `36 00` reply appeared on VPW with the correct
+64-byte baseline and checksums, but AutoCal still delivered no data. The two
+submitted RAM fragments reconstruct the pinned derived image exactly; changing
+the submode alone did not resolve reception. AutoCal completed 478 subsequent
+native reads with zero bytes over 50.036 seconds, exhausted five receive
+windows, and closed without a channel fault or retained owner. The GT completed
+capture, verified OFF and restored its saved settings. No prefix was received
+through AutoCal, so no exit/reset or ordinary post-exit identity followed.
+Another bench power cycle is required before a subsequent live experiment.
 
 The pinned RAM-kernel version/exit/ordinary-identity sequence has passed on the
 isolated E54 bench. Full flash readback, the backend's 4x transition, programming

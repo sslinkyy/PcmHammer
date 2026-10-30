@@ -886,7 +886,17 @@ baseline digest remain fixed. The experiment cannot combine the template and
 configuration changes. EFILive's preceding Mode75 acknowledgement is another
 unresolved difference; this variant adds no acknowledgement. These differences
 are hypotheses about delivery, not established AutoCal firmware requirements.
-The variant is offline-tested and has no physical qualification receipt yet.
+The [paired zero-submode experiment](AUTOCAL_E54_GT_PREFIX_SUBMODE_ZERO_20261030.json)
+then confirmed the intended `36 00` reply on VPW, with valid physical CRC,
+block checksum and the pinned 64-byte prefix. The submitted RAM fragments
+reconstruct the exact derived image; reversing its one-byte change reproduces
+the original asset digest. AutoCal nevertheless returned zero bytes in 478
+native reads after the request over 50,036 ms. It exhausted five receive
+windows without a channel fault and closed with zero retained owners. The GT
+completed its capture, verified OFF and restored the saved settings. No
+controller exit/reset followed the missing reply, so the next experiment
+requires a bench power cycle. Submode alone therefore did not resolve this
+delivery gap; the need for EFILive's separate Mode75 response remains unproven.
 
 ## Remaining integration work
 

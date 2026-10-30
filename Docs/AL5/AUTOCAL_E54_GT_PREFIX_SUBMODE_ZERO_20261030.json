@@ -1,0 +1,558 @@
+{
+  "schema": "autocal-gt-fixed-prefix-comparison-v1",
+  "scope": "Completed paired application journals, exact ECM-response comparison and fixed64-byte baseline validation; offline audit only.",
+  "autocal": {
+    "profile": "e54-read-prefix-submode-zero",
+    "adapter_serial": "AC3NCHH5",
+    "setup_lifecycle": {
+      "recorded_setup_experiment": false,
+      "legacy_ordinary_flags_absent": false,
+      "plan_and_result_flags_consistent": true,
+      "exact_local_sequence_and_replies_verified": true,
+      "ordinary_setup_commands": 4,
+      "recorded_extra_commands": 0,
+      "adapter_cleanup_commands": 0,
+      "recorded_preparation_and_restore_boundaries_verified": false,
+      "local_command_counts": {
+        "8201:": 1,
+        "8604:00": 1,
+        "8800:0000": 1,
+        "8604:000000000000": 1
+      },
+      "commands": [
+        {
+          "command_hex": "8201",
+          "payload_hex": "",
+          "tx_journal_line_one_based": 3,
+          "rx_journal_line_one_based": 5,
+          "tx_wrapper_sha256": "44d01ec7a272ab4b4fd38fdb352258300af5251cd088450bceedeb7a73cf934a",
+          "rx_wrapper_sha256": "935e0ff0745da3eff52c75b31a2824a3f702b78858d2c2b30a0d4f13dbbde594",
+          "reply_payload_matches": true
+        },
+        {
+          "command_hex": "8604",
+          "payload_hex": "00",
+          "tx_journal_line_one_based": 6,
+          "rx_journal_line_one_based": 8,
+          "tx_wrapper_sha256": "1afd9e9bc59bba4642c5072de347ac88650fe4e1667378ccffe36d56f4af987f",
+          "rx_wrapper_sha256": "a8d0af0b157a43954bfab94fe52fa779b9ecdba94f3ee54c4d799ab8640884a5",
+          "reply_payload_matches": true
+        },
+        {
+          "command_hex": "8800",
+          "payload_hex": "0000",
+          "tx_journal_line_one_based": 9,
+          "rx_journal_line_one_based": 11,
+          "tx_wrapper_sha256": "221b342ac2f0a748bc3f47b1897a11af6a467e07be1f7e93d10d2a96fc35915c",
+          "rx_wrapper_sha256": "4339f68ffa01426db442564e48fa21609737ab60dde4e941b546b26b23a1d17c",
+          "reply_payload_matches": true
+        },
+        {
+          "command_hex": "8604",
+          "payload_hex": "000000000000",
+          "tx_journal_line_one_based": 12,
+          "rx_journal_line_one_based": 14,
+          "tx_wrapper_sha256": "4b7aeffc8e91f85330bbe0b7d588ac09617fc80a70d4b4df60847aea0bb436b1",
+          "rx_wrapper_sha256": "8fde6eb681bf2080e9d5213f032517f4b85312ab2d620e0d39ca42d3531b48c4",
+          "reply_payload_matches": true
+        }
+      ],
+      "configuration_effect_on_firmware_or_physical_receive_path_proven": false
+    },
+    "kernel_variant": {
+      "expected_read_reply_submode": 0,
+      "zero_submode_experiment": true,
+      "legacy_variant_fields_absent": false,
+      "plan_result_policy_markers_agree": true,
+      "submitted_kernel_reconstructed": true,
+      "submitted_kernel_length": 2027,
+      "base_sha256": "8294b899c153b513cd1307ac4c6654c2720832779f40c19aac7100a4b864929a",
+      "effective_sha256": "17a351715bbdd366cf77e33ad5d0b801fa0747f2d31c57478ad3bb409ee58fe3",
+      "derived_base_sha256_matches": true,
+      "changed_byte_count": 1,
+      "derivation": {
+        "scope": "owned-in-memory-clone-only",
+        "file_offset": 1966,
+        "ram_address": 16750766,
+        "source_byte": 1,
+        "effective_byte": 0,
+        "source_file_modified": false,
+        "changed_byte_count": 1
+      },
+      "upload_payload_sha256": [
+        "d442623b2dd2791ddc78a8af8d771d5120c6dc5c836a770bc08040e798af02fb",
+        "c79faf4f381a08b51229e053379c219c30f03e80e2220a69f2d2064a75063fe6"
+      ],
+      "source_file_opened_or_modification_independently_checked": false,
+      "kernel_bytes_exported": false
+    },
+    "recorded_kernel_pin": {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\PcmHammer_E54_RAM_Survey_Bench_v0_1\\Kernel-E54.bin",
+      "sha256": "8294b899c153b513cd1307ac4c6654c2720832779f40c19aac7100a4b864929a",
+      "length": 2027,
+      "effective_sha256": "17a351715bbdd366cf77e33ad5d0b801fa0747f2d31c57478ad3bb409ee58fe3",
+      "expected_read_reply_submode": 0,
+      "derivation": {
+        "scope": "owned-in-memory-clone-only",
+        "file_offset": 1966,
+        "ram_address": 16750766,
+        "source_byte": 1,
+        "effective_byte": 0,
+        "source_file_modified": false,
+        "changed_byte_count": 1
+      },
+      "expected_version": 458244025398,
+      "ram_messages_sha256": [
+        "D442623B2DD2791DDC78A8AF8D771D5120C6DC5C836A770BC08040E798AF02FB",
+        "C79FAF4F381A08B51229E053379C219C30F03E80E2220A69F2D2064A75063FE6"
+      ]
+    },
+    "application_tx_frames": 18,
+    "application_rx_frames": 13,
+    "vpw_tx_frames": 14,
+    "vpw_rx_frames": 9,
+    "all_complete_wrapper_crcs_valid": true,
+    "request": {
+      "payload_hex": "6d10f035010040000000",
+      "outer_wrapper_sha256": "520a86a386d0dca699dc3bb279dd7e2558c079dc6fd759f3c10edb1a1edad36a",
+      "journal_line_one_based": 65,
+      "elapsed_ms": 3143
+    },
+    "post_request_native_reads": {
+      "completion_count": 478,
+      "returned_bytes": 0,
+      "first_completion_elapsed_ms": 3254,
+      "last_completion_elapsed_ms": 53179,
+      "last_completion_from_request_ms": 50036,
+      "all_returned_zero": true
+    },
+    "receipt_observations": {
+      "setup_accepted": true,
+      "recorded_cleanup_accepted": false,
+      "readback_saved_bytes": 0,
+      "transport_disposed": true,
+      "retained_native_owners": 0,
+      "channel_fault": null,
+      "cleanup_exception": null
+    },
+    "reported_late_transfer": {
+      "Operation": "read",
+      "RequestedByteCount": 4096,
+      "ReturnedByteCount": 0,
+      "IsCompleted": true,
+      "error": null,
+      "data_bytes": 0,
+      "data_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes_exported": false
+    },
+    "late_read_coverage": {
+      "completed_empty_read_reported": true,
+      "eligible_for_no_delivery_conclusion": true,
+      "qualification_blockers": [],
+      "nonempty_late_bytes_reconciled": false
+    },
+    "kernel_result": {
+      "Success": false,
+      "InitialIdentityVerified": true,
+      "KernelVersionVerified": true,
+      "ExitAcknowledged": false,
+      "PostExitIdentityVerified": false,
+      "BenchPowerCycleRequired": true,
+      "ReadbackLength": 0,
+      "ReadbackScope": "baseline-prefix",
+      "ReadbackCrcVerified": false,
+      "BaselineMatched": false,
+      "FlashWriteEnabled": false,
+      "RecordedReadSetupAttempted": false,
+      "RecordedReadSetupApplied": false,
+      "RecordedOrdinaryConfigurationRestored": false
+    },
+    "read_policy": {
+      "ReadBlockAttempts": 1,
+      "ReadBlockReplies": 0,
+      "IsShortReadVerified": false,
+      "CrcQueryAttempts": 0,
+      "VerifiedCrcRanges": 0
+    },
+    "recorded_source_sha256": {
+      "Apps/PcmLibrary/AutoCalHostFrame.cs": "b87cd99d6adea75374609efdcda3cd16760836d293580e7952f0d0e6b3226600",
+      "Apps/PcmLibrary/AutoCalChannel.cs": "4a62652602f3fe26f23ed7dfdb13db82e2b8ac0d7ec3161c4930c42485629ff4",
+      "Apps/PcmLibrary/AutoCalVpwEnvelope.cs": "c3367d1b972061b2662b227e608d9278e466b6b30f50d7bbef70c62554c0074f",
+      "Apps/PcmLibrary/AutoCalSetupResponse.cs": "cb582c8b049d212c9aa8e603bc77a9cb0ad06d162f905e949bacf02108f78007",
+      "Apps/PcmLibrary/Devices/AutoCalDevice.cs": "75e7ef18084a10b4950c6bb48e71bdb674e9a18312df1753bc18f8eac2a55459",
+      "Apps/PcmLibraryWindowsApi/Ports/AutoCalD2xxTransport.cs": "80decc39ac396ff86aeebfadff0e33c2395f802171e01d89407cb28a4f948614",
+      "Tools/AL5/AutoCalBackendProbe/Program.cs": "b0f3b77cda52dd18cc949997fa27fe85a0e377111857f84f4ac61206039be0de",
+      "Tools/AL5/AutoCalBackendProbe/ProbeProfile.cs": "d758251ef1a5a236fc0bfeeffd60b531a2463adacc48990dc41aab0aea5dcd0d",
+      "Tools/AL5/AutoCalBackendProbe/KernelRequestGuard.cs": "be0b5344edea5f94dd35f196920e5ac45b00b15e33b2303399b6d29f10fd80b5",
+      "Tools/AL5/AutoCalKernelProbePolicy.cs": "b3396847c438b65c38be4744a8411853b6cc53a7b0073dfecc973d779f69a42c",
+      "Tools/AL5/AutoCalKernelProbeSession.cs": "f2728c1693df6a3429ef03639d97ba918441f12eb4a921eb4e86d310dfc551fc",
+      "Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj": "1e2828586357c0e739aa3a6e8095db036ebb1c26d8f4515644a2274f9d2ed7dc",
+      "Apps/PcmLibrary/CKernelReader.cs": "6ca5cb53f324ce53f3c4fd3b84b4512f5c7627d2d090d6fcffbb8746bdd8d4e2",
+      "Apps/PcmLibrary/CKernelVerifier.cs": "8fb21615467e27f31fafc374d87b27002706a25f584e77f3b6bb446ab86dbc27",
+      "Apps/PcmLibrary/Misc/Crc.cs": "da4cd970a78568fcabbf7ad7f8012ea35b95d063c24207697c08da7933d85538",
+      "Apps/PcmLibrary/Misc/Query.cs": "bb12ce829d277aebaeee0ec33c36c90c27afc5238381f38978d8c5e9516af73d",
+      "Apps/PcmLibrary/Misc/FlashChip.cs": "1b10acfa6df00b768fed607cbb32169e50ed3e2205a298df35122cf51f0c2aef",
+      "Apps/PcmLibrary/Misc/ToolPresentNotifier.cs": "62fd88d3d7c1cacb5af32b96486a46d71a0296d3e182377cbc27033c3c4fb779",
+      "Apps/PcmLibrary/Vehicle.Kernel.cs": "f4b33c05d26b1d522d873ef361cfea7024988ff10319a9e155a04987431d2591",
+      "Apps/PcmLibrary/Vehicle.cs": "a6ac56c0d3c5e98a3e9e2059e8ff3b61c85c41ae3f4a8728a08906c71d42d121",
+      "Apps/PcmLibrary/Messages/Protocol.ReadWrite.cs": "e33b002a79a1244f13d8ec7e7e225bf6bf41852f6c6b80579bd284dc62e9ef1e",
+      "Apps/PcmLibrary/Messages/Protocol.Kernel.cs": "f277b2ce7bca2944968f37c9724370fad8ea7df8aac44cd88c22f1254904c236"
+    },
+    "recorded_probe_sha256": "377b1fe46f451e4da2a88fd03829c78e15206a4776e10d47165693b73a19936c",
+    "recorded_pcmlibrary_sha256": "0783ed84411a1b9f3151b07aee4125277869ba0d3ee5cd07460ac339be6d5436"
+  },
+  "gt": {
+    "strict_replay_complete": true,
+    "original_serial_chunks": 300,
+    "adapter_tx_frames": 87,
+    "adapter_rx_frames": 87,
+    "network_frames": 693,
+    "adapter_errors": 0,
+    "outgoing_guard_violations": 0,
+    "message_prefix_counts": {
+      "49921001": 672,
+      "08ff1003": 11,
+      "6cf0107c": 1,
+      "6cf01068": 1,
+      "6cf01067": 2,
+      "6cf01074": 1,
+      "6cf01076": 2,
+      "6cf0107d": 2,
+      "6df01036": 1
+    },
+    "all_network_vpw_crcs_valid": true,
+    "checked_physical_crc_frames": 693,
+    "context": {
+      "network_frames": 693,
+      "capture_started_source_line_one_based": 235,
+      "network_frames_before_capture_started": [],
+      "checked_network_ordinal_ranges_zero_based": [
+        {
+          "start": 0,
+          "end_exclusive": 693
+        }
+      ],
+      "checked_network_frame_count": 693,
+      "all_post_start_network_frames_have_checked_context": true,
+      "fixed_speed_setting": "1x",
+      "physical_speed_measured": false,
+      "exact_source": 16,
+      "crc_display_and_validation_enabled": true,
+      "final_network_off_get_verified": true,
+      "all_nine_saved_settings_separately_restored_and_read_back": true,
+      "hidden_coupled_filter_state_proven": false,
+      "counter_snapshots": [
+        {
+          "counter_semantics_verified": false,
+          "counts_raw": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0
+          ],
+          "kind": "vpw_error_counter_snapshot",
+          "phase": "before_listener_configuration",
+          "read_clears_counter": true,
+          "requested_indices": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "success": true
+        },
+        {
+          "counter_semantics_verified": false,
+          "counts_raw": [
+            165,
+            0,
+            0,
+            0,
+            0,
+            14,
+            0,
+            0,
+            0,
+            0,
+            43,
+            0,
+            0
+          ],
+          "kind": "vpw_error_counter_snapshot",
+          "phase": "after_network_off",
+          "read_clears_counter": true,
+          "requested_indices": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "success": true
+        }
+      ],
+      "correlated_setting_get_count": 38
+    },
+    "source_reported_success": true,
+    "monotonic_timing_scope": "GT serial receipt time, not physical edge time; no shared origin with AutoCal elapsed_ms."
+  },
+  "ordered_common_replies": [
+    {
+      "autocal_rx_ordinal_zero_based": 0,
+      "autocal_journal_line_one_based": 18,
+      "autocal_elapsed_ms": 589,
+      "gt_network_ordinal_zero_based": 681,
+      "gt_source_line_end": 1322,
+      "gt_serial_chunk_end_monotonic_ns": 51044968000000,
+      "vpw_prefix_hex": "6cf0107c",
+      "message_bytes": 11,
+      "message_sha256": "bfeb18b21607485b5badc3761296b1270406ea988c43d3c34ad8b47d0e9cd4dc"
+    },
+    {
+      "autocal_rx_ordinal_zero_based": 1,
+      "autocal_journal_line_one_based": 23,
+      "autocal_elapsed_ms": 702,
+      "gt_network_ordinal_zero_based": 684,
+      "gt_source_line_end": 1328,
+      "gt_serial_chunk_end_monotonic_ns": 51045078000000,
+      "vpw_prefix_hex": "6cf01068",
+      "message_bytes": 5,
+      "message_sha256": "77ce2efdcdad3f21db37fe054dc361d502158c15f245e72194224f33d7f89d50"
+    },
+    {
+      "autocal_rx_ordinal_zero_based": 2,
+      "autocal_journal_line_one_based": 26,
+      "autocal_elapsed_ms": 818,
+      "gt_network_ordinal_zero_based": 685,
+      "gt_source_line_end": 1331,
+      "gt_serial_chunk_end_monotonic_ns": 51045187000000,
+      "vpw_prefix_hex": "6cf01067",
+      "message_bytes": 7,
+      "message_sha256": "0472ba47aaa046a3b8f3795bb088c32ff5f0a3a53e60b5c7ccac9a6b749be873"
+    },
+    {
+      "autocal_rx_ordinal_zero_based": 3,
+      "autocal_journal_line_one_based": 29,
+      "autocal_elapsed_ms": 938,
+      "gt_network_ordinal_zero_based": 686,
+      "gt_source_line_end": 1334,
+      "gt_serial_chunk_end_monotonic_ns": 51045281000000,
+      "vpw_prefix_hex": "6cf01067",
+      "message_bytes": 6,
+      "message_sha256": "e65c59fca0331d950d6e7fe5d207fa8a96562fece70ed52d5f0f9d8d2b80e2e4"
+    },
+    {
+      "autocal_rx_ordinal_zero_based": 4,
+      "autocal_journal_line_one_based": 32,
+      "autocal_elapsed_ms": 1042,
+      "gt_network_ordinal_zero_based": 687,
+      "gt_source_line_end": 1337,
+      "gt_serial_chunk_end_monotonic_ns": 51045406000000,
+      "vpw_prefix_hex": "6cf01074",
+      "message_bytes": 6,
+      "message_sha256": "752f9376541a81db53722363dade1d60f872409529cd6474565ffba5d36b13b1"
+    },
+    {
+      "autocal_rx_ordinal_zero_based": 5,
+      "autocal_journal_line_one_based": 39,
+      "autocal_elapsed_ms": 1438,
+      "gt_network_ordinal_zero_based": 688,
+      "gt_source_line_end": 1342,
+      "gt_serial_chunk_end_monotonic_ns": 51045734000000,
+      "vpw_prefix_hex": "6cf01076",
+      "message_bytes": 6,
+      "message_sha256": "db8236a84a8d1cfcad5b05dc3f2908d08a05ed66b67aace088f9bd62b0b04aed"
+    },
+    {
+      "autocal_rx_ordinal_zero_based": 6,
+      "autocal_journal_line_one_based": 54,
+      "autocal_elapsed_ms": 2904,
+      "gt_network_ordinal_zero_based": 689,
+      "gt_source_line_end": 1358,
+      "gt_serial_chunk_end_monotonic_ns": 51047265000000,
+      "vpw_prefix_hex": "6cf01076",
+      "message_bytes": 6,
+      "message_sha256": "02cae7732977956a7a0219faa42984a6abe7a52f1ea9e42eb35696b1bd05b5e1"
+    },
+    {
+      "autocal_rx_ordinal_zero_based": 7,
+      "autocal_journal_line_one_based": 57,
+      "autocal_elapsed_ms": 3022,
+      "gt_network_ordinal_zero_based": 690,
+      "gt_source_line_end": 1361,
+      "gt_serial_chunk_end_monotonic_ns": 51047375000000,
+      "vpw_prefix_hex": "6cf0107d",
+      "message_bytes": 10,
+      "message_sha256": "9214fa66058c28bcbda7cedfd945a530ed8764e3af36b8d5727cb5c1811a89da"
+    },
+    {
+      "autocal_rx_ordinal_zero_based": 8,
+      "autocal_journal_line_one_based": 62,
+      "autocal_elapsed_ms": 3138,
+      "gt_network_ordinal_zero_based": 691,
+      "gt_source_line_end": 1364,
+      "gt_serial_chunk_end_monotonic_ns": 51047468000000,
+      "vpw_prefix_hex": "6cf0107d",
+      "message_bytes": 9,
+      "message_sha256": "efb1c3174f24eb72e564c4470257cabd72cb7a1cca2136c9f61252d50b3f6da3"
+    }
+  ],
+  "data_candidates": [
+    {
+      "gt_network_ordinal_zero_based": 692,
+      "within_checked_gt_capture_context": true,
+      "gt_source_line_end": 1368,
+      "gt_serial_chunk_end_monotonic_ns": 51047703000000,
+      "physical_vpw_bytes": 77,
+      "message_bytes_without_physical_crc": 76,
+      "message_sha256": "70db0cd94d2a5e53009cb96ad4e7435d403873f349e2d3a60f40113aeb5ebc95",
+      "physical_message_sha256": "5bd690b3a2926a114872829393546550e24e4aefc6f13764c21173bc0d0b5f05",
+      "exact_submode_address_extent": true,
+      "block_additive_checksum_valid": true,
+      "raw_reply_submode": 0,
+      "expected_raw_reply_submode": 0,
+      "data_sha256": "5b20a24c0d5c5618de617dd929c4baffe7ba4cf151648398f68f0105bd43a5d9",
+      "equals_saved_baseline_prefix": true,
+      "same_message_in_autocal_rx": false,
+      "follows_last_common_autocal_reply_in_gt_order": true
+    }
+  ],
+  "comparison": {
+    "all_autocal_vpw_replies_found_in_gt_order": true,
+    "nonempty_ordered_reply_anchors_present": true,
+    "common_reply_count": 9,
+    "matching_gt_prefix_reply_count": 1,
+    "correlated_gt_prefix_reply_count": 1,
+    "autocal_late_read_coverage_complete": true,
+    "valid_prefix_observed_by_gt_but_not_delivered_to_autocal_host": true,
+    "no_verified_prefix_reply_in_gt_capture": false,
+    "physical_ecu_transmit_cause_proven": false,
+    "valid_baseline_prefix_reply_observed_on_gt": true,
+    "known_kernel_prefix_reply_correlated_to_session": true,
+    "autocal_read_qualified": false,
+    "flash_programming_qualified": false
+  },
+  "baseline": {
+    "length": 524288,
+    "sha256": "a3b010af7e04df03be699198920aac26ba0645c2ad608e72eacf0bc3970beb58",
+    "prefix_length": 64,
+    "prefix_sha256": "5b20a24c0d5c5618de617dd929c4baffe7ba4cf151648398f68f0105bd43a5d9",
+    "data_exported": false
+  },
+  "limits": [
+    "GT receives only source10 responses. It does not independently record the AutoCal request on VPW.",
+    "The valid GT reply establishes reception of the expected kernel data on this bench; it does not locate the AutoCal physical receiver, firmware filter, buffer or USB-delivery fault.",
+    "Exact shared replies establish ordered correlation, not synchronized clocks. Both timestamps describe host receipt rather than physical bus timing.",
+    "A matching data reply before the shared reply anchors, or with no shared anchors, is retained as an uncorrelated observation and cannot establish this session delivery gap.",
+    "A nonempty, incomplete, errored or unknown retained native read blocks the non-delivery conclusion; late bytes are not reconciled into the receive journal by this analyzer.",
+    "No shorter ACK or repair is invented. Only a valid trailing GT VPW CRC is removed before whole-message comparison.",
+    "A matching64-byte prefix does not verify the whole image, controller CRC ranges, erase/programming or interrupted-flash recovery.",
+    "Successful GT software cleanup is checked separately from AutoCal failure closure; neither establishes electrical bus silence.",
+    "Recorded setup acceptance proves only the exact acknowledged host-command lifecycle; its firmware semantics and receive-path effect remain unknown.",
+    "The zero-submode profile requires the exact submitted derived RAM kernel and validates the raw submode-zero checksum; other profiles remain submode one. No response byte or checksum is rewritten for comparison.",
+    "No raw tune data, kernel bytes or complete data reply is exported. Inputs remain private and unchanged."
+  ],
+  "adapter_opened": false,
+  "al5_live_writes_enabled": false,
+  "ready_to_flash": false,
+  "inputs": {
+    "autocal_receipt": {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\AutoCalBackendProbe\\e54_read_prefix_zero_gt_01.json",
+      "bytes": 11277,
+      "sha256": "dbb5b4356b39ab5771b18b48f7a6824d365ebde2765cb307acb054e2f15c7d5c"
+    },
+    "autocal_journal": {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\AutoCalBackendProbe\\e54_read_prefix_zero_gt_01.json.journal.jsonl",
+      "bytes": 55532,
+      "sha256": "0aeebab3dcbab4d009276939c2e66ec7a1d05fda38156e1ceb7737909685c1c6"
+    },
+    "gt_capture": {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\AutoCalBackendProbe\\gt_e54_read_prefix_zero_1x_01.jsonl",
+      "bytes": 1067958,
+      "sha256": "5356fcfd523e35aab072b6ef5da00796a0d61324fdf27a6c23814e0066c18e5e"
+    },
+    "baseline": {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\usb_capture_setup_20261030\\e54_gt_pcmhammer_write_01\\E54_before_test.bin",
+      "bytes": 524288,
+      "sha256": "a3b010af7e04df03be699198920aac26ba0645c2ad608e72eacf0bc3970beb58"
+    }
+  },
+  "implementation": [
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\compare_autocal_gt_prefix.py",
+      "bytes": 35999,
+      "sha256": "ccdefb9244ddec43123afa64ff0ddac082e7b92ef551514eef31db9c013a834d"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_autocal_read_gap.py",
+      "bytes": 19267,
+      "sha256": "ebaeeef7eec6159b8f547a48028c68f05bd243506efc98e51b82f36326899076"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\obdx_capture.py",
+      "bytes": 44816,
+      "sha256": "9793411686438b7b12c9b74e2d862dd4aa3a16bc7b2296c0f4107b538e8764d0"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\obdx_speed.py",
+      "bytes": 12317,
+      "sha256": "d3e9e35eabd35694b7df58f77e5506ed42d8703207931325fab8f40d1962ac4c"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\compare_vpw_read_capture.py",
+      "bytes": 33993,
+      "sha256": "c327236cf0c2825ce18ceedf049588cf8cedd08d8aad35f45ca6f18c23c9ee80"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\audit_trace_wrappers.py",
+      "bytes": 5198,
+      "sha256": "c824d113b63244d7e5d56b7bd53e3870fc155e666d897c12a570f1bdd69bd608"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\checksum.py",
+      "bytes": 1841,
+      "sha256": "b057805b2f5dc141141be5ce747ee78be98e441746a05d3a4a0cb3911bf2ef93"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\al5_segment.py",
+      "bytes": 1710,
+      "sha256": "c391085ae14ed3f8c762c0ad2baf174474d2287fc17d95b3a5bb4ba3fe169edb"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\decode_trace_containers.py",
+      "bytes": 5780,
+      "sha256": "ab2feac05c102f3616c444889c428608e8466084bb7661743d5cd85e02cae382"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_trace_containers.py",
+      "bytes": 4793,
+      "sha256": "540b1d3a013ed7d0bff0fbf382a3393856accc5b0344de0d322e79b42ca3026f"
+    }
+  ]
+}
