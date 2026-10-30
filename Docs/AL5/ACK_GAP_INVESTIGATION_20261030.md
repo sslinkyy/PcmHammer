@@ -420,3 +420,21 @@ These hashes pin the investigation inputs/results; they do not make the full
 comparison independently reproducible without those retained files.
 No electrical noninterference, complete all-source capture, AL5 programming or
 recovery qualification follows from these results. Live AL5 writes remain disabled.
+
+## USB-boundary follow-up
+
+The [simultaneous USB and serial read](USB_CAPTURE_COMPARISON.md#simultaneous-usb-and-serial-read--2026-10-30)
+reproduced the same malformed `6C F0 10 75 01 54 56` ACK at block `0x073000`.
+All 533,034 recorded successful USB bulk-IN bytes matched the complete raw
+serial RX stream. The malformed byte and valid-checksum DVI envelope are
+already present in the USB completion data, placing this observed discrepancy
+before the downstream COM reader/logger and decoding. GT reception, firmware
+and stages before USBPcap remain unresolved; this does not prove what appeared
+on the VPW wire.
+
+The loader ACK remains absent. There are again 127 valid block ACKs and one
+malformed ACK, with all 128 data blocks and 524,286 observed image bytes equal
+to baseline. EFILive completed in 1:59 with six valid checksums. USB qualification
+still fails conservatively on a zero-data non-success completion at serial
+close, and the supervisor retained a final status-publication failure after
+child exit zero. Both limits remain in the saved reports. No flash ran.
