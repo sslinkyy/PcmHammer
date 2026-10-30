@@ -607,6 +607,27 @@ No unlock, kernel upload, full image read, erase, program, verification or
 interrupted-write recovery operation ran in this fixed profile. The normal
 AutoCal factory entry and AL5 live writes remain disabled.
 
+## Stock RAM-copy acknowledgement gap
+
+The [saved-evidence inventory](AUTOCAL_STOCK_RAM_COPY_ACK_GAP_20261030.json)
+examined all 13 local E54 HTX files and seven GT operation logs, plus their two
+empty stderr logs. Every HTX RAM upload uses a single `36 80` execute packet;
+none contains a stock-ROM `36 00` RAM copy. The GT logs contain six RAM execute
+uploads, 96 flash copies and 96 test writes. Flash-copy replies come from the
+running kernel and cannot establish the stock-ROM RAM-copy response contract.
+The saved execute reply is `6C F0 10 76 80 78`. Its last byte is not the ordinary
+J1850 CRC of the preceding five bytes: that CRC is `E2`; the CRC of all six
+bytes is `02`. The meaning of `78` remains unknown.
+
+At the existing AutoCal transmit cap, PcmHammer divides the pinned 2,027-byte
+kernel into a 267-byte RAM copy at `FF97E0`, then a 1,760-byte execute packet at
+`FF9100`. A reply with an opaque final byte cannot prove that the first copy
+succeeded before execution. The next bounded experiment therefore stops after
+one copy packet and records its reply. It does not execute the kernel or prove
+that RAM contains the requested bytes. Full kernel execution remains disabled
+for live use; a bench power cycle is required after preparation. The inventory
+pins its private inputs and script and contains no kernel payload.
+
 ## Remaining integration work
 
 The bounded model/setup/recorded-cleanup sequence and one ordinary E54 identity

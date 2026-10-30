@@ -6,8 +6,8 @@ using System.Text.Json;
 using PcmHacking;
 using Tests;
 
-// Two exact profiles: USB-only setup, or one ordinary E54 OS-ID request on an
-// isolated bench. No programming path exists in this tool. DeviceFactory and
+// Bounded profiles: USB-only setup, one E54 OS-ID request, or a pinned RAM-kernel
+// execution/exit experiment. Flash programming is absent. DeviceFactory and
 // ordinary CLI selection remain unchanged. Plans load no native driver.
 internal static class Program
 {
@@ -31,25 +31,43 @@ internal static class Program
             if (File.Exists(Path.Combine(item.FullName, "Tools", "AL5", "AutoCalBackendProbe", "AutoCalBackendProbe.csproj"))) return item.FullName;
         throw new InvalidOperationException("Run the in-checkout build so source provenance can be recorded.");
     }
-    static object Plan(string root, ProbeProfile profile)
+    static object Plan(string root, ProbeProfile profile, AutoCalKernelProbePolicy? kernelPolicy, bool copyOnly)
     {
         string[] sources = { "Apps/PcmLibrary/AutoCalHostFrame.cs", "Apps/PcmLibrary/AutoCalChannel.cs",
             "Apps/PcmLibrary/AutoCalVpwEnvelope.cs", "Apps/PcmLibrary/AutoCalSetupResponse.cs",
             "Apps/PcmLibrary/Devices/AutoCalDevice.cs", "Apps/PcmLibraryWindowsApi/Ports/AutoCalD2xxTransport.cs",
             "Tools/AL5/AutoCalBackendProbe/Program.cs", "Tools/AL5/AutoCalBackendProbe/ProbeProfile.cs",
+            "Tools/AL5/AutoCalBackendProbe/KernelRequestGuard.cs", "Tools/AL5/AutoCalKernelProbePolicy.cs",
+            "Tools/AL5/AutoCalKernelProbeSession.cs",
             "Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj" };
         if (Hash(Dll) != DllHash || Hash(Header) != HeaderHash) throw new InvalidDataException("Native DLL/header pin changed.");
-        return new { schema = "autocal-backend-fixed-probe-plan-v2", profile = profile.Name,
+        return new { schema = "autocal-backend-bounded-probe-plan-v3",
+            profile = kernelPolicy == null ? profile.Name : (copyOnly ? "e54-ram-copy" : "e54-kernel-info-offline-only"),
             source_sha256 = sources.ToDictionary(x => x, x => Hash(Path.Combine(root, x))),
             native_dll = Dll, native_sha256 = DllHash, header_sha256 = HeaderHash,
             probe_sha256 = Hash(Assembly.GetExecutingAssembly().Location), pcmlibrary_sha256 = Hash(typeof(AutoCalDevice).Assembly.Location),
-            maximum_application_commands = profile.Requests.Length, maximum_vpw_payload_commands = profile.ReadsE54Identity ? 1 : 0,
+            maximum_application_commands = kernelPolicy == null ? profile.Requests.Length : (copyOnly ? 42 : 49),
+            maximum_vpw_payload_commands = kernelPolicy == null ? (profile.ReadsE54Identity ? 1 : 0) : (copyOnly ? 38 : 42),
+            live_kernel_execution_enabled = false,
             physical_bus_transmissions = "unmeasured", requires_obd_disconnected = !profile.ReadsE54Identity,
             requires_isolated_e54_bench = profile.ReadsE54Identity,
             expected_osid = profile.ReadsE54Identity ? (uint?)ProbeProfile.ExpectedOperatingSystem : null,
-            commands = profile.Requests.Select(Convert.ToHexString).ToArray(),
+            commands = kernelPolicy == null ? profile.Requests.Select(Convert.ToHexString).ToArray()
+                : copyOnly ? new[] { "Exact ordinary-profile model/setup", "Fixed initial OS-ID", "One suppression and bounded tool-present",
+                    "One seed/key exchange using existing E54 algorithm", "One pinned RAM upload permission request",
+                    "Pinned 279-byte RAM Copy of 267 bytes at FF97E0", "Receive acknowledgement; stop without execute or protocol cleanup; bench power cycle required" }
+                : new[] { "Exact ordinary-profile model/setup", "Fixed initial OS-ID", "One suppression and bounded tool-present",
+                    "One seed/key exchange using existing E54 algorithm", "One pinned RAM upload permission request",
+                    "Pinned 279-byte RAM Copy at FF97E0", "Pinned 1772-byte RAM Execute at FF9100",
+                    "Exact kernel-version query/reply", "One kernel exit and final OS-ID", "Exact recorded adapter cleanup after confirmed exit" },
+            kernel = kernelPolicy == null ? null : new { path = AutoCalKernelProbePolicy.DefaultKernelPath,
+                sha256 = AutoCalKernelProbePolicy.ExpectedKernelSha256, length = AutoCalKernelProbePolicy.ExpectedKernelLength,
+                expected_version = AutoCalKernelProbePolicy.ExpectedKernelVersion,
+                ram_messages_sha256 = kernelPolicy.UploadMessages.Select(x => Convert.ToHexString(SHA256.HashData(x))).ToArray() },
             limits = new[] { "Only the exact selected command sequence is admitted; no replay or alternate request.",
-                "USB setup requires OBD unplugged. Identity mode admits only 6C10F03C0A, once, on the isolated E54 bench.",
+                "USB setup requires OBD unplugged. Identity mode admits only 6C10F03C0A, once. Kernel mode is confined to the isolated E54 and the pinned RAM asset.",
+                "No flash erase/program/CRC/read, DTC-clear, arbitrary payload, alternative kernel, or speed-change operation is available.",
+                "Full kernel execution is offline-only until stock RAM Copy acknowledgement behavior is resolved. The live RAM profile copies only and then requires a bench power cycle.",
                 "Replies do not establish physical VPW speed, programming or recovery. No speed change is requested.",
                 "Partial/ambiguous transfers stop the session; cleanup only closes owned host resources after failure.", "Close failure retains owner; EOF does not release it." } };
     }
@@ -59,9 +77,9 @@ internal static class Program
         readonly AutoCalD2xxTransport native;
         readonly StreamWriter writer;
         readonly Stopwatch watch = Stopwatch.StartNew();
-        public ExactRequestGuard Guard { get; }
-        public Journal(AutoCalD2xxTransport native, StreamWriter writer, ProbeProfile profile)
-        { this.native = native; this.writer = writer; Guard = new(profile); }
+        public RequestWriteGuard Guard { get; }
+        public Journal(AutoCalD2xxTransport native, StreamWriter writer, RequestWriteGuard guard)
+        { this.native = native; this.writer = writer; Guard = guard; }
         public int PendingByteCount => native.PendingByteCount;
         public void Event(string kind, object data)
         {
@@ -87,14 +105,22 @@ internal static class Program
     {
         try
         {
-            bool identity = args.Length > 0 && (args[0] == "--e54-osid-read" || args[0] == "--plan-e54-osid-read");
+            bool copyOnly = args.Length > 0 && (args[0] == "--e54-ram-copy" || args[0] == "--plan-e54-ram-copy");
+            bool kernelInfo = copyOnly || (args.Length > 0 && (args[0] == "--e54-kernel-info" || args[0] == "--plan-e54-kernel-info"));
+            bool identity = kernelInfo || (args.Length > 0 && (args[0] == "--e54-osid-read" || args[0] == "--plan-e54-osid-read"));
             ProbeProfile profile = new(identity);
-            string root = Root(); object plan = Plan(root, profile);
-            if (args.Length == 0 || args.SequenceEqual(new[] { "--plan" }) || args.SequenceEqual(new[] { "--plan-e54-osid-read" }))
+            AutoCalKernelProbePolicy? kernelPolicy = kernelInfo
+                ? new(File.ReadAllBytes(AutoCalKernelProbePolicy.DefaultKernelPath)) : null;
+            string operation = kernelInfo ? (copyOnly ? "e54-ram-copy" : "e54-kernel-info") : profile.Name;
+            string root = Root(); object plan = Plan(root, profile, kernelPolicy, copyOnly);
+            if (args.Length == 0 || args.SequenceEqual(new[] { "--plan" }) || args.SequenceEqual(new[] { "--plan-e54-osid-read" })
+                || args.SequenceEqual(new[] { "--plan-e54-kernel-info" }) || args.SequenceEqual(new[] { "--plan-e54-ram-copy" }))
             { Console.WriteLine(JsonSerializer.Serialize(plan, new JsonSerializerOptions { WriteIndented = true })); return 0; }
-            if (args.Length != 6 || args[0] != "--" + profile.Name
+            if (args.Length != 6 || args[0] != "--" + operation
                 || args[1] != (identity ? "--isolated-e54-bench" : "--obd-disconnected") || args[2] != "--serial" || args[4] != "--receipt")
-                throw new ArgumentException("Use --plan, --plan-e54-osid-read, --usb-setup --obd-disconnected --serial SERIAL --receipt NEW.json, or --e54-osid-read --isolated-e54-bench --serial SERIAL --receipt NEW.json.");
+                throw new ArgumentException("Use --plan, --plan-e54-osid-read, --plan-e54-ram-copy, --plan-e54-kernel-info, or a listed live mode with its physical-state flag, --serial SERIAL and --receipt NEW.json.");
+            if (kernelInfo && !copyOnly)
+                throw new NotSupportedException("Live kernel execution is blocked: stock RAM Copy acknowledgement semantics are not established. No native driver was loaded.");
             string output = Path.GetFullPath(args[5]);
             string directory = Path.Combine(root, "LocalOnly", "AutoCalBackendProbe");
             if (!string.Equals(Path.GetDirectoryName(output), directory, StringComparison.OrdinalIgnoreCase))
@@ -103,7 +129,7 @@ internal static class Program
             using FileStream journalFile = new(output + ".journal.jsonl", FileMode.CreateNew, FileAccess.Write, FileShare.Read);
             using StreamWriter journalWriter = new(journalFile) { AutoFlush = true };
             WriteEvent(journalWriter, new { kind = "plan", data = plan, serial = args[3] });
-            using CancellationTokenSource cancel = new(TimeSpan.FromSeconds(45));
+            using CancellationTokenSource cancel = new(TimeSpan.FromSeconds(kernelInfo ? 180 : 45));
             ConsoleCancelEventHandler handler = (_, e) => { e.Cancel = true; cancel.Cancel(); };
             Console.CancelKeyPress += handler;
             AutoCalD2xxTransport? native = null; AutoCalChannel? channel = null; AutoCalDevice? device = null;
@@ -112,18 +138,33 @@ internal static class Program
             uint? operatingSystem = null;
             string? identityReply = null;
             int receivedVpwFrames = 0;
+            AutoCalKernelProbeResult? kernelResult = null;
             string? failure = null;
             try
             {
                 native = AutoCalD2xxTransport.OpenPinned(args[3], Dll, DllHash);
-                transport = new(native, journalWriter, profile);
+                RequestWriteGuard guard = kernelPolicy == null ? new ExactRequestGuard(profile) : new KernelRequestGuard(kernelPolicy, copyOnly);
+                transport = new(native, journalWriter, guard);
                 transport.Event("opened", new { native.Serial, native.Description, pending = native.PendingByteCount });
                 channel = new(transport);
                 device = new(channel, new TestLogger(), cancel.Token, profile.Setup);
                 setupAccepted = await device.Initialize();
                 transport.Event("setup_result", new { accepted = setupAccepted });
                 if (!setupAccepted) throw new IOException("AutoCal identity/setup did not match.");
-                if (identity)
+                if (kernelPolicy != null)
+                {
+                    if (channel.BufferedByteCount != 0 || channel.PendingByteCount != 0)
+                        throw new IOException("Unconsumed bytes precede the kernel experiment; no purge or transmit is allowed.");
+                    var session = new AutoCalKernelProbeSession(device, new TestLogger(), kernelPolicy, cancel.Token, copyOnly);
+                    kernelResult = await session.RunAsync();
+                    transport.Event("kernel_result", kernelResult);
+                    if (!kernelResult.Success || (copyOnly ? !kernelResult.RamCopyReplyObserved : !kernelPolicy.IsPostExitIdentityVerified))
+                        throw new IOException("RAM kernel experiment stopped: " + kernelResult.Error);
+                    operatingSystem = AutoCalKernelProbePolicy.ExpectedOperatingSystem;
+                    identityReply = Convert.ToHexString(copyOnly ? kernelPolicy.InitialIdentityReply! : kernelPolicy.PostExitIdentityReply!);
+                    receivedVpwFrames = kernelPolicy.ReceiveCount;
+                }
+                else if (identity)
                 {
                     if (channel.BufferedByteCount != 0 || channel.PendingByteCount != 0)
                         throw new IOException("Unconsumed bytes precede the one identity request; no purge or transmit is allowed.");
@@ -146,9 +187,14 @@ internal static class Program
                     transport.Event("identity_result", new { osid = operatingSystem, hex = identityReply,
                         physical_speed = "unmeasured", firmware_execution_state = "not established by identity alone" });
                 }
-                await device.StopRecordedSessionAsync(); cleanupAccepted = true;
-                transport.Event("recorded_cleanup_result", new { accepted = true, buffered = channel.BufferedByteCount, pending = channel.PendingByteCount });
-                if (channel.BufferedByteCount != 0 || channel.PendingByteCount != 0) throw new IOException("Unconsumed bytes remain after recorded cleanup.");
+                if (!copyOnly)
+                {
+                    await device.StopRecordedSessionAsync(); cleanupAccepted = true;
+                    transport.Event("recorded_cleanup_result", new { accepted = true, buffered = channel.BufferedByteCount, pending = channel.PendingByteCount });
+                    if (channel.BufferedByteCount != 0 || channel.PendingByteCount != 0) throw new IOException("Unconsumed bytes remain after recorded cleanup.");
+                }
+                else transport.Event("copy_only_stop", new { no_further_protocol_commands = true, bench_power_cycle_required = true,
+                    buffered = channel.BufferedByteCount, pending = channel.PendingByteCount });
             }
             catch (Exception error)
             {
@@ -180,12 +226,19 @@ internal static class Program
                 Console.CancelKeyPress -= handler;
             }
             journalWriter.Flush(); journalFile.Flush(true);
-            object result = new { schema = "autocal-backend-fixed-probe-result-v2", plan,
+            object result = new { schema = "autocal-backend-bounded-probe-result-v3", plan,
                 serial = args[3], setup_accepted = setupAccepted, recorded_cleanup_accepted = cleanupAccepted,
                 vpw_payload_commands_started = transport?.Guard.VpwPayloadCommandsStarted ?? 0,
                 vpw_payload_commands_completed = transport?.Guard.VpwPayloadCommandsCompleted ?? 0,
                 physical_bus_transmissions = "unmeasured", operating_system = operatingSystem, identity_reply = identityReply,
                 received_vpw_frames = receivedVpwFrames, physical_speed = "unmeasured", hardware_programming_qualified = false,
+                kernel_result = kernelResult,
+                kernel_policy = kernelPolicy == null ? null : new { kernelPolicy.CurrentPhase, kernelPolicy.Failure,
+                    kernelPolicy.TransmitAttempts, kernelPolicy.ReceiveCount, kernelPolicy.UnrelatedReceiveCount,
+                    kernelPolicy.RamCopyAttempts, kernelPolicy.RamExecuteAttempts,
+                    ram_copy_ack = kernelPolicy.RamCopyAcknowledgement == null ? null : Convert.ToHexString(kernelPolicy.RamCopyAcknowledgement),
+                    ram_execute_ack = kernelPolicy.RamExecuteAcknowledgement == null ? null : Convert.ToHexString(kernelPolicy.RamExecuteAcknowledgement),
+                    ack_final_byte_meaning = "opaque; actual execution requires exact known kernel-version response" },
                 failure, channel_fault = channel?.Fault?.ToString(), cleanup_exception = channel?.CleanupException?.ToString(),
                 late_transfer = channel?.LastTransfer == null ? null : new { channel.LastTransfer.Operation,
                     channel.LastTransfer.RequestedByteCount, channel.LastTransfer.ReturnedByteCount,
@@ -194,7 +247,7 @@ internal static class Program
                 transport_disposed = channel?.IsTransportDisposed, retained_native_owners = AutoCalD2xxTransport.RetainedCleanupCount };
             JsonSerializer.Serialize(receiptFile, result, new JsonSerializerOptions { WriteIndented = true }); receiptFile.Flush(true);
             Console.WriteLine(JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true }));
-            return failure == null && setupAccepted && cleanupAccepted ? 0 : 1;
+            return failure == null && setupAccepted && (copyOnly ? kernelResult?.RamCopyReplyObserved == true : cleanupAccepted) ? 0 : 1;
         }
         catch (Exception error) { Console.Error.WriteLine(error); return 1; }
     }

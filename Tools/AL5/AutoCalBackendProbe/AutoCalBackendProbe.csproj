@@ -17,6 +17,9 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="ProbeProfile.cs" />
+    <Compile Include="KernelRequestGuard.cs" />
+    <Compile Include="../AutoCalKernelProbePolicy.cs" Link="AutoCalKernelProbePolicy.cs" />
+    <Compile Include="../AutoCalKernelProbeSession.cs" Link="AutoCalKernelProbeSession.cs" />
     <Compile Include="../../../Apps/PcmLibraryWindowsApi/Ports/AutoCalD2xxTransport.cs" Link="AutoCalD2xxTransport.cs" />
     <Compile Include="../../../Apps/Tests/TestLogger.cs" Link="TestLogger.cs" />
     <ProjectReference Include="../../../Apps/PcmLibrary/PcmLibrary.csproj" />

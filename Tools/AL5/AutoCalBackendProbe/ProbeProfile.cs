@@ -62,26 +62,24 @@ internal sealed class ProbeProfile
     }
 }
 
-internal sealed class ExactRequestGuard
+internal abstract class RequestWriteGuard
 {
-    readonly byte[][] requests;
     byte[]? current;
     int offset;
     bool pending;
     public int CommandsStarted { get; private set; }
     public int VpwPayloadCommandsStarted { get; private set; }
     public int VpwPayloadCommandsCompleted { get; private set; }
-    public ExactRequestGuard(ProbeProfile profile)
-        => requests = profile.Requests.Select(x => (byte[])x.Clone()).ToArray();
+    protected abstract void ValidateNewCommand(byte[] bytes);
 
     public void BeforeWrite(byte[] bytes, int at, int count)
     {
         if (pending) throw new InvalidOperationException("Concurrent or uncertain write cannot be replayed.");
         if (current == null || offset == current.Length)
         {
-            if (CommandsStarted >= requests.Length || at != 0 || count != bytes.Length
-                || !bytes.SequenceEqual(requests[CommandsStarted]))
-                throw new InvalidOperationException("Request differs from the exact fixed sequence.");
+            if (at != 0 || count != bytes.Length)
+                throw new InvalidOperationException("A new command must begin with its complete frame.");
+            ValidateNewCommand(bytes);
             current = (byte[])bytes.Clone(); offset = 0; CommandsStarted++;
             if (current[2] == 0 && current[3] == 0x8A) VpwPayloadCommandsStarted++;
         }
@@ -96,5 +94,16 @@ internal sealed class ExactRequestGuard
             throw new InvalidOperationException("Native completion cannot be reconciled with the pending write.");
         offset += returned; pending = false;
         if (offset == current.Length && current[2] == 0 && current[3] == 0x8A) VpwPayloadCommandsCompleted++;
+    }
+}
+
+internal sealed class ExactRequestGuard : RequestWriteGuard
+{
+    readonly byte[][] requests;
+    public ExactRequestGuard(ProbeProfile profile) => requests = profile.Requests;
+    protected override void ValidateNewCommand(byte[] bytes)
+    {
+        if (CommandsStarted >= requests.Length || !bytes.SequenceEqual(requests[CommandsStarted]))
+            throw new InvalidOperationException("Request differs from the exact fixed sequence.");
     }
 }

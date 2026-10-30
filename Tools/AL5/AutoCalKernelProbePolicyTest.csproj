@@ -1,0 +1,24 @@
+<Project>
+  <PropertyGroup>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)../../LocalOnly/AutoCalKernelProbePolicyTest/obj/</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
+  </PropertyGroup>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <OutputPath>../../LocalOnly/AutoCalKernelProbePolicyTest/bin/</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AutoCalKernelProbePolicy.cs" />
+    <Compile Include="AutoCalKernelProbePolicyTest.cs" />
+    <Compile Include="AutoCalBackendProbe/ProbeProfile.cs" Link="ProbeProfile.cs" />
+    <Compile Include="AutoCalBackendProbe/KernelRequestGuard.cs" Link="KernelRequestGuard.cs" />
+    <ProjectReference Include="../../Apps/PcmLibrary/PcmLibrary.csproj" />
+  </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+</Project>

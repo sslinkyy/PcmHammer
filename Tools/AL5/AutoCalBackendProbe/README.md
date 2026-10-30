@@ -10,6 +10,7 @@ Build and inspect the plan without loading a driver or opening USB:
 dotnet build Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --verbosity quiet
 dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan
 dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-osid-read
+dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-ram-copy
 ```
 
 The USB-only profile requires the OBD cable physically disconnected and EFILive,
@@ -41,14 +42,31 @@ Live invocation forms (not automatic test steps):
 ```text
 --usb-setup --obd-disconnected --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
 --e54-osid-read --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
+--e54-ram-copy --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
 ```
 
 Each receipt must be a new direct child of `LocalOnly/AutoCalBackendProbe`.
 Both profiles journal raw TX/RX and source, assembly, and native-library hashes.
 The exact request guard rejects any unlisted command, different payload,
 reordered request, replay, or incorrect continuation after a partial write.
-There are no arbitrary payload, file, address, retry, unlock, speed-change,
-kernel, erase, or programming options.
+There are no arbitrary payload, file, address, retry, security algorithm,
+speed-change, kernel-selection, erase, or flash-programming options.
+
+The RAM-copy profile is a separate bounded experiment. It verifies the fixed
+OS-ID, suppresses normal chatter, uses PcmHammer's existing E54 seed/key and RAM
+upload-permission methods, and sends only the pinned kernel's final 267 bytes
+to `FF97E0..FF98EA`. A matching six-byte `76 00` response is retained with its
+last byte opaque. Observing it does **not** establish that the bytes were written
+correctly. The experiment stops without executing code, querying a kernel, or
+sending controller/adapter protocol cleanup. A bench power cycle is required
+before a future attempt. Native USB resources are still closed explicitly.
+
+The full RAM-kernel coordinator is tested offline, including exact kernel
+version, exit and post-exit identity. Its live `--e54-kernel-info` invocation is
+blocked before loading a native driver; `--plan-e54-kernel-info` remains available
+for inspection. Existing traces contain no stock RAM-copy acknowledgement,
+so live execution must not proceed just because a simulated copy succeeds.
+See [the evidence gap](../../../Docs/AL5/AUTOCAL_STOCK_RAM_COPY_ACK_GAP_20261030.json).
 
 After failure the tool sends no additional protocol cleanup and closes only
 owned host resources. A native operation still running at its deadline remains
@@ -64,6 +82,8 @@ Offline tests:
 dotnet run --project Tools/AL5/AutoCalChannelTest.csproj --verbosity quiet
 dotnet run --project Tools/AL5/AutoCalDeviceTest.csproj --verbosity quiet
 dotnet run --project Tools/AL5/AutoCalProbeProfileTest.csproj --verbosity quiet
+dotnet run --project Tools/AL5/AutoCalKernelProbePolicyTest.csproj --verbosity quiet
+dotnet run --project Tools/AL5/AutoCalKernelProbeSessionTest.csproj --verbosity quiet
 ```
 
 The backend's 4x transition and physical programming remain unqualified. The

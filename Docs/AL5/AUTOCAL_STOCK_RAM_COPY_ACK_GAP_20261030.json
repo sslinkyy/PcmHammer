@@ -1,0 +1,297 @@
+{
+  "schema": "autocal-stock-ram-copy-ack-gap-v1",
+  "date": "2026-10-30",
+  "scope": "Offline saved E54 evidence inventory; no hardware access or programming qualification",
+  "hardware_access": false,
+  "live_write_enabled": false,
+  "kernel_execute_qualified": false,
+  "stock_ram_copy_ack_success_semantics_known": false,
+  "private_analysis": {
+    "script": {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\autocal_stock_copy_ack_20261030_01\\inspect.py",
+      "bytes": 5221,
+      "sha256": "46801a491b7b79cf89d349af424e9a13b63cdd430a00048a2baa6043d5c43c24"
+    },
+    "report": {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\autocal_stock_copy_ack_20261030_01\\report.json",
+      "bytes": 75537,
+      "sha256": "cfe927f512681d0ebebdec94a5ec74801ccef497a288300d2889c238a31630bd"
+    }
+  },
+  "examined_corpus": {
+    "htx_file_count": 13,
+    "htx_parse_failures": [],
+    "unsupported_wrappers": 0,
+    "outer_crc_failures": 0,
+    "mode36_submode_counts": {
+      "80": 13
+    },
+    "htx_sources": [
+      {
+        "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\ack_gap_20261030\\all_sources_crc_retained_01\\crc_retained_E54_R.htx",
+        "bytes": 200276,
+        "sha256": "56da008381808521c5457912936f1d22858ffdfb2c3d11360735ff7e7fe5d40a"
+      },
+      {
+        "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\ack_gap_20261030\\all_sources_diagnostics_01\\diagnostic_E54_R.htx",
+        "bytes": 200296,
+        "sha256": "3764abc2276b18b44ea848213611545413fe62a1760387ae11ddcabf102c73a6"
+      },
+      {
+        "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\ack_gap_20261030\\ecm_diagnostics_01\\ecm_E54_R.htx",
+        "bytes": 200295,
+        "sha256": "b8bc6eb82ea8b7f367206831a20176e6978537612b7519c46bbd8b1245767bec"
+      },
+      {
+        "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\autocal_all_sources_20261029_01\\all_sources_E54_R.htx",
+        "bytes": 200267,
+        "sha256": "81256913c9014b3927e196c85410d2a2f175eca018c38cd0483c891bcf321201"
+      },
+      {
+        "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\autocal_request_20261029_01\\request_E54_R.htx",
+        "bytes": 200291,
+        "sha256": "127c9a149dda0abbf1002d46dad818e6f220f4976235427d7bdf920368265e54"
+      },
+      {
+        "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\autocal_usb_20261029_bad23509\\baseline_E54_R.htx",
+        "bytes": 200325,
+        "sha256": "d2e80d42faa15323e8591e9acc6db139f536cb98318aad01d658a5fc36c582b9"
+      },
+      {
+        "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\autocal_usb_20261029_bad23509\\monitored_E54_R.htx",
+        "bytes": 200311,
+        "sha256": "83a297e4492cede2fae302ad4770c1c27abdecb8f1be1d4bcf04c270f64fa4c4"
+      },
+      {
+        "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\e54_write_license_check_20261030_01\\20261030_025249_E54_W.htx",
+        "bytes": 42930,
+        "sha256": "a88c5cd0ec8ac3640c57e6efa3f03151cd1e7af6338444c58b87d9e8ffc423db"
+      },
+      {
+        "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\scoped_bench_20261029_01\\gt_off_E54_R.htx",
+        "bytes": 200267,
+        "sha256": "db265716d700463aba049137d704623484cc4a95456d1d4509556a73149bb8b0"
+      },
+      {
+        "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\scoped_bench_20261029_02\\gt_off_E54_R.htx",
+        "bytes": 200293,
+        "sha256": "885c54aafda20c89b86a2755a80a7306167a9cc6a593cc1884c5d0ce757093ec"
+      },
+      {
+        "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\scoped_listen_20261029_01\\listen_E54_R.htx",
+        "bytes": 200250,
+        "sha256": "cd259a71044c27f74c56538c27ac98836df076260de7d06fae38ec77c648ad9f"
+      },
+      {
+        "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\scoped_unplugged_20261029_01\\unplugged_E54_R.htx",
+        "bytes": 200297,
+        "sha256": "f47eafabcc8439cad666bcc3e4744a936fc5b15543e094e498aa3d5a3c15bcd1"
+      },
+      {
+        "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\usb_capture_setup_20261030\\e54_usb_read_01\\crc_retained_E54_R.htx",
+        "bytes": 200276,
+        "sha256": "49e0b14e2e5deb3581baca6c00f8ac29e264e2006d999aa017e4c736c448987f"
+      }
+    ],
+    "gt_operation_log_count": 7,
+    "gt_empty_stderr_log_count": 2,
+    "gt_log_sources": [
+      {
+        "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\usb_capture_setup_20261030\\e54_gt_actual_write_01\\actual_write.log",
+        "bytes": 336906,
+        "sha256": "083f136230583426669d186131878eec6300132ba15f70e67eaa98f48ea65bc7"
+      },
+      {
+        "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\usb_capture_setup_20261030\\e54_gt_actual_write_01\\after_flash_read.log",
+        "bytes": 1634055,
+        "sha256": "81ee71f8fa907ff7795397491d7ab9d05485aece755e5c21b371b3afb0855216"
+      },
+      {
+        "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\usb_capture_setup_20261030\\e54_gt_actual_write_01\\prewrite_verify.log",
+        "bytes": 13571,
+        "sha256": "1b6ac598b203e2dee77282ac9a859bd00cefeb10109cdc025de672f8f168cf12"
+      },
+      {
+        "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\usb_capture_setup_20261030\\e54_gt_actual_write_01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\usb_capture_setup_20261030\\e54_gt_pcmhammer_write_01\\after_test_read.log",
+        "bytes": 1633981,
+        "sha256": "241e4448f7db13e5be611c6edbb87f533c117599f98744ef54a2617dc5484f91"
+      },
+      {
+        "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\usb_capture_setup_20261030\\e54_gt_pcmhammer_write_01\\baseline_read.log",
+        "bytes": 1634004,
+        "sha256": "95ef4177811136e21df4e0f3b62f01f041fa5f3c6697f463ceb46e7869c20fee"
+      },
+      {
+        "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\usb_capture_setup_20261030\\e54_gt_pcmhammer_write_01\\properties.log",
+        "bytes": 2564,
+        "sha256": "132c39747ff464a90fad07abd4a7510204dab7c397cb7bb3dd7acc3cda3335df"
+      },
+      {
+        "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\usb_capture_setup_20261030\\e54_gt_pcmhammer_write_01\\stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\usb_capture_setup_20261030\\e54_gt_pcmhammer_write_01\\test_write.log",
+        "bytes": 336606,
+        "sha256": "c8d004ece9066c1a3e3fed4eb63d6912a013b6afcafe6962f8b49e374026d955"
+      }
+    ],
+    "gt_mode36_counts": {
+      "RAM_execute_80": 6,
+      "flash_copy_00": 96,
+      "flash_testwrite_44": 96,
+      "RAM_copy_00": 0
+    },
+    "distinct_programming_session_claim": false
+  },
+  "selected_saved_uploads": [
+    {
+      "source_path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\e54_write_license_check_20261030_01\\20261030_025249_E54_W.htx",
+      "source_sha256": "a88c5cd0ec8ac3640c57e6efa3f03151cd1e7af6338444c58b87d9e8ffc423db",
+      "record_ordinal": 108,
+      "decoded_offset": 48969,
+      "tx_payload_bytes": 1772,
+      "tx_prefix_hex": "6d10f0368006e0ff9200",
+      "tx_payload_sha256": "3a9ed21828eba9edd66467a5bbbd4e3ac5f58543abdd8409a24257f9b37f9e67",
+      "outer_crc_matches": true,
+      "next_small_rx_records": [
+        {
+          "ordinal": 111,
+          "decoded_offset": 50845,
+          "hex": "6cf010768078",
+          "outer_crc_matches": true
+        },
+        {
+          "ordinal": 114,
+          "decoded_offset": 50964,
+          "hex": "6cf0107f3c0112",
+          "outer_crc_matches": true
+        },
+        {
+          "ordinal": 116,
+          "decoded_offset": 51041,
+          "hex": "6cf0107c0533303337",
+          "outer_crc_matches": true
+        }
+      ]
+    },
+    {
+      "source_path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\usb_capture_setup_20261030\\e54_usb_read_01\\crc_retained_E54_R.htx",
+      "source_sha256": "49e0b14e2e5deb3581baca6c00f8ac29e264e2006d999aa017e4c736c448987f",
+      "record_ordinal": 125,
+      "decoded_offset": 46788,
+      "tx_payload_bytes": 1186,
+      "tx_prefix_hex": "6d10f036800496ff9200",
+      "tx_payload_sha256": "5617c0df0bc74f09bb09def0131d9b58f5788bc6f3dcf19bac46bdc5b4950ff9",
+      "outer_crc_matches": true,
+      "next_small_rx_records": [
+        {
+          "ordinal": 127,
+          "decoded_offset": 48050,
+          "hex": "6cf010768078",
+          "outer_crc_matches": true
+        },
+        {
+          "ordinal": 130,
+          "decoded_offset": 48169,
+          "hex": "6cf0107cbb4471",
+          "outer_crc_matches": true
+        },
+        {
+          "ordinal": 133,
+          "decoded_offset": 48290,
+          "hex": "6cf0107c210007fffe",
+          "outer_crc_matches": true
+        }
+      ]
+    }
+  ],
+  "crc8_j1850": {
+    "polynomial_hex": "1D",
+    "initial_hex": "FF",
+    "xor_out_hex": "FF",
+    "reflected": false,
+    "calculations": [
+      {
+        "payload": "6cf010768078",
+        "last_byte": 120,
+        "crc8_over_all_but_last": 226,
+        "last_byte_matches_physical_crc": false,
+        "physical_crc_if_full_payload": 2
+      },
+      {
+        "payload": "6cf010760078",
+        "last_byte": 120,
+        "crc8_over_all_but_last": 196,
+        "last_byte_matches_physical_crc": false,
+        "physical_crc_if_full_payload": 203
+      },
+      {
+        "payload": "6cf010760000",
+        "last_byte": 0,
+        "crc8_over_all_but_last": 196,
+        "last_byte_matches_physical_crc": false,
+        "physical_crc_if_full_payload": 122
+      },
+      {
+        "payload": "6cf010740044",
+        "last_byte": 68,
+        "crc8_over_all_but_last": 92,
+        "last_byte_matches_physical_crc": false,
+        "physical_crc_if_full_payload": 30
+      }
+    ],
+    "interpretation": "For payload 6CF010768078, the CRC over 6CF0107680 is E2, not 78. The CRC over all six bytes is 02. This excludes 78 as the ordinary physical CRC byte at this boundary; its controller-specific meaning remains unknown."
+  },
+  "pinned_pcmhammer_plan": {
+    "kernel_length": 2027,
+    "kernel_sha256": "8294b899c153b513cd1307ac4c6654c2720832779f40c19aac7100a4b864929a",
+    "kernel_base_hex": "FF9100",
+    "observed_autocal_tx_cap_bytes": 1772,
+    "derived_first_copy": {
+      "payload_bytes": 267,
+      "vpw_frame_bytes": 279,
+      "address_hex": "FF97E0",
+      "end_exclusive_hex": "FF98EB",
+      "prefix_hex": "6D10F03600010BFF97E0"
+    },
+    "derived_second_execute": {
+      "payload_bytes": 1760,
+      "vpw_frame_bytes": 1772,
+      "address_hex": "FF9100",
+      "prefix_hex": "6D10F0368006E0FF9100"
+    },
+    "split_physically_qualified": false
+  },
+  "conclusion": "All 13 saved HTX uploads execute a single RAM payload. None establishes the success meaning of a stock-ROM Copy 00 reply. GT flash-copy replies must not be substituted for that missing contract.",
+  "next_experiment_boundary": {
+    "kind": "copy-only reply observation",
+    "planned": true,
+    "maximum_ram_copy_frames": 1,
+    "readback_or_copy_success_proven": false,
+    "stop_after_copy_reply": true,
+    "bench_power_cycle_required_after_preparation": true,
+    "live_full_kernel_mode_blocked": true,
+    "prohibited_operations": [
+      "RAM execution",
+      "kernel version query",
+      "flash read",
+      "flash program",
+      "erase",
+      "controller reset",
+      "DTC clear"
+    ]
+  },
+  "limits": [
+    "HTX is saved host logging, not a USB or physical-bus capture.",
+    "Neighboring RX records preserve ordering and do not establish semantics of opaque reply fields.",
+    "Copy00 at flash addresses in GT writer logs is a running-kernel operation, not stock-ROM RAM copy evidence.",
+    "The physical CRC calculation excludes 0x78 as a trailing physical CRC in 6CF010768078; it does not establish that byte's status semantics."
+  ]
+}
