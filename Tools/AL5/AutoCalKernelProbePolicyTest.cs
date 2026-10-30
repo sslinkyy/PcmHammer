@@ -60,6 +60,10 @@ internal static partial class AutoCalKernelProbePolicyTest
         Run("short read rejects malformed blocks checksum and wrong baseline prefix", ShortReadResponses);
         Run("short read native host guard gates entire fixed prefix exchange", ShortReadHostBoundary);
         Run("recorded read configuration is bound to exact session phases", RecordedReadHostBoundary);
+        Run("zero-submode variant changes one pinned data byte without changing input", ZeroSubmodePin);
+        Run("zero-submode RAM upload uses exact effective bytes and recalculated checksum", ZeroSubmodeUpload);
+        Run("zero-submode reply validates raw checksum exact prefix and explicit exit", ZeroSubmodeReply);
+        Run("zero-submode option rejects other modes inputs submodes and extra operations", ZeroSubmodeRestrictions);
         Console.WriteLine(JsonSerializer.Serialize(new { assertions, passed, failed, kernelPath = path,
             kernelSha256 = AutoCalKernelProbePolicy.ExpectedKernelSha256,
             hardwareAccess = false, liveWriteEnabled = false, hardwareQualificationClaimedByThisRun = false,
@@ -398,5 +402,9 @@ internal static partial class AutoCalKernelProbePolicyTest
         bool rejected = false;
         try { new KernelRequestGuard(New(), recordedReadSetup: true); } catch (ArgumentException) { rejected = true; }
         Require(rejected, "configuration experiment cannot expand kernel-info or copy-only modes");
+        rejected = false;
+        try { new KernelRequestGuard(new AutoCalKernelProbePolicy(kernel, shortRead: true, useZeroSubmodeKernel: true), recordedReadSetup: true); }
+        catch (ArgumentException) { rejected = true; }
+        Require(rejected, "configuration and reply-template experiments cannot be combined");
     }
 }

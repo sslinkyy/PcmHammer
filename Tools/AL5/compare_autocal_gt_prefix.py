@@ -20,6 +20,16 @@ REQUEST = bytes.fromhex('6d10f035010040000000')
 REPLY_HEADER = bytes.fromhex('6df01036010040000000')
 BASELINE_SHA = 'a3b010af7e04df03be699198920aac26ba0645c2ad608e72eacf0bc3970beb58'
 PREFIX_SHA = '5b20a24c0d5c5618de617dd929c4baffe7ba4cf151648398f68f0105bd43a5d9'
+PROFILES = ('e54-read-prefix', 'e54-read-prefix-recorded-setup')
+RECORDED_FLAGS = ('RecordedReadSetupAttempted', 'RecordedReadSetupApplied',
+                  'RecordedOrdinaryConfigurationRestored')
+ORDINARY_SETUP = ((0x8201, b'', b'ACV2\0'), (0x8604, b'\0', b''),
+                  (0x8800, bytes(2), b'\0'), (0x8604, bytes(6), b''))
+RECORDED_SETUP = ((0x8603, bytes.fromhex('0100f401'), b''),
+                  (0x8604, bytes.fromhex('010010000000'), b''),
+                  (0x8604, bytes(6), b''))
+ADAPTER_CLEANUP = ((0x8604, bytes(6), b''), (0x8b01, bytes.fromhex('00010000'), b''),
+                   (0x8b01, bytes.fromhex('01010000'), b''))
 
 
 def parse_rows(source):
@@ -29,6 +39,109 @@ def parse_rows(source):
     return rows
 
 
+def setup_lifecycle(plan, result, receipt, tx, rx, request):
+    """Check the two explicit profiles against original framed commands/replies."""
+    recorded = plan['profile'] == PROFILES[1]
+    # The ordinary experiment predates these fields. Accept that all-absent
+    # historical representation, never a partially omitted or contradictory one.
+    flag_keys = ['recorded_read_setup_experiment'] + list(RECORDED_FLAGS)
+    flags = [plan.get(flag_keys[0])] + [result.get(k) for k in RECORDED_FLAGS]
+    legacy = flag_keys[0] not in plan and all(k not in result for k in RECORDED_FLAGS)
+    if not (not recorded and legacy) and any(value is not recorded for value in flags):
+        raise ValueError('AutoCal profile/recorded-setup flags disagree or are missing')
+    if result.get('FlashWriteEnabled') is not False:
+        raise ValueError('AutoCal result does not explicitly disable flash writing')
+    if receipt.get('setup_accepted') is not True or type(receipt.get('recorded_cleanup_accepted')) is not bool:
+        raise ValueError('AutoCal setup/cleanup status is missing or unsupported')
+    cleanup = receipt['recorded_cleanup_accepted']
+    expected = ORDINARY_SETUP + (RECORDED_SETUP if recorded else ()) + (ADAPTER_CLEANUP if cleanup else ())
+    local_tx, local_rx = [r for r in tx if not is_vpw(r)], [r for r in rx if not is_vpw(r)]
+    if len(local_tx) != len(expected) or len(local_rx) != len(expected):
+        raise ValueError('AutoCal exact local setup/cleanup lifecycle counts differ')
+    evidence = []
+    for index, (sent, received, (command, payload, reply)) in enumerate(zip(local_tx, local_rx, expected)):
+        following = next((r['line'] for r in tx if r['line'] > sent['line']), float('inf'))
+        if (sent['command'] != command or sent['payload'] != payload
+                or sent['raw'][4:10] != b'\x07\x00' + bytes(4)
+                or int.from_bytes(received['raw'][2:4], 'little') != command
+                or received['payload'] != reply or not sent['line'] < received['line'] < following):
+            raise ValueError('AutoCal exact local command/reply lifecycle differs')
+        evidence.append({'command_hex': f'{command:04X}', 'payload_hex': payload.hex(),
+                         'tx_journal_line_one_based': sent['line'], 'rx_journal_line_one_based': received['line'],
+                         'tx_wrapper_sha256': sha256(sent['raw']), 'rx_wrapper_sha256': sha256(received['raw']),
+                         'reply_payload_matches': True})
+    vpw_tx = [r for r in tx if is_vpw(r)]
+    if local_rx[3]['line'] >= vpw_tx[0]['line']:
+        raise ValueError('AutoCal ordinary setup was not completed before VPW traffic')
+    if recorded:
+        identities = [r for r in rx if is_vpw(r) and r['payload'] in
+                      (bytes.fromhex('6cf0107c0a00e7c434'), bytes.fromhex('6cf0107c0a00e7c434444e'))
+                      and r['line'] < request['line']]
+        versions = [r for r in rx if is_vpw(r) and r['payload'] == bytes.fromhex('6cf0107d006ab178ec36')
+                    and r['line'] < request['line']]
+        flash_ids = [r for r in vpw_tx if r['payload'] == bytes.fromhex('6c10f03d01') and r['line'] < request['line']]
+        if len(identities) != 1 or len(versions) != 1 or len(flash_ids) != 1:
+            raise ValueError('Recorded setup requires exact identity, kernel and flash-ID boundaries')
+        next_vpw = next(r for r in vpw_tx if r['line'] > identities[0]['line'])
+        if not (identities[0]['line'] < local_tx[4]['line'] < local_rx[5]['line'] < next_vpw['line']
+                and versions[0]['line'] < local_tx[6]['line'] < local_rx[6]['line'] < flash_ids[0]['line']):
+            raise ValueError('Recorded setup did not follow the exact identity/kernel boundaries')
+    if cleanup:
+        if (result.get('ExitAcknowledged') is not True or result.get('PostExitIdentityVerified') is not True
+                or local_tx[-3]['line'] <= vpw_tx[-1]['line']):
+            raise ValueError('AutoCal cleanup lacks confirmed exit and final identity')
+    return {'recorded_setup_experiment': recorded, 'legacy_ordinary_flags_absent': legacy,
+            'plan_and_result_flags_consistent': True, 'exact_local_sequence_and_replies_verified': True,
+            'ordinary_setup_commands': 4, 'recorded_extra_commands': 3 if recorded else 0,
+            'adapter_cleanup_commands': 3 if cleanup else 0,
+            'recorded_preparation_and_restore_boundaries_verified': recorded,
+            'local_command_counts': dict(Counter(f'{r[0]:04X}:{r[1].hex()}' for r in expected)),
+            'commands': evidence,
+            'configuration_effect_on_firmware_or_physical_receive_path_proven': False}
+
+
+def late_read_coverage(receipt):
+    """Unreconciled native bytes or unknown completion cannot prove non-delivery."""
+    late = receipt.get('late_transfer')
+    blockers, observation = [], None
+    if not isinstance(late, dict):
+        blockers.append('late_transfer_missing_or_not_an_object')
+    else:
+        raw = None
+        if isinstance(late.get('hex'), str):
+            try:
+                raw = bytes.fromhex(late['hex'])
+            except ValueError:
+                pass
+        observation = {k: late.get(k) for k in ('Operation', 'RequestedByteCount', 'ReturnedByteCount',
+                                               'IsCompleted', 'error')}
+        observation.update(data_bytes=len(raw) if raw is not None else None,
+                           data_sha256=sha256(raw) if raw is not None else None, raw_bytes_exported=False)
+        if late.get('Operation') != 'read':
+            blockers.append('late_transfer_is_not_a_read')
+        if late.get('IsCompleted') is not True:
+            blockers.append('late_read_not_confirmed_complete')
+        if 'error' not in late or late['error'] is not None:
+            blockers.append('late_read_error_or_unknown_error_status')
+        returned, requested = late.get('ReturnedByteCount'), late.get('RequestedByteCount')
+        if type(returned) is not int or returned < 0:
+            blockers.append('late_read_returned_count_unknown_or_invalid')
+        if type(requested) is not int or requested <= 0:
+            blockers.append('late_read_requested_count_unknown_or_invalid')
+        if raw is None:
+            blockers.append('late_read_bytes_unknown_or_invalid')
+        elif type(returned) is int and returned != len(raw):
+            blockers.append('late_read_returned_count_differs_from_preserved_bytes')
+        if raw or (type(returned) is int and returned > 0):
+            # Do not parse these bytes as an independent stream: their receive
+            # extent/order against the journal has not been reconciled.
+            blockers.append('nonempty_late_read_is_not_reconciled_with_journal')
+    return observation, {'completed_empty_read_reported': not blockers,
+                         'eligible_for_no_delivery_conclusion': not blockers,
+                         'qualification_blockers': blockers,
+                         'nonempty_late_bytes_reconciled': False}
+
+
 def autocal_audit(receipt_bytes, journal_bytes):
     receipt, rows = json.loads(receipt_bytes.decode('utf-8-sig')), parse_rows(journal_bytes)
     plans = [r['data'] for r in rows if r.get('kind') == 'plan']
@@ -36,7 +149,9 @@ def autocal_audit(receipt_bytes, journal_bytes):
     if plans != [receipt.get('plan')] or results != [receipt.get('kernel_result')]:
         raise ValueError('AutoCal receipt/journal plan or result differs')
     plan = plans[0]
-    if plan.get('profile') != 'e54-read-prefix' or plan.get('flash_programming_enabled') is not False:
+    required_flags = {'flash_programming_enabled': False, 'live_kernel_execution_enabled': True,
+                      'full_baseline_read_enabled': False, 'baseline_prefix_read_enabled': True}
+    if plan.get('profile') not in PROFILES or any(plan.get(k) is not value for k, value in required_flags.items()):
         raise ValueError('AutoCal receipt is outside the fixed prefix-read profile')
     tx, rx, reads = [], [], []
     pending = None
@@ -92,8 +207,11 @@ def autocal_audit(receipt_bytes, journal_bytes):
     if (result.get('VpwTransmissions') != len(vpw_tx) or result.get('VpwReceivedFrames') != len(vpw_rx)
             or receipt.get('vpw_payload_commands_completed') != len(vpw_tx)):
         raise ValueError('AutoCal receipt counts differ from native journal')
+    lifecycle = setup_lifecycle(plan, result, receipt, tx, rx, request)
+    late_observation, late_coverage = late_read_coverage(receipt)
     metadata = {
         'profile': plan['profile'], 'adapter_serial': receipt.get('serial'),
+        'setup_lifecycle': lifecycle,
         'recorded_kernel_pin': plan.get('kernel'),
         'application_tx_frames': len(tx), 'application_rx_frames': len(rx),
         'vpw_tx_frames': len(vpw_tx), 'vpw_rx_frames': len(vpw_rx),
@@ -108,9 +226,11 @@ def autocal_audit(receipt_bytes, journal_bytes):
         },
         'receipt_observations': {k: receipt.get(k) for k in ('setup_accepted', 'recorded_cleanup_accepted',
             'readback_saved_bytes', 'transport_disposed', 'retained_native_owners', 'channel_fault', 'cleanup_exception')},
+        'reported_late_transfer': late_observation,
+        'late_read_coverage': late_coverage,
         'kernel_result': {k: result.get(k) for k in ('Success', 'InitialIdentityVerified', 'KernelVersionVerified',
             'ExitAcknowledged', 'PostExitIdentityVerified', 'BenchPowerCycleRequired', 'ReadbackLength',
-            'ReadbackScope', 'ReadbackCrcVerified', 'BaselineMatched', 'FlashWriteEnabled')},
+            'ReadbackScope', 'ReadbackCrcVerified', 'BaselineMatched', 'FlashWriteEnabled', *RECORDED_FLAGS)},
         'read_policy': {k: receipt.get('kernel_policy', {}).get(k) for k in ('ReadBlockAttempts', 'ReadBlockReplies',
             'IsShortReadVerified', 'CrcQueryAttempts', 'VerifiedCrcRanges')},
         'recorded_source_sha256': plan.get('source_sha256'),
@@ -280,16 +400,24 @@ def compare_data(auto_receipt, auto_journal, gt_path, gt_source, baseline):
                 'gt_serial_chunk_end_monotonic_ns': gt_network[index]['host_monotonic_ns_at_chunk_end'],
                 'vpw_prefix_hex': r['payload'][:4].hex(), 'message_bytes': len(r['payload']),
                 'message_sha256': sha256(r['payload'])} for i, (r, index) in enumerate(zip(auto_rx, positions))]
-    positive_gap = len(matching) == 1 and not matching[0]['same_message_in_autocal_rx']
+    # A valid baseline body alone may be stale. Preserve such observations but
+    # qualify this session's delivery gap only after nonempty shared anchors.
+    correlated = [r for r in matching if anchors and r['follows_last_common_autocal_reply_in_gt_order']]
+    late_covered = auto['late_read_coverage']['eligible_for_no_delivery_conclusion']
+    positive_gap = len(correlated) == 1 and not correlated[0]['same_message_in_autocal_rx'] and late_covered
     return {'schema': 'autocal-gt-fixed-prefix-comparison-v1',
         'scope': 'Completed paired application journals, exact ECM-response comparison and fixed64-byte baseline validation; offline audit only.',
         'autocal': auto, 'gt': gt, 'ordered_common_replies': anchors, 'data_candidates': candidates,
-        'comparison': {'all_autocal_vpw_replies_found_in_gt_order': True,
+        'comparison': {'all_autocal_vpw_replies_found_in_gt_order': bool(anchors),
+            'nonempty_ordered_reply_anchors_present': bool(anchors),
             'common_reply_count': len(anchors), 'matching_gt_prefix_reply_count': len(matching),
+            'correlated_gt_prefix_reply_count': len(correlated),
+            'autocal_late_read_coverage_complete': late_covered,
             'valid_prefix_observed_by_gt_but_not_delivered_to_autocal_host': positive_gap,
             'no_verified_prefix_reply_in_gt_capture': not matching,
             'physical_ecu_transmit_cause_proven': False,
-            'known_kernel_prefix_reply_observed': bool(matching),
+            'valid_baseline_prefix_reply_observed_on_gt': bool(matching),
+            'known_kernel_prefix_reply_correlated_to_session': bool(correlated),
             'autocal_read_qualified': False, 'flash_programming_qualified': False},
         'baseline': {'length': len(baseline), 'sha256': sha256(baseline), 'prefix_length': 64,
                      'prefix_sha256': sha256(baseline[:64]), 'data_exported': False},
@@ -297,9 +425,12 @@ def compare_data(auto_receipt, auto_journal, gt_path, gt_source, baseline):
             'GT receives only source10 responses. It does not independently record the AutoCal request on VPW.',
             'The valid GT reply establishes reception of the expected kernel data on this bench; it does not locate the AutoCal physical receiver, firmware filter, buffer or USB-delivery fault.',
             'Exact shared replies establish ordered correlation, not synchronized clocks. Both timestamps describe host receipt rather than physical bus timing.',
+            'A matching data reply before the shared reply anchors, or with no shared anchors, is retained as an uncorrelated observation and cannot establish this session delivery gap.',
+            'A nonempty, incomplete, errored or unknown retained native read blocks the non-delivery conclusion; late bytes are not reconciled into the receive journal by this analyzer.',
             'No shorter ACK or repair is invented. Only a valid trailing GT VPW CRC is removed before whole-message comparison.',
             'A matching64-byte prefix does not verify the whole image, controller CRC ranges, erase/programming or interrupted-flash recovery.',
             'Successful GT software cleanup is checked separately from AutoCal failure closure; neither establishes electrical bus silence.',
+            'Recorded setup acceptance proves only the exact acknowledged host-command lifecycle; its firmware semantics and receive-path effect remain unknown.',
             'No raw tune data, kernel bytes or complete data reply is exported. Inputs remain private and unchanged.',
         ], 'adapter_opened': False, 'al5_live_writes_enabled': False, 'ready_to_flash': False}
 

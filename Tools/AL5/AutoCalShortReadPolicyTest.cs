@@ -8,9 +8,9 @@ using PcmHacking;
 internal static partial class AutoCalKernelProbePolicyTest
 {
     private const string ShortRequest = "6D10F035010040000000";
-    private static AutoCalKernelProbePolicy ShortDataReady()
+    private static AutoCalKernelProbePolicy ShortDataReady(bool zeroSubmode = false)
     {
-        var p = new AutoCalKernelProbePolicy(kernel, shortRead: true);
+        var p = new AutoCalKernelProbePolicy(kernel, shortRead: true, useZeroSubmodeKernel: zeroSubmode);
         Tx(p, "6C10F03C0A"); Rx(p, "6CF0107C0A00E7C434444E");
         Tx(p, "6C10F02701"); Rx(p, "6CF01067010000");
         p.BeforeTransmit(p.UploadPermissionMessage); Rx(p, "6CF010740044");
@@ -20,10 +20,10 @@ internal static partial class AutoCalKernelProbePolicyTest
         Tx(p, "6C10F03D01"); Rx(p, "6CF0107D0100894471");
         return p;
     }
-    private static byte[] ShortReply()
+    private static byte[] ShortReply(byte submode = 1)
     {
         byte[] reply = new Protocol().CreateBlockMessage(baseline.Value, 0, 64, 0, BlockCopyType.Copy).GetBytes();
-        reply[1] = 0xF0; reply[2] = 0x10; reply[4] = 1;
+        reply[1] = 0xF0; reply[2] = 0x10; reply[4] = submode;
         return VpwUtilities.AddBlockChecksum(reply);
     }
     private static void ShortReadSuccess()

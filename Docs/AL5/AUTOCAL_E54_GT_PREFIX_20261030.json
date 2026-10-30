@@ -4,6 +4,61 @@
   "autocal": {
     "profile": "e54-read-prefix",
     "adapter_serial": "AC3NCHH5",
+    "setup_lifecycle": {
+      "recorded_setup_experiment": false,
+      "legacy_ordinary_flags_absent": true,
+      "plan_and_result_flags_consistent": true,
+      "exact_local_sequence_and_replies_verified": true,
+      "ordinary_setup_commands": 4,
+      "recorded_extra_commands": 0,
+      "adapter_cleanup_commands": 0,
+      "recorded_preparation_and_restore_boundaries_verified": false,
+      "local_command_counts": {
+        "8201:": 1,
+        "8604:00": 1,
+        "8800:0000": 1,
+        "8604:000000000000": 1
+      },
+      "commands": [
+        {
+          "command_hex": "8201",
+          "payload_hex": "",
+          "tx_journal_line_one_based": 3,
+          "rx_journal_line_one_based": 5,
+          "tx_wrapper_sha256": "44d01ec7a272ab4b4fd38fdb352258300af5251cd088450bceedeb7a73cf934a",
+          "rx_wrapper_sha256": "935e0ff0745da3eff52c75b31a2824a3f702b78858d2c2b30a0d4f13dbbde594",
+          "reply_payload_matches": true
+        },
+        {
+          "command_hex": "8604",
+          "payload_hex": "00",
+          "tx_journal_line_one_based": 6,
+          "rx_journal_line_one_based": 8,
+          "tx_wrapper_sha256": "1afd9e9bc59bba4642c5072de347ac88650fe4e1667378ccffe36d56f4af987f",
+          "rx_wrapper_sha256": "8fde6eb681bf2080e9d5213f032517f4b85312ab2d620e0d39ca42d3531b48c4",
+          "reply_payload_matches": true
+        },
+        {
+          "command_hex": "8800",
+          "payload_hex": "0000",
+          "tx_journal_line_one_based": 9,
+          "rx_journal_line_one_based": 11,
+          "tx_wrapper_sha256": "221b342ac2f0a748bc3f47b1897a11af6a467e07be1f7e93d10d2a96fc35915c",
+          "rx_wrapper_sha256": "4339f68ffa01426db442564e48fa21609737ab60dde4e941b546b26b23a1d17c",
+          "reply_payload_matches": true
+        },
+        {
+          "command_hex": "8604",
+          "payload_hex": "000000000000",
+          "tx_journal_line_one_based": 12,
+          "rx_journal_line_one_based": 14,
+          "tx_wrapper_sha256": "4b7aeffc8e91f85330bbe0b7d588ac09617fc80a70d4b4df60847aea0bb436b1",
+          "rx_wrapper_sha256": "a8d0af0b157a43954bfab94fe52fa779b9ecdba94f3ee54c4d799ab8640884a5",
+          "reply_payload_matches": true
+        }
+      ],
+      "configuration_effect_on_firmware_or_physical_receive_path_proven": false
+    },
     "recorded_kernel_pin": {
       "path": "C:\\Codex Projects\\Car Tuning\\To tune\\My Original Stock Tunes\\iMob Racing MultiMap OS\\PcmHammer_E54_RAM_Survey_Bench_v0_1\\Kernel-E54.bin",
       "sha256": "8294b899c153b513cd1307ac4c6654c2720832779f40c19aac7100a4b864929a",
@@ -42,6 +97,22 @@
       "channel_fault": null,
       "cleanup_exception": null
     },
+    "reported_late_transfer": {
+      "Operation": "read",
+      "RequestedByteCount": 4096,
+      "ReturnedByteCount": 0,
+      "IsCompleted": true,
+      "error": null,
+      "data_bytes": 0,
+      "data_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_bytes_exported": false
+    },
+    "late_read_coverage": {
+      "completed_empty_read_reported": true,
+      "eligible_for_no_delivery_conclusion": true,
+      "qualification_blockers": [],
+      "nonempty_late_bytes_reconciled": false
+    },
     "kernel_result": {
       "Success": false,
       "InitialIdentityVerified": true,
@@ -53,7 +124,10 @@
       "ReadbackScope": "baseline-prefix",
       "ReadbackCrcVerified": false,
       "BaselineMatched": false,
-      "FlashWriteEnabled": false
+      "FlashWriteEnabled": false,
+      "RecordedReadSetupAttempted": null,
+      "RecordedReadSetupApplied": null,
+      "RecordedOrdinaryConfigurationRestored": null
     },
     "read_policy": {
       "ReadBlockAttempts": 1,
@@ -368,12 +442,16 @@
   ],
   "comparison": {
     "all_autocal_vpw_replies_found_in_gt_order": true,
+    "nonempty_ordered_reply_anchors_present": true,
     "common_reply_count": 9,
     "matching_gt_prefix_reply_count": 1,
+    "correlated_gt_prefix_reply_count": 1,
+    "autocal_late_read_coverage_complete": true,
     "valid_prefix_observed_by_gt_but_not_delivered_to_autocal_host": true,
     "no_verified_prefix_reply_in_gt_capture": false,
     "physical_ecu_transmit_cause_proven": false,
-    "known_kernel_prefix_reply_observed": true,
+    "valid_baseline_prefix_reply_observed_on_gt": true,
+    "known_kernel_prefix_reply_correlated_to_session": true,
     "autocal_read_qualified": false,
     "flash_programming_qualified": false
   },
@@ -388,9 +466,12 @@
     "GT receives only source10 responses. It does not independently record the AutoCal request on VPW.",
     "The valid GT reply establishes reception of the expected kernel data on this bench; it does not locate the AutoCal physical receiver, firmware filter, buffer or USB-delivery fault.",
     "Exact shared replies establish ordered correlation, not synchronized clocks. Both timestamps describe host receipt rather than physical bus timing.",
+    "A matching data reply before the shared reply anchors, or with no shared anchors, is retained as an uncorrelated observation and cannot establish this session delivery gap.",
+    "A nonempty, incomplete, errored or unknown retained native read blocks the non-delivery conclusion; late bytes are not reconciled into the receive journal by this analyzer.",
     "No shorter ACK or repair is invented. Only a valid trailing GT VPW CRC is removed before whole-message comparison.",
     "A matching64-byte prefix does not verify the whole image, controller CRC ranges, erase/programming or interrupted-flash recovery.",
     "Successful GT software cleanup is checked separately from AutoCal failure closure; neither establishes electrical bus silence.",
+    "Recorded setup acceptance proves only the exact acknowledged host-command lifecycle; its firmware semantics and receive-path effect remain unknown.",
     "No raw tune data, kernel bytes or complete data reply is exported. Inputs remain private and unchanged."
   ],
   "adapter_opened": false,
@@ -421,8 +502,8 @@
   "implementation": [
     {
       "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\compare_autocal_gt_prefix.py",
-      "bytes": 20951,
-      "sha256": "eb57f9b663fb5e296887569d3bf7a62d33a9f77ca03b41da41aa7e3ec75ffc50"
+      "bytes": 30342,
+      "sha256": "3bc0c37fa890b72e27054c2d68f065563b541fc110261a4e07ad83ed2b372ad4"
     },
     {
       "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_autocal_read_gap.py",

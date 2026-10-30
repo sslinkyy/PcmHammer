@@ -48,6 +48,7 @@ internal static class Program
         if (Hash(Dll) != DllHash || Hash(Header) != HeaderHash) throw new InvalidDataException("Native DLL/header pin changed.");
         bool fullRead = kernelPolicy?.FullReadEnabled == true;
         bool shortRead = kernelPolicy?.ShortReadEnabled == true;
+        bool zeroSubmode = kernelPolicy?.UsesZeroSubmodeKernel == true;
         bool readEnabled = fullRead || shortRead;
         if (readEnabled && (new FileInfo(AutoCalKernelProbePolicy.DefaultBaselinePath).Length != AutoCalKernelProbePolicy.FullReadLength
             || Hash(AutoCalKernelProbePolicy.DefaultBaselinePath) != AutoCalKernelProbePolicy.ExpectedBaselineSha256))
@@ -56,7 +57,8 @@ internal static class Program
             + AutoCalKernelProbePolicy.ReadBlockCount + 7 * AutoCalKernelProbePolicy.MaximumCrcQueriesPerRange;
         return new { schema = "autocal-backend-bounded-probe-plan-v4",
             profile = kernelPolicy == null ? profile.Name : (copyOnly ? "e54-ram-copy" : fullRead ? "e54-read-baseline"
-                : recordedReadSetup ? "e54-read-prefix-recorded-setup" : shortRead ? "e54-read-prefix" : "e54-kernel-info"),
+                : recordedReadSetup ? "e54-read-prefix-recorded-setup" : zeroSubmode ? "e54-read-prefix-submode-zero"
+                : shortRead ? "e54-read-prefix" : "e54-kernel-info"),
             source_sha256 = sources.ToDictionary(x => x, x => Hash(Path.Combine(root, x))),
             native_dll = Dll, native_sha256 = DllHash, header_sha256 = HeaderHash,
             probe_sha256 = Hash(Assembly.GetExecutingAssembly().Location), pcmlibrary_sha256 = Hash(typeof(AutoCalDevice).Assembly.Location),
@@ -67,6 +69,7 @@ internal static class Program
             full_baseline_read_enabled = fullRead,
             baseline_prefix_read_enabled = shortRead,
             recorded_read_setup_experiment = recordedReadSetup,
+            zero_submode_kernel_experiment = zeroSubmode,
             flash_programming_enabled = false,
             physical_bus_transmissions = "unmeasured", requires_obd_disconnected = !profile.ReadsE54Identity,
             requires_isolated_e54_bench = profile.ReadsE54Identity,
@@ -79,7 +82,8 @@ internal static class Program
                     recordedReadSetup ? "Fixed 8603{0100F401} then 8604{010010000000} after identity, before preparation" : "Retain ordinary configuration",
                     "One suppression and bounded tool-present",
                     "One seed/key exchange using existing E54 algorithm", "One pinned RAM upload permission request",
-                    "Pinned 279-byte RAM Copy at FF97E0", "Pinned 1772-byte RAM Execute at FF9100",
+                    zeroSubmode ? "Pinned 279-byte RAM Copy at FF97E0 with one derived reply-template byte (file 07AE: 01 to 00)"
+                        : "Pinned 279-byte RAM Copy at FF97E0", "Pinned 1772-byte RAM Execute at FF9100",
                     "Exact kernel-version query/reply",
                     recordedReadSetup ? "Fixed 8604{000000000000} after kernel verification, before flash identity" : "No additional adapter configuration",
                     fullRead ? "Pinned flash ID, 128 sequential 4096-byte reads, pinned image SHA and seven controller CRC ranges"
@@ -92,6 +96,11 @@ internal static class Program
                 expected_read_sha256 = fullRead ? AutoCalKernelProbePolicy.ExpectedBaselineSha256 : AutoCalKernelProbePolicy.ExpectedShortReadSha256 },
             kernel = kernelPolicy == null ? null : new { path = AutoCalKernelProbePolicy.DefaultKernelPath,
                 sha256 = AutoCalKernelProbePolicy.ExpectedKernelSha256, length = AutoCalKernelProbePolicy.ExpectedKernelLength,
+                effective_sha256 = kernelPolicy.EffectiveKernelSha256,
+                expected_read_reply_submode = kernelPolicy.ReadReplySubmode,
+                derivation = !zeroSubmode ? null : new { scope = "owned-in-memory-clone-only", file_offset = 0x7AE,
+                    ram_address = 0xFF98AE, source_byte = 1, effective_byte = 0,
+                    source_file_modified = false, changed_byte_count = 1 },
                 expected_version = AutoCalKernelProbePolicy.ExpectedKernelVersion,
                 ram_messages_sha256 = kernelPolicy.UploadMessages.Select(x => Convert.ToHexString(SHA256.HashData(x))).ToArray() },
             limits = new[] { "Only the exact selected command sequence is admitted; no replay or alternate request.",
@@ -102,6 +111,7 @@ internal static class Program
                         : "Flash identification, CRC and image reads are absent from this mode.",
                 "Kernel-info is a fixed RAM-only experiment: exact observed Copy/Execute replies gate the known version, exit and final identity. Copy-only mode stops before execution and requires a bench power cycle.",
                 "Recorded-setup prefix mode tests the observed configuration lifecycle; firmware meanings, persistence and receive effect remain unproven. Kernel, read address/length and VPW requests are unchanged.",
+                "Zero-submode prefix mode changes one reply-template byte in the pinned RAM kernel clone. The raw reply checksum must validate with submode zero; ordinary configuration is retained. No extra acknowledgement is added.",
                 "Replies do not establish physical VPW speed, programming or recovery. No speed change is requested.",
                 "Partial/ambiguous transfers stop the session; cleanup only closes owned host resources after failure.", "Close failure retains owner; EOF does not release it." } };
     }
@@ -142,19 +152,22 @@ internal static class Program
             bool copyOnly = args.Length > 0 && (args[0] == "--e54-ram-copy" || args[0] == "--plan-e54-ram-copy");
             bool fullRead = args.Length > 0 && (args[0] == "--e54-read-baseline" || args[0] == "--plan-e54-read-baseline");
             bool recordedReadSetup = args.Length > 0 && (args[0] == "--e54-read-prefix-recorded-setup" || args[0] == "--plan-e54-read-prefix-recorded-setup");
-            bool shortRead = recordedReadSetup || (args.Length > 0 && (args[0] == "--e54-read-prefix" || args[0] == "--plan-e54-read-prefix"));
+            bool zeroSubmode = args.Length > 0 && (args[0] == "--e54-read-prefix-submode-zero" || args[0] == "--plan-e54-read-prefix-submode-zero");
+            bool shortRead = recordedReadSetup || zeroSubmode || (args.Length > 0 && (args[0] == "--e54-read-prefix" || args[0] == "--plan-e54-read-prefix"));
             bool kernelInfo = copyOnly || fullRead || shortRead || (args.Length > 0 && (args[0] == "--e54-kernel-info" || args[0] == "--plan-e54-kernel-info"));
             bool identity = kernelInfo || (args.Length > 0 && (args[0] == "--e54-osid-read" || args[0] == "--plan-e54-osid-read"));
             ProbeProfile profile = new(identity);
             AutoCalKernelProbePolicy? kernelPolicy = kernelInfo
-                ? new(File.ReadAllBytes(AutoCalKernelProbePolicy.DefaultKernelPath), fullRead, shortRead) : null;
+                ? new(File.ReadAllBytes(AutoCalKernelProbePolicy.DefaultKernelPath), fullRead, shortRead, zeroSubmode) : null;
             string operation = kernelInfo ? (copyOnly ? "e54-ram-copy" : fullRead ? "e54-read-baseline"
-                : recordedReadSetup ? "e54-read-prefix-recorded-setup" : shortRead ? "e54-read-prefix" : "e54-kernel-info") : profile.Name;
+                : recordedReadSetup ? "e54-read-prefix-recorded-setup" : zeroSubmode ? "e54-read-prefix-submode-zero"
+                : shortRead ? "e54-read-prefix" : "e54-kernel-info") : profile.Name;
             string root = Root(); object plan = Plan(root, profile, kernelPolicy, copyOnly, recordedReadSetup);
             if (args.Length == 0 || args.SequenceEqual(new[] { "--plan" }) || args.SequenceEqual(new[] { "--plan-e54-osid-read" })
                 || args.SequenceEqual(new[] { "--plan-e54-kernel-info" }) || args.SequenceEqual(new[] { "--plan-e54-ram-copy" })
                 || args.SequenceEqual(new[] { "--plan-e54-read-baseline" }) || args.SequenceEqual(new[] { "--plan-e54-read-prefix" })
-                || args.SequenceEqual(new[] { "--plan-e54-read-prefix-recorded-setup" }))
+                || args.SequenceEqual(new[] { "--plan-e54-read-prefix-recorded-setup" })
+                || args.SequenceEqual(new[] { "--plan-e54-read-prefix-submode-zero" }))
             { Console.WriteLine(JsonSerializer.Serialize(plan, new JsonSerializerOptions { WriteIndented = true })); return 0; }
             if (args.Length != 6 || args[0] != "--" + operation
                 || args[1] != (identity ? "--isolated-e54-bench" : "--obd-disconnected") || args[2] != "--serial" || args[4] != "--receipt")
@@ -307,6 +320,7 @@ internal static class Program
                     kernelPolicy.RamCopyAttempts, kernelPolicy.RamExecuteAttempts,
                     kernelPolicy.FullReadEnabled, kernelPolicy.ReadBlockAttempts, kernelPolicy.ReadBlockReplies,
                     kernelPolicy.ShortReadEnabled, kernelPolicy.IsShortReadVerified,
+                    kernelPolicy.UsesZeroSubmodeKernel, kernelPolicy.EffectiveKernelSha256, kernelPolicy.ReadReplySubmode,
                     kernelPolicy.CrcQueryAttempts, kernelPolicy.VerifiedCrcRanges, kernelPolicy.IsImageVerified,
                     kernelPolicy.BaselineShaMatched, kernelPolicy.ComputedImageSha256,
                     ram_copy_ack = kernelPolicy.RamCopyAcknowledgement == null ? null : Convert.ToHexString(kernelPolicy.RamCopyAcknowledgement),

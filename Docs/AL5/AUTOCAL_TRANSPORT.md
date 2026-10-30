@@ -858,9 +858,35 @@ The independent ordinary profile omitted the middle pair. A separate bounded
 `--e54-read-prefix-recorded-setup` experiment now reproduces that lifecycle
 around the same identity, pinned kernel and 64-byte read. It adds three exact
 adapter commands and retains all flash-write and speed-change blocks. Its
-offline tests establish ordering and failure behavior; physical receive effects
-remain untested. `8B01` occurs only in saved cleanup and is not assigned an
-unsupported filter-enable meaning.
+offline tests establish ordering and failure behavior. The
+[recorded-setup paired test](AUTOCAL_E54_GT_PREFIX_RECORDED_SETUP_20261030.json)
+accepted all three extra commands and still returned no prefix through AutoCal.
+The GT received the same valid 77-byte physical reply after nine shared response
+anchors. AutoCal completed 379 later native reads with zero bytes over 40,052 ms;
+the retained read also completed empty. The deadline fault ended the session
+after that absence; it does not explain the earlier empty receives. Both host
+owners closed, and the GT verified OFF and restored its saved settings.
+No exit/reset was sent, so another bench power cycle is required before reuse.
+`8B01` occurs only in saved cleanup and is not assigned an unsupported
+filter-enable meaning.
+
+The next fixed experiment, `--e54-read-prefix-submode-zero`, changes only the
+Mode35 reply template's submode byte from `01` to `00` at file offset `0x7AE`
+(RAM `0xFF98AE`) in an owned clone of the pinned kernel. The source file remains
+unchanged. Its exact derived SHA-256 is
+`17a351715bbdd366cf77e33ad5d0b801fa0747f2d31c57478ad3bb409ee58fe3`.
+The existing kernel checksum path reads this template byte, so checksum
+validation uses the original raw `00` response without rewriting it to `01`.
+The default production parser retains its original `01` expectation; the
+experimental coordinator explicitly selects `00`.
+
+Saved EFILive data replies use `00`, while the paired PcmHammer reply used `01`.
+The 64-byte request, ordinary adapter configuration, RAM instructions and
+baseline digest remain fixed. The experiment cannot combine the template and
+configuration changes. EFILive's preceding Mode75 acknowledgement is another
+unresolved difference; this variant adds no acknowledgement. These differences
+are hypotheses about delivery, not established AutoCal firmware requirements.
+The variant is offline-tested and has no physical qualification receipt yet.
 
 ## Remaining integration work
 

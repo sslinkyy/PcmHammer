@@ -19,6 +19,7 @@ public sealed class AutoCalKernelProbePolicy
     public const int MaximumTransmitBytes = 1772;
     public const int KernelBaseAddress = 0xFF9100;
     public const string ExpectedKernelSha256 = "8294b899c153b513cd1307ac4c6654c2720832779f40c19aac7100a4b864929a";
+    public const string ExpectedZeroSubmodeKernelSha256 = "17a351715bbdd366cf77e33ad5d0b801fa0747f2d31c57478ad3bb409ee58fe3";
     public const string DefaultKernelPath = @"C:\Codex Projects\Car Tuning\To tune\My Original Stock Tunes\iMob Racing MultiMap OS\PcmHammer_E54_RAM_Survey_Bench_v0_1\Kernel-E54.bin";
     public const int FullReadLength = 512 * 1024;
     public const int ReadBlockLength = 4096;
@@ -68,6 +69,9 @@ public sealed class AutoCalKernelProbePolicy
     public bool IsPostExitIdentityVerified { get; private set; }
     public bool FullReadEnabled { get; }
     public bool ShortReadEnabled { get; }
+    public bool UsesZeroSubmodeKernel { get; }
+    public byte ReadReplySubmode => UsesZeroSubmodeKernel ? (byte)0 : (byte)1;
+    public string EffectiveKernelSha256 { get; }
     public bool ReadEnabled => FullReadEnabled || ShortReadEnabled;
     public bool IsShortReadVerified { get; private set; }
     public bool IsFlashIdentityVerified { get; private set; }
@@ -105,17 +109,35 @@ public sealed class AutoCalKernelProbePolicy
     public byte[]? InitialIdentityReply => Clone(initialIdentity);
     public byte[]? PostExitIdentityReply => Clone(finalIdentity);
 
-    public AutoCalKernelProbePolicy(byte[] pinnedKernel, bool fullRead = false, bool shortRead = false)
+    public AutoCalKernelProbePolicy(byte[] pinnedKernel, bool fullRead = false, bool shortRead = false,
+        bool useZeroSubmodeKernel = false)
     {
         if (pinnedKernel == null) throw new ArgumentNullException(nameof(pinnedKernel));
         if (fullRead && shortRead) throw new ArgumentException("Full-image and short-prefix read modes are mutually exclusive.");
+        if (useZeroSubmodeKernel && !shortRead)
+            throw new ArgumentException("The zero-submode kernel is restricted to the fixed short-prefix experiment.");
         kernel = (byte[])pinnedKernel.Clone();
         FullReadEnabled = fullRead;
         ShortReadEnabled = shortRead;
+        UsesZeroSubmodeKernel = useZeroSubmodeKernel;
         readImage = fullRead ? new byte[FullReadLength] : shortRead ? new byte[ShortReadLength] : Array.Empty<byte>();
         if (kernel.Length != ExpectedKernelLength ||
             !Convert.ToHexString(SHA256.HashData(kernel)).Equals(ExpectedKernelSha256, StringComparison.OrdinalIgnoreCase))
             throw new InvalidDataException("Kernel bytes do not match the previously captured E54 asset.");
+
+        if (useZeroSubmodeKernel)
+        {
+            // Pinned Mode35Reply data template: file0x7AA / RAM0xFF98AA.
+            // Its submode is read into the running block checksum at0xFF9804.
+            // Only this data byte changes; instruction bytes and version stay fixed.
+            // Always validate the original input first; never accept a supplied variant.
+            if (!kernel.AsSpan(0x7AA, 10).SequenceEqual(Convert.FromHexString("6DF01036010000000000")))
+                throw new InvalidDataException("Pinned E54 read-reply template context differs.");
+            kernel[0x7AE] = 0;
+        }
+        EffectiveKernelSha256 = Convert.ToHexString(SHA256.HashData(kernel)).ToLowerInvariant();
+        if (EffectiveKernelSha256 != (useZeroSubmodeKernel ? ExpectedZeroSubmodeKernelSha256 : ExpectedKernelSha256))
+            throw new InvalidDataException("Effective E54 kernel differs from the selected exact asset pin.");
 
         var info = new OSIDInfo(ExpectedOperatingSystem);
         if (info.HardwareType != PcmType.E54 || info.LoaderRequired || info.KernelBaseAddress != KernelBaseAddress || info.KeyAlgorithm != 54)
@@ -249,9 +271,10 @@ public sealed class AutoCalKernelProbePolicy
             int address = ReadBlockReplies * length;
             byte[] expected = protocol.CreateReadRequest(address, length).GetBytes();
             expected[1] = 0xF0; expected[2] = 0x10; expected[3] = 0x36;
+            expected[4] = ReadReplySubmode;
             if (bytes.Length != length + 12 || !bytes.AsSpan(0, 10).SequenceEqual(expected))
                 Reject("Read block has an unexpected exact extent, submode, length or address.");
-            Response<byte[]> decoded = protocol.ParsePayload(new Message(bytes), length, address);
+            Response<byte[]> decoded = protocol.ParsePayload(new Message(bytes), length, address, ReadReplySubmode);
             if (decoded.Status != ResponseStatus.Success || decoded.Value.Length != length)
                 Reject("Read block failed production payload/checksum validation.");
             Buffer.BlockCopy(decoded.Value, 0, readImage, address, length);

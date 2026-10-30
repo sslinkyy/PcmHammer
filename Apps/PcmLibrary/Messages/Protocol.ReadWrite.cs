@@ -165,6 +165,17 @@ namespace PcmHacking
         /// </remarks>
         public Response<byte[]> ParsePayload(Message message, int length, int expectedAddress)
         {
+            return ParsePayload(message, length, expectedAddress, 1);
+        }
+
+        /// <summary>
+        /// Parse a normal read block using the explicitly selected reply submode.
+        /// Raw bytes, including the submode, retain their original checksum contribution.
+        /// </summary>
+        public Response<byte[]> ParsePayload(Message message, int length, int expectedAddress, byte expectedNormalSubmode)
+        {
+            if (expectedNormalSubmode > 1)
+                throw new ArgumentOutOfRangeException(nameof(expectedNormalSubmode), "Only normal reply submodes zero and one are supported.");
             byte[] actual = message.GetBytes();
             byte[] expected = new byte[] { Priority.Block, DeviceId.Tool, DeviceId.Pcm, Mode.PCMUpload };
             if (!TryVerifyInitialBytes(actual, expected, out ResponseStatus status))
@@ -191,7 +202,7 @@ namespace PcmHacking
             byte[] result = new byte[dataLength];
 
             // Normal block
-            if (actual[4] == 1)
+            if (actual[4] == expectedNormalSubmode)
             {
                 // With normal encoding, data length should be actual length minus header size
                 if (actual.Length - 12 < dataLength)

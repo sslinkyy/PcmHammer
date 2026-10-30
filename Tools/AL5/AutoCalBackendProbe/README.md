@@ -15,6 +15,7 @@ dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --
 dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-read-baseline
 dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-read-prefix
 dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-read-prefix-recorded-setup
+dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-read-prefix-submode-zero
 ```
 
 The USB-only profile requires the OBD cable physically disconnected and EFILive,
@@ -52,6 +53,7 @@ Live invocation forms (not automatic test steps):
 --e54-read-baseline --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
 --e54-read-prefix --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
 --e54-read-prefix-recorded-setup --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
+--e54-read-prefix-submode-zero --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
 ```
 
 Each receipt must be a new direct child of `LocalOnly/AutoCalBackendProbe`.
@@ -72,8 +74,9 @@ three fixed adapter commands follow the configuration lifecycle in saved
 EFILive reads. Their firmware meaning and effect on reception remain unknown.
 Both the device and native request guard reject replay, changed commands and
 incorrect phase ordering. The limit becomes 54 host commands; the 44 VPW
-payload and 180-second limits remain unchanged. This mode has offline checks
-only until a separately recorded bench experiment is completed.
+payload and 180-second limits remain unchanged. Its separately recorded bench
+experiment accepted all three configuration exchanges but still delivered no
+data through AutoCal; the paired result is described below.
 The exact request guard rejects any unlisted command, different payload,
 reordered request, replay, or incorrect continuation after a partial write.
 There are no arbitrary payload, file, address, retry, security algorithm,
@@ -227,6 +230,37 @@ settings; AutoCal closed without a channel fault or retained owner. This
 establishes that the prefix response appeared on VPW but was not delivered by
 AutoCal under the tested configuration. It does not identify the firmware cause,
 qualify arbitrary reception or establish complete/lossless monitoring.
+
+The [paired recorded-setup experiment](../../../Docs/AL5/AUTOCAL_E54_GT_PREFIX_RECORDED_SETUP_20261030.json)
+produced the same delivery gap. All three added configuration exchanges were
+accepted at their required phases. The GT again received the correct prefix
+reply, with valid VPW CRC, block checksum and baseline digest, after nine shared
+reply anchors. AutoCal returned zero bytes in 379 subsequent native reads over
+40.052 seconds. A pending read reached its deadline, then completed empty;
+owned resources closed with zero retained owners. No exit/reset was sent, so
+the next experiment requires a bench power cycle. Acceptance of these setup
+commands does not establish their internal firmware effect.
+
+The separate `--e54-read-prefix-submode-zero` experiment changes exactly one
+data byte in an owned memory copy of the pinned 2,027-byte RAM kernel: file
+offset `0x7AE`, RAM address `0xFF98AE`, changes `01` to `00` in the Mode35 reply
+template. The original source file must first match its existing SHA-256 and
+is never modified. The derived image must match
+`17a351715bbdd366cf77e33ad5d0b801fa0747f2d31c57478ad3bb409ee58fe3`.
+Instruction bytes, version, read request, length, address and baseline data
+remain unchanged. The RAM upload checksum is recalculated by the production
+packet builder. The kernel already includes the template byte in its running
+reply checksum; the host validates that checksum on the original raw reply.
+
+This tests the observed difference between PcmHammer's `36 01` data reply and
+saved EFILive `36 00` replies. The original configuration is retained; combining
+it with the recorded-setup experiment is rejected. It adds no Mode75
+acknowledgement, leaving that other observed EFILive difference unresolved.
+Only the fixed 64-byte prefix can be read, with the existing 44 VPW / 51 host
+command and 180-second bounds. Success still requires exact prefix validation,
+kernel exit and ordinary OS identity. The ordinary three-argument payload
+parser still requires submode `01`; only this explicit experiment selects `00`.
+This variant has offline validation only until its own bench receipt exists.
 
 The pinned RAM-kernel version/exit/ordinary-identity sequence has passed on the
 isolated E54 bench. Full flash readback, the backend's 4x transition, programming

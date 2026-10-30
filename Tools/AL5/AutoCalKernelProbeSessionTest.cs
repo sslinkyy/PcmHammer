@@ -71,21 +71,36 @@ internal static class AutoCalKernelProbeSessionTest
         await Case("recorded preparation cancellation blocks continuation", () => RecordedSetupCancellation("config-cancel"));
         await Case("recorded restore cancellation blocks continuation", () => RecordedSetupCancellation("restore-cancel"));
         await Case("recorded setup is restricted to short read before any I/O", RecordedSetupModeBinding);
+        await Case("payload parser selects exact submode and checks original wire bytes", ExplicitReadReplySubmode);
+        await Case("zero-submode kernel returns scoped prefix with exact changed RAM upload", ZeroSubmodeSuccess);
+        await Case("zero-submode kernel rejects a normal-one reply without exit", () => ZeroSubmodeFailure("short-wrong-submode"));
+        await Case("zero-submode kernel rejects checksum corruption without exit", () => ZeroSubmodeFailure("short-corrupt"));
         Console.WriteLine(JsonSerializer.Serialize(new { assertions, passed, failed,
             adapterOpened = false, liveWriteEnabled = false, hardwareQualified = false,
             scope = "Production Vehicle + AutoCalDevice/Channel under the bounded policy, scripted byte transport only" }));
         return failed.Count == 0 ? 0 : 1;
     }
 
-    static async Task<(Fake adapter, AutoCalDevice device, AutoCalKernelProbePolicy policy, AutoCalKernelProbeSession session)> Fixture(string failure = "", CancellationTokenSource? cancel = null, bool copyOnly = false, bool fullRead = false, bool shortRead = false, bool recordedReadSetup = false)
+    static async Task<(Fake adapter, AutoCalDevice device, AutoCalKernelProbePolicy policy, AutoCalKernelProbeSession session)> Fixture(string failure = "", CancellationTokenSource? cancel = null, bool copyOnly = false, bool fullRead = false, bool shortRead = false, bool recordedReadSetup = false, bool useZeroSubmodeKernel = false)
     {
-        var adapter = new Fake(kernel, failure, cancel, fullRead, shortRead, recordedReadSetup);
+        var adapter = new Fake(IndependentKernel(useZeroSubmodeKernel), failure, cancel, fullRead, shortRead, recordedReadSetup, useZeroSubmodeKernel);
         var token = cancel?.Token ?? CancellationToken.None;
         var device = new AutoCalDevice(new AutoCalChannel(adapter), new Log(), token, AutoCalSetupProfile.RecordedOrdinaryIdentification);
         Require(await device.Initialize(), "ordinary host setup accepted by fake adapter");
-        var policy = new AutoCalKernelProbePolicy(kernel, fullRead, shortRead);
+        var policy = new AutoCalKernelProbePolicy(kernel, fullRead, shortRead, useZeroSubmodeKernel);
         var session = new AutoCalKernelProbeSession(device, new Log(), policy, token, copyOnly, fullRead, shortRead, recordedReadSetup);
         return (adapter, device, policy, session);
+    }
+    static byte[] IndependentKernel(bool zeroSubmode)
+    {
+        byte[] value = (byte[])kernel.Clone();
+        if (zeroSubmode)
+        {
+            if (!value.AsSpan(0x7AA, 10).SequenceEqual(Hex("6DF01036010000000000")))
+                throw new Exception("Private kernel fixture differs from the independently pinned reply-template bytes.");
+            value[0x7AE] = 0;
+        }
+        return value;
     }
     static void Ownership(Fake fake, AutoCalDevice device)
     {
@@ -105,6 +120,8 @@ internal static class AutoCalKernelProbeSessionTest
         Require(result.Success, result.Error ?? "expected successful scripted probe");
         Require(result.Stage == AutoCalKernelProbeStage.Complete && result.InitialIdentityVerified && result.KernelVersionVerified && result.ExitAcknowledged && result.PostExitIdentityVerified, "all physical-exchange conditions represented separately");
         Require(result.KernelVersion == 0x6AB178EC36UL && !result.BenchPowerCycleRequired && result.RamExecuteSubmitted, "exact version and successful return");
+        Require(result.EffectiveKernelSha256 == AutoCalKernelProbePolicy.ExpectedKernelSha256 && !result.UsesZeroSubmodeKernel && result.ReadReplySubmode == 1,
+            "ordinary kernel provenance and expected reply submode remain unchanged");
         var uploads = f.adapter.Vpw.Where(v => v[3] == 0x36).ToArray();
         Require(uploads.Length == 2 && uploads[0].Length == 279 && uploads[1].Length == 1772, "two expected descending RAM chunks");
         Require(uploads[0].SequenceEqual(Block(kernel, 1760, 267, 0xFF97E0, 0)) && uploads[1].SequenceEqual(Block(kernel, 0, 1760, 0xFF9100, 0x80)), "all RAM payload bytes/address/checksum match independent wire construction");
@@ -437,8 +454,87 @@ internal static class AutoCalKernelProbeSessionTest
         var fullPolicy = new AutoCalKernelProbePolicy(kernel, fullRead: true);
         try { _ = new AutoCalKernelProbeSession(f.device, new Log(), fullPolicy, CancellationToken.None, fullRead: true, recordedReadSetup: true); }
         catch (ArgumentException) { rejected++; }
-        Require(rejected == 2 && f.adapter.Vpw.Count == 0, "recorded setup cannot enable ordinary or full-image variant");
+        var zeroPolicy = new AutoCalKernelProbePolicy(kernel, shortRead: true, useZeroSubmodeKernel: true);
+        try { _ = new AutoCalKernelProbeSession(f.device, new Log(), zeroPolicy, CancellationToken.None, shortRead: true, recordedReadSetup: true); }
+        catch (ArgumentException) { rejected++; }
+        Require(rejected == 3 && f.adapter.Vpw.Count == 0, "recorded setup cannot enable ordinary, full-image or zero-submode variant");
         Ownership(f.adapter, f.device);
+    }
+
+    static Task ExplicitReadReplySubmode()
+    {
+        var protocol = new Protocol();
+        byte[] normal = Block(baseline, 0, 64, 0, 1); normal[1] = 0xF0; normal[2] = 0x10;
+        byte[] zero = Block(baseline, 0, 64, 0, 0); zero[1] = 0xF0; zero[2] = 0x10;
+        byte[] before = (byte[])zero.Clone();
+        Require(protocol.ParsePayload(new Message(normal), 64, 0).Status == ResponseStatus.Success,
+            "legacy three-argument parser still accepts normal submode one");
+        Require(protocol.ParsePayload(new Message(zero), 64, 0).Status != ResponseStatus.Success,
+            "legacy parser does not silently broaden to submode zero");
+        var accepted = protocol.ParsePayload(new Message(zero), 64, 0, 0);
+        Require(accepted.Status == ResponseStatus.Success && accepted.Value.SequenceEqual(baseline.Take(64)),
+            "explicit zero parses the independently constructed raw zero-submode checksum");
+        Require(zero.SequenceEqual(before), "explicit parsing does not normalize or mutate input bytes");
+        Require(protocol.ParsePayload(new Message(normal), 64, 0, 0).Status != ResponseStatus.Success
+            && protocol.ParsePayload(new Message(zero), 64, 0, 1).Status != ResponseStatus.Success,
+            "expected submode is exact in both directions");
+        byte[] staleChecksum = (byte[])normal.Clone(); staleChecksum[4] = 0;
+        Require(protocol.ParsePayload(new Message(staleChecksum), 64, 0, 0).Status != ResponseStatus.Success,
+            "changing submode without recomputing its raw checksum cannot pass");
+        byte[] corrupt = (byte[])zero.Clone(); corrupt[^1] ^= 1;
+        Require(protocol.ParsePayload(new Message(corrupt), 64, 0, 0).Status != ResponseStatus.Success,
+            "independently corrupted zero-submode checksum fails");
+        int rejected = 0;
+        foreach (byte unsupported in new byte[] { 2, 0x80, 0xFF })
+            try { protocol.ParsePayload(new Message(normal), 64, 0, unsupported); }
+            catch (ArgumentOutOfRangeException) { rejected++; }
+        Require(rejected == 3, "explicit normal mode option admits only zero or one");
+        return Task.CompletedTask;
+    }
+
+    static void ZeroSubmodeUploadBoundary(Fake adapter)
+    {
+        byte[] derived = IndependentKernel(true);
+        Require(Enumerable.Range(0, kernel.Length).Where(i => derived[i] != kernel[i]).SequenceEqual(new[] { 0x7AE })
+            && kernel[0x7AE] == 1 && derived[0x7AE] == 0, "only the pinned response-template byte is changed in the test kernel");
+        byte[][] uploads = adapter.Vpw.Where(v => v[3] == 0x36).ToArray();
+        Require(uploads.Length == 2 && uploads[0].SequenceEqual(Block(derived, 1760, 267, 0xFF97E0, 0))
+            && uploads[1].SequenceEqual(Block(kernel, 0, 1760, 0xFF9100, 0x80)),
+            "derived high chunk and checksum match; executable low chunk remains byte-identical");
+        Require(adapter.Vpw.Count(v => v[3] == 0x34) == 1 && adapter.ReadRequests == 1 && adapter.CrcRequests == 0
+            && adapter.ConfigurationCommands == 0, "one RAM permission and prefix read, with no retry, CRC or configuration change");
+    }
+
+    static async Task ZeroSubmodeSuccess()
+    {
+        var f = await Fixture(shortRead: true, useZeroSubmodeKernel: true); var result = await f.session.RunAsync();
+        Require(result.Success, result.Error ?? "expected derived-kernel prefix success");
+        Require(result.UsesZeroSubmodeKernel && result.ReadReplySubmode == 0
+            && result.EffectiveKernelSha256 == "17a351715bbdd366cf77e33ad5d0b801fa0747f2d31c57478ad3bb409ee58fe3"
+            && Convert.ToHexString(SHA256.HashData(kernel)).Equals(AutoCalKernelProbePolicy.ExpectedKernelSha256, StringComparison.OrdinalIgnoreCase),
+            "receipt identifies derived kernel without changing original fixture");
+        Require(result.ReadbackScope == "baseline-prefix" && result.BaselineMatched && result.ReadbackLength == 64
+            && result.ReadbackBytes!.SequenceEqual(baseline.Take(64)) && result.ReadbackSha256 == AutoCalKernelProbePolicy.ExpectedShortReadSha256,
+            "exact prefix returned from raw zero-submode response");
+        Require(f.policy.IsShortReadVerified && !f.policy.IsImageVerified && !result.ReadbackCrcVerified,
+            "zero variant preserves prefix-only scope");
+        Require(result.ExitAcknowledged && result.PostExitIdentityVerified && !result.BenchPowerCycleRequired,
+            "normal explicit exit follows verified variant prefix");
+        ZeroSubmodeUploadBoundary(f.adapter); Ownership(f.adapter, f.device);
+    }
+
+    static async Task ZeroSubmodeFailure(string failure)
+    {
+        var f = await Fixture(failure, shortRead: true, useZeroSubmodeKernel: true); var result = await f.session.RunAsync();
+        Require(!result.Success && result.Stage == AutoCalKernelProbeStage.ShortRead && result.KernelVersionVerified
+            && result.BenchPowerCycleRequired && result.UsesZeroSubmodeKernel && result.ReadReplySubmode == 0,
+            "bad variant reply halts after the known kernel with uncertain controller state retained");
+        Require(!result.BaselineMatched && result.ReadbackBytes == null && !f.policy.IsShortReadVerified
+            && !result.ExitAcknowledged && !result.PostExitIdentityVerified && !Has(f.adapter, "6C10F020"),
+            "no result, automatic exit or cleanup after mismatching raw frame");
+        Require(f.policy.LastReceive != null && f.policy.LastReceive.Length == 76,
+            "rejected data frame remains available as evidence");
+        ZeroSubmodeUploadBoundary(f.adapter); Ownership(f.adapter, f.device);
     }
 
     // Independent wire constructors for the fake's fixed responses/expected RAM
@@ -468,9 +564,10 @@ internal static class AutoCalKernelProbeSessionTest
         bool partialConfiguration;
         public int DisposeCalls, ReadRequests, CrcRequests; public List<(ushort Command, byte[] Payload)> Commands = new(); public List<byte[]> Vpw = new();
         public int ConfigurationCommands, PartialConfigurationBytes;
-        public readonly bool FullRead, ShortRead, RecordedReadSetup;
+        public readonly bool FullRead, ShortRead, RecordedReadSetup, ZeroSubmodeKernel;
         public int PendingByteCount => input.Count;
-        public Fake(byte[] kernel, string failure, CancellationTokenSource? cancel, bool fullRead, bool shortRead, bool recordedReadSetup) { image = kernel; this.failure = failure; this.cancel = cancel; FullRead = fullRead; ShortRead = shortRead; RecordedReadSetup = recordedReadSetup; }
+        public Fake(byte[] kernel, string failure, CancellationTokenSource? cancel, bool fullRead, bool shortRead, bool recordedReadSetup, bool zeroSubmodeKernel)
+        { image = kernel; this.failure = failure; this.cancel = cancel; FullRead = fullRead; ShortRead = shortRead; RecordedReadSetup = recordedReadSetup; ZeroSubmodeKernel = zeroSubmodeKernel; }
         public void Enqueue(byte[] bytes) { foreach (byte b in bytes) input.Enqueue(b); }
         public Task<int> Read(byte[] buffer, int offset, int count, int timeoutMs, CancellationToken token)
         {
@@ -564,7 +661,9 @@ internal static class AutoCalKernelProbeSessionTest
                         }
                         byte[] data = (byte[])baseline.Clone();
                         if (failure == "short-different") data[0] ^= 1;
-                        reply = Block(data, 0, 64, 0, 1); reply[1] = 0xF0; reply[2] = 0x10;
+                        byte submode = ZeroSubmodeKernel ? (byte)0 : (byte)1;
+                        if (failure == "short-wrong-submode") submode = submode == 0 ? (byte)1 : (byte)0;
+                        reply = Block(data, 0, 64, 0, submode); reply[1] = 0xF0; reply[2] = 0x10;
                         if (failure == "short-corrupt") reply[^1] ^= 1;
                     }
                     else if (FullRead && bytes.Length == 10 && bytes.AsSpan(0, 5).SequenceEqual(Hex("6D10F03501")))

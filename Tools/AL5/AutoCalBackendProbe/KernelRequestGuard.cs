@@ -19,8 +19,8 @@ internal sealed class KernelRequestGuard : RequestWriteGuard
     bool ordinaryRestored;
     public KernelRequestGuard(AutoCalKernelProbePolicy policy, bool copyOnly = false, bool recordedReadSetup = false)
     {
-        if (recordedReadSetup && (copyOnly || !policy.ShortReadEnabled))
-            throw new ArgumentException("Recorded read configuration is confined to the prefix diagnostic.");
+        if (recordedReadSetup && (copyOnly || !policy.ShortReadEnabled || policy.UsesZeroSubmodeKernel))
+            throw new ArgumentException("Recorded read configuration is confined to the original-kernel prefix diagnostic.");
         this.policy = policy; this.copyOnly = copyOnly; this.recordedReadSetup = recordedReadSetup;
     }
 

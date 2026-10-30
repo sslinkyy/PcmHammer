@@ -28,6 +28,9 @@ internal sealed class AutoCalKernelProbeResult
     public bool InitialIdentityVerified { get; internal set; }
     public bool KernelVersionVerified { get; internal set; }
     public ulong KernelVersion { get; internal set; }
+    public string? EffectiveKernelSha256 { get; internal set; }
+    public byte ReadReplySubmode { get; internal set; }
+    public bool UsesZeroSubmodeKernel { get; internal set; }
     public bool ExitAcknowledged { get; internal set; }
     public bool PostExitIdentityVerified { get; internal set; }
     public bool RamExecuteSubmitted { get; internal set; }
@@ -83,6 +86,8 @@ internal sealed class AutoCalKernelProbeSession
             throw new ArgumentException("Policy and session read modes differ.");
         if (recordedReadSetup && !shortRead)
             throw new ArgumentException("Recorded read preparation is restricted to the fixed short-prefix experiment.");
+        if (recordedReadSetup && policy.UsesZeroSubmodeKernel)
+            throw new ArgumentException("Recorded read preparation and the zero-submode kernel are separate experiments.");
         this.fullRead = fullRead;
         this.shortRead = shortRead;
         this.recordedReadSetup = recordedReadSetup;
@@ -93,7 +98,9 @@ internal sealed class AutoCalKernelProbeSession
         // A session is never retried with a partially advanced wire policy.
         if (Interlocked.Exchange(ref started, 1) != 0)
             throw new InvalidOperationException("The bounded kernel probe was already attempted.");
-        var result = new AutoCalKernelProbeResult { ObservationOnly = copyOnly };
+        var result = new AutoCalKernelProbeResult { ObservationOnly = copyOnly,
+            EffectiveKernelSha256 = policy.EffectiveKernelSha256, ReadReplySubmode = policy.ReadReplySubmode,
+            UsesZeroSubmodeKernel = policy.UsesZeroSubmodeKernel };
         var guarded = new GuardedDevice(inner, logger, policy, cancellation);
         try
         {
@@ -225,7 +232,7 @@ internal sealed class AutoCalKernelProbeSession
                 // outer TryReadBlock retry or generic cleanup is involved.
                 Response<byte[]> read = await vehicle.ReadMemory(
                     () => protocol.CreateReadRequest(0, AutoCalKernelProbePolicy.ShortReadLength),
-                    reply => protocol.ParsePayload(reply, AutoCalKernelProbePolicy.ShortReadLength, 0), cancellation).ConfigureAwait(false);
+                    reply => protocol.ParsePayload(reply, AutoCalKernelProbePolicy.ShortReadLength, 0, policy.ReadReplySubmode), cancellation).ConfigureAwait(false);
                 cancellation.ThrowIfCancellationRequested();
                 if (read.Status != ResponseStatus.Success || !policy.IsShortReadVerified)
                     throw new InvalidDataException("Short read did not return the pinned baseline prefix: " + read.Status);
