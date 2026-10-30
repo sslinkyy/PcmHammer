@@ -665,14 +665,39 @@ bytes remain in `LocalOnly/AutoCalBackendProbe/e54_ram_copy_01.json` and its
 `.journal.jsonl` sibling; the public result pins them and the tested build.
 This is a D2XX journal audit, not an independent electrical capture.
 
-The session ended with a bench power cycle required. A subsequent cold-reset
-identity check is separate evidence and is not established by this receipt.
-Full kernel execution, programming and AL5 live writes remain disabled.
+The COPY-only session ended with a bench power cycle required. The subsequent
+[post-reset identity check](AUTOCAL_E54_POST_COPY_RESET_20261030.json) is separate
+evidence, described below; the original COPY-only receipt remains unchanged.
+Full kernel execution, programming and AL5 live writes remain disabled at this
+checkpoint.
+
+## Ordinary identity after the reported power cycle
+
+The owner reported power-cycling both the bench and AutoCal, then returning the
+isolated E54 bench to ignition ON at 13.8 V with EFILive closed. Those physical
+steps and voltage are user-attested. A separate fixed ordinary identity probe
+then returned OS `15189044`; see the
+[post-copy reset result](AUTOCAL_E54_POST_COPY_RESET_20261030.json).
+
+The audit found eight exact planned TX and eight RX envelopes, 140 and 139 bytes
+respectively, with all sixteen outer CRCs valid. The only VPW request was
+`6C 10 F0 3C 0A`; its reply was `6C F0 10 7C 0A 00 E7 C4 34 44 4E`. No replay
+or short transfer occurred. All twelve recorded source hashes match commit
+`42cf710`; source, binary and private raw-file digests are in the result.
+
+Recorded cleanup completed. At the final 915 ms journal event the receive
+queues were empty, and the native owner reports successful disposal with zero
+retained owners and no error. This establishes an ordinary matching identity
+exchange after the reported reset. It does not verify the earlier copied RAM
+bytes, full kernel execution, flash programming or interrupted-flash recovery.
+No such operation ran in this identity session, and physical speed remains
+unmeasured. Earlier receipts retain their original scope and hashes.
 
 ## Remaining integration work
 
-The bounded setup, ordinary E54 identity and COPY-only reply observation have
-passed. Copied RAM contents, complete kernel transfer/execution, full readback,
+The bounded setup, ordinary E54 identity, COPY-only reply observation and
+ordinary identity after the reported power cycle have passed. Copied RAM
+contents, complete kernel transfer/execution, full readback,
 larger or sustained VPW exchanges, physical speed, filters and programming
 completion still require qualification for the independent AutoCal backend.
 An ordinary PcmHammer factory/CLI integration must also explicitly own and

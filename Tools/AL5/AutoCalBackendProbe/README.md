@@ -11,6 +11,7 @@ dotnet build Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --verbosit
 dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan
 dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-osid-read
 dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-ram-copy
+dotnet run --project Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj --no-build -- --plan-e54-kernel-info
 ```
 
 The USB-only profile requires the OBD cable physically disconnected and EFILive,
@@ -44,6 +45,7 @@ Live invocation forms (not automatic test steps):
 --usb-setup --obd-disconnected --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
 --e54-osid-read --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
 --e54-ram-copy --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
+--e54-kernel-info --isolated-e54-bench --serial SERIAL --receipt NEW_ABSOLUTE_PATH.json
 ```
 
 Each receipt must be a new direct child of `LocalOnly/AutoCalBackendProbe`.
@@ -75,13 +77,29 @@ remains opaque. The tool stopped without further protocol traffic and required
 a bench power cycle; that session contains no subsequent cold-reset identity
 check. It did not execute uploaded code or query a kernel version.
 
-The full RAM-kernel coordinator is tested offline, including exact kernel
-version, exit and post-exit identity. Its live `--e54-kernel-info` invocation is
-still blocked before loading a native driver; `--plan-e54-kernel-info` remains
-available for inspection. The earlier
+After the owner reported power-cycling the bench and AutoCal, a separate
+ordinary identity run again returned OS `15189044`. Its eight TX/eight RX
+host envelopes passed all outer CRCs; recorded cleanup succeeded, both receive
+queues were empty and the native owner closed. See the
+[post-copy reset receipt](../../../Docs/AL5/AUTOCAL_E54_POST_COPY_RESET_20261030.json).
+The physical reset and 13.8 V supply were user-attested. This confirms ordinary
+communication after that reported reset; it does not validate the earlier RAM
+contents, full kernel execution or interrupted-flash recovery.
+
+The RAM-kernel coordinator passes its offline checks, including exact kernel
+version, exit and post-exit identity. After the separate Copy-reply and cold-reset
+identity observations, `--e54-kernel-info` enables only the fixed isolated-bench
+experiment. It sends the two pinned RAM fragments once, requires the observed
+Copy reply before Execute, and requires the exact Execute reply before the known
+kernel-version query. Only a matching version permits exit; the exact exit ACK
+and one ordinary OS-ID check after a 10-second settling margin must also pass.
+Failures stop without another upload or controller cleanup. Flash erase/program,
+arbitrary kernels, full image reads and speed transitions remain absent.
+The earlier
 [evidence-gap inventory](../../../Docs/AL5/AUTOCAL_STOCK_RAM_COPY_ACK_GAP_20261030.json)
 remains unchanged and covers its original saved traces. The new COPY-only
-observation is separate evidence and does not enable full kernel execution.
+observation is separate evidence. Enabling the bounded experiment does not claim
+that kernel execution or flashing has already been qualified.
 
 After failure the tool sends no additional protocol cleanup and closes only
 owned host resources. A native operation still running at its deadline remains

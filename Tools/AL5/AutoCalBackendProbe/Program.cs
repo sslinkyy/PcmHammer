@@ -42,13 +42,14 @@ internal static class Program
             "Tools/AL5/AutoCalBackendProbe/AutoCalBackendProbe.csproj" };
         if (Hash(Dll) != DllHash || Hash(Header) != HeaderHash) throw new InvalidDataException("Native DLL/header pin changed.");
         return new { schema = "autocal-backend-bounded-probe-plan-v3",
-            profile = kernelPolicy == null ? profile.Name : (copyOnly ? "e54-ram-copy" : "e54-kernel-info-offline-only"),
+            profile = kernelPolicy == null ? profile.Name : (copyOnly ? "e54-ram-copy" : "e54-kernel-info"),
             source_sha256 = sources.ToDictionary(x => x, x => Hash(Path.Combine(root, x))),
             native_dll = Dll, native_sha256 = DllHash, header_sha256 = HeaderHash,
             probe_sha256 = Hash(Assembly.GetExecutingAssembly().Location), pcmlibrary_sha256 = Hash(typeof(AutoCalDevice).Assembly.Location),
             maximum_application_commands = kernelPolicy == null ? profile.Requests.Length : (copyOnly ? 42 : 49),
             maximum_vpw_payload_commands = kernelPolicy == null ? (profile.ReadsE54Identity ? 1 : 0) : (copyOnly ? 38 : 42),
-            live_kernel_execution_enabled = false,
+            live_kernel_execution_enabled = kernelPolicy != null && !copyOnly,
+            flash_programming_enabled = false,
             physical_bus_transmissions = "unmeasured", requires_obd_disconnected = !profile.ReadsE54Identity,
             requires_isolated_e54_bench = profile.ReadsE54Identity,
             expected_osid = profile.ReadsE54Identity ? (uint?)ProbeProfile.ExpectedOperatingSystem : null,
@@ -67,7 +68,7 @@ internal static class Program
             limits = new[] { "Only the exact selected command sequence is admitted; no replay or alternate request.",
                 "USB setup requires OBD unplugged. Identity mode admits only 6C10F03C0A, once. Kernel mode is confined to the isolated E54 and the pinned RAM asset.",
                 "No flash erase/program/CRC/read, DTC-clear, arbitrary payload, alternative kernel, or speed-change operation is available.",
-                "Full kernel execution is offline-only until stock RAM Copy acknowledgement behavior is resolved. The live RAM profile copies only and then requires a bench power cycle.",
+                "Kernel-info is a fixed RAM-only experiment: exact observed Copy/Execute replies gate the known version, exit and final identity. Copy-only mode stops before execution and requires a bench power cycle.",
                 "Replies do not establish physical VPW speed, programming or recovery. No speed change is requested.",
                 "Partial/ambiguous transfers stop the session; cleanup only closes owned host resources after failure.", "Close failure retains owner; EOF does not release it." } };
     }
@@ -119,8 +120,10 @@ internal static class Program
             if (args.Length != 6 || args[0] != "--" + operation
                 || args[1] != (identity ? "--isolated-e54-bench" : "--obd-disconnected") || args[2] != "--serial" || args[4] != "--receipt")
                 throw new ArgumentException("Use --plan, --plan-e54-osid-read, --plan-e54-ram-copy, --plan-e54-kernel-info, or a listed live mode with its physical-state flag, --serial SERIAL and --receipt NEW.json.");
-            if (kernelInfo && !copyOnly)
-                throw new NotSupportedException("Live kernel execution is blocked: stock RAM Copy acknowledgement semantics are not established. No native driver was loaded.");
+            // The separate copy-only and post-reset experiments established the
+            // exact reply prerequisites (AUTOCAL_E54_RAM_COPY_20261030.json and
+            // AUTOCAL_E54_POST_COPY_RESET_20261030.json). The fixed kernel-info
+            // experiment may now test execution; it admits no flash operations.
             string output = Path.GetFullPath(args[5]);
             string directory = Path.Combine(root, "LocalOnly", "AutoCalBackendProbe");
             if (!string.Equals(Path.GetDirectoryName(output), directory, StringComparison.OrdinalIgnoreCase))
