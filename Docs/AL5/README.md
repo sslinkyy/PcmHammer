@@ -22,6 +22,13 @@ received both directions and all 128 data blocks, but missed three short replies
 present in its host trace. Lossless capture, continuous speed transitions and
 programming capture remain unqualified; live AL5 writes remain disabled.
 
+[AutoCal transport reconstruction](AUTOCAL_TRANSPORT.md) adds matching Python
+and PcmLibrary decoders for saved host envelopes, pins the native FTDI binding
+and outer CRC, and records an isolated USB settings read. An independent
+model query now returns `ACV2` with EFILive closed; a simultaneous USB capture
+matches the exact request and reply. This does not yet add an AutoCal device
+backend or enable AL5 programming.
+
 [Public-source research dated 2026-10-06](ONLINE_RESEARCH_20261006.md) records
 AL5-specific vendor programming/recovery guidance, conditional hardware leads
 and the limits of later-generation teardown information.

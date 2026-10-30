@@ -1,0 +1,255 @@
+{
+  "schema": "autocal-direct-model-query-summary-v1",
+  "scope": "One bounded direct AutoCal V2 model query with OBD physically unplugged, corroborated by independent USBPcap bytes. Offline file analysis; no vehicle protocol trial.",
+  "sources": {
+    "capture": {
+      "path": "LocalOnly/autocal_usb_setup_20261030/autocal_usb_direct_model_01/capture.pcap",
+      "bytes": 2024,
+      "sha256": "de99cbc15c0ef51c3977d560d8b2165856fac2ee739e7e5449053de237db3fe0"
+    },
+    "capture_receipt": {
+      "path": "LocalOnly/autocal_usb_setup_20261030/autocal_usb_direct_model_01/receipt.json",
+      "bytes": 5348,
+      "sha256": "232ea856cc8dfd8a950b47df05c1b7d01f1ec9a6c318daa710e7200484ee71e7"
+    },
+    "probe_receipt": {
+      "path": "LocalOnly/autocal_usb_setup_20261030/autocal_model_query_01.json",
+      "bytes": 39170,
+      "sha256": "ab4eee61f61f39ce15cd45686817818c093493d000336b03f4700459eeb4c154"
+    },
+    "probe_journal": {
+      "path": "LocalOnly/autocal_usb_setup_20261030/autocal_model_query_01.worker.jsonl",
+      "bytes": 8781,
+      "sha256": "55c74fe0fd2a3919604d6c56db7c37df791809c4e316c9b7ff825e24cdc04771"
+    },
+    "private_analysis": {
+      "path": "LocalOnly/autocal_usb_setup_20261030/autocal_usb_direct_model_01/ftdi_envelope_analysis.json",
+      "bytes": 30851,
+      "sha256": "39e311c92f559c47a8be93e48b98b07cf0428cd73022d254eb4929ed31c6a057"
+    },
+    "private_envelopes": {
+      "path": "LocalOnly/autocal_usb_setup_20261030/autocal_usb_direct_model_01/private_envelopes.json",
+      "bytes": 550,
+      "sha256": "c072e86405daac81e319f7188771ec6531f03d4a39e091761b824cf4b4493b88"
+    },
+    "descriptor_snapshot": {
+      "path": "LocalOnly/autocal_usb_setup_20261030/usbtreeview_report_01.txt",
+      "bytes": 345816,
+      "sha256": "79b099fd7d520263a91e856792c269ff23c1db10ac9e73fd1c94bc813cb588bb"
+    },
+    "prior_model_evidence": {
+      "path": "LocalOnly/autocal_identity_candidate_20261030/identity_candidate_receipt.json",
+      "bytes": 24781,
+      "sha256": "458efc52f81cbb4cb3ef9801a62ef02038af717e6487b6de91306984e579da73"
+    }
+  },
+  "query_execution": {
+    "started_utc": "2026-10-30T10:49:32.713694+00:00",
+    "finished_utc": "2026-10-30T10:49:33.102009+00:00",
+    "probe_source_sha256": "407a1de47b24ed121df74c2e0aa59a6aa3815c2684926d82e80b47bce09adfaa",
+    "d2xx_dll": {
+      "path": "C:\\Program Files (x86)\\EFILive\\Drivers\\EFILive\\Win-7-8-10\\amd64\\ftd2xx64.dll",
+      "sha256": "91185415e0a1cd8ad09a5b644130554867ee4c4975c7aa71ee6da15d2645d9a2",
+      "size": 323216,
+      "machine": "AMD64",
+      "machine_hex": "8664",
+      "pe_magic_hex": "020b",
+      "required_exports": {
+        "FT_CreateDeviceInfoList": {
+          "rva": 14400,
+          "ordinal": 70,
+          "forwarded": false
+        },
+        "FT_GetDeviceInfoDetail": {
+          "rva": 23056,
+          "ordinal": 72,
+          "forwarded": false
+        }
+      },
+      "imported_dlls": [
+        "SETUPAPI.dll",
+        "KERNEL32.dll",
+        "USER32.dll",
+        "ADVAPI32.dll"
+      ]
+    },
+    "allowed_native_api_calls": [
+      "FT_CreateDeviceInfoList",
+      "FT_GetDeviceInfoDetail",
+      "FT_OpenEx",
+      "FT_SetTimeouts",
+      "FT_GetQueueStatus",
+      "FT_Write",
+      "FT_Read",
+      "FT_Close"
+    ],
+    "read_timeout_ms": 250,
+    "write_timeout_ms": 1000,
+    "application_write_calls": 1,
+    "application_write_bytes": 14,
+    "application_read_calls": 1,
+    "application_read_bytes": 20,
+    "prewrite_queue": 0,
+    "postread_queue": 0,
+    "model_verified": true,
+    "close_status": 0,
+    "owned_handle_closed": true,
+    "cleanup_pending": false,
+    "supervisor_state": "complete",
+    "child_exit_code": 0,
+    "cleanup_proven": true,
+    "deadline_reached": false,
+    "owned_process_handle_retained": false,
+    "journal_sha256_verified": true
+  },
+  "usb_comparison": {
+    "bus": 2,
+    "device_address": 8,
+    "out_endpoint_hex": "02",
+    "in_endpoint_hex": "81",
+    "tx": {
+      "wrapper_hex": "0154018207000000000000008177",
+      "application_bytes": 14,
+      "application_sha256": "44d01ec7a272ab4b4fd38fdb352258300af5251cd088450bceedeb7a73cf934a",
+      "record_ordinal_one_based": 33,
+      "pcap_file_offset": 1503,
+      "outer_crc_matches": true,
+      "equals_probe_write": true
+    },
+    "rx": {
+      "wrapper_hex": "015201820000000000000500414356320026b419",
+      "application_bytes": 20,
+      "application_sha256": "935e0ff0745da3eff52c75b31a2824a3f702b78858d2c2b30a0d4f13dbbde594",
+      "record_ordinal_one_based": 37,
+      "raw_usb_file_offset": 1691,
+      "raw_usb_bytes": 22,
+      "ftdi_status_prefix_hex": "3160",
+      "application_file_offset": 1693,
+      "outer_crc_matches": true,
+      "equals_probe_read": true,
+      "model_text": "ACV2",
+      "payload_bytes": 5,
+      "terminal_nul": true,
+      "opaque_metadata_4_through_9_hex": "000000000000",
+      "uninterpreted_trailing_byte_hex": "19"
+    },
+    "unparsed_tx_application_bytes": 0,
+    "unparsed_rx_application_bytes": 0,
+    "matches_prior_efilive_model_request": true,
+    "matches_prior_efilive_model_payload": true,
+    "matches_prior_license_check_rx_wrapper": true,
+    "matches_prior_read12_rx_wrapper": false,
+    "difference_from_prior_read12_rx": "Opaque metadata byte 6 is 00 instead of 01, with corresponding CRC difference; no sequence/status meaning assigned."
+  },
+  "descriptor_basis": {
+    "snapshot_sha256": "79b099fd7d520263a91e856792c269ff23c1db10ac9e73fd1c94bc813cb588bb",
+    "source_encoding": "utf-16le",
+    "section_file_offsets": [
+      173600,
+      190172
+    ],
+    "end_offset_exclusive": true,
+    "section_lines_one_based_inclusive": [
+      1624,
+      1780
+    ],
+    "full_speed": true,
+    "endpoints_bulk_81_and_02_max_packet_bytes": 64,
+    "same_attachment_basis": "Caller correlates separate exact-identity descriptor snapshot to capture; no hotplug history inferred.",
+    "ftdi_status_bytes_per_derived_in_packet": 2
+  },
+  "capture_observations": {
+    "pcap_records": 44,
+    "parsed_file_bytes": 2024,
+    "file_structurally_read_to_end": true,
+    "successful_bulk_in_completions": 15,
+    "bulk_in_raw_bytes": 50,
+    "derived_status_only_packets": 14,
+    "status_pair_histogram": {
+      "3100": 1,
+      "3160": 14
+    },
+    "completed_bulk_out_submissions": 1,
+    "bulk_out_pairing_issues": 0,
+    "selected_in_pending_urbs": 0,
+    "selected_timing_warnings": 0,
+    "unsupported_metadata_records": 4,
+    "unsupported_metadata_function": 30,
+    "unsupported_metadata_transfer": 254,
+    "usb_control_records": 8,
+    "usb_control_submission_setup_hex": [
+      "4000000000000000",
+      "c005000000000200",
+      "4000000000000000",
+      "c005000000000200"
+    ],
+    "driver_control_semantics": "Raw USB control traffic is retained. No explicit FT_ResetDevice API call does not imply absence of driver-generated USB control traffic."
+  },
+  "capture_cleanup": {
+    "state": "exited_after_pipe_close",
+    "exit_code": 0,
+    "graceful_stop_observed": true,
+    "quiet_tail_achieved": true,
+    "quiet_tail_seconds": 8.280999999999949,
+    "pipe_bytes_available_before_close": 0,
+    "inflight_after_close": "unknown; peer close is not proof of complete driver-buffer drain",
+    "stderr": "",
+    "cleanup_operations": {
+      "close_process_handle": true,
+      "close_auxiliary_handle_0": true,
+      "close_auxiliary_handle_1": true
+    },
+    "ownership_retained": false
+  },
+  "analysis_implementation_sha256": {
+    "analyze_autocal_usb.py": "c971bf25501bfcbbd70f863ffade727620d31a4bc776f9ac129db789102e663f",
+    "compare_usb_serial_capture.py": "143c7af57baf7ad5e81476ae2ee1474b7d37f3d8b9f4614217ad97dd54ff71b4",
+    "audit_trace_wrappers.py": "c824d113b63244d7e5d56b7bd53e3870fc155e666d897c12a570f1bdd69bd608",
+    "checksum.py": "b057805b2f5dc141141be5ce747ee78be98e441746a05d3a4a0cb3911bf2ef93"
+  },
+  "conclusion": "Direct D2XX delivery of this one model query and its ACV2 response worked in this USB-only session; captured application bytes match the probe receipt exactly.",
+  "limits": [
+    "This qualifies only the fixed adapter model query on the observed attachment and state; cold-start behavior, other commands, and future sessions are not established.",
+    "AutoCal was not power-cycled after HAPI. Direct access was demonstrated only for this attachment/session; clean power-on initialization and inherited device state are not proven.",
+    "Existing baud, flow-control, latency and event-character state was not independently established; omitted setup calls must not be inferred unnecessary in every state.",
+    "No application retry, vehicle request, security operation, loader, erase, programming, or controller recovery was exercised.",
+    "The API call list is bounded, but internal driver/device effects are not proven absent; control traffic is preserved separately.",
+    "No pending selected URBs and an achieved quiet tail do not establish a complete driver-buffer drain or universal lossless capture. Four unsupported metadata records remain visible.",
+    "Descriptor-based packetization and matching outer CRCs corroborate retained bytes, not electrical noninterference or VPW capability."
+  ],
+  "one_direct_model_query_observed_successful": true,
+  "general_autocal_transport_qualified": false,
+  "complete_capture_proven": false,
+  "noninterference_proven": false,
+  "vpw_monitoring_qualified": false,
+  "controller_programming_qualified": false,
+  "recovery_qualified": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "offline_pcmhammer_replay_after_neutral_decoder_change": {
+    "command": "dotnet run --project Tools/AL5/AutoCalFrameTest.csproj --verbosity quiet -- LocalOnly/autocal_usb_setup_20261030/csharp_usb_direction_corpus.json",
+    "exit_code": 0,
+    "actual_captured_envelopes": 24,
+    "assertions_including_boundary_tests": 262,
+    "input_direction": "Explicit host_to_device/device_to_host, with no fabricated HTX channel",
+    "sources": [
+      {
+        "path": "Apps/PcmLibrary/AutoCalHostFrame.cs",
+        "sha256": "b1f2416eab2ff595c6dfe21608e3fbe2a06a07beecc98c211b00ab43afd83750"
+      },
+      {
+        "path": "Tools/AL5/AutoCalFrameTest.cs",
+        "sha256": "f24ec9eb45fd6a542391449af945281cd6cc27eb4e310ca759c94b08dc592b32"
+      },
+      {
+        "path": "Tools/AL5/AutoCalFrameTest.csproj",
+        "sha256": "247d3a598c6b342f7e58583087474447a3467b57336a544d0f55302275b1d22e"
+      },
+      {
+        "path": "LocalOnly/autocal_usb_setup_20261030/csharp_usb_direction_corpus.json",
+        "sha256": "15decd8da030ca9a970133635148ebb2c27d5bf2f9286dc10980e0a764b8ce89"
+      }
+    ],
+    "scope": "File-only replay of 22 settings-read and 2 independent-model envelopes; no C# hardware backend or live I/O"
+  }
+}

@@ -1,0 +1,297 @@
+{
+  "schema": "autocal-usb-local-summary-v1",
+  "scope": "Offline analysis of one USB-only AutoCal V2 device-information/settings-read session. Local adapter traffic, not a vehicle or programming trace.",
+  "context": {
+    "obd_physically_unplugged_confirmed_by_user": true,
+    "ui_actions_reported_by_operator": [
+      "Opened Control Panel About",
+      "Opened F6 Devices / AutoCal V2",
+      "Clicked Read once; device settings successfully loaded",
+      "Closed temporary settings without saving"
+    ],
+    "program_clicked": false,
+    "per_request_ui_action_attribution_established": false
+  },
+  "sources": {
+    "capture": {
+      "path": "LocalOnly/autocal_usb_setup_20261030/autocal_usb_local_01/capture.pcap",
+      "bytes": 6699054,
+      "sha256": "3c5ccaf8d8c661e56104faa9d138282e7f4be5f37fd7df763a66ef175911485f"
+    },
+    "capture_receipt": {
+      "path": "LocalOnly/autocal_usb_setup_20261030/autocal_usb_local_01/receipt.json",
+      "bytes": 5366,
+      "sha256": "301a8159c04b47f8abc858481bf057d9d75d9bd5e59c99a854e112c0f6c131f5"
+    },
+    "private_analysis": {
+      "path": "LocalOnly/autocal_usb_setup_20261030/autocal_usb_local_01/ftdi_envelope_analysis.json",
+      "bytes": 2622564,
+      "sha256": "9335d97d0c219c96be3b75eb63a06ac4a4f41a697f641cbcf1a211c54aaa1890"
+    },
+    "private_envelope_sidecar": {
+      "path": "LocalOnly/autocal_usb_setup_20261030/autocal_usb_local_01/private_envelopes.json",
+      "bytes": 3428,
+      "sha256": "3b5b30b1ee52c4c7e93ca463079b3b3e177e697ccb040b53cb7af38231ad3b6c"
+    },
+    "descriptor_snapshot": {
+      "path": "LocalOnly/autocal_usb_setup_20261030/usbtreeview_report_01.txt",
+      "bytes": 345816,
+      "sha256": "79b099fd7d520263a91e856792c269ff23c1db10ac9e73fd1c94bc813cb588bb"
+    },
+    "private_model_query_evidence": {
+      "path": "LocalOnly/autocal_identity_candidate_20261030/identity_candidate_receipt.json",
+      "bytes": 24781,
+      "sha256": "458efc52f81cbb4cb3ef9801a62ef02038af717e6487b6de91306984e579da73"
+    },
+    "private_csharp_corpus": {
+      "path": "LocalOnly/autocal_usb_setup_20261030/autocal_usb_local_01/csharp_usb_envelopes_corpus.json",
+      "bytes": 8641,
+      "sha256": "b9aab008fb33d1c47ce042fdff54e8360f841ed879858a041390ddca9d65cfe9"
+    }
+  },
+  "selection": {
+    "bus": 2,
+    "device_address": 8,
+    "in_endpoint_hex": "81",
+    "out_endpoint_hex": "02",
+    "vendor_id_hex": "0403",
+    "product_id_hex": "e4a3",
+    "identity_bound_to_unique_pnp_and_cim_device": true,
+    "old_device_address_2_not_used": true
+  },
+  "descriptor_basis": {
+    "source_text_encoding": "utf-16le",
+    "section_start_file_offset": 173600,
+    "section_end_file_offset_exclusive": 190172,
+    "section_line_start_one_based": 1624,
+    "section_line_end_inclusive": 1780,
+    "device_bus_speed_display": "0x01 (Full-Speed)",
+    "configuration_descriptor_hex": "0902200001010080960904000002ffffff020705810240000007050202400000",
+    "configuration_descriptor_source_lines": [
+      {
+        "line_one_based": 1719,
+        "file_offset": 183632,
+        "bytes": 190
+      },
+      {
+        "line_one_based": 1720,
+        "file_offset": 183822,
+        "bytes": 190
+      }
+    ],
+    "endpoints": [
+      {
+        "configuration_byte_offset": 18,
+        "endpoint": 129,
+        "attributes": 2,
+        "max_packet_size": 64,
+        "descriptor_hex": "07058102400000"
+      },
+      {
+        "configuration_byte_offset": 25,
+        "endpoint": 2,
+        "attributes": 2,
+        "max_packet_size": 64,
+        "descriptor_hex": "07050202400000"
+      }
+    ],
+    "capture_same_attachment_assertion": "Caller correlates this separate snapshot to the capture; no hotplug history is inferred"
+  },
+  "ftdi_normalization": {
+    "basis": "Two status bytes per derived USB IN packet; 64-byte maximum established by both endpoint descriptors, not one prefix per URB.",
+    "status_bytes_per_packet": 2,
+    "max_packet_size": 64,
+    "successful_bulk_in_completions": 76060,
+    "raw_bulk_in_bytes": 152869,
+    "raw_bulk_in_sha256": "90a99cca6c9983ee885c954374644960106866c343e9a3410ad02f0b73c39c7d",
+    "completion_length_histogram": {
+      "2": 76049,
+      "17": 2,
+      "18": 3,
+      "22": 1,
+      "33": 3,
+      "281": 2
+    },
+    "derived_usb_packets": 76068,
+    "status_only_packets": 76049,
+    "status_pair_histogram": {
+      "3100": 4,
+      "3160": 76064
+    },
+    "status_bit_meanings_assigned": false,
+    "aggregated_281_byte_completions": {
+      "count": 2,
+      "packet_sizes_each": [
+        64,
+        64,
+        64,
+        64,
+        25
+      ],
+      "status_bytes_removed_each": 10,
+      "application_bytes_each": 271
+    },
+    "packet_boundaries_observed_directly": false,
+    "raw_offsets_and_packet_ledger_retained_privately": true
+  },
+  "streams": {
+    "tx": {
+      "application_bytes": 171,
+      "application_sha256": "4f6551bf3a562cd6b9345972d1af38f7963fa35b14e7787100f224d870287672",
+      "envelopes": 11,
+      "outer_crc_failures": 0,
+      "unparsed_application_bytes": 0,
+      "route_order_hex": [
+        "0486",
+        "0088",
+        "0182",
+        "2683",
+        "0081",
+        "2683",
+        "1585",
+        "4184",
+        "0081",
+        "2683",
+        "1585"
+      ],
+      "payload_lengths": [
+        1,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        14,
+        0,
+        0,
+        0
+      ]
+    },
+    "rx": {
+      "application_bytes": 733,
+      "application_sha256": "9616f2319938e259bb2f9c36058849bee165c5a385cf8a27b2d47b191fe36c26",
+      "envelopes": 11,
+      "outer_crc_failures": 0,
+      "unparsed_application_bytes": 0,
+      "route_order_hex": [
+        "0486",
+        "0088",
+        "0182",
+        "2683",
+        "0081",
+        "2683",
+        "1585",
+        "4184",
+        "0081",
+        "2683",
+        "1585"
+      ],
+      "payload_lengths": [
+        0,
+        1,
+        5,
+        16,
+        1,
+        16,
+        256,
+        0,
+        1,
+        16,
+        256
+      ]
+    }
+  },
+  "capture_boundary": {
+    "pcap_records": 152224,
+    "parsed_file_bytes": 6699054,
+    "file_structurally_read_to_end": true,
+    "unsupported_metadata_records": 8,
+    "unsupported_metadata_function": 30,
+    "unsupported_metadata_transfer": 254,
+    "pending_bulk_in_submissions_at_end": 4,
+    "pending_record_ordinals_one_based": [
+      152218,
+      152220,
+      152222,
+      152224
+    ],
+    "bulk_out_successful_completions": 11,
+    "bulk_out_pairing_issues": 0,
+    "selected_timing_warnings": 0,
+    "supervisor_state": "exited_after_pipe_close",
+    "child_exit_code": 0,
+    "graceful_stop_observed": true,
+    "cleanup_operations": {
+      "close_process_handle": true,
+      "close_auxiliary_handle_0": true,
+      "close_auxiliary_handle_1": true
+    },
+    "ownership_retained": false,
+    "quiet_tail_achieved": false,
+    "stderr": "Write failed (232). Stopping capture.\n",
+    "driver_buffer_drain_proven": false
+  },
+  "model_query": {
+    "route_bytes_hex": "0182",
+    "route_word_le_hex": "8201",
+    "request_payload_bytes": 0,
+    "response_model_text": "ACV2",
+    "response_payload_bytes": 5,
+    "response_has_terminal_nul": true,
+    "tx": {
+      "record_ordinal_one_based": 313,
+      "pcap_file_offset": 14129,
+      "bytes": 14,
+      "wrapper_sha256": "44d01ec7a272ab4b4fd38fdb352258300af5251cd088450bceedeb7a73cf934a"
+    },
+    "rx": {
+      "record_ordinal_one_based": 317,
+      "raw_usb_file_offset": 14317,
+      "raw_usb_bytes": 22,
+      "application_file_offset": 14319,
+      "application_bytes": 20,
+      "wrapper_sha256": "7af7a8da2898304a95158d32c872530bc146f03a3ef71d6c4b94a7d3737a3904"
+    },
+    "static_hapi_sha256": "c51bbf4795c2ee0ac54b95114e1d5ae509d7f53d35a160b35115085f444fbcf8",
+    "static_basis": [
+      "0xA15163 loads DX=0x8201; call at 0xA15169 targets string-query helper 0xA144CC",
+      "0xA15138 compares returned text to FSV2 and ACV2",
+      "Caller 0xA15273 invokes model helper and prefixes returned text with MODEL="
+    ],
+    "conclusion": "Host-used adapter model query, corroborated by static caller and USB bytes. Firmware-internal side effects and future direct replay behavior are not proven."
+  },
+  "validation": {
+    "offline_python_tests": 15,
+    "python_test_command": "python -B -m unittest discover -s Tools/AL5 -p test_autocal_usb.py -v",
+    "production_csharp_decoder_reported_by_root": {
+      "captured_envelopes_accepted": 22,
+      "assertions_including_boundary_tests": 261,
+      "scope": "File-only replay of private corpus; no C# transport or hardware execution"
+    },
+    "analyzer_and_dependency_sha256": {
+      "analyze_autocal_usb.py": "c971bf25501bfcbbd70f863ffade727620d31a4bc776f9ac129db789102e663f",
+      "compare_usb_serial_capture.py": "143c7af57baf7ad5e81476ae2ee1474b7d37f3d8b9f4614217ad97dd54ff71b4",
+      "audit_trace_wrappers.py": "c824d113b63244d7e5d56b7bd53e3870fc155e666d897c12a570f1bdd69bd608",
+      "checksum.py": "b057805b2f5dc141141be5ce747ee78be98e441746a05d3a4a0cb3911bf2ef93"
+    }
+  },
+  "primary_ftdi_sources": [
+    "https://ftdichip.com/Support/Knowledgebase/an232b_04smalldataend.htm",
+    "https://ftdichip.com/Support/Knowledgebase/an232beffectbuffsizeandlatency.htm"
+  ],
+  "limits": [
+    "Expected trace domain is local AutoCal USB traffic only; application request semantics remain unknown except the independently traced model query.",
+    "UI Read action does not establish that all observed adapter-local requests are side-effect free; route 4184 carried a 14-byte TX payload.",
+    "All retained application bytes framing and CRC validation do not prove complete capture: four IN submissions remain pending, eight metadata records are unparsed, and quiet tail was not achieved.",
+    "USBPcap records URBs; packet boundaries are derived from the separately verified descriptor and standard FTDI packet rules.",
+    "Opaque envelope metadata and RX trailing byte 19 retain unknown semantics.",
+    "No claim of lossless capture, noninterference, VPW monitoring, programming, recovery, or readiness to flash follows from this session."
+  ],
+  "complete_capture_proven": false,
+  "noninterference_proven": false,
+  "vpw_monitoring_qualified": false,
+  "active_transport_implemented_by_analyzer": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false
+}

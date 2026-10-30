@@ -1,0 +1,21 @@
+<Project>
+  <PropertyGroup>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)../../LocalOnly/AutoCalFrameTest/obj/</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
+  </PropertyGroup>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <OutputPath>../../LocalOnly/AutoCalFrameTest/bin/</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AutoCalFrameTest.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AutoCalHostFrame.cs" Link="AutoCalHostFrame.cs" />
+    <None Include="Fixtures/autocal_htx_envelope_cases.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+</Project>

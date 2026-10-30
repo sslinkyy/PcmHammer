@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "scope": "Saved HTX long-wrapper decoding cases, not USB-wire evidence or executable transport requests",
+  "provenance": "Public ACV2 identification and generic bus-header examples observed in retained read12/license-check HTXs; mutations are synthetic and explicitly named. No VIN, license serial, tune, or loader payload is included.",
+  "cases": [
+    {
+      "name": "observed_empty_identification_tx",
+      "channel": 1,
+      "wrapper_hex": "0154018207000000000000008177",
+      "framing_supported": true,
+      "payload_hex": "",
+      "route_role": "adapter_local_candidate",
+      "outer_crc_matches": true,
+      "rx_trailing_byte_hex": null
+    },
+    {
+      "name": "observed_acv2_identification_rx_read12",
+      "channel": 2,
+      "wrapper_hex": "0152018200000100000005004143563200224819",
+      "framing_supported": true,
+      "payload_hex": "4143563200",
+      "route_role": "adapter_local_candidate",
+      "outer_crc_matches": true,
+      "rx_trailing_byte_hex": "19"
+    },
+    {
+      "name": "observed_acv2_identification_rx_license_check",
+      "channel": 2,
+      "wrapper_hex": "015201820000000000000500414356320026b419",
+      "framing_supported": true,
+      "payload_hex": "4143563200",
+      "route_role": "adapter_local_candidate",
+      "outer_crc_matches": true,
+      "rx_trailing_byte_hex": "19"
+    },
+    {
+      "name": "observed_unreviewed_adapter_route",
+      "channel": 1,
+      "wrapper_hex": "0154268307000000000000003c57",
+      "framing_supported": true,
+      "payload_hex": "",
+      "route_role": "unknown",
+      "outer_crc_matches": true,
+      "rx_trailing_byte_hex": null
+    },
+    {
+      "name": "observed_bus_tx_other_header",
+      "channel": 1,
+      "wrapper_hex": "0154008a0700100000000400686af004fe01",
+      "framing_supported": true,
+      "payload_hex": "686af004",
+      "route_role": "bus_send_candidate",
+      "outer_crc_matches": true,
+      "rx_trailing_byte_hex": null
+    },
+    {
+      "name": "observed_bus_rx_other_header",
+      "channel": 2,
+      "wrapper_hex": "015210000000110000000400486b1044382619",
+      "framing_supported": true,
+      "payload_hex": "486b1044",
+      "route_role": "bus_receive_candidate",
+      "outer_crc_matches": true,
+      "rx_trailing_byte_hex": "19"
+    },
+    {
+      "name": "synthetic_unknown_rx_trailer_is_preserved",
+      "channel": 2,
+      "wrapper_hex": "015201820000010000000500414356320022487f",
+      "framing_supported": true,
+      "payload_hex": "4143563200",
+      "route_role": "adapter_local_candidate",
+      "outer_crc_matches": true,
+      "rx_trailing_byte_hex": "7f"
+    },
+    {
+      "name": "synthetic_corrupt_outer_crc_is_retained",
+      "channel": 1,
+      "wrapper_hex": "0154018207000000000000008176",
+      "framing_supported": true,
+      "payload_hex": "",
+      "route_role": "adapter_local_candidate",
+      "outer_crc_matches": false,
+      "rx_trailing_byte_hex": null
+    },
+    {
+      "name": "synthetic_truncated_header",
+      "channel": 1,
+      "wrapper_hex": "01540182",
+      "framing_supported": false,
+      "payload_hex": null,
+      "route_role": "unknown",
+      "outer_crc_matches": null,
+      "rx_trailing_byte_hex": null
+    },
+    {
+      "name": "synthetic_missing_crc_byte",
+      "channel": 1,
+      "wrapper_hex": "01540182070000000000000081",
+      "framing_supported": false,
+      "payload_hex": null,
+      "route_role": "unknown",
+      "outer_crc_matches": null,
+      "rx_trailing_byte_hex": null
+    },
+    {
+      "name": "synthetic_declared_length_exceeds_record",
+      "channel": 1,
+      "wrapper_hex": "0154018207000000000001008177",
+      "framing_supported": false,
+      "payload_hex": null,
+      "route_role": "unknown",
+      "outer_crc_matches": null,
+      "rx_trailing_byte_hex": null
+    },
+    {
+      "name": "synthetic_extra_rx_byte",
+      "channel": 2,
+      "wrapper_hex": "015201820000010000000500414356320022481900",
+      "framing_supported": false,
+      "payload_hex": null,
+      "route_role": "unknown",
+      "outer_crc_matches": null,
+      "rx_trailing_byte_hex": null
+    },
+    {
+      "name": "synthetic_unknown_wrapper_marker",
+      "channel": 1,
+      "wrapper_hex": "0155018207000000000000008177",
+      "framing_supported": false,
+      "payload_hex": null,
+      "route_role": "unknown",
+      "outer_crc_matches": null,
+      "rx_trailing_byte_hex": null
+    },
+    {
+      "name": "synthetic_htx_channel_prefix_disagreement",
+      "channel": 2,
+      "wrapper_hex": "0154018207000000000000008177",
+      "requires_htx_channel_validation": true,
+      "framing_supported": false,
+      "payload_hex": null,
+      "route_role": "unknown",
+      "outer_crc_matches": null,
+      "rx_trailing_byte_hex": null
+    }
+  ]
+}
