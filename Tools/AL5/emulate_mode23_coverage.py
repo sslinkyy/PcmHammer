@@ -9,8 +9,15 @@ RANGES=((0xbfda0,0xbfe48),(0xc00e8,0xc018e),(0xc2f88,0xc2fce),(0xc2fd0,0xc2ff6))
 
 
 class Probe:
-    def __init__(self,high):
-        if hashlib.sha256(high).hexdigest()!=HIGH_HASH:raise ValueError('Firmware identity changed')
+    def __init__(self,high,source='legacy_high'):
+        if source=='legacy_high':
+            if hashlib.sha256(high).hexdigest()!=HIGH_HASH:raise ValueError('Firmware identity changed')
+        elif source=='sps_os':
+            if len(high)!=679828 or hashlib.sha256(high).hexdigest()!='145d0dde8c4de88e3145b5693685ab28958d1dda70743c589cc0c7deaa4b45e7':
+                raise ValueError('SPS OS identity changed')
+            # The unavailable upper tail is synthetic inert memory, never a readback.
+            high=high+bytes(0xE0000-len(high))
+        else:raise ValueError('Unknown firmware source')
         from unicorn import Uc,UC_ARCH_M68K,UC_MODE_BIG_ENDIAN,UC_HOOK_CODE,UC_PROT_READ,UC_PROT_EXEC
         from unicorn.m68k_const import UC_CPU_M68K_M68020
         self.u=Uc(UC_ARCH_M68K,UC_MODE_BIG_ENDIAN);self.u.ctl_set_cpu_model(UC_CPU_M68K_M68020)
