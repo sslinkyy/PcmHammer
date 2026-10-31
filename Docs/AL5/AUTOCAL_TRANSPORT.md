@@ -941,7 +941,7 @@ reader callers retain submode one. Pending receive bytes after a completed
 block prevent further transmission. The profile requires all 128 ACK/data
 pairs, the pinned image digest, seven controller CRC ranges, kernel exit and
 post-exit identity. Its bounds remain 392 VPW / 399 host commands and 900
-seconds. No hardware full read has yet qualified this profile.
+seconds. The first physical full transfer passed the pinned digest but failed controller-CRC delivery; see the result below.
 
 The developer probe now has a separate fixed baseline-read profile. It reuses
 the production reader after verified kernel execution and checks 128 sequential
@@ -970,3 +970,26 @@ well as the later vehicle operation.
 An AutoCal backend does not establish the AL5 erase/program/verification or
 interrupted-write recovery path. AL5 `live_write_enabled` and `ready_to_flash`
 remain false.
+
+## Full acknowledged transfer: CRC delivery gap (2026-10-30)
+
+The isolated E54 test at 1x delivered all 128 acknowledgements and all 128
+4,096-byte data blocks through AutoCal. Offline journal reconstruction validates
+every block checksum and the full 512 KiB baseline SHA-256. The independent
+GT capture replays completely and contains all 265 AutoCal VPW replies in order.
+
+Verification then failed: the GT captured two checksum-valid replies for the
+first CRC range (address 0x60000, length 0x20000, CRC D6703728), but neither
+appears in AutoCal receive data. Zero of seven CRC ranges were accepted.
+The receive deadline faulted the channel; that describes the stop, not the
+cause of missing delivery. The session correctly failed without kernel exit
+or post-exit identity, and the reserved readback file stayed empty. Native
+ownership closed with zero retained owners; adapter protocol cleanup did not
+complete. The GT restored settings and returned its network OFF. A bench power
+cycle is required before another test.
+
+Evidence: `AUTOCAL_E54_ACK_FULL_CRC_GAP_20261030.json` under Docs/AL5; reproduce
+offline with `audit_ack_prefix_success.inspect(full=True)` using the pinned
+local artifacts. This establishes complete data delivery for one fixed 1x
+experiment, not a verified successful read, 4x capability, flashing or recovery.
+No flash operation ran and live writes remain disabled.

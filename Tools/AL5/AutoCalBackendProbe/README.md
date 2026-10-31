@@ -323,4 +323,27 @@ ACK-plus-zero profile without opening USB. Its live form is
 It uses the same exact RAM asset as the successful prefix test, but requests
 128 sequential 4096-byte blocks and seven CRC ranges. Every block requires
 its own ACK. The original full-read and prefix profiles remain separate.
-No full-image physical result exists yet; flashing remains unavailable.
+The first full-image transfer matched the baseline, but controller-CRC delivery failed; flashing remains unavailable.
+
+## Full acknowledged transfer: CRC delivery gap (2026-10-30)
+
+The isolated E54 test at 1x delivered all 128 acknowledgements and all 128
+4,096-byte data blocks through AutoCal. Offline journal reconstruction validates
+every block checksum and the full 512 KiB baseline SHA-256. The independent
+GT capture replays completely and contains all 265 AutoCal VPW replies in order.
+
+Verification then failed: the GT captured two checksum-valid replies for the
+first CRC range (address 0x60000, length 0x20000, CRC D6703728), but neither
+appears in AutoCal receive data. Zero of seven CRC ranges were accepted.
+The receive deadline faulted the channel; that describes the stop, not the
+cause of missing delivery. The session correctly failed without kernel exit
+or post-exit identity, and the reserved readback file stayed empty. Native
+ownership closed with zero retained owners; adapter protocol cleanup did not
+complete. The GT restored settings and returned its network OFF. A bench power
+cycle is required before another test.
+
+Evidence: `AUTOCAL_E54_ACK_FULL_CRC_GAP_20261030.json` under Docs/AL5; reproduce
+offline with `audit_ack_prefix_success.inspect(full=True)` using the pinned
+local artifacts. This establishes complete data delivery for one fixed 1x
+experiment, not a verified successful read, 4x capability, flashing or recovery.
+No flash operation ran and live writes remain disabled.
