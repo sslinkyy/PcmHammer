@@ -1,5 +1,9 @@
 # AL5 captured calibration writes, 2026-10-30
 
+Follow-up: [checksum-error and repeat correlation](CAPTURED_WRITE_RETRIES_20261030.md)
+identifies the short CRC-valid requests preceding every captured `760077` and
+replays the resulting block sequences through PcmHammer's offline session model.
+
 Three complete-duration saved EFILive sessions now establish a concrete observed
 write exchange. This is file-only analysis of earlier user-authorized EFILive
 operations, not a PcmHammer flash or recovery qualification. Source SHA256 values

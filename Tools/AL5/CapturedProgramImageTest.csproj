@@ -12,6 +12,7 @@
   <ItemGroup>
     <Compile Include="CapturedProgramImageTest.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5CapturedProgramImage.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5CapturedProgramSession.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5ProgrammingWorkflow.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5CalibrationInspection.cs" />
   </ItemGroup>

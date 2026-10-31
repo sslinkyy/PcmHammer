@@ -53,6 +53,39 @@ internal static class CapturedProgramImageTest
         var assessment=referenceImage.AssessReference(calibration,collateral);
         Check(!assessment.LiveWriteEnabled && !assessment.ReadyToFlash);
         collateral[0]=1;Reject(()=>referenceImage.AssessReference(calibration,collateral));
+        var retry=new AL5CapturedProgramSession();
+        retry.ObserveRequest(first);retry.ObserveReply(Convert.FromHexString("760077"));
+        Check(retry.PositiveReplies==0 && retry.State==AL5CapturedProgramState.ChecksumRejected);
+        Reject(()=>retry.ObserveRequest(Example(0x8200,512)));
+        Check(retry.RepeatsAfterChecksumError==0);
+        retry.ObserveRequest(first);retry.ObserveReply(Convert.FromHexString("760073"));
+        Check(retry.PositiveReplies==1 && retry.RepeatsAfterChecksumError==1);
+        try { retry.ObserveReply(Convert.FromHexString("760073")); throw new Exception("Orphan ACK accepted"); } catch(InvalidOperationException) { }
+        var next=Example(0x8200,512);retry.ObserveRequest(next);retry.ObserveRequest(next);
+        Check(retry.RepeatsWithoutReply==1);
+        retry.ObserveReply(Convert.FromHexString("7600F8"));
+        Check(retry.State==AL5CapturedProgramState.Stopped && !retry.LiveWriteEnabled && !retry.AutomaticRetryEnabled);
+        try { retry.ObserveRequest(next); throw new Exception("Stopped attempt resumed"); } catch(InvalidOperationException) { }
+        if(args.Length>0 && args[0]=="--sessions")
+        {
+            if((args.Length-1)%2!=0) throw new ArgumentException("Use replay path/hash pairs");
+            for(int i=1;i<args.Length;i+=2)
+            {
+                var replay=new AL5CapturedProgramSession();
+                foreach(var line in File.ReadLines(args[i]))
+                {
+                    var payload=Convert.FromHexString(line.Substring(2));
+                    if(line.StartsWith("T ")) replay.ObserveRequest(payload);
+                    else if(line.StartsWith("R ")) replay.ObserveReply(payload);
+                    else throw new ArgumentException("Unknown corpus direction");
+                }
+                Check(replay.State==AL5CapturedProgramState.BlocksAcknowledged && replay.PositiveReplies==192);
+                Check(Convert.ToHexString(SHA256.HashData(replay.CopyAcknowledgedCapture())).ToLowerInvariant()==args[i+1]);
+                Check(!replay.AutomaticRetryEnabled && !replay.PhysicalReadbackVerified);
+                Console.WriteLine("PASS real session: "+replay.ChecksumErrors+" checksum errors, "+replay.RepeatsAfterChecksumError+" identical repeats, "+replay.RepeatsWithoutReply+" unacknowledged repeats");
+            }
+            args=Array.Empty<string>();
+        }
         if(args.Length%2!=0) throw new ArgumentException("Use CORPUS EXPECTED_IMAGE_SHA256 pairs");
         for(int i=0;i<args.Length;i+=2)
         {

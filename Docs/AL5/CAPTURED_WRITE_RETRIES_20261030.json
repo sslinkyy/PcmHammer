@@ -1,0 +1,142 @@
+{
+  "scope": "Offline saved capture correlation, not physical recovery qualification",
+  "sessions": [
+    {
+      "schema": "al5-write-retry-correlation-v1",
+      "trace_sha256": "e436213e7f62d92b0a554a116a8a2d2fa1d8c2e1c41ace483432511ab49cda98",
+      "gt_sha256": "678c3555b632f19326d189019b3e6fa2ce0a0372c92f9798628106cf4cb4ba18",
+      "patterns": {
+        "request -> 760073": 175,
+        "request -> 760077 -> request -> 760073": 15,
+        "request -> request -> 760073": 2
+      },
+      "usb_program_wrapper_occurrences_missing": {},
+      "gt_short_program_frames": 15,
+      "gt_relevant_crc_failures": 0,
+      "trailing_host_events": 0,
+      "trailing_gt_events": 0,
+      "physical_cause_proven": false,
+      "retry_authorized": false,
+      "live_write_enabled": false,
+      "usb_envelopes_sha256": "8635e10531757875028b878bc1c2744095e585493e97fc8123bcd1c0ae04f395",
+      "session": "02",
+      "gt_patterns": {
+        "request:524 -> 760073": 176,
+        "request:11 -> 760077 -> request:524 -> 760073": 15,
+        "request:522 -> 760073": 1
+      },
+      "timing_ranges_ms": {
+        "first_request_to_77_ms": [
+          26.0,
+          28.0
+        ],
+        "77_to_repeat_ms": [
+          102.0,
+          119.0
+        ],
+        "repeat_to_73_ms": [
+          411.0,
+          436.0
+        ],
+        "no_reply_repeat_ms": [
+          1443.0,
+          1462.0
+        ]
+      },
+      "all_short_prefixes_match": true,
+      "preconfiguration_network_frames_excluded": 1
+    },
+    {
+      "schema": "al5-write-retry-correlation-v1",
+      "trace_sha256": "8b8e4531ce8f854e2d91f2e081775e7426dcd3f97eae2afd601e246d6b6f36ec",
+      "gt_sha256": "88314c88f7554ea819c4485b4aa224e5e02981090313392dba9cd4e44240760d",
+      "patterns": {
+        "request -> 760073": 167,
+        "request -> 760077 -> request -> 760073": 20,
+        "request -> request -> 760073": 5
+      },
+      "usb_program_wrapper_occurrences_missing": {},
+      "gt_short_program_frames": 20,
+      "gt_relevant_crc_failures": 0,
+      "trailing_host_events": 0,
+      "trailing_gt_events": 0,
+      "physical_cause_proven": false,
+      "retry_authorized": false,
+      "live_write_enabled": false,
+      "usb_envelopes_sha256": "6bc358bdf815393b00155f1e470c3fba827a13e8ff92e107acee2b000dfd063e",
+      "session": "04",
+      "gt_patterns": {
+        "request:524 -> 760073": 171,
+        "request:11 -> 760077 -> request:524 -> 760073": 20,
+        "request:522 -> 760073": 1
+      },
+      "timing_ranges_ms": {
+        "first_request_to_77_ms": [
+          26.0,
+          27.0
+        ],
+        "77_to_repeat_ms": [
+          101.0,
+          118.0
+        ],
+        "repeat_to_73_ms": [
+          411.0,
+          437.0
+        ],
+        "no_reply_repeat_ms": [
+          1428.0,
+          1456.0
+        ]
+      },
+      "all_short_prefixes_match": true,
+      "preconfiguration_network_frames_excluded": 0
+    },
+    {
+      "schema": "al5-write-retry-correlation-v1",
+      "trace_sha256": "8384441f9da209b176734b8e4e90ca76fb422e4daed23152a414bc437b7c5daf",
+      "gt_sha256": "e536ac026dc4563a0938874b5111b7bb93e507891934d5b1276ddfaa1519a083",
+      "patterns": {
+        "request -> 760073": 172,
+        "request -> 760077 -> request -> 760073": 19,
+        "request -> request -> 760073": 1
+      },
+      "usb_program_wrapper_occurrences_missing": {},
+      "gt_short_program_frames": 19,
+      "gt_relevant_crc_failures": 0,
+      "trailing_host_events": 0,
+      "trailing_gt_events": 0,
+      "physical_cause_proven": false,
+      "retry_authorized": false,
+      "live_write_enabled": false,
+      "usb_envelopes_sha256": "2c41479ec87f72faa71462e450101441bfda2cc99d7a9d5ee5e1a8ce6a63ea8a",
+      "session": "05",
+      "gt_patterns": {
+        "request:524 -> 760073": 172,
+        "request:11 -> 760077 -> request:524 -> 760073": 19,
+        "request:522 -> 760073": 1
+      },
+      "timing_ranges_ms": {
+        "first_request_to_77_ms": [
+          26.0,
+          27.0
+        ],
+        "77_to_repeat_ms": [
+          101.0,
+          118.0
+        ],
+        "repeat_to_73_ms": [
+          413.0,
+          437.0
+        ],
+        "no_reply_repeat_ms": [
+          1464.0,
+          1464.0
+        ]
+      },
+      "all_short_prefixes_match": true,
+      "preconfiguration_network_frames_excluded": 1
+    }
+  ],
+  "producer": "Tools/AL5/analyze_al5_write_retries.py",
+  "producer_sha256": "6525a2ddde365e127509d4fa329a4c114db0b8e64d9f39e48e229bc903df8439"
+}
