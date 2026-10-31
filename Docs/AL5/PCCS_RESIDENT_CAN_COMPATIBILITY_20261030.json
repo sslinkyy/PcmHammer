@@ -1,0 +1,537 @@
+{
+  "pccs_sha256": "13e083b9f1fc31b0909614c1403e9fb007f48385f0035c4f2725ffc525e6d40d",
+  "low_sha256": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
+  "resident_code_sha256": "fc25461273eac7b45e07efa34ddd91c5066571a4b1210ca13669505677d041e6",
+  "devices_xml_sha256": "15f22ef1913a1a891066f7b0104426015b0ef1ff053bd747236ff8fd88ddcc41",
+  "interfaces": [
+    {
+      "CommSelection": "18",
+      "TCM": "TCM_1K2K3rd",
+      "Protocol": "CAN",
+      "DisplayedProtocol": "J1939",
+      "Library": "DR121032",
+      "Device": "150",
+      "Desc": "DPA 4 or 4+ USB",
+      "Defaulted": "Yes"
+    },
+    {
+      "CommSelection": "72",
+      "TCM": "TCM_1K2K3rd",
+      "Protocol": "CAN",
+      "DisplayedProtocol": "J1939",
+      "Library": "NORWIR32",
+      "Device": "100",
+      "Desc": "Noregon Wireless/USB",
+      "Defaulted": "No"
+    },
+    {
+      "CommSelection": "127",
+      "TCM": "TCM_1K2K3rd",
+      "Protocol": "CAN",
+      "DisplayedProtocol": "J1939",
+      "Library": "DLAWIR32",
+      "Device": "100",
+      "Desc": "Noregon DLA+WL 2.0",
+      "Defaulted": "No"
+    },
+    {
+      "CommSelection": "51",
+      "TCM": "TCM_1K2K3rd",
+      "Protocol": "CAN",
+      "DisplayedProtocol": "J1939",
+      "Library": "VE121032",
+      "Device": "1",
+      "Desc": "Noregon DLA USB",
+      "Defaulted": "No"
+    },
+    {
+      "CommSelection": "13",
+      "TCM": "TCM_1K2K3rd",
+      "Protocol": "CAN",
+      "DisplayedProtocol": "J1939",
+      "Library": "PCSRP32",
+      "Device": "1",
+      "Desc": "Noregon DLA",
+      "Defaulted": "No"
+    },
+    {
+      "CommSelection": "44",
+      "TCM": "TCM_1K2K3rd",
+      "Protocol": "CAN",
+      "DisplayedProtocol": "J1939",
+      "Library": "NXULNK32",
+      "Device": "1",
+      "Desc": "NEXIQ USB-Link",
+      "Defaulted": "No"
+    },
+    {
+      "CommSelection": "14",
+      "TCM": "TCM_1K2K3rd",
+      "Protocol": "CAN",
+      "DisplayedProtocol": "J1939",
+      "Library": "DX121032",
+      "Device": "202",
+      "Desc": "Nexiq MagiKey",
+      "Defaulted": "No"
+    },
+    {
+      "CommSelection": "15",
+      "TCM": "TCM_1K2K3rd",
+      "Protocol": "CAN",
+      "DisplayedProtocol": "J1939",
+      "Library": "VECTCDXL32",
+      "Device": "15",
+      "Desc": "Vector CANCardXL",
+      "Defaulted": "No"
+    },
+    {
+      "CommSelection": "94",
+      "TCM": "TCM_1K2K3rd",
+      "Protocol": "CAN",
+      "DisplayedProtocol": "J1939",
+      "Library": "VECTCDXL32",
+      "Device": "21",
+      "Desc": "Vector CANcaseXL",
+      "Defaulted": "No"
+    },
+    {
+      "CommSelection": "107",
+      "TCM": "TCM_1K2K3rd",
+      "Protocol": "CAN",
+      "DisplayedProtocol": "J1939",
+      "Library": "VECTCDXL32",
+      "Device": "55",
+      "Desc": "Vector VN16xx",
+      "Defaulted": "No"
+    },
+    {
+      "CommSelection": "63",
+      "TCM": "TCM_1K2K3rd",
+      "Protocol": "CAN",
+      "DisplayedProtocol": "J1939",
+      "Library": "SOFTUSB",
+      "Device": "111",
+      "Desc": "Softing CANusb",
+      "Defaulted": "No"
+    },
+    {
+      "CommSelection": "16",
+      "TCM": "TCM_1K2K3rd",
+      "Protocol": "CAN",
+      "DisplayedProtocol": "J1939",
+      "Library": "SOFTCD32",
+      "Device": "1",
+      "Desc": "Softing CANCard2",
+      "Defaulted": "No"
+    },
+    {
+      "CommSelection": "17",
+      "TCM": "TCM_1K2K3rd",
+      "Protocol": "CAN",
+      "DisplayedProtocol": "J1939",
+      "Library": "SOFTPCI",
+      "Device": "3",
+      "Desc": "Softing AC2 (PCI)",
+      "Defaulted": "No"
+    },
+    {
+      "CommSelection": "86",
+      "TCM": "TCM_1K2K3rd",
+      "Protocol": "CAN",
+      "DisplayedProtocol": "J1939",
+      "Library": "DGDPA5MA",
+      "Device": "1",
+      "Desc": "DPA 5 USB",
+      "Defaulted": "No"
+    },
+    {
+      "CommSelection": "116",
+      "TCM": "TCM_1K2K3rd",
+      "Protocol": "CAN",
+      "DisplayedProtocol": "J1939",
+      "Library": "NULN2R32",
+      "Device": "1",
+      "Desc": "NEXIQ USB-Link 2",
+      "Defaulted": "No"
+    }
+  ],
+  "cases": [
+    {
+      "address": 32768,
+      "internal_identifier": "0x3f8",
+      "host_internal_payload": "2200800011223344",
+      "controller": {
+        "flash_calls": [
+          {
+            "operation": 1,
+            "selector": 0,
+            "count": 4,
+            "destination": "0x008000",
+            "data_hex": "11223344",
+            "primitive_executed": false
+          }
+        ],
+        "responses": [
+          {
+            "internal_frame_hex": "1500077fc018000000002200800000000000",
+            "data_hex": "2200800000"
+          }
+        ],
+        "instructions": 244,
+        "memory_mode": 0,
+        "stored_address": "00008000",
+        "ram_probe_hex": "00000000",
+        "ready_to_flash": false,
+        "live_write_enabled": false
+      }
+    },
+    {
+      "address": 32768,
+      "internal_identifier": "0x3f9",
+      "host_internal_payload": "2200800011223344",
+      "controller": {
+        "flash_calls": [
+          {
+            "operation": 1,
+            "selector": 0,
+            "count": 4,
+            "destination": "0x008000",
+            "data_hex": "11223344",
+            "primitive_executed": false
+          }
+        ],
+        "responses": [
+          {
+            "internal_frame_hex": "1500077fc818000000002200800000000000",
+            "data_hex": "2200800000"
+          }
+        ],
+        "instructions": 246,
+        "memory_mode": 0,
+        "stored_address": "00008000",
+        "ram_probe_hex": "00000000",
+        "ready_to_flash": false,
+        "live_write_enabled": false
+      }
+    },
+    {
+      "address": 32768,
+      "internal_identifier": "0x2f8",
+      "host_internal_payload": "2200800011223344",
+      "controller": {
+        "flash_calls": [],
+        "responses": [],
+        "instructions": 27,
+        "memory_mode": 0,
+        "stored_address": "00000000",
+        "ram_probe_hex": "00000000",
+        "ready_to_flash": false,
+        "live_write_enabled": false
+      }
+    },
+    {
+      "address": 32772,
+      "internal_identifier": "0x3f8",
+      "host_internal_payload": "2200800455667788",
+      "controller": {
+        "flash_calls": [
+          {
+            "operation": 1,
+            "selector": 0,
+            "count": 4,
+            "destination": "0x008004",
+            "data_hex": "55667788",
+            "primitive_executed": false
+          }
+        ],
+        "responses": [
+          {
+            "internal_frame_hex": "1500077fc018000000002200800400000000",
+            "data_hex": "2200800400"
+          }
+        ],
+        "instructions": 244,
+        "memory_mode": 0,
+        "stored_address": "00008004",
+        "ram_probe_hex": "00000000",
+        "ready_to_flash": false,
+        "live_write_enabled": false
+      }
+    },
+    {
+      "address": 32772,
+      "internal_identifier": "0x3f9",
+      "host_internal_payload": "2200800455667788",
+      "controller": {
+        "flash_calls": [
+          {
+            "operation": 1,
+            "selector": 0,
+            "count": 4,
+            "destination": "0x008004",
+            "data_hex": "55667788",
+            "primitive_executed": false
+          }
+        ],
+        "responses": [
+          {
+            "internal_frame_hex": "1500077fc818000000002200800400000000",
+            "data_hex": "2200800400"
+          }
+        ],
+        "instructions": 246,
+        "memory_mode": 0,
+        "stored_address": "00008004",
+        "ram_probe_hex": "00000000",
+        "ready_to_flash": false,
+        "live_write_enabled": false
+      }
+    },
+    {
+      "address": 32772,
+      "internal_identifier": "0x2f8",
+      "host_internal_payload": "2200800455667788",
+      "controller": {
+        "flash_calls": [],
+        "responses": [],
+        "instructions": 27,
+        "memory_mode": 0,
+        "stored_address": "00000000",
+        "ram_probe_hex": "00000000",
+        "ready_to_flash": false,
+        "live_write_enabled": false
+      }
+    },
+    {
+      "address": 131072,
+      "internal_identifier": "0x3f8",
+      "host_internal_payload": "2202000011223344",
+      "controller": {
+        "flash_calls": [
+          {
+            "operation": 1,
+            "selector": 0,
+            "count": 4,
+            "destination": "0x020000",
+            "data_hex": "11223344",
+            "primitive_executed": false
+          }
+        ],
+        "responses": [
+          {
+            "internal_frame_hex": "1500077fc018000000002202000000000000",
+            "data_hex": "2202000000"
+          }
+        ],
+        "instructions": 244,
+        "memory_mode": 0,
+        "stored_address": "00020000",
+        "ram_probe_hex": "00000000",
+        "ready_to_flash": false,
+        "live_write_enabled": false
+      }
+    },
+    {
+      "address": 131072,
+      "internal_identifier": "0x3f9",
+      "host_internal_payload": "2202000011223344",
+      "controller": {
+        "flash_calls": [
+          {
+            "operation": 1,
+            "selector": 0,
+            "count": 4,
+            "destination": "0x020000",
+            "data_hex": "11223344",
+            "primitive_executed": false
+          }
+        ],
+        "responses": [
+          {
+            "internal_frame_hex": "1500077fc818000000002202000000000000",
+            "data_hex": "2202000000"
+          }
+        ],
+        "instructions": 246,
+        "memory_mode": 0,
+        "stored_address": "00020000",
+        "ram_probe_hex": "00000000",
+        "ready_to_flash": false,
+        "live_write_enabled": false
+      }
+    },
+    {
+      "address": 131072,
+      "internal_identifier": "0x2f8",
+      "host_internal_payload": "2202000011223344",
+      "controller": {
+        "flash_calls": [],
+        "responses": [],
+        "instructions": 27,
+        "memory_mode": 0,
+        "stored_address": "00000000",
+        "ram_probe_hex": "00000000",
+        "ready_to_flash": false,
+        "live_write_enabled": false
+      }
+    },
+    {
+      "address": 131076,
+      "internal_identifier": "0x3f8",
+      "host_internal_payload": "2202000455667788",
+      "controller": {
+        "flash_calls": [
+          {
+            "operation": 1,
+            "selector": 0,
+            "count": 4,
+            "destination": "0x020004",
+            "data_hex": "55667788",
+            "primitive_executed": false
+          }
+        ],
+        "responses": [
+          {
+            "internal_frame_hex": "1500077fc018000000002202000400000000",
+            "data_hex": "2202000400"
+          }
+        ],
+        "instructions": 244,
+        "memory_mode": 0,
+        "stored_address": "00020004",
+        "ram_probe_hex": "00000000",
+        "ready_to_flash": false,
+        "live_write_enabled": false
+      }
+    },
+    {
+      "address": 131076,
+      "internal_identifier": "0x3f9",
+      "host_internal_payload": "2202000455667788",
+      "controller": {
+        "flash_calls": [
+          {
+            "operation": 1,
+            "selector": 0,
+            "count": 4,
+            "destination": "0x020004",
+            "data_hex": "55667788",
+            "primitive_executed": false
+          }
+        ],
+        "responses": [
+          {
+            "internal_frame_hex": "1500077fc818000000002202000400000000",
+            "data_hex": "2202000400"
+          }
+        ],
+        "instructions": 246,
+        "memory_mode": 0,
+        "stored_address": "00020004",
+        "ram_probe_hex": "00000000",
+        "ready_to_flash": false,
+        "live_write_enabled": false
+      }
+    },
+    {
+      "address": 131076,
+      "internal_identifier": "0x2f8",
+      "host_internal_payload": "2202000455667788",
+      "controller": {
+        "flash_calls": [],
+        "responses": [],
+        "instructions": 27,
+        "memory_mode": 0,
+        "stored_address": "00000000",
+        "ram_probe_hex": "00000000",
+        "ready_to_flash": false,
+        "live_write_enabled": false
+      }
+    },
+    {
+      "address": 131068,
+      "internal_identifier": "0x3f8",
+      "host_internal_payload": "2201fffc11223344",
+      "controller": {
+        "flash_calls": [
+          {
+            "operation": 1,
+            "selector": 0,
+            "count": 4,
+            "destination": "0x01FFFC",
+            "data_hex": "11223344",
+            "primitive_executed": false
+          }
+        ],
+        "responses": [
+          {
+            "internal_frame_hex": "1500077fc018000000002201fffc00000000",
+            "data_hex": "2201fffc00"
+          }
+        ],
+        "instructions": 244,
+        "memory_mode": 0,
+        "stored_address": "0001fffc",
+        "ram_probe_hex": "00000000",
+        "ready_to_flash": false,
+        "live_write_enabled": false
+      }
+    },
+    {
+      "address": 131068,
+      "internal_identifier": "0x3f9",
+      "host_internal_payload": "2201fffc11223344",
+      "controller": {
+        "flash_calls": [
+          {
+            "operation": 1,
+            "selector": 0,
+            "count": 4,
+            "destination": "0x01FFFC",
+            "data_hex": "11223344",
+            "primitive_executed": false
+          }
+        ],
+        "responses": [
+          {
+            "internal_frame_hex": "1500077fc818000000002201fffc00000000",
+            "data_hex": "2201fffc00"
+          }
+        ],
+        "instructions": 246,
+        "memory_mode": 0,
+        "stored_address": "0001fffc",
+        "ram_probe_hex": "00000000",
+        "ready_to_flash": false,
+        "live_write_enabled": false
+      }
+    },
+    {
+      "address": 131068,
+      "internal_identifier": "0x2f8",
+      "host_internal_payload": "2201fffc11223344",
+      "controller": {
+        "flash_calls": [],
+        "responses": [],
+        "instructions": 27,
+        "memory_mode": 0,
+        "stored_address": "00000000",
+        "ram_probe_hex": "00000000",
+        "ready_to_flash": false,
+        "live_write_enabled": false
+      }
+    }
+  ],
+  "command_payload_compatibility_observed": true,
+  "physical_can_support_proven": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "limits": [
+    "PCCS target index/family and success replies are synthetic; boot entry not executed.",
+    "Payload handoff bypasses CAN envelope, peripheral reception, driver and host response parser.",
+    "Resident internal identifier is injected, not a verified wire-ID decoder.",
+    "All flash primitives and send helpers trapped. No erase, program or recovery executed.",
+    "Saved editor LOW image is not a current physical boot-region backup.",
+    "Catalog family membership does not establish exact AL5 hardware or harness compatibility."
+  ]
+}
