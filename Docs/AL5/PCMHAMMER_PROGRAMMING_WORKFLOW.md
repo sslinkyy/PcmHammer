@@ -1,5 +1,11 @@
 # PcmHammer AL5 offline programming workflow
 
+New saved-wire evidence and the production offline decoder are documented in
+[captured writes, 2026-10-30](CAPTURED_WRITE_SESSIONS_20261030.md). Actual EFILive
+requests use 512-byte blocks across the calibration/collateral boundary, with
+a 510-byte tail. The 256-byte coordinator layout below remains a conditional
+model, not a claim about those captured requests. Live writing remains disabled.
+
 The shared `Apps/PcmLibrary/AL5ProgrammingWorkflow.cs` now owns a typed,
 file-only assessment of the modeled AL5 programming sequence and retry
 constraints. Both the WinForms file tools and the shared `WriteManager` consume

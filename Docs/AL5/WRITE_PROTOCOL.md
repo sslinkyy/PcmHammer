@@ -1,5 +1,11 @@
 # AL5 offline programming state machine
 
+**2026-10-30 evidence update:** [Captured successful EFILive writes](CAPTURED_WRITE_SESSIONS_20261030.md)
+now establish observed loader, erase/program/finalize exchanges and matching
+transmitted calibration bytes. Historical unknowns below describe the earlier
+analysis baseline. They must not override the newer observations or imply that
+PcmHammer writing, interrupted-flash recovery or all retry paths are qualified.
+
 This is an evidence-based reconstruction scaffold. Unknown packet formats are
 deliberately absent. No live erase, program, key, or loader upload was performed.
 The existing PCM writer cannot be assumed to apply to VPW module `0x18`.

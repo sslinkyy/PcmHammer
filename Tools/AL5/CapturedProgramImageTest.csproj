@@ -1,0 +1,19 @@
+<Project>
+  <PropertyGroup>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)../../LocalOnly/CapturedProgramImageTest/obj/</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
+  </PropertyGroup>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+    <OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><Nullable>enable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <OutputPath>../../LocalOnly/CapturedProgramImageTest/bin/</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="CapturedProgramImageTest.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5CapturedProgramImage.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5ProgrammingWorkflow.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5CalibrationInspection.cs" />
+  </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+</Project>
