@@ -1,0 +1,75 @@
+{
+  "executable_sha256": "13e083b9f1fc31b0909614c1403e9fb007f48385f0035c4f2725ffc525e6d40d",
+  "known_analysis_build": true,
+  "controller_ini_sha256": "2f8981122c6f0ac517265f37921cdce842acd45d0f917711348465a548aca8f9",
+  "fil_count": 49,
+  "transmission_utility_references": [
+    {
+      "section": "Utility File",
+      "configured_path": "C:\\Program Files\\Allison Transmission\\Allison TCM Reflash (PCCS)\\DownloadApp\\util\\AppandCal_Utility.Fil",
+      "configured_path_exists": false,
+      "same_basename_candidates": [],
+      "compatibility_proven": false
+    },
+    {
+      "section": "Utility File Cal Only",
+      "configured_path": "C:\\Program Files\\Allison Transmission\\Allison TCM Reflash (PCCS)\\DownloadApp\\util\\CalOnly_Utility.Fil",
+      "configured_path_exists": false,
+      "same_basename_candidates": [
+        {
+          "path": "DownloadApp\\CALONLY_UTILITY.FIL",
+          "sha256": "d1dadc0060c6f619b4c683cea308237b768bf1970ee39e99724fb9cb533083a9"
+        }
+      ],
+      "compatibility_proven": false
+    },
+    {
+      "section": "Utility File Program Only",
+      "configured_path": "C:\\Program Files\\Allison Transmission\\Allison TCM Reflash (PCCS)\\DownloadApp\\util\\AppOnly_Utility.Fil",
+      "configured_path_exists": false,
+      "same_basename_candidates": [
+        {
+          "path": "DownloadApp\\APPONLY_UTILITY.FIL",
+          "sha256": "ef51253b5b184c1c9a578481ddcc9a0ae638db987447224a2d16688205a0ac59"
+        }
+      ],
+      "compatibility_proven": false
+    },
+    {
+      "section": "Utility File PO Only",
+      "configured_path": "C:\\Program Files\\Allison Transmission\\Allison TCM Reflash (PCCS)\\DownloadApp\\util\\POOnly_Utility.Fil",
+      "configured_path_exists": false,
+      "same_basename_candidates": [
+        {
+          "path": "DownloadApp\\POONLY_UTILITY.FIL",
+          "sha256": "a953e07236a1fb0be6b7587755f616681179b2ecb7f303732c4b4f9b5e90795e"
+        }
+      ],
+      "compatibility_proven": false
+    },
+    {
+      "section": "Utility File Boot Reprogram List",
+      "configured_path": "C:\\Program Files\\Allison Transmission\\Allison TCM Reflash (PCCS)\\DownloadApp\\util\\BootProg_Utility.fil",
+      "configured_path_exists": false,
+      "same_basename_candidates": [],
+      "compatibility_proven": false
+    }
+  ],
+  "other_utility_settings": [
+    {
+      "section": "Utility File Correct Boot",
+      "value": "B47",
+      "interpretation": "not classified as a FIL path"
+    }
+  ],
+  "spx1850_candidates": [],
+  "generic_appandcal_present": false,
+  "erase_app_present": false,
+  "qualified_al5_programming_route": false,
+  "live_write_enabled": false,
+  "limits": [
+    "Installed PCCS tree only; no registry, system-wide driver or installer payload search.",
+    "File presence and same-basename candidates do not establish compatibility or active selection.",
+    "No configuration changes, DLL loads, application launch or hardware access."
+  ]
+}
