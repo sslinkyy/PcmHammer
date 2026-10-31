@@ -16,6 +16,9 @@ class SpsPlanTests(unittest.TestCase):
         self.assertNotIn('-A',args)
         self.assertFalse(r['launch_performed'])
         self.assertFalse(r['topology_identity_verified'])
+        self.assertEqual('-',args[args.index('-o')+1])
+        self.assertTrue(r['capture_supervisor'].endswith('usbpcap_pipe_supervisor.py'))
+        self.assertIn('DETACHED_PROCESS',r['supervisor_launch'])
 
     def test_invalid_or_partial_binding(self):
         for values in [(None,2),(r'\\.\USBPcap1',None),('USBPcap1',2),(r'\\.\USBPcap1',0),(r'\\.\USBPcap1',128)]:

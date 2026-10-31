@@ -11,12 +11,17 @@ def plan(hub=None,address=None):
         raise ValueError('Expected an explicit USBPcap control device')
     if address is not None and (type(address) is not int or not 1<=address<=127):
         raise ValueError('USB address must be 1..127')
-    args=None if hub is None else ['-d',hub,'--devices',str(address),'--inject-descriptors',
-                                 '-s','65535','-b','16777216','-o','gt_sps2.pcap']
+    args=None if hub is None else ['-d',hub,'--devices',str(address),
+                                 '-s','1048576','-b','16777216','-o','-']
     return dict(capture_executable=r'C:\Program Files\USBPcap\USBPcapCMD.exe',
                 proposed_capture_arguments=args,plan_only=True,launch_performed=False,
                 topology_identity_verified=False,vin_coverage_verified=False,
                 flashing_authorized=False,serial_port_open=False,
+                capture_supervisor='LocalOnly/usb_capture_setup_20261030/usbpcap_pipe_supervisor.py',
+                supervisor_launch='pythonw.exe with DETACHED_PROCESS; not python.exe with CREATE_NO_WINDOW',
+                stop_method='Write receipt.stop_request to receipt.stop_path; supervisor drains and closes its owned pipe.',
+                obsolete_supervisor='Do not launch usbpcap_console_supervisor.py; shared definitions only.',
+                capture_arguments_scope='Child arguments only: stdout must be the supervisor-owned duplex pipe, not a terminal.',
                 prerequisites=['Verify current GT USB identity, hub and device address immediately before capture.',
                                'Do not use all-device capture or reuse an old address after reconnect.',
                                'Use a fresh output directory and confirm capture is writing before SPS communication.',

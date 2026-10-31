@@ -52,3 +52,22 @@ The displayed VIN is blank and the vehicle selectors show Chevrolet / 2003 / Med
 Fresh inventory preparation: LocalOnly/sps2_capture_preparation_20261030/enumerate_sps_gt_01.ps1, copied from the existing verified inventory procedure with a fresh receipt filename. Not launched; no elevation requested, USB capture started or serial port opened. The plan-only unit suite passes three tests.
 
 Capture readiness is blocked by the console stop self-test. A correctly hidden CREATE_NEW_CONSOLE launch of the existing supervisor reached the fixture but the fixture exited before AttachConsole. surrogate_ready.json records NULL standard input and console_mode_valid=false. Evidence: LocalOnly/usb_capture_setup_20261030/sps_stop_selftest_02. No USBPcap process was involved. The older console launch assumption must be repaired and the clean-stop fixture passed before relying on this helper for programming capture. This is a capture-helper failure, not an SPS2/GT recognition failure.
+
+## Capture-helper correction and offline qualification (2026-10-30)
+
+The previous follow-up selected the obsolete console supervisor. The existing duplex-pipe supervisor is the supported path (see USB_CAPTURE_COMPARISON.md). Its native fixture now passes when launched with pythonw.exe and DETACHED_PROCESS. python.exe with CREATE_NO_WINDOW did not satisfy the consoleless precondition on this machine. Microsoft documents that GUI standard handles may be absent and that console handles require an appropriate inheritance/attachment relationship:
+https://learn.microsoft.com/en-us/windows/console/getstdhandle
+https://learn.microsoft.com/en-us/windows/console/console-handles
+
+Corrections:
+
+- The private console helper now refuses direct execution before any launch; its shared definitions remain importable by the pipe helper. No old evidence was removed.
+- The pipe helper launch instructions now require pythonw.exe with DETACHED_PROCESS. Fixture-only stop modes permit exercising explicit stop files and duration expiry without hardware.
+- prepare_sps_usb_capture.py identifies the pipe supervisor and its receipt-based stop mechanism. Proposed child arguments now match its 1 MiB snap length, 16 MiB buffer and duplex stdout output. They are not standalone shell capture instructions. Descriptor injection is not included in this supervisor invocation; the older plan's direct-file arguments are superseded.
+- validate_sps_capture_stop.py is a repeatable Windows offline runner using only native fixtures. It has no hardware launch mode and retains fresh evidence directories.
+
+Validation: seven native cases passed (ready stop, external stop, duration stop, wrong-session stop rejection, receipt-publication failure, fsync failure, file-close failure). Every case retained all 65,537 expected fixture bytes with SHA256 237356e18b503616912abb8ffaed3a72591e397d4ac294c4637917d48a3f529d and observed native child exit 0 after pipe closure. Wrong-session and injected-failure cases remain reported as failures, not successful captures, while still cleaning up their child. The three fault cases also verify all tracked native handles are closed. Three capture-plan unit tests pass. No USBPcap or fixture process remained in the final process check.
+
+Private evidence: LocalOnly/usb_capture_setup_20261030/sps_stop_validation_59207daabea248d4800ecc5f0732e2a3.json, including helper hashes and each receipt path. Earlier failed console receipts remain intact. The helper changes reside in the existing ignored LocalOnly directory; the runner and plan correction are tracked.
+
+The offline shutdown blocker is resolved. This establishes fixture byte retention and process cleanup only, not real USB capture, complete driver-buffer drain or programming readiness. The truck remained disconnected; no adapter was opened and no flash was started. Fresh elevated USB topology inventory and an actual USB capture check remain required before a later programming capture.
