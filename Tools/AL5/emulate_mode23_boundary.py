@@ -10,8 +10,8 @@ EXTRA=((0x23694,0x2377a),(0x23c9c,0x23d14),(0x23e88,0x23f28),
 
 
 class Boundary(Probe):
-    def __init__(self, high):
-        super().__init__(high)
+    def __init__(self, high, source='legacy_high'):
+        super().__init__(high,source=source)
         self.ranges.extend(EXTRA)
 
     def request(self,address):

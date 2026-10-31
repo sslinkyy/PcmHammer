@@ -17,6 +17,16 @@ class Program
   Check(campaign.ObserveSavedReply(Reply(0x8004),out _,out _)==AL5SavedReplyKind.Unrelated && campaign.HasPendingRequest);
   Check(campaign.ObserveSavedReply(Reply(0x8000),out var accepted,out _)==AL5SavedReplyKind.MatchingLow16Echo);
   campaign.StartLogicalSegment();Reject(()=>campaign.BeginSavedRequest(0x18000));Check(campaign.Stopped && campaign.MatchedDwords==1);
+  // Native event tracing shows that an acknowledged body can be requeued verbatim.
+  // Neither an observed positive reply nor a logical segment may authorize its echo again.
+  var retainedReply=Reply(0x8000);var requeued=new AL5SpsSavedReadCampaign(firmware);
+  requeued.BeginSavedRequest(0x8000);requeued.ObserveSavedReply(retainedReply,out _,out _);
+  Reject(()=>requeued.ObserveSavedReply(retainedReply,out _,out _));requeued.StartLogicalSegment();
+  Reject(()=>requeued.BeginSavedRequest(0x18000));Check(requeued.Stopped);
+  var otherEcho=new AL5SpsSavedReadCampaign(firmware);otherEcho.BeginSavedRequest(0x8000);otherEcho.ObserveSavedReply(retainedReply,out _,out _);
+  otherEcho.StartLogicalSegment();otherEcho.BeginSavedRequest(0x18004);
+  Check(otherEcho.ObserveSavedReply(retainedReply,out _,out _)==AL5SavedReplyKind.Unrelated && otherEcho.HasPendingRequest);
+  otherEcho.ObserveSavedReply(Reply(0x18004),out _,out _);Check(otherEcho.MatchedDwords==2 && !otherEcho.PhysicalBoundaryProven);
   var timed=new AL5SpsSavedReadCampaign(firmware);timed.BeginSavedRequest(0xC5F94);timed.TimeoutOrCancel();Reject(()=>timed.StartLogicalSegment());Reject(()=>timed.ObserveSavedReply(Reply(0xC5F94),out _,out _));
   var unknownHistory=new AL5SpsSavedReadCampaign(firmware);unknownHistory.BeginSavedRequest(0x18000);Check(unknownHistory.ObserveSavedReply(Reply(0x8000),out _,out _)==AL5SavedReplyKind.MatchingLow16Echo);Check(!unknownHistory.FreshnessProven && !unknownHistory.FullAddressIdentityProven);
   var overlap=new AL5SpsSavedReadCampaign(firmware);overlap.BeginSavedRequest(0xC4C62);Check(overlap.ObserveSavedReply(Reply(0xC4C62),out _,out _)==AL5SavedReplyKind.MatchingLow16Echo);

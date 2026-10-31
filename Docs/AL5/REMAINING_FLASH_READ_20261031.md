@@ -42,3 +42,22 @@ AL5SpsSavedReadCampaign now owns used low-16 echoes across saved logical segment
 Tests explicitly demonstrate the unresolved ambiguity: a newly created campaign requesting 0x18000 cannot distinguish a saved positive reply originally associated with 0x08000 if the low echo matches. It reports only MatchingLow16Echo and keeps freshness, physical boundary and full-address identity false. The campaign is not a proof that a new physical session is clean. Broader live reads and writes remain disabled.
 
 The next target is the complete downstream event/receive path and peripheral completion semantics, coupled to adapter/USB draining. No arbitrary delay, software queue clear, logical segment or short status frame is accepted as a bank-transition fence. A qualified physical boundary is still unresolved.
+
+
+## Executed downstream event requeue and retained-body witness
+
+emulate_sps_receive_events.py now executes the actual pinned SPS receive accumulator 0x23570, ring producer 0xB6230, partial-record discard 0xB6328, event handler 0x23428, response tracking 0xC54E8 and requeue helper 0xC54CC/0xC17BC. The receive request fixture is the eight bytes 6D 18 F0 23 00 80 00 01. Global/register state is synthetic; no vehicle access is performed.
+
+The scheduler stores its selected index at A5+0xF54 (0x23ABC), clears the pending bit and formats/submits the response. After submission, 0xC54E8 copies that selected index to A5+0xF46. Crucially, 0xC54CC calls 0xC17BC, which SETS the selected pending bit, then clears the tracking index. This differs from 0xC17E4, which clears a pending bit. Thus these helpers must not be conflated as equivalent cleanup.
+
+Eight executed cases establish:
+
+- With synthetic tracked response index 75 (Mode 23) and an eight-byte receive accumulation, event mask 0 requeues bit 0x10 at 0xFF8F3F, retains the six-byte reply body, resets the tracking index and commits the receive ring record.
+- Event masks 0x10 and 0x20 leave the tracking index 75 in place while retaining the body. Masks 0x40 and 0x80 take distinct ring-discard paths. These numeric masks are not assigned physical success/error labels.
+- Direct partial-record discard 0xB6328 clears the accumulated ring bytes and rewinds the producer, while retaining Mode 23 body and tracked index. It is not controller-wide response invalidation.
+- An event with zero accumulated length retains the tracked response index; absence of a receive record is not completion.
+- The integrated case executes native formatting, software submission, response tracking, receive accumulation, event requeue and formatting again. Both formatted payloads are identical: 6C F0 18 63 80 00 12 34 56 78. This proves a retained-body software path, not physical duplicate transmission, wire timing or adapter drain.
+
+The production offline campaign tests now replay the consequence: a duplicate retained reply cannot own a new request, a logical segment cannot permit reuse at an aliased bank address, and a stale reply with a different low echo remains unrelated while the pending slot stays intact. Starting a new campaign still cannot prove absence of external historical responses.
+
+The reliable physical boundary remains unresolved. Any proposed boundary must account for pending-body requeue, queued receive work, the tracked response index, physical interface transmission and adapter/USB buffers together. Host observation of one positive reply and empty software TX staging are demonstrably insufficient as a software-state argument. None of these native cases claims a real request failed or duplicated. Broader live reads and all PcmHammer AL5 writes remain disabled.
