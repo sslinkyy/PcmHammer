@@ -27,3 +27,18 @@ A positive Mode 23 reply echoes only the low two address bytes. Earlier native t
 The most useful next trace is the peripheral submission/completion and receive-invalidation path in the pinned SPS OS, including interrupt callers of 0x70AA8/0x70CE0. A broader live reader needs a justified single-pending correlation and timeout/stop policy before bank transitions. Six excluded bytes require a separate independently qualified acquisition path if complete flash verification is required. The captured SPS programming loader is not qualified for read-only use.
 
 No newly acquired flash bytes are claimed by this audit. The independently verified 57,304-byte calibration remains the only current PcmHammer readback from this SPS session. OS, tails and protected-prefix physical preservation remain unverified; live writes and broader live reads stay disabled.
+
+
+## Status paths and correlation across logical bank segments
+
+The pinned SPS OS status routines were decoded at 0x70AA8-0x70C9B and 0x70CE0-0x70E31. Absolute call sites for 0x70AA8 occur at 0xC3DD0/0xC3DEE/0xC431A/0xC4344; the latter wrappers call 0x21D08/0x21D18 around the status consumer. The only absolute call to 0x70CE0 found in this bounded literal search is 0x4FEAA, among other task calls. A literal call-site search is not complete indirect/interrupt caller recovery.
+
+0x70AA8 consumes status/data registers 0xFFFFE802/803. Classes 0x20/40/60/80 take byte-accumulation branches; classes 0xA0/C0/E0 reach event handling and call 0x23428 with a derived mask. Shared flags select byte handling through 0x23570 or another branch. 0x70CE0 tests status bits 4/3, updates counters/flags and can reset the interface and submit short frame 08 FF 18 03 through 0x70A44. None of these observations assigns physical completion semantics to a status bit.
+
+emulate_sps_status_boundary.py executes ten cases with scripted inert status/data registers, allowlisted code, bounded instructions and intercepted receive/event callbacks. It records actual register writes and callback arguments. All ten leave the staged Mode 23 pending bit and six-byte body unchanged. Cases with bit 3 set submit the short 08 FF 18 03 frame; one byte-accumulation case forwards 0x41 while its alternate-flag case does not. These are executed control-flow observations, not peripheral timing, queue-invalidation or wire-completion proofs. Downstream receive/event callbacks are deliberately not executed.
+
+AL5SpsSavedReadCampaign now owns used low-16 echoes across saved logical segments, rather than letting a segment label reset correlation history. It permits one pending saved request, retains unrelated replies without completing it, stops after malformed/negative replies or timeout, and rejects echo reuse across address banks or segments. Starting a logical segment cannot erase pending work or reopen a stopped campaign. The existing legacy parser's public address restriction is unchanged; both profiles share the same internal response-envelope parser.
+
+Tests explicitly demonstrate the unresolved ambiguity: a newly created campaign requesting 0x18000 cannot distinguish a saved positive reply originally associated with 0x08000 if the low echo matches. It reports only MatchingLow16Echo and keeps freshness, physical boundary and full-address identity false. The campaign is not a proof that a new physical session is clean. Broader live reads and writes remain disabled.
+
+The next target is the complete downstream event/receive path and peripheral completion semantics, coupled to adapter/USB draining. No arbitrary delay, software queue clear, logical segment or short status frame is accepted as a bank-transition fence. A qualified physical boundary is still unresolved.

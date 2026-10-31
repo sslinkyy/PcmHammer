@@ -16,7 +16,8 @@ namespace PcmHacking
         public bool FullAddressIdentityProven => false;
         public bool FreshnessProven => false;
         public bool LiveWriteEnabled => false;
-        public AL5SpsSavedFlashCoverage(byte[] spsOs)
+        public AL5SpsSavedFlashCoverage(byte[] spsOs) { ValidateSource(spsOs); }
+        internal static void ValidateSource(byte[] spsOs)
         {
             if(spsOs==null)throw new ArgumentNullException(nameof(spsOs));
             if(spsOs.Length!=679828)throw new ArgumentException("Exact saved SPS OS required.");

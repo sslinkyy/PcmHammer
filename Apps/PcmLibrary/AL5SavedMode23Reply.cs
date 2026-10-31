@@ -15,6 +15,12 @@ namespace PcmHacking
         {
             if(requestedAddress<AL5CalibrationInspection.StartAddress || requestedAddress>AL5SavedReadCoverage.LastDwordAddress || requestedAddress%4!=0)
                 throw new ArgumentOutOfRangeException(nameof(requestedAddress));
+            return ParseForEcho(requestedAddress,message,out data,out negativeReason);
+        }
+
+        internal static AL5SavedReplyKind ParseForEcho(int requestedAddress,byte[] message,out byte[] data,out byte? negativeReason)
+        {
+            if(requestedAddress<0 || requestedAddress>0xFFFFFC)throw new ArgumentOutOfRangeException(nameof(requestedAddress));
             if(message==null)throw new ArgumentNullException(nameof(message));
             data=Array.Empty<byte>();negativeReason=null;
             if(message.Length<4)return AL5SavedReplyKind.Malformed;
