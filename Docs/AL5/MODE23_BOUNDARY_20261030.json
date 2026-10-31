@@ -1,0 +1,92 @@
+{
+  "firmware_sha256": "492040d9460d53b77dda606b9a89f4254e0680f239093001663f6ed5cf51ba75",
+  "code_sha256": {
+    "0x23694": "6a964ea8969bae996f926f14d047d8f31acebe9305a33039f5e4008f8aaf1d79",
+    "0x23c9c": "ac0e1855a854a1ef617cc502f73376302c7cce25c99418feb29fa1fff4a43f02",
+    "0x23e88": "b70c26e4fb136a6d73617f211b6e98151f4dae9dafbd6e4a3bdf29fd66aed65f",
+    "0x70e34": "edbe8519233ed5a3219f14d5c71b1172bb2ae525227876271cf956110868f0f6",
+    "0xc17e4": "ca5cca779d4abf9b9e4e04cabfbf5a94f6a928760ec8d258bdf8623bedbd869b",
+    "0x23bd4": "b23919195f19922b268f3329a4af560d86cb82b87d720686f9b37ca1035d8b4b",
+    "0xa9bf0": "355121998ec05285218d210e2cb684eb9f6d33685ea33827bf5d847b7a6e0342"
+  },
+  "scheduler_slice_sha256": "a721049e3aaaa0072f4e613d3ab344b758baa51713cd879f29684b5434225722",
+  "response_record_address": "0x6ddba",
+  "response_descriptor_address": "0x6df50",
+  "response_index": 75,
+  "cases": [
+    {
+      "case": "empty_receive_preserves_pending",
+      "dequeue_result": 0,
+      "observed": {
+        "body": "5fd85b6c7d8e",
+        "pending": "10",
+        "tx_count": 0,
+        "tx": ""
+      }
+    },
+    {
+      "case": "second_request_replaces_first_staged_response",
+      "observed": {
+        "body": "fffcbfd0e1f2",
+        "pending": "00",
+        "tx_count": 10,
+        "tx": "6cf01863fffcbfd0e1f2"
+      }
+    },
+    {
+      "case": "empty_receive_and_clear_pending_still_have_tx_bytes",
+      "observed": {
+        "body": "fffcbfd0e1f2",
+        "pending": "00",
+        "tx_count": 10,
+        "tx": "6cf01863fffcbfd0e1f2"
+      }
+    },
+    {
+      "case": "same_echo_and_data_are_indistinguishable",
+      "observed": {
+        "body": "800003142536",
+        "pending": "10",
+        "tx_count": 0,
+        "tx": ""
+      }
+    },
+    {
+      "case": "native_queue_advance",
+      "returned_offsets": [
+        1,
+        10,
+        0
+      ],
+      "consumer_offset": 10,
+      "previous_record_cleared": true,
+      "last_record_retained": true
+    },
+    {
+      "case": "initial_equal_offsets_return_zero",
+      "dequeue_result": 0
+    },
+    {
+      "case": "native_queue_wrap",
+      "returned_offset": 1,
+      "raw_record_flag": 136,
+      "normalized_length": 8
+    },
+    {
+      "case": "native_pending_priority_and_eligibility",
+      "first_selected": 65,
+      "next_selected": 75,
+      "ineligible_selection": 65535,
+      "mode23_still_pending": true
+    }
+  ],
+  "session_boundary_proven": false,
+  "live_read_enabled": false,
+  "live_write_enabled": false,
+  "limits": [
+    "Synthetic receive queue, dispatcher metadata and read data.",
+    "Pending selector, selected bit-clear and formatter executed directly; outer scheduling gates not executed.",
+    "Actual TX helper stages RAM bytes only. No peripheral, interrupts, USB or bus execution.",
+    "No bound on pending response latency or guarantee of transport FIFO ordering established."
+  ]
+}
