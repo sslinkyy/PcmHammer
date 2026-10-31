@@ -6,9 +6,9 @@ namespace PcmHacking
 {
     public enum AL5CapturedWriteState
     {
-        BootRequest, BootReply, LoaderTransfer, LoaderIdentityRequest, LoaderIdentityReply,
+        Setup, BootRequest, BootReply, BootBroadcast, LoaderTransfer, LoaderIdentityRequest, LoaderIdentityReply, LoaderSerial,
         EraseRequest, EraseReply, Programming, FinalizeRequest, FinalizeReply,
-        AwaitingSavedVerification, SavedImageVerified, Stopped
+        Cleanup, AwaitingSavedVerification, SavedImageVerified, Stopped
     }
 
     /// <summary>Offline, ordered replay of selected saved frames. Never a live protocol executor.</summary>
@@ -18,7 +18,37 @@ namespace PcmHacking
         private readonly string loaderSha256;
         private readonly AL5CapturedProgramSession program = new AL5CapturedProgramSession();
         private int bootReplies;
-        public AL5CapturedWriteState State { get; private set; } = AL5CapturedWriteState.BootRequest;
+        private int exchangeIndex;
+        public int ProgrammingBroadcasts { get; private set; }
+        public int CleanupQueryRepeats { get; private set; }
+        public bool CleanupNegative14Observed { get; private set; }
+        public bool CleanupObserved { get; private set; }
+        public AL5CapturedWriteState State { get; private set; } = AL5CapturedWriteState.Setup;
+        private static readonly (bool Tx, string Prefix, int Length)[] SetupRules = {
+            (true,"6c18f03c55",5),(false,"6cf0187c550a0012",8),
+            (true,"6cfef020",4),(false,"6cf01860",4),
+            (true,"6c18f03c05",5),(false,"6cf0187c05",9),
+            (true,"6c18f03c06",5),(false,"6cf0187c06",11),
+            (true,"6c18f03c07",5),(false,"6cf0187c07",11),
+            (true,"6c18f02701",5),(false,"6cf0186701",7),
+            (true,"6c18f02702",7),(false,"6cf018670234",6)};
+        private static readonly (bool Tx, string Prefix, int Length)[] LoaderSerialRules = {
+            (true,"6c18f03c05",5),(false,"6cf0187c05",9),
+            (true,"6c18f03c06",5),(false,"6cf0187c06",9),
+            (true,"6c18f03c07",5),(false,"6cf0187c07",9)};
+        private static readonly (bool Tx, string Prefix, int Length)[] CleanupRules = {
+            (true,"6c18f03c55",5),(false,"6cf0187c550a0012",8),
+            (true,"6cfef020",4),(false,"6cf01860",4),
+            (true,"686af004",4),(false,"486b1844",4),(true,"6cfef014",4)};
+
+        private bool Exchange(bool tx, byte[] m, (bool Tx, string Prefix, int Length)[] rules, AL5CapturedWriteState next)
+        {
+            var rule=rules[exchangeIndex];
+            if(tx!=rule.Tx || m.Length!=rule.Length ||
+               !BitConverter.ToString(m).Replace("-","").ToLowerInvariant().StartsWith(rule.Prefix,StringComparison.Ordinal))return false;
+            if(++exchangeIndex==rules.Length){exchangeIndex=0;State=next;}
+            return true;
+        }
         public bool? SavedCalibrationMatches { get; private set; }
         public int PositiveProgramReplies => program.PositiveReplies;
         public int ChecksumErrors => program.ChecksumErrors;
@@ -52,6 +82,10 @@ namespace PcmHacking
             if(message==null)throw new ArgumentNullException(nameof(message));
             if(message.Length>1602)throw new ArgumentException("Outside captured message profile.");
             var m=(byte[])message.Clone();
+            // Some successful captures end with this rejected cleanup service; not programming failure or recovery proof.
+            if(State==AL5CapturedWriteState.AwaitingSavedVerification && !CleanupNegative14Observed &&
+               !transmitted && Is(m,0x6C,0xF0,0x18,0x7F,0x14,0x23))
+            {CleanupNegative14Observed=true;return;}
             if(State==AL5CapturedWriteState.Stopped || State==AL5CapturedWriteState.SavedImageVerified || State==AL5CapturedWriteState.AwaitingSavedVerification)
                 throw new InvalidOperationException("No pending wire observation.");
             if(!transmitted && m.Length>=4 && m[1]==0xF0 && m[2]==0x18 &&
@@ -64,11 +98,17 @@ namespace PcmHacking
             bool accepted=false;
             switch(State)
             {
+                case AL5CapturedWriteState.Setup:
+                    accepted=Exchange(transmitted,m,SetupRules,AL5CapturedWriteState.BootRequest);break;
                 case AL5CapturedWriteState.BootRequest:
                     if(transmitted && Is(m,0x6C,0x18,0xF0,0x34)){State=AL5CapturedWriteState.BootReply;accepted=true;}break;
                 case AL5CapturedWriteState.BootReply:
                     if(!transmitted && Is(m,0x6C,0xF0,0x18,0x74,0x44))
-                    {bootReplies++;State=bootReplies==2?AL5CapturedWriteState.LoaderTransfer:AL5CapturedWriteState.BootRequest;accepted=true;}break;
+                    {bootReplies++;State=bootReplies==2?AL5CapturedWriteState.LoaderTransfer:AL5CapturedWriteState.BootBroadcast;accepted=true;}break;
+                case AL5CapturedWriteState.BootBroadcast:
+                    if(exchangeIndex==0 && transmitted && Is(m,0x6C,0xFE,0xF0,0x28,0)){exchangeIndex=1;accepted=true;}
+                    else if(exchangeIndex==1 && !transmitted && Is(m,0x6C,0xF0,0x18,0x68,0))
+                    {exchangeIndex=0;State=AL5CapturedWriteState.BootRequest;accepted=true;}break;
                 case AL5CapturedWriteState.LoaderTransfer:
                     if(transmitted && m.Length==1602 && m[0]==0x6D && m[1]==0x18 && m[2]==0xF0 && m[3]==0x36 && m[4]==0x80 &&
                        m[5]==6 && m[6]==0x36 && m[7]==0xFF && m[8]==0x90 && m[9]==0)
@@ -84,12 +124,15 @@ namespace PcmHacking
                 case AL5CapturedWriteState.LoaderIdentityRequest:
                     if(transmitted && Is(m,0x6C,0x18,0xF0,0x3C,0x0A)){State=AL5CapturedWriteState.LoaderIdentityReply;accepted=true;}break;
                 case AL5CapturedWriteState.LoaderIdentityReply:
-                    if(!transmitted && Is(m,0x6C,0xF0,0x18,0x7C,0x0A,0,0xE7,0xB0,0xED)){State=AL5CapturedWriteState.EraseRequest;accepted=true;}break;
+                    if(!transmitted && Is(m,0x6C,0xF0,0x18,0x7C,0x0A,0,0xE7,0xB0,0xED)){State=AL5CapturedWriteState.LoaderSerial;accepted=true;}break;
+                case AL5CapturedWriteState.LoaderSerial:
+                    accepted=Exchange(transmitted,m,LoaderSerialRules,AL5CapturedWriteState.EraseRequest);break;
                 case AL5CapturedWriteState.EraseRequest:
                     if(transmitted && Is(m,0x6C,0x18,0xF0,0x36,0xEE)){State=AL5CapturedWriteState.EraseReply;accepted=true;}break;
                 case AL5CapturedWriteState.EraseReply:
                     if(!transmitted && Is(m,0x6C,0xF0,0x18,0x76,0,0xEE)){State=AL5CapturedWriteState.Programming;accepted=true;}break;
                 case AL5CapturedWriteState.Programming:
+                    if(transmitted && Is(m,0x6C,0xFE,0xF0,0x28,0)){ProgrammingBroadcasts++;accepted=true;break;}
                     if(transmitted)program.ObserveRequest(m);
                     else
                     {
@@ -107,7 +150,13 @@ namespace PcmHacking
                 case AL5CapturedWriteState.FinalizeRequest:
                     if(transmitted && Is(m,0x6C,0x18,0xF0,0x36,0xFF)){State=AL5CapturedWriteState.FinalizeReply;accepted=true;}break;
                 case AL5CapturedWriteState.FinalizeReply:
-                    if(!transmitted && Is(m,0x6C,0xF0,0x18,0x76,0,0x86)){State=AL5CapturedWriteState.AwaitingSavedVerification;accepted=true;}break;
+                    if(!transmitted && Is(m,0x6C,0xF0,0x18,0x76,0,0x86)){State=AL5CapturedWriteState.Cleanup;accepted=true;}break;
+                case AL5CapturedWriteState.Cleanup:
+                    if(exchangeIndex==1 && transmitted && Is(m,0x6C,0x18,0xF0,0x3C,0x55))
+                    {CleanupQueryRepeats++;accepted=true;break;}
+                    accepted=Exchange(transmitted,m,CleanupRules,AL5CapturedWriteState.AwaitingSavedVerification);
+                    if(accepted && State==AL5CapturedWriteState.AwaitingSavedVerification)CleanupObserved=true;
+                    break;
             }
             if(!accepted)throw new ArgumentException("Unexpected, malformed or out-of-order captured frame; state retained.");
         }

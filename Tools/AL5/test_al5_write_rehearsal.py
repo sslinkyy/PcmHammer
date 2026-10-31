@@ -10,8 +10,8 @@ class RehearsalExportTests(unittest.TestCase):
               (1,wrapper(bytes.fromhex('6c18f034'))),(2,wrapper(bytes.fromhex('6cf0187444'),2,metadata=0x18)),
               (1,wrapper(loader))]
         frames,report=extract(trace_bytes(rows))
-        self.assertEqual([1,2,3],[r[0] for r in frames])
-        self.assertEqual(1,report['excluded_binary_records'])
+        self.assertEqual([0,1,2,3],[r[0] for r in frames])
+        self.assertEqual(0,report['excluded_binary_records'])
         self.assertFalse(report['security_authorization_proven'])
         self.assertFalse(report['live_write_enabled'])
         # Export is a selector, not a replacement for the production loader validator.
@@ -20,5 +20,11 @@ class RehearsalExportTests(unittest.TestCase):
         with self.assertRaises(ValueError):extract(trace_bytes([]))
         loader=wrapper(bytes.fromhex('6d18f03680')+bytes(20))
         with self.assertRaises(ValueError):extract(trace_bytes([(1,loader),(1,loader)]))
+
+    def test_unknown_vpw_frame_is_preserved_for_validator(self):
+        loader=wrapper(bytes.fromhex('6d18f03680')+bytes(20))
+        unknown=bytes.fromhex('6c18f09901')
+        frames,_=extract(trace_bytes([(1,loader),(1,wrapper(unknown))]))
+        self.assertEqual(unknown,frames[-1][2])
 
 if __name__=='__main__':unittest.main()

@@ -1,5 +1,9 @@
 # Integrated captured-write rehearsal
 
+Update: [reader coverage and vehicle setup/cleanup](READER_COVERAGE_SETUP_CLEANUP_20261030.md)
+extends the original selected-phase replay below. Security and broadcasts are now
+included as observations; adapter-local setup remains outside the replay.
+
 `AL5CapturedWriteRehearsal` joins the previously separate captured programming
 session to boot/loader, erase, finalization and saved-file verification. It is
 production library code with no transport reference, packet builder, timer,

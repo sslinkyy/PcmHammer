@@ -1,0 +1,42 @@
+{
+  "scope": "Offline reader review and captured vehicle setup/cleanup replay",
+  "source_sha256": {
+    "Apps/PcmLibrary/AL5CalibrationReader.cs": "a419e3b8326d134e076d9ca7e8b4be61391f940a01f5f97675833543ec564083",
+    "Apps/PcmLibrary/AL5CapturedWriteRehearsal.cs": "ba52f8026b2b13a2d95aad82fae04991f637ebef2a5c145c106f0d76c10b4872",
+    "Apps/PcmLibrary/AL5SavedReadCoverage.cs": "c5637f585ac49a145a6c4ef0f5554a6842233dfd0487f37db2d9d90c81b72efe",
+    "Tools/AL5/export_al5_write_rehearsal.py": "42b1d4b2d7a35cc3d8e6c231347a5a5a0a8e955697822ae4fb258858c7c1c3ab"
+  },
+  "cases": [
+    {
+      "source_sha256": "e436213e7f62d92b0a554a116a8a2d2fa1d8c2e1c41ace483432511ab49cda98",
+      "loader_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
+      "selected_frames": 460,
+      "excluded_binary_records": 107,
+      "scope": "All VPW payloads in observed AL5 wrapper context; adapter-local setup remains excluded",
+      "live_write_enabled": false,
+      "security_authorization_proven": false
+    },
+    {
+      "source_sha256": "8b8e4531ce8f854e2d91f2e081775e7426dcd3f97eae2afd601e246d6b6f36ec",
+      "loader_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
+      "selected_frames": 475,
+      "excluded_binary_records": 128,
+      "scope": "All VPW payloads in observed AL5 wrapper context; adapter-local setup remains excluded",
+      "live_write_enabled": false,
+      "security_authorization_proven": false
+    },
+    {
+      "source_sha256": "8384441f9da209b176734b8e4e90ca76fb422e4daed23152a414bc437b7c5daf",
+      "loader_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
+      "selected_frames": 466,
+      "excluded_binary_records": 100,
+      "scope": "All VPW payloads in observed AL5 wrapper context; adapter-local setup remains excluded",
+      "live_write_enabled": false,
+      "security_authorization_proven": false
+    }
+  ],
+  "live_write_enabled": false,
+  "extended_live_read_enabled": false,
+  "remaining_snapshot_bytes": 41000,
+  "supplemental_dword_count": 10250
+}
