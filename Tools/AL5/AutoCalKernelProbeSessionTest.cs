@@ -96,19 +96,36 @@ internal static class AutoCalKernelProbeSessionTest
             var r = await f.session.RunAsync();
             Require(!r.Success && f.policy.ReadBlockReplies == 1 && !Has(f.adapter, "6C10F020"), "no reuse of earlier ACK or exit after failure");
         });
+        await Case("6D CRC control verifies all ranges with exact alternate headers", async () => {
+            var f = await Fixture(fullRead: true, useZeroSubmodeKernel: true, prependReadAcknowledgement: true, use6dCrc: true);
+            var r = await f.session.RunAsync();
+            Require(r.Success && r.ReadbackCrcVerified && r.BaselineMatched && r.PostExitIdentityVerified,
+                "6D parser and production verifier complete with explicit exit");
+            Require(f.policy.VerifiedCrcRanges == 7 && f.adapter.CrcRequests == 7 && f.policy.CrcPriority == 0x6D,
+                "seven independently pinned CRC values and no implicit fallback");
+            Ownership(f.adapter, f.device);
+        });
+        foreach (string failure in new[] { "crc-wrong-header", "crc-wrong-range", "crc-truncated", "crc-extra", "read-crc" })
+            await Case("6D CRC rejects " + failure, async () => {
+                var f = await Fixture(failure, fullRead: true, useZeroSubmodeKernel: true, prependReadAcknowledgement: true, use6dCrc: true);
+                var r = await f.session.RunAsync();
+                Require(!r.Success && !r.ReadbackCrcVerified && r.BenchPowerCycleRequired && !Has(f.adapter, "6C10F020"),
+                    "invalid CRC cannot authorize exit or verified image");
+            });
         Console.WriteLine(JsonSerializer.Serialize(new { assertions, passed, failed,
             adapterOpened = false, liveWriteEnabled = false, hardwareQualified = false,
             scope = "Production Vehicle + AutoCalDevice/Channel under the bounded policy, scripted byte transport only" }));
         return failed.Count == 0 ? 0 : 1;
     }
 
-    static async Task<(Fake adapter, AutoCalDevice device, AutoCalKernelProbePolicy policy, AutoCalKernelProbeSession session)> Fixture(string failure = "", CancellationTokenSource? cancel = null, bool copyOnly = false, bool fullRead = false, bool shortRead = false, bool recordedReadSetup = false, bool useZeroSubmodeKernel = false, bool prependReadAcknowledgement = false)
+    static async Task<(Fake adapter, AutoCalDevice device, AutoCalKernelProbePolicy policy, AutoCalKernelProbeSession session)> Fixture(string failure = "", CancellationTokenSource? cancel = null, bool copyOnly = false, bool fullRead = false, bool shortRead = false, bool recordedReadSetup = false, bool useZeroSubmodeKernel = false, bool prependReadAcknowledgement = false, bool use6dCrc = false)
     {
         var adapter = new Fake(IndependentKernel(useZeroSubmodeKernel, prependReadAcknowledgement), failure, cancel, fullRead, shortRead, recordedReadSetup, useZeroSubmodeKernel, prependReadAcknowledgement);
+        adapter.Use6dCrc = use6dCrc;
         var token = cancel?.Token ?? CancellationToken.None;
         var device = new AutoCalDevice(new AutoCalChannel(adapter), new Log(), token, AutoCalSetupProfile.RecordedOrdinaryIdentification);
         Require(await device.Initialize(), "ordinary host setup accepted by fake adapter");
-        var policy = new AutoCalKernelProbePolicy(kernel, fullRead, shortRead, useZeroSubmodeKernel, prependReadAcknowledgement, fullRead && prependReadAcknowledgement);
+        var policy = new AutoCalKernelProbePolicy(kernel, fullRead, shortRead, useZeroSubmodeKernel, prependReadAcknowledgement, fullRead && prependReadAcknowledgement, use6dCrc);
         var session = new AutoCalKernelProbeSession(device, new Log(), policy, token, copyOnly, fullRead, shortRead, recordedReadSetup);
         return (adapter, device, policy, session);
     }
@@ -675,6 +692,7 @@ internal static class AutoCalKernelProbeSessionTest
         public int ConfigurationCommands, PartialConfigurationBytes;
         public readonly bool FullRead, ShortRead, RecordedReadSetup, ZeroSubmodeKernel, PrependReadAcknowledgement;
         public int PendingByteCount => input.Count;
+        public bool Use6dCrc;
         public Fake(byte[] kernel, string failure, CancellationTokenSource? cancel, bool fullRead, bool shortRead, bool recordedReadSetup, bool zeroSubmodeKernel, bool prependReadAcknowledgement)
         { image = kernel; this.failure = failure; this.cancel = cancel; FullRead = fullRead; ShortRead = shortRead; RecordedReadSetup = recordedReadSetup; ZeroSubmodeKernel = zeroSubmodeKernel; PrependReadAcknowledgement = prependReadAcknowledgement; }
         public void Enqueue(byte[] bytes) { foreach (byte b in bytes) input.Enqueue(b); }
@@ -797,16 +815,20 @@ internal static class AutoCalKernelProbeSessionTest
                         reply[1] = 0xF0; reply[2] = 0x10;
                         if (failure == "read-corrupt") reply[^1] ^= 1;
                     }
-                    else if (FullRead && bytes.Length == 11 && bytes.AsSpan(0, 5).SequenceEqual(Hex("6C10F03D02")))
+                    else if (FullRead && bytes.Length == 11 && bytes.AsSpan(0, 5).SequenceEqual(Hex(Use6dCrc ? "6D10F03D02" : "6C10F03D02")))
                     {
                         // Golden replies from the independent GT full read log
                         // (baseline a3b010af...), not calculated by production Crc.
                         string[] replies = { "6CF0107D02020000060000D6703728", "6CF0107D0202000004000057DBDAAF", "6CF0107D020200000200004E3F92B0",
                             "6CF0107D02018000008000712EFE11", "6CF0107D0200200000600085B5BB36", "6CF0107D020020000040007D830D3E", "6CF0107D02004000000000CED58D53" };
                         if (CrcRequests >= replies.Length) throw new Exception("Unexpected repeated CRC request");
-                        reply = Hex(replies[CrcRequests]); byte[] expected = reply.Take(11).ToArray(); expected[1] = 0x10; expected[2] = 0xF0; expected[3] = 0x3D;
+                        reply = Hex(replies[CrcRequests]); if (Use6dCrc) reply[0] = 0x6D; byte[] expected = reply.Take(11).ToArray(); expected[1] = 0x10; expected[2] = 0xF0; expected[3] = 0x3D;
                         if (!bytes.SequenceEqual(expected)) throw new Exception("CRC request order or range differs from independent GT log");
                         CrcRequests++;
+                        if (failure == "crc-wrong-header") reply[0] ^= 1;
+                        if (failure == "crc-wrong-range") reply[8] ^= 1;
+                        if (failure == "crc-truncated") reply = reply.Take(14).ToArray();
+                        if (failure == "crc-extra") reply = reply.Concat(new byte[] { 0 }).ToArray();
                         if (failure == "read-crc-cancel" && CrcRequests == 7) { cancel!.Cancel(); return; }
                         if (failure == "read-crc" && CrcRequests == 4) reply[^1] ^= 1;
                     }

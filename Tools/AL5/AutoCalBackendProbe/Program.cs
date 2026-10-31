@@ -78,7 +78,7 @@ internal static class Program
         int fullReadVpwLimit = AutoCalKernelProbePolicy.MaximumFullReadToolPresentAttempts + 11
             + AutoCalKernelProbePolicy.ReadBlockCount + 7 * AutoCalKernelProbePolicy.MaximumCrcQueriesPerRange;
         return new { schema = "autocal-backend-bounded-probe-plan-v4",
-            profile = kernelPolicy == null ? profile.Name : (copyOnly ? "e54-ram-copy" : fullRead ? (acknowledgedRead ? "e54-read-baseline-acknowledged" : "e54-read-baseline")
+            profile = kernelPolicy == null ? profile.Name : (copyOnly ? "e54-ram-copy" : fullRead ? (kernelPolicy?.CrcPriority == 0x6D ? "e54-read-baseline-acknowledged-crc6d" : acknowledgedRead ? "e54-read-baseline-acknowledged" : "e54-read-baseline")
                 : recordedReadSetup ? "e54-read-prefix-recorded-setup" : acknowledgedRead ? "e54-read-prefix-acknowledged" : zeroSubmode ? "e54-read-prefix-submode-zero"
                 : shortRead ? "e54-read-prefix" : "e54-kernel-info"),
             source_sha256 = sources.ToDictionary(x => x, x => Hash(Path.Combine(root, x))),
@@ -93,6 +93,8 @@ internal static class Program
             recorded_read_setup_experiment = recordedReadSetup,
             zero_submode_kernel_experiment = zeroSubmode,
             read_acknowledgement_kernel_experiment = acknowledgedRead,
+            crc_priority_hex = kernelPolicy?.CrcPriority.ToString("X2"),
+            crc6d_experiment = kernelPolicy?.CrcPriority == 0x6D,
             flash_programming_enabled = false,
             physical_bus_transmissions = "unmeasured", requires_obd_disconnected = !profile.ReadsE54Identity,
             requires_isolated_e54_bench = profile.ReadsE54Identity,
@@ -176,7 +178,8 @@ internal static class Program
         try
         {
             bool copyOnly = args.Length > 0 && (args[0] == "--e54-ram-copy" || args[0] == "--plan-e54-ram-copy");
-            bool acknowledgedFullRead = args.Length > 0 && (args[0] == "--e54-read-baseline-acknowledged" || args[0] == "--plan-e54-read-baseline-acknowledged");
+            bool use6dCrc = args.Length > 0 && (args[0] == "--e54-read-baseline-acknowledged-crc6d" || args[0] == "--plan-e54-read-baseline-acknowledged-crc6d");
+            bool acknowledgedFullRead = use6dCrc || args.Length > 0 && (args[0] == "--e54-read-baseline-acknowledged" || args[0] == "--plan-e54-read-baseline-acknowledged");
             bool fullRead = acknowledgedFullRead || args.Length > 0 && (args[0] == "--e54-read-baseline" || args[0] == "--plan-e54-read-baseline");
             bool recordedReadSetup = args.Length > 0 && (args[0] == "--e54-read-prefix-recorded-setup" || args[0] == "--plan-e54-read-prefix-recorded-setup");
             bool acknowledgedRead = acknowledgedFullRead || args.Length > 0 && (args[0] == "--e54-read-prefix-acknowledged" || args[0] == "--plan-e54-read-prefix-acknowledged");
@@ -186,8 +189,8 @@ internal static class Program
             bool identity = kernelInfo || (args.Length > 0 && (args[0] == "--e54-osid-read" || args[0] == "--plan-e54-osid-read"));
             ProbeProfile profile = new(identity);
             AutoCalKernelProbePolicy? kernelPolicy = kernelInfo
-                ? new(File.ReadAllBytes(AutoCalKernelProbePolicy.DefaultKernelPath), fullRead, shortRead, zeroSubmode, acknowledgedRead, acknowledgedFullRead) : null;
-            string operation = kernelInfo ? (copyOnly ? "e54-ram-copy" : fullRead ? (acknowledgedRead ? "e54-read-baseline-acknowledged" : "e54-read-baseline")
+                ? new(File.ReadAllBytes(AutoCalKernelProbePolicy.DefaultKernelPath), fullRead, shortRead, zeroSubmode, acknowledgedRead, acknowledgedFullRead, use6dCrc) : null;
+            string operation = kernelInfo ? (copyOnly ? "e54-ram-copy" : fullRead ? (kernelPolicy?.CrcPriority == 0x6D ? "e54-read-baseline-acknowledged-crc6d" : acknowledgedRead ? "e54-read-baseline-acknowledged" : "e54-read-baseline")
                 : recordedReadSetup ? "e54-read-prefix-recorded-setup" : acknowledgedRead ? "e54-read-prefix-acknowledged" : zeroSubmode ? "e54-read-prefix-submode-zero"
                 : shortRead ? "e54-read-prefix" : "e54-kernel-info") : profile.Name;
             string root = Root(); object plan = Plan(root, profile, kernelPolicy, copyOnly, recordedReadSetup);
@@ -197,7 +200,8 @@ internal static class Program
                 || args.SequenceEqual(new[] { "--plan-e54-read-prefix-recorded-setup" })
                 || args.SequenceEqual(new[] { "--plan-e54-read-prefix-submode-zero" })
                 || args.SequenceEqual(new[] { "--plan-e54-read-prefix-acknowledged" })
-                || args.SequenceEqual(new[] { "--plan-e54-read-baseline-acknowledged" }))
+                || args.SequenceEqual(new[] { "--plan-e54-read-baseline-acknowledged" })
+                || args.SequenceEqual(new[] { "--plan-e54-read-baseline-acknowledged-crc6d" }))
             { Console.WriteLine(JsonSerializer.Serialize(plan, new JsonSerializerOptions { WriteIndented = true })); return 0; }
             if (args.Length != 6 || args[0] != "--" + operation
                 || args[1] != (identity ? "--isolated-e54-bench" : "--obd-disconnected") || args[2] != "--serial" || args[4] != "--receipt")
@@ -356,7 +360,7 @@ internal static class Program
                     kernelPolicy.UsesZeroSubmodeKernel, kernelPolicy.EffectiveKernelSha256, kernelPolicy.ReadReplySubmode,
                     kernelPolicy.PrependReadAcknowledgement, kernelPolicy.ReadAcknowledgementObserved, kernelPolicy.ReadAcknowledgementCount,
                     read_acknowledgement = kernelPolicy.ReadAcknowledgement == null ? null : Convert.ToHexString(kernelPolicy.ReadAcknowledgement),
-                    kernelPolicy.CrcQueryAttempts, kernelPolicy.VerifiedCrcRanges, kernelPolicy.IsImageVerified,
+                    kernelPolicy.CrcPriority, kernelPolicy.CrcQueryAttempts, kernelPolicy.VerifiedCrcRanges, kernelPolicy.IsImageVerified,
                     kernelPolicy.BaselineShaMatched, kernelPolicy.ComputedImageSha256,
                     ram_copy_ack = kernelPolicy.RamCopyAcknowledgement == null ? null : Convert.ToHexString(kernelPolicy.RamCopyAcknowledgement),
                     ram_execute_ack = kernelPolicy.RamExecuteAcknowledgement == null ? null : Convert.ToHexString(kernelPolicy.RamExecuteAcknowledgement),

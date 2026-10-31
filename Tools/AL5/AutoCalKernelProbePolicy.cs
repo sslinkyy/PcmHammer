@@ -76,6 +76,7 @@ public sealed class AutoCalKernelProbePolicy
     public int ReadAcknowledgementCount { get; private set; }
     public bool ReadAcknowledgementObserved => readAcknowledgement != null;
     public byte[]? ReadAcknowledgement => Clone(readAcknowledgement);
+    public byte CrcPriority { get; }
     public byte ReadReplySubmode => UsesZeroSubmodeKernel ? (byte)0 : (byte)1;
     public string EffectiveKernelSha256 { get; }
     public bool ReadEnabled => FullReadEnabled || ShortReadEnabled;
@@ -94,7 +95,7 @@ public sealed class AutoCalKernelProbePolicy
     // Partial images must not be represented as a completed read by callers.
     public byte[] ReadImage => (byte[])readImage.Clone();
     public byte[][] CrcRequests => crcAddresses.Select((address, index) =>
-        protocol.CreateCrcQuery(address, crcSizes[index]).GetBytes()).ToArray();
+        protocol.CreateCrcQuery(address, crcSizes[index], CrcPriority).GetBytes()).ToArray();
     public int TransmitAttempts { get; private set; }
     public int AuthorizedTransmitCount => TransmitAttempts;
     public byte[]? LastAuthorizedTransmit => Clone(lastAuthorizedTransmit);
@@ -116,8 +117,11 @@ public sealed class AutoCalKernelProbePolicy
     public byte[]? PostExitIdentityReply => Clone(finalIdentity);
 
     public AutoCalKernelProbePolicy(byte[] pinnedKernel, bool fullRead = false, bool shortRead = false,
-        bool useZeroSubmodeKernel = false, bool prependReadAcknowledgement = false, bool acknowledgedFullRead = false)
+        bool useZeroSubmodeKernel = false, bool prependReadAcknowledgement = false, bool acknowledgedFullRead = false, bool use6dCrc = false)
     {
+        if (use6dCrc && !acknowledgedFullRead)
+            throw new ArgumentException("6D CRC requires the explicit acknowledged full-read control.");
+        CrcPriority = use6dCrc ? (byte)0x6D : (byte)0x6C;
         if (pinnedKernel == null) throw new ArgumentNullException(nameof(pinnedKernel));
         if (fullRead && shortRead) throw new ArgumentException("Full-image and short-prefix read modes are mutually exclusive.");
         if (acknowledgedFullRead && (!fullRead || shortRead || !useZeroSubmodeKernel || !prependReadAcknowledgement))
@@ -258,7 +262,7 @@ public sealed class AutoCalKernelProbePolicy
                 break;
             case Phase.ReadCrc:
             case Phase.ReadCrcReply:
-                permitted = bytes.SequenceEqual(protocol.CreateCrcQuery(crcAddresses[VerifiedCrcRanges], crcSizes[VerifiedCrcRanges]).GetBytes());
+                permitted = bytes.SequenceEqual(protocol.CreateCrcQuery(crcAddresses[VerifiedCrcRanges], crcSizes[VerifiedCrcRanges], CrcPriority).GetBytes());
                 if (permitted)
                 {
                     if (crcQueryAttemptsByRange[VerifiedCrcRanges] >= MaximumCrcQueriesPerRange)
@@ -335,7 +339,8 @@ public sealed class AutoCalKernelProbePolicy
             return;
         }
         int expectedMode = ExpectedMode();
-        if (expectedMode < 0 || !Starts(bytes, "6CF010")) { UnrelatedReceiveCount++; return; }
+        bool crcPeer = phase == Phase.ReadCrcReply && Starts(bytes, "6DF010");
+        if (expectedMode < 0 || (!Starts(bytes, "6CF010") && !crcPeer)) { UnrelatedReceiveCount++; return; }
         if (bytes.Length >= 5 && bytes[3] == 0x7F && bytes[4] == expectedMode)
             Reject("E54 rejected the pending request: " + Convert.ToHexString(bytes));
         if (bytes.Length < 4 || bytes[3] != expectedMode + 0x40) { UnrelatedReceiveCount++; return; }
@@ -394,7 +399,7 @@ public sealed class AutoCalKernelProbePolicy
                 if (!Equal(bytes, "6CF0107D0100894471")) Reject("Flash identity differs from the pinned Intel 28F400B baseline.");
                 IsFlashIdentityVerified = true; phase = Phase.ReadBlock; return;
             case Phase.ReadCrcReply:
-                byte[] expectedCrc = protocol.CreateCrcQuery(crcAddresses[VerifiedCrcRanges], crcSizes[VerifiedCrcRanges]).GetBytes();
+                byte[] expectedCrc = protocol.CreateCrcQuery(crcAddresses[VerifiedCrcRanges], crcSizes[VerifiedCrcRanges], CrcPriority).GetBytes();
                 expectedCrc[1] = 0xF0; expectedCrc[2] = 0x10; expectedCrc[3] = 0x7D;
                 if (bytes.Length != 15 || !bytes.AsSpan(0, 11).SequenceEqual(expectedCrc))
                     Reject("CRC reply differs from the exact requested range/extent.");

@@ -35,6 +35,19 @@ internal static partial class AutoCalKernelProbePolicyTest
         try { kernel = File.ReadAllBytes(path); }
         catch (Exception error) { Console.Error.WriteLine(error); return 2; }
         Run("acknowledged full image and seven CRC ranges offline", AcknowledgedFullReadOffline);
+        Run("6D CRC complete policy sequence", () => AcknowledgedFullReadOffline(true));
+        Run("6D CRC requires explicit full acknowledged profile", () => {
+            int rejected = 0;
+            try { _ = new AutoCalKernelProbePolicy(kernel, use6dCrc: true); } catch (ArgumentException) { rejected++; }
+            try { _ = new AutoCalKernelProbePolicy(kernel, fullRead: true, use6dCrc: true); } catch (ArgumentException) { rejected++; }
+            try { _ = new AutoCalKernelProbePolicy(kernel, acknowledgedFullRead: true, use6dCrc: true); } catch (ArgumentException) { rejected++; }
+            Require(rejected == 3, "invalid mode combinations fail before I/O");
+            var p = FullCrcReady(); byte[] request = p.CrcRequests[0]; request[0] = 0x6D;
+            Reject(() => p.BeforeTransmit(request), "default profile cannot silently use 6D");
+            Require(new Protocol().CreateCrcQuery(0x60000, 0x20000).GetBytes()[0] == 0x6C, "default API preserves 6C");
+            try { _ = new Protocol().CreateCrcQuery(0, 1, 0x6E); } catch (ArgumentOutOfRangeException) { rejected++; }
+            Require(rejected == 4, "unrecognized priority rejected");
+        });
         Run("pinned asset and production upload-plan equivalence", PlanAndPin);
         Run("complete positive-seed session and exact provenance", CompletePositive);
         Run("unknown copy suffix is observable but cannot authorize execution", ZeroSeed);

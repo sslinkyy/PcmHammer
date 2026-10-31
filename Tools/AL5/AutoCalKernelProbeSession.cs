@@ -198,7 +198,7 @@ internal sealed class AutoCalKernelProbeSession
             {
                 result.Stage = AutoCalKernelProbeStage.FullRead;
                 result.ReadbackScope = "full-image";
-                var reader = new CKernelReader(vehicle, info, logger, policy.ReadReplySubmode);
+                var reader = new CKernelReader(vehicle, info, logger, policy.ReadReplySubmode, policy.CrcPriority);
                 Response<Stream> read = await reader.ReadRunningKernelContents(cancellation).ConfigureAwait(false);
                 if (read.Value != null)
                 {

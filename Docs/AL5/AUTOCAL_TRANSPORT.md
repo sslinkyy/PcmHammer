@@ -1006,3 +1006,32 @@ control, with identical range and expected CRC and no kernel patch. This is
 a source-derived prediction, not a qualified fix. The normal parser and probe
 guard require 6C; no live alternate-header path has been added or enabled.
 The offline geometry checks reject mixed headers, wrong ranges and extents.
+
+## Explicit 6D CRC control
+
+The `--plan-e54-read-baseline-acknowledged-crc6d` profile is an offline preview.
+Its separate read-only live form is `--e54-read-baseline-acknowledged-crc6d`
+with the existing isolated-bench, serial and new-receipt arguments. No hardware
+run of this profile has been performed. Flashing remains unavailable.
+
+The control retains the exact acknowledged RAM kernel, 128 fixed reads,
+512 KiB baseline digest and seven CRC ranges. Only CRC request/reply priority
+changes from 6C to 6D. Normal calls retain 6C; there is no fallback or header
+normalization. Each reply must contain exactly 15 bytes with the selected
+header, requested range and matching CRC. Wrong headers, ranges, extents or
+values stop the guarded session without kernel exit. Same-range retries retain
+the existing six-attempt bound. Exit and post-exit OS identity remain required.
+
+Plans record `crc_priority_hex` and `crc6d_experiment`; receipts preserve
+`kernel_policy.CrcPriority`. The existing command/time budgets are unchanged.
+Offline transport simulation establishes host behavior only, not AutoCal
+firmware acceptance, physical speed, flash programming or recovery.
+
+Offline validation for the 6D integration: policy suite 39 cases / 665
+assertions; production session with scripted native-byte transport 60 cases /
+607 assertions; existing reader safety suite 25/25. The new session cases
+cover all seven CRC ranges followed by exit/identity, plus wrong header, wrong
+range, truncated/extra response and CRC mismatch. Both plan previews preserve
+the kernel, baseline and budgets with flash programming false. The developer
+probe builds successfully; the library emits three existing CS1998 warnings.
+No adapter was opened and no bench operation was performed for this change.

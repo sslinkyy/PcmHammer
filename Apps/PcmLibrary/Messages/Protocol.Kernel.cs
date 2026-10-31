@@ -89,8 +89,13 @@ namespace PcmHacking
         /// Create a request to get the CRC of a byte range.
         /// </summary>
         public Message CreateCrcQuery(UInt32 address, UInt32 size)
+            => CreateCrcQuery(address, size, 0x6C);
+
+        public Message CreateCrcQuery(UInt32 address, UInt32 size, byte crcPriority)
         {
+            ValidateCrcPriority(crcPriority);
             byte[] requestBytes = new byte[] { Priority.Physical0, DeviceId.Pcm, DeviceId.Tool, 0x3D, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+            requestBytes[0] = crcPriority;
             requestBytes[5] = unchecked((byte)(size >> 16));
             requestBytes[6] = unchecked((byte)(size >> 8));
             requestBytes[7] = unchecked((byte)size);
@@ -104,11 +109,21 @@ namespace PcmHacking
         /// Parse the response to a CRC query.
         /// </summary>
         internal Response<UInt32> ParseCrc(Message responseMessage, UInt32 address, UInt32 size)
+            => ParseCrc(responseMessage, address, size, 0x6C);
+
+        internal static void ValidateCrcPriority(byte crcPriority)
         {
+            if (crcPriority != 0x6C && crcPriority != 0x6D)
+                throw new ArgumentOutOfRangeException(nameof(crcPriority));
+        }
+
+        internal Response<UInt32> ParseCrc(Message responseMessage, UInt32 address, UInt32 size, byte crcPriority)
+        {
+            ValidateCrcPriority(crcPriority);
             ResponseStatus status;
             byte[] expected = new byte[]
             {
-                Priority.Physical0,
+                crcPriority,
                 DeviceId.Tool,
                 DeviceId.Pcm,
                 0x7D,
@@ -123,7 +138,7 @@ namespace PcmHacking
 
             if (!TryVerifyInitialBytes(responseMessage, expected, out status))
             {
-                byte[] refused = {  Priority.Physical0, DeviceId.Tool, DeviceId.Pcm, Mode.NegativeResponse, 0x3D, 0x02 };
+                byte[] refused = { crcPriority, DeviceId.Tool, DeviceId.Pcm, Mode.NegativeResponse, 0x3D, 0x02 };
                 if (TryVerifyInitialBytes(responseMessage, refused, out status))
                 {
                     return Response.Create(ResponseStatus.Refused, (UInt32)0);
@@ -133,7 +148,7 @@ namespace PcmHacking
             }
 
             byte[] responseBytes = responseMessage.GetBytes();
-            if (responseBytes.Length < 15)
+            if (responseBytes.Length < 15 || (crcPriority == 0x6D && responseBytes.Length != 15))
             {
                 return Response.Create(ResponseStatus.Truncated, (UInt32)0);
             }

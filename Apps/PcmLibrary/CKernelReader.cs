@@ -19,6 +19,7 @@ namespace PcmHacking
         private readonly Protocol protocol;
         private readonly ILogger logger;
         private readonly byte readReplySubmode;
+        private readonly byte crcPriority;
 
         public int CrcPollingDelayMs { get; set; } = 50;
 
@@ -26,7 +27,12 @@ namespace PcmHacking
             : this(vehicle, pcmInfo, logger, 1) { }
 
         public CKernelReader(Vehicle vehicle, OSIDInfo pcmInfo, ILogger logger, byte readReplySubmode)
+            : this(vehicle, pcmInfo, logger, readReplySubmode, 0x6C) { }
+
+        public CKernelReader(Vehicle vehicle, OSIDInfo pcmInfo, ILogger logger, byte readReplySubmode, byte crcPriority)
         {
+            Protocol.ValidateCrcPriority(crcPriority);
+            this.crcPriority = crcPriority;
             if (readReplySubmode > 1) throw new ArgumentOutOfRangeException(nameof(readReplySubmode));
             this.readReplySubmode = readReplySubmode;
             this.vehicle = vehicle;
@@ -301,7 +307,7 @@ namespace PcmHacking
                         this.protocol,
                         this.pcmInfo,
                         (UInt32)imageSize,
-                        this.logger)
+                        this.logger, this.crcPriority)
                     {
                         PollingDelayMs = this.CrcPollingDelayMs,
                     };

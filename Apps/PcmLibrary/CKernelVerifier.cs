@@ -26,6 +26,7 @@ namespace PcmHacking
         private readonly OSIDInfo pcmInfo;
         private readonly UInt32 effectiveImageSize;
         private readonly ILogger logger;
+        private readonly byte crcPriority;
 
         public int PollingDelayMs { get; set; } = 50;
 
@@ -44,7 +45,13 @@ namespace PcmHacking
             OSIDInfo pcmInfo,
             UInt32 effectiveImageSize,
             ILogger logger)
+            : this(image, ranges, vehicle, protocol, pcmInfo, effectiveImageSize, logger, 0x6C) { }
+
+        public CKernelVerifier(byte[] image, IEnumerable<MemoryRange> ranges, Vehicle vehicle,
+            Protocol protocol, OSIDInfo pcmInfo, UInt32 effectiveImageSize, ILogger logger, byte crcPriority)
         {
+            Protocol.ValidateCrcPriority(crcPriority);
+            this.crcPriority = crcPriority;
             this.image = image;
             this.ranges = ranges;
             this.vehicle = vehicle;
@@ -109,7 +116,7 @@ namespace PcmHacking
                 int consecutiveTimeouts = 0;
                 UInt32 crc = 0;
 
-                Message query = this.protocol.CreateCrcQuery(range.Address, range.Size);
+                Message query = this.protocol.CreateCrcQuery(range.Address, range.Size, this.crcPriority);
                 while (true)
                 {
                     if (cancellationToken.IsCancellationRequested)
@@ -145,7 +152,7 @@ namespace PcmHacking
 
                     consecutiveTimeouts = 0;
 
-                    Response<UInt32> crcResponse = this.protocol.ParseCrc(response, range.Address, range.Size);
+                    Response<UInt32> crcResponse = this.protocol.ParseCrc(response, range.Address, range.Size, this.crcPriority);
                     if (crcResponse.Status != ResponseStatus.Success)
                     {
                         await Task.Delay(retryDelay);

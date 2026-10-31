@@ -21,9 +21,9 @@ internal static partial class AutoCalKernelProbePolicyTest
         "6CF0107D020200000200004E3F92B0", "6CF0107D02018000008000712EFE11",
         "6CF0107D0200200000600085B5BB36", "6CF0107D020020000040007D830D3E",
         "6CF0107D02004000000000CED58D53" };
-    private static AutoCalKernelProbePolicy FullVersion(bool acknowledged = false)
+    private static AutoCalKernelProbePolicy FullVersion(bool acknowledged = false, bool use6dCrc = false)
     {
-        var p = new AutoCalKernelProbePolicy(kernel, fullRead: true, useZeroSubmodeKernel: acknowledged, prependReadAcknowledgement: acknowledged, acknowledgedFullRead: acknowledged);
+        var p = new AutoCalKernelProbePolicy(kernel, fullRead: true, useZeroSubmodeKernel: acknowledged, prependReadAcknowledgement: acknowledged, acknowledgedFullRead: acknowledged, use6dCrc: use6dCrc);
         Tx(p, "6C10F03C0A"); Rx(p, "6CF0107C0A00E7C434444E");
         Tx(p, "6C10F02701"); Rx(p, "6CF01067010000");
         p.BeforeTransmit(p.UploadPermissionMessage); Rx(p, "6CF010740044");
@@ -49,9 +49,10 @@ internal static partial class AutoCalKernelProbePolicyTest
         for (int index = 0; index < 128; index++) { p.BeforeTransmit(DataRequest(index)); p.ObserveReceive(DataReply(index)); }
         return p;
     }
-    private static void AcknowledgedFullReadOffline()
+    private static void AcknowledgedFullReadOffline() => AcknowledgedFullReadOffline(false);
+    private static void AcknowledgedFullReadOffline(bool use6dCrc)
     {
-        var p = FullVersion(true); Tx(p, "6C10F03D01"); Rx(p, "6CF0107D0100894471");
+        var p = FullVersion(true, use6dCrc); Tx(p, "6C10F03D01"); Rx(p, "6CF0107D0100894471");
         for (int index = 0; index < 128; index++)
         {
             p.BeforeTransmit(DataRequest(index)); Rx(p, "6DF010750154");
@@ -61,7 +62,7 @@ internal static partial class AutoCalKernelProbePolicyTest
                 "one acknowledgement required for each sequential block");
         }
         Require(p.BaselineShaMatched && !p.IsImageVerified, "full baseline needs controller CRCs");
-        for (int index = 0; index < 7; index++) { p.BeforeTransmit(p.CrcRequests[index]); Rx(p, savedCrcReplies[index]); }
+        for (int index = 0; index < 7; index++) { p.BeforeTransmit(p.CrcRequests[index]); byte[] crc = Hex(savedCrcReplies[index]); crc[0] = use6dCrc ? (byte)0x6D : (byte)0x6C; p.ObserveReceive(crc); }
         Require(p.IsImageVerified && p.VerifiedCrcRanges == 7, "all CRC ranges verified offline");
         Tx(p, "6C10F020"); Rx(p, "6CF01060"); Tx(p, "6C10F03C0A"); Rx(p, "6CF0107C0A00E7C434444E");
         Require(p.IsPostExitIdentityVerified, "explicit exit follows full verification");

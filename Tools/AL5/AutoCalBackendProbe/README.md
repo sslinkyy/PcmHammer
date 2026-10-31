@@ -347,3 +347,23 @@ offline with `audit_ack_prefix_success.inspect(full=True)` using the pinned
 local artifacts. This establishes complete data delivery for one fixed 1x
 experiment, not a verified successful read, 4x capability, flashing or recovery.
 No flash operation ran and live writes remain disabled.
+
+## Explicit 6D CRC control
+
+The `--plan-e54-read-baseline-acknowledged-crc6d` profile is an offline preview.
+Its separate read-only live form is `--e54-read-baseline-acknowledged-crc6d`
+with the existing isolated-bench, serial and new-receipt arguments. No hardware
+run of this profile has been performed. Flashing remains unavailable.
+
+The control retains the exact acknowledged RAM kernel, 128 fixed reads,
+512 KiB baseline digest and seven CRC ranges. Only CRC request/reply priority
+changes from 6C to 6D. Normal calls retain 6C; there is no fallback or header
+normalization. Each reply must contain exactly 15 bytes with the selected
+header, requested range and matching CRC. Wrong headers, ranges, extents or
+values stop the guarded session without kernel exit. Same-range retries retain
+the existing six-attempt bound. Exit and post-exit OS identity remain required.
+
+Plans record `crc_priority_hex` and `crc6d_experiment`; receipts preserve
+`kernel_policy.CrcPriority`. The existing command/time budgets are unchanged.
+Offline transport simulation establishes host behavior only, not AutoCal
+firmware acceptance, physical speed, flash programming or recovery.
