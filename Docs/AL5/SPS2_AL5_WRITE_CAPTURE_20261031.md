@@ -56,3 +56,30 @@ Relevant traced boundaries:
 - Main and block initialization set six-byte status replies. The sender at 0xFF91A0 transmits the reply buffer at 0xFFA200. Internal flash reads include checksum scans (for example 0xFF954A onward), but no arbitrary flash-data response construction was identified.
 
 Private evidence: sps_loader_read_capability_audit.json, sps_loader_disassembly.json/txt and sps_loader_dispatch_tail.txt. The audit found no ready-to-use readback service; that is a bounded negative finding, not proof that every possible reuse or a separately designed read-only loader is impossible. The existing Mode 0x23 reader was not broadened. Reading other flash ranges still requires resolving resident-service permissions or separately building and qualifying a read-only loader; the captured programming kernel does not by itself close that gate. Live AL5 writes remain disabled.
+
+
+## SPS-specific C# offline rehearsal and deeper trace
+
+AL5SpsOfflineRehearsal in PcmLibrary is a separate saved-observation profile. It owns immutable copies of the loader, OS and calibration inputs, verifies the caller-pinned loader hash, requires the observed lengths/types/destination metadata, validates Mode 36 envelopes and additive checksums, matches every byte/padding byte to the selected saved modules, and correlates one pending operation. It has no transport dependency or request builder. Existing EFILive classes and live-write gates are unchanged.
+
+### Destination, erase, programming and verification
+
+At 0xFF94EA the module-1 handler reads RAM metadata at 0xFF803E/42; the saved OS gives inclusive destination range 0x20000-0xC5F93. The calibration range is read from the installed OS header at flash 0x20046/4A (handler 0xFF95A6); the saved SPS OS gives 0x8000-0x15FD7. Rehearsal acceptance of these saved metadata values is not proof that arbitrary modules are compatible.
+
+The high erase helper 0xFF9C50 calls sector erase 0xFF9BD8 at 0xF0000, 0xE0000 down through 0x20000. Lower erase helper 0xFF9D7C calls 0x10000 and 0x8000. The assembly establishes command addresses, not an independently qualified physical chip map. Erase polls flash status and returns an error indication; the caller sends status 0x85 on failure and calls the terminal helper.
+
+0xFF92E4 divides programming into full 4096-byte blocks and a final partial block based on a remaining-byte count. It calls 0xFF9DB8, which issues AMD-style word-program commands, polls, compares source/destination words and finally performs an entire-block word comparison (0xFF9E80-0xFF9E9E). These are internal checks, not a host BIN readback. At module boundaries the loader computes zero word-sums over the OS header's inclusive ranges and invokes 0xFF9EAC to fill remaining tail space with 0x4AFC words. Observed metadata yields OS tail 0xC5F94-0xFFFFF and calibration tail 0x15FD8-0x1FFFF. This is broader than calibration data and must not be silently reused by a calibration-only custom writer.
+
+Before calibration erase, the loader checks marker 0x4AFC at 0xFFFFE and the installed OS word-sum (0xFF952E onward); rejection sends 0x8A. After final calibration programming it checks the calibration word-sum, fills the lower tail, sends 0x86 at 0xFF93A2, then calls the terminal helper. OS module completion sends 0x73 and resets its module-active flag. The captured sequence agrees with 179 ordinary 0x73 replies and one final 0x86.
+
+### Failure behavior and explicit correction
+
+The helper at 0xFF9124 is not a returning cleanup/retry helper. Its reachable path writes 0xD0C2 to RAM 0xFF8000, changes interface registers, then parks at the self-branch 0xFF9194. The instructions after the park include an epilogue, but normal fallthrough cannot reach it. Calls to this helper retain their pending return frames; retrying through those frames is not established. Any watchdog/reset or external recovery outcome remains physically unknown.
+
+This corrects the preliminary possibility that an 0x85 failure could return and emit a later success: that continuation is prevented by the normal terminal-helper path. The same helper is used after successful final 0x86, so parking alone does not identify failure; preceding status and control-flow context matter.
+
+Parser errors differ: invalid RAM address/alignment gives 0x74, malformed length 0x75, and additive checksum rejection 0x77. The checksum branch (0xFF9804) returns from the block receiver without calling the erase/program handler; it does not establish a safe host retry policy. The new rehearsal conservatively stops on all these errors and on 0x85/0x8A, with no automatic retry. Unknown or misplaced terminal statuses also stop it. Pending 0x78 does not complete a block.
+
+Validation: the net8 SpsOfflineRehearsalTest harness exercises an entire synthetic 180-block session, pending ownership, identity and payload rejection, final-block zero padding, early terminal replies, error latching, interruption and refusal to reuse a closed attempt. It also imports the actual saved corpus and completes with exactly 180 acknowledged blocks / 201 pending replies. All status/length checks are model behavior; no injected physical flash failure, interrupted-write recovery or whole-flash readback was performed.
+
+The rehearsal additionally exposes copied literal erase-address observations and independently validates zero word-sums on both saved modules before accepting a session. The full Windows app builds successfully to LocalOnly/SpsOfflineWriterBuild; the normal output folder was locked by the open reader. Existing offline regression harnesses pass. No vehicle access occurred during this implementation.
