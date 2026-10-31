@@ -993,3 +993,16 @@ offline with `audit_ack_prefix_success.inspect(full=True)` using the pinned
 local artifacts. This establishes complete data delivery for one fixed 1x
 experiment, not a verified successful read, 4x capability, flashing or recovery.
 No flash operation ran and live writes remain disabled.
+
+### CRC header control derived offline
+
+The [CRC differential](AUTOCAL_CRC_DELIVERY_DIFFERENTIAL_20261030.json)
+records 6C replies of 6-11 bytes delivered through AutoCal, versus two
+missing 15-byte 6C CRC replies. Both 6-byte ACKs and 4,108-byte data replies
+with header 6D arrived. These observations do not establish a length limit.
+Pinned source accepts 6C/6D, retains byte zero for the CRC response, and sends
+the buffer unchanged. An explicit 6D CRC request is therefore a useful next
+control, with identical range and expected CRC and no kernel patch. This is
+a source-derived prediction, not a qualified fix. The normal parser and probe
+guard require 6C; no live alternate-header path has been added or enabled.
+The offline geometry checks reject mixed headers, wrong ranges and extents.

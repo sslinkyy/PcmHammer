@@ -1,0 +1,177 @@
+{
+  "schema": "autocal-crc-delivery-differential-v1",
+  "implementation": {
+    "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\audit_autocal_crc_delivery.py",
+    "bytes": 6360,
+    "sha256": "e6c110f8135e874ee6a129ee62889175f294954ad7346fbabcd02d36ba346f1d"
+  },
+  "inputs": [
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\AutoCalBackendProbe\\e54_full_ack_gt_01.json",
+      "bytes": 14938,
+      "sha256": "2633ffe0f57ee2169c5ffca77692dfd13e6fa0077f529aee06b9c970e52e755b"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\AutoCalBackendProbe\\e54_full_ack_gt_01.json.journal.jsonl",
+      "bytes": 3098453,
+      "sha256": "9dbd0ce4108405df307cf836cef665090e6786a29d443545c3b84aa9e6a74a6e"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\AutoCalBackendProbe\\gt_e54_full_ack_1x_01.jsonl",
+      "bytes": 7628001,
+      "sha256": "7908749ea31d2c9ca182306175c5c0a02ede9fee920edddb139cef22e7ea030c"
+    },
+    {
+      "path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\AutoCalBackendProbe\\e54_full_ack_gt_01.json.readback.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "source_commit": "fe8e3a9804c42e236e3326fb46e5555af27e5f3b",
+  "source_pins": [
+    {
+      "git_commit": "fe8e3a9804c42e236e3326fb46e5555af27e5f3b",
+      "path": "Kernels/68k-VPW-Asm/Kernel.S",
+      "bytes": 57610,
+      "sha256": "582eeb77dcf703c1398ad63999e3f4d8304312fb23a60bb963992ebba8055d1f"
+    },
+    {
+      "git_commit": "fe8e3a9804c42e236e3326fb46e5555af27e5f3b",
+      "path": "Kernels/68k-VPW-Asm/Common-Assembly.h",
+      "bytes": 4528,
+      "sha256": "53acc2ae5e7de4ca20f7651f894bc0e2b9d4fdfea4e495b21d47f4c11f8f2790"
+    },
+    {
+      "git_commit": "fe8e3a9804c42e236e3326fb46e5555af27e5f3b",
+      "path": "Kernels/68k-VPW-Asm/Kernel.ld",
+      "bytes": 207,
+      "sha256": "e0bc65744327fea2eaa62df770e385b16ac7471ce6849abd0f042433587146d3"
+    },
+    {
+      "git_commit": "fe8e3a9804c42e236e3326fb46e5555af27e5f3b",
+      "path": "Kernels/Build.cmd",
+      "bytes": 13244,
+      "sha256": "0e050029ecc80adedb4b8a0dc15aab9d6bf734b977b8265bc53b5f9314dc3ab6"
+    }
+  ],
+  "source_windows": {
+    "ProcessCRC": {
+      "first_line": 314,
+      "last_line": 376,
+      "source": "ProcessCRC:\n    moveq   #0, %d0                    | Start Clean\n    movea.l #MessageBuffer, %a0        | Pointer to MessageBuffer buffer\n    move.b  8(%a0), %d0                | First address byte\n    lsl.l   #8, %d0                    | Logical Shift Left\n    move.b  9(%a0), %d0                | Second address byte\n    lsl.l   #8, %d0                    | Logical Shift Left\n    move.b  10(%a0), %d0               | Third address byte\n    movea.l %d0, %a1                   | Pointer to address buffer\n\n    moveq   #0, %d0                    | Start Clean\n    move.b  5(%a0), %d0                | First length byte\n    lsl.l   #8, %d0                    | Logical Shift Left\n    move.b  6(%a0), %d0                | Second length byte\n    lsl.l   #8, %d0                    | Logical Shift Left\n    move.b  7(%a0), %d0                | Third length byte\n    movea.l %d0, %a2                   | Pointer to length buffer\n\n    lea     (%a1, %a2.l), %a2          | for (int byte = 0; byte < nBytes; ++byte)\n    moveq   #0x18, %d2                 | WIDTH-8 to register\n    moveq   #0, %d0                    | unsigned int remainder = 0\n\nProcessCRCMainLoop:\n    bsr.w   ResetWatchdog              | Scratch the dog\n    move.b  (%a1)+, %d1                | message[byte] to register\n    lsl.l   %d2, %d1                   | Shift left copy of message[byte] by (WIDTH-8)\n    eor.l   %d1, %d0                   | xor in to remainder\n    moveq   #8, %d1                    | for (unsigned char bit = 8; bit > 0; --bit)\n\nProcessCRCBitLoop:\n    tst.l   %d0                        | if (remainder & TOPBIT)\n    add.l   %d0, %d0                   | remainder = (remainder << 1); (optimised by tricky use of an add opcode)\n    blt.b   ProcessCRCPolynomial       | Then jump to the polynomial part\n    subq.b  #1, %d1                    | Next bit\n    bne.s   ProcessCRCBitLoop          | Any bits left?\n\nProcessCRCMainLoopCheck:\n    bsr.w   ResetWatchdog              | Scratch the dog\n    move.b  (J1850_Status).l, %d1     | Check RFS - any data in FIFO?\n    andi.b  #0xE0, %d1                | Mask RFS bits 7:5\n    beq.s   ProcessCRCMainLoopNoRX    | FIFO empty, skip drain\n    move.b  (J1850_RX_FIFO).l, %d1   | Drain one byte to prevent FIFO overflow\nProcessCRCMainLoopNoRX:\n    cmpa.l  %a1, %a2                   | Is byte < nBytes?\n    bne.s   ProcessCRCMainLoop         | If not, iterate main loop\n\n| Process CRC Response\n    move.b  #toolid, 1(%a0)            | To: Tool\n    move.b  #pcmid, 2(%a0)             | From: PCM\n    move.b  #0x7D, 3(%a0)              | 3D + 40 = Mode 3D, Success\n\n    move.b  %d0, 14(%a0)               | Move CRC byte 4 to MessageBuffer byte 15\n    lsr.l   #8, %d0                    | Shift CRC Right\n    move.b  %d0, 13(%a0)               | Move CRC byte 3 to MessageBuffer byte 14\n    lsr.l   #8, %d0                    | Shift CRC Right\n    move.b  %d0, 12(%a0)               | Move CRC byte 2 to MessageBuffer byte 13\n    lsr.l   #8, %d0                    | Shift CRC Right\n    move.b  %d0, 11(%a0)               | Move CRC byte 1 to MessageBuffer byte 12\n\n    move.w  #15, %d0                   | It's 15 bytes long (6C F0 10 7D 02 01 00 00 01 00 00 67 86 6E C2)\n    bsr.w   VPWSend                    | Send it\n    bra.w   MainLoop                   | Return to MainLoop\n"
+    },
+    "VPWSend": {
+      "first_line": 1130,
+      "last_line": 1148,
+      "source": "VPWSend:\n    move.b  #0x14, (J1850_Command).l   | BTAD Byte type and destination field to 101 (000 101 00)\n                                       | 101 = Load as first byte of transmit data\n    subq.w  #2, %d0                    | Zero Index data length and last byte not counted\n\nVPWSendNextByte:\n    bsr.w   ResetWatchdog              | Scratch the dog\n    move.b  (%a0)+, (J1850_TX_FIFO).l  | Write byte to TX FIFO\n    bsr.w   WaitForTXFIFO              | Wait for space in TX FIFO\n    dbf     %d0, VPWSendNextByte       | If False Decrement and Branch\n\n    move.b  #0x0C, (J1850_Command).l   | 011 to BTAD - Load as last byte of transmit data\n    move.b  (%a0)+, (J1850_TX_FIFO).l  | Drop the last byte in TX FIFO\n    bra.w   VPWSendFlush               | Tail call shared flush, rts returns to our caller\n\n| =============== S U B R O U T I N E =======================================\n| Shared flush used by VPWSend and VPWSendBlock.\n| Sends RFC=11 flush command, waits for transmit completion, drains completion code.\n| Entered via bra (tail call) - rts returns to the original caller."
+    },
+    "VPWReceiveReadComplete": {
+      "first_line": 1188,
+      "last_line": 1199,
+      "source": "VPWReceiveReadComplete:\n    move.b  (J1850_RX_FIFO).l, (%a0)+ | Read completion code (discard, advance pointer)\n    movea.l #MessageBuffer, %a0        | Reset pointer to message start\n    move.b  (%a0), %d0                 | Load message first byte\n    andi.b  #0xFE, %d0                 | Mask 1111 1110\n    cmpi.b  #0x6C, %d0                 | Priority 6C or 6D packet?\n    bne.s   VPWReceiveReadFrame        | If not, abort and get next packet\n    cmpi.b  #pcmid, 1(%a0)             | Check for device 0x10\n    beq.s   VPWReceiveRTS              | If yes, return for processing\n    cmpi.b  #0xFE, 1(%a0)              | Check for broadcast device id 0xFE\n    bne.s   VPWReceiveReadFrame        | Not an FE, junk it, get next packet\n"
+    }
+  },
+  "observed": {
+    "autocal_vpw_reply_shapes": [
+      {
+        "prefix_hex": "6cf0106701",
+        "bytes_without_bus_crc": 7,
+        "count": 1
+      },
+      {
+        "prefix_hex": "6cf0106702",
+        "bytes_without_bus_crc": 6,
+        "count": 1
+      },
+      {
+        "prefix_hex": "6cf0107400",
+        "bytes_without_bus_crc": 6,
+        "count": 1
+      },
+      {
+        "prefix_hex": "6cf0107600",
+        "bytes_without_bus_crc": 6,
+        "count": 1
+      },
+      {
+        "prefix_hex": "6cf0107680",
+        "bytes_without_bus_crc": 6,
+        "count": 1
+      },
+      {
+        "prefix_hex": "6cf0107c0a",
+        "bytes_without_bus_crc": 11,
+        "count": 1
+      },
+      {
+        "prefix_hex": "6cf0107d00",
+        "bytes_without_bus_crc": 10,
+        "count": 1
+      },
+      {
+        "prefix_hex": "6cf0107d01",
+        "bytes_without_bus_crc": 9,
+        "count": 1
+      },
+      {
+        "prefix_hex": "6df0103600",
+        "bytes_without_bus_crc": 4108,
+        "count": 128
+      },
+      {
+        "prefix_hex": "6df0107501",
+        "bytes_without_bus_crc": 6,
+        "count": 128
+      },
+      {
+        "prefix_hex": "8cf0106800",
+        "bytes_without_bus_crc": 5,
+        "count": 1
+      }
+    ],
+    "crc_request_hex": "6c10f03d02020000060000",
+    "crc_reply_hex": "6cf0107d02020000060000d6703728",
+    "crc_reply_shape": {
+      "priority_hex": "6c",
+      "size": 131072,
+      "address": 393216,
+      "crc_hex": "d6703728"
+    },
+    "crc_host_request_elapsed_ms": [
+      489218,
+      494284
+    ],
+    "gt_crc_network_ordinals": [
+      813,
+      814
+    ],
+    "gt_crc_reply_spacing_ms": 5047.0,
+    "gt_physical_crc_valid": true,
+    "autocal_crc_reply_count": 0,
+    "complete_image_matches_baseline": true
+  },
+  "derivation": [
+    "Pinned ProcessCRC retains byte zero of MessageBuffer, writes response fields and sends 15 bytes.",
+    "Pinned VPWSend copies buffer bytes unchanged into the TX FIFO.",
+    "Pinned VPWReceive masks bit zero before comparing 6C, so source accepts both 6C and 6D.",
+    "Existing production CRC parser and probe guard both require 6C; changing request alone would not create a valid end-to-end test."
+  ],
+  "hypothesis": "AutoCal delivery may depend on the combination of header and reply length. This run cannot separate header, length, service and adapter state.",
+  "offline_candidate": {
+    "request_hex": "6d10f03d02020000060000",
+    "predicted_reply_hex": "6df0107d02020000060000d6703728",
+    "changed_request_byte_offsets": [
+      0
+    ],
+    "kernel_patch_required_by_source": false,
+    "requires_separate_explicit_host_policy_and_parser": true,
+    "live_implemented": false,
+    "next_control": "Compare fixed CRC request headers in separate reset sessions with GT listening; preserve exact range and expected CRC. Do not relax normal parser or verification gates."
+  },
+  "limits": [
+    "Host timestamps are not physical edge timestamps and AutoCal/GT clocks are not synchronized.",
+    "Source-derived 6D acceptance and response are predictions until bench observed.",
+    "No firmware-wide length threshold, internal filtering rule or fix is proven.",
+    "No adapter was opened; bench remains off; flashing and recovery remain unqualified."
+  ]
+}
