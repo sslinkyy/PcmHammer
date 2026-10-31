@@ -42,3 +42,13 @@ Before an authorized capture:
 5. Retain raw USB traffic, SPS logs, selected calibration metadata and operation/shutdown timestamps. Stop only the owned capture process after cleanup.
 
 USB traffic cannot by itself prove lossless physical-bus monitoring. The J2534 driver's traffic must be decoded from this session; prior PcmHammer DVI byte-window assumptions cannot be applied blindly. A successful SPS event would still need coverage analysis to establish what flash regions were actually written.
+
+## Installed SPS2 recognition follow-up (2026-10-30)
+
+Observed Techline Connect 26.9.11.0 Production OCF, SPS2 26.10.5.0. Its welcome screen reports "Diagnostic Tool Ready!" and "J2534 OBDX Pro;OBDX Pro GT;04.04;". The user confirmed the adapter is not connected to the truck. Windows reports the expected GT USB instance present and OK on COM9. No Auto Detect VIN, tool selection or programming control was clicked.
+
+The displayed VIN is blank and the vehicle selectors show Chevrolet / 2003 / Medium Duty Truck / ANY / LB7. These are not validated vehicle identification and must not be used as confirmation of truck fitment.
+
+Fresh inventory preparation: LocalOnly/sps2_capture_preparation_20261030/enumerate_sps_gt_01.ps1, copied from the existing verified inventory procedure with a fresh receipt filename. Not launched; no elevation requested, USB capture started or serial port opened. The plan-only unit suite passes three tests.
+
+Capture readiness is blocked by the console stop self-test. A correctly hidden CREATE_NEW_CONSOLE launch of the existing supervisor reached the fixture but the fixture exited before AttachConsole. surrogate_ready.json records NULL standard input and console_mode_valid=false. Evidence: LocalOnly/usb_capture_setup_20261030/sps_stop_selftest_02. No USBPcap process was involved. The older console launch assumption must be repaired and the clean-stop fixture passed before relying on this helper for programming capture. This is a capture-helper failure, not an SPS2/GT recognition failure.
