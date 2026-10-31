@@ -19,6 +19,7 @@ class Probe:
         self.u.mem_write(0xc2390,bytes.fromhex('4e75')) # negative formatter intercepted, never real transport
         self.u.mem_protect(0,0x100000,UC_PROT_READ|UC_PROT_EXEC)
         self.u.mem_map(0xff8000,0x8000);self.u.mem_map(0x200000,0x10000);self.u.mem_map(0x300000,0x1000)
+        self.ranges=list(RANGES)
         self.u.hook_add(UC_HOOK_CODE,self.hook);self.negative=[]
 
     def hook(self,u,pc,size,user):
@@ -26,7 +27,7 @@ class Probe:
         if pc==0x300000:u.emu_stop();return
         if pc==0xc2390:
             sp=u.reg_read(UC_M68K_REG_A7);self.negative.append(int.from_bytes(u.mem_read(sp+8,4),'big'));return
-        if not any(a<=pc<b for a,b in RANGES):raise ValueError('Execution left selected handler/helpers: '+hex(pc))
+        if not any(a<=pc<b for a,b in self.ranges):raise ValueError('Execution left selected handler/helpers: '+hex(pc))
 
     def call(self,pc,args):
         from unicorn.m68k_const import UC_M68K_REG_A7,UC_M68K_REG_A5,UC_M68K_REG_D0

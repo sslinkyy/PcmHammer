@@ -12,6 +12,8 @@
   <ItemGroup>
     <Compile Include="CapturedProgramImageTest.cs" />
     <Compile Include="CapturedWriteRehearsalTest.cs" />
+    <Compile Include="SavedReadSessionTest.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5SavedReadSession.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5CapturedWriteRehearsal.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5SavedReadCoverage.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5SavedMode23Reply.cs" />

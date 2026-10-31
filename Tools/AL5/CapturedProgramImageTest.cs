@@ -20,6 +20,7 @@ internal static class CapturedProgramImageTest
     static void Reject(Action action) { try { action(); } catch(ArgumentException) { return; } throw new Exception("Invalid input accepted"); }
     static int Main(string[] args)
     {
+        SavedReadSessionTest.Run();
         var savedReply=Convert.FromHexString("6cf01863800003142536");
         Check(AL5SavedMode23Reply.Parse(0x8000,savedReply,out var replyData,out _)==AL5SavedReplyKind.MatchingLow16Echo);
         Check(AL5SavedMode23Reply.Parse(0x18000,savedReply,out _,out _)==AL5SavedReplyKind.MatchingLow16Echo);

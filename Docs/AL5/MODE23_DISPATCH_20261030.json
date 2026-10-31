@@ -1,0 +1,177 @@
+{
+  "firmware_sha256": "492040d9460d53b77dda606b9a89f4254e0680f239093001663f6ed5cf51ba75",
+  "code_sha256": {
+    "0xa4a38": "486f8e4384ffaa01b3ac75262dc3d633ebbfb023aa5c7372f8a6b3197d4412d9",
+    "0xb1970": "39cd6b4ad8462047ad277ff32b2b362af917c1bcd15705e78e672fbec61aa664"
+  },
+  "descriptor": "9000000bfda0",
+  "cases": [
+    {
+      "state": 0,
+      "lock_flags": 0,
+      "call_argument": 0,
+      "handler_result_staged": true,
+      "response_body": "fffcbfd0e1f2",
+      "pending_flag": "10"
+    },
+    {
+      "state": 0,
+      "lock_flags": 0,
+      "call_argument": 1,
+      "handler_result_staged": true,
+      "response_body": "fffcbfd0e1f2",
+      "pending_flag": "10"
+    },
+    {
+      "state": 0,
+      "lock_flags": 32,
+      "call_argument": 0,
+      "handler_result_staged": true,
+      "response_body": "fffcbfd0e1f2",
+      "pending_flag": "10"
+    },
+    {
+      "state": 0,
+      "lock_flags": 32,
+      "call_argument": 1,
+      "handler_result_staged": true,
+      "response_body": "fffcbfd0e1f2",
+      "pending_flag": "10"
+    },
+    {
+      "state": 1,
+      "lock_flags": 0,
+      "call_argument": 0,
+      "handler_result_staged": false,
+      "response_body": "cccccccccccc",
+      "pending_flag": "00"
+    },
+    {
+      "state": 1,
+      "lock_flags": 0,
+      "call_argument": 1,
+      "handler_result_staged": true,
+      "response_body": "fffcbfd0e1f2",
+      "pending_flag": "10"
+    },
+    {
+      "state": 1,
+      "lock_flags": 32,
+      "call_argument": 0,
+      "handler_result_staged": false,
+      "response_body": "cccccccccccc",
+      "pending_flag": "00"
+    },
+    {
+      "state": 1,
+      "lock_flags": 32,
+      "call_argument": 1,
+      "handler_result_staged": true,
+      "response_body": "fffcbfd0e1f2",
+      "pending_flag": "10"
+    },
+    {
+      "state": 2,
+      "lock_flags": 0,
+      "call_argument": 0,
+      "handler_result_staged": false,
+      "response_body": "cccccccccccc",
+      "pending_flag": "00"
+    },
+    {
+      "state": 2,
+      "lock_flags": 0,
+      "call_argument": 1,
+      "handler_result_staged": true,
+      "response_body": "fffcbfd0e1f2",
+      "pending_flag": "10"
+    },
+    {
+      "state": 2,
+      "lock_flags": 32,
+      "call_argument": 0,
+      "handler_result_staged": false,
+      "response_body": "cccccccccccc",
+      "pending_flag": "00"
+    },
+    {
+      "state": 2,
+      "lock_flags": 32,
+      "call_argument": 1,
+      "handler_result_staged": true,
+      "response_body": "fffcbfd0e1f2",
+      "pending_flag": "10"
+    },
+    {
+      "state": 3,
+      "lock_flags": 0,
+      "call_argument": 0,
+      "handler_result_staged": false,
+      "response_body": "cccccccccccc",
+      "pending_flag": "00"
+    },
+    {
+      "state": 3,
+      "lock_flags": 0,
+      "call_argument": 1,
+      "handler_result_staged": true,
+      "response_body": "fffcbfd0e1f2",
+      "pending_flag": "10"
+    },
+    {
+      "state": 3,
+      "lock_flags": 32,
+      "call_argument": 0,
+      "handler_result_staged": false,
+      "response_body": "cccccccccccc",
+      "pending_flag": "00"
+    },
+    {
+      "state": 3,
+      "lock_flags": 32,
+      "call_argument": 1,
+      "handler_result_staged": true,
+      "response_body": "fffcbfd0e1f2",
+      "pending_flag": "10"
+    },
+    {
+      "state": 255,
+      "lock_flags": 0,
+      "call_argument": 0,
+      "handler_result_staged": false,
+      "response_body": "cccccccccccc",
+      "pending_flag": "00"
+    },
+    {
+      "state": 255,
+      "lock_flags": 0,
+      "call_argument": 1,
+      "handler_result_staged": true,
+      "response_body": "fffcbfd0e1f2",
+      "pending_flag": "10"
+    },
+    {
+      "state": 255,
+      "lock_flags": 32,
+      "call_argument": 0,
+      "handler_result_staged": false,
+      "response_body": "cccccccccccc",
+      "pending_flag": "00"
+    },
+    {
+      "state": 255,
+      "lock_flags": 32,
+      "call_argument": 1,
+      "handler_result_staged": true,
+      "response_body": "fffcbfd0e1f2",
+      "pending_flag": "10"
+    }
+  ],
+  "limits": [
+    "Dispatcher traced statically; only descriptor processor and Mode 23 helpers executed.",
+    "Receive queue, physical addressing acceptance and response scheduling not executed.",
+    "Synthetic state and target data; no live security or transport operation."
+  ],
+  "live_read_enabled": false,
+  "live_write_enabled": false
+}
