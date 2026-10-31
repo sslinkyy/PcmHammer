@@ -20,6 +20,18 @@ internal static class CapturedProgramImageTest
     static void Reject(Action action) { try { action(); } catch(ArgumentException) { return; } throw new Exception("Invalid input accepted"); }
     static int Main(string[] args)
     {
+        var savedReply=Convert.FromHexString("6cf01863800003142536");
+        Check(AL5SavedMode23Reply.Parse(0x8000,savedReply,out var replyData,out _)==AL5SavedReplyKind.MatchingLow16Echo);
+        Check(AL5SavedMode23Reply.Parse(0x18000,savedReply,out _,out _)==AL5SavedReplyKind.MatchingLow16Echo);
+        Check(!AL5SavedMode23Reply.FullAddressIdentityProven && !AL5SavedMode23Reply.ExtendedLiveReadEnabled);
+        savedReply[6]=0;Check(replyData[0]==3);
+        Check(AL5SavedMode23Reply.Parse(0x18004,savedReply,out _,out _)==AL5SavedReplyKind.Unrelated);
+        foreach(string malformed in new[]{"6cf018638000031425","6cf0186380000314253600","6cf0186301800003142536"})
+            Check(AL5SavedMode23Reply.Parse(0x18000,Convert.FromHexString(malformed),out _,out _)==AL5SavedReplyKind.Malformed);
+        Check(AL5SavedMode23Reply.Parse(0x1FFFC,Convert.FromHexString("6cf01863fffc12344afc"),out var tail,out _)==AL5SavedReplyKind.MatchingLow16Echo && tail[2]==0x4A && tail[3]==0xFC);
+        Check(AL5SavedMode23Reply.Parse(0x18000,Convert.FromHexString("6cf0187f2331"),out _,out var reason)==AL5SavedReplyKind.Negative && reason==0x31);
+        Reject(()=>AL5SavedMode23Reply.Parse(0x1FFFE,savedReply,out _,out _));
+        Console.WriteLine("PASS strict offline Mode 23 extent, tail, rejection, ownership and address-alias checks");
         if(args.Length>0 && args[0]=="--writes")return CapturedWriteRehearsalTest.Run(System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Skip(args,1)));
         var image=new AL5CapturedProgramImage();
         var first=Example(0x8000,512); image.Observe(first); image.Observe(first);

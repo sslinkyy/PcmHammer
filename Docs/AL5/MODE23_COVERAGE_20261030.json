@@ -1,0 +1,93 @@
+{
+  "firmware_sha256": "492040d9460d53b77dda606b9a89f4254e0680f239093001663f6ed5cf51ba75",
+  "table_address": "0xc591e",
+  "table_hex": "000200000000000fffff00ff800000ffb7ff",
+  "code_sha256": {
+    "0xbfda0": "4684fe33254165f6a3c4dbb2df71b6c9ebd5401c4f4f57546f7181fe032d966c",
+    "0xc00e8": "88313f19e7fb20ad03aa1ba31bcd795205d600d6af3f8559c4ec10029074bedd",
+    "0xc2f88": "b12a584ff7212033e1e9c64e226569286b335c83b1b3a924327ddb3dfe8d408d",
+    "0xc2fd0": "ed1c6b76f093ce6fcf2da3ec186adf1311336f7c24c05c1e9484455bfa8b4ef8"
+  },
+  "supplemental_dwords_checked": 10250,
+  "rejected_addresses": [],
+  "boundary_permissions": {
+    "0x15fd8": true,
+    "0x1fffc": true,
+    "0xffffc": true,
+    "0xffffd": false,
+    "0x100000": false,
+    "0x3fd7": false,
+    "0x3fd8": false,
+    "0xc4c64": false,
+    "0xff8000": true,
+    "0xffb7fc": true,
+    "0xffb7fd": false
+  },
+  "handler_samples": [
+    {
+      "address": 32768,
+      "negative_reasons": [],
+      "response_body": "800003142536",
+      "pending_flag": "10"
+    },
+    {
+      "address": 98304,
+      "negative_reasons": [],
+      "response_body": "800003142536",
+      "pending_flag": "10"
+    },
+    {
+      "address": 90072,
+      "negative_reasons": [],
+      "response_body": "5fd85b6c7d8e",
+      "pending_flag": "10"
+    },
+    {
+      "address": 131068,
+      "negative_reasons": [],
+      "response_body": "fffcbfd0e1f2",
+      "pending_flag": "10"
+    },
+    {
+      "address": 16344,
+      "negative_reasons": [
+        49
+      ],
+      "response_body": "cccccccccccc",
+      "pending_flag": "00"
+    },
+    {
+      "address": 1048576,
+      "negative_reasons": [
+        49
+      ],
+      "response_body": "cccccccccccc",
+      "pending_flag": "00"
+    }
+  ],
+  "malformed_requests": [
+    {
+      "address": 131068,
+      "negative_reasons": [
+        18
+      ],
+      "response_body": "cccccccccccc",
+      "pending_flag": "00"
+    },
+    {
+      "address": 131068,
+      "negative_reasons": [
+        18
+      ],
+      "response_body": "cccccccccccc",
+      "pending_flag": "00"
+    }
+  ],
+  "limits": [
+    "Synthetic data; isolated handler invocation bypasses dispatcher, security and scheduling.",
+    "Negative formatter intercepted; pending response not transmitted.",
+    "No physical readability or full-address response identity established."
+  ],
+  "live_read_enabled": false,
+  "live_write_enabled": false
+}
