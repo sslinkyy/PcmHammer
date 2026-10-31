@@ -1,0 +1,206 @@
+{
+  "firmware_sha256": "492040d9460d53b77dda606b9a89f4254e0680f239093001663f6ed5cf51ba75",
+  "code_sha256": {
+    "0x70a44": "0a2f5e69fd1c7f7a8f79abf8f09c3db41915ae15374abdbf3d60140740c204a9",
+    "0x70e58": "a2de204f17f9a7b4fc5cb716311ec8fe41d518e82f49f1e6d87f3da2482e4d01",
+    "0x70ea4": "fefd84a583eb1c5ee4f1566f209a364ec024fb573ed1c2904e17e1c39ab39796"
+  },
+  "cases": [
+    {
+      "case": "submission_ignores_synthetic_status",
+      "synthetic_status": 0,
+      "register_writes": [
+        [
+          "0xffffe800",
+          20
+        ],
+        [
+          "0xffffe801",
+          108
+        ],
+        [
+          "0xffffe800",
+          4
+        ],
+        [
+          "0xffffe801",
+          240
+        ],
+        [
+          "0xffffe800",
+          4
+        ],
+        [
+          "0xffffe801",
+          24
+        ],
+        [
+          "0xffffe800",
+          4
+        ],
+        [
+          "0xffffe801",
+          99
+        ],
+        [
+          "0xffffe800",
+          4
+        ],
+        [
+          "0xffffe801",
+          255
+        ],
+        [
+          "0xffffe800",
+          4
+        ],
+        [
+          "0xffffe801",
+          252
+        ],
+        [
+          "0xffffe800",
+          4
+        ],
+        [
+          "0xffffe801",
+          191
+        ],
+        [
+          "0xffffe800",
+          4
+        ],
+        [
+          "0xffffe801",
+          208
+        ],
+        [
+          "0xffffe800",
+          4
+        ],
+        [
+          "0xffffe801",
+          225
+        ],
+        [
+          "0xffffe800",
+          12
+        ],
+        [
+          "0xffffe801",
+          242
+        ]
+      ],
+      "register_reads": [],
+      "tx_count_after": 0,
+      "staging_bytes_retained": true,
+      "hardware_completion_observed": false
+    },
+    {
+      "case": "submission_ignores_synthetic_status",
+      "synthetic_status": 255,
+      "register_writes": [
+        [
+          "0xffffe800",
+          20
+        ],
+        [
+          "0xffffe801",
+          108
+        ],
+        [
+          "0xffffe800",
+          4
+        ],
+        [
+          "0xffffe801",
+          240
+        ],
+        [
+          "0xffffe800",
+          4
+        ],
+        [
+          "0xffffe801",
+          24
+        ],
+        [
+          "0xffffe800",
+          4
+        ],
+        [
+          "0xffffe801",
+          99
+        ],
+        [
+          "0xffffe800",
+          4
+        ],
+        [
+          "0xffffe801",
+          255
+        ],
+        [
+          "0xffffe800",
+          4
+        ],
+        [
+          "0xffffe801",
+          252
+        ],
+        [
+          "0xffffe800",
+          4
+        ],
+        [
+          "0xffffe801",
+          191
+        ],
+        [
+          "0xffffe800",
+          4
+        ],
+        [
+          "0xffffe801",
+          208
+        ],
+        [
+          "0xffffe800",
+          4
+        ],
+        [
+          "0xffffe801",
+          225
+        ],
+        [
+          "0xffffe800",
+          12
+        ],
+        [
+          "0xffffe801",
+          242
+        ]
+      ],
+      "register_reads": [],
+      "tx_count_after": 0,
+      "staging_bytes_retained": true,
+      "hardware_completion_observed": false
+    },
+    {
+      "case": "software_discard_is_not_session_invalidation",
+      "pending_preserved": true,
+      "response_body_preserved": true,
+      "receive_record_preserved": true,
+      "tx_count_after": 0
+    }
+  ],
+  "session_boundary_proven": false,
+  "live_read_enabled": false,
+  "live_write_enabled": false,
+  "limits": [
+    "MMIO mapped to inert emulator RAM; writes recorded, not delivered to hardware.",
+    "Synthetic status bytes are not a model of peripheral semantics.",
+    "No interrupt, arbitration, acknowledgement, completion or adapter queue modeled.",
+    "No timing bound or physical drain/invalidation guarantee established."
+  ]
+}
