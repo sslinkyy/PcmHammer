@@ -71,3 +71,15 @@ Validation: seven native cases passed (ready stop, external stop, duration stop,
 Private evidence: LocalOnly/usb_capture_setup_20261030/sps_stop_validation_59207daabea248d4800ecc5f0732e2a3.json, including helper hashes and each receipt path. Earlier failed console receipts remain intact. The helper changes reside in the existing ignored LocalOnly directory; the runner and plan correction are tracked.
 
 The offline shutdown blocker is resolved. This establishes fixture byte retention and process cleanup only, not real USB capture, complete driver-buffer drain or programming readiness. The truck remained disconnected; no adapter was opened and no flash was started. Fresh elevated USB topology inventory and an actual USB capture check remain required before a later programming capture.
+
+## Real GT-only USB capture smoke test (2026-10-30)
+
+User confirmed GT directly connected to the truck, USB connected, ignition OFF and AutoCal disconnected. No SPS connection controls were used and no adapter command was sent by the capture workflow. User manually approved elevation separately for USB inventory and capture.
+
+Fresh signed-USBPcap inventory identified the expected GT on USBPcap2, address 27. A ten-second capture (plus bounded five-second drain) using the corrected detached pythonw pipe supervisor completed successfully: 8,206 bytes, 178 records, USBPcap exit 0, supervisor exit 0, graceful_stop_observed=true, ownership_retained=false, empty stderr and all cleanup operations successful. No USBPcap/PcmHammer process was present in the final check.
+
+The offline parser consumed the entire classic PCAP with no structural, pairing or timing findings. All records belong to bus 2/device 27: endpoint 0x01 has 44 submissions and 44 completions; endpoint 0x82 has 45 submissions and 45 completions, carrying 308 completion bytes. The 44 OUT payloads are identical, 3a0200fec5. IN payloads comprise 44 seven-byte responses, one split across two USB completions. Command 0x3A is the ReadVoltage command family in Apps/PcmLibrary/Devices/OBDXProDevice.cs; the exact 0xFE variant was not decoded here. Existing host-to-adapter polling was observed while SPS2 was open; attributing it to SPS2 is an inference, not process attribution from USBPcap.
+
+The capture helper did not achieve a full one-second quiet tail because polling continued. It stopped at its bounded drain deadline with zero pipe bytes available, and explicitly retains unknown inflight/driver-buffer state. Successful capture startup, data recording and clean process shutdown are verified; losslessness and physical VPW behavior are not established. No flash started.
+
+Evidence: LocalOnly/usb_capture_setup_20261030/sps_gt_usb_smoke_01/{capture.pcap,receipt.json,pcap_inventory.json}; PCAP SHA256 fd46df78e2851cb8515512f557a7a25663e55fe1d464714273b86757b6e56c14. Inventory and launcher receipt are under LocalOnly/sps2_capture_preparation_20261030. The short capture is stopped; a fresh recording must be active before later authorized SPS identification/programming.
