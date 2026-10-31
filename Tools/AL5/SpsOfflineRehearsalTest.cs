@@ -22,7 +22,23 @@ class Program
  static void Main(string[] args)
  {
   os[0x23]=1;cal[0x23]=2;Long(os,0x3E,0x20000);Long(os,0x42,0xC5F93);Long(os,0x46,0x8000);Long(os,0x4A,0x15FD7);
-  Balance(os);Balance(cal);
+  Balance(os);
+  Array.Copy(Convert.FromHexString("00E7B058"),0,cal,0x24,4);
+  Array.Copy(Convert.FromHexString("11F70C68073E05A0040002D9"),0,cal,0xA996-0x8000,12);
+  Array.Copy(Convert.FromHexString("00110009"),0,cal,0x158A8-0x8000,4);
+  var field=Convert.FromHexString(AL5CalibrationInspection.Inspect(cal).ComputedChecksumHex!);Array.Copy(field,0,cal,cal.Length-4,4);
+  var mapping=new AL5SpsModuleMapping(os,cal);var affected=mapping.CopyConditionalAffectedBytes();
+  Check(affected.Length==0xF8000 && affected[0x15FD8-0x8000]==0x4A && affected[0x15FD9-0x8000]==0xFC);
+  var before=new byte[0x100000];var after=new byte[0x100000];Array.Copy(affected,0,after,0x8000,affected.Length);
+  var preservation=mapping.CompareSavedSnapshots(before,after);Check(preservation.SavedProtectedPrefixMatches && preservation.SavedAffectedImageMatches && preservation.OtherFlashWouldChange && !preservation.PhysicalPreservationVerified);
+  after[0x4000]=1;preservation=mapping.CompareSavedSnapshots(before,after);Check(!preservation.SavedProtectedPrefixMatches && preservation.PersistentRegionDifferences==1);
+  after[0x4000]=0;after[0x15FD8]=0;Check(!mapping.CompareSavedSnapshots(before,after).SavedAffectedImageMatches);
+  Reject(()=>mapping.CompareSavedSnapshots(cal,cal));
+  var balancedBad=(byte[])cal.Clone();balancedBad[0x100]^=1;Balance(balancedBad);Check(AL5SpsModuleMapping.Sum(balancedBad)==0);Reject(()=>new AL5SpsModuleMapping(os,balancedBad));
+  var custom=(byte[])cal.Clone();custom[0x100]^=1;field=Convert.FromHexString(AL5CalibrationInspection.Inspect(custom).ComputedChecksumHex!);Array.Copy(field,0,custom,custom.Length-4,4);
+  var customMap=new AL5SpsModuleMapping(os,custom);Check(customMap.CopyCalibrationModule()[0x100]==custom[0x100] && !customMap.LiveWriteEnabled && !customMap.PhysicalSectorMappingVerified);
+  var returned=customMap.CopyCalibrationModule();returned[0x100]^=1;Check(customMap.CopyCalibrationModule()[0x100]==custom[0x100]);
+  var wrongMetadata=(byte[])os.Clone();Long(wrongMetadata,0x46,0x4000);Balance(wrongMetadata);Reject(()=>new AL5SpsModuleMapping(wrongMetadata,cal));
   var x=Started();Check(x.OsFillStart==0xC5F94 && x.CalibrationFillStart==0x15FD8 && x.FillWord==0x4AFC);
   x.ObserveRequest(Packet(os));x.ObserveReply(Reply(0x78));Check(x.AcknowledgedBlocks==0);Reject(()=>x.ObserveRequest(Packet(os)));x.ObserveReply(Reply(0x73));Check(x.AcknowledgedBlocks==1);
   foreach(byte status in new byte[]{0x74,0x75,0x77,0x85,0x8A}) {var f=Started();f.ObserveRequest(Packet(os));f.ObserveReply(Reply(status));Check(f.State==AL5SpsOfflineState.Stopped && f.FailureStatus==status);Reject(()=>f.ObserveReply(Reply(0x73)));Reject(()=>f.ObserveRequest(Packet(os)));}
@@ -38,8 +54,10 @@ class Program
   var complete=Started();foreach(var module in new[]{os,cal})for(int i=0;i<(module.Length+4095)/4096;i++){complete.ObserveRequest(Packet(module,i));complete.ObserveReply(Reply(module==cal && i==13?(byte)0x86:(byte)0x73));}
   Check(complete.State==AL5SpsOfflineState.CompletedObservations && complete.AcknowledgedBlocks==180 && !complete.LiveWriteEnabled && !complete.ReadyToFlash && !complete.RecoveryVerified && !complete.PhysicalReadbackVerified);
   Reject(()=>complete.ObserveRequest(Packet(os)));Console.WriteLine("Offline safety, boundaries, failure latch, interruption and 180-block fixture passed.");
-  if(args.Length==4)
+  if(args.Length==4 || args.Length==5)
   {
+   var actualMap=new AL5SpsModuleMapping(File.ReadAllBytes(args[1]),File.ReadAllBytes(args[2]));
+   if(args.Length==5)Check(Convert.ToHexString(SHA256.HashData(actualMap.CopyCalibrationModule()))==Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(args[4]))));
    var replay=new AL5SpsOfflineRehearsal(File.ReadAllBytes(args[0]),"4a03452ef44e85d1874f6b519f8b3e7fd3c2bca7332ecf11fb1aaaa1b6372d80",File.ReadAllBytes(args[1]),File.ReadAllBytes(args[2]));
    foreach(var line in File.ReadLines(args[3])){var p=line.Split(' ');var m=Convert.FromHexString(p[1]);if(p[0]=="T" && m.Length>4 && m[0]==0x6D && m[1]==0x18 && m[2]==0xF0 && m[3]==0x36)replay.ObserveRequest(m);else if(p[0]=="R" && m.Length>=4 && m[0]==0x6C && m[1]==0xF0 && m[2]==0x18 && m[3]==0x76)replay.ObserveReply(m);}
    Check(replay.State==AL5SpsOfflineState.CompletedObservations && replay.AcknowledgedBlocks==180);Console.WriteLine("Saved SPS capture replay passed: "+replay.AcknowledgedBlocks+" acknowledged blocks, "+replay.PendingReplies+" pending replies.");

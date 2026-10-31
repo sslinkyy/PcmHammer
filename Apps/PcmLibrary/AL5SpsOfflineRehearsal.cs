@@ -37,11 +37,7 @@ namespace PcmHacking
             {0xF0000,0xE0000,0xD0000,0xC0000,0xB0000,0xA0000,0x90000,0x80000,
              0x70000,0x60000,0x50000,0x40000,0x30000,0x20000,0x10000,0x8000};
         public uint[] CopyObservedCalibrationModuleEraseAddresses() => new uint[] {0x10000,0x8000};
-        private static ushort Sum(byte[] data)
-        {
-            int sum=0;for(int i=0;i<data.Length;i+=2)sum=(sum+Word(data,i))&65535;
-            return (ushort)sum;
-        }
+
 
         public AL5SpsOfflineRehearsal(byte[] loader, string loaderSha256, byte[] os, byte[] calibration)
         {
@@ -54,17 +50,14 @@ namespace PcmHacking
                 if(!String.Equals(actual,loaderSha256,StringComparison.OrdinalIgnoreCase))
                     throw new ArgumentException("Saved loader identity mismatch.");
             }
-            this.loader=(byte[])loader.Clone(); this.os=(byte[])os.Clone(); this.calibration=(byte[])calibration.Clone();
-            if(Word(os,0x22)!=1 || Word(calibration,0x22)!=2) throw new ArgumentException("Unexpected module types.");
-            SavedOsWordSum=Sum(this.os); SavedCalibrationWordSum=Sum(this.calibration);
-            if(SavedOsWordSum!=0 || SavedCalibrationWordSum!=0) throw new ArgumentException("Saved module word-sum verification failed.");
-            OsStart=Long(os,0x3E); OsEndInclusive=Long(os,0x42);
-            CalibrationStart=Long(os,0x46); CalibrationEndInclusive=Long(os,0x4A);
-            if(OsStart!=0x20000 || OsEndInclusive!=0xC5F93 || CalibrationStart!=0x8000 || CalibrationEndInclusive!=0x15FD7)
-                throw new ArgumentException("Unqualified flash destination metadata.");
+            var mapping=new AL5SpsModuleMapping(os,calibration);
+            this.loader=(byte[])loader.Clone();this.os=mapping.CopyOsModule();this.calibration=mapping.CopyCalibrationModule();
+            SavedOsWordSum=AL5SpsModuleMapping.Sum(this.os);SavedCalibrationWordSum=AL5SpsModuleMapping.Sum(this.calibration);
+            OsStart=mapping.OsStart;OsEndInclusive=mapping.OsEndInclusive;
+            CalibrationStart=mapping.CalibrationStart;CalibrationEndInclusive=mapping.CalibrationEndInclusive;
         }
         private static int Word(byte[] m,int p) => (m[p]<<8)|m[p+1];
-        private static uint Long(byte[] m,int p) => ((uint)m[p]<<24)|((uint)m[p+1]<<16)|((uint)m[p+2]<<8)|m[p+3];
+
         private static void Equal(byte[] m,int offset,byte[] expected,int start,int length)
         {
             for(int i=0;i<length;i++) if(m[offset+i]!=expected[start+i]) throw new ArgumentException("Saved payload mismatch.");
