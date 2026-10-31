@@ -1,0 +1,35 @@
+{
+  "scope": "Offline phase replay; full snapshot verification tests use synthetic fixtures, not hardware readback",
+  "sessions": [
+    {
+      "source_sha256": "e436213e7f62d92b0a554a116a8a2d2fa1d8c2e1c41ace483432511ab49cda98",
+      "loader_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
+      "selected_frames": 427,
+      "excluded_binary_records": 140,
+      "scope": "Selected phase observations; security, broadcasts and other traffic are excluded, not validated",
+      "live_write_enabled": false,
+      "security_authorization_proven": false
+    },
+    {
+      "source_sha256": "8b8e4531ce8f854e2d91f2e081775e7426dcd3f97eae2afd601e246d6b6f36ec",
+      "loader_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
+      "selected_frames": 440,
+      "excluded_binary_records": 163,
+      "scope": "Selected phase observations; security, broadcasts and other traffic are excluded, not validated",
+      "live_write_enabled": false,
+      "security_authorization_proven": false
+    },
+    {
+      "source_sha256": "8384441f9da209b176734b8e4e90ca76fb422e4daed23152a414bc437b7c5daf",
+      "loader_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
+      "selected_frames": 434,
+      "excluded_binary_records": 132,
+      "scope": "Selected phase observations; security, broadcasts and other traffic are excluded, not validated",
+      "live_write_enabled": false,
+      "security_authorization_proven": false
+    }
+  ],
+  "production_source_sha256": "e22caa4f8e5e79e01753ea1c8a950ae44555eccfc7d14dc1cbc6180c9def29ff",
+  "physical_recovery_verified": false,
+  "live_write_enabled": false
+}

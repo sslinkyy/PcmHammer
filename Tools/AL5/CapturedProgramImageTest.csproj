@@ -11,6 +11,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CapturedProgramImageTest.cs" />
+    <Compile Include="CapturedWriteRehearsalTest.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5CapturedWriteRehearsal.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5CapturedProgramImage.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5CapturedProgramSession.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5ProgrammingWorkflow.cs" />

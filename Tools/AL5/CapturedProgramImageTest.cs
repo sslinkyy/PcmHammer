@@ -20,6 +20,7 @@ internal static class CapturedProgramImageTest
     static void Reject(Action action) { try { action(); } catch(ArgumentException) { return; } throw new Exception("Invalid input accepted"); }
     static int Main(string[] args)
     {
+        if(args.Length>0 && args[0]=="--writes")return CapturedWriteRehearsalTest.Run(System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Skip(args,1)));
         var image=new AL5CapturedProgramImage();
         var first=Example(0x8000,512); image.Observe(first); image.Observe(first);
         Check(image.CoveredBytes==512 && image.AcceptedRequests==2);

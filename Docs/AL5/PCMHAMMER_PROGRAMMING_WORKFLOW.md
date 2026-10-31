@@ -1,5 +1,9 @@
 # PcmHammer AL5 offline programming workflow
 
+The [integrated captured-write rehearsal](CAPTURED_WRITE_REHEARSAL_20261030.md)
+now joins selected loader-entry, erase, block programming and finalization
+observations to saved-file verification without enabling a transport.
+
 New saved-wire evidence and the production offline decoder are documented in
 [captured writes, 2026-10-30](CAPTURED_WRITE_SESSIONS_20261030.md). Actual EFILive
 requests use 512-byte blocks across the calibration/collateral boundary, with
