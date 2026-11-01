@@ -79,6 +79,57 @@ class Runtime:
  def validate_watchdog(self):
   if self.watchdog!=[0x55,0xAA]*(len(self.watchdog)//2) or len(self.watchdog)%2:raise ValueError('Watchdog sequence invalid')
 
+def peripheral_fault_cases(code,receipt):
+ """Adversarial scripted statuses; these assertions describe software, not hardware."""
+ cases=[];wire=bytes.fromhex('6d18f0b1')+request(0x8000,4)
+ for status in range(32):
+  r=Runtime(code,receipt);r.call('al5_ro_init');r.feed(wire);before=len(r.tx);r.busy=status
+  result=r.call('al5_ro_step');allowed=(status&0x0B)==0
+  assert (len(r.tx)>before)==allowed and result==(2 if allowed else 0)
+  r.validate_watchdog()
+ cases.append(dict(case='all_idle_class_status_bit_combinations',statuses=32,submission_mask='0x0b'))
+ r=Runtime(code,receipt);r.call('al5_ro_init')
+ # A stuck/repeating data source must overflow into discard, not escape RAM.
+ r.fifo.extend([(0x20,0x6D)]*128)
+ for _ in range(128):r.call('al5_ro_step')
+ assert not r.tx and not r.flash_reads and r.u.mem_read(0xFFA302,1)==b'\x01'
+ r.fifo.append((0xE0,0));r.call('al5_ro_step');r.feed(wire);r.drain();r.validate_watchdog()
+ assert len(r.frames)==1
+ cases.append(dict(case='repeated_data_overflow_then_explicit_end_recovery',repeated_events=128))
+ r=Runtime(code,receipt);r.call('al5_ro_init');r.fifo.extend((0x20,b) for b in wire[:13])
+ for _ in range(13):r.call('al5_ro_step')
+ for _ in range(100):r.call('al5_ro_step')
+ assert not r.tx and not r.flash_reads and int.from_bytes(r.u.mem_read(0xFFA300,2),'big')==13
+ r.fifo.extend((0x20,b) for b in wire[13:]);r.fifo.append((0xE0,0))
+ for _ in range(14):r.call('al5_ro_step')
+ r.drain();assert len(r.frames)==1;r.validate_watchdog()
+ cases.append(dict(case='idle_gap_retains_partial_frame',idle_polls=100,
+                   limitation='No timeout or session boundary is inferred from idle polls.'))
+ r=Runtime(code,receipt);r.call('al5_ro_init');r.feed(wire);r.call('al5_ro_step');assert r.current
+ r.fifo.append((0xE0,0xC0));before=len(r.tx);r.call('al5_ro_step')
+ assert len(r.tx)==before and r.u.mem_read(0xFFA303,1)==b'\x01'
+ r.drain();assert len(r.frames)==1;r.validate_watchdog()
+ cases.append(dict(case='receive_error_during_tx_does_not_prove_tx_abort',
+                   limitation='Current software consumes RX error and continues TX; hardware TX error semantics remain unknown.'))
+ r=Runtime(code,receipt);r.call('al5_ro_init');r.feed(wire);r.drain();r.busy=0x0B
+ assert r.u.mem_read(0xFFA303,1)==b'\0'
+ for _ in range(50):r.call('al5_ro_step')
+ assert len(r.frames)==1
+ cases.append(dict(case='last_submission_clears_software_pending_before_physical_completion',
+                   limitation='No physical completion/acknowledgement event is modeled.'))
+ # Inspect every unowned byte, not merely the minimum observed stack address.
+ r=Runtime(code,receipt);r.fifo.extend((0x20,b) for b in wire);r.fifo.append((0xE0,0));r.entry_steps=100
+ r.u.emu_start(receipt['entry'],0x1000000,count=1000000)
+ memory=bytes(r.u.mem_read(0xFF8000,0x4000));checked=0
+ for offset,value in enumerate(memory):
+  address=0xFF8000+offset
+  if r.base<=address<r.end or any(a<=address<b for _,a,b in FIXED):continue
+  assert value==0xA5;checked+=1
+ assert len(r.frames)==1
+ cases.append(dict(case='all_unowned_ram_canaries_preserved',bytes_checked=checked,
+                   limitation='Guest CPU accesses only; no asynchronous DMA or interrupt writer is simulated.'))
+ return cases
+
 def analyze(code,receipt):
  cases=[];vectors=[]
  for address,count in [(0,1),(0x3FD8,4),(0xC4C66,2),(0x8000,32),(0x18000,32),(0xFFFFF,1)]:
@@ -125,6 +176,7 @@ def analyze(code,receipt):
  assert len(r.frames)==1 and r.frames[0][4:24]==b'ar\x01\0'+request(0x18000,32)[4:20] and r.flash_reads==list(range(0x18000,0x18020))
  assert r.u.reg_read(UC_M68K_REG_SR)&0x700==0x700
  cases.append(dict(case='assembly_entry_to_complete_scripted_vpw_reply',steps=100,software_tx_bytes=len(r.frames[0]),stack_low=hex(r.stack_low),watchdog_pairs=len(r.watchdog)//2))
+ cases.extend(peripheral_fault_cases(code,receipt))
  return dict(schema='al5-offline-runtime-emulation-v1',code_sha256=receipt['code_sha256'],code_bytes=len(code),cases=cases,valid_cases=vectors,session_transcript=transcript,ram_layout=audit(len(code)),
   flash_writes=0,unowned_ram_writes=0,peripheral_writes='Only scripted VPW command/data and watchdog allowlist',
   live_upload_enabled=False,live_execution_enabled=False,live_write_enabled=False,hardware_qualified=False,

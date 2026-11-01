@@ -50,3 +50,50 @@ python Tools/AL5/build_readonly_kernel.py --output-dir LocalOnly/al5_runtime_new
 With Unicorn available to the chosen Python environment, run emulate_readonly_runtime.py with --build-dir and a new --output receipt. Pass that receipt to `dotnet run --project Tools/AL5/ReadOnlyCoreSessionTest.csproj -- <receipt>` to check production C# interoperability. The builder records source hashes, compiler/flags, ELF text, symbols and emitted-code identity. It never places output in deployed Kernels/build and enables no device operations.
 
 Before hardware execution, remaining gates include physical FIFO semantics/maximum frame length, initialization and speed, safe boot entry, CPU instruction compatibility, watchdog timing, exceptions/NMI/DMA, exclusive RAM ownership, safe exit/restore behavior and bench qualification on a recoverable controller. An emulator read of the six excluded addresses is not proof they can be physically read.
+
+## Native boot handoff and peripheral fault follow-up
+
+`Tools/AL5/emulate_readonly_handoff.py` now joins the pinned historical boot ISR,
+dispatcher and RAM-transfer instructions to this independently built runtime in
+one CPU/RAM session. LOW identity is
+`cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6`.
+The executable bytes are removed before transfer; native byte stores must copy
+all 1,166 bytes at 0xFF9006 and their final contents must match the build.
+Five cases check armed entry, unarmed rejection, checksum rejection, copy without
+execution, and checksum rejection followed by a valid transfer in the same session.
+
+On accepted execution the native JSR arrives with a 72-byte pending boot stack
+and return PC 0x33B8. The prototype then replaces SP with 0xFFA7FE, masks
+interrupts and runs initialization plus two polling steps. All 72 abandoned
+frame bytes remain unchanged in the synthetic external boot stack. This proves
+neither a return path nor a safe physical stack arrangement: the test supplies
+the boot stack at 0x208000, ISR-enabled context, FIFO/send/flush callbacks and
+interrupt entry. Boot watchdog instructions are skipped, RTE is trapped, and
+no physical upload or exception delivery occurs. The incoming stack location is
+a test input, not an observed controller address.
+
+The native transfer copies bytes before rejecting an unarmed or checksum-invalid
+request. Rejection prevents entry in these cases but does not roll RAM back.
+The reports distinguish those copied bytes from actual runtime entry; they do
+not authorize experimenting with the installed controller.
+
+Six additional compiled-runtime groups bring the runtime report to 21 groups.
+They examine all 32 idle-class status bit combinations, repeated data overflow
+and end-event recovery, partial frames across idle gaps, RX errors during TX,
+software completion before physical completion, and every unowned RAM canary
+after full assembly entry. The important open behaviors are explicit:
+
+- An idle gap retains a partial frame; elapsed polling alone is no session boundary.
+- A receive-error event during a pending reply is consumed without aborting TX.
+  Whether that event represents a hardware TX fault is unknown.
+- Last-byte submission clears software pending state without a physical-completion
+  acknowledgement. The harness cannot establish wire delivery.
+- Untouched RAM canaries and guarded CPU accesses establish containment for the
+  exercised paths, not freedom from an asynchronous interrupt/DMA writer.
+
+The runtime machine code and its SHA256 above are unchanged. This extension adds
+offline evidence and exposes missing hardware contracts; it does not add a live
+backend, peripheral initialization, watchdog timing proof or safe exit procedure.
+The handoff report records generator/dependency hashes and both binary identities.
+To reproduce with existing Unicorn dependencies, run the handoff tool with
+`--low <pinned LOW dump> --build-dir <runtime build> --output <new report>`.
