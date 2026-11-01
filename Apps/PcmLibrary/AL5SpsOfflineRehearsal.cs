@@ -1,16 +1,15 @@
 // SPDX-License-Identifier: GPL-3.0-only
 using System;
-using System.Security.Cryptography;
 
 namespace PcmHacking
 {
     public enum AL5SpsOfflineState { LoaderRequest, LoaderReply, BlockRequest, BlockReply, CompletedObservations, Stopped }
 
-    /// <summary>Saved SPS observations only. No transport, packet construction or retry authority.</summary>
+    /// <summary>Offline SPS plan and saved-reply validation. No transport or retry authority.</summary>
     public sealed class AL5SpsOfflineRehearsal
     {
-        private readonly byte[] loader, os, calibration;
-        private int module, block;
+        private readonly AL5SpsOfflineWritePlan plan;
+        private int nextRequest;
         public AL5SpsOfflineState State { get; private set; } = AL5SpsOfflineState.LoaderRequest;
         public int AcknowledgedBlocks { get; private set; }
         public int PendingReplies { get; private set; }
@@ -21,17 +20,17 @@ namespace PcmHacking
         public bool AutomaticRetryEnabled => false;
         public bool RecoveryVerified => false;
         public bool PhysicalReadbackVerified => false;
-        public uint OsStart { get; }
-        public uint OsEndInclusive { get; }
-        public uint CalibrationStart { get; }
-        public uint CalibrationEndInclusive { get; }
+        public uint OsStart => plan.OsStart;
+        public uint OsEndInclusive => plan.OsEndInclusive;
+        public uint CalibrationStart => plan.CalibrationStart;
+        public uint CalibrationEndInclusive => plan.CalibrationEndInclusive;
         public uint OsFillStart => OsEndInclusive + 1;
         public uint OsFillEndExclusive => 0x100000;
         public uint CalibrationFillStart => CalibrationEndInclusive + 1;
         public uint CalibrationFillEndExclusive => 0x20000;
         public ushort FillWord => 0x4AFC;
-        public ushort SavedOsWordSum { get; }
-        public ushort SavedCalibrationWordSum { get; }
+        public ushort SavedOsWordSum => plan.SavedOsWordSum;
+        public ushort SavedCalibrationWordSum => plan.SavedCalibrationWordSum;
         // Literal erase command addresses from 0xFF9C50/0xFF9D7C; not a physical sector map or send plan.
         public uint[] CopyObservedOsModuleEraseAddresses() => new uint[]
             {0xF0000,0xE0000,0xD0000,0xC0000,0xB0000,0xA0000,0x90000,0x80000,
@@ -41,26 +40,14 @@ namespace PcmHacking
 
         public AL5SpsOfflineRehearsal(byte[] loader, string loaderSha256, byte[] os, byte[] calibration)
         {
-            if(loader==null || os==null || calibration==null) throw new ArgumentNullException();
-            if(loader.Length!=3858 || os.Length!=679828 || calibration.Length!=57304)
-                throw new ArgumentException("Outside observed SPS 15107661/15184109/15183960 profile.");
-            using(var hash=SHA256.Create())
-            {
-                var actual=BitConverter.ToString(hash.ComputeHash(loader)).Replace("-", "").ToLowerInvariant();
-                if(!String.Equals(actual,loaderSha256,StringComparison.OrdinalIgnoreCase))
-                    throw new ArgumentException("Saved loader identity mismatch.");
-            }
-            var mapping=new AL5SpsModuleMapping(os,calibration);
-            this.loader=(byte[])loader.Clone();this.os=mapping.CopyOsModule();this.calibration=mapping.CopyCalibrationModule();
-            SavedOsWordSum=AL5SpsModuleMapping.Sum(this.os);SavedCalibrationWordSum=AL5SpsModuleMapping.Sum(this.calibration);
-            OsStart=mapping.OsStart;OsEndInclusive=mapping.OsEndInclusive;
-            CalibrationStart=mapping.CalibrationStart;CalibrationEndInclusive=mapping.CalibrationEndInclusive;
+            plan=new AL5SpsOfflineWritePlan(loader,loaderSha256,os,calibration);
         }
-        private static int Word(byte[] m,int p) => (m[p]<<8)|m[p+1];
-
-        private static void Equal(byte[] m,int offset,byte[] expected,int start,int length)
+        /// <summary>Copy for offline review only; does not send or mark an operation pending.</summary>
+        public byte[] CopyNextOfflineRequest()
         {
-            for(int i=0;i<length;i++) if(m[offset+i]!=expected[start+i]) throw new ArgumentException("Saved payload mismatch.");
+            if(State!=AL5SpsOfflineState.LoaderRequest && State!=AL5SpsOfflineState.BlockRequest)
+                throw new InvalidOperationException("No offline request slot.");
+            return plan.CopyRequest(nextRequest);
         }
         public void ObserveRequest(byte[] m)
         {
@@ -68,22 +55,10 @@ namespace PcmHacking
             if(State!=AL5SpsOfflineState.LoaderRequest && State!=AL5SpsOfflineState.BlockRequest)
                 throw new InvalidOperationException("No request slot; pending, stopped or completed observations cannot retry implicitly.");
             bool entry=State==AL5SpsOfflineState.LoaderRequest;
-            int count=entry?3858:4096;
-            if(m.Length!=count+12 || m[0]!=0x6D || m[1]!=0x18 || m[2]!=0xF0 || m[3]!=0x36 ||
-               m[4]!=(entry?0x80:0) || Word(m,5)!=count || LongAddress(m)!=(entry?0xFF9006:0xFF8000))
-                throw new ArgumentException("Unexpected saved SPS block envelope.");
-            int sum=0; for(int i=4;i<m.Length-2;i++) sum+=m[i];
-            if((sum&65535)!=Word(m,m.Length-2)) throw new ArgumentException("Saved block checksum mismatch.");
-            if(entry) Equal(m,10,loader,0,count);
-            else
-            {
-                var source=module==0?os:calibration; int start=block*4096;
-                int n=Math.Min(4096,source.Length-start); Equal(m,10,source,start,n);
-                for(int i=n;i<4096;i++) if(m[10+i]!=0) throw new ArgumentException("Nonzero final-block padding.");
-            }
+            if(!plan.Matches(nextRequest,m))
+                throw new ArgumentException("Saved request differs from the validated offline SPS plan.");
             State=entry?AL5SpsOfflineState.LoaderReply:AL5SpsOfflineState.BlockReply;
         }
-        private static int LongAddress(byte[] m) => (m[7]<<16)|(m[8]<<8)|m[9];
         public void ObserveReply(byte[] m)
         {
             if(m==null) throw new ArgumentNullException(nameof(m));
@@ -101,15 +76,12 @@ namespace PcmHacking
             if(entry)
             {
                 if(status!=0x73) { Stop("Unexpected loader-entry status."); return; }
-                State=AL5SpsOfflineState.BlockRequest;return;
+                nextRequest++;State=AL5SpsOfflineState.BlockRequest;return;
             }
-            var source=module==0?os:calibration;
-            bool last=(block+1)*4096>=source.Length;
-            byte expected=module==1 && last?(byte)0x86:(byte)0x73;
+            byte expected=nextRequest==plan.RequestCount-1?(byte)0x86:(byte)0x73;
             if(status!=expected) { Stop("Terminal status does not match pending module boundary.");return; }
-            AcknowledgedBlocks++; block++;
-            if(last) {module++;block=0;}
-            State=module==2?AL5SpsOfflineState.CompletedObservations:AL5SpsOfflineState.BlockRequest;
+            AcknowledgedBlocks++;nextRequest++;
+            State=nextRequest==plan.RequestCount?AL5SpsOfflineState.CompletedObservations:AL5SpsOfflineState.BlockRequest;
         }
         private void Stop(string why) { StopReason=why; State=AL5SpsOfflineState.Stopped; }
         public void Interrupt()

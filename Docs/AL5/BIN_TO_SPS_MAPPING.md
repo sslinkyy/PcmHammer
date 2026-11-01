@@ -36,3 +36,37 @@ CopyConditionalAffectedBytes deliberately returns only the 1,015,808-byte affect
 The BCL-only SpsOfflineRehearsalTest compiles the production mapping, inspector and rehearsal without transport classes. It checks module metadata rejection, balanced-but-native-invalid calibration rejection, checksum-correct custom bytes, immutable ownership, staged-padding rejection, modeled 4AFC fill, detection of protected-prefix changes, detection of affected-tail mismatches and rejection of calibration-only inputs as full preservation snapshots. The saved SPS capture still completes with 180 acknowledged blocks and 201 pending replies, and the optional live-readback file matches the saved SPS calibration module exactly.
 
 This is conditional offline modeling. Physical flash geometry, OS/tail readback, interrupted-write recovery, edit authorization and live PcmHammer programming remain unqualified. LiveWriteEnabled and ReadyToFlash remain false. No controller access is part of these tests.
+
+## Constructed offline writer, 2026-11-01
+
+`AL5SpsOfflineWritePlan` now constructs the bounded Mode 36 transfer stream from
+explicit loader, expanded OS and validated calibration BIN inputs. It emits one
+3,858-byte loader payload at RAM 0xFF9006, followed by 166 OS and 14 calibration
+staging blocks of 4,096 bytes at RAM 0xFF8000. It owns the envelope encoding,
+zero padding and additive transfer checksum. Callers receive detached copies.
+Conditional flash destinations are reported separately from the RAM staging
+address; loader upload has no flash destination.
+
+The existing rehearsal consumes this plan rather than maintaining a second
+envelope/payload parser. CopyNextOfflineRequest exposes the next reviewable
+request only when no reply is pending. Copying does not send it or advance state;
+ObserveRequest and a matching saved terminal reply perform those transitions.
+Pending 0x78 retains ownership. Stopped/completed sessions cannot supply another
+request, and automatic retries remain disabled.
+
+All 181 constructed transfers match the successful saved SPS2 capture byte for
+byte, including 108 OS padding bytes, 40 calibration padding bytes, headers and
+checksums. The saved reply replay still completes with 180 acknowledged blocks
+and 201 pending replies. Tests additionally exercise all five modeled failure
+statuses at loader, first/last OS and first/last calibration boundaries, and
+interruptions before/after request submission at those boundaries. Checksum-valid
+custom calibration bytes leave every generated loader/OS request unchanged.
+
+This is an implemented and capture-validated offline serialization/state path,
+not a live writer. It does not implement security/setup, physical speed handling,
+terminal restart, VIN writes or recovery. It deliberately uses the captured full
+OS-plus-calibration algorithm, including tail replacement; it makes no promise
+to preserve an installed OS or other flash regions. Safe calibration-only
+programming requires a separately established path. No proprietary loader bytes
+are embedded in source, and a caller-supplied digest is an identity binding, not
+an assertion that arbitrary loader contents are safe.
