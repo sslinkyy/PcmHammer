@@ -1,6 +1,6 @@
-# AL5 read-only callable core prototype
+# AL5 read-only kernel prototype (offline only)
 
-This is independently written experimental source, not an uploadable AL5 kernel. It is excluded from BuildAll and every live PcmHammer adapter/upload route. The C function needs a caller providing the M68K ABI and candidate scratch buffers; it has no receive loop, VPW framing, watchdog service, interrupt setup or boot/handoff code. Physical CPU/RAM/peripheral compatibility remains unqualified. Do not upload the text-only binary to a controller.
+This is independently written experimental source, excluded from BuildAll and every live PcmHammer adapter/upload route. read_core.c is the bounded callable reader. entry.S and runtime.c add an experimental interrupt-masked entry, polling VPW transport and watchdog service, validated only against a scripted emulator. Physical CPU/RAM/peripheral compatibility and safe boot/handoff remain unqualified. Do not upload either generated binary to a controller.
 
 ## Implemented contract
 
@@ -10,7 +10,7 @@ Replies use ASCII ar, version 1 and status zero, followed by the same nonce, seq
 
 The core permits byte reads only in 0x000000-0x0FFFFF. It validates length, operation/version/magic, CRC, nonce, byte count, address/end bound, output capacity and candidate scratch addresses before reading any flash byte. Rejected calls return zero and do not emit a reply. It contains no erase/program/security/reset dispatch and no peripheral accesses. For emulator ABI containment, the request pointer must be 0xFFA500 and the reply pointer 0xFFA600; those addresses are NOT physically reserved or qualified on the AL5. Stack and code locations are also experimental.
 
-AL5ReadOnlyCoreSession in PcmLibrary is an offline host validator with one pending request. It generates random nonzero nonces through CreateOffline, permits deterministic caller-supplied nonces for saved tests, and checks full request identity on replies. Never reuse a nonce across real sessions. Sequence numbers do not wrap; timeout/cancellation closes the session. Valid old/foreign replies remain unrelated, malformed own-protocol replies stop the session, and no automatic retry exists. A new payload design does not establish physical freshness until transport and execution are qualified.
+AL5ReadOnlyCoreSession in PcmLibrary is an offline host validator with one pending request. Its separate saved-VPW methods wrap requests in experimental 6D 18 F0 B1 and unwrap replies from 6D F0 18 F1; these service values are not a qualified or assigned live protocol. It generates random nonzero nonces through CreateOffline, permits deterministic caller-supplied nonces for saved tests, and checks full request identity on replies. Never reuse a nonce across real sessions. Sequence numbers do not wrap; timeout/cancellation closes the session. Valid old/foreign replies remain unrelated, malformed own-protocol replies stop the session, and no automatic retry exists. A new payload design does not establish physical freshness until transport and execution are qualified.
 
 ## Reproducible offline build and checks
 
@@ -26,6 +26,10 @@ Use emulate_readonly_core.py with Unicorn M68K available in the selected Python 
 
 ReadOnlyCoreSessionTest.csproj accepts the emulator JSON report to validate the exact machine-code reply vectors through production C# code and compare host request bytes. The original Mode 23 reader and writer remain unchanged. Native C/Python and C# checks agree on the independent standard CRC golden vector.
 
+## Combined runtime
+
+See [RUNTIME_VALIDATION.md](RUNTIME_VALIDATION.md) for the compiled transport, entry, watchdog and candidate RAM layout. Build it into a new private directory with `python Tools/AL5/build_readonly_kernel.py --output-dir LocalOnly/al5_runtime_new_build`. It remains disconnected from all live upload/execution routes.
+
 ## Remaining work
 
-Implement and verify a separately bounded VPW transport/entry bridge, watchdog behavior, interrupt/handoff behavior and RAM ownership before considering a hardware test. Prove that complete token/address fields survive the actual adapter path. Qualify on a recoverable spare AL5 before using the installed truck controller. No live upload or execution route is present in this prototype.
+Qualify physical VPW FIFO/end-event semantics, complete-frame length handling, watchdog deadlines, CPU/interrupt/handoff behavior and exclusive RAM ownership before considering a hardware test. Prove that complete token/address fields survive the actual adapter path. Qualify on a recoverable spare AL5 before using the installed truck controller. No live upload or execution route is present in this prototype.

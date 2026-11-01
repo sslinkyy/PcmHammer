@@ -20,6 +20,9 @@ class Program
   var bankWrong=Reply(next);bankWrong[16]^=1;AL5ReadOnlyCoreSession.SetCrc(bankWrong);Check(s.ObserveSavedReply(bankWrong,out _)==AL5ReadOnlyCoreReply.Unrelated);
   var nonceWrong=Reply(next);nonceWrong[4]^=1;AL5ReadOnlyCoreSession.SetCrc(nonceWrong);Check(s.ObserveSavedReply(nonceWrong,out _)==AL5ReadOnlyCoreReply.Unrelated);
   var countWrong=Reply(next);countWrong[19]=3;Check(s.ObserveSavedReply(countWrong,out _)==AL5ReadOnlyCoreReply.Malformed && s.Stopped);
+  var envelope=new AL5ReadOnlyCoreSession(Nonce());envelope.BeginSavedVpwRead(0x8000,4);
+  Check(envelope.ObserveSavedVpwReply(Convert.FromHexString("6cf018f1"),out _)==AL5ReadOnlyCoreReply.Unrelated && envelope.HasPendingRequest);
+  Check(envelope.ObserveSavedVpwReply(Convert.FromHexString("6df018f1"),out _)==AL5ReadOnlyCoreReply.Malformed && envelope.Stopped);
   var timed=new AL5ReadOnlyCoreSession(Nonce());timed.BeginSavedRead(0,1);timed.TimeoutOrCancel();Reject(()=>timed.BeginSavedRead(0,1));
   var fresh=new AL5ReadOnlyCoreSession(Convert.FromHexString("1123456789ABCDEF"));fresh.BeginSavedRead(0x8000,4);Check(fresh.ObserveSavedReply(first,out _)==AL5ReadOnlyCoreReply.Unrelated);
   Check(!fresh.LiveUploadEnabled && !fresh.LiveExecutionEnabled && !fresh.HardwareQualified && !fresh.LiveWriteEnabled);
@@ -27,8 +30,22 @@ class Program
    var host=new AL5ReadOnlyCoreSession(Nonce());var r=host.BeginSavedRead(c.GetProperty("address").GetUInt32(),c.GetProperty("count").GetInt32());
    Check(Convert.ToHexString(r).ToLowerInvariant()==c.GetProperty("request_hex").GetString());
    var wire=Convert.FromHexString(c.GetProperty("reply_hex").GetString()!);Check(host.ObserveSavedReply(wire,out var bytes)==AL5ReadOnlyCoreReply.Matched);
-   for(int i=0;i<bytes.Length;i++)Check(bytes[i]==wire[20+i]);matched++;
-  }Console.WriteLine("PASS "+matched+" actual compiled M68K reply vectors and identical host request vectors.");}
+   for(int i=0;i<bytes.Length;i++)Check(bytes[i]==wire[20+i]);
+   if(c.TryGetProperty("vpw_request_hex",out var vf)){
+    var framed=new AL5ReadOnlyCoreSession(Nonce());Check(Convert.ToHexString(framed.BeginSavedVpwRead(c.GetProperty("address").GetUInt32(),c.GetProperty("count").GetInt32())).ToLowerInvariant()==vf.GetString());
+    Check(framed.ObserveSavedVpwReply(Convert.FromHexString(c.GetProperty("vpw_reply_hex").GetString()!),out var frameData)==AL5ReadOnlyCoreReply.Matched && Convert.ToHexString(frameData)==Convert.ToHexString(bytes));
+   }matched++;
+  }Console.WriteLine("PASS "+matched+" actual compiled M68K reply vectors and identical host request vectors.");
+   if(j.RootElement.TryGetProperty("session_transcript",out var transcript)){
+    var session=new AL5ReadOnlyCoreSession(Nonce());byte[]? previous=null;int frames=0;
+    foreach(var c in transcript.EnumerateArray()){
+     var req=session.BeginSavedRead(c.GetProperty("address").GetUInt32(),c.GetProperty("count").GetInt32());
+     Check(Convert.ToHexString(req).ToLowerInvariant()==c.GetProperty("request_hex").GetString());
+     if(previous!=null)Check(session.ObserveSavedReply(previous,out _)==AL5ReadOnlyCoreReply.Unrelated && session.HasPendingRequest);
+     previous=Convert.FromHexString(c.GetProperty("reply_hex").GetString()!);Check(session.ObserveSavedReply(previous,out _)==AL5ReadOnlyCoreReply.Matched);frames++;
+    }Console.WriteLine("PASS "+frames+" persistent compiled-runtime bank transitions with delayed-reply rejection.");
+   }
+  }
   Console.WriteLine("PASS offline nonce/sequence/full-address/count/CRC correlation, rejection and disabled hardware gates.");
  }
 }

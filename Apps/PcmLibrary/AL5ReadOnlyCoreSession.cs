@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 namespace PcmHacking
 {
     public enum AL5ReadOnlyCoreReply { Matched, Unrelated, Malformed }
-    /// <summary>Experimental offline core payloads only. No VPW framing, adapter, uploader or execution path.</summary>
+    /// <summary>Experimental offline payloads and VPW envelopes only. No adapter, uploader or execution path.</summary>
     public sealed class AL5ReadOnlyCoreSession
     {
         private readonly byte[] nonce;
@@ -37,6 +37,23 @@ namespace PcmHacking
             r[12]=(byte)(sequence>>24);r[13]=(byte)(sequence>>16);r[14]=(byte)(sequence>>8);r[15]=(byte)sequence;
             r[16]=(byte)(address>>16);r[17]=(byte)(address>>8);r[18]=(byte)address;r[19]=(byte)count;SetCrc(r);
             pending=r;return (byte[])r.Clone();
+        }
+        public byte[] BeginSavedVpwRead(uint address,int count)
+        {
+            var payload=BeginSavedRead(address,count);var frame=new byte[26];
+            frame[0]=0x6D;frame[1]=0x18;frame[2]=0xF0;frame[3]=0xB1;
+            Array.Copy(payload,0,frame,4,payload.Length);return frame;
+        }
+        public AL5ReadOnlyCoreReply ObserveSavedVpwReply(byte[] frame,out byte[] data)
+        {
+            data=Array.Empty<byte>();if(frame==null)throw new ArgumentNullException(nameof(frame));
+            if(Stopped || pending==null)throw new InvalidOperationException("No offline pending request.");
+            if(frame.Length<4 || frame[0]!=0x6D || frame[1]!=0xF0 || frame[2]!=0x18 || frame[3]!=0xF1)
+                return AL5ReadOnlyCoreReply.Unrelated;
+            // The adapter's transport CRC is already removed. Internal payload CRC remains mandatory.
+            if(frame.Length<27 || frame.Length>58){Stopped=true;pending=null;return AL5ReadOnlyCoreReply.Malformed;}
+            var payload=new byte[frame.Length-4];Array.Copy(frame,4,payload,0,payload.Length);
+            return ObserveSavedReply(payload,out data);
         }
         public AL5ReadOnlyCoreReply ObserveSavedReply(byte[] reply,out byte[] data)
         {
