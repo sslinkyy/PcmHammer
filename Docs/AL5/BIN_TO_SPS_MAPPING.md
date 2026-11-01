@@ -70,3 +70,43 @@ to preserve an installed OS or other flash regions. Safe calibration-only
 programming requires a separately established path. No proprietary loader bytes
 are embedded in source, and a caller-supplied digest is an identity binding, not
 an assertion that arbitrary loader contents are safe.
+
+## Integrated saved setup and cleanup lifecycle
+
+`AL5SpsOfflineLifecycle` owns the setup/programming/cleanup phase boundary and
+delegates programming packets and status ownership to the existing rehearsal.
+The transfer builder remains the single owner of Mode 36 serialization.
+Programming requests cannot be copied before setup completes, while a reply is
+pending, during cleanup, or after completion/interruption.
+
+The selected capture's 15 setup observations comprise global Mode 28 plus the
+AL5 acknowledgement, ordinary seed/key exchange, another Mode 28, Mode 34,
+global A0 plus the AL5 E0 AA response, global A1 with no selected reply, and a
+second Mode 34. The ten cleanup observations are Mode 28, seed request with
+literal short response 67 01 37, a separate ordinary seed/key exchange, and a
+final Mode 28 with the AL5 acknowledgement. Dynamic seed/key bytes are opaque
+saved values; no key derivation, authorization or security-packet builder is
+implemented. The short reply is not reinterpreted as a generic status code.
+
+Exact 8C FE F0 3F keepalives are recorded without advancing an exchange.
+Replies from other sources are counted as unrelated, not accepted in place of
+an AL5 acknowledgement. Unexpected AL5 diagnostics, wrong order/length,
+misplaced programming statuses and interruptions stop the lifecycle. This is a
+saved-frame profile: physical wire timing, keepalive schedules, quiet periods,
+all-controller barriers and automatic recovery are not inferred.
+
+The real corpus reaches CompletedObservations after 2,332 records: 15 setup,
+10 cleanup, 377 keepalives, 1,367 unrelated replies and the existing programming
+stream with 180 acknowledged blocks/201 pending replies. Its 181 constructed
+transfers still match exactly. Completion ends at the final AL5 Mode 28 reply;
+16 later records, including other-controller replies, a keepalive, three VIN
+fragment writes and acknowledgements, and later probes are excluded. No VIN
+mutation or key exchange is appended to the generated programming plan.
+CompletedObservations does not mean physical reset, restoration of every
+controller, readback or recovery has been verified.
+
+Synthetic regressions cover missing/duplicate/reordered owned observations,
+foreign-source acknowledgements, unexpected security replies, premature loader
+transfer, oversized frames, early VIN writes, cleanup mismatch and interruption
+at every cleanup boundary. The Windows build and all 210 live-write gate checks
+pass. Live upload, execution, writes and automatic retry remain disabled.

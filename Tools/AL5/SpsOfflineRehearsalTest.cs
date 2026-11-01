@@ -27,6 +27,7 @@ class Program
   Array.Copy(Convert.FromHexString("11F70C68073E05A0040002D9"),0,cal,0xA996-0x8000,12);
   Array.Copy(Convert.FromHexString("00110009"),0,cal,0x158A8-0x8000,4);
   var field=Convert.FromHexString(AL5CalibrationInspection.Inspect(cal).ComputedChecksumHex!);Array.Copy(field,0,cal,cal.Length-4,4);
+  LifecycleTests.Run(loader,os,cal,null);
   var mapping=new AL5SpsModuleMapping(os,cal);var affected=mapping.CopyConditionalAffectedBytes();
   Check(affected.Length==0xF8000 && affected[0x15FD8-0x8000]==0x4A && affected[0x15FD9-0x8000]==0xFC);
   var before=new byte[0x100000];var after=new byte[0x100000];Array.Copy(affected,0,after,0x8000,affected.Length);
@@ -82,6 +83,7 @@ class Program
   Reject(()=>complete.CopyNextOfflineRequest());Reject(()=>complete.ObserveRequest(Packet(os)));Console.WriteLine("Offline safety, boundaries, failure latch, interruption and 180-block fixture passed.");
   if(args.Length==4 || args.Length==5)
   {
+   LifecycleTests.Run(File.ReadAllBytes(args[0]),File.ReadAllBytes(args[1]),File.ReadAllBytes(args[2]),args[3]);
    var actualMap=new AL5SpsModuleMapping(File.ReadAllBytes(args[1]),File.ReadAllBytes(args[2]));
    if(args.Length==5)Check(Convert.ToHexString(SHA256.HashData(actualMap.CopyCalibrationModule()))==Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(args[4]))));
    var replay=new AL5SpsOfflineRehearsal(File.ReadAllBytes(args[0]),"4a03452ef44e85d1874f6b519f8b3e7fd3c2bca7332ecf11fb1aaaa1b6372d80",File.ReadAllBytes(args[1]),File.ReadAllBytes(args[2]));
