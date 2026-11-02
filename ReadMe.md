@@ -34,6 +34,12 @@ Very thin power wires can cause voltage drop under load and cause problems.
 Quality lab type power supplies, or charged car batteries with good floating voltages are recommended.
 There are mutiple revisions of P05 PCM. PCMHammer only works with VPW capable units (P05a, P05b) and does not support CAN (P05c).
 
+## TCM Hammer
+
+The Windows PCM Hammer application has a dedicated **TCM Hammer** menu for Allison AL5 work: read-only identity queries, the 57,304-byte Mode 0x23 calibration reader, offline BIN comparison, and saved-flash assessment. Offline commands are available without an adapter. Live programming, experimental kernel upload/execution, and recovery remain disabled.
+
+See [TCM Hammer](Docs/TCMHammer/README.md) for the shared library, offline writer rehearsals, capture tools, read-only kernel, and recovery research.
+
 ## Installation
 
 Go here: https://github.com/PcmHammer/PcmHammer/releases

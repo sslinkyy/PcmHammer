@@ -94,6 +94,7 @@ namespace PcmHacking
 
         /// <summary>Read-only AL5 identity probe at VPW module 0x18.</summary>
         private ToolStripMenuItem al5ReadOnlyProbeToolStripMenuItem;
+        private ToolStripMenuItem tcmHammerToolStripMenuItem;
 
         /// <summary>Direct read-only AL5 calibration-segment reader.</summary>
         private ToolStripMenuItem al5ReadCalibrationToolStripMenuItem;
@@ -129,23 +130,32 @@ namespace PcmHacking
                 new EventHandler(this.e54RamCanaryToolStripMenuItem_Click);
             this.menuItemTools.DropDownItems.Add(this.e54RamCanaryToolStripMenuItem);
 
+            this.tcmHammerToolStripMenuItem = new ToolStripMenuItem();
+            this.tcmHammerToolStripMenuItem.Name = "tcmHammerToolStripMenuItem";
+            this.tcmHammerToolStripMenuItem.Text = "TCM Hammer";
+            this.menuStripMain.Items.Insert(this.menuStripMain.Items.IndexOf(this.menuItemOptions), this.tcmHammerToolStripMenuItem);
+
             this.al5ReadOnlyProbeToolStripMenuItem = new ToolStripMenuItem();
             this.al5ReadOnlyProbeToolStripMenuItem.Name = "al5ReadOnlyProbeToolStripMenuItem";
+            this.al5ReadOnlyProbeToolStripMenuItem.Enabled = false;
             this.al5ReadOnlyProbeToolStripMenuItem.Text = "AL5 Read-Only Identity Probe...";
             this.al5ReadOnlyProbeToolStripMenuItem.ToolTipText =
                 "Non-destructive Mode 0x3C identity probe of the Allison AL5 at VPW module 0x18.";
             this.al5ReadOnlyProbeToolStripMenuItem.Click +=
                 new EventHandler(this.al5ReadOnlyProbeToolStripMenuItem_Click);
-            this.menuItemTools.DropDownItems.Add(this.al5ReadOnlyProbeToolStripMenuItem);
+            this.tcmHammerToolStripMenuItem.DropDownItems.Add(this.al5ReadOnlyProbeToolStripMenuItem);
 
             this.al5ReadCalibrationToolStripMenuItem = new ToolStripMenuItem();
             this.al5ReadCalibrationToolStripMenuItem.Name = "al5ReadCalibrationToolStripMenuItem";
+            this.al5ReadCalibrationToolStripMenuItem.Enabled = false;
             this.al5ReadCalibrationToolStripMenuItem.Text = "AL5 Read Calibration (Mode 0x23)...";
             this.al5ReadCalibrationToolStripMenuItem.ToolTipText =
                 "Read-only direct dump of AL5 calibration memory 0x08000-0x15FD7 using stock Mode 0x23.";
             this.al5ReadCalibrationToolStripMenuItem.Click +=
                 new EventHandler(this.al5ReadCalibrationToolStripMenuItem_Click);
-            this.menuItemTools.DropDownItems.Add(this.al5ReadCalibrationToolStripMenuItem);
+            this.tcmHammerToolStripMenuItem.DropDownItems.Add(this.al5ReadCalibrationToolStripMenuItem);
+
+            this.tcmHammerToolStripMenuItem.DropDownItems.Add(new ToolStripSeparator());
 
             this.al5CompareCalibrationToolStripMenuItem = new ToolStripMenuItem();
             this.al5CompareCalibrationToolStripMenuItem.Name = "al5CompareCalibrationToolStripMenuItem";
@@ -154,11 +164,11 @@ namespace PcmHacking
                 "Compare original and edited AL5 calibration files, including checksums and changed addresses. No adapter required.";
             this.al5CompareCalibrationToolStripMenuItem.Click +=
                 new EventHandler(this.al5CompareCalibrationToolStripMenuItem_Click);
-            this.menuItemTools.DropDownItems.Add(this.al5CompareCalibrationToolStripMenuItem);
+            this.tcmHammerToolStripMenuItem.DropDownItems.Add(this.al5CompareCalibrationToolStripMenuItem);
             this.al5ReconcileSnapshotToolStripMenuItem = new ToolStripMenuItem();
             this.al5ReconcileSnapshotToolStripMenuItem.Text = "AL5 Assess Saved Flash Snapshot (Offline)...";
             this.al5ReconcileSnapshotToolStripMenuItem.Click += this.al5ReconcileSnapshotToolStripMenuItem_Click;
-            this.menuItemTools.DropDownItems.Add(this.al5ReconcileSnapshotToolStripMenuItem);
+            this.tcmHammerToolStripMenuItem.DropDownItems.Add(this.al5ReconcileSnapshotToolStripMenuItem);
         }
 
         /// <summary>
@@ -722,6 +732,8 @@ namespace PcmHacking
             this.bruteForceUnlockToolStripMenuItem.Enabled = false;
             this.haltRunningKernelToolStripMenuItem.Enabled = false;
             this.testFileChecksumsToolStripMenuItem.Enabled = false;
+            this.al5ReadOnlyProbeToolStripMenuItem.Enabled = false;
+            this.al5ReadCalibrationToolStripMenuItem.Enabled = false;
             this.al5CompareCalibrationToolStripMenuItem.Enabled = false;
             this.al5ReconcileSnapshotToolStripMenuItem.Enabled = false;
             this.e54RamSurveyToolStripMenuItem.Enabled = false;
@@ -762,6 +774,8 @@ namespace PcmHacking
                 this.bruteForceUnlockToolStripMenuItem.Enabled = true;
                 this.haltRunningKernelToolStripMenuItem.Enabled = true;
                 this.testFileChecksumsToolStripMenuItem.Enabled = true;
+                this.al5ReadOnlyProbeToolStripMenuItem.Enabled = true;
+                this.al5ReadCalibrationToolStripMenuItem.Enabled = true;
                 this.al5CompareCalibrationToolStripMenuItem.Enabled = true;
                 this.al5ReconcileSnapshotToolStripMenuItem.Enabled = true;
                 this.e54RamSurveyToolStripMenuItem.Enabled = true;
@@ -783,6 +797,9 @@ namespace PcmHacking
             this.interfaceBox.Enabled = true;
             this.settingsToolStripMenuItem.Enabled = true;
             this.exitApplicationToolStripMenuItem.Enabled = true;
+
+            this.al5ReadOnlyProbeToolStripMenuItem.Enabled = false;
+            this.al5ReadCalibrationToolStripMenuItem.Enabled = false;
 
             // Test File Checksums works on a file only - it needs no interface - so make it
             // available whenever no operation is in progress, even with no device selected.
