@@ -146,6 +146,41 @@ def peripheral_fault_cases(code,receipt):
                    limitation='Closing a host campaign does not stop or restore the controller runtime.'))
  return cases
 
+def quiesce_cases(code,receipt):
+ if 'al5_ro_request_quiesce' not in receipt['symbols']:raise ValueError('Quiesce validation requires the new runtime build')
+ cases=[];wire=bytes.fromhex('6d18f0b1')+request(0x15FD8,32)
+ r=Runtime(code,receipt);r.call('al5_ro_init');r.call('al5_ro_request_quiesce');assert r.call('al5_ro_step')==32
+ r.call('al5_ro_request_quiesce');r.feed(wire)
+ assert r.u.mem_read(0xFFA310,1)==b'\x02' and len(r.fifo)==27 and not r.tx and not r.flash_reads;r.validate_watchdog()
+ cases.append(dict(case='local_quiesce_parks_then_rejects_all_further_work',physical_exit_proven=False))
+ r=Runtime(code,receipt);r.call('al5_ro_init');r.fifo.extend((0x20,b) for b in wire[:13])
+ for _ in range(13):r.call('al5_ro_step')
+ r.call('al5_ro_request_quiesce')
+ for _ in range(150):r.call('al5_ro_step')
+ assert r.u.mem_read(0xFFA310,1)==b'\x01' and not r.tx and not r.flash_reads
+ r.fifo.extend((0x20,b) for b in wire[13:]);r.fifo.append((0xE0,0))
+ for _ in range(14):r.call('al5_ro_step')
+ assert r.call('al5_ro_step')==32 and not r.tx and not r.flash_reads;r.validate_watchdog()
+ cases.append(dict(case='quiesce_partial_rx_waits_for_end_not_idle_timeout',idle_polls=150))
+ r=Runtime(code,receipt);r.call('al5_ro_init');r.feed(wire);r.call('al5_ro_step');r.call('al5_ro_request_quiesce');r.busy=8
+ before=len(r.tx)
+ for _ in range(150):r.call('al5_ro_step')
+ assert len(r.tx)==before and r.u.mem_read(0xFFA310,1)==b'\x01'
+ r.feed(bytes.fromhex('6d18f0b1')+request(0x18000,32,sequence=2));r.busy=0;r.drain()
+ assert r.call('al5_ro_step')==32 and len(r.frames)==1 and r.flash_reads==list(range(0x15FD8,0x15FF8));r.validate_watchdog()
+ cases.append(dict(case='quiesce_finishes_existing_software_reply_and_drops_new_requests',busy_polls=150,
+                   limitation='Zero scripted status is only a software park criterion, not physical TX completion.'))
+ r=Runtime(code,receipt);r.call('al5_ro_init');r.fifo.extend((0x20,b) for b in wire);r.fifo.append((0xE0,0));r.call('al5_ro_request_quiesce')
+ for _ in range(27):r.call('al5_ro_step')
+ assert r.call('al5_ro_step')==32 and not r.tx and not r.flash_reads;r.validate_watchdog()
+ cases.append(dict(case='quiesce_consumes_queued_rx_without_invoking_reader'))
+ r=Runtime(code,receipt);r.call('al5_ro_init');r.u.mem_write(0xFFA310,b'\x03')
+ assert r.call('al5_ro_step')==16 and not r.tx and not r.flash_reads
+ r=Runtime(code,receipt);r.call('al5_ro_init');r.feed(wire);r.u.mem_write(0xFFA310,b'\x02')
+ assert r.call('al5_ro_step')==16 and not r.tx
+ cases.append(dict(case='corrupt_lifecycle_or_parked_pending_owner_latches_fault',rejections=2))
+ return cases
+
 def analyze(code,receipt):
  cases=[];vectors=[]
  for address,count in [(0,1),(0x3FD8,4),(0xC4C66,2),(0x8000,32),(0x18000,32),(0xFFFFF,1)]:
@@ -193,6 +228,7 @@ def analyze(code,receipt):
  assert r.u.reg_read(UC_M68K_REG_SR)&0x700==0x700
  cases.append(dict(case='assembly_entry_to_complete_scripted_vpw_reply',steps=100,software_tx_bytes=len(r.frames[0]),stack_low=hex(r.stack_low),watchdog_pairs=len(r.watchdog)//2))
  cases.extend(peripheral_fault_cases(code,receipt))
+ cases.extend(quiesce_cases(code,receipt))
  return dict(schema='al5-offline-runtime-emulation-v1',code_sha256=receipt['code_sha256'],code_bytes=len(code),cases=cases,valid_cases=vectors,session_transcript=transcript,ram_layout=audit(len(code)),
   flash_writes=0,unowned_ram_writes=0,peripheral_writes='Only scripted VPW command/data and watchdog allowlist',
   live_upload_enabled=False,live_execution_enabled=False,live_write_enabled=False,hardware_qualified=False,

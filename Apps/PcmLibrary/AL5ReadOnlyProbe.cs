@@ -14,9 +14,9 @@ namespace PcmHacking
     public sealed class AL5ReadOnlyProbe
     {
         public const byte TcmDeviceId = 0x18;
-        // Verified offline against the previously observed AL5 pair:
-        // seed 0x9CE5 -> key 0xBC08.  The key is calculated for characterization
-        // only in this probe and is NOT sent to the TCM.
+        // Algorithm-50 hypothesis matches one captured pair (9CE5 -> BC08).
+        // Saved selector-zero firmware uses literal words, so that pair does not
+        // verify a general fresh-seed algorithm. Prediction only; never sent.
         public const int Al5KeyAlgorithm = 50;
         private readonly Vehicle vehicle;
         private readonly ILogger logger;
@@ -120,7 +120,7 @@ namespace PcmHacking
                 UInt16 predictedKey = KeyAlgorithm.GetKey(Al5KeyAlgorithm, seed);
                 logger.AddUserMessage(
                     string.Format(
-                        "AL5 security seed 0x{0:X4}; PCM Hammer algorithm #{1} predicts key 0x{2:X4} (not sent).",
+                        "AL5 seed 0x{0:X4}; algorithm #{1} hypothesis gives 0x{2:X4}; general AL5 algorithm unverified, key not sent.",
                         seed, Al5KeyAlgorithm, predictedKey));
             }
             else
@@ -241,16 +241,13 @@ namespace PcmHacking
                     return Response.Create(ResponseStatus.Refused, (UInt16)0);
                 }
 
-                // Expected seed reply: 6C F0 18 67 01 <seedHi> <seedLo>
-                if (bytes.Length >= 7 &&
-                    bytes[0] == Priority.Physical0 &&
-                    bytes[1] == DeviceId.Tool &&
-                    bytes[2] == TcmDeviceId &&
-                    bytes[3] == (Mode.Seed + Mode.Response) &&
-                    bytes[4] == Submode.GetSeed)
+                var savedSeed=AL5SavedSecuritySeed.Parse(bytes);
+                if(savedSeed.Kind==AL5SavedSeedKind.Seed)
+                    return Response.Create(ResponseStatus.Success,savedSeed.Seed!.Value);
+                if(savedSeed.Kind==AL5SavedSeedKind.Short37Unqualified || savedSeed.Kind==AL5SavedSeedKind.Malformed)
                 {
-                    UInt16 seed = (UInt16)((bytes[5] << 8) | bytes[6]);
-                    return Response.Create(ResponseStatus.Success, seed);
+                    logger.AddUserMessage("AL5 seed reply is short/ambiguous or malformed; authorization is unproven and no key is sent.");
+                    return Response.Create(ResponseStatus.Refused,(UInt16)0);
                 }
 
                 logger.AddDebugMessage("Ignoring unrelated AL5 security-probe message: " + message);

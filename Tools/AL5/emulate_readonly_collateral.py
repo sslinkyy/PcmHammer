@@ -10,8 +10,8 @@ from readonly_ram_layout import FIXED
 START, END = 0x15FD8, 0x20000
 
 
-def analyze(code, receipt, low=None):
-    from unicorn.m68k_const import UC_M68K_REG_PC
+def analyze(code, receipt, low=None, exercise_local_quiesce=False):
+    from unicorn.m68k_const import UC_M68K_REG_PC,UC_M68K_REG_A7
     if low is None:
         r = Runtime(code, receipt)
     else:
@@ -47,6 +47,22 @@ def analyze(code, receipt, low=None):
     reconstructed = b''.join(bytes.fromhex(f['vpw_reply_hex'])[24:-2] for f in frames)
     assert reconstructed == r.flash[START:END] and len(reconstructed) == 41000
     assert len(frames) == 1282 and frames[-1]['address'] == 0x1FFF8 and frames[-1]['count'] == 8
+    local_quiesce=None
+    if exercise_local_quiesce:
+        # Explicit offline caller simulation; this is not a wire service, IRQ or
+        # proof that a host can invoke this entry on a physical controller.
+        pc=r.u.reg_read(UC_M68K_REG_PC);sp=r.u.reg_read(UC_M68K_REG_A7)
+        r.u.mem_write(sp-4,pc.to_bytes(4,'big'));r.u.reg_write(UC_M68K_REG_A7,sp-4);r.entry_steps=0
+        r.u.emu_start(receipt['symbols']['al5_ro_request_quiesce'],0x1000000,count=50000)
+        assert r.u.reg_read(UC_M68K_REG_PC)==pc and r.u.reg_read(UC_M68K_REG_A7)==sp
+        before=(len(r.tx),len(r.flash_reads));r.entry_steps=5;r.u.emu_start(pc,0x1000000,count=100000)
+        assert r.u.mem_read(0xFFA310,1)==b'\x02'
+        r.fifo.extend((0x20,b) for b in bytes.fromhex('6d18f0b1')+request(START,32,sequence=1283));r.fifo.append((0xE0,0))
+        r.entry_steps=5;r.u.emu_start(r.u.reg_read(UC_M68K_REG_PC),0x1000000,count=100000)
+        assert before==(len(r.tx),len(r.flash_reads)) and len(r.fifo)==27
+        r.validate_watchdog()
+        local_quiesce=dict(invocation='synthetic local call frame',software_parked=True,queued_rx_left_unprocessed=27,
+                           physical_tx_completion_proven=False,safe_exit_proven=False,power_cycle_required=True)
     canaries = bytes(r.u.mem_read(0xFF8000, 0x4000))
     checked = 0
     for offset, value in enumerate(canaries):
@@ -65,6 +81,7 @@ def analyze(code, receipt, low=None):
                 generator_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                 dependency_sha256={n:hashlib.sha256(Path(__file__).with_name(n).read_bytes()).hexdigest() for n in dependencies},
                 native_boot_handoff=None if low is None else r.handoff,
+                local_quiesce=local_quiesce,
                 low_sha256=None if low is None else hashlib.sha256(low).hexdigest(),
                 start=START, end_exclusive=END, bytes=len(reconstructed), request_count=len(frames),
                 supplement_sha256=hashlib.sha256(reconstructed).hexdigest(), marker_hex=reconstructed[-2:].hex(),
@@ -83,11 +100,12 @@ if __name__ == '__main__':
     p.add_argument('--build-dir', type=Path, required=True)
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--low', type=Path, help='Optional pinned boot evidence for same-CPU native-copy handoff')
+    p.add_argument('--exercise-local-quiesce',action='store_true',help='Exercise local control entry via an explicitly synthetic caller')
     a = p.parse_args()
     if a.output.exists():
         p.error('New output path required')
     result = analyze((a.build_dir/'readonly_kernel.offline.bin').read_bytes(), json.loads((a.build_dir/'build_receipt.json').read_text()),
-                     None if a.low is None else a.low.read_bytes())
+                     None if a.low is None else a.low.read_bytes(),a.exercise_local_quiesce)
     with a.output.open('x', encoding='utf-8') as f:
         json.dump(result, f, indent=2)
     print('PASS', result['request_count'], 'persistent compiled-runtime reads;', result['bytes'], 'bytes; marker', result['marker_hex'])

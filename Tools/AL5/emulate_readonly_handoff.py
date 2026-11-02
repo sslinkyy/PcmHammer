@@ -159,7 +159,7 @@ def analyze(low, code, receipt):
             r.validate_watchdog()
         else:
             assert not r.handoff and not r.watchdog and not r.tx
-            expected = {'unarmed_rejected_after_copy':'6cf0187f3680048eff9022',
+            expected = {'unarmed_rejected_after_copy':(bytes.fromhex('6cf0187f3680')+len(code).to_bytes(2,'big')+bytes.fromhex('ff9022')).hex(),
                         'bad_checksum_rejected_after_copy':'6cf018768077',
                         'copy_without_execute':'6cf018760073'}
             assert r.responses[-1] == expected[name], r.responses

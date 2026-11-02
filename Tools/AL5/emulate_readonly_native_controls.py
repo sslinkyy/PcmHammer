@@ -8,6 +8,8 @@ from readonly_ram_layout import FIXED
 
 SPS_SHA = '4a03452ef44e85d1874f6b519f8b3e7fd3c2bca7332ecf11fb1aaaa1b6372d80'
 BASE = 0xFF9006
+BOOT_HELPERS = {'boot_system_init':(0xAF0,0xBD8), 'boot_serial_init':(0xBF0,0xC20),
+                'boot_interface_init':(0xC20,0xCDC), 'boot_vpw_init':(0x3B7C,0x3CEA)}
 
 
 def spans(addresses):
@@ -25,7 +27,7 @@ def run(low, loader, mode, statuses, seed=0xA5, poll_limit=12):
         raise ValueError('Unrecognized LOW evidence')
     if len(loader) != 3858 or hashlib.sha256(loader).hexdigest() != SPS_SHA:
         raise ValueError('Unrecognized SPS loader')
-    if mode not in ('sps_init', 'sps_timeout', 'boot_flush') or not statuses or any(type(s) is not int or not 0<=s<=255 for s in statuses):
+    if mode not in ('sps_init', 'sps_timeout', 'boot_flush',*BOOT_HELPERS) or not statuses or any(type(s) is not int or not 0<=s<=255 for s in statuses):
         raise ValueError('Invalid scripted control context')
     from unicorn import Uc, UC_ARCH_M68K, UC_MODE_BIG_ENDIAN, UC_HOOK_CODE, UC_HOOK_MEM_READ, UC_HOOK_MEM_WRITE, UC_PROT_READ, UC_PROT_EXEC
     from unicorn.m68k_const import UC_CPU_M68K_M68020, UC_M68K_REG_A7, UC_M68K_REG_A6, UC_M68K_REG_SR, UC_M68K_REG_PC
@@ -37,7 +39,7 @@ def run(low, loader, mode, statuses, seed=0xA5, poll_limit=12):
     u.mem_map(0xFFE000, 0x1000); u.mem_map(0xFFF000, 0x1000)
     u.mem_map(0x200000, 0x10000); u.mem_map(0x300000, 0x1000)
     u.reg_write(UC_M68K_REG_SR, 0x2000); u.reg_write(UC_M68K_REG_A6, 0x11223344)
-    u.reg_write(UC_M68K_REG_A7, 0xFFA7F8 if mode=='boot_flush' else 0x208000)
+    u.reg_write(UC_M68K_REG_A7, 0xFFA7F8 if mode.startswith('boot_') else 0x208000)
     u.mem_write(0xFFA7F8, (0x300000).to_bytes(4, 'big'))
     observed = dict(mode=mode, scripted_statuses=statuses, stop=None, sender_calls=0, status_reads=0,
                     register_writes=[], watchdog_writes=[], ram_writes=[], flash_writes=0)
@@ -45,7 +47,7 @@ def run(low, loader, mode, statuses, seed=0xA5, poll_limit=12):
 
     def instruction(machine, pc, size, unused):
         if pc == 0x300000:
-            if mode!='boot_flush':raise ValueError('Unexpected native return')
+            if not mode.startswith('boot_'):raise ValueError('Unexpected native return')
             observed['stop']='returned';machine.emu_stop();return
         if pc == 0xFF91A0:
             observed['sender_calls'] += 1
@@ -60,6 +62,7 @@ def run(low, loader, mode, statuses, seed=0xA5, poll_limit=12):
         if pc == 0xFF9194:
             observed['stop']='terminal_self_branch';machine.emu_stop();return
         ranges=((0x2D30,0x2D50),(0x2D98,0x2E2E)) if mode=='boot_flush' else ((BASE,0xFF9020),(0xFF9910,0xFF9A3C),(0xFF9124,0xFF9196))
+        if mode in BOOT_HELPERS:ranges=(BOOT_HELPERS[mode],(0x2E30,0x2E4A))
         if not any(a<=pc and pc+size<=b for a,b in ranges):raise ValueError('Native control PC escaped '+hex(pc))
 
     def read(machine, access, a, size, value, unused):
@@ -68,25 +71,35 @@ def run(low, loader, mode, statuses, seed=0xA5, poll_limit=12):
             if observed['status_reads']>poll_limit:
                 observed['stop']='synthetic_poll_budget';machine.emu_stop()
             machine.mem_write(a,bytes([statuses[min(observed['status_reads']-1,len(statuses)-1)]]));return
+        if mode in BOOT_HELPERS and 0xFFF000<=a and a+size<=0x1000000:
+            if mode=='boot_interface_init' and a==0xFFFC1F and machine.reg_read(UC_M68K_REG_PC)==0xCA8:
+                machine.mem_write(a,b'\x80')  # Synthetic ready transition, not a modeled device.
+            if mode=='boot_interface_init' and a==0xFFFD02:machine.mem_write(a,statuses[0].to_bytes(2,'big'))
+            return
+        if mode=='boot_vpw_init' and a==0xFF8000 and size==2:return
         if (0<=a and a+size<=0x5000 or 0xFFA200<=a and a+size<=0xFFA240 or
             0xFFA700<=a and a+size<=0xFFA800 or 0x207E00<=a and a+size<=0x208000):return
         raise ValueError('Native control read outside selected ownership '+hex(a))
 
     def write(machine, access, a, size, value, unused):
-        if a==0xFFE800 and size==1 and value in (3,0xE0,0x40) or a==0xFFE801 and size==1 and value==0:
+        if a==0xFFE800 and size==1 and value in ((0x18,) if mode=='boot_vpw_init' else (3,0xE0,0x40)) or a==0xFFE801 and size==1 and value==(2 if mode=='boot_vpw_init' else 0):
             observed['register_writes'].append(dict(address=a,size=size,value=value));return
         if (a==0xFFFA26 and size==2 or a==0xFFFA27 and size==1) and value in (0x55,0xAA):
             observed['watchdog_writes'].append(dict(address=a,size=size,value=value));return
-        if (0xFFA200<=a and a+size<=0xFFA240 or 0xFFA700<=a and a+size<=0xFFA800 or
+        if mode in BOOT_HELPERS and 0xFFF000<=a and a+size<=0x1000000 and size in (1,2):
+            observed['register_writes'].append(dict(address=a,size=size,value=value));return
+        if (mode.startswith('boot_') and 0xFF8164<=a and a+size<=0xFF818B or
+            mode=='boot_interface_init' and a==0xFF8010 and size==1 or 0xFFA200<=a and a+size<=0xFFA240 or 0xFFA700<=a and a+size<=0xFFA800 or
             0x207E00<=a and a+size<=0x208000 or mode=='sps_timeout' and a==0xFF8000 and size==2 and value==0xD0C2):
             touched.update(range(a,a+size));observed['ram_writes'].append(dict(address=a,size=size,value=value));return
         raise ValueError('Native control write outside selected ownership '+hex(a))
 
     u.hook_add(UC_HOOK_CODE,instruction);u.hook_add(UC_HOOK_MEM_READ,read);u.hook_add(UC_HOOK_MEM_WRITE,write)
-    u.emu_start(0x2D98 if mode=='boot_flush' else BASE,0x1000000,count=100000)
+    u.emu_start(BOOT_HELPERS[mode][0] if mode in BOOT_HELPERS else 0x2D98 if mode=='boot_flush' else BASE,0x1000000,count=100000)
     if observed['stop'] is None:raise ValueError('Native control instruction budget exhausted')
     observed.update(final_pc=u.reg_read(UC_M68K_REG_PC),final_sp=u.reg_read(UC_M68K_REG_A7),sr=u.reg_read(UC_M68K_REG_SR),
                     written_ram_ranges=spans(touched),candidate_ram_overlaps={name:len(touched.intersection(range(a,b))) for name,a,b in FIXED},
+                    interface_flag=bytes(u.mem_read(0xFF8010,1)).hex(),
                     transport_used=False,physical_reset_verified=False,live_upload_enabled=False,live_execution_enabled=False,live_write_enabled=False)
     return observed
 
@@ -111,11 +124,18 @@ def analyze(low,loader):
         assert [(w['address'],w['value']) for w in r['register_writes']]==[(0xFFE800,3),(0xFFE801,0)]
         assert r['stop']==('synthetic_poll_budget' if statuses==[0x20] else 'returned')
         if statuses==[0x20,0]:assert [(w['address'],w['size'],w['value']) for w in r['watchdog_writes']]==[(0xFFFA27,1,0x55),(0xFFFA27,1,0xAA)]
+    for mode in BOOT_HELPERS:
+        for status in ([0,20,21] if mode=='boot_interface_init' else [0]):
+            r=run(low,loader,mode,[status]);cases.append(r);assert r['stop']=='returned'
+            if mode=='boot_interface_init':assert r['interface_flag']==('01' if status<=20 else '00')
+            if mode=='boot_vpw_init':assert [(w['address'],w['value']) for w in r['register_writes']]==[(0xFFE800,0x18),(0xFFE801,2)]
     return dict(schema='al5-offline-native-startup-exit-v1',low_sha256=EXPECTED_LOW,sps_loader_sha256=SPS_SHA,cases=cases,
                 generator_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                 peripheral_initialization_proven=False,safe_exit_proven=False,physical_ram_ownership_proven=False,
                 live_upload_enabled=False,live_execution_enabled=False,live_write_enabled=False,
                 limits=['Selected native paths only; all register status values are synthetic.',
+                        'Boot helpers run as independent calls with synthetic serial-ready and interface-word inputs; no complete cold startup is established.',
+                        'Raw register values do not establish exact CPU identity, clock/speed semantics, chip-select mapping or DMA ownership.',
                         'SPS sender callback is intercepted; near-threshold counter is a test input, not measured time.',
                         'Writing D0C2 to FF8000 is a RAM store here, not proof of physical reset.',
                         'Opcode values 03/E0/40 are observed; physical mode/speed semantics remain unknown.',

@@ -13,8 +13,10 @@ struct ro_state {
     unsigned short tx_index;
     unsigned long polls;
     unsigned long watchdog_pairs;
+    unsigned char lifecycle; /* 0 running, 1 draining software, 2 software parked */
+    unsigned char reserved[3];
 };
-typedef char state_must_be_16_bytes[(sizeof(struct ro_state)==16)?1:-1];
+typedef char state_must_match_layout[(sizeof(struct ro_state)==AL5_RO_STATE_BYTES)?1:-1];
 #define STATE ((volatile struct ro_state *)AL5_RO_STATE_RAM)
 #define RX ((volatile unsigned char *)AL5_RO_RX_RAM)
 #define TX ((volatile unsigned char *)AL5_RO_TX_RAM)
@@ -25,12 +27,19 @@ void al5_ro_init(void)
 {
     unsigned int i;
     volatile unsigned char *s=(volatile unsigned char *)AL5_RO_STATE_RAM;
-    for(i=0;i<16u;i++)s[i]=0;
+    for(i=0;i<AL5_RO_STATE_BYTES;i++)s[i]=0;
     for(i=0;i<AL5_RO_RX_BYTES;i++)RX[i]=0;
     for(i=0;i<AL5_RO_TX_BYTES;i++)TX[i]=0;
     for(i=0;i<AL5_RO_REQUEST_BYTES;i++)REQUEST[i]=0;
     for(i=0;i<AL5_RO_MAX_REPLY;i++)REPLY[i]=0;
     kick_watchdog();
+}
+void al5_ro_request_quiesce(void)
+{
+    if(STATE->lifecycle==0u) {
+        STATE->lifecycle=1u;
+        if(STATE->rx_count!=0u)STATE->discard=1u;
+    }
 }
 /* One bounded step. Numeric FIFO classes mirror observed loader branches, not qualified physical semantics. */
 unsigned int al5_ro_step(void)
@@ -38,15 +47,20 @@ unsigned int al5_ro_step(void)
     unsigned char status,kind,value;
     unsigned int i,n;
     kick_watchdog();STATE->polls++;
-    if(STATE->tx_active>1u || STATE->discard>1u || STATE->rx_count>AL5_RO_RX_BYTES ||
+    if(STATE->lifecycle>2u || STATE->tx_active>1u || STATE->discard>1u || STATE->rx_count>AL5_RO_RX_BYTES ||
        STATE->tx_count>AL5_RO_TX_BYTES || STATE->tx_index>STATE->tx_count ||
+       (STATE->lifecycle==2u && (STATE->tx_active || STATE->rx_count || STATE->discard)) ||
        (STATE->tx_active && (STATE->tx_count==0u || STATE->tx_index>=STATE->tx_count))) {
         STATE->tx_active=2u;return 16; /* Latched internal fault; never submit out-of-bounds bytes. */
     }
+    if(STATE->lifecycle==2u)return 32; /* Watchdog-only software park, not a verified physical exit. */
     status=STATUS;kind=(unsigned char)(status>>5);
+    if(STATE->lifecycle==1u && !STATE->tx_active && !STATE->rx_count && !STATE->discard && status==0u) {
+        STATE->lifecycle=2u;return 32;
+    }
     if(kind>=1u && kind<=4u) {
         value=DATA;
-        if(STATE->tx_active || STATE->discard)return 0;
+        if(STATE->tx_active || STATE->discard || STATE->lifecycle)return 0;
         if(STATE->rx_count>=AL5_RO_RX_BYTES){STATE->discard=1;return 8;}
         RX[STATE->rx_count++]=value;return 0;
     }
@@ -54,7 +68,7 @@ unsigned int al5_ro_step(void)
         value=DATA;
         n=STATE->rx_count;
         STATE->rx_count=0;
-        if(STATE->discard || STATE->tx_active || kind!=7u || (value&0xC0u)!=0u || n!=AL5_RO_RX_BYTES) {
+        if(STATE->lifecycle || STATE->discard || STATE->tx_active || kind!=7u || (value&0xC0u)!=0u || n!=AL5_RO_RX_BYTES) {
             STATE->discard=0;return 4;
         }
         if(RX[0]!=0x6Du || RX[1]!=0x18u || RX[2]!=0xF0u || RX[3]!=AL5_RO_REQUEST_SERVICE)return 4;

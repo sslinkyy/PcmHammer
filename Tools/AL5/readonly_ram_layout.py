@@ -1,7 +1,7 @@
 """Candidate RAM placement only; not an assertion of physical ownership or a live handoff plan."""
 CODE_BASE=0xFF9006
 RAM=(0xFF8000,0xFFB800)
-FIXED=(('state',0xFFA300,0xFFA310),('receive',0xFFA380,0xFFA39A),('transmit',0xFFA400,0xFFA43A),
+FIXED=(('state',0xFFA300,0xFFA314),('receive',0xFFA380,0xFFA39A),('transmit',0xFFA400,0xFFA43A),
        ('request',0xFFA500,0xFFA516),('reply',0xFFA600,0xFFA636),('stack',0xFFA700,0xFFA800))
 def audit(code_bytes):
  if not isinstance(code_bytes,int) or code_bytes<=0 or CODE_BASE+code_bytes>0xFFA000:raise ValueError('Code outside bounded experimental text region')

@@ -1,5 +1,12 @@
 # Offline VPW runtime, entry, watchdog and RAM checks
 
+Current revision: the local-quiesce extension is 1,328 bytes, SHA256
+5f8ce64bf5d26a3121d6b2e941694ca95da49e15b730f708939cbb66cd1f7836,
+with 20-byte state at 0xFFA300-0xFFA313. Earlier measurements below describe
+the retained 1,166-byte revision. See the latest
+[startup, quiesce and security findings](../../Docs/AL5/READER_STARTUP_QUIESCE_SECURITY.md)
+for the current implementation and qualification limits.
+
 ## Implemented source and evidence boundary
 
 entry.S masks interrupts with SR 0x2700, sets SP to 0xFFA7FE, calls initialization, then polls al5_ro_step. runtime.c owns explicit scratch RAM, receives bounded frames, validates the experimental envelope, invokes read_core.c, and emits bounded replies. No firmware erase/program/reset/security routine is linked and no adapter/upload route references this build. Live upload, execution and writes remain disabled.
