@@ -11,6 +11,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CapturedProgramImageTest.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5CalibrationSectorPlan.cs" />
     <Compile Include="CapturedWriteRehearsalTest.cs" /><Compile Include="EfiOfflineWritePlanTest.cs" /><Compile Include="../../Apps/PcmLibrary/AL5EfiOfflineWritePlan.cs" />
     <Compile Include="SavedReadSessionTest.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5SavedReadSession.cs" />

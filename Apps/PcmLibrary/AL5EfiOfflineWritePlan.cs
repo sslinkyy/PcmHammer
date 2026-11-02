@@ -13,6 +13,8 @@ namespace PcmHacking
         public int RequestCount => ProgramBlocks+3;
         public string LoaderSha256 { get; }
         public string CollateralSha256 { get; }
+        public uint[] CopyConditionalEraseSectorStarts() => AL5CalibrationSectorPlan.CopyCalibrationEraseSectorStarts();
+        public bool PhysicalSectorMappingVerified => false;
         public bool LiveUploadEnabled => false;
         public bool LiveExecutionEnabled => false;
         public bool LiveWriteEnabled => false;
@@ -40,7 +42,9 @@ namespace PcmHacking
             for(int block=0;block<ProgramBlocks;block++)
             {
                 int offset=block*512;int count=Math.Min(512,data.Length-offset);
-                requests[block+2]=Encode(data,offset,count,0,(uint)(AL5CapturedProgramImage.StartAddress+offset));
+                uint destination=(uint)(AL5CapturedProgramImage.StartAddress+offset);
+                AL5CalibrationSectorPlan.ValidateProgramSpan(destination,count);
+                requests[block+2]=Encode(data,offset,count,0,destination);
             }
             requests[RequestCount-1]=new byte[]{0x6C,0x18,0xF0,0x36,0xFF};
         }

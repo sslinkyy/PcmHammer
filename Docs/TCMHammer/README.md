@@ -8,6 +8,8 @@ The top-level TCM Hammer menu groups the AL5 identity probe, direct Mode 0x23 ca
 
 [Write qualification plan](WRITE_QUALIFICATION_PLAN.md) records the application-to-boot chain, historical reader-to-writer validation and remaining physical gates.
 
+[Calibration sector policy](CALIBRATION_SECTOR_POLICY.md) specifies the offline erase allowlist, span checks and collateral/marker preservation contract.
+
 ## Source and research
 
 All existing AL5 assets belong to this section. Their paths remain stable so scripts, tests and prior evidence references continue to work:

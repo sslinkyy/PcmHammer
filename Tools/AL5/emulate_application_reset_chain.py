@@ -68,6 +68,40 @@ class PreparationStorageBoundary(ApplicationPark):
                         banks_unchanged=hashlib.sha256(bytes(self.uc.mem_read(0x4000,0x4000))).hexdigest()==self.initial_banks_sha256)
         return observed,ram
 
+class PreparationFailure(PreparationStorageBoundary):
+    """Synthetic erase-status return followed by native copy-wrapper failure handling."""
+    def __init__(self,low,high):
+        super().__init__(low,high)
+        self.ranges.append((0x22CF0,0x22DF0))
+        self.uc.mem_write(0x22CF0,self.data[0x22CF0:0x22F14])
+        self.injected_returns=[]
+    def hook(self,machine,pc,size,user_data):
+        from unicorn.m68k_const import UC_M68K_REG_A7,UC_M68K_REG_PC
+        sp=machine.reg_read(UC_M68K_REG_A7)
+        if pc==0x22B18:
+            status=int.from_bytes(machine.mem_read(sp+4,4),'big')
+            destination=int.from_bytes(machine.mem_read(sp+8,4),'big')
+            machine.mem_write(status,bytes.fromhex('2000'))
+            self.injected_returns.append(dict(helper=pc,kind='erase_status_only_no_erase',status_word=0x2000,destination=destination))
+            machine.reg_write(UC_M68K_REG_PC,int.from_bytes(machine.mem_read(sp,4),'big'))
+            machine.reg_write(UC_M68K_REG_A7,sp+4);return
+        if pc==0x22CF0:return  # Native wrapper, not parent primitive trap.
+        if 0x200000<=pc<0x210000:
+            if int.from_bytes(machine.mem_read(sp,4),'big')!=0x22D7C or bytes(machine.mem_read(pc,0x124))!=self.data[0x22DF0:0x22F14]:
+                raise ValueError('Unexpected copied flash implementation boundary')
+            status=int.from_bytes(machine.mem_read(sp+4,4),'big')
+            machine.mem_write(status,bytes.fromhex('2000'))
+            self.injected_returns.append(dict(helper=pc,kind='copied_program_status_only_no_flash_execution',status_word=0x2000))
+            machine.reg_write(UC_M68K_REG_PC,0x22D7C);machine.reg_write(UC_M68K_REG_A7,sp+4);return
+        if pc==0x22DBC:
+            self.observed['stop_pc']=hex(pc);machine.emu_stop();return
+        super().hook(machine,pc,size,user_data)
+    def application(self):
+        observed,ram=super().application()
+        observed.update(injected_returns=self.injected_returns,flash_implementation_executed=False,
+                        flash_effects_modeled=False,storage_return_assumed=False)
+        return observed,ram
+
 def static_chain_evidence(low,high):
     validate_source(low,high)
     from capstone import Cs,CS_ARCH_M68K,CS_MODE_M68K_020,CS_MODE_BIG_ENDIAN
@@ -87,6 +121,8 @@ def analyze(low,high):
     validate_source(low,high)
     strict,strict_ram=ApplicationPark(low,high).application()
     storage_boundary,_=PreparationStorageBoundary(low,high).application()
+    failure,failure_ram=PreparationFailure(low,high).application()
+    failure_reset=experiment(low,high,reset_status=0x20,retained_marker=int.from_bytes(failure_ram[:2],'big'),initial_ram=failure_ram)
     accepted,ram=ApplicationPark(low,high,allow_stubbed_storage_return=True).application()
     locked,_=ApplicationPark(low,high,allow_stubbed_storage_return=True,guard_flags=0x20).application()
     continuations=[]
@@ -99,6 +135,7 @@ def analyze(low,high):
     dependencies=('emulate_flash_fault_recovery.py','emulate_receive_preparation.py',
                   'emulate_application_authorization.py','emulate_application_boot.py','emulate_storage_selection.py')
     return dict(schema='al5-offline-application-reset-chain-v1',static=static_chain_evidence(low,high),strict_application=strict,preparation_storage_boundary=storage_boundary,
+                preparation_failure=failure,conditional_failure_reset=dict(reset_injected=True,ram_retention_assumed=True,boot=failure_reset),
                 conditional_application=accepted,locked_application=locked,conditional_resets=continuations,
                 low_sha256=hashlib.sha256(low).hexdigest(),high_sha256=hashlib.sha256(high).hexdigest(),
                 generator_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
@@ -106,6 +143,7 @@ def analyze(low,high):
                 entry_physically_proven=False,reset_physically_proven=False,storage_preservation_proven=False,
                 ready_to_flash=False,live_upload_enabled=False,live_execution_enabled=False,live_write_enabled=False,would_send=[],
                 limits=['Application classifier/callback begins with synthetic request and guard values; not full receive routing.',
+                        'Failure case injects error statuses without erase/program effects and traps the copied implementation before execution.',
                         'Subsystems are explicit stubs. Strict case stops before persistent storage; conditional case assumes its return.',
                         'Eight native park-loop iterations contain no modeled watchdog service or CPU reset instruction.',
                         'Reset is explicitly injected in a separate CPU instance, carrying the exact application RAM bytes, not elapsed watchdog time.',

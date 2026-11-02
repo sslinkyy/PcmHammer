@@ -89,7 +89,10 @@ static class ReadOnlyCollateralCampaignTest
     var calibration=historicalLow.Skip(0x8000).Take(AL5CalibrationInspection.Length).ToArray();
     var snapshot=s.AssembleSavedSnapshot(calibration);
     Check(snapshot.SequenceEqual(historicalLow.Skip(0x8000).ToArray()));
-    var assessment=AL5ProgrammingWorkflow.Assess(calibration,snapshot,s.CopySavedCollateral());
+    var sectorPlan=new AL5CalibrationSectorPlan(calibration,historicalLow.Skip(0x8000).ToArray());
+    Check(sectorPlan.CopyDesiredBeforeFinalization().SequenceEqual(snapshot));
+    Check(!sectorPlan.IndependentBackupVerified && !sectorPlan.PhysicalSectorMappingVerified && !sectorPlan.RecoveryVerified);
+    var assessment=sectorPlan.AssessSavedReadback(snapshot);
     Check(assessment.Candidate.ChecksPass && assessment.ExactSavedImageMatch);
     Check(!assessment.ReadyToFlash && !assessment.LiveWriteEnabled && !assessment.PhysicalReadbackVerified && !assessment.RecoveryVerified);
     var damaged=(byte[])snapshot.Clone();damaged[damaged.Length-1]^=1;

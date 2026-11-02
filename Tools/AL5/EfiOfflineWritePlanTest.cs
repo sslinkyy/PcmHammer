@@ -16,6 +16,7 @@ static class EfiOfflineWritePlanTest
   // Explicit CAPTURE-derived reference, deliberately not represented as an independent physical backup.
   byte[] collateral=image.CopyCompleteImage().Skip(calibration.Length).ToArray();
   var plan=new AL5EfiOfflineWritePlan(loader,loaderHash,calibration,collateral);
+  Check(plan.CopyConditionalEraseSectorStarts().SequenceEqual(new uint[]{0x8000,0x10000}) && !plan.PhysicalSectorMappingVerified);
   Check(plan.RequestCount==195 && collateral.Length==40998 && plan.CopyRequest(193).Length==522);
   Check(plan.CollateralSha256==Convert.ToHexString(SHA256.HashData(collateral)).ToLowerInvariant());
   Check(!plan.IndependentCollateralBackupVerified && !plan.PhysicalReadbackVerified && !plan.ReadyToFlash && !plan.RecoveryVerified && !plan.LiveUploadEnabled && !plan.LiveExecutionEnabled && !plan.LiveWriteEnabled && !plan.AutomaticRetryEnabled);

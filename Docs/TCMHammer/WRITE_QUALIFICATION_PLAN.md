@@ -2,6 +2,8 @@
 
 Updated 2026-11-02. This checklist distinguishes completed offline work from remaining physical qualification. Live upload, execution, erase/program operations and automatic retries remain disabled. Historical images, modeled outcomes and captured acknowledgements do not authorize writes.
 
+[Calibration sector policy](CALIBRATION_SECTOR_POLICY.md) now implements destination limits and full-sector baseline ownership in the offline EFILive profile.
+
 ## 1. Application to boot entry
 
 Implemented `emulate_application_reset_chain.py` and its regression suite. The existing classifier, descriptor callback, native preparation caller and marker producer execute with synthetic request/state. Strict mode stops at 226F0 before persistent-storage implementation or even its return stub. A separately labeled conditional mode assumes subsystem/storage returns, reaches BFC1 with interrupt mask seven and observes eight self-branch iterations without watchdog servicing in that loop.
@@ -11,6 +13,8 @@ Exact application RAM FF8000..FFB7FF is hash-linked into a separate reset-model 
 The pinned boot store at 48E writes 84 to FFFFFA21. Under the conditional MC68336/376 SYPCR interpretation, this enables the software watchdog. The park instruction is a self branch, not RESET. Actual MCU, application-time watchdog state, timing, retained RAM and complete receive routing remain unqualified. See the [manufacturer register summary](https://www.nxp.com/docs/en/user-guide/MC68336376UMD.pdf), D.2.4 and D.2.12. Native execution here is emulator-only.
 
 A deeper preparation case executes the real 226F0 caller using the historical bank bytes and the prepared application RAM. It reaches erase-wrapper entry 22B18 with target 6000. The wrapper is trapped before execution and the historical banks remain unchanged. This joins the request's preparation to a concrete persistent-storage boundary; it does not simulate successful erase/programming.
+
+The failure continuation injects an erase-status error without changing bank contents, then executes the native copy wrapper until its copied RAM flash implementation would run. That implementation is intercepted before execution and given an explicit failure status. The wrapper sets marker 6124 and parks at 22DBC instead of reaching the accepted BFC1 park. The unchanged RAM can conditionally enter boot handling as 23CB after a separately injected status-20 reset. This demonstrates status/marker control flow only; failed-erase contents, physical reset and recovery remain unqualified.
 
 Remaining gate: persistent preparation side effects and actual reset/retention. The conditional RAM join does not remove those blockers or claim one uninterrupted physical session.
 
@@ -34,7 +38,7 @@ Remaining gate: exact selected live profile, fresh collateral baseline, physical
 
 ## 5. Programming and recovery qualification
 
-Not performed. The owner currently has only the installed AL5 and no recoverable spare. Interrupted erase/program testing and recovery require a separate qualification target and a demonstrated recovery procedure. A12 remains a conditional offline recovery hypothesis, not a qualified method. No destructive experiment is scheduled by this checklist.
+Not performed. The owner reports a spare TCM has been ordered and is expected by the end of this week. It has not arrived or been identified/qualified. Interrupted erase/program testing and recovery require a separate qualification target and a demonstrated recovery procedure. A12 remains a conditional offline recovery hypothesis, not a qualified method. No destructive experiment is scheduled by this checklist.
 
 ## Reproduction and retained artifacts
 

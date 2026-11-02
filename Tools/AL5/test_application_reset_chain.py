@@ -27,6 +27,23 @@ class ChainTests(unittest.TestCase):
   self.assertEqual(c['park_iterations'],0)
   self.assertFalse(c['reset_observed'])
   self.assertFalse(c['storage_calls'][0]['return_is_stubbed'])
+ def test_preparation_failure_does_not_return_to_accepted_park(self):
+  c=self.report['preparation_failure']
+  self.assertEqual(c['stop_pc'],'0x22dbc')
+  self.assertEqual(c['marker'],'0x6124')
+  self.assertEqual(c['park_iterations'],0)
+  self.assertTrue(c['banks_unchanged'])
+  self.assertFalse(c['flash_effects_modeled'])
+  self.assertFalse(c['flash_implementation_executed'])
+  self.assertEqual([r['kind'] for r in c['injected_returns']],['erase_status_only_no_erase','copied_program_status_only_no_flash_execution'])
+  self.assertEqual(c['injected_returns'][0]['destination'],0x6000)
+  b=self.report['conditional_failure_reset']['boot']
+  self.assertTrue(self.report['conditional_failure_reset']['reset_injected'])
+  self.assertEqual(b['initial_ram_sha256'],c['ram_sha256'])
+  self.assertEqual(b['retained_marker'],0x6124)
+  self.assertEqual(b['reset_marker'],0x23CB)
+  self.assertEqual(b['software_tx_frames'],['6df0187444'])
+  self.assertFalse(b['live_write_enabled'])
  def test_conditional_park_and_ram_identity(self):
   c=self.report['conditional_application']
   self.assertEqual(c['stop_pc'],'0xbe78c')
