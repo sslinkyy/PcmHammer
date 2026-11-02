@@ -1,5 +1,10 @@
 # Integrated captured-write rehearsal
 
+2026-11-01 extension: [constructed EFILive calibration plan](EFILIVE_OFFLINE_WRITE_PLAN.md)
+adds an optional explicit calibration/collateral-bound packet builder to this
+rehearsal. The original observation-only constructor remains available; the
+historical no-builder description below applies to that original version.
+
 Update: [reader coverage and vehicle setup/cleanup](READER_COVERAGE_SETUP_CLEANUP_20261030.md)
 extends the original selected-phase replay below. Security and broadcasts are now
 included as observations; adapter-local setup remains outside the replay.

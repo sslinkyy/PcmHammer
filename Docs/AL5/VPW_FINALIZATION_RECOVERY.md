@@ -1,5 +1,10 @@
 # AL5 loader finalization and conditional recovery routes
 
+Historical evidence note: the trace-coverage limitation below predates the
+successful 2026-10-30 calibration-write captures. Those captures now supply
+erase/program/finalize exchanges and an [offline constructed plan](EFILIVE_OFFLINE_WRITE_PLAN.md).
+The native failure-path findings and physical recovery limits below still apply.
+
 The captured loader's finalization and error paths now execute in bounded
 offline models. The saved application also exposes conditional calibration
 marker/CRC failure routes toward resident boot code. This improves the

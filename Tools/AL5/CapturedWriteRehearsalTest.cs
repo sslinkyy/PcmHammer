@@ -18,6 +18,7 @@ internal static class CapturedWriteRehearsalTest
         for(int i=0;i<args.Length;i+=3)
         {
             var lines=File.ReadAllLines(args[i]);var candidate=File.ReadAllBytes(args[i+1]);string loader=args[i+2];
+            EfiOfflineWritePlanTest.Run(lines,candidate,loader);
             var session=Replay(lines,candidate,loader);
             Check(session.State==AL5CapturedWriteState.AwaitingSavedVerification && session.PositiveProgramReplies==192);
             Check(session.CleanupObserved && session.CleanupQueryRepeats==1);

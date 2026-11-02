@@ -16,6 +16,7 @@ namespace PcmHacking
     {
         private readonly byte[] candidate;
         private readonly string loaderSha256;
+        private readonly AL5EfiOfflineWritePlan? plan;
         private readonly AL5CapturedProgramSession program = new AL5CapturedProgramSession();
         private int bootReplies;
         private int exchangeIndex;
@@ -57,6 +58,31 @@ namespace PcmHacking
         public bool RecoveryVerified => false;
         public bool PhysicalReadbackVerified => false;
         public bool SecurityAuthorizationProven => false;
+        public bool LiveUploadEnabled => false;
+        public bool LiveExecutionEnabled => false;
+        public bool AutomaticRetryEnabled => false;
+
+        public AL5CapturedWriteRehearsal(AL5EfiOfflineWritePlan plan)
+            : this(plan==null?throw new ArgumentNullException(nameof(plan)):plan.CopyCalibration(),plan.LoaderSha256)
+        {this.plan=plan;}
+
+        private int OfflineRequestIndex()
+        {
+            if(plan==null)throw new InvalidOperationException("No explicit collateral-bound offline plan supplied.");
+            switch(State)
+            {
+                case AL5CapturedWriteState.LoaderTransfer:return 0;
+                case AL5CapturedWriteState.EraseRequest:return 1;
+                case AL5CapturedWriteState.Programming:
+                    if(program.State!=AL5CapturedProgramState.AwaitingRequest)break;
+                    return 2+program.PositiveReplies;
+                case AL5CapturedWriteState.FinalizeRequest:return plan.RequestCount-1;
+            }
+            throw new InvalidOperationException("No new offline programming request slot; pending/rejected attempts confer no retry authority.");
+        }
+        /// <summary>Detached bytes for review only. Security/setup/cleanup are saved observations, not constructed actions.</summary>
+        public byte[] CopyNextOfflineRequest()
+        {int index=OfflineRequestIndex();return plan!.CopyRequest(index);}
 
         public AL5CapturedWriteRehearsal(byte[] calibration, string expectedLoaderSha256)
         {
@@ -82,6 +108,13 @@ namespace PcmHacking
             if(message==null)throw new ArgumentNullException(nameof(message));
             if(message.Length>1602)throw new ArgumentException("Outside captured message profile.");
             var m=(byte[])message.Clone();
+            if(plan!=null && transmitted)
+            {
+                int? index=State==AL5CapturedWriteState.LoaderTransfer?0:State==AL5CapturedWriteState.EraseRequest?1:
+                    State==AL5CapturedWriteState.FinalizeRequest?plan.RequestCount-1:
+                    State==AL5CapturedWriteState.Programming && m.Length>=4 && m[3]==0x36?2+program.PositiveReplies:(int?)null;
+                if(index.HasValue && !plan.Matches(index.Value,m))throw new ArgumentException("Captured request differs from explicit calibration/collateral offline plan.");
+            }
             // Some successful captures end with this rejected cleanup service; not programming failure or recovery proof.
             if(State==AL5CapturedWriteState.AwaitingSavedVerification && !CleanupNegative14Observed &&
                !transmitted && Is(m,0x6C,0xF0,0x18,0x7F,0x14,0x23))
