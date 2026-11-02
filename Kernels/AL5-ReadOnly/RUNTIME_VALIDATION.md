@@ -97,3 +97,47 @@ backend, peripheral initialization, watchdog timing proof or safe exit procedure
 The handoff report records generator/dependency hashes and both binary identities.
 To reproduce with existing Unicorn dependencies, run the handoff tool with
 `--low <pinned LOW dump> --build-dir <runtime build> --output <new report>`.
+
+## Full collateral and completion-marker campaign
+
+`emulate_readonly_collateral.py` now runs the compiled runtime through the entire
+0x15FD8-0x1FFFF supplement in one persistent CPU/RAM session. It issues 1,282
+requests: 1,281 at 32 bytes and a final eight-byte request at 0x1FFF8. All
+41,000 flash bytes are read exactly once, with no calibration/OS overread.
+This includes the 40,998 collateral bytes and the separately observed two-byte
+completion marker. Assembly entry/initialization runs once; the emulator resumes
+the original polling loop's saved PC and stack between requests.
+
+The production `AL5ReadOnlyCollateralCampaign` uses the existing full-address,
+nonce, sequence, count and CRC validator. All compiled request/reply envelopes
+are checked through this host campaign. Old replies do not advance coverage.
+No supplement, collateral-only reference or assembled saved snapshot can be
+exported until every byte has a matching reply. Timeout/cancellation and a bad
+CRC close the attempt, including a corrupt last reply after 40,992 accepted
+bytes. No missing marker is invented. Marker values 4AFC and 1234 are preserved
+in synthetic host tests; the compiled runtime's synthetic flash yields DFF0,
+which is preserved exactly as well.
+
+The complete direct-entry run records 128,201 ordered watchdog pairs, deepest
+stack write 0xFFA7BE and 14,786 unchanged unowned-RAM canary bytes. These are
+exercised software bounds, not physical watchdog timing or SRAM ownership.
+The kernel machine code is unchanged: its source hashes still match the saved
+1,166-byte build and SHA256 documented above.
+
+An optional `--low <pinned LOW dump>` extends the same campaign through native
+boot RAM-copy and handoff before reader initialization. It requires exact copied
+runtime identity, observes pending boot frames, and checks that all 72 abandoned
+frame bytes remain unchanged through the complete read. Reader-era canaries are
+compared to RAM at the explicit handoff boundary, since bootstrap writes have a
+different owner. This still uses a synthetic external boot stack, enabled-ISR
+context, FIFO/send/flush callbacks and scripted runtime registers; boot watchdog
+stores and RTE are not executed. It does not establish physical entry or shared
+peripheral-state continuity.
+
+Reproduce the campaign with `--build-dir <build> --output <new JSON>`, optionally
+adding `--low`. Pass its report to `Tools/AL5/ReadOnlyCollateralCampaignTest.csproj`
+to validate the production host against every compiled reply. Flash contents
+remain synthetic; the output is not an independent controller backup. Live
+upload, execution and writes remain disabled. Physical FIFO/clock/speed setup,
+TX completion, CPU compatibility, exclusive RAM ownership, exceptions/watchdog,
+safe exit and recoverable-bench qualification remain open.

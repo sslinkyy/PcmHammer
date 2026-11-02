@@ -1,0 +1,7 @@
+<Project>
+<PropertyGroup><BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)../../LocalOnly/ReadOnlyCollateralCampaignTest/obj/</BaseIntermediateOutputPath><MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath></PropertyGroup>
+<Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk"/>
+<PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><Nullable>enable</Nullable><EnableDefaultCompileItems>false</EnableDefaultCompileItems><OutputPath>../../LocalOnly/ReadOnlyCollateralCampaignTest/bin/</OutputPath></PropertyGroup>
+<ItemGroup><Compile Include="ReadOnlyCollateralCampaignTest.cs"/><Compile Include="../../Apps/PcmLibrary/AL5ReadOnlyCollateralCampaign.cs"/><Compile Include="../../Apps/PcmLibrary/AL5ReadOnlyCoreSession.cs"/><Compile Include="../../Apps/PcmLibrary/AL5SavedReadCoverage.cs"/><Compile Include="../../Apps/PcmLibrary/AL5ProgrammingWorkflow.cs"/><Compile Include="../../Apps/PcmLibrary/AL5CalibrationInspection.cs"/></ItemGroup>
+<Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk"/>
+</Project>
