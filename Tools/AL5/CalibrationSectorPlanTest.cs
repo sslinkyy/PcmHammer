@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Security.Cryptography;
 using PcmHacking;
 
 static class CalibrationSectorPlanTest
@@ -39,6 +40,9 @@ static class CalibrationSectorPlanTest
   before[^2]=0x12;before[^1]=0x34;var original=(byte[])before.Clone();
   var plan=new AL5CalibrationSectorPlan(calibration,before);
   Check(plan.SavedOriginalMarker==0x1234);
+  Check(plan.SavedPreEraseSha256==Convert.ToHexString(SHA256.HashData(original)).ToLowerInvariant());
+  var anotherBaseline=(byte[])original.Clone();anotherBaseline[^1]^=1;
+  Check(new AL5CalibrationSectorPlan(calibration,anotherBaseline).SavedPreEraseSha256!=plan.SavedPreEraseSha256);
   var desired=plan.CopyDesiredBeforeFinalization();Check(desired.Take(calibration.Length).SequenceEqual(calibration));
   Check(desired.Skip(calibration.Length).SequenceEqual(original.Skip(calibration.Length)));
   Check(!plan.AssessSavedReadback(desired).ExactSavedImageMatch);

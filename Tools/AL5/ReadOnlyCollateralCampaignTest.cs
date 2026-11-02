@@ -95,6 +95,17 @@ static class ReadOnlyCollateralCampaignTest
     var assessment=sectorPlan.AssessSavedReadback(snapshot);
     Check(assessment.Candidate.ChecksPass && assessment.ExactSavedImageMatch);
     Check(!assessment.ReadyToFlash && !assessment.LiveWriteEnabled && !assessment.PhysicalReadbackVerified && !assessment.RecoveryVerified);
+    var rehearsal=AL5OfflineProgrammingSession.FromSectorPlan(sectorPlan);
+    while(rehearsal.PendingOperation!.Phase!=AL5ProgrammingPhase.CalibrationBlocks)
+     rehearsal.RecordModelOutcome(rehearsal.PendingOperation,AL5OfflineOutcome.ModelCompleted);
+    rehearsal.RecordModelOutcome(rehearsal.PendingOperation!,AL5OfflineOutcome.ReplyLost);
+    var stopped=rehearsal.AssessStoppedSnapshot(snapshot);
+    Check(stopped.ImageAssessment.ExactSavedImageMatch && stopped.PreEraseSnapshotSha256==sectorPlan.SavedPreEraseSha256);
+    Check(rehearsal.State==AL5OfflineRunState.Stopped && !stopped.CanResumeStoppedSession && !stopped.RetryEnabled);
+    var reconstruction=rehearsal.CreateReconstructionRehearsal(stopped);
+    Check(reconstruction.PreEraseSnapshotSha256==sectorPlan.SavedPreEraseSha256 && reconstruction.Observations.Count==0);
+    Check(reconstruction.CopySavedPreEraseSectors().SequenceEqual(snapshot) && !reconstruction.ReadyToFlash && !reconstruction.LiveWriteEnabled);
+    Console.WriteLine("PASS historical reader baseline -> interrupted rehearsal -> provenance-preserving fresh reconstruction; no automatic resume.");
     var damaged=(byte[])snapshot.Clone();damaged[damaged.Length-1]^=1;
     Check(!AL5ProgrammingWorkflow.Assess(calibration,damaged,s.CopySavedCollateral()).ExactSavedImageMatch);
     damaged=(byte[])snapshot.Clone();damaged[calibration.Length]^=1;

@@ -1,6 +1,6 @@
 """Offline application preparation -> explicit reset hypothesis -> native boot.
 
-Storage/subsystems are never executed. No reset is inferred from the park loop.
+Flash implementations and subsystem bodies never execute. No reset is inferred from the park loop.
 """
 import argparse
 import hashlib

@@ -37,6 +37,35 @@ internal static class OfflineProgrammingSessionTest
         int passed = 0;
         void Test(string name, Action action) { action(); passed++; Console.WriteLine("PASS AL5 sequence: " + name); }
 
+        Test("complete sector baseline follows stopped assessment and explicit reconstruction", () =>
+        {
+            byte[] baseline=(byte[])snapshot.Clone();baseline[0]^=1;baseline[baseline.Length-2]=0x12;baseline[baseline.Length-1]=0x34;
+            byte[] original=(byte[])baseline.Clone();
+            var plan=new AL5CalibrationSectorPlan(image,baseline);
+            var session=AL5OfflineProgrammingSession.FromSectorPlan(plan);
+            Check(session.HasCompletePreEraseBaseline && session.PreEraseSnapshotSha256==plan.SavedPreEraseSha256,"Complete baseline provenance absent");
+            Check(session.CopyConditionalEraseSectorStarts().SequenceEqual(new uint[]{0x8000,0x10000}),"Erase targets changed");
+            baseline[0]^=1;var copied=session.CopySavedPreEraseSectors();copied[0]^=1;
+            Check(session.CopySavedPreEraseSectors().SequenceEqual(original),"Caller changed owned full baseline");
+            Reach(session,AL5ProgrammingPhase.CalibrationBlocks);
+            var pending=session.PendingOperation!;session.RecordModelOutcome(pending,AL5OfflineOutcome.ReplyLost);
+            var assessment=session.AssessStoppedSnapshot(snapshot);
+            Check(assessment.PreEraseSnapshotSha256==plan.SavedPreEraseSha256 && !assessment.CanResumeStoppedSession && !assessment.RetryEnabled,"Lost reply altered baseline authority");
+            var next=session.CreateReconstructionRehearsal(assessment);
+            Check(next.HasCompletePreEraseBaseline && next.PreEraseSnapshotSha256==session.PreEraseSnapshotSha256 && next.CopySavedPreEraseSectors().SequenceEqual(original),"Reconstruction lost full baseline");
+            Check(next.PendingOperation!.Phase==AL5ProgrammingPhase.BootAndLoaderEntry && next.Observations.Count==0 && session.PendingOperation==pending && session.State==AL5OfflineRunState.Stopped,"Reconstruction reused progress");
+            Reject(()=>next.RecordModelOutcome(pending,AL5OfflineOutcome.ModelCompleted));
+            var foreign=AL5OfflineProgrammingSession.FromSectorPlan(plan);Reach(foreign,AL5ProgrammingPhase.CalibrationBlocks);foreign.RecordModelOutcome(foreign.PendingOperation!,AL5OfflineOutcome.Interrupted);
+            Reject(()=>session.CreateReconstructionRehearsal(foreign.AssessStoppedSnapshot(snapshot)));
+            Blocked(session);Blocked(next);
+        });
+        Test("legacy abstract references never become complete pre-erase evidence", () =>
+        {
+            var session=New();Check(!session.HasCompletePreEraseBaseline && session.PreEraseSnapshotSha256==null,"Legacy baseline invented");
+            Reject(()=>session.CopySavedPreEraseSectors());Reject(()=>AL5OfflineProgrammingSession.FromSectorPlan(null!));
+            session.RecordModelOutcome(session.PendingOperation!,AL5OfflineOutcome.Interrupted);
+            Check(session.AssessStoppedSnapshot(snapshot).PreEraseSnapshotSha256==null,"Reconciliation synthesized baseline");
+        });
         Test("dense blocks cover exact ranges including short tails", () =>
         {
             var session = New();

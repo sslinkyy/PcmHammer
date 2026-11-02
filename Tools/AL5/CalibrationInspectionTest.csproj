@@ -15,6 +15,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CalibrationInspectionTest.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5CalibrationSectorPlan.cs" />
     <Compile Include="ProgrammingWorkflowTest.cs" />
     <Compile Include="OfflineProgrammingSessionTest.cs" />
     <Compile Include="LoaderModelReplyTest.cs" />

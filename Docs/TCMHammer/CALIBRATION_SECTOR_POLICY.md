@@ -25,3 +25,9 @@ Tests use an independently specified sector-start golden and existing native-che
 The owner has ordered a spare, expected by the end of this week. On receipt, establish its label/service number, hardware compatibility, physical condition and verified harness/power requirements. Begin with identity and non-destructive baseline acquisition. Preserve all obtainable original bytes and record which regions remain unknown. Then review the RAM-entry/read-only-kernel qualification before considering any unchanged-calibration programming test.
 
 No hardware operation is authorized or started by this document. Buying a spare does not establish a working recovery procedure. The installed truck TCM remains outside destructive qualification. Live upload, execution, writing, recovery verification and readiness flags remain false.
+
+## Complete-baseline rehearsal provenance
+
+`AL5OfflineProgrammingSession.FromSectorPlan` creates the abstract offline sequence from the immutable sector plan. It retains the complete pre-erase SHA-256 and original bytes; stopped-snapshot assessments retain the same digest. Explicit reconstruction carries that baseline into a new attempt while resetting progress and operation identities. Matching saved bytes never resume the stopped attempt. Existing collateral-only model constructors remain supported but expose no complete baseline and throw if asked to supply one.
+
+The rehearsal validates every modeled calibration/collateral destination and the separate marker word against this policy. These checks still do not establish hardware mapping or transport authority. The historical compiled-reader fixture now passes through the full-baseline rehearsal, lost-reply assessment and fresh reconstruction path while preserving false readiness/recovery flags.

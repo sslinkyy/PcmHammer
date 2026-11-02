@@ -10,6 +10,8 @@ The top-level TCM Hammer menu groups the AL5 identity probe, direct Mode 0x23 ca
 
 [Calibration sector policy](CALIBRATION_SECTOR_POLICY.md) specifies the offline erase allowlist, span checks and collateral/marker preservation contract.
 
+[Preparation status paths](PREPARATION_STATUS_PATHS.md) distinguish native errors/readback mismatches and pending frames. [Spare bench qualification](SPARE_TCM_BENCH_QUALIFICATION.md) defines the future hardware gates.
+
 ## Source and research
 
 All existing AL5 assets belong to this section. Their paths remain stable so scripts, tests and prior evidence references continue to work:

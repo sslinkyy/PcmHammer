@@ -16,6 +16,8 @@ A deeper preparation case executes the real 226F0 caller using the historical ba
 
 The failure continuation injects an erase-status error without changing bank contents, then executes the native copy wrapper until its copied RAM flash implementation would run. That implementation is intercepted before execution and given an explicit failure status. The wrapper sets marker 6124 and parks at 22DBC instead of reaching the accepted BFC1 park. The unchanged RAM can conditionally enter boot handling as 23CB after a separately injected status-20 reset. This demonstrates status/marker control flow only; failed-erase contents, physical reset and recovery remain unqualified.
 
+[Preparation status paths](PREPARATION_STATUS_PATHS.md) now distinguish six success/error/readback cases and trace native wrapper returns. This strengthens the failure-control evidence without qualifying physical flash effects.
+
 Remaining gate: persistent preparation side effects and actual reset/retention. The conditional RAM join does not remove those blockers or claim one uninterrupted physical session.
 
 ## 2. Read-only kernel
@@ -30,6 +32,8 @@ The compiled reader reconstructed 41,000 bytes at 15FD8..1FFFF from the pinned h
 
 Remaining gate: fresh independent readback of the actual controller. Historical success does not establish present contents, all flash-bank coverage or physical preservation.
 
+The full sector baseline and SHA-256 now follow the offline rehearsal into stopped-snapshot assessment and explicit reconstruction. A matching saved snapshot does not resume the stopped attempt, and legacy collateral-only references never become a complete baseline.
+
 ## 4. Calibration-only programming rehearsal
 
 The three retained EFILive calibration captures continue to match constructed requests, checksum retry handling, interruptions and saved-byte verification. The SPS full-programming corpus continues to match 181 generated transfers, 180 acknowledged blocks and its setup/cleanup lifecycle. These profiles remain distinct: a complete SPS calibration-only capture is still absent. Do not infer a safe calibration-only SPS sequence by skipping its OS transfers.
@@ -39,6 +43,8 @@ Remaining gate: exact selected live profile, fresh collateral baseline, physical
 ## 5. Programming and recovery qualification
 
 Not performed. The owner reports a spare TCM has been ordered and is expected by the end of this week. It has not arrived or been identified/qualified. Interrupted erase/program testing and recovery require a separate qualification target and a demonstrated recovery procedure. A12 remains a conditional offline recovery hypothesis, not a qualified method. No destructive experiment is scheduled by this checklist.
+
+[Spare bench qualification checklist](SPARE_TCM_BENCH_QUALIFICATION.md) defines intake, baseline-read, prototype-entry, programming and recovery gates.
 
 ## Reproduction and retained artifacts
 

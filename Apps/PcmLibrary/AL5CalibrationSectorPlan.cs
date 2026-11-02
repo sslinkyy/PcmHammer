@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 using System;
+using System.Security.Cryptography;
 
 namespace PcmHacking
 {
@@ -20,6 +21,7 @@ namespace PcmHacking
         public const uint FlashEndExclusive=0x100000;
         public const uint CalibrationEraseStart=0x8000, CalibrationEraseEndExclusive=0x20000;
         private readonly byte[] candidate, before;
+        public string SavedPreEraseSha256 { get; }
         public bool PhysicalSectorMappingVerified => false;
         public bool IndependentBackupVerified => false;
         public bool LiveUploadEnabled => false;
@@ -75,12 +77,14 @@ namespace PcmHacking
             if(calibration.Length!=AL5CalibrationInspection.Length || savedPreEraseSectors.Length!=AL5ProgrammingWorkflow.SnapshotLength)
                 throw new ArgumentException("Exact calibration and all 98,304 pre-erase sector bytes are required, including the original marker.");
             candidate=(byte[])calibration.Clone();before=(byte[])savedPreEraseSectors.Clone();
+            using(var hash=SHA256.Create())SavedPreEraseSha256=BitConverter.ToString(hash.ComputeHash(before)).Replace("-", "").ToLowerInvariant();
             if(!AL5CalibrationInspection.Inspect(candidate).ChecksPass)
                 throw new ArgumentException("Candidate native checksum and anchors must pass.");
             ValidateProgramSpan(AL5CalibrationInspection.StartAddress,candidate.Length);
             ValidateFinalizationSpan(AL5ProgrammingWorkflow.MarkerAddress,2);
         }
 
+        public byte[] CopyCalibration() => (byte[])candidate.Clone();
         public byte[] CopySavedPreEraseSectors() => (byte[])before.Clone();
         public byte[] CopyCollateralBackup()
         {

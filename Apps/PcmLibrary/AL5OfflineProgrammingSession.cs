@@ -8,6 +8,7 @@ namespace PcmHacking
     /// <summary>Host sequence rehearsal only. Observations are model inputs, never transport authority.</summary>
     public sealed class AL5OfflineProgrammingSession
     {
+        private readonly AL5CalibrationSectorPlan? sectorPlan;
         private readonly byte[] candidate;
         private readonly byte[] collateralBackup;
         private readonly List<AL5OfflineObservation> observations = new List<AL5OfflineObservation>();
@@ -16,12 +17,13 @@ namespace PcmHacking
         public AL5OfflineProgrammingSession(byte[] candidate, byte[] collateralBackup)
             : this(candidate, collateralBackup, null) { }
 
-        private AL5OfflineProgrammingSession(byte[] candidate, byte[] collateralBackup, AL5StoppedOperationAssessment? reconstructionSource)
+        private AL5OfflineProgrammingSession(byte[] candidate, byte[] collateralBackup, AL5StoppedOperationAssessment? reconstructionSource, AL5CalibrationSectorPlan? sectorPlan = null)
         {
             if (candidate == null) throw new ArgumentNullException(nameof(candidate));
             if (collateralBackup == null) throw new ArgumentNullException(nameof(collateralBackup));
             if (candidate.Length != AL5CalibrationInspection.Length || collateralBackup.Length != AL5ProgrammingWorkflow.CollateralLength)
-                throw new ArgumentException("Offline sequencing requires exact calibration and independent pre-erase collateral bytes.");
+                throw new ArgumentException("Offline sequencing requires exact calibration and an explicit collateral reference.");
+            this.sectorPlan = sectorPlan;
             this.candidate = (byte[])candidate.Clone();
             this.collateralBackup = (byte[])collateralBackup.Clone();
             Assessment = AL5ProgrammingWorkflow.Assess(this.candidate, collateralBackup: this.collateralBackup);
@@ -40,6 +42,10 @@ namespace PcmHacking
                         start += block * AL5ProgrammingWorkflow.ModeledBlockBytes;
                         length = Math.Min(AL5ProgrammingWorkflow.ModeledBlockBytes, stage.EndAddressExclusive!.Value - start!.Value);
                     }
+                    if(stage.Phase==AL5ProgrammingPhase.CalibrationBlocks || stage.Phase==AL5ProgrammingPhase.CollateralRestoration)
+                        AL5CalibrationSectorPlan.ValidateProgramSpan((uint)start!.Value,length!.Value);
+                    if(stage.Phase==AL5ProgrammingPhase.Finalization)
+                        AL5CalibrationSectorPlan.ValidateFinalizationSpan((uint)start!.Value,length!.Value);
                     operations.Add(new AL5OfflineOperation(operations.Count+1, stage.Phase, start, length));
                 }
             }
@@ -48,6 +54,19 @@ namespace PcmHacking
             State = AL5OfflineRunState.AwaitingModelOutcome;
         }
 
+        public static AL5OfflineProgrammingSession FromSectorPlan(AL5CalibrationSectorPlan plan)
+        {
+            if(plan==null)throw new ArgumentNullException(nameof(plan));
+            return new AL5OfflineProgrammingSession(plan.CopyCalibration(),plan.CopyCollateralBackup(),null,plan);
+        }
+        public bool HasCompletePreEraseBaseline => sectorPlan!=null;
+        public string? PreEraseSnapshotSha256 => sectorPlan?.SavedPreEraseSha256;
+        public byte[] CopySavedPreEraseSectors()
+        {
+            if(sectorPlan==null)throw new InvalidOperationException("This older abstract rehearsal has no complete pre-erase sector baseline.");
+            return sectorPlan.CopySavedPreEraseSectors();
+        }
+        public uint[] CopyConditionalEraseSectorStarts() => AL5CalibrationSectorPlan.CopyCalibrationEraseSectorStarts();
         public AL5ProgrammingAssessment Assessment { get; }
         public AL5StoppedOperationAssessment? ReconstructionSource { get; }
         public IReadOnlyList<AL5OfflineOperation> Operations { get; }
@@ -145,7 +164,7 @@ namespace PcmHacking
                     operation.Length!.Value, operation.StartAddress.Value);
             }
             // Reconciliation never changes the cursor, outcome journal or stopped state.
-            return new AL5StoppedOperationAssessment(observations[observations.Count-1], image, range);
+            return new AL5StoppedOperationAssessment(observations[observations.Count-1], image, range, PreEraseSnapshotSha256);
         }
 
         /// <summary>Explicitly prepares a new offline rehearsal; never resumes this attempt or executes an erase.</summary>
@@ -157,7 +176,7 @@ namespace PcmHacking
             if (!ReferenceEquals(source.StopObservation, observations[observations.Count-1]))
                 throw new ArgumentException("Reconciliation does not belong to this stopped attempt.", nameof(source));
             // Reuse only owned candidate/baseline bytes and immutable provenance, never progress or CPU state.
-            return new AL5OfflineProgrammingSession(candidate, collateralBackup, source);
+            return new AL5OfflineProgrammingSession(candidate, collateralBackup, source, sectorPlan);
         }
 
         private void RequirePending(AL5OfflineOperation operation)
@@ -174,8 +193,9 @@ namespace PcmHacking
 
     public sealed class AL5StoppedOperationAssessment
     {
-        internal AL5StoppedOperationAssessment(AL5OfflineObservation stopObservation, AL5ProgrammingAssessment image, AL5WordComparison? range)
-        { StopObservation = stopObservation; ImageAssessment = image; PendingRangeComparison = range; }
+        internal AL5StoppedOperationAssessment(AL5OfflineObservation stopObservation, AL5ProgrammingAssessment image, AL5WordComparison? range, string? preEraseSnapshotSha256)
+        { StopObservation = stopObservation; ImageAssessment = image; PendingRangeComparison = range; PreEraseSnapshotSha256 = preEraseSnapshotSha256; }
+        public string? PreEraseSnapshotSha256 { get; }
         public AL5OfflineObservation StopObservation { get; }
         public AL5OfflineOperation Operation => StopObservation.Operation;
         public AL5ProgrammingAssessment ImageAssessment { get; }
