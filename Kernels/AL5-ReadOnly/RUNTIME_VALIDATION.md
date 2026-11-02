@@ -141,3 +141,64 @@ remain synthetic; the output is not an independent controller backup. Live
 upload, execution and writes remain disabled. Physical FIFO/clock/speed setup,
 TX completion, CPU compatibility, exclusive RAM ownership, exceptions/watchdog,
 safe exit and recoverable-bench qualification remain open.
+
+## VPW initialization, shared-stack ownership and exit trace
+
+`emulate_readonly_native_controls.py` executes selected paths in the pinned LOW
+and SPS loader without modifying their instructions. Ten cases compare native
+initialization, the terminal helper and boot FIFO-control behavior. All register
+values remain scripted and all observations are offline.
+
+From SPS entry 0xFF9006, the routine at 0xFF9910 clears scratch storage in the
+0xFFA200-0xFFA23B arena, builds reply 6C F0 18 76 80 73 and calls the sender.
+Two different seeded-RAM cases reach that sender with no preceding peripheral
+configuration writes. Thus this initializer does not supply a standalone VPW
+clock/speed configuration recipe. Its scratch stores do not intersect our fixed
+state/RX/TX/request/reply buffers in these cases; its stack does share the
+proposed stack region. The code images themselves overlap and cannot coexist.
+
+Native boot helper 0x2D98 uses the byte at table address 0x2D18 (03), writes it
+to 0xFFE800, clears byte 0xFFE801 and polls status. Scripted classes 0, 5 and 7
+return; a class-1-to-idle sequence services byte watchdog 0xFFFA27 with 55/AA
+before returning. Persistent class 1 reaches only the test poll budget.
+This establishes instruction behavior, not that command 03 physically drains
+all traffic or sets the required speed. In contrast, the SPS loop uses word
+watchdog stores at 0xFFFA26; access widths must not be silently substituted.
+
+The SPS receive-counter path is advanced with a synthetic near-threshold
+counter to call 0xFF9124. Status 00 reaches a D0C2 word store at 0xFF8000,
+byte 40 at 0xFFE800, zero at 0xFFE801 and the self-branch at 0xFF9194. Status
+08 first adds E0/zero writes to the same peripheral pair. Persistent low status
+bit 0 instead remains in the helper's polling path until the test budget;
+there are no additional watchdog stores after the caller's one pair. The
+sender is an intercepted callback in this test. Neither the near-threshold
+counter nor its poll budget is a measured physical timeout. The 0xFF8000 store
+targets synthetic RAM here; it does not prove controller reset on hardware.
+No path supplies a returning context-restore routine for the reader.
+
+The handoff harness now also tests a synthetic incoming stack top of 0xFFA7FE,
+in addition to the earlier external 0x208000 context. Native boot transfer leaves
+72 pending bytes below the incoming stack top. Reader entry and one actual
+32-byte request/reply overwrite 64 of those frame byte locations; 33 values
+change in the recorded case. This differs from the earlier external-stack
+case, whose abandoned bytes remain untouched. Neither incoming stack is claimed
+to be the controller's actual context. A direct return through the old stack is
+not justified: a real restoration design would need proven context storage,
+exception-frame/CPU semantics and peripheral/interrupt restoration. Six bad
+synthetic stack geometries are rejected before emulator allocation, including
+upload-code and boot-global overlap. The seven handoff report groups retain
+all prior copy/checksum/arming tests.
+
+Three additional compiled-runtime cases bring its total to 24 groups. They
+demonstrate indefinite TX deferral for scripted status 08, rejection of a
+CRC-valid unsupported exit opcode without flash/TX effects, and continued
+watchdog-serviced polling after a reply. A completed or canceled host campaign
+does not terminate the reader running on the controller. The prototype does not
+add control opcodes 03/E0/40, a reset store, or an unqualified return sequence.
+Machine code remains unchanged and all live gates remain disabled.
+
+Reproduce native controls with `--low <pinned LOW> --loader <SPS loader>
+--output <new report>`. Re-run the handoff and compiled-runtime tools for their
+updated reports. Physical VPW initialization and safe exit remain explicit
+qualification requirements; the successful synthetic read campaign does not
+close them.

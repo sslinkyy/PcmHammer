@@ -128,6 +128,22 @@ def peripheral_fault_cases(code,receipt):
  assert len(r.frames)==1
  cases.append(dict(case='all_unowned_ram_canaries_preserved',bytes_checked=checked,
                    limitation='Guest CPU accesses only; no asynchronous DMA or interrupt writer is simulated.'))
+ r=Runtime(code,receipt);r.call('al5_ro_init');r.feed(wire);r.busy=8;before=len(r.tx)
+ for _ in range(150):r.call('al5_ro_step')
+ assert len(r.tx)==before and r.u.mem_read(0xFFA303,1)==b'\x01';r.validate_watchdog()
+ cases.append(dict(case='persistent_status_bit3_defers_tx_without_native_control_write',polls=150,
+                   limitation='No physical status-bit clearing or peripheral initialization is implemented.'))
+ r=Runtime(code,receipt);r.call('al5_ro_init');unsupported=bytearray(wire);unsupported[7]=2
+ import binascii
+ crc=binascii.crc_hqx(unsupported[4:-2],0xFFFF);unsupported[-2:]=crc.to_bytes(2,'big')
+ r.feed(bytes(unsupported));r.drain();assert not r.tx and not r.flash_reads
+ cases.append(dict(case='unsupported_exit_operation_has_no_flash_or_tx_effect',
+                   limitation='Rejecting an unsupported operation does not implement a safe exit.'))
+ r=Runtime(code,receipt);r.call('al5_ro_init');r.feed(wire);r.drain();before=(len(r.tx),len(r.flash_reads),len(r.watchdog))
+ for _ in range(150):r.call('al5_ro_step')
+ assert (len(r.tx),len(r.flash_reads))==before[:2] and len(r.watchdog)==before[2]+300;r.validate_watchdog()
+ cases.append(dict(case='post_reply_idle_keeps_polling_without_implicit_exit',polls=150,
+                   limitation='Closing a host campaign does not stop or restore the controller runtime.'))
  return cases
 
 def analyze(code,receipt):
