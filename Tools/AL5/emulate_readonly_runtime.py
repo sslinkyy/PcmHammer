@@ -5,14 +5,15 @@ from pathlib import Path
 from emulate_readonly_core import request
 from readonly_ram_layout import audit,FIXED
 class Runtime:
- def __init__(self,code,receipt):
+ def __init__(self,code,receipt,*,flash_image=None):
+  if flash_image is not None and (not isinstance(flash_image,bytes) or len(flash_image)!=0x100000):raise ValueError('Exact offline flash image required')
   if hashlib.sha256(code).hexdigest()!=receipt['code_sha256']:raise ValueError('Runtime identity mismatch')
   self.layout=audit(len(code));self.base=receipt['text_base'];self.end=self.base+len(code);self.symbols=receipt['symbols']
   if self.base!=0xFF9006 or receipt['entry']!=self.symbols['al5_ro_entry'] or any(not self.base<=self.symbols[n]<self.end for n in ('al5_ro_entry','al5_ro_init','al5_ro_step','al5_ro_read')):raise ValueError('Runtime symbol/layout mismatch')
   from unicorn import Uc,UC_ARCH_M68K,UC_MODE_BIG_ENDIAN,UC_HOOK_CODE,UC_HOOK_MEM_READ,UC_HOOK_MEM_WRITE,UC_PROT_READ,UC_PROT_EXEC
   from unicorn.m68k_const import UC_CPU_M68K_M68020,UC_M68K_REG_SR
   self.u=Uc(UC_ARCH_M68K,UC_MODE_BIG_ENDIAN);self.u.ctl_set_cpu_model(UC_CPU_M68K_M68020);self.u.reg_write(UC_M68K_REG_SR,0x2700)
-  self.u.mem_map(0,0x100000);self.flash=bytes((i*17+(i>>16))&255 for i in range(0x100000));self.u.mem_write(0,self.flash);self.u.mem_protect(0,0x100000,UC_PROT_READ)
+  self.u.mem_map(0,0x100000);self.flash=flash_image if flash_image is not None else bytes((i*17+(i>>16))&255 for i in range(0x100000));self.u.mem_write(0,self.flash);self.u.mem_protect(0,0x100000,UC_PROT_READ)
   self.u.mem_map(0xFF8000,0x4000);self.u.mem_write(0xFF8000,b'\xa5'*0x4000);self.u.mem_write(self.base,code)
   self.u.mem_map(0xFFE000,0x1000);self.u.mem_map(0xFFF000,0x1000);self.u.mem_map(0x300000,0x1000)
   self.fifo=deque();self.tx=[];self.frames=[];self.current=[];self.command=None;self.watchdog=[];self.flash_reads=[];self.ram_writes=[];self.stack_low=0xFFA800;self.busy=0;self.entry_steps=None

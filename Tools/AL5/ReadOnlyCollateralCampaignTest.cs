@@ -60,10 +60,19 @@ static class ReadOnlyCollateralCampaignTest
  {
   Synthetic(0x4AFC);Synthetic(0x1234);Failures();
   Console.WriteLine("PASS complete 41,000-byte synthetic campaigns, marker retention, stale-session/reply rejection, interruption and disabled hardware gates.");
-  if(args.Length==1)
+  if(args.Length==1 || args.Length==2)
   {
    using var doc=JsonDocument.Parse(File.ReadAllText(args[0]));var root=doc.RootElement;
    Check(root.GetProperty("schema").GetString()=="al5-offline-compiled-collateral-campaign-v1" && root.GetProperty("persistent_cpu_ram_session").GetBoolean());
+   byte[]? historicalLow=null;
+   bool historical=root.TryGetProperty("flash_source",out var source) && source.GetString()=="pinned_historical_full_image";
+   if(historical)
+   {
+    Check(args.Length==2);historicalLow=File.ReadAllBytes(args[1]);
+    Check(historicalLow.Length==0x20000 && Convert.ToHexString(SHA256.HashData(historicalLow)).ToLowerInvariant()=="cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6");
+    Check(!root.GetProperty("independent_physical_readback").GetBoolean() && !root.GetProperty("hardware_qualified").GetBoolean());
+   }
+   else Check(args.Length==1);
    var s=new AL5ReadOnlyCollateralCampaign(Nonce());byte[]? previous=null;
    foreach(var row in root.GetProperty("frames").EnumerateArray())
    {
@@ -74,7 +83,22 @@ static class ReadOnlyCollateralCampaignTest
    }
    Check(s.Complete && s.MatchedReplies==1282 && s.SavedCompletionMarker==Convert.ToUInt16(root.GetProperty("marker_hex").GetString(),16));
    var data=s.CopySavedSupplement();Check(Convert.ToHexString(SHA256.HashData(data)).ToLowerInvariant()==root.GetProperty("supplement_sha256").GetString());
-   for(int i=0;i<data.Length;i++){int a=0x15FD8+i;Check(data[i]==(byte)(a*17+(a>>16)));}
+   for(int i=0;i<data.Length;i++){int a=0x15FD8+i;Check(data[i]==(historicalLow==null?(byte)(a*17+(a>>16)):historicalLow[a]));}
+   if(historicalLow!=null)
+   {
+    var calibration=historicalLow.Skip(0x8000).Take(AL5CalibrationInspection.Length).ToArray();
+    var snapshot=s.AssembleSavedSnapshot(calibration);
+    Check(snapshot.SequenceEqual(historicalLow.Skip(0x8000).ToArray()));
+    var assessment=AL5ProgrammingWorkflow.Assess(calibration,snapshot,s.CopySavedCollateral());
+    Check(assessment.Candidate.ChecksPass && assessment.ExactSavedImageMatch);
+    Check(!assessment.ReadyToFlash && !assessment.LiveWriteEnabled && !assessment.PhysicalReadbackVerified && !assessment.RecoveryVerified);
+    var damaged=(byte[])snapshot.Clone();damaged[damaged.Length-1]^=1;
+    Check(!AL5ProgrammingWorkflow.Assess(calibration,damaged,s.CopySavedCollateral()).ExactSavedImageMatch);
+    damaged=(byte[])snapshot.Clone();damaged[calibration.Length]^=1;
+    Check(!AL5ProgrammingWorkflow.Assess(calibration,damaged,s.CopySavedCollateral()).ExactSavedImageMatch);
+    Console.WriteLine("PASS historical reader snapshot through offline writer assessment; marker/collateral mismatches remain detected and live gates closed.");
+   }
+   Check(!s.PhysicalReadbackVerified && !s.IndependentCollateralBackupVerified && !s.LiveUploadEnabled && !s.LiveExecutionEnabled && !s.LiveWriteEnabled);
    Console.WriteLine($"PASS all {s.MatchedReplies} compiled-kernel replies through production host campaign: {data.Length} exact bytes; marker {s.SavedCompletionMarker:X4}.");
   }
  }

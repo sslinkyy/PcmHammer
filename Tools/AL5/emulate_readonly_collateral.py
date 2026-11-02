@@ -10,14 +10,18 @@ from readonly_ram_layout import FIXED
 START, END = 0x15FD8, 0x20000
 
 
-def analyze(code, receipt, low=None, exercise_local_quiesce=False):
+def analyze(code, receipt, low=None, exercise_local_quiesce=False,high=None):
+    if high is not None:
+        from emulate_calibration_marker import validate_source
+        validate_source(low,high)
+    flash_image=None if high is None else low+high
     from unicorn.m68k_const import UC_M68K_REG_PC,UC_M68K_REG_A7
     if low is None:
         r = Runtime(code, receipt)
     else:
         from emulate_readonly_handoff import Handoff
         from emulate_boot_receive_session import frame_events
-        r = Handoff(low, code, receipt)
+        r = Handoff(low, code, receipt,flash_image=flash_image)
         r.interrupt(frame_events(bytes.fromhex('6d18f034')))
         r.entry_steps = 0
         r.transfer()
@@ -82,6 +86,9 @@ def analyze(code, receipt, low=None, exercise_local_quiesce=False):
                 dependency_sha256={n:hashlib.sha256(Path(__file__).with_name(n).read_bytes()).hexdigest() for n in dependencies},
                 native_boot_handoff=None if low is None else r.handoff,
                 local_quiesce=local_quiesce,
+                flash_source='synthetic_pattern' if high is None else 'pinned_historical_full_image',
+                flash_sha256=hashlib.sha256(r.flash).hexdigest(),
+                high_sha256=None if high is None else hashlib.sha256(high).hexdigest(),
                 low_sha256=None if low is None else hashlib.sha256(low).hexdigest(),
                 start=START, end_exclusive=END, bytes=len(reconstructed), request_count=len(frames),
                 supplement_sha256=hashlib.sha256(reconstructed).hexdigest(), marker_hex=reconstructed[-2:].hex(),
@@ -89,9 +96,9 @@ def analyze(code, receipt, low=None, exercise_local_quiesce=False):
                 watchdog_pairs=len(r.watchdog)//2, stack_low=r.stack_low, unowned_canary_bytes_checked=checked,
                 flash_writes=0, live_upload_enabled=False, live_execution_enabled=False, live_write_enabled=False,
                 hardware_qualified=False, independent_physical_readback=False,
-                limits=['All flash contents, FIFO events and MMIO are synthetic; no controller or adapter opened.',
+                limits=['Flash contents are identified by flash_source; historical images are not fresh controller readbacks. FIFO/MMIO are synthetic; no devices opened.',
                         'No physical timing, TX completion, watchdog deadline, SRAM ownership or recovery qualification.',
-                        'Synthetic marker bytes are retained, not replaced by expected 4AFC.',
+                        'Marker bytes are read from the supplied flash fixture, never replaced by an expected constant.',
                         'Optional boot handoff uses a synthetic external stack/ISR context and FIFO callbacks; boot watchdog stores and RTE are not executed.'])
 
 
@@ -100,12 +107,14 @@ if __name__ == '__main__':
     p.add_argument('--build-dir', type=Path, required=True)
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--low', type=Path, help='Optional pinned boot evidence for same-CPU native-copy handoff')
+    p.add_argument('--high',type=Path,help='Pinned historical HIGH image; requires matching LOW, never a physical readback')
     p.add_argument('--exercise-local-quiesce',action='store_true',help='Exercise local control entry via an explicitly synthetic caller')
     a = p.parse_args()
+    if a.high is not None and a.low is None:p.error('--high requires --low')
     if a.output.exists():
         p.error('New output path required')
     result = analyze((a.build_dir/'readonly_kernel.offline.bin').read_bytes(), json.loads((a.build_dir/'build_receipt.json').read_text()),
-                     None if a.low is None else a.low.read_bytes(),a.exercise_local_quiesce)
+                     None if a.low is None else a.low.read_bytes(),a.exercise_local_quiesce,None if a.high is None else a.high.read_bytes())
     with a.output.open('x', encoding='utf-8') as f:
         json.dump(result, f, indent=2)
     print('PASS', result['request_count'], 'persistent compiled-runtime reads;', result['bytes'], 'bytes; marker', result['marker_hex'])

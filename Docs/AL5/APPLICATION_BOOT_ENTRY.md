@@ -92,3 +92,9 @@ receive/state selection, 0x5BAB8, boot initialization gates and reset behavior.
 Loader ABI, exact erase geometry, collateral preservation, flash wire protocol,
 verification and recovery remain unresolved. The direct reader and live-write
 block are unchanged.
+
+## Reset-chain continuation (2026-11-02)
+
+`emulate_application_reset_chain.py` extends this historical slice evidence through an explicit RAM handoff to the actual reset-vector boot model. The strict case stops before preparation storage; the conditional case executes native marker/park code after assumed storage/subsystem returns. It does not infer reset from the park loop. Synthetic reset statuses 00/02/10/20 with the exact derived application RAM reach B094 boot startup; 40/80/C0 instead reach the application boundary. Startup TX and later synthetic request replies are recorded separately. See [the current qualification plan](../TCMHammer/WRITE_QUALIFICATION_PLAN.md). Physical reset, RAM retention and preparation-storage success remain unproven.
+
+The deeper preparation variant now executes 226F0 against the historical LOW banks and the actual modeled request RAM. It stops at erase wrapper 22B18 with destination 6000; no flash primitive executes and both banks retain their original digest. This is an entry-path preservation dependency outside the calibration range, not a qualified physical erase geometry or a completed storage update.

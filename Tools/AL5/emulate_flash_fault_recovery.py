@@ -23,7 +23,7 @@ def fault_bytes(data,kind):
     mask=0x2000 if kind=='a12_direct' else 0x1000
     return bytes(data[i&~mask] for i in range(SIZE))
 
-def experiment(low,high,kind='a12_direct',window='none',instruction_limit=1000000,probe_boot_request=True,external_service_magic=0,reset_status=0x80,retained_marker=0):
+def experiment(low,high,kind='a12_direct',window='none',instruction_limit=1000000,probe_boot_request=True,external_service_magic=0,reset_status=0x80,retained_marker=0,initial_ram=None):
     validate_source(low,high)
     if kind not in FAULTS or window not in ('none','held','release_at_os_reject','os_check_to_reject','os_check_to_vpw'):
         raise ValueError('Unknown bounded fault hypothesis/window')
@@ -33,6 +33,8 @@ def experiment(low,high,kind='a12_direct',window='none',instruction_limit=100000
         raise ValueError('Synthetic reset status must be a byte')
     if type(retained_marker) is not int or not 0<=retained_marker<=65535:
         raise ValueError('Synthetic retained marker must be a word')
+    if initial_ram is not None and (not isinstance(initial_ram,bytes) or len(initial_ram)!=0x3800 or int.from_bytes(initial_ram[:2],'big')!=retained_marker):
+        raise ValueError('Explicit RAM handoff requires exactly FF8000..FFB7FF and matching marker')
     if type(instruction_limit) is not int or not 1<=instruction_limit<=1000000:
         raise ValueError('Instruction limit must be 1..1000000')
     from unicorn import Uc,UC_ARCH_M68K,UC_MODE_BIG_ENDIAN,UC_HOOK_CODE,UC_HOOK_MEM_READ,UC_HOOK_MEM_WRITE,UC_PROT_READ,UC_PROT_EXEC,UC_PROT_ALL,UcError
@@ -48,7 +50,7 @@ def experiment(low,high,kind='a12_direct',window='none',instruction_limit=100000
              live_upload_enabled=False,live_execution_enabled=False,live_write_enabled=False,recovery_verified=False,
              external_service_magic=external_service_magic,reset_status=reset_status,synthetic_irq_invoked=False,exception_return_executed=False,
              software_tx_frames=[],software_tx_observations=[],fifo_events_consumed=0,integrity_observations=[],
-             retained_marker=retained_marker,reset_status_accesses=[],marker_accesses=[],routing_observations=[])
+             retained_marker=retained_marker,initial_ram_sha256=None if initial_ram is None else hashlib.sha256(initial_ram).hexdigest(),reset_status_accesses=[],marker_accesses=[],routing_observations=[])
     if not 0xFF8000<=(sp&0xFFFFFF)<0x1000000 or not 0<=pc<0x4000 or pc%2:
         out['stop']='faulted_reset_vector_outside_declared_context';return out
     u=Uc(UC_ARCH_M68K,UC_MODE_BIG_ENDIAN);u.ctl_set_cpu_model(UC_CPU_M68K_M68020)
@@ -64,6 +66,7 @@ def experiment(low,high,kind='a12_direct',window='none',instruction_limit=100000
     out['modeled_stack_alias']=stack_alias
     u.mem_map(0x208000,0x1000);u.mem_write(0x208000,external_service_magic.to_bytes(2,'big'))
     u.mem_map(0x20C000,0x1000)  # Explicit inert external-service control byte.
+    if initial_ram is not None:u.mem_write(0xFF8000,initial_ram)
     u.mem_write(0xFF8000,retained_marker.to_bytes(2,'big'))
     u.mem_write(0xFFFA07,bytes([reset_status]))  # Synthetic reset/status input; not measured hardware state.
     u.reg_write(UC_M68K_REG_SR,0x2700);u.reg_write(UC_M68K_REG_A7,sp)

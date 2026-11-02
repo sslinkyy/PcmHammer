@@ -6,6 +6,8 @@ TCM Hammer is the transmission-controller section inside the Windows PCM Hammer 
 
 The top-level TCM Hammer menu groups the AL5 identity probe, direct Mode 0x23 calibration read, offline BIN comparison, and offline saved-flash assessment. Read operations require an initialized adapter and are disabled while another operation runs. File-only operations remain available without an adapter. The calibration reader covers 0x08000..0x15FD7 (57,304 bytes), not a complete flash backup.
 
+[Write qualification plan](WRITE_QUALIFICATION_PLAN.md) records the application-to-boot chain, historical reader-to-writer validation and remaining physical gates.
+
 ## Source and research
 
 All existing AL5 assets belong to this section. Their paths remain stable so scripts, tests and prior evidence references continue to work:
