@@ -13,7 +13,7 @@ static class Program
     }
     static int Main(string[] args)
     {
-        if(args.Length<2 || args.Length>3)throw new ArgumentException("Pinned SPS OS and native freshness report [receiver-init report] required; file-only tests.");
+        if(args.Length<2 || args.Length>4)throw new ArgumentException("Pinned SPS OS and native freshness report [receiver-init report [startup-scheduling report]] required; file-only tests.");
         byte[] os=File.ReadAllBytes(args[0]);using var doc=JsonDocument.Parse(File.ReadAllBytes(args[1]));var root=doc.RootElement;
         Check(root.GetProperty("schema").GetString()=="al5-native-resident-reply-freshness-v1","Exact native producer schema");
         foreach(string flag in new[]{"hardware_access","session_boundary_proven","physical_status_semantics_verified","live_read_enabled","live_upload_enabled","live_execution_enabled","live_write_enabled"})
@@ -52,8 +52,33 @@ static class Program
         c=new AL5SavedPersistentBankCampaign(os);c.BeginNextSavedVpwRequest();
         Check(c.ObserveSavedVpwReply(alias,out _)==AL5SavedReplyKind.MatchingLow16Echo && c.BytesObserved==4,"A new host campaign cannot distinguish the native same-echo alias");
         Blocked(c);Reject(()=>c.CopyCompleteSavedBanks());
-        if(args.Length==3)CheckReceiverInitialization(os,args[2]);
+        if(args.Length>=3)CheckReceiverInitialization(os,args[2]);
+        if(args.Length==4)CheckStartupScheduling(os,args[3]);
         Console.WriteLine("PASS 12 native state outcomes and production host duplicate/alias/stop guards; no physical freshness or live authority.");return 0;
+    }
+
+    static void CheckStartupScheduling(byte[] os,string path)
+    {
+        using var doc=JsonDocument.Parse(File.ReadAllBytes(path));var root=doc.RootElement;
+        Check(root.GetProperty("schema").GetString()=="al5-offline-application-startup-audit-v1","Exact startup producer schema");
+        foreach(string flag in new[]{"hardware_access","full_startup_verified","physical_receiver_ready_verified","session_boundary_proven","live_read_enabled","live_upload_enabled","live_execution_enabled","live_write_enabled"})
+            Check(!root.GetProperty(flag).GetBoolean(),"Native scheduling model retains false physical/live gates");
+        var row=root.GetProperty("cases").EnumerateArray().Single();
+        Check(row.GetProperty("stop").GetProperty("reason").GetString()=="after_native_startup_handshake" &&
+            row.GetProperty("scheduling_context").GetProperty("handshake").GetInt32()==3,"Native foreground consumed the handshake");
+        Check(row.GetProperty("entry_counts").GetProperty("0xa4a38").GetInt32()==80 &&
+            row.GetProperty("entry_counts").GetProperty("0x238ac").GetInt32()==80,"Native scheduled dequeue and response selection");
+        Check(row.GetProperty("scripted_ticks").GetArrayLength()==320 &&
+            row.GetProperty("scripted_ticks").EnumerateArray().All(t=>t.GetProperty("returned").GetBoolean()&&!t.GetProperty("physical_exception_delivered").GetBoolean()),"Scripted timer bodies do not prove real IRQ delivery");
+        Check(row.GetProperty("final_state").GetProperty("tracking").GetString()=="0002" &&
+            row.GetProperty("final_state").GetProperty("body").GetString()=="000000000000","Empty Mode 23 body does not imply empty response tracking");
+        var submission=row.GetProperty("software_submissions").EnumerateArray().Single();
+        byte[] frame=Convert.FromHexString(submission.GetProperty("hex").GetString()!);
+        Check(submission.GetProperty("response_index").GetInt32()==2 && frame.SequenceEqual(Convert.FromHexString("49FE1806")),"Actual native background submission");
+        var campaign=new AL5SavedPersistentBankCampaign(os);campaign.BeginNextSavedVpwRequest();
+        Check(campaign.ObserveSavedVpwReply(frame,out _)==AL5SavedReplyKind.Unrelated && campaign.BytesObserved==0 && campaign.HasPendingRequest,"Background startup frame cannot advance bank coverage");
+        campaign.TimeoutOrCancel();Reject(()=>campaign.BeginNextSavedVpwRequest());Reject(()=>campaign.CopyCompleteSavedBanks());Blocked(campaign);
+        Console.WriteLine("PASS native startup scheduling witness through production host: background response cannot advance bank coverage; physical freshness remains false.");
     }
 
     static void CheckReceiverInitialization(byte[] os,string path)

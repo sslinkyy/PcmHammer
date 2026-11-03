@@ -108,6 +108,60 @@ class StartupTests(unittest.TestCase):
                 self.assertTrue(all(not row['implementation_executed'] for row in programs))
                 self.assertEqual(['fffe','ffaa']*3,[row['after'] for row in programs if row['bytes']==2])
 
+    def scheduler_inputs(self):
+        return json.loads((Path(__file__).parent/'Fixtures/resident_startup_scheduler_mmio.json').read_text())
+
+    def scheduler_sites(self):
+        return json.loads((Path(__file__).parent/'Fixtures/resident_scheduler_sites.json').read_text())
+
+    def test_remaining_initializers_unmask_interrupts_then_wait_for_handshake(self):
+        observed=trace(self.image,mmio_inputs=self.scheduler_inputs(),model_bank_programs=True,stop_before_startup_wait=True)
+        self.assertEqual(dict(reason='before_startup_handshake_wait',pc=0x5003C),observed['stop'])
+        self.assertEqual(85,len(observed['main_calls']))
+        self.assertTrue(all(row['returned'] for row in observed['main_calls'][:-1]))
+        self.assertEqual(0x4FFE8,observed['main_calls'][-1]['target'])
+        self.assertFalse(observed['main_calls'][-1]['returned'])
+        boundary=next(row for row in observed['boundaries'] if row['pc']==0x9976E)
+        self.assertEqual(0,boundary['scheduling']['sr']&0x700)
+        self.assertEqual(1,observed['scheduling_context']['handshake'])
+        self.assertEqual('0000',observed['final_state']['tracking'])
+        self.assertEqual([],observed['scripted_ticks'])
+
+    def test_native_timer_body_stops_at_unassumed_profiling_completion(self):
+        observed=trace(self.image,mmio_inputs=self.scheduler_inputs(),model_bank_programs=True,scheduled_ticks=1)
+        self.assertEqual(dict(reason='unchanged_peripheral_poll',pc=0x9D92C,
+                              address=0xFFFFFE18,size=2,value=0x300),observed['stop'])
+        self.assertEqual([0x40],observed['scripted_ticks'][0]['event_masks'])
+        self.assertFalse(observed['scripted_ticks'][0]['returned'])
+        self.assertFalse(observed['scripted_ticks'][0]['physical_exception_delivered'])
+
+    def test_native_scheduler_changes_handshake_and_retains_background_response(self):
+        observed=trace(self.image,mmio_inputs=self.scheduler_inputs(),model_bank_programs=True,
+                       scheduled_ticks=320,mmio_site_inputs=self.scheduler_sites())
+        self.assertEqual(dict(reason='after_native_startup_handshake',pc=0x5004C),observed['stop'])
+        ticks=observed['scripted_ticks'];self.assertEqual(320,len(ticks))
+        self.assertTrue(all(row['returned'] and not row['physical_exception_delivered'] for row in ticks))
+        self.assertEqual(1,ticks[-1]['before']['handshake'])
+        self.assertEqual(2,ticks[-1]['after']['handshake'])
+        self.assertEqual(3,observed['scheduling_context']['handshake'])
+        self.assertEqual(80,observed['entry_counts']['0xa4a38'])
+        self.assertEqual(80,observed['entry_counts']['0x238ac'])
+        self.assertEqual(1,observed['entry_counts']['0x4fee8'])
+        self.assertEqual('0000',ticks[62]['state']['tracking'])
+        self.assertEqual('0002',ticks[63]['state']['tracking'])
+        self.assertEqual([dict(hex='49fe1806',response_index=2,tick=63)],observed['software_submissions'])
+        self.assertEqual('0002',observed['final_state']['tracking'])
+        self.assertEqual('000000000000',observed['final_state']['body'])
+        self.assertEqual(13,len(observed['synthetic_bank_programs']))
+        self.assertEqual([0x4A1D,0x4A1E,0x4A23,0x4A29,0x4A2F,0x4A41,0x4A42,0x4A47],observed['bank_comparison']['changed_addresses'])
+
+    def test_scripted_tick_and_site_assumptions_fail_closed(self):
+        for count in (-1,321,True):
+            with self.subTest(count=count),self.assertRaises(ValueError):trace(self.image,scheduled_ticks=count)
+        with self.assertRaises(ValueError):trace(self.image,scheduled_ticks=1,stop_after_communication=True)
+        row=self.scheduler_sites()[0]
+        with self.assertRaises(ValueError):trace(self.image,mmio_site_inputs=[row,row])
+
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
