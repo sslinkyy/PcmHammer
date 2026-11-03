@@ -10,6 +10,7 @@
     <OutputPath>..\..\LocalOnly\AL5GateTest\</OutputPath>
     <IntermediateOutputPath>..\..\LocalOnly\AL5GateTest\obj\</IntermediateOutputPath>
     <AssemblyName>AL5GateTest</AssemblyName>
+    <AL5CandidateLibraryPath Condition="'$(AL5CandidateLibraryPath)' == ''">$(MSBuildThisFileDirectory)..\..\Apps\PcmLibrary\bin\Debug\netstandard2.0\PcmLibrary.dll</AL5CandidateLibraryPath>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="GateTest.cs" />
@@ -17,7 +18,7 @@
     <Reference Include="System.Core" />
     <Reference Include="netstandard" />
     <Reference Include="PcmLibrary">
-      <HintPath>..\..\Apps\PcmLibrary\bin\Debug\netstandard2.0\PcmLibrary.dll</HintPath>
+      <HintPath>$(AL5CandidateLibraryPath)</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

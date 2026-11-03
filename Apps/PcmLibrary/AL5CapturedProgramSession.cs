@@ -20,6 +20,13 @@ namespace PcmHacking
         public bool AutomaticRetryEnabled => false;
         public bool PhysicalReadbackVerified => false;
 
+        internal byte[] CopyChecksumRejectedRequest()
+        {
+            if (State != AL5CapturedProgramState.ChecksumRejected || pending == null)
+                throw new InvalidOperationException("Only a retained checksum-rejected request is available for explicit offline retry review.");
+            return (byte[])pending.Clone();
+        }
+
         public void ObserveRequest(byte[] request)
         {
             if (request == null) throw new ArgumentNullException(nameof(request));

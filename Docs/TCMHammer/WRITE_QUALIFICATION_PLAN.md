@@ -1,5 +1,7 @@
 # TCM Hammer AL5 write qualification
 
+The [calibration writer candidate](CALIBRATION_WRITE_CANDIDATE.md) now joins constructed setup/programming/cleanup actions, a custom-BIN rehearsal and complete saved preservation comparison. Follow the [writer-first 30-point plan](PRE_ARRIVAL_30_POINT_PLAN.md); the [bench run sheet](FIRST_WRITE_BENCH_RUN_SHEET.md) reuses completed offline evidence rather than scheduling a broad arrival-day rerun.
+
 Updated 2026-11-02. This checklist distinguishes completed offline work from remaining physical qualification. Live upload, execution, erase/program operations and automatic retries remain disabled. Historical images, modeled outcomes and captured acknowledgements do not authorize writes.
 
 [Calibration sector policy](CALIBRATION_SECTOR_POLICY.md) now implements destination limits and full-sector baseline ownership in the offline EFILive profile.

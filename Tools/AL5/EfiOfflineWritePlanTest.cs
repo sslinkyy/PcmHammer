@@ -15,6 +15,7 @@ static class EfiOfflineWritePlanTest
   var image=new AL5CapturedProgramImage();foreach(var line in lines.Where(ProgramFrame))image.Observe(Bytes(line));
   // Explicit CAPTURE-derived reference, deliberately not represented as an independent physical backup.
   byte[] collateral=image.CopyCompleteImage().Skip(calibration.Length).ToArray();
+  CalibrationWriteCandidateTest.Run(lines,loader,calibration,collateral);
   var plan=new AL5EfiOfflineWritePlan(loader,loaderHash,calibration,collateral);
   Check(plan.CopyConditionalEraseSectorStarts().SequenceEqual(new uint[]{0x8000,0x10000}) && !plan.PhysicalSectorMappingVerified);
   Check(plan.RequestCount==195 && collateral.Length==40998 && plan.CopyRequest(193).Length==522);

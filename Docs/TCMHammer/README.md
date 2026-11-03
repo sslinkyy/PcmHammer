@@ -1,5 +1,7 @@
 # TCM Hammer
 
+[Calibration writer candidate](CALIBRATION_WRITE_CANDIDATE.md) describes the constructed calibration-write lifecycle, custom-BIN rehearsal and full preservation comparison. The [30-point writer-first plan](PRE_ARRIVAL_30_POINT_PLAN.md) and [first-write bench run sheet](FIRST_WRITE_BENCH_RUN_SHEET.md) organize the remaining qualification work without repeating completed offline campaigns on arrival.
+
 TCM Hammer is the transmission-controller section inside the Windows PCM Hammer application. Current support focuses on Allison AL5. Adapter selection, cancellation and logs use the existing application infrastructure.
 
 ## Available commands

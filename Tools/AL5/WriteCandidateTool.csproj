@@ -1,0 +1,17 @@
+<Project>
+  <PropertyGroup><BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)../../LocalOnly/WriteCandidateTool/obj/</BaseIntermediateOutputPath><MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath></PropertyGroup>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><Nullable>enable</Nullable><EnableDefaultCompileItems>false</EnableDefaultCompileItems><OutputPath>../../LocalOnly/WriteCandidateTool/bin/</OutputPath></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="WriteCandidateTool.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5CalibrationWriteCandidate.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5CalibrationSectorPlan.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5EfiOfflineWritePlan.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5CapturedWriteRehearsal.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5CapturedProgramImage.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5CapturedProgramSession.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5ProgrammingWorkflow.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5CalibrationInspection.cs" />
+  </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+</Project>

@@ -53,6 +53,8 @@ namespace PcmHacking
         public bool? SavedCalibrationMatches { get; private set; }
         public int PositiveProgramReplies => program.PositiveReplies;
         public int ChecksumErrors => program.ChecksumErrors;
+        public int RepeatsWithoutReply => program.RepeatsWithoutReply;
+        public bool ChecksumRetryReviewRequired => State==AL5CapturedWriteState.Programming && program.State==AL5CapturedProgramState.ChecksumRejected;
         public bool LiveWriteEnabled => false;
         public bool ReadyToFlash => false;
         public bool RecoveryVerified => false;
@@ -83,6 +85,32 @@ namespace PcmHacking
         /// <summary>Detached bytes for review only. Security/setup/cleanup are saved observations, not constructed actions.</summary>
         public byte[] CopyNextOfflineRequest()
         {int index=OfflineRequestIndex();return plan!.CopyRequest(index);}
+
+        public byte[] CopyChecksumRejectedOfflineRequest()
+        {
+            if(plan==null || !ChecksumRetryReviewRequired)throw new InvalidOperationException("No checksum-rejected offline plan request.");
+            return program.CopyChecksumRejectedRequest();
+        }
+
+        // These bytes are derived from this parser's owned setup/cleanup rules.
+        // Variable security-key bytes remain missing evidence, never a captured-key replay default.
+        internal byte[]? CopyFixedOfflineControlRequest(out bool requiresSecurityKeyEvidence)
+        {
+            requiresSecurityKeyEvidence=false;
+            if(State==AL5CapturedWriteState.BootRequest)return new byte[]{0x6C,0x18,0xF0,0x34};
+            if(State==AL5CapturedWriteState.BootBroadcast && exchangeIndex==0)return new byte[]{0x6C,0xFE,0xF0,0x28,0};
+            if(State==AL5CapturedWriteState.LoaderIdentityRequest)return new byte[]{0x6C,0x18,0xF0,0x3C,0x0A};
+            (bool Tx,string Prefix,int Length) rule;
+            if(State==AL5CapturedWriteState.Setup)rule=SetupRules[exchangeIndex];
+            else if(State==AL5CapturedWriteState.LoaderSerial)rule=LoaderSerialRules[exchangeIndex];
+            else if(State==AL5CapturedWriteState.Cleanup)rule=CleanupRules[exchangeIndex];
+            else return null;
+            if(!rule.Tx)return null;
+            if(rule.Prefix.Length!=rule.Length*2){requiresSecurityKeyEvidence=true;return null;}
+            var bytes=new byte[rule.Length];
+            for(int i=0;i<bytes.Length;i++)bytes[i]=Convert.ToByte(rule.Prefix.Substring(i*2,2),16);
+            return bytes;
+        }
 
         public AL5CapturedWriteRehearsal(byte[] calibration, string expectedLoaderSha256)
         {

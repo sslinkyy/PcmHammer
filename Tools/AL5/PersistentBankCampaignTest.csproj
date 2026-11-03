@@ -1,0 +1,16 @@
+<Project>
+  <PropertyGroup><BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)../../LocalOnly/PersistentBankCampaignTest/obj/</BaseIntermediateOutputPath><MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath></PropertyGroup>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><Nullable>enable</Nullable><EnableDefaultCompileItems>false</EnableDefaultCompileItems><OutputPath>../../LocalOnly/PersistentBankCampaignTest/bin/</OutputPath></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="PersistentBankCampaignTest.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5SavedPersistentBankCampaign.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5SpsSavedReadCampaign.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5SpsSavedFlashCoverage.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5SavedMode23Reply.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5SavedReadCoverage.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5CalibrationInspection.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5ProgrammingWorkflow.cs" />
+  </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+</Project>
