@@ -18,7 +18,7 @@ TCM Hammer is the transmission-controller section inside the Windows PCM Hammer 
 
 ## Available commands
 
-[Resident main startup audit](RESIDENT_MAIN_STARTUP_AUDIT.md) traces the complete application entry into early main, identifies explicit peripheral-completion assumptions, and retains the unresolved freshness boundary for pre-entry bank reads.
+[Resident main startup audit](RESIDENT_MAIN_STARTUP_AUDIT.md) conditionally traces native entry through communication setup, records the peripheral assumptions and startup journal mutations, and retains the unresolved physical freshness boundary for pre-entry bank reads.
 
 The top-level TCM Hammer menu groups the AL5 identity probe, direct Mode 0x23 calibration read, offline BIN comparison, offline saved-flash assessment, and offline calibration-write preparation/export. Read operations require an initialized adapter and are disabled while another operation runs. File-only operations remain available without an adapter. The calibration reader covers 0x08000..0x15FD7 (57,304 bytes), not a complete flash backup.
 

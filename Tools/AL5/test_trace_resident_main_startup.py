@@ -1,5 +1,6 @@
 """Native startup boundaries, explicit peripheral assumptions and preservation."""
 import argparse
+import json
 from pathlib import Path
 import unittest
 from trace_resident_main_startup import trace
@@ -52,7 +53,7 @@ class StartupTests(unittest.TestCase):
 
     def test_assumption_scope_rejects_invalid_address_size_and_values(self):
         for changed in ({'address':-1},{'address':0x1FFFFFE18},{'address':0x4000},
-                        {'address':0xFFFFFFFF,'size':2},{'size':3},
+                        {'address':0xFFFFFFFF,'size':2},{'address':0xFFFFE80F,'size':2},{'size':3},
                         {'value':65536},{'pc':0x100000},{'value':False}):
             row=dict(COMPLETION[0]);row.update(changed)
             with self.subTest(changed=changed),self.assertRaises(ValueError):
@@ -61,6 +62,51 @@ class StartupTests(unittest.TestCase):
     def test_modified_saved_image_is_rejected(self):
         image=bytearray(self.image);image[0x4000]^=1
         with self.assertRaises(ValueError):trace(bytes(image))
+
+    def communication_inputs(self):
+        return json.loads((Path(__file__).parent/'Fixtures/resident_startup_communication_mmio.json').read_text())
+
+    def test_two_register_wait_is_bounded_without_inventing_completion(self):
+        rows=self.communication_inputs()[:24]
+        observed=trace(self.image,mmio_inputs=rows)
+        self.assertEqual(dict(reason='unchanged_peripheral_poll',pc=0x21DAA,
+                              address=0xFFFFFE18,size=2,value=0),observed['stop'])
+        self.assertTrue(observed['banks_unchanged'])
+        self.assertEqual([],observed['synthetic_bank_programs'])
+
+    def test_complete_peripheral_profile_still_traps_storage_by_default(self):
+        observed=trace(self.image,mmio_inputs=self.communication_inputs(),stop_after_communication=True)
+        self.assertEqual('before_storage_primitive',observed['stop']['reason'])
+        self.assertEqual(0x22C3C,observed['stop']['entry'])
+        stack=bytes.fromhex(observed['stop']['stack_hex'])
+        self.assertEqual(0x229C2,int.from_bytes(stack[:4],'big'))
+        self.assertEqual(0x4A1C,int.from_bytes(stack[12:16],'big'))
+        self.assertTrue(observed['banks_unchanged'])
+        self.assertEqual([],observed['synthetic_bank_programs'])
+
+    def test_conditional_whole_entry_reaches_communication_with_explicit_bank_changes(self):
+        for pattern,status in ((0xA5,0x80),(0x5A,0x40)):
+            rows=self.communication_inputs()
+            reset=next(row for row in rows if row['pc']==0xC599C);reset['value']=status
+            with self.subTest(pattern=pattern,status=status):
+                observed=trace(self.image,pattern,rows,model_bank_programs=True,stop_after_communication=True)
+                self.assertEqual(dict(reason='after_communication_setup_return',pc=0x99604),observed['stop'])
+                self.assertEqual([],observed['unused_mmio_inputs'])
+                self.assertEqual(25,len(observed['main_calls']))
+                self.assertTrue(all(row['returned'] for row in observed['main_calls']))
+                self.assertEqual([0xBDC38,0xC02F8],[row['target'] for row in observed['main_calls'][-2:]])
+                context=observed['communication_context']
+                self.assertEqual('00000001000001',context['receive_flags'])
+                self.assertTrue(context['mode23_eligible'])
+                self.assertEqual((1,1),(context['producer'],context['consumer']))
+                for value in observed['final_state'].values():self.assertEqual({'0'},set(value))
+                self.assertFalse(observed['banks_unchanged'])
+                self.assertEqual([0x4A1D,0x4A1E,0x4A29,0x4A2F,0x4A41,0x4A42],observed['bank_comparison']['changed_addresses'])
+                programs=observed['synthetic_bank_programs']
+                self.assertEqual([0x4A1C,0x4A1E,0x4A1C,0x4A28,0x4A2A,0x4A28,0x4A40,0x4A42,0x4A40],[row['destination'] for row in programs])
+                self.assertEqual([2,10,2]*3,[row['bytes'] for row in programs])
+                self.assertTrue(all(not row['implementation_executed'] for row in programs))
+                self.assertEqual(['fffe','ffaa']*3,[row['after'] for row in programs if row['bytes']==2])
 
 
 if __name__=='__main__':

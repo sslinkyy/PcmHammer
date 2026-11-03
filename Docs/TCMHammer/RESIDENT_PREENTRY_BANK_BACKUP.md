@@ -23,6 +23,8 @@ Negative controls retain locked-entry rejection, malformed programming length, m
 
 ## Bank-first qualification order
 
+The [whole-entry startup continuation](RESIDENT_MAIN_STARTUP_AUDIT.md) now reaches communication setup under explicit peripheral inputs and an atomic storage model. It exposes three startup journal updates before communication initialization. A resident pre-entry acquisition describes the controller state after ordinary startup and before programming entry; it must not be claimed to preserve the bank state from before power-on. Default native tracing still traps storage before execution, and physical programming remains unqualified.
+
 On the spare, after separately reviewing the live read path and its physical response/session assumptions:
 
 1. Stay in the ordinary resident application. Do not issue Mode $34, upload or execute a kernel before obtaining the banks.
