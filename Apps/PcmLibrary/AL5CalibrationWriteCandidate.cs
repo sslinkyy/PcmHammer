@@ -37,6 +37,7 @@ namespace PcmHacking
         private readonly AL5CalibrationSectorPlan sectors;
         private readonly AL5EfiOfflineWritePlan plan;
         private readonly AL5CapturedWriteRehearsal session;
+        private AL5PreparedBankReference? preparedBanks;
         public string BaselineSha256 { get; }
         public string PreEraseSectorSha256 => sectors.SavedPreEraseSha256;
         public AL5CapturedWriteState State => comparisonFailed ? AL5CapturedWriteState.Stopped : session.State;
@@ -56,6 +57,15 @@ namespace PcmHacking
         public bool SecurityAuthorizationProven => false;
         public bool ControllerIdentityVerified => false;
         public int ConstructedProgrammingRequests => plan.RequestCount;
+        public bool HasSavedPreparedBankReference=>preparedBanks!=null;
+        public string? PreparedBanksSha256=>preparedBanks?.PreparedSha256;
+        public int? SavedPreparationChangedBytes=>preparedBanks?.ChangedBytes;
+        internal void RecordSavedPreparedBanks(byte[] bytes)
+        {
+            if(State!=AL5CapturedWriteState.EraseRequest || preparedBanks!=null)throw new InvalidOperationException("Record prepared banks once, before erase.");
+            var original=new byte[AL5PreparedBankReference.Length];Buffer.BlockCopy(baseline,AL5PreparedBankReference.StartAddress,original,0,original.Length);
+            preparedBanks=new AL5PreparedBankReference(original,bytes);
+        }
 
         public AL5CalibrationWriteCandidate(byte[] loader, byte[] calibration, byte[] savedFullBaseline)
         {
@@ -109,6 +119,7 @@ namespace PcmHacking
         public byte[] CopyExpectedSavedImage()
         {
             var expected=(byte[])baseline.Clone();var desired=sectors.CopyDesiredBeforeFinalization();
+            if(preparedBanks!=null)Buffer.BlockCopy(preparedBanks.CopyPrepared(),0,expected,AL5PreparedBankReference.StartAddress,AL5PreparedBankReference.Length);
             Buffer.BlockCopy(desired,0,expected,0x8000,desired.Length);
             expected[0x1FFFE]=0x4A;expected[0x1FFFF]=0xFC;return expected;
         }
@@ -118,10 +129,12 @@ namespace PcmHacking
             if(State!=AL5CapturedWriteState.AwaitingSavedVerification)throw new InvalidOperationException("Complete cleanup is required before saved readback verification.");
             if(readback==null || readback.Length!=0x100000)throw new ArgumentException("Independent saved comparison requires all 1 MiB; missing bytes stay unknown.");
             var observed=(byte[])readback.Clone();int bankChanges=0,otherChanges=0;
+            byte[]? prepared=preparedBanks?.CopyPrepared();
             for(int i=0;i<observed.Length;i++)
             {
                 if(i>=0x8000 && i<0x20000)continue;
-                if(observed[i]==baseline[i])continue;
+                byte expected=prepared!=null && i>=0x4000 && i<0x8000?prepared[i-0x4000]:baseline[i];
+                if(observed[i]==expected)continue;
                 if(i>=0x4000 && i<0x8000)bankChanges++;else otherChanges++;
             }
             ChangedPersistentBankBytes=bankChanges;ChangedOtherProtectedBytes=otherChanges;

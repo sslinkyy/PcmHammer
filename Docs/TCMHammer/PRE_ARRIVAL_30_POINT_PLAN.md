@@ -45,6 +45,8 @@ All work before arrival remains offline. Live upload, execution, erase/programmi
 
 ## Current software continuation
 
+The [four-priority execution checkpoint](FOUR_WRITE_QUALIFICATION_PRIORITIES.md) adds the asynchronous Vehicle binding behind an unconditional live gate, one-session transport ownership, and a required prepared-bank review before erase. Physical gates remain open while the spare is in transit.
+
 The [dispatch checkpoint](WRITER_DISPATCH_CHECKPOINT_20261102.md) implements send/reply ownership, fixed qualification boundaries, saved-profile matching, explicit timeout budgets and production Vehicle/GT integration tests through a scripted port. TCM Hammer includes a file-only write preparation/export command. Live operations remain disabled; no physical qualification gate is marked complete by this work.
 
 ## Exit condition

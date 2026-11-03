@@ -7,7 +7,7 @@ namespace PcmHacking
     public enum AL5OfflineDispatchKind { Control, SecurityEvidence, Loader, Erase, Data, ChecksumRetry, Finalization, Cleanup, ProgrammingBroadcast }
     public enum AL5OfflineDispatchState { ActionAvailable, DispatchPrepared, AwaitingReply, AwaitingSecurityEvidence, ChecksumRetryReview, AwaitingReadback, Completed, Stopped, BoundaryReached }
     public enum AL5OfflineWriteBoundary { BeforeSecurityKey, BeforeProgrammingEntry, BeforeLoaderUpload, BeforeErase, AfterEraseBeforeData, CompleteOfflineRehearsal }
-    public enum AL5OfflineDispatchStop { None, Timeout, Cancelled, SendNotSubmitted, SendSubmissionUnknown, UnexpectedReply, InvalidFrame, ProtocolFailure, RetryBudgetExhausted, VerificationFailed, UnsupportedSecurityProfile, LoaderChecksumRejected, LoaderRejected, UnqualifiedLoaderReply }
+    public enum AL5OfflineDispatchStop { None, Timeout, Cancelled, SendNotSubmitted, SendSubmissionUnknown, UnexpectedReply, InvalidFrame, ProtocolFailure, RetryBudgetExhausted, VerificationFailed, UnsupportedSecurityProfile, LoaderChecksumRejected, LoaderRejected, UnqualifiedLoaderReply, ReceiveFault, InvalidClock, ExecutionWaitFault }
 
     /// <summary>An immutable, single-use offline send reservation. It is not a live send capability.</summary>
     public sealed class AL5OfflineWriteDispatch
@@ -96,6 +96,19 @@ namespace PcmHacking
         public bool CompleteSavedComparison { get { lock(sync)return candidate.CompleteSavedComparison; } }
         public int? ChangedPersistentBankBytes { get { lock(sync)return candidate.ChangedPersistentBankBytes; } }
         public int? ChangedOtherProtectedBytes { get { lock(sync)return candidate.ChangedOtherProtectedBytes; } }
+        public string OriginalReferenceSha256 { get { lock(sync)return candidate.BaselineSha256; } }
+        public bool HasSavedPreparedBankReference { get { lock(sync)return candidate.HasSavedPreparedBankReference; } }
+        public string? PreparedBanksSha256 { get { lock(sync)return candidate.PreparedBanksSha256; } }
+        public int? SavedPreparationChangedBytes { get { lock(sync)return candidate.SavedPreparationChangedBytes; } }
+        internal void RecordSavedPreparedBanks(byte[] bytes)
+        {
+            lock(sync)
+            {
+                RequireSendSlot();
+                if(candidate.State!=AL5CapturedWriteState.EraseRequest)throw new InvalidOperationException("Prepared reference belongs only to the before-erase phase.");
+                candidate.RecordSavedPreparedBanks(bytes);
+            }
+        }
         public bool LiveUploadEnabled => false;
         public bool LiveExecutionEnabled => false;
         public bool LiveWriteEnabled => false;
@@ -325,6 +338,26 @@ namespace PcmHacking
         }
         public void Timeout(){lock(sync){RequireOpen();Stop(AL5OfflineDispatchStop.Timeout);}}
         public void Cancel(){lock(sync){RequireOpen();Stop(AL5OfflineDispatchStop.Cancelled);}}
+        internal void StopFromExecutionBinding(AL5OfflineDispatchStop reason)
+        {
+            lock(sync)
+            {
+                RequireOpen();
+                if(reason!=AL5OfflineDispatchStop.ReceiveFault && reason!=AL5OfflineDispatchStop.InvalidClock && reason!=AL5OfflineDispatchStop.ExecutionWaitFault)throw new ArgumentOutOfRangeException(nameof(reason));
+                Stop(reason);
+            }
+        }
+        internal TimeSpan RemainingExecutionWait()
+        {
+            lock(sync)
+            {
+                if(timeBudget==null)throw new InvalidOperationException("Execution requires explicit time budgets.");
+                long remaining=timeBudget.TotalSession.Ticks-clockTicks;
+                if(pending!=null)remaining=Math.Min(remaining,timeBudget.Send.Ticks-(clockTicks-sendStartedTicks));
+                if(awaitingReply && replyOwner!=null)remaining=Math.Min(remaining,timeBudget.ReplyBudget(replyOwner).Ticks-(clockTicks-replyStartedTicks));
+                return TimeSpan.FromTicks(Math.Max(0,remaining));
+            }
+        }
         public void AdvanceSavedElapsed(TimeSpan elapsed)
         {
             lock(sync)

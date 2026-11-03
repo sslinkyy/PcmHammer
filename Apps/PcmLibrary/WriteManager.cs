@@ -57,6 +57,14 @@ namespace PcmHacking
             return await Write(image, forcedPcmType);
         }
 
+        /// <summary>Explicit AL5 qualification entry. The executor rejects live access unconditionally at this checkpoint.</summary>
+        public Task<AL5WriteExecutionReport> WriteAL5UnchangedCalibrationAsync(byte[] loader,byte[] calibration,
+            byte[] fullOriginalReference,AL5OfflineWriteTimeBudget budgets)
+        {
+            return AL5CalibrationWriteExecutor.WriteUnchangedCalibrationAsync(vehicle,loader,calibration,
+                fullOriginalReference,budgets,cancellationToken);
+        }
+
         /// <summary>
         /// Contains cross-platform code to handle user interactions to write the PCM's flash memory.
         /// Accepts a byte array directly for OSes that don't support direct file handling.

@@ -13,6 +13,7 @@
     <Compile Include="CapturedProgramImageTest.cs" />
     <Compile Include="CalibrationWriteCandidateTest.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5CalibrationWriteCandidate.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5PreparedBankReference.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5CalibrationSectorPlan.cs" />
     <Compile Include="CapturedWriteRehearsalTest.cs" /><Compile Include="EfiOfflineWritePlanTest.cs" /><Compile Include="../../Apps/PcmLibrary/AL5EfiOfflineWritePlan.cs" />
     <Compile Include="SavedReadSessionTest.cs" />

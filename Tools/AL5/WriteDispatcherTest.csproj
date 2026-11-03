@@ -9,6 +9,7 @@
     <Compile Include="../../Apps/PcmLibrary/AL5CalibrationWriteProfile.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5SavedSecuritySeed.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5CalibrationWriteCandidate.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5PreparedBankReference.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5CalibrationSectorPlan.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5EfiOfflineWritePlan.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5CapturedWriteRehearsal.cs" />

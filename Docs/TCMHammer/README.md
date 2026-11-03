@@ -1,5 +1,7 @@
 # TCM Hammer
 
+[Four write qualification priorities](FOUR_WRITE_QUALIFICATION_PRIORITIES.md) records the asynchronous execution binding, mandatory original/prepared backup distinction, and remaining physical gates while the spare is in transit.
+
 [Calibration writer candidate](CALIBRATION_WRITE_CANDIDATE.md) describes the constructed calibration-write lifecycle, custom-BIN rehearsal and full preservation comparison. The [30-point writer-first plan](PRE_ARRIVAL_30_POINT_PLAN.md) and [first-write bench run sheet](FIRST_WRITE_BENCH_RUN_SHEET.md) organize the remaining qualification work without repeating completed offline campaigns on arrival.
 
 [Writer dispatch checkpoint](WRITER_DISPATCH_CHECKPOINT_20261102.md) adds immutable send/reply ownership, stage boundaries, profile/deadline checks, production Vehicle/GT integration tests and the GT send-result fix.
