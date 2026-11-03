@@ -175,3 +175,33 @@ does not change the lookup result.
 Read [the combined trace](TCC_CRUISE_THROTTLE_RELEASE_TRACE.md) for activation,
 source identities, actual extracted-code replay, and the physical-validation
 boundary. The named XDF and source calibration bytes are unchanged.
+
+## Cruise TCC v0.13 — current expanded definition
+
+Use `AL5_15184109_15183960_CRUISE_TCC_v0_13.xdf` with the same 57,304-byte
+segment format and OS/calibration context. It preserves all 298 v0.12 items
+and adds the two traced cruise banks as ten per-gear entries under
+`TCC / Cruise Throttle Release`:
+
+- Tow/Haul cruise family header 0x13A08.
+- Normal-family cruise header 0x13C30.
+
+Each bank has first-through-fifth selected-gear columns, shown as individual
+17-cell vectors to skip the intervening count headers. Speed labels are
+0, 16, ..., 256 km/h; physical units are corroborated by shared native
+definitions and the speed producer. Values are unsigned BE16 percentages,
+`raw * 100 / 65536`. These are firmware-traced alternate-bank identities;
+they have no assigned EFILive IDs or direct native marker proof.
+
+All 170 added stock cells are 0xFFFF, exactly 99.99847412109375% (99.998% at
+the configured three decimal places). Existing native coverage remains
+127/127 IDs and 2517/2517 numeric cells; the complete audit passes across
+308 items. See `CRUISE_TCC_MAPPING_v0_13.json` for addresses, stock values
+and evidence hashes, and `V0_13_AUDIT.json` for the full audit.
+
+`Tools/AL5/expand_cruise_tcc.py` reproduces the expansion from v0.12 and
+validates stock bytes, count headers, cell conversion, preservation of prior
+items and complete native numeric coverage. Output paths must be absent.
+Stock and PPEI BIN bytes were unchanged. TunerPro GUI validation remains
+pending; activation and software-effect limits remain documented in
+[the combined trace](TCC_CRUISE_THROTTLE_RELEASE_TRACE.md).
