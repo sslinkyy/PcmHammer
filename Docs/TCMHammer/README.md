@@ -1,5 +1,7 @@
 # TCM Hammer
 
+[Resident pre-entry bank reads](RESIDENT_PREENTRY_BANK_BACKUP.md) traces a bank-first alternative before programming preparation, with native dispatcher coverage and a file-only resident-bank exporter. Live reads and writes remain disabled.
+
 [Security and backup continuation](SECURITY_AND_BACKUP_PATH.md) adds a profile-bound security exchange and an ordered correlated original/prepared acquisition path with a file-only exporter. Physical qualification and live operations remain disabled.
 
 [Four write qualification priorities](FOUR_WRITE_QUALIFICATION_PRIORITIES.md) records the asynchronous execution binding, mandatory original/prepared backup distinction, and remaining physical gates while the spare is in transit.

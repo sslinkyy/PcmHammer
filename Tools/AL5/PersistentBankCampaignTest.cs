@@ -19,7 +19,7 @@ static class PersistentBankCampaignTest
         !c.LiveUploadEnabled && !c.LiveExecutionEnabled && !c.LiveWriteEnabled && !c.ReadyToFlash);
     static void Main(string[] args)
     {
-        if(args.Length < 1 || args.Length > 2) throw new ArgumentException("Supply pinned saved SPS OS and optionally native rehearsal directory; no adapter is used.");
+        if(args.Length < 1 || args.Length > 3 || (args.Length==3 && args[2]!="--preentry")) throw new ArgumentException("Supply pinned saved SPS OS and optionally native rehearsal directory [--preentry]; no adapter is used.");
         var firmware = File.ReadAllBytes(args[0]);
         Reject(() => new AL5SavedPersistentBankCampaign(new byte[679828]));
         var c = new AL5SavedPersistentBankCampaign(firmware);
@@ -55,18 +55,31 @@ static class PersistentBankCampaignTest
         Check(c.ObserveSavedVpwReply(Reply(0x14000,new byte[]{1,2,3,4}),out _)==AL5SavedReplyKind.MatchingLow16Echo);
         Blocked(c);
         Console.WriteLine("PASS 4096 bounded saved bank exchanges, ownership, stop/incomplete guards; same-echo ambiguity explicitly remains unqualified.");
-        if(args.Length==2)
+        if(args.Length>=2)
         {
+            bool preentry=args.Length==3;
             c=new AL5SavedPersistentBankCampaign(firmware);
-            foreach(string line in File.ReadLines(Path.Combine(args[1],"frames.jsonl")))
+            foreach(string line in File.ReadLines(Path.Combine(args[1],preentry?"resident_frames.jsonl":"frames.jsonl")))
             {
                 using var row=JsonDocument.Parse(line);var root=row.RootElement;
                 Check(root.GetProperty("address").GetInt32()==0x4000+c.BytesObserved);
                 Check(c.BeginNextSavedVpwRequest().SequenceEqual(Convert.FromHexString(root.GetProperty("vpw_request_hex").GetString()!)));
                 Check(c.ObserveSavedVpwReply(Convert.FromHexString(root.GetProperty("vpw_reply_hex").GetString()!),out _)==AL5SavedReplyKind.MatchingLow16Echo);
             }
-            Check(c.CopyCompleteSavedBanks().SequenceEqual(File.ReadAllBytes(Path.Combine(args[1],"fixture.offline.bin"))));Blocked(c);
-            Console.WriteLine("PASS native resident-handler transcript through production saved-bank campaign: 16384 synthetic bytes exact.");
+            Check(c.CopyCompleteSavedBanks().SequenceEqual(File.ReadAllBytes(Path.Combine(args[1],preentry?"banks.historical_readback.bin":"fixture.offline.bin"))));Blocked(c);
+            if(preentry)
+            {
+                using var report=JsonDocument.Parse(File.ReadAllText(Path.Combine(args[1],"result.json")));
+                var root=report.RootElement;Check(root.GetProperty("schema").GetString()=="al5-offline-resident-preentry-banks-v1");
+                Check(!root.GetProperty("hardware_access").GetBoolean() && !root.GetProperty("pre_entry_physical_acquisition_verified").GetBoolean());
+                foreach(var row in root.GetProperty("cases").EnumerateArray())
+                {
+                    var observed=row.GetProperty("observed");Check(observed.GetProperty("banks_unchanged").GetBoolean());
+                    if(row.GetProperty("case").GetString()=="resident_bank_read")
+                        Check(observed.GetProperty("storage_calls").GetArrayLength()==0 && observed.GetProperty("preparation_entry_count").GetInt32()==0);
+                }
+            }
+            Console.WriteLine(preentry?"PASS native dequeue/lookup/descriptor bank transcript: 16384 historical fixture bytes exact; physical acquisition unqualified.":"PASS native resident-handler transcript through production saved-bank campaign: 16384 synthetic bytes exact.");
         }
     }
 }

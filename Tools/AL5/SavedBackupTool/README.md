@@ -1,5 +1,7 @@
 # Saved AL5 backup path
 
+For stock resident bank transcripts, use `dotnet run --project Tools/AL5/SavedBackupTool/SavedBackupTool.csproj -- --resident-banks PINNED_SPS_OS frames.jsonl evidence-id NEW-output-directory`. Each JSONL row has `address`, `vpw_request_hex`, and `vpw_reply_hex`. This separate mode requires all 4,096 sequential dwords and exports only `preentry_banks.saved.bin` plus a report. It preserves the low-16 echo/freshness limitation and does not produce or certify a full original image. See [the native pre-entry trace](../../../Docs/TCMHammer/RESIDENT_PREENTRY_BANK_BACKUP.md).
+
 This file-only tool consumes original and prepared acquisition transcripts from the experimental correlated reader protocol. Each line is `T HEX` or `R HEX`, with transport CRC removed. It checks each constructed request, response nonce, sequence, full address, count and payload CRC using the production campaign implementation. Unrelated replies do not consume the pending slot. It requires all 1 MiB of original coverage before recording the entry boundary, then all 16 KiB of prepared banks. Partial data and repeated or out-of-order requests cannot produce an export.
 
 ```

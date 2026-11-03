@@ -30,6 +30,8 @@ Normal application entry can change persistent banks 4000..7FFF before the reade
 
 The spare's qualification plan must acquire and preserve the obtainable pre-entry bank data through an independently qualified nonprogramming path. A post-entry full image still helps verify calibration-sector collateral, but does not recover overwritten original bank contents. Resident Mode 23 permissions and low-16 response correlation remain separate qualification gates.
 
+The [resident pre-entry bank continuation](RESIDENT_PREENTRY_BANK_BACKUP.md) now traces the ordinary application dequeue/lookup/descriptor/read path for the complete bank interval, without programming preparation in the model. This supports a bank-first qualification candidate that avoids uploading the experimental reader before preserving the banks. It does not establish physical freshness, a safe full-reader entry, or an independent complete original image.
+
 ## Reproduction and provenance
 
 `emulate_readonly_full_flash.py --low LOW --high HIGH --build-dir BUILD --output-dir NEW_DIR` runs the legacy context. Add `--reset-context` or `--preparation-context` for the stronger joins. All source images and the compiled reader are identity checked. Each output directory is new; failure records and partial frames are retained instead of being reported complete.

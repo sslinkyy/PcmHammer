@@ -40,6 +40,7 @@ static class Program
     }
     static int Main(string[] args)
     {
+        if(args.Length>0 && args[0]=="--resident-banks")return ResidentBanks(args);
         if(args.Length!=6)
         {
             Console.Error.WriteLine("Offline only: original-transcript.txt prepared-transcript.txt original-nonce-hex prepared-nonce-hex evidence-id NEW-output-directory");return 2;
@@ -71,5 +72,43 @@ static class Program
         };
         Save(Path.Combine(output,"backup.json"),JsonSerializer.SerializeToUtf8Bytes(report,new JsonSerializerOptions{WriteIndented=true}));
         Console.WriteLine("Exported complete saved original and prepared bank epochs. No live operations; physical acquisition remains unqualified.");return 0;
+    }
+
+    static int ResidentBanks(string[] args)
+    {
+        if(args.Length!=5)throw new ArgumentException("--resident-banks pinned-sps-os.bin frames.jsonl evidence-id NEW-output-directory");
+        if(string.IsNullOrWhiteSpace(args[3]))throw new ArgumentException("Explicit evidence identity required.");
+        string output=Path.GetFullPath(args[4]);
+        if(Directory.Exists(output) || File.Exists(output))throw new ArgumentException("New output directory required.");
+        byte[] os=File.ReadAllBytes(args[1]),raw=File.ReadAllBytes(args[2]);
+        var campaign=new AL5SavedPersistentBankCampaign(os);
+        using(var reader=new StreamReader(new MemoryStream(raw),new System.Text.UTF8Encoding(false,true)))
+        {
+            while(reader.ReadLine() is string line)
+            {
+                using var document=JsonDocument.Parse(line);var row=document.RootElement;
+                if(row.GetProperty("address").GetInt32()!=AL5SavedPersistentBankCampaign.StartAddress+campaign.BytesObserved)
+                    throw new ArgumentException("Resident bank records must follow the explicit saved interval.");
+                var request=Convert.FromHexString(row.GetProperty("vpw_request_hex").GetString()!);
+                if(!campaign.BeginNextSavedVpwRequest().SequenceEqual(request))throw new ArgumentException("Resident request differs from the next saved bank request.");
+                var kind=campaign.ObserveSavedVpwReply(Convert.FromHexString(row.GetProperty("vpw_reply_hex").GetString()!),out _);
+                if(kind!=AL5SavedReplyKind.MatchingLow16Echo)throw new ArgumentException("Resident record did not supply the expected low-16 echo.");
+            }
+        }
+        byte[] banks=campaign.CopyCompleteSavedBanks();
+        var report=new {
+            schema="al5-saved-resident-bank-backup-v1",evidence_id=args[3],
+            os=Input(args[1],os),transcript=Input(args[2],raw),start_address="0x4000",bytes=banks.Length,
+            bank_sha256=Hash(banks),requests=campaign.BytesObserved/4,
+            acquisition_epoch="caller_claimed_pre_entry_not_physically_verified",
+            complete_full_original_image=false,physical_readback_verified=false,pre_entry_acquisition_proven=false,
+            freshness_proven=false,full_address_identity_proven=false,hardware_access=false,
+            live_read_enabled=false,live_upload_enabled=false,live_execution_enabled=false,live_write_enabled=false,ready_to_flash=false,
+            limit="Only low-16 response correlation; a stale same-echo reply cannot be identified by this wire format. This bank file is not a complete independent original backup."
+        };
+        Directory.CreateDirectory(output);
+        Save(Path.Combine(output,"preentry_banks.saved.bin"),banks);
+        Save(Path.Combine(output,"backup.json"),JsonSerializer.SerializeToUtf8Bytes(report,new JsonSerializerOptions{WriteIndented=true}));
+        Console.WriteLine("Exported 16384 saved resident bank bytes; physical pre-entry acquisition remains unqualified.");return 0;
     }
 }
