@@ -202,6 +202,14 @@ and evidence hashes, and `V0_13_AUDIT.json` for the full audit.
 `Tools/AL5/expand_cruise_tcc.py` reproduces the expansion from v0.12 and
 validates stock bytes, count headers, cell conversion, preservation of prior
 items and complete native numeric coverage. Output paths must be absent.
-Stock and PPEI BIN bytes were unchanged. TunerPro GUI validation remains
-pending; activation and software-effect limits remain documented in
+Stock and PPEI BIN bytes were unchanged. TunerPro GUI validation completed
+2026-11-03 in TunerPro RT 5.0.10305.0: all ten cruise gear entries, their
+17-row km/h axes (0 through 256 in steps of 16), native offsets and all
+170 displayed stock cells (99.998) passed actual visual inspection.
+`V0_13_TUNERPRO_GUI_VALIDATION_20261103.json` binds this result to the unchanged
+v0.13 XDF hash. The loaded stock-reference copy matched the original stock
+digest; original stock/PPEI digests remained unchanged. Editors and the BIN
+were closed without saving. Generated XDF/manifest wording about pending GUI
+validation records their earlier generation state; the separate GUI report
+records this subsequent check. Activation and software-effect limits remain documented in
 [the combined trace](TCC_CRUISE_THROTTLE_RELEASE_TRACE.md).
