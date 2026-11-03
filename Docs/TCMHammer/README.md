@@ -12,6 +12,8 @@ The top-level TCM Hammer menu groups the AL5 identity probe, direct Mode 0x23 ca
 
 [Preparation status paths](PREPARATION_STATUS_PATHS.md) distinguish native errors/readback mismatches and pending frames. [Spare bench qualification](SPARE_TCM_BENCH_QUALIFICATION.md) defines the future hardware gates.
 
+[Full-flash reader rehearsal](FULL_FLASH_READER.md) covers the complete fixture, reset-derived native copy, inherited runtime state and pre/post-entry provenance.
+
 ## Source and research
 
 All existing AL5 assets belong to this section. Their paths remain stable so scripts, tests and prior evidence references continue to work:

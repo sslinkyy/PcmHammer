@@ -24,11 +24,15 @@ Remaining gate: persistent preparation side effects and actual reset/retention. 
 
 The existing compiled reader, native-copy handoff, RAM canaries, request/reply ownership and local software-quiesce tests remain active. Runtime/handoff tools now accept an explicitly supplied full flash fixture for offline validation; default synthetic-pattern regressions remain supported. The caller pins LOW/HIGH before using historical bytes.
 
+[Full-flash rehearsal](FULL_FLASH_READER.md) now extends the compiled reader to all 1 MiB. Retained emulator contexts join reset vectors, native receiver/sender/copy and the compiled reader on the same CPU. Synthetic reset/IRQ/MMIO assumptions remain explicit.
+
 Remaining gate: physical VPW/clock configuration, watchdog deadline, exclusive SRAM and interrupt ownership, and safe physical exit. No adapter upload/execution backend is enabled.
 
 ## 3. Collateral readback and preservation
 
 The compiled reader reconstructed 41,000 bytes at 15FD8..1FFFF from the pinned historical LOW/HIGH fixture in 1,282 correlated requests. Marker 4AFC came from that fixture, not a replacement constant. Production C# host code consumed all replies and reproduced the bytes exactly. The assembled 8000..1FFFF snapshot matched historical LOW; writer assessment detected changed marker and collateral bytes. Readback, backup and recovery qualification flags stayed false.
+
+The full-image campaign also distinguishes original historical fixtures from post-preparation atomic-model fixtures. Pre-entry persistent-bank data must not be inferred from a later image after normal entry has updated those banks.
 
 Remaining gate: fresh independent readback of the actual controller. Historical success does not establish present contents, all flash-bank coverage or physical preservation.
 

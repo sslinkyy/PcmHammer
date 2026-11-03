@@ -55,18 +55,13 @@ def analyze(code, receipt, low=None, exercise_local_quiesce=False,high=None):
     if exercise_local_quiesce:
         # Explicit offline caller simulation; this is not a wire service, IRQ or
         # proof that a host can invoke this entry on a physical controller.
-        pc=r.u.reg_read(UC_M68K_REG_PC);sp=r.u.reg_read(UC_M68K_REG_A7)
-        r.u.mem_write(sp-4,pc.to_bytes(4,'big'));r.u.reg_write(UC_M68K_REG_A7,sp-4);r.entry_steps=0
-        r.u.emu_start(receipt['symbols']['al5_ro_request_quiesce'],0x1000000,count=50000)
-        assert r.u.reg_read(UC_M68K_REG_PC)==pc and r.u.reg_read(UC_M68K_REG_A7)==sp
-        before=(len(r.tx),len(r.flash_reads));r.entry_steps=5;r.u.emu_start(pc,0x1000000,count=100000)
-        assert r.u.mem_read(0xFFA310,1)==b'\x02'
+        local_quiesce=r.quiesce_from_saved_loop()
+        before=(len(r.tx),len(r.flash_reads))
         r.fifo.extend((0x20,b) for b in bytes.fromhex('6d18f0b1')+request(START,32,sequence=1283));r.fifo.append((0xE0,0))
         r.entry_steps=5;r.u.emu_start(r.u.reg_read(UC_M68K_REG_PC),0x1000000,count=100000)
         assert before==(len(r.tx),len(r.flash_reads)) and len(r.fifo)==27
         r.validate_watchdog()
-        local_quiesce=dict(invocation='synthetic local call frame',software_parked=True,queued_rx_left_unprocessed=27,
-                           physical_tx_completion_proven=False,safe_exit_proven=False,power_cycle_required=True)
+        local_quiesce['queued_rx_left_unprocessed']=27
     canaries = bytes(r.u.mem_read(0xFF8000, 0x4000))
     checked = 0
     for offset, value in enumerate(canaries):

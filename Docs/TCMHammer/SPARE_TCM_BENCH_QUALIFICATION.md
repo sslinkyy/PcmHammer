@@ -14,6 +14,8 @@ After hardware setup has been reviewed and the physical connection state confirm
 
 Maintain an explicit byte-coverage record. Distinguish boot 00000..03FFF, persistent banks 04000..07FFF, calibration 08000..15FD7, collateral 15FD8..1FFFD, completion marker 1FFFE..1FFFF, and OS/rest 20000..FFFFF. Unknown bytes stay unknown; SPS modules, expected fill and captures of transmitted bytes are not independent original backups. The current Mode 23 calibration reader does not provide all of this coverage.
 
+Preserve the persistent-bank data before any programming-style application entry. The new full-image prototype starts after entry; its bank contents may already include legitimate preparation updates. Do not call that post-entry image the original bank backup. Establish the qualified pre-entry read path separately.
+
 Gate A passes only for operations actually observed to work. It does not authorize experimental kernel entry or prove the controller's flash-to-CPU mapping, hardware sector protection, current security state or recovery.
 
 ## Gate B: isolated read-only entry qualification

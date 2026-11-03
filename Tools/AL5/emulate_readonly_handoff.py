@@ -13,7 +13,7 @@ from emulate_boot_receive_isr import START, RTE, STACK
 
 
 class Handoff(Runtime):
-    def __init__(self, low, code, receipt, *, boot_stack=STACK, flash_image=None):
+    def __init__(self, low, code, receipt, *, boot_stack=STACK, flash_image=None, trace_detail='full'):
         if len(low) != 0x20000 or hashlib.sha256(low).hexdigest() != EXPECTED_LOW:
             raise ValueError('Unrecognized boot evidence')
         if flash_image is not None and (not isinstance(flash_image,bytes) or len(flash_image)!=0x100000 or flash_image[:len(low)]!=low):
@@ -25,7 +25,7 @@ class Handoff(Runtime):
             raise ValueError('Synthetic boot stack overlaps code/globals or escapes mapped guard')
         self.boot_stack=boot_stack
         self.phase = 'boot'
-        super().__init__(code, receipt,flash_image=flash_image)
+        super().__init__(code, receipt,flash_image=flash_image,trace_detail=trace_detail)
         from unicorn import UC_PROT_READ, UC_PROT_EXEC
         from unicorn.m68k_const import UC_M68K_REG_A7
         self.low, self.code = low, code

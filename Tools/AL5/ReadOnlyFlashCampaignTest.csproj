@@ -1,0 +1,7 @@
+<Project>
+<PropertyGroup><BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)../../LocalOnly/ReadOnlyFlashCampaignTest/obj/</BaseIntermediateOutputPath><MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath></PropertyGroup>
+<Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk"/>
+<PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><Nullable>enable</Nullable><EnableDefaultCompileItems>false</EnableDefaultCompileItems><OutputPath>../../LocalOnly/ReadOnlyFlashCampaignTest/bin/</OutputPath></PropertyGroup>
+<ItemGroup><Compile Include="ReadOnlyFlashCampaignTest.cs"/><Compile Include="../../Apps/PcmLibrary/AL5ReadOnlyFlashCampaign.cs"/><Compile Include="../../Apps/PcmLibrary/AL5ReadOnlyRangeCampaign.cs"/><Compile Include="../../Apps/PcmLibrary/AL5ReadOnlyCoreSession.cs"/></ItemGroup>
+<Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk"/>
+</Project>

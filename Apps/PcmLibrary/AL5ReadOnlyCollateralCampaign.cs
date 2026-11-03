@@ -6,53 +6,34 @@ namespace PcmHacking
     /// <summary>Offline correlated reader campaign, not an adapter/upload/execution backend.</summary>
     public sealed class AL5ReadOnlyCollateralCampaign
     {
-        private readonly AL5ReadOnlyCoreSession session;
-        private readonly byte[] supplement=new byte[AL5SavedReadCoverage.SupplementLength];
-        public int BytesObserved { get; private set; }
-        public int MatchedReplies { get; private set; }
-        public bool Complete => BytesObserved==supplement.Length && !Stopped;
-        public bool Stopped => session.Stopped;
-        public bool HasPendingRequest => session.HasPendingRequest;
+        private readonly AL5ReadOnlyRangeCampaign campaign;
+        public int BytesObserved => campaign.BytesObserved;
+        public int MatchedReplies => campaign.MatchedReplies;
+        public bool Complete => campaign.Complete;
+        public bool Stopped => campaign.Stopped;
+        public bool HasPendingRequest => campaign.HasPendingRequest;
         public bool LiveUploadEnabled => false;
         public bool LiveExecutionEnabled => false;
         public bool LiveWriteEnabled => false;
         public bool HardwareQualified => false;
         public bool PhysicalReadbackVerified => false;
         public bool IndependentCollateralBackupVerified => false;
-        public ushort? SavedCompletionMarker => Complete?(ushort?)((supplement[supplement.Length-2]<<8)|supplement[supplement.Length-1]):null;
+        public ushort? SavedCompletionMarker
+        {
+            get { if(!Complete)return null;var bytes=campaign.CopySavedRange(AL5SavedReadCoverage.SupplementLength-2,2);return (ushort)((bytes[0]<<8)|bytes[1]); }
+        }
 
         public AL5ReadOnlyCollateralCampaign(byte[] nonce):this(new AL5ReadOnlyCoreSession(nonce)){}
-        private AL5ReadOnlyCollateralCampaign(AL5ReadOnlyCoreSession session){this.session=session;}
+        private AL5ReadOnlyCollateralCampaign(AL5ReadOnlyCoreSession session){campaign=new AL5ReadOnlyRangeCampaign(session,AL5SavedReadCoverage.SupplementStart,AL5SavedReadCoverage.SupplementLength);}
         public static AL5ReadOnlyCollateralCampaign CreateOffline()=>new AL5ReadOnlyCollateralCampaign(AL5ReadOnlyCoreSession.CreateOffline());
-        public byte[] BeginNextSavedVpwRequest()
-        {
-            if(Complete || Stopped)throw new InvalidOperationException("Offline campaign is closed.");
-            return session.BeginSavedVpwRead((uint)(AL5SavedReadCoverage.SupplementStart+BytesObserved),Math.Min(32,supplement.Length-BytesObserved));
-        }
-        public AL5ReadOnlyCoreReply ObserveSavedVpwReply(byte[] frame)
-        {
-            var result=session.ObserveSavedVpwReply(frame,out var bytes);
-            if(result==AL5ReadOnlyCoreReply.Matched)
-            {
-                Array.Copy(bytes,0,supplement,BytesObserved,bytes.Length);
-                BytesObserved+=bytes.Length;MatchedReplies++;
-            }
-            return result;
-        }
-        public void TimeoutOrCancel()
-        {
-            if(Complete || Stopped)throw new InvalidOperationException("Offline campaign is closed.");
-            session.TimeoutOrCancel();
-        }
-        public byte[] CopySavedSupplement()
-        {
-            if(!Complete)throw new InvalidOperationException("Complete correlated supplement required; missing bytes cannot be invented.");
-            return (byte[])supplement.Clone();
-        }
+        public byte[] BeginNextSavedVpwRequest()=>campaign.BeginNextSavedVpwRequest();
+        public AL5ReadOnlyCoreReply ObserveSavedVpwReply(byte[] frame)=>campaign.ObserveSavedVpwReply(frame);
+        public void TimeoutOrCancel()=>campaign.TimeoutOrCancel();
+        public byte[] CopySavedSupplement()=>campaign.CopySavedBytes();
         public byte[] CopySavedCollateral()
         {
             if(!Complete)throw new InvalidOperationException("Complete correlated supplement required.");
-            var result=new byte[AL5ProgrammingWorkflow.CollateralLength];Array.Copy(supplement,result,result.Length);return result;
+            return campaign.CopySavedRange(0,AL5ProgrammingWorkflow.CollateralLength);
         }
         public byte[] AssembleSavedSnapshot(byte[] calibration)=>AL5SavedReadCoverage.AssembleSavedSnapshot(calibration,CopySavedSupplement());
     }

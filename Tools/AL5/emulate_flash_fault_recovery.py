@@ -5,6 +5,18 @@ from emulate_calibration_marker import validate_source
 from emulate_boot_receive_session import frame_events
 from emulate_readonly_native_controls import SPS_SHA
 
+class OfflineBootContext:
+    """Retained emulator state only. One native-copy attempt; no transport API."""
+    def __init__(self,cpu,report,copy_reader,attach_runtime):
+        self.cpu=cpu;self.report=report;self._copy_reader=copy_reader;self._attach_runtime=attach_runtime;self.closed=False
+    def copy_readonly_runtime(self,code,receipt,*,execute=True,bad_checksum=False):
+        if self.closed:raise ValueError('Offline copy attempt is terminal; create a fresh boot context')
+        if type(execute) is not bool or type(bad_checksum) is not bool:raise ValueError('Explicit offline transfer flags required')
+        self.closed=True
+        return self._copy_reader(code,receipt,execute,bad_checksum)
+    def attach_runtime(self,runtime):
+        return self._attach_runtime(runtime)
+
 SIZE=0x100000
 FAULTS=('a12_direct','cpu_a12_alternative','dq13_word')
 
@@ -23,12 +35,15 @@ def fault_bytes(data,kind):
     mask=0x2000 if kind=='a12_direct' else 0x1000
     return bytes(data[i&~mask] for i in range(SIZE))
 
-def experiment(low,high,kind='a12_direct',window='none',instruction_limit=1000000,probe_boot_request=True,external_service_magic=0,reset_status=0x80,retained_marker=0,initial_ram=None):
+def experiment(low,high,kind='a12_direct',window='none',instruction_limit=1000000,probe_boot_request=True,external_service_magic=0,reset_status=0x80,retained_marker=0,initial_ram=None,retain_context=False,initial_persistent_banks=None):
     validate_source(low,high)
     if kind not in FAULTS or window not in ('none','held','release_at_os_reject','os_check_to_reject','os_check_to_vpw'):
         raise ValueError('Unknown bounded fault hypothesis/window')
     if type(external_service_magic) is not int or not 0<=external_service_magic<=65535 or type(probe_boot_request) is not bool:
         raise ValueError('Invalid synthetic external service/IRQ context')
+    if initial_persistent_banks is not None and (not isinstance(initial_persistent_banks,bytes) or len(initial_persistent_banks)!=0x4000):
+        raise ValueError('Explicit modeled persistent banks must cover exactly 4000..7FFF')
+    if type(retain_context) is not bool:raise ValueError('Explicit emulator-context option required')
     if type(reset_status) is not int or not 0<=reset_status<=255:
         raise ValueError('Synthetic reset status must be a byte')
     if type(retained_marker) is not int or not 0<=retained_marker<=65535:
@@ -41,7 +56,8 @@ def experiment(low,high,kind='a12_direct',window='none',instruction_limit=100000
     from unicorn.m68k_const import UC_CPU_M68K_M68020,UC_M68K_REG_A7,UC_M68K_REG_SR,UC_M68K_REG_PC,UC_M68K_REG_D4
     from capstone import Cs,CS_ARCH_M68K,CS_MODE_M68K_020,CS_MODE_BIG_ENDIAN
     decoder=Cs(CS_ARCH_M68K,CS_MODE_M68K_020|CS_MODE_BIG_ENDIAN);fetch_sizes={}
-    data=low+high;bad=fault_bytes(data,kind)
+    data=low+high if initial_persistent_banks is None else low[:0x4000]+initial_persistent_banks+low[0x8000:]+high
+    bad=fault_bytes(data,kind)
     active=window in ('held','release_at_os_reject');view=bad if active else data
     sp=int.from_bytes(view[:4],'big');pc=int.from_bytes(view[4:8],'big')
     out=dict(fault=kind,window=window,reset_sp=sp,reset_pc=pc,stop=None,instructions=0,events=[],
@@ -50,7 +66,8 @@ def experiment(low,high,kind='a12_direct',window='none',instruction_limit=100000
              live_upload_enabled=False,live_execution_enabled=False,live_write_enabled=False,recovery_verified=False,
              external_service_magic=external_service_magic,reset_status=reset_status,synthetic_irq_invoked=False,exception_return_executed=False,
              software_tx_frames=[],software_tx_observations=[],fifo_events_consumed=0,integrity_observations=[],
-             retained_marker=retained_marker,initial_ram_sha256=None if initial_ram is None else hashlib.sha256(initial_ram).hexdigest(),reset_status_accesses=[],marker_accesses=[],routing_observations=[])
+             initial_persistent_banks_sha256=None if initial_persistent_banks is None else hashlib.sha256(initial_persistent_banks).hexdigest(),
+             flash_fixture_sha256=hashlib.sha256(data).hexdigest(),retained_marker=retained_marker,initial_ram_sha256=None if initial_ram is None else hashlib.sha256(initial_ram).hexdigest(),reset_status_accesses=[],marker_accesses=[],routing_observations=[])
     if not 0xFF8000<=(sp&0xFFFFFF)<0x1000000 or not 0<=pc<0x4000 or pc%2:
         out['stop']='faulted_reset_vector_outside_declared_context';return out
     u=Uc(UC_ARCH_M68K,UC_MODE_BIG_ENDIAN);u.ctl_set_cpu_model(UC_CPU_M68K_M68020)
@@ -70,11 +87,22 @@ def experiment(low,high,kind='a12_direct',window='none',instruction_limit=100000
     u.mem_write(0xFF8000,retained_marker.to_bytes(2,'big'))
     u.mem_write(0xFFFA07,bytes([reset_status]))  # Synthetic reset/status input; not measured hardware state.
     u.reg_write(UC_M68K_REG_SR,0x2700);u.reg_write(UC_M68K_REG_A7,sp)
-    switch=None;irq_phase=False;fifo=[];tx_command=None;tx=[]
+    switch=None;irq_phase=False;fifo=[];tx_command=None;tx=[];reader=None;runtime=None;copied=set();handoff=None
     class Guard(Exception):pass
 
     def code(machine,a,n,_):
-        nonlocal switch
+        nonlocal switch,handoff
+        if runtime is not None:
+            runtime.instruction(machine,a,n,_);return
+        if reader is not None and a==reader['base']:
+            incoming_sp=machine.reg_read(UC_M68K_REG_A7)
+            if bytes(machine.mem_read(a,len(reader['code'])))!=reader['code'] or len(copied)!=len(reader['code']):raise Guard('incomplete_native_reader_copy')
+            if incoming_sp!=reader['prior_sp']-72 or int.from_bytes(machine.mem_read(incoming_sp,4),'big')!=0x33B8:raise Guard('unqualified_native_reader_stack_boundary')
+            if any(event!=(0,0) for event in fifo):raise Guard('pending_native_fifo_at_reader_entry')
+            handoff=dict(incoming_sp=incoming_sp,incoming_physical_sp=incoming_sp&0xFFFFFF,pending_return=0x33B8,stack_delta=-72,
+                         native_copied_bytes=len(copied),code_preloaded=False,scripted_fifo_remaining=[list(event) for event in fifo],
+                         abandoned_frame_sha256=hashlib.sha256(bytes(machine.mem_read(incoming_sp,72))).hexdigest())
+            out['stop']='before_offline_runtime_entry';machine.emu_stop();return
         out['instructions']+=1
         if out['instructions']>instruction_limit:out['stop']='instruction_resource_budget';machine.emu_stop();return
         if not active and window.startswith('os_check_') and a==0x806:
@@ -104,6 +132,8 @@ def experiment(low,high,kind='a12_direct',window='none',instruction_limit=100000
         if a==0x96E:out['stop']='native_boot_failure_wait';machine.emu_stop();return
 
     def read(machine,access,a,n,value,_):
+        if runtime is not None:
+            runtime.read(machine,access,a,n,value,_);return
         if a<SIZE:
             if active and data[a:a+n]!=bad[a:a+n]:out['changed_data_reads']+=1
             if active and kind!='dq13_word' and any((i&(0x2000 if kind=='a12_direct' else 0x1000)) for i in range(a,a+n)):out['aliased_reads']+=1
@@ -125,6 +155,8 @@ def experiment(low,high,kind='a12_direct',window='none',instruction_limit=100000
 
     def write(machine,access,a,n,value,_):
         nonlocal tx_command,tx
+        if runtime is not None:
+            runtime.write(machine,access,a,n,value,_);return
         if a<SIZE:
             out['flash_writes_blocked']+=1;raise Guard('flash_write_blocked')
         if a==0x20C000 and n==1 and value in (0,1):return
@@ -134,6 +166,9 @@ def experiment(low,high,kind='a12_direct',window='none',instruction_limit=100000
             raise Guard('reset_status_write_outside_readonly_model')
         if physical==0xFF8000 and len(out['marker_accesses'])<128:
             out['marker_accesses'].append(dict(operation='write',pc=machine.reg_read(UC_M68K_REG_PC),size=n,value=value))
+        if reader is not None and reader['base']<=physical and physical+n<=reader['base']+len(reader['code']):
+            if n!=1:raise Guard('unexpected_native_reader_copy_width')
+            copied.add(physical-reader['base'])
         if physical in (0xFFFA26,0xFFFA27):out['watchdog_stores']+=1
         elif physical>=0xFFE000 and len(out['register_writes'])<256:
             out['register_writes'].append(dict(pc=machine.reg_read(UC_M68K_REG_PC),address=a,physical_under_hypothesis=physical,size=n,value=value))
@@ -165,13 +200,48 @@ def experiment(low,high,kind='a12_direct',window='none',instruction_limit=100000
             fifo=list(frame_events(bytes.fromhex('6d18f034')));pc=0x39AC
             u.reg_write(UC_M68K_REG_SR,0x2700);continue
         if out['stop'] is None:out['stop']='instruction_resource_budget'
-    out.update(final_pc=u.reg_read(UC_M68K_REG_PC),fault_active_at_stop=active,
-               reset_status_snapshot=int.from_bytes(u.mem_read(0xFF8008,2),'big'),
-               reset_marker=int.from_bytes(u.mem_read(0xFF8000,2),'big'),interface_flag=u.mem_read(0xFF8010,1)[0],
-               interrupt_mask=(u.reg_read(UC_M68K_REG_SR)>>8)&7,
-               upload_armed_byte=u.mem_read(0xFF8185,1)[0],
-               rom_unchanged_from_selected_view=bytes(u.mem_read(0,SIZE))==(bad if active else data))
-    return out
+    def snapshot():
+        out.update(final_pc=u.reg_read(UC_M68K_REG_PC),fault_active_at_stop=active,
+                   reset_status_snapshot=int.from_bytes(u.mem_read(0xFF8008,2),'big'),
+                   reset_marker=int.from_bytes(u.mem_read(0xFF8000,2),'big'),interface_flag=u.mem_read(0xFF8010,1)[0],
+                   interrupt_mask=(u.reg_read(UC_M68K_REG_SR)>>8)&7,
+                   upload_armed_byte=u.mem_read(0xFF8185,1)[0],
+                   rom_unchanged_from_selected_view=bytes(u.mem_read(0,SIZE))==(bad if active else data))
+        out['final_sp']=u.reg_read(UC_M68K_REG_A7)
+        if reader is not None:out['offline_reader_handoff']=handoff;out['offline_reader_copied_bytes']=len(copied)
+        return out
+
+    def copy_reader(code_bytes,receipt,execute,bad_checksum):
+        nonlocal reader,fifo,irq_phase
+        from readonly_ram_layout import audit
+        if out['stop'] not in ('native_idle_boundary','before_synthetic_irq_rte') or active or not out['vpw_initializer_entered'] or runtime is not None:
+            raise ValueError('No qualified offline native boot boundary for one transfer')
+        if not isinstance(code_bytes,bytes) or receipt.get('text_base')!=0xFF9006 or receipt.get('entry')!=0xFF9006 or hashlib.sha256(code_bytes).hexdigest()!=receipt.get('code_sha256'):
+            raise ValueError('Explicit matching compiled reader required')
+        audit(len(code_bytes))
+        if any(event!=(0,0) for event in fifo) or tx or tx_command is not None:raise ValueError('Pending boot FIFO/transmit ownership')
+        if bytes(u.mem_read(0xFF9006,len(code_bytes)))==code_bytes:raise ValueError('Reader must not be preloaded')
+        reader=dict(base=0xFF9006,code=code_bytes,prior_sp=u.reg_read(UC_M68K_REG_A7))
+        tail=bytes([0x80 if execute else 0])+len(code_bytes).to_bytes(2,'big')+(0xFF9006).to_bytes(3,'big')+code_bytes
+        checksum=((sum(tail)+int(bad_checksum))&65535).to_bytes(2,'big')
+        fifo=[(0x20,b) for b in bytes.fromhex('6d18f036')+tail+checksum]+[(0xA0,0),(0,0)]
+        irq_phase=True;out['stop']=None;u.reg_write(UC_M68K_REG_SR,0x2700)
+        try:u.emu_start(0x39AC,0,count=instruction_limit)
+        except (UcError,Guard) as error:out['stop']='emulator_or_ownership_boundary';out['error']=str(error)
+        if out['stop'] is None:out['stop']='instruction_resource_budget'
+        return snapshot()
+
+    def attach_runtime(selected):
+        nonlocal runtime
+        from emulate_readonly_runtime import Runtime
+        if runtime is not None or not isinstance(selected,Runtime) or selected.u is not u or out['stop']!='before_offline_runtime_entry' or handoff is None:
+            raise ValueError('Runtime must adopt this exact paused native-copy CPU')
+        if selected.base!=reader['base'] or selected.end!=reader['base']+len(reader['code']):raise ValueError('Runtime layout changed after native copy')
+        runtime=selected
+        return handoff
+
+    snapshot()
+    return OfflineBootContext(u,out,copy_reader,attach_runtime) if retain_context else out
 
 def mapping_evidence(loader):
     if len(loader)!=3858 or hashlib.sha256(loader).hexdigest()!=SPS_SHA:raise ValueError('Pinned SPS loader required for mapping observations')

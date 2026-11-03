@@ -5,19 +5,31 @@ from pathlib import Path
 from emulate_readonly_core import request
 from readonly_ram_layout import audit,FIXED
 class Runtime:
- def __init__(self,code,receipt,*,flash_image=None):
+ def __init__(self,code,receipt,*,flash_image=None,trace_detail='full',inherited_cpu=None):
+  if inherited_cpu is not None and flash_image is None:raise ValueError('Inherited CPU requires an explicit flash fixture')
+  if trace_detail not in ('full','summary'):raise ValueError('Named offline trace detail required')
+  self.trace_detail=trace_detail;self.watchdog_count=0;self.tx_count=0;self.ram_write_count=0
+  self.flash_read_count=0;self.flash_read_first=None;self.flash_read_next=None;self.flash_read_contiguous=True
   if flash_image is not None and (not isinstance(flash_image,bytes) or len(flash_image)!=0x100000):raise ValueError('Exact offline flash image required')
   if hashlib.sha256(code).hexdigest()!=receipt['code_sha256']:raise ValueError('Runtime identity mismatch')
-  self.layout=audit(len(code));self.base=receipt['text_base'];self.end=self.base+len(code);self.symbols=receipt['symbols']
+  self.layout=audit(len(code));self.base=receipt['text_base'];self.end=self.base+len(code);self.symbols=dict(receipt['symbols'])
   if self.base!=0xFF9006 or receipt['entry']!=self.symbols['al5_ro_entry'] or any(not self.base<=self.symbols[n]<self.end for n in ('al5_ro_entry','al5_ro_init','al5_ro_step','al5_ro_read')):raise ValueError('Runtime symbol/layout mismatch')
   from unicorn import Uc,UC_ARCH_M68K,UC_MODE_BIG_ENDIAN,UC_HOOK_CODE,UC_HOOK_MEM_READ,UC_HOOK_MEM_WRITE,UC_PROT_READ,UC_PROT_EXEC
   from unicorn.m68k_const import UC_CPU_M68K_M68020,UC_M68K_REG_SR
-  self.u=Uc(UC_ARCH_M68K,UC_MODE_BIG_ENDIAN);self.u.ctl_set_cpu_model(UC_CPU_M68K_M68020);self.u.reg_write(UC_M68K_REG_SR,0x2700)
-  self.u.mem_map(0,0x100000);self.flash=flash_image if flash_image is not None else bytes((i*17+(i>>16))&255 for i in range(0x100000));self.u.mem_write(0,self.flash);self.u.mem_protect(0,0x100000,UC_PROT_READ)
-  self.u.mem_map(0xFF8000,0x4000);self.u.mem_write(0xFF8000,b'\xa5'*0x4000);self.u.mem_write(self.base,code)
-  self.u.mem_map(0xFFE000,0x1000);self.u.mem_map(0xFFF000,0x1000);self.u.mem_map(0x300000,0x1000)
+  self.flash=flash_image if flash_image is not None else bytes((i*17+(i>>16))&255 for i in range(0x100000))
+  self.inherited_cpu=inherited_cpu is not None
+  if inherited_cpu is None:
+   self.u=Uc(UC_ARCH_M68K,UC_MODE_BIG_ENDIAN);self.u.ctl_set_cpu_model(UC_CPU_M68K_M68020);self.u.reg_write(UC_M68K_REG_SR,0x2700)
+   self.u.mem_map(0,0x100000);self.u.mem_write(0,self.flash);self.u.mem_protect(0,0x100000,UC_PROT_READ)
+   self.u.mem_map(0xFF8000,0x4000);self.u.mem_write(0xFF8000,b'\xa5'*0x4000);self.u.mem_write(self.base,code)
+   self.u.mem_map(0xFFE000,0x1000);self.u.mem_map(0xFFF000,0x1000);self.u.mem_map(0x300000,0x1000)
+  else:
+   self.u=inherited_cpu
+   if bytes(self.u.mem_read(0,0x100000))!=self.flash or bytes(self.u.mem_read(self.base,len(code)))!=code:
+    raise ValueError('Inherited CPU flash/native-copy identity mismatch')
   self.fifo=deque();self.tx=[];self.frames=[];self.current=[];self.command=None;self.watchdog=[];self.flash_reads=[];self.ram_writes=[];self.stack_low=0xFFA800;self.busy=0;self.entry_steps=None
-  self.u.hook_add(UC_HOOK_CODE,self.instruction);self.u.hook_add(UC_HOOK_MEM_READ,self.read);self.u.hook_add(UC_HOOK_MEM_WRITE,self.write)
+  if inherited_cpu is None:
+   self.u.hook_add(UC_HOOK_CODE,self.instruction);self.u.hook_add(UC_HOOK_MEM_READ,self.read);self.u.hook_add(UC_HOOK_MEM_WRITE,self.write)
  def instruction(self,u,pc,size,_):
   if pc==0x300000:u.emu_stop();return
   if self.entry_steps is not None and pc==self.symbols['al5_ro_step']:
@@ -25,7 +37,13 @@ class Runtime:
    if self.entry_steps<0:u.emu_stop();return
   if not (self.base<=pc and pc+size<=self.end):raise ValueError('PC escaped compiled runtime '+hex(pc))
  def read(self,u,access,address,size,value,_):
-  if address<0x100000:self.flash_reads.extend(range(address,address+size));return
+  if address<0x100000:
+   if address+size>0x100000:raise ValueError('Flash read escaped declared image')
+   if self.flash_read_first is None:self.flash_read_first=address
+   elif address!=self.flash_read_next:self.flash_read_contiguous=False
+   self.flash_read_next=address+size;self.flash_read_count+=size
+   if self.trace_detail=='full':self.flash_reads.extend(range(address,address+size))
+   return
   if address==0xFFE800 and size==1:
    status=self.fifo[0][0] if self.fifo else self.busy;u.mem_write(address,bytes([status]));return
   if address==0xFFE801 and size==1:
@@ -38,13 +56,19 @@ class Runtime:
  def write(self,u,access,address,size,value,_):
   if address==0xFFFA26 and size==2:
    if value not in (0x55,0xAA):raise ValueError('Unexpected watchdog value')
-   self.watchdog.append(value);return
+   if value!=(0x55 if self.watchdog_count%2==0 else 0xAA):raise ValueError('Watchdog ordering invalid')
+   self.watchdog_count+=1
+   if self.trace_detail=='full':self.watchdog.append(value)
+   return
   if address==0xFFE800 and size==1:
    if value not in (0x14,0x04,0x0C):raise ValueError('Unexpected VPW command')
-   self.command=value;self.tx.append(('command',value));return
+   self.command=value;self.tx_count+=1
+   if self.trace_detail=='full':self.tx.append(('command',value))
+   return
   if address==0xFFE801 and size==1:
    if self.command is None:raise ValueError('Data without command')
-   self.tx.append(('data',value))
+   self.tx_count+=1
+   if self.trace_detail=='full':self.tx.append(('data',value))
    if self.command==0x14:
     if self.current:raise ValueError('Nested transmit frame')
     self.current=[value]
@@ -57,7 +81,8 @@ class Runtime:
    self.command=None;return
   for name,a,b in FIXED:
    if a<=address and address+size<=b:
-    self.ram_writes.append((address,size))
+    self.ram_write_count+=1
+    if self.trace_detail=='full':self.ram_writes.append((address,size))
     if name=='stack':self.stack_low=min(self.stack_low,address)
     return
   raise ValueError('Write outside owned RAM/exact IO '+hex(address))
@@ -77,8 +102,23 @@ class Runtime:
    if self.u.mem_read(0xFFA303,1)==b'\0':return
    self.call('al5_ro_step')
   raise ValueError('Software transmit did not finish')
+ def quiesce_from_saved_loop(self):
+  """Explicit local emulator call, never a wire opcode or hardware exit."""
+  from unicorn.m68k_const import UC_M68K_REG_PC,UC_M68K_REG_A7
+  pc=self.u.reg_read(UC_M68K_REG_PC);sp=self.u.reg_read(UC_M68K_REG_A7)
+  entry=self.symbols.get('al5_ro_request_quiesce')
+  if pc!=self.symbols['al5_ro_step'] or type(entry) is not int or not self.base<=entry<self.end or not 0xFFA704<=sp<=0xFFA800:
+   raise ValueError('Local quiesce requires the saved polling-loop/owned-stack boundary')
+  before=(self.tx_count,self.flash_read_count)
+  self.u.mem_write(sp-4,pc.to_bytes(4,'big'));self.u.reg_write(UC_M68K_REG_A7,sp-4);self.entry_steps=0
+  self.u.emu_start(entry,0x1000000,count=50000)
+  if self.u.reg_read(UC_M68K_REG_PC)!=pc or self.u.reg_read(UC_M68K_REG_A7)!=sp:raise ValueError('Local quiesce did not preserve the caller boundary')
+  self.entry_steps=5;self.u.emu_start(pc,0x1000000,count=100000)
+  if self.u.mem_read(0xFFA310,1)!=b'\x02' or before!=(self.tx_count,self.flash_read_count):raise ValueError('Software park not established')
+  self.validate_watchdog()
+  return dict(invocation='synthetic local call frame',software_parked=True,physical_tx_completion_proven=False,safe_exit_proven=False,power_cycle_required=True)
  def validate_watchdog(self):
-  if self.watchdog!=[0x55,0xAA]*(len(self.watchdog)//2) or len(self.watchdog)%2:raise ValueError('Watchdog sequence invalid')
+  if self.watchdog_count%2 or self.trace_detail=='full' and (self.watchdog!=[0x55,0xAA]*(len(self.watchdog)//2) or len(self.watchdog)!=self.watchdog_count):raise ValueError('Watchdog sequence invalid')
 
 def peripheral_fault_cases(code,receipt):
  """Adversarial scripted statuses; these assertions describe software, not hardware."""
