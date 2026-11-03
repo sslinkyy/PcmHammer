@@ -1,0 +1,6491 @@
+{
+  "source_hashes": {
+    "low": "cf5dd139e52ba5925fc95f166627a9a7abcac1374ded8cb738df8297b961a3f6",
+    "high": "492040d9460d53b77dda606b9a89f4254e0680f239093001663f6ed5cf51ba75",
+    "stock": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6"
+  },
+  "composition": "saved low+high firmware; calibration replaced in emulator with exact stock segment",
+  "scope": "actual extracted 0x3A7C0 routine plus real mode getter, axis helper, vector and bilinear interpolators; no call stubs",
+  "emulator": "Unicorn M68020; synthetic RAM and inputs; no peripheral or vehicle I/O",
+  "limitations": [
+    "Input producers and scheduler are not executed here.",
+    "No physical converter behavior or edited-calibration acceptance is established.",
+    "Synthetic table vectors exist only in emulator memory.",
+    "The output is the software reason bit; downstream arbitration is separate evidence."
+  ],
+  "code_windows": [
+    {
+      "start": "0x3a7c0",
+      "end_exclusive": "0x3a9ba",
+      "sha256": "d88103102d06b21321c60671faf06b542595f6c7b13451d532e66c1401cee166"
+    },
+    {
+      "start": "0x3dc40",
+      "end_exclusive": "0x3dcc4",
+      "sha256": "2c91a55d748b6af67734b12c105ce4deda49ff486c603aaf3d26cf807ae070b4"
+    },
+    {
+      "start": "0x3dd40",
+      "end_exclusive": "0x3ddb8",
+      "sha256": "1b6f9b9b0c2a52e006b52eefbd9ba47ad28e99078b66b94526cfa38ff6c3e144"
+    },
+    {
+      "start": "0x3df08",
+      "end_exclusive": "0x3e06e",
+      "sha256": "68b14fdc9c65b0317598f06305c440a76d31b738f463346680fa8b7a295d0242"
+    },
+    {
+      "start": "0x29a60",
+      "end_exclusive": "0x29a68",
+      "sha256": "ad08ccbefa8cab5cfa7fdfdc37141c2d9fd98bb150d5ba684a80595d2a7fbd03"
+    },
+    {
+      "start": "0x8ba60",
+      "end_exclusive": "0x8ba66",
+      "sha256": "ad43189d016e3b60cda1a3e70792f3ac131787757e2a31c866cd4afca9f4ea5b"
+    }
+  ],
+  "cases": [
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 0,
+        "alternate": 0,
+        "gear": 0
+      },
+      "result": {
+        "selected_header": "0x13b78",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 3202,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80760,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 393,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 0,
+        "alternate": 0,
+        "gear": 1
+      },
+      "result": {
+        "selected_header": "0x13b9c",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 1869,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80796,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 393,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 0,
+        "alternate": 0,
+        "gear": 2
+      },
+      "result": {
+        "selected_header": "0x13bc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 1462,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80832,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 393,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 0,
+        "alternate": 0,
+        "gear": 3
+      },
+      "result": {
+        "selected_header": "0x13be4",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 1032,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80868,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 393,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 0,
+        "alternate": 0,
+        "gear": 4
+      },
+      "result": {
+        "selected_header": "0x13c08",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 733,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80904,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 393,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 0,
+        "alternate": 1,
+        "gear": 0
+      },
+      "result": {
+        "selected_header": "0x13c30",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 3202,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80944,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 396,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 0,
+        "alternate": 1,
+        "gear": 1
+      },
+      "result": {
+        "selected_header": "0x13c54",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 1869,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80980,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 396,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 0,
+        "alternate": 1,
+        "gear": 2
+      },
+      "result": {
+        "selected_header": "0x13c78",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 1462,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81016,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 396,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 0,
+        "alternate": 1,
+        "gear": 3
+      },
+      "result": {
+        "selected_header": "0x13c9c",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 1032,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81052,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 396,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 0,
+        "alternate": 1,
+        "gear": 4
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 733,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 396,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 1,
+        "alternate": 0,
+        "gear": 0
+      },
+      "result": {
+        "selected_header": "0x13950",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 3202,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80208,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 391,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 1,
+        "alternate": 0,
+        "gear": 1
+      },
+      "result": {
+        "selected_header": "0x13974",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 1869,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80244,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 391,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 1,
+        "alternate": 0,
+        "gear": 2
+      },
+      "result": {
+        "selected_header": "0x13998",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 1462,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80280,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 391,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 1,
+        "alternate": 0,
+        "gear": 3
+      },
+      "result": {
+        "selected_header": "0x139bc",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 1032,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80316,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 391,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 1,
+        "alternate": 0,
+        "gear": 4
+      },
+      "result": {
+        "selected_header": "0x139e0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 733,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80352,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 391,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 1,
+        "alternate": 1,
+        "gear": 0
+      },
+      "result": {
+        "selected_header": "0x13a08",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 3202,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80392,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 393,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 1,
+        "alternate": 1,
+        "gear": 1
+      },
+      "result": {
+        "selected_header": "0x13a2c",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 1869,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80428,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 393,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 1,
+        "alternate": 1,
+        "gear": 2
+      },
+      "result": {
+        "selected_header": "0x13a50",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 1462,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80464,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 393,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 1,
+        "alternate": 1,
+        "gear": 3
+      },
+      "result": {
+        "selected_header": "0x13a74",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 1032,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80500,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 393,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 1,
+        "alternate": 1,
+        "gear": 4
+      },
+      "result": {
+        "selected_header": "0x13a98",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 733,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80536,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 393,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 2,
+        "alternate": 0,
+        "gear": 0
+      },
+      "result": {
+        "selected_header": "0x13ac0",
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80576,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              0
+            ]
+          }
+        ],
+        "instruction_count": 389,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 2,
+        "alternate": 0,
+        "gear": 1
+      },
+      "result": {
+        "selected_header": "0x13ae4",
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80612,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              0
+            ]
+          }
+        ],
+        "instruction_count": 389,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 2,
+        "alternate": 0,
+        "gear": 2
+      },
+      "result": {
+        "selected_header": "0x13b08",
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80648,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              0
+            ]
+          }
+        ],
+        "instruction_count": 389,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 2,
+        "alternate": 0,
+        "gear": 3
+      },
+      "result": {
+        "selected_header": "0x13b2c",
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80684,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              0
+            ]
+          }
+        ],
+        "instruction_count": 389,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 2,
+        "alternate": 0,
+        "gear": 4
+      },
+      "result": {
+        "selected_header": "0x13b50",
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80720,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              0
+            ]
+          }
+        ],
+        "instruction_count": 389,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 2,
+        "alternate": 1,
+        "gear": 0
+      },
+      "result": {
+        "selected_header": "0x13ac0",
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80576,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              0
+            ]
+          }
+        ],
+        "instruction_count": 389,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 2,
+        "alternate": 1,
+        "gear": 1
+      },
+      "result": {
+        "selected_header": "0x13ae4",
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80612,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              0
+            ]
+          }
+        ],
+        "instruction_count": 389,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 2,
+        "alternate": 1,
+        "gear": 2
+      },
+      "result": {
+        "selected_header": "0x13b08",
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80648,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              0
+            ]
+          }
+        ],
+        "instruction_count": 389,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 2,
+        "alternate": 1,
+        "gear": 3
+      },
+      "result": {
+        "selected_header": "0x13b2c",
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80684,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              0
+            ]
+          }
+        ],
+        "instruction_count": 389,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "stock_all_modes_and_gears",
+      "inputs": {
+        "mode": 2,
+        "alternate": 1,
+        "gear": 4
+      },
+      "result": {
+        "selected_header": "0x13b50",
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80720,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              0
+            ]
+          }
+        ],
+        "instruction_count": 389,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 0,
+        "rpm_raw": 1600,
+        "comparison_raw": 0
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              1600
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              0,
+              0
+            ]
+          }
+        ],
+        "instruction_count": 320,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 0,
+        "rpm_raw": 1600,
+        "comparison_raw": 1
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              1600
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              0,
+              0
+            ]
+          }
+        ],
+        "instruction_count": 320,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 0,
+        "rpm_raw": 8000,
+        "comparison_raw": 0
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              8000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              16384,
+              0
+            ]
+          }
+        ],
+        "instruction_count": 374,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 0,
+        "rpm_raw": 8000,
+        "comparison_raw": 1
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              8000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              16384,
+              0
+            ]
+          }
+        ],
+        "instruction_count": 374,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 0,
+        "rpm_raw": 16000,
+        "comparison_raw": 0
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              0
+            ]
+          }
+        ],
+        "instruction_count": 394,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 0,
+        "rpm_raw": 16000,
+        "comparison_raw": 1
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              0
+            ]
+          }
+        ],
+        "instruction_count": 394,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 0,
+        "rpm_raw": 24000,
+        "comparison_raw": 0
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              24000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              53248,
+              0
+            ]
+          }
+        ],
+        "instruction_count": 419,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 0,
+        "rpm_raw": 24000,
+        "comparison_raw": 1
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              24000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              53248,
+              0
+            ]
+          }
+        ],
+        "instruction_count": 419,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 0,
+        "rpm_raw": 28800,
+        "comparison_raw": 0
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              28800
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              65535,
+              0
+            ]
+          }
+        ],
+        "instruction_count": 324,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 0,
+        "rpm_raw": 28800,
+        "comparison_raw": 1
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              28800
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              65535,
+              0
+            ]
+          }
+        ],
+        "instruction_count": 324,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 16384,
+        "rpm_raw": 1600,
+        "comparison_raw": 0
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 16384,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              1600
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              0,
+              16384
+            ]
+          }
+        ],
+        "instruction_count": 320,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 16384,
+        "rpm_raw": 1600,
+        "comparison_raw": 1
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 16384,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              1600
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              0,
+              16384
+            ]
+          }
+        ],
+        "instruction_count": 320,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 16384,
+        "rpm_raw": 8000,
+        "comparison_raw": 131
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 16384,
+        "surface_result_raw": 11629,
+        "comparison_threshold_raw": 132,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              8000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              16384,
+              16384
+            ]
+          }
+        ],
+        "instruction_count": 378,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 16384,
+        "rpm_raw": 8000,
+        "comparison_raw": 132
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 16384,
+        "surface_result_raw": 11629,
+        "comparison_threshold_raw": 132,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              8000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              16384,
+              16384
+            ]
+          }
+        ],
+        "instruction_count": 376,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 16384,
+        "rpm_raw": 8000,
+        "comparison_raw": 133
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 16384,
+        "surface_result_raw": 11629,
+        "comparison_threshold_raw": 132,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              8000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              16384,
+              16384
+            ]
+          }
+        ],
+        "instruction_count": 376,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 16384,
+        "rpm_raw": 16000,
+        "comparison_raw": 73
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 16384,
+        "surface_result_raw": 6549,
+        "comparison_threshold_raw": 74,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              16384
+            ]
+          }
+        ],
+        "instruction_count": 398,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 16384,
+        "rpm_raw": 16000,
+        "comparison_raw": 74
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 16384,
+        "surface_result_raw": 6549,
+        "comparison_threshold_raw": 74,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              16384
+            ]
+          }
+        ],
+        "instruction_count": 396,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 16384,
+        "rpm_raw": 16000,
+        "comparison_raw": 75
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 16384,
+        "surface_result_raw": 6549,
+        "comparison_threshold_raw": 74,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              16384
+            ]
+          }
+        ],
+        "instruction_count": 396,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 16384,
+        "rpm_raw": 24000,
+        "comparison_raw": 0
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 16384,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              24000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              53248,
+              16384
+            ]
+          }
+        ],
+        "instruction_count": 419,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 16384,
+        "rpm_raw": 24000,
+        "comparison_raw": 1
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 16384,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              24000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              53248,
+              16384
+            ]
+          }
+        ],
+        "instruction_count": 419,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 16384,
+        "rpm_raw": 28800,
+        "comparison_raw": 0
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 16384,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              28800
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              65535,
+              16384
+            ]
+          }
+        ],
+        "instruction_count": 324,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 16384,
+        "rpm_raw": 28800,
+        "comparison_raw": 1
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 16384,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              28800
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              65535,
+              16384
+            ]
+          }
+        ],
+        "instruction_count": 324,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 32768,
+        "rpm_raw": 1600,
+        "comparison_raw": 0
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 32768,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              1600
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              0,
+              32768
+            ]
+          }
+        ],
+        "instruction_count": 320,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 32768,
+        "rpm_raw": 1600,
+        "comparison_raw": 1
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 32768,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              1600
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              0,
+              32768
+            ]
+          }
+        ],
+        "instruction_count": 320,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 32768,
+        "rpm_raw": 8000,
+        "comparison_raw": 356
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 32768,
+        "surface_result_raw": 31452,
+        "comparison_threshold_raw": 357,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              8000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              16384,
+              32768
+            ]
+          }
+        ],
+        "instruction_count": 378,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 32768,
+        "rpm_raw": 8000,
+        "comparison_raw": 357
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 32768,
+        "surface_result_raw": 31452,
+        "comparison_threshold_raw": 357,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              8000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              16384,
+              32768
+            ]
+          }
+        ],
+        "instruction_count": 376,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 32768,
+        "rpm_raw": 8000,
+        "comparison_raw": 358
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 32768,
+        "surface_result_raw": 31452,
+        "comparison_threshold_raw": 357,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              8000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              16384,
+              32768
+            ]
+          }
+        ],
+        "instruction_count": 376,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 32768,
+        "rpm_raw": 16000,
+        "comparison_raw": 306
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 32768,
+        "surface_result_raw": 27037,
+        "comparison_threshold_raw": 307,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              32768
+            ]
+          }
+        ],
+        "instruction_count": 398,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 32768,
+        "rpm_raw": 16000,
+        "comparison_raw": 307
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 32768,
+        "surface_result_raw": 27037,
+        "comparison_threshold_raw": 307,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              32768
+            ]
+          }
+        ],
+        "instruction_count": 396,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 32768,
+        "rpm_raw": 16000,
+        "comparison_raw": 308
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 32768,
+        "surface_result_raw": 27037,
+        "comparison_threshold_raw": 307,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              32768
+            ]
+          }
+        ],
+        "instruction_count": 396,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 32768,
+        "rpm_raw": 24000,
+        "comparison_raw": 147
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 32768,
+        "surface_result_raw": 13053,
+        "comparison_threshold_raw": 148,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              24000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              53248,
+              32768
+            ]
+          }
+        ],
+        "instruction_count": 423,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 32768,
+        "rpm_raw": 24000,
+        "comparison_raw": 148
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 32768,
+        "surface_result_raw": 13053,
+        "comparison_threshold_raw": 148,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              24000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              53248,
+              32768
+            ]
+          }
+        ],
+        "instruction_count": 421,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 32768,
+        "rpm_raw": 24000,
+        "comparison_raw": 149
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 32768,
+        "surface_result_raw": 13053,
+        "comparison_threshold_raw": 148,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              24000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              53248,
+              32768
+            ]
+          }
+        ],
+        "instruction_count": 421,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 32768,
+        "rpm_raw": 28800,
+        "comparison_raw": 0
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 32768,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              28800
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              65535,
+              32768
+            ]
+          }
+        ],
+        "instruction_count": 324,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 32768,
+        "rpm_raw": 28800,
+        "comparison_raw": 1
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 32768,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              28800
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              65535,
+              32768
+            ]
+          }
+        ],
+        "instruction_count": 324,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 49152,
+        "rpm_raw": 1600,
+        "comparison_raw": 0
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 49152,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              1600
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              0,
+              49152
+            ]
+          }
+        ],
+        "instruction_count": 320,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 49152,
+        "rpm_raw": 1600,
+        "comparison_raw": 1
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 49152,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              1600
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              0,
+              49152
+            ]
+          }
+        ],
+        "instruction_count": 320,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 49152,
+        "rpm_raw": 8000,
+        "comparison_raw": 512
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 49152,
+        "surface_result_raw": 45116,
+        "comparison_threshold_raw": 513,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              8000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              16384,
+              49152
+            ]
+          }
+        ],
+        "instruction_count": 376,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 49152,
+        "rpm_raw": 8000,
+        "comparison_raw": 513
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 49152,
+        "surface_result_raw": 45116,
+        "comparison_threshold_raw": 513,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              8000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              16384,
+              49152
+            ]
+          }
+        ],
+        "instruction_count": 374,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 49152,
+        "rpm_raw": 8000,
+        "comparison_raw": 514
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 49152,
+        "surface_result_raw": 45116,
+        "comparison_threshold_raw": 513,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              8000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              16384,
+              49152
+            ]
+          }
+        ],
+        "instruction_count": 374,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 49152,
+        "rpm_raw": 16000,
+        "comparison_raw": 594
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 49152,
+        "surface_result_raw": 52318,
+        "comparison_threshold_raw": 595,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              49152
+            ]
+          }
+        ],
+        "instruction_count": 398,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 49152,
+        "rpm_raw": 16000,
+        "comparison_raw": 595
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 49152,
+        "surface_result_raw": 52318,
+        "comparison_threshold_raw": 595,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              49152
+            ]
+          }
+        ],
+        "instruction_count": 396,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 49152,
+        "rpm_raw": 16000,
+        "comparison_raw": 596
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 49152,
+        "surface_result_raw": 52318,
+        "comparison_threshold_raw": 595,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              49152
+            ]
+          }
+        ],
+        "instruction_count": 396,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 49152,
+        "rpm_raw": 24000,
+        "comparison_raw": 391
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 49152,
+        "surface_result_raw": 34462,
+        "comparison_threshold_raw": 392,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              24000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              53248,
+              49152
+            ]
+          }
+        ],
+        "instruction_count": 423,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 49152,
+        "rpm_raw": 24000,
+        "comparison_raw": 392
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 49152,
+        "surface_result_raw": 34462,
+        "comparison_threshold_raw": 392,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              24000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              53248,
+              49152
+            ]
+          }
+        ],
+        "instruction_count": 421,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 49152,
+        "rpm_raw": 24000,
+        "comparison_raw": 393
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 49152,
+        "surface_result_raw": 34462,
+        "comparison_threshold_raw": 392,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              24000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              53248,
+              49152
+            ]
+          }
+        ],
+        "instruction_count": 421,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 49152,
+        "rpm_raw": 28800,
+        "comparison_raw": 0
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 49152,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              28800
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              65535,
+              49152
+            ]
+          }
+        ],
+        "instruction_count": 325,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 49152,
+        "rpm_raw": 28800,
+        "comparison_raw": 1
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 49152,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              28800
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              65535,
+              49152
+            ]
+          }
+        ],
+        "instruction_count": 325,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 65535,
+        "rpm_raw": 1600,
+        "comparison_raw": 0
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              1600
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              0,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 320,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 65535,
+        "rpm_raw": 1600,
+        "comparison_raw": 1
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              1600
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              0,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 320,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 65535,
+        "rpm_raw": 8000,
+        "comparison_raw": 512
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 45116,
+        "comparison_threshold_raw": 513,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              8000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              16384,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 376,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 65535,
+        "rpm_raw": 8000,
+        "comparison_raw": 513
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 45116,
+        "comparison_threshold_raw": 513,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              8000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              16384,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 374,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 65535,
+        "rpm_raw": 8000,
+        "comparison_raw": 514
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 45116,
+        "comparison_threshold_raw": 513,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              8000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              16384,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 374,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 65535,
+        "rpm_raw": 16000,
+        "comparison_raw": 732
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 733,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 396,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 65535,
+        "rpm_raw": 16000,
+        "comparison_raw": 733
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 733,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 394,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 65535,
+        "rpm_raw": 16000,
+        "comparison_raw": 734
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 733,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 394,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 65535,
+        "rpm_raw": 24000,
+        "comparison_raw": 732
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64500,
+        "comparison_threshold_raw": 733,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              24000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              53248,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 423,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 65535,
+        "rpm_raw": 24000,
+        "comparison_raw": 733
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64500,
+        "comparison_threshold_raw": 733,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              24000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              53248,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 421,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 65535,
+        "rpm_raw": 24000,
+        "comparison_raw": 734
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64500,
+        "comparison_threshold_raw": 733,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              24000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              53248,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 421,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 65535,
+        "rpm_raw": 28800,
+        "comparison_raw": 0
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 1,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              28800
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              65535,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 326,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "synthetic_table_and_comparator_boundary",
+      "inputs": {
+        "table_raw": 65535,
+        "rpm_raw": 28800,
+        "comparison_raw": 1
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 1,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              28800
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              65535,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 326,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "runtime_compensation",
+      "inputs": {
+        "gear": 0,
+        "compensation": 0
+      },
+      "result": {
+        "selected_header": "0x13c30",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80944,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 394,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "runtime_compensation",
+      "inputs": {
+        "gear": 0,
+        "compensation": 2048
+      },
+      "result": {
+        "selected_header": "0x13c30",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 1601,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80944,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 396,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "runtime_compensation",
+      "inputs": {
+        "gear": 0,
+        "compensation": 4096
+      },
+      "result": {
+        "selected_header": "0x13c30",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 3202,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80944,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 396,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "runtime_compensation",
+      "inputs": {
+        "gear": 0,
+        "compensation": 8192
+      },
+      "result": {
+        "selected_header": "0x13c30",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 6404,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80944,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 396,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "runtime_compensation",
+      "inputs": {
+        "gear": 0,
+        "compensation": 65535
+      },
+      "result": {
+        "selected_header": "0x13c30",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 51231,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80944,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 396,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "runtime_compensation",
+      "inputs": {
+        "gear": 4,
+        "compensation": 0
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 394,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "runtime_compensation",
+      "inputs": {
+        "gear": 4,
+        "compensation": 2048
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 366,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 396,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "runtime_compensation",
+      "inputs": {
+        "gear": 4,
+        "compensation": 4096
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 733,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 396,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "runtime_compensation",
+      "inputs": {
+        "gear": 4,
+        "compensation": 8192
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 1466,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 396,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "runtime_compensation",
+      "inputs": {
+        "gear": 4,
+        "compensation": 65535
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 11727,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 396,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "signed_acceleration_hysteresis",
+      "inputs": {
+        "acceleration": -1,
+        "previous_accel_gate": 0
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 733,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 396,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "signed_acceleration_hysteresis",
+      "inputs": {
+        "acceleration": 613,
+        "previous_accel_gate": 0
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 733,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 396,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "signed_acceleration_hysteresis",
+      "inputs": {
+        "acceleration": 614,
+        "previous_accel_gate": 0
+      },
+      "result": {
+        "selected_header": null,
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": false,
+        "calls": [],
+        "instruction_count": 25,
+        "context_written_offsets": [
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "signed_acceleration_hysteresis",
+      "inputs": {
+        "acceleration": 615,
+        "previous_accel_gate": 0
+      },
+      "result": {
+        "selected_header": null,
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": false,
+        "calls": [],
+        "instruction_count": 25,
+        "context_written_offsets": [
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "signed_acceleration_hysteresis",
+      "inputs": {
+        "acceleration": -1,
+        "previous_accel_gate": 1
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 733,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 397,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "signed_acceleration_hysteresis",
+      "inputs": {
+        "acceleration": 2457,
+        "previous_accel_gate": 1
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 733,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 397,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "signed_acceleration_hysteresis",
+      "inputs": {
+        "acceleration": 2458,
+        "previous_accel_gate": 1
+      },
+      "result": {
+        "selected_header": null,
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": false,
+        "calls": [],
+        "instruction_count": 26,
+        "context_written_offsets": [
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "signed_acceleration_hysteresis",
+      "inputs": {
+        "acceleration": 2459,
+        "previous_accel_gate": 1
+      },
+      "result": {
+        "selected_header": null,
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": false,
+        "calls": [],
+        "instruction_count": 26,
+        "context_written_offsets": [
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "alternate_enable_clear",
+      "inputs": {
+        "mode": 0,
+        "enable": 0
+      },
+      "result": {
+        "selected_header": "0x13c08",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 733,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80904,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 395,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "alternate_enable_clear",
+      "inputs": {
+        "mode": 1,
+        "enable": 0
+      },
+      "result": {
+        "selected_header": "0x139e0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 733,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              80352,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 393,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe",
+          "0x2410"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "primary_gate_clear",
+      "inputs": {
+        "primary_gate": 0
+      },
+      "result": {
+        "selected_header": null,
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": false,
+        "acceleration_gate": false,
+        "calls": [],
+        "instruction_count": 6,
+        "context_written_offsets": []
+      },
+      "match": true
+    },
+    {
+      "kind": "existing_reason_not_cleared_here",
+      "inputs": {
+        "primary_gate": 0,
+        "initial_reason": 1
+      },
+      "result": {
+        "selected_header": null,
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": false,
+        "calls": [],
+        "instruction_count": 6,
+        "context_written_offsets": []
+      },
+      "match": true
+    },
+    {
+      "kind": "existing_reason_not_cleared_here",
+      "inputs": {
+        "comparison_raw": 65535,
+        "initial_reason": 1
+      },
+      "result": {
+        "selected_header": "0x13cc0",
+        "table_result_raw": 65535,
+        "surface_result_raw": 64457,
+        "comparison_threshold_raw": 733,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": true,
+        "calls": [
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              783076,
+              12800
+            ]
+          },
+          {
+            "entry": "0x3dd40",
+            "arguments": [
+              81088,
+              25600
+            ]
+          },
+          {
+            "entry": "0x3dc40",
+            "arguments": [
+              86250,
+              16000
+            ]
+          },
+          {
+            "entry": "0x3df08",
+            "arguments": [
+              85576,
+              32768,
+              65535
+            ]
+          }
+        ],
+        "instruction_count": 394,
+        "context_written_offsets": [
+          "0x23b4",
+          "0x23b5",
+          "0x23b6",
+          "0x23b7",
+          "0x23c4",
+          "0x23c5",
+          "0x23fe"
+        ]
+      },
+      "match": true
+    },
+    {
+      "kind": "existing_reason_not_cleared_here",
+      "inputs": {
+        "acceleration": 32767,
+        "initial_reason": 1
+      },
+      "result": {
+        "selected_header": null,
+        "table_result_raw": 0,
+        "surface_result_raw": 0,
+        "comparison_threshold_raw": 0,
+        "reason_bit_2410_1": true,
+        "acceleration_gate": false,
+        "calls": [],
+        "instruction_count": 25,
+        "context_written_offsets": [
+          "0x23fe"
+        ]
+      },
+      "match": true
+    }
+  ],
+  "case_count": 115,
+  "all_match": true,
+  "inputs": {
+    "low": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\AL5_RAW_DUMP_00000_1FFFF\\AL5_RAW_00000_1FFFF_20260927_182847_001.bin",
+    "high": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\AL5_RAW_DUMP_20000_FFFFF\\AL5_RAW_20000_FFFFF_20260927_184345_001.bin",
+    "stock": "C:\\Car Tuning\\To tune\\AL5 Transmission Work\\AL5_15184109_TunerPro_VALIDATED_CORE_v0_3\\AL5_15184109_15183960_STOCK_REFERENCE_SEGMENT.bin"
+  }
+}

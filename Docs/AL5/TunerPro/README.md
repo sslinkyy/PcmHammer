@@ -161,3 +161,17 @@ The improved audit counts 2381 of 2517 unique numeric cells; 136 remaining
 cells are D5000/D5005 Patterns E-H. All 283 numeric entry comparisons pass.
 [Coverage evidence and the next 24-cell pass](D5197_AND_CELL_COVERAGE_v0_11.md)
 describe this distinction. No edited BIN is flash-ready.
+
+## Offline trace of the extra TCC families — 2026-11-03
+
+The completed v0.12 exported-definition coverage is recorded in
+[NUMERIC_COVERAGE_v0_12.md](NUMERIC_COVERAGE_v0_12.md). Beyond that exported set,
+the two previously unassigned raw families at 0x13A08 and 0x13C30 now have
+cruise-conditioned selection, shared speed/gear axes, fixed-point cell scaling,
+and a bounded release-reason/state trace. Both contain the same all-0xFFFF
+values as their corresponding stock base banks, so stock bank switching alone
+does not change the lookup result.
+
+Read [the combined trace](TCC_CRUISE_THROTTLE_RELEASE_TRACE.md) for activation,
+source identities, actual extracted-code replay, and the physical-validation
+boundary. The named XDF and source calibration bytes are unchanged.
