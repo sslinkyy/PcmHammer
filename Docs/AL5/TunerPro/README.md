@@ -176,7 +176,7 @@ Read [the combined trace](TCC_CRUISE_THROTTLE_RELEASE_TRACE.md) for activation,
 source identities, actual extracted-code replay, and the physical-validation
 boundary. The named XDF and source calibration bytes are unchanged.
 
-## Cruise TCC v0.13 — current expanded definition
+## Cruise TCC v0.13
 
 Use `AL5_15184109_15183960_CRUISE_TCC_v0_13.xdf` with the same 57,304-byte
 segment format and OS/calibration context. It preserves all 298 v0.12 items
@@ -223,3 +223,30 @@ The two stock pairs are identical. The inhibit can select the release/off
 request path; clearing it lets the remaining lockup logic proceed.
 See [selector, hysteresis and effect evidence](TCC_ALTERNATE_RPM_TRACE.md).
 The exact hydraulic phase name remains unresolved. No XDF or BIN was changed.
+
+## Extended TCC v0.14 — current expanded definition
+
+`AL5_15184109_15183960_EXTENDED_TCC_v0_14.xdf` preserves all 308 v0.13
+entries, including both cruise banks, and adds two constants under
+`TCC / Shift-Stage RPM Inhibit`:
+
+- TCC Low-RPM Lockup Inhibit Set - Active Shift Stage: 0x145E0,
+  stock raw 7200 (0x1C20), displayed 900.000 rpm.
+- TCC Low-RPM Lockup Inhibit Clear - Active Shift Stage: 0x145E2,
+  stock raw 8400 (0x20D0), displayed 1050.000 rpm.
+
+Both use unsigned BE16 /8 scaling, three decimal places (preserving the
+0.125 RPM raw resolution), and the representable range 0-8191.875 rpm.
+Set applies strictly below its threshold when the inhibit latch is clear;
+Clear applies at or above its threshold when the latch is set. Descriptions
+retain selector A5+0x2D1D=1, shared-latch behavior, the stock state-7 enforcement
+condition and the unresolved exact hydraulic phase name. No native calibration
+ID or alternate-field marker proof is claimed.
+
+`ALTERNATE_TCC_RPM_MAPPING_v0_14.json` records addresses, stock values and
+trace provenance. `V0_14_AUDIT.json` passes across 310 items with all 2517
+native numeric cells retained; the two additional stock constants have their
+own raw/scaling checks. `Tools/AL5/expand_alternate_tcc_rpm.py` reproduces this
+expansion from the verified v0.13 XDF. BINs remain unchanged. GUI validation
+for these two new entries is pending; v0.13 GUI evidence remains tied to its
+original file hash.

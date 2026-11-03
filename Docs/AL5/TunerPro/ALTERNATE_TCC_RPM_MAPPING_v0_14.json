@@ -1,0 +1,43 @@
+{
+  "source_xdf_sha256": "264e2b49e2300a1ddd773a3975c9913c4a06b16c4918cd0a49f95186894e0d53",
+  "stock_sha256": "140b70ea90cb57c20aaab2d9641d2b7caaa6bf312c89bd9369b27b8bce5fcbe6",
+  "evidence_sha256": {
+    "TCC_RPM_SELECTOR_20261103.json": "a2beec84e8fa2f98bbbfd32593b9a843b36bb00c904cd5833a4b01e4b82bf5ec",
+    "TCC_ALTERNATE_RPM_EFFECT_20261103.json": "dd665f9c8d9a032de773e229449bf3829d2ab100c2ab954ced83149c0a6b3fd0"
+  },
+  "previous_items_preserved": 308,
+  "added": [
+    {
+      "title": "TCC Low-RPM Lockup Inhibit Set - Active Shift Stage",
+      "native_address": "0x145e0",
+      "segment_offset": 50656,
+      "raw_hex": "1C20",
+      "stock_raw": 7200,
+      "stock_rpm": 900.0,
+      "stock_display": "900.000",
+      "units": "rpm",
+      "behavior": "With a clear inhibit latch, RPM strictly below this threshold sets the inhibit."
+    },
+    {
+      "title": "TCC Low-RPM Lockup Inhibit Clear - Active Shift Stage",
+      "native_address": "0x145e2",
+      "segment_offset": 50658,
+      "raw_hex": "20D0",
+      "stock_raw": 8400,
+      "stock_rpm": 1050.0,
+      "stock_display": "1050.000",
+      "units": "rpm",
+      "behavior": "With the inhibit latch set, RPM reaching or exceeding this threshold clears it."
+    }
+  ],
+  "scaling": "unsigned BE16 /8 RPM",
+  "all_stock_values_match": true,
+  "gui_validation": "pending for the two new RPM constants",
+  "xdf_sha256": "7563b8489986abef397df3dfe3516fd824371c64d29b7a0334e63486d060d33d",
+  "inputs": {
+    "source": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Docs\\AL5\\TunerPro\\AL5_15184109_15183960_CRUISE_TCC_v0_13.xdf",
+    "stock": "C:\\Car Tuning\\To tune\\AL5 Transmission Work\\AL5_15184109_TunerPro_VALIDATED_CORE_v0_3\\AL5_15184109_15183960_STOCK_REFERENCE_SEGMENT.bin",
+    "ppei": "C:\\Car Tuning\\To tune\\AL5 Transmission Work\\Direct Read PPEI AL5 Performance Tune.bin",
+    "export": "C:\\Codex Projects\\Car Tuning\\AL5_15184109_15183960_tables_20260905_185942_001.json"
+  }
+}
