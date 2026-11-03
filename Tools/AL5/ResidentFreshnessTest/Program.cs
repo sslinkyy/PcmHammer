@@ -13,7 +13,7 @@ static class Program
     }
     static int Main(string[] args)
     {
-        if(args.Length!=2)throw new ArgumentException("Pinned SPS OS and native freshness report required; file-only tests.");
+        if(args.Length<2 || args.Length>3)throw new ArgumentException("Pinned SPS OS and native freshness report [receiver-init report] required; file-only tests.");
         byte[] os=File.ReadAllBytes(args[0]);using var doc=JsonDocument.Parse(File.ReadAllBytes(args[1]));var root=doc.RootElement;
         Check(root.GetProperty("schema").GetString()=="al5-native-resident-reply-freshness-v1","Exact native producer schema");
         foreach(string flag in new[]{"hardware_access","session_boundary_proven","physical_status_semantics_verified","live_read_enabled","live_upload_enabled","live_execution_enabled","live_write_enabled"})
@@ -52,6 +52,49 @@ static class Program
         c=new AL5SavedPersistentBankCampaign(os);c.BeginNextSavedVpwRequest();
         Check(c.ObserveSavedVpwReply(alias,out _)==AL5SavedReplyKind.MatchingLow16Echo && c.BytesObserved==4,"A new host campaign cannot distinguish the native same-echo alias");
         Blocked(c);Reject(()=>c.CopyCompleteSavedBanks());
+        if(args.Length==3)CheckReceiverInitialization(os,args[2]);
         Console.WriteLine("PASS 12 native state outcomes and production host duplicate/alias/stop guards; no physical freshness or live authority.");return 0;
+    }
+
+    static void CheckReceiverInitialization(byte[] os,string path)
+    {
+        using var doc=JsonDocument.Parse(File.ReadAllBytes(path));var root=doc.RootElement;
+        Check(root.GetProperty("schema").GetString()=="al5-offline-resident-receiver-init-v1","Exact receiver producer schema");
+        foreach(string flag in new[]{"hardware_access","physical_receiver_ready_verified","session_boundary_proven","live_read_enabled","live_upload_enabled","live_execution_enabled","live_write_enabled"})
+            Check(!root.GetProperty(flag).GetBoolean(),"Receiver model cannot grant physical/live authority");
+        var rows=root.GetProperty("cases").EnumerateArray().ToArray();Check(rows.Length==11,"Complete receiver case corpus");
+        foreach(var row in rows.Where(r=>r.GetProperty("case").GetString()=="native_irq_guard"))
+        {
+            var initial=row.GetProperty("initialization");var state=initial.GetProperty("after");
+            Check(state.GetProperty("body").GetString()=="000000000000" && state.GetProperty("tracked_index").GetInt32()==0 && initial.GetProperty("mode23_eligible").GetBoolean(),"Native init retains CRT clearing and admits Mode 23 selection");
+            bool consumer=!row.GetProperty("blocked").GetBoolean() && (row.GetProperty("status").GetInt32()==0x40 ||
+                (row.GetProperty("status").GetInt32()==0x60 && row.GetProperty("allow60").GetBoolean()));
+            Check((row.GetProperty("consumer_entries").GetInt32()>0)==consumer,"Native IRQ guards decide consumer entry");
+            Check(row.GetProperty("after").GetProperty("rx_length").GetInt32()==(consumer&&!row.GetProperty("alternate").GetBoolean()?1:0),"Only selected accumulation path takes the byte");
+        }
+        var initOnly=rows.Single(r=>r.GetProperty("case").GetString()=="communication_init_alone_retains_old_tracking");
+        Check(initOnly.GetProperty("after").GetProperty("tracked_index").GetInt32()==75,"Warm communication init is not a freshness fence");
+        var joined=rows.Single(r=>r.GetProperty("case").GetString()=="initialized_guarded_receive_to_native_scheduler");
+        Check(joined.GetProperty("scheduled").GetProperty("tracked_index").GetInt32()==75 && joined.GetProperty("scheduled").GetProperty("pending").GetString()=="00","Native complete scheduler submitted and tracks reply");
+        foreach(var row in rows.Where(r=>r.GetProperty("case").GetString()=="next_read_scheduler_interleaving"))
+        {
+            bool early=row.GetProperty("early_scheduler").GetBoolean();
+            Check(row.GetProperty("native_timer_calls").GetInt32()==(early?100:0) && !row.GetProperty("physical_tick_duration_verified").GetBoolean(),"Native countdown invocation count is not physical timing");
+            var c=new AL5SavedPersistentBankCampaign(os);
+            Check(c.BeginNextSavedVpwRequest().SequenceEqual(Convert.FromHexString("6d18f02300400001")),"First bank request");
+            Check(c.ObserveSavedVpwReply(Convert.FromHexString(row.GetProperty("first_submission_hex").GetString()!),out _)==AL5SavedReplyKind.MatchingLow16Echo && c.BytesObserved==4,"First native dword consumed");
+            Check(c.BeginNextSavedVpwRequest().SequenceEqual(Convert.FromHexString("6d18f02300400401")),"Next bank request");
+            string duplicate=row.GetProperty("duplicate_submission_hex").GetString()!;
+            if(early)
+                Check(c.ObserveSavedVpwReply(Convert.FromHexString(duplicate),out _)==AL5SavedReplyKind.Unrelated && c.HasPendingRequest && c.BytesObserved==4,"Native duplicate leaves next request pending");
+            else Check(duplicate=="","No early scheduler duplicate in this interleaving");
+            Check(c.ObserveSavedVpwReply(Convert.FromHexString(row.GetProperty("next_submission_hex").GetString()!),out _)==AL5SavedReplyKind.MatchingLow16Echo && c.BytesObserved==8,"Actual next native reply satisfies pending request");
+            Reject(()=>c.CopyCompleteSavedBanks());c.TimeoutOrCancel();Reject(()=>c.BeginNextSavedVpwRequest());Blocked(c);
+        }
+        var restored=rows.Single(r=>r.GetProperty("case").GetString()=="persistent_context_restore_preserves_response_clear");
+        Check(restored.GetProperty("bytes_restored").GetInt32()==0x9F2 && restored.GetProperty("destination_end_exclusive").GetInt32()==0xFF8B32 &&
+            restored.GetProperty("native_crc").GetInt32()==restored.GetProperty("stored_crc").GetInt32(),"Native restored context is bounded and passes CRC");
+        Check(restored.GetProperty("restored").GetProperty("body").GetString()=="000000000000" && restored.GetProperty("restored").GetProperty("tracked_index").GetInt32()==0,"Persistent context does not restore the old reply");
+        Console.WriteLine("PASS 11 native receiver/init/scheduler/restore outcomes and both actual host reply interleavings; live operations disabled.");
     }
 }

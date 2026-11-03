@@ -1,5 +1,7 @@
 # Resident Mode $23 reply freshness
 
+The [receiver-initialization continuation](RESIDENT_RECEIVER_INITIALIZATION.md) adds the real communication initializer, guarded status entry, complete scheduler selection, native countdown and persistent-context restore. Physical startup and freshness remain unqualified.
+
 This continues the [pre-entry bank trace](RESIDENT_PREENTRY_BANK_BACKUP.md). The new joined native trace distinguishes reply retirement, requeue, interface clearing and application startup. It establishes no physical session boundary and enables no live operation.
 
 ## Joined scheduling and status observations
