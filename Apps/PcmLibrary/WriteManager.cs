@@ -67,16 +67,23 @@ namespace PcmHacking
         /// <returns>True if the write was successful, fales if failed or aborted.</returns>
         public async Task<bool> Write(byte[] image, PcmType forcedPcmType = PcmType.Undefined)
         {
-            // AL5 raw calibration segments must never enter the PCM kernel writer,
+            // AL5 segments and recognized full images must never enter the PCM kernel writer,
             // including when a user manually forces a PCM type. The AL5
             // programming protocol is still offline research. Reject before any
             // vehicle query, security exchange, upload, erase or programming call.
             if (image == null)
                 throw new ArgumentNullException(nameof(image));
 
-            if (image.Length == AL5CalibrationReader.Length)
+            if (image.Length == AL5CalibrationReader.Length || AL5CalibrationWriteProfile.ContainsKnownAl5FlashCode(image))
             {
-                AL5ProgrammingAssessment assessment = AL5ProgrammingWorkflow.Assess(image);
+                byte[] calibration = image;
+                if (image.Length == 0x100000)
+                {
+                    calibration = new byte[AL5CalibrationReader.Length];
+                    Array.Copy(image, AL5CalibrationInspection.StartAddress, calibration, 0, calibration.Length);
+                    logger.AddUserMessage("Recognized full AL5 flash image: the PCM writer cannot program this reference or expected-image artifact.");
+                }
+                AL5ProgrammingAssessment assessment = AL5ProgrammingWorkflow.Assess(calibration);
                 logger.AddUserMessage("AL5 calibration-segment writing is disabled. Use the offline AL5 write-plan tool; the write protocol remains unproven.");
                 logger.AddUserMessage("AL5 offline retry assessment: " + assessment.RetryAssessment + ". " + assessment.BlockingReason);
                 foreach (string error in assessment.Candidate.InputErrors)

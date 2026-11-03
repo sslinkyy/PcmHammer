@@ -2,6 +2,8 @@
 
 Updated 2026-11-02. Writing is the main workstream in the [30-point plan](PRE_ARRIVAL_30_POINT_PLAN.md). This is a compiled, transport-free candidate, not an enabled live writer. No adapter or controller is accessed by the tools below.
 
+The [dispatch continuation](WRITER_DISPATCH_CHECKPOINT_20261102.md) implements send/reply ownership, immutable qualification boundaries, profile/deadline checks and tests the real Vehicle/GT path through a scripted port. It also documents the corrected GT send-result propagation and executable-upload ACK distinction.
+
 ## Implemented candidate
 
 `AL5CalibrationWriteCandidate` joins the captured EFILive VPW 1x lifecycle to the constructed packet plan and an owned full saved reference. It pins the 1,590-byte write loader SHA-256 to `b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa` and requires the calibration's native checksum and family anchors.
@@ -32,7 +34,7 @@ Without a template, the tool constructs the plan and remains at Setup. With a co
 
 `CapturedProgramImageTest.csproj -- --writes` now tests the candidate with all three retained calibration captures. It checks generated control packets, the dynamic-key boundary, checksum retry ownership, a changed checksum-correct calibration, corruption in calibration/collateral/marker/persistent/other protected regions, and interruptions at every captured pending program block plus phase transitions. The synthetic full reference is explicitly not an original controller backup.
 
-The Windows PcmHammer build includes the shared candidate. The TCM Hammer menu retains its existing read/file commands; no live writer button or upload backend is enabled. `GateTest.csproj` accepts `AL5CandidateLibraryPath` so the rejection test can run against the exact frozen application library instead of a stale default build.
+The Windows PcmHammer build includes the shared candidate and a file-only write preparation/export command in TCM Hammer. No live writer button or upload backend is enabled. `GateTest.csproj` accepts `AL5CandidateLibraryPath` so the rejection test can run against the exact frozen application library instead of a stale default build.
 
 ## First bench qualification, without another broad offline cycle
 

@@ -9,7 +9,17 @@ static class WriteCandidateTool
 {
     static string Hash(byte[] bytes)=>Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
     static object Input(string path,byte[] bytes)=>new { selected=path,resolved=Path.GetFullPath(path),bytes=bytes.Length,sha256=Hash(bytes) };
-    static void Save(string path,object value)=>File.WriteAllText(path,JsonSerializer.Serialize(value,new JsonSerializerOptions { WriteIndented=true }));
+    static void Save(string path,object value)
+    {
+        using var stream=new FileStream(path,FileMode.CreateNew,FileAccess.Write,FileShare.Read);
+        JsonSerializer.Serialize(stream,value,new JsonSerializerOptions { WriteIndented=true });stream.Flush(true);
+    }
+    static void SaveBytes(string path,byte[] bytes)
+    {
+        using var stream=new FileStream(path,FileMode.CreateNew,FileAccess.Write,FileShare.Read);
+        stream.Write(bytes);stream.Flush(true);
+    }
+    static StreamWriter NewWriter(string path)=>new StreamWriter(new FileStream(path,FileMode.CreateNew,FileAccess.Write,FileShare.Read));
     static int Main(string[] args)
     {
         if(args.Length!=4 && args.Length!=5)
@@ -25,11 +35,11 @@ static class WriteCandidateTool
         Directory.CreateDirectory(output);
         try
         {
-            File.WriteAllBytes(Path.Combine(output,"expected.offline.bin"),expected);
-            File.WriteAllBytes(Path.Combine(output,"baseline.reference.bin"),baseline);
-            File.WriteAllBytes(Path.Combine(output,"calibration.reference.bin"),calibration);
-            File.WriteAllBytes(Path.Combine(output,"loader.reference.bin"),loader);
-            using(var requests=new StreamWriter(Path.Combine(output,"programming_requests.jsonl")))
+            SaveBytes(Path.Combine(output,"expected.offline.bin"),expected);
+            SaveBytes(Path.Combine(output,"baseline.reference.bin"),baseline);
+            SaveBytes(Path.Combine(output,"calibration.reference.bin"),calibration);
+            SaveBytes(Path.Combine(output,"loader.reference.bin"),loader);
+            using(var requests=NewWriter(Path.Combine(output,"programming_requests.jsonl")))
                 for(int i=0;i<candidate.ConstructedProgrammingRequests;i++)
                 {
                     byte[] request=candidate.CopyConstructedProgrammingRequest(i);
@@ -39,8 +49,8 @@ static class WriteCandidateTool
             if(args.Length==5)
             {
                 byte[] raw=File.ReadAllBytes(args[4]);template=Input(args[4],raw);
-                File.WriteAllBytes(Path.Combine(output,"saved_control_template.txt"),raw);
-                using var transcript=new StreamWriter(Path.Combine(output,"rehearsal.jsonl"));
+                SaveBytes(Path.Combine(output,"saved_control_template.txt"),raw);
+                using var transcript=NewWriter(Path.Combine(output,"rehearsal.jsonl"));
                 foreach(string line in File.ReadAllLines(args[4]))
                 {
                     if(line.Length<3 || (line[0]!='T' && line[0]!='R') || line[1]!=' ')throw new ArgumentException("Unexpected template record.");
@@ -66,6 +76,7 @@ static class WriteCandidateTool
                 schema="al5-calibration-write-candidate-v1",profile=AL5CalibrationWriteCandidate.Profile,
                 loader=Input(args[0],loader),calibration=Input(args[1],calibration),baseline=Input(args[2],baseline),
                 baseline_provenance="caller_supplied_saved_reference_not_physically_qualified",control_template=template,
+                saved_profile=AL5CalibrationWriteProfile.InspectSavedReference(baseline,calibration),
                 template_semantics="Saved control/reply observations with constructed payload substitution; not a successful custom flash.",
                 candidate.BaselineSha256,candidate.PreEraseSectorSha256,
                 constructed_programming_requests=candidate.ConstructedProgrammingRequests,program_blocks=192,
@@ -83,7 +94,8 @@ static class WriteCandidateTool
         }
         catch(Exception error)
         {
-            Save(Path.Combine(output,"failure.json"),new { complete=false,error=error.Message,hardware_access=false,live_write_enabled=false });
+            try{Save(Path.Combine(output,"failure.json"),new { complete=false,error=error.Message,hardware_access=false,live_write_enabled=false });}
+            catch(IOException){ /* Preserve an existing failure record and propagate the original error. */ }
             throw;
         }
     }

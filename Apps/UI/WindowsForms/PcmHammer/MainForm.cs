@@ -102,6 +102,7 @@ namespace PcmHacking
         /// <summary>File-only comparison; available without an adapter.</summary>
         private ToolStripMenuItem al5CompareCalibrationToolStripMenuItem;
         private ToolStripMenuItem al5ReconcileSnapshotToolStripMenuItem;
+        private ToolStripMenuItem al5PrepareWriteCandidateToolStripMenuItem;
 
         /// <summary>
         /// Initializes a new instance of the main window.
@@ -169,6 +170,13 @@ namespace PcmHacking
             this.al5ReconcileSnapshotToolStripMenuItem.Text = "AL5 Assess Saved Flash Snapshot (Offline)...";
             this.al5ReconcileSnapshotToolStripMenuItem.Click += this.al5ReconcileSnapshotToolStripMenuItem_Click;
             this.tcmHammerToolStripMenuItem.DropDownItems.Add(this.al5ReconcileSnapshotToolStripMenuItem);
+
+            this.al5PrepareWriteCandidateToolStripMenuItem = new ToolStripMenuItem();
+            this.al5PrepareWriteCandidateToolStripMenuItem.Name = "al5PrepareWriteCandidateToolStripMenuItem";
+            this.al5PrepareWriteCandidateToolStripMenuItem.Text = "AL5 Prepare Calibration Write Candidate (Offline)...";
+            this.al5PrepareWriteCandidateToolStripMenuItem.ToolTipText = "Validate saved inputs and export the calibration programming plan without accessing an adapter.";
+            this.al5PrepareWriteCandidateToolStripMenuItem.Click += this.al5PrepareWriteCandidateToolStripMenuItem_Click;
+            this.tcmHammerToolStripMenuItem.DropDownItems.Add(this.al5PrepareWriteCandidateToolStripMenuItem);
         }
 
         /// <summary>
@@ -1557,6 +1565,76 @@ namespace PcmHacking
 
                 // The token / token-source can only be cancelled once, so we need to make sure they won't be re-used.
                 this.cancellationTokenSource = null;
+            }
+        }
+
+        private void al5PrepareWriteCandidateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (BackgroundWorker.IsAlive || this.cancellationTokenSource != null) return;
+            // File-only preparation: no Vehicle, device initialization or write manager.
+            using (OpenFileDialog dialog = new OpenFileDialog())
+            {
+                dialog.Filter = "BIN files (*.bin)|*.bin|All files (*.*)|*.*";
+                dialog.CheckFileExists = true;
+                dialog.RestoreDirectory = true;
+                dialog.Title = "Select AL5 calibration to prepare (57,304 bytes)";
+                if (dialog.ShowDialog(this) != DialogResult.OK) return;
+                string calibrationPath = dialog.FileName;
+                dialog.Title = "Select complete saved AL5 flash reference (1 MiB)";
+                dialog.FileName = string.Empty;
+                if (dialog.ShowDialog(this) != DialogResult.OK) return;
+                string referencePath = dialog.FileName;
+                dialog.Title = "Select captured AL5 calibration programming loader (1,590 bytes)";
+                dialog.FileName = string.Empty;
+                if (dialog.ShowDialog(this) != DialogResult.OK) return;
+                string loaderPath = dialog.FileName;
+                try
+                {
+                    byte[] calibration = ReadAl5OfflineFile(calibrationPath, AL5CalibrationInspection.Length);
+                    byte[] reference = ReadAl5OfflineFile(referencePath, 0x100000);
+                    byte[] loader = ReadAl5OfflineFile(loaderPath, 1590);
+                    var dispatch = new AL5OfflineWriteDispatcher(loader, calibration, reference, 0);
+                    var candidate = new AL5CalibrationWriteCandidate(loader, calibration, reference);
+                    this.AddUserMessage("AL5 offline writer profile matched the saved boot/OS and selector-zero inputs.");
+                    LogAl5CalibrationReport("Write candidate", AL5CalibrationInspection.Inspect(calibration));
+                    this.AddUserMessage("Reference SHA256: " + candidate.BaselineSha256);
+                    this.AddUserMessage("Prepared 195 programming requests: loader, erase, 192 data blocks and finalization.");
+                    this.AddUserMessage("Erase sectors: 0x08000 and 0x10000. Collateral comes from the saved reference; marker finalization is separate.");
+                    this.AddUserMessage("Dispatcher: " + dispatch.State + ". Connected controller identity, original-data provenance and recovery remain unverified. Live writing is disabled.");
+                    using (SaveFileDialog output = new SaveFileDialog())
+                    {
+                        output.Filter = "Offline write plan (*.txt)|*.txt";
+                        output.FileName = "AL5_offline_write_candidate.txt";
+                        output.Title = "Save new offline AL5 write plan";
+                        output.RestoreDirectory = true;
+                        output.OverwritePrompt = false; // CreateNew below always preserves existing artifacts.
+                        if (output.ShowDialog(this) != DialogResult.OK) return;
+                        // Preserve an existing result even if an existing filename was selected.
+                        using (FileStream stream = new FileStream(output.FileName, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+                        using (StreamWriter writer = new StreamWriter(stream))
+                        {
+                            writer.WriteLine("AL5 OFFLINE CALIBRATION WRITE PLAN - NOT A FLASH SCRIPT");
+                            writer.WriteLine("Profile: " + AL5CalibrationWriteCandidate.Profile);
+                            writer.WriteLine("Calibration: " + calibrationPath);
+                            writer.WriteLine("Saved reference: " + referencePath);
+                            writer.WriteLine("Loader: " + loaderPath);
+                            writer.WriteLine("Baseline SHA256: " + candidate.BaselineSha256);
+                            writer.WriteLine("Calibration SHA256: " + AL5CalibrationInspection.Inspect(calibration).Sha256);
+                            writer.WriteLine("Loader SHA256: " + AL5CalibrationWriteCandidate.LoaderSha256);
+                            writer.WriteLine("Pre-erase sectors SHA256: " + candidate.PreEraseSectorSha256);
+                            writer.WriteLine("Live upload/execution/writing: disabled. Physical qualification: incomplete.");
+                            for (int index = 0; index < candidate.ConstructedProgrammingRequests; index++)
+                                writer.WriteLine(index + " " + BitConverter.ToString(candidate.CopyConstructedProgrammingRequest(index)).Replace("-", string.Empty));
+                            writer.WriteLine("END OFFLINE PLAN: 195 programming requests. No controller operation performed.");
+                        }
+                        this.AddUserMessage("Offline AL5 write plan saved: " + output.FileName);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    this.AddUserMessage("AL5 offline write preparation failed: " + exception.Message);
+                    this.AddDebugMessage(exception.ToString());
+                }
             }
         }
 

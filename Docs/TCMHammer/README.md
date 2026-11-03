@@ -2,11 +2,13 @@
 
 [Calibration writer candidate](CALIBRATION_WRITE_CANDIDATE.md) describes the constructed calibration-write lifecycle, custom-BIN rehearsal and full preservation comparison. The [30-point writer-first plan](PRE_ARRIVAL_30_POINT_PLAN.md) and [first-write bench run sheet](FIRST_WRITE_BENCH_RUN_SHEET.md) organize the remaining qualification work without repeating completed offline campaigns on arrival.
 
+[Writer dispatch checkpoint](WRITER_DISPATCH_CHECKPOINT_20261102.md) adds immutable send/reply ownership, stage boundaries, profile/deadline checks, production Vehicle/GT integration tests and the GT send-result fix.
+
 TCM Hammer is the transmission-controller section inside the Windows PCM Hammer application. Current support focuses on Allison AL5. Adapter selection, cancellation and logs use the existing application infrastructure.
 
 ## Available commands
 
-The top-level TCM Hammer menu groups the AL5 identity probe, direct Mode 0x23 calibration read, offline BIN comparison, and offline saved-flash assessment. Read operations require an initialized adapter and are disabled while another operation runs. File-only operations remain available without an adapter. The calibration reader covers 0x08000..0x15FD7 (57,304 bytes), not a complete flash backup.
+The top-level TCM Hammer menu groups the AL5 identity probe, direct Mode 0x23 calibration read, offline BIN comparison, offline saved-flash assessment, and offline calibration-write preparation/export. Read operations require an initialized adapter and are disabled while another operation runs. File-only operations remain available without an adapter. The calibration reader covers 0x08000..0x15FD7 (57,304 bytes), not a complete flash backup.
 
 [Write qualification plan](WRITE_QUALIFICATION_PLAN.md) records the application-to-boot chain, historical reader-to-writer validation and remaining physical gates.
 

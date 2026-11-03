@@ -32,7 +32,7 @@ Record missing coverage explicitly. The current stock reader does not give a qua
 
 Review only the hardware gaps: current security/profile, preparation side effects, reset/watchdog transition, loader RAM ownership, message framing and physical completion. Preserve capture from setup through cleanup. The candidate's dynamic-key action is unresolved authorization evidence; its one captured seed/key pair must not silently become generic support.
 
-The current source has no enabled live writer executor. Connecting the spare does not bypass this. A separately reviewed bounded entry operation must be implemented/qualified before a first erase is attempted. A smallest bounded read can verify that handoff; there is no reason to repeat long full-image offline campaigns on arrival.
+The current source has no enabled live writer executor. Connecting the spare does not bypass this. Use the implemented immutable dispatcher boundaries for staged qualification: before key submission (default), before programming entry, before loader upload, and before erase. The after-erase boundary is already destructive and belongs to a later qualified test. A live binding and its bounded operation list still require separate review/qualification before a first erase. A smallest bounded read can verify handoff; there is no reason to repeat long full-image offline campaigns on arrival.
 
 Stop on an unexpected identity, reply, timeout, unstable supply or uncertain controller state. A missing acknowledgement does not authorize a duplicate erase/program command. Keep captures and the stopped candidate intact for targeted diagnosis.
 

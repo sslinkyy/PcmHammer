@@ -558,12 +558,11 @@ namespace PcmHacking
             if (m.Status == ResponseStatus.Success)
             {
                 byte[] Val = m.Value.GetBytes();
-                if (Val[0] == 0x20 && Val[2] == 0x00)
-                {
-                    this.Logger.AddDebugMessage("TX: " + message.ToString());
-                    return Response.Create(ResponseStatus.Success, message);
-                }
-                else if (Val[0] == 0x21 && Val[2] == 0x00)
+                // A successful send acknowledgement has one status byte. Do not
+                // accept a different/truncated/extended device response merely
+                // because its first payload byte happens to be zero.
+                if (Val.Length == 4 && Val[1] == 1 &&
+                    (Val[0] == 0x20 || Val[0] == 0x21) && Val[2] == 0x00)
                 {
                     this.Logger.AddDebugMessage("TX: " + message.ToString());
                     return Response.Create(ResponseStatus.Success, message);
@@ -582,7 +581,7 @@ namespace PcmHacking
         }
 
         /// <summary>
-        /// Configure DVI to return only packets targeted to the tool (Device ID F0), and disable transmit acks
+        /// Configure the DVI receive destination and enable the configured protocol network.
         /// </summary>
         async private Task<Response<Boolean>> DVISetup()
         {
@@ -627,10 +626,10 @@ namespace PcmHacking
         /// </summary>
         public override async Task<bool> SendMessage(Message message)
         {
-            //this.Logger.AddDebugMessage("Sendrequest called");
-            //  this.Logger.AddDebugMessage("TX: " + message.GetBytes().ToHex());
-            await SendDVIPacket(message);
-            return true;
+            Response<Message> result = await SendDVIPacket(message);
+            // Failure may occur after transmission. This bool is not proof that
+            // no bus message was submitted, nor authority to retry a write.
+            return result.Status == ResponseStatus.Success;
         }
 
         /// <summary>

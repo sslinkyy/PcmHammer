@@ -43,6 +43,10 @@ All work before arrival remains offline. Live upload, execution, erase/programmi
 29. **Prepare the first-write procedure.** Stage identity/backup checks, separately reviewed entry qualification, unchanged-calibration programming and independent readback, with exact stop conditions.
 30. **Prepare recovery qualification.** List available vendor/boot/external-flash options, equipment and missing proof; interruption experiments remain separate from the first unchanged write.
 
+## Current software continuation
+
+The [dispatch checkpoint](WRITER_DISPATCH_CHECKPOINT_20261102.md) implements send/reply ownership, fixed qualification boundaries, saved-profile matching, explicit timeout budgets and production Vehicle/GT integration tests through a scripted port. TCM Hammer includes a file-only write preparation/export command. Live operations remain disabled; no physical qualification gate is marked complete by this work.
+
 ## Exit condition
 
 A built offline writer candidate and frozen qualification packet must exist before delivery. Physical questions remain named gates. No routine hours-long offline rerun is scheduled for arrival; a spare mismatch, observed failure or source change triggers only the relevant investigation/checks. The installed truck TCM is not the experimental target.
