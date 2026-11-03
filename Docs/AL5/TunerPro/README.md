@@ -213,3 +213,13 @@ were closed without saving. Generated XDF/manifest wording about pending GUI
 validation records their earlier generation state; the separate GUI report
 records this subsequent check. Activation and software-effect limits remain documented in
 [the combined trace](TCC_CRUISE_THROTTLE_RELEASE_TRACE.md).
+
+## Alternate TCC RPM pair — offline trace 2026-11-03
+
+The pair at 0x145E0/0x145E2 is selected during intermediate transmission
+transition state A5+0x2D1D=1. It drives the same low-RPM inhibit latch as
+D5057/D5058: stock 900 RPM entry / 1050 RPM clear hysteresis, unsigned BE16 /8.
+The two stock pairs are identical. The inhibit can select the release/off
+request path; clearing it lets the remaining lockup logic proceed.
+See [selector, hysteresis and effect evidence](TCC_ALTERNATE_RPM_TRACE.md).
+The exact hydraulic phase name remains unresolved. No XDF or BIN was changed.
