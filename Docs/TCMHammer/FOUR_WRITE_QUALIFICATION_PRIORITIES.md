@@ -1,5 +1,7 @@
 # Four write qualification priorities
 
+The [security and backup continuation](SECURITY_AND_BACKUP_PATH.md) connects session-bound saved security and correlated acquisition epochs to this executor. It preserves the physical qualification boundaries below.
+
 The spare is still in transit. This checkpoint prepares an unchanged-calibration bench candidate; it does not authorize live upload, execution or writes.
 
 ## 1. Connect the executor with staged stops

@@ -59,5 +59,17 @@ class PackageTests(unittest.TestCase):
         with patch.object(package,'source_paths',return_value=['Apps/New.cs']):
             self.assertEqual(['Apps/Example.cs','Apps/New.cs'],package.verify(self.output,self.repo)['source_drift'])
 
+    def test_optional_backup_tool_is_sealed_and_verified_without_running_it(self):
+        backup=self.root/'backup';backup.mkdir();(backup/'SavedBackupTool.dll').write_bytes(b'not executable')
+        package.seal(self.repo,self.output,self.app,self.writer,[self.evidence],backup_tool=backup)
+        self.assertTrue(package.verify(self.output,self.repo)['verified'])
+        (self.output/'offline_backup/SavedBackupTool.dll').write_bytes(b'changed')
+        self.assertEqual(['offline_backup/SavedBackupTool.dll'],package.verify(self.output)['mismatches'])
+
+    def test_missing_backup_build_rejected_before_output(self):
+        with self.assertRaises(ValueError):
+            package.seal(self.repo,self.output,self.app,self.writer,[self.evidence],backup_tool=self.root/'missing')
+        self.assertFalse(self.output.exists())
+
 
 if __name__=='__main__':unittest.main()

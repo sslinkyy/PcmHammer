@@ -41,7 +41,7 @@ def source_paths(repo):
     return sorted(set(x.decode('utf-8') for x in result.split(b'\0') if x))
 
 
-def seal(repo, output, app, writer, evidence, capture_dir=None):
+def seal(repo, output, app, writer, evidence, capture_dir=None, backup_tool=None):
     repo, output = repo.resolve(), output.resolve()
     if output.exists():
         raise ValueError('Choose a new package directory; existing evidence is retained')
@@ -50,7 +50,12 @@ def seal(repo, output, app, writer, evidence, capture_dir=None):
         raise ValueError('Completed application and offline writer builds are required')
     if not evidence or any(not p.is_file() for p in evidence):
         raise ValueError('Explicit existing qualification evidence files required')
-    for source in (app, writer):
+    if backup_tool is not None and not (backup_tool/'SavedBackupTool.dll').is_file():
+        raise ValueError('Completed saved backup tool build required')
+    builds = [('application', app), ('offline_writer', writer)]
+    if backup_tool is not None:
+        builds.append(('offline_backup', backup_tool))
+    for _, source in builds:
         if output.is_relative_to(source.resolve()) or source.resolve().is_relative_to(output):
             raise ValueError('Package and input directories must not contain each other')
     paths = source_paths(repo)
@@ -70,7 +75,7 @@ def seal(repo, output, app, writer, evidence, capture_dir=None):
 
     for relative in paths:
         copy(safe_child(repo, relative), Path('source')/relative)
-    for label, folder in (('application', app), ('offline_writer', writer)):
+    for label, folder in builds:
         for source in sorted(folder.rglob('*')):
             if source.is_file():
                 if not source.resolve().is_relative_to(folder.resolve()):
@@ -129,12 +134,13 @@ if __name__ == '__main__':
         make.add_argument('--'+name, type=Path, required=True)
     make.add_argument('--evidence', type=Path, action='append', required=True)
     make.add_argument('--capture-dir', type=Path)
+    make.add_argument('--backup-tool', type=Path)
     check = sub.add_parser('verify')
     check.add_argument('--package', type=Path, required=True)
     check.add_argument('--repo', type=Path)
     args = parser.parse_args()
     if args.operation == 'seal':
-        value = seal(args.repo, args.output, args.app, args.writer, args.evidence, args.capture_dir)
+        value = seal(args.repo, args.output, args.app, args.writer, args.evidence, args.capture_dir, args.backup_tool)
         print('Sealed', len(value['files']), 'files; private/offline package only.')
     else:
         value = verify(args.package, args.repo)

@@ -154,7 +154,7 @@ static class WriteDispatcherTest
                         if(scenario=="wrong_key")
                         {
                             Reject(()=>d.PrepareSavedSecurityEvidence(Convert.FromHexString("6c18f02702bc09")));
-                            Check(d.StopReason==AL5OfflineDispatchStop.UnsupportedSecurityProfile,"wrong saved key evidence stops");
+                            Check(d.StopReason==AL5OfflineDispatchStop.SecurityInvalidKey,"wrong saved key evidence stops with a specific reason");
                         }
                         else
                         {

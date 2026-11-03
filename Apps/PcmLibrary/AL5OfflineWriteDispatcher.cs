@@ -7,7 +7,7 @@ namespace PcmHacking
     public enum AL5OfflineDispatchKind { Control, SecurityEvidence, Loader, Erase, Data, ChecksumRetry, Finalization, Cleanup, ProgrammingBroadcast }
     public enum AL5OfflineDispatchState { ActionAvailable, DispatchPrepared, AwaitingReply, AwaitingSecurityEvidence, ChecksumRetryReview, AwaitingReadback, Completed, Stopped, BoundaryReached }
     public enum AL5OfflineWriteBoundary { BeforeSecurityKey, BeforeProgrammingEntry, BeforeLoaderUpload, BeforeErase, AfterEraseBeforeData, CompleteOfflineRehearsal }
-    public enum AL5OfflineDispatchStop { None, Timeout, Cancelled, SendNotSubmitted, SendSubmissionUnknown, UnexpectedReply, InvalidFrame, ProtocolFailure, RetryBudgetExhausted, VerificationFailed, UnsupportedSecurityProfile, LoaderChecksumRejected, LoaderRejected, UnqualifiedLoaderReply, ReceiveFault, InvalidClock, ExecutionWaitFault }
+    public enum AL5OfflineDispatchStop { None, Timeout, Cancelled, SendNotSubmitted, SendSubmissionUnknown, UnexpectedReply, InvalidFrame, ProtocolFailure, RetryBudgetExhausted, VerificationFailed, UnsupportedSecurityProfile, LoaderChecksumRejected, LoaderRejected, UnqualifiedLoaderReply, ReceiveFault, InvalidClock, ExecutionWaitFault, SecurityInvalidKey, SecurityAttemptsExceeded, SecurityDelayRequired, SecurityNegativeResponse, SecurityMalformed }
 
     /// <summary>An immutable, single-use offline send reservation. It is not a live send capability.</summary>
     public sealed class AL5OfflineWriteDispatch
@@ -40,7 +40,7 @@ namespace PcmHacking
         private bool awaitingReply;
         private long ordinal;
         private int retriesForBlock;
-        private ushort? pendingSecuritySeed,lastObservedSeed;
+        private readonly AL5SavedSecurityExchange security;
         private AL5OfflineDispatchStop stopReason;
         private int ignoredOtherSources;
         private int trailingCleanupReplies;
@@ -69,6 +69,7 @@ namespace PcmHacking
             if(!SavedProfile.SavedBytesMatchProfile)
                 throw new ArgumentException("Offline dispatch requires the pinned boot/OS and selector-zero calibration profile; unknown references cannot use this writer.");
             candidate=new AL5CalibrationWriteCandidate(ownedLoader,ownedCalibration,ownedReference);
+            security=new AL5SavedSecurityExchange(ownedReference);
         }
 
         public AL5SavedWriteProfileAssessment SavedProfile { get; }
@@ -82,7 +83,10 @@ namespace PcmHacking
         public AL5OfflineWriteDispatch? LastConsumedReplyOwner { get { lock(sync)return lastReplyOwner; } }
         public AL5OfflineWriteDispatch? LastLoaderDispatch { get { lock(sync)return lastLoader; } }
         public bool AwaitingLoaderIdentity { get { lock(sync)return awaitingLoaderIdentity; } }
-        public ushort? LastObservedSeed { get { lock(sync)return lastObservedSeed; } }
+        public ushort? LastObservedSeed { get { lock(sync)return security.ObservedSeed; } }
+        public AL5SavedSecurityState SavedSecurityState { get { lock(sync)return security.State; } }
+        public AL5SavedSecurityFailure SavedSecurityFailure { get { lock(sync)return security.Failure; } }
+        public byte? SavedSecurityStatus { get { lock(sync)return security.ObservedStatus; } }
         public int? LastReceivedFrameLength { get { lock(sync)return lastReceivedFrameLength; } }
         public byte[]? CopyLastObservedAl5Reply(){lock(sync)return lastObservedAl5Reply==null?null:(byte[])lastObservedAl5Reply.Clone();}
         public AL5OfflineSendOutcome? LastSendOutcome { get { lock(sync)return lastSendOutcome; } }
@@ -168,7 +172,7 @@ namespace PcmHacking
         {
             sendStartedTicks=clockTicks;
             pending=new AL5OfflineWriteDispatch(checked(++ordinal),kind,bytes,candidate.State,candidate.PositiveProgramReplies,
-                kind==AL5OfflineDispatchKind.SecurityEvidence?pendingSecuritySeed:null);
+                kind==AL5OfflineDispatchKind.SecurityEvidence?security.ObservedSeed:null);
             return pending;
         }
 
@@ -197,19 +201,15 @@ namespace PcmHacking
             lock(sync)
             {
                 RequireSendSlot();
-                if(candidate.NextOfflineAction().Kind!=AL5OfflineWriteActionKind.SecurityKeyEvidenceRequired || !pendingSecuritySeed.HasValue)
+                if(candidate.NextOfflineAction().Kind!=AL5OfflineWriteActionKind.SecurityKeyEvidenceRequired || security.State!=AL5SavedSecurityState.KeyReviewRequired)
                     throw new InvalidOperationException("A current saved seed observation must own the key evidence slot.");
                 if(savedRequest==null || savedRequest.Length!=7)
                     throw new ArgumentException("Exact saved AL5 key-request evidence required; no key is computed.");
                 savedRequest=(byte[])savedRequest.Clone();
                 if(savedRequest[0]!=0x6C || savedRequest[1]!=0x18 || savedRequest[2]!=0xF0 || savedRequest[3]!=0x27 || savedRequest[4]!=2)
                     throw new ArgumentException("Exact saved AL5 key-request evidence required; no key is computed.");
-                if(pendingSecuritySeed!=AL5CalibrationWriteProfile.SavedSelectorZeroSeed ||
-                    ((savedRequest[5]<<8)|savedRequest[6])!=AL5CalibrationWriteProfile.SavedSelectorZeroKey)
-                {
-                    Stop(AL5OfflineDispatchStop.UnsupportedSecurityProfile);
-                    throw new ArgumentException("Saved key evidence differs from the pinned selector-zero profile; no algorithm fallback is permitted.");
-                }
+                security.ReviewSavedKeyRequest(savedRequest);
+                if(StopForSecurityFailure())throw new ArgumentException("Saved security key review failed.");
                 return Reserve(AL5OfflineDispatchKind.SecurityEvidence,savedRequest);
             }
         }
@@ -264,7 +264,9 @@ namespace PcmHacking
                     replyOwner=awaitingReply?dispatch:null;
                     if(awaitingReply)replyStartedTicks=clockTicks;
                 }
-                if(dispatch.Kind==AL5OfflineDispatchKind.SecurityEvidence)pendingSecuritySeed=null;
+                if(Exact(dispatch.CopyRequest(),0x6C,0x18,0xF0,0x27,1))security.ObserveSavedSeedRequestAccepted(dispatch.CopyRequest());
+                if(dispatch.Kind==AL5OfflineDispatchKind.SecurityEvidence)security.ObserveSavedKeyRequestAccepted(dispatch.CopyRequest());
+                StopForSecurityFailure();
             }
         }
 
@@ -300,6 +302,14 @@ namespace PcmHacking
                 }
                 if(pending!=null || !awaitingReply)
                 {Stop(AL5OfflineDispatchStop.UnexpectedReply);throw new InvalidOperationException("No confirmed send owns this AL5 reply.");}
+                if(security.State==AL5SavedSecurityState.AwaitingSeedReply)security.ObserveSavedSeedReply(message);
+                else if(security.State==AL5SavedSecurityState.AwaitingKeyReply)security.ObserveSavedKeyReply(message);
+                if(StopForSecurityFailure())
+                {
+                    if(security.Failure==AL5SavedSecurityFailure.ShortSeedReply || security.Failure==AL5SavedSecurityFailure.Malformed)
+                        throw new ArgumentException("Malformed or unqualified saved security reply.");
+                    return;
+                }
                 int before=candidate.PositiveProgramReplies;
                 var priorPhase=candidate.State;
                 try{candidate.ObserveSavedFrame(false,message);}
@@ -312,19 +322,30 @@ namespace PcmHacking
                 awaitingReply=candidate.NextOfflineAction().Kind==AL5OfflineWriteActionKind.SavedReplyRequired;
                 if(!awaitingReply)replyOwner=null;
                 if(before!=candidate.PositiveProgramReplies)retriesForBlock=0;
-                if(candidate.NextOfflineAction().Kind==AL5OfflineWriteActionKind.SecurityKeyEvidenceRequired)
-                {
-                    var seed=AL5SavedSecuritySeed.Parse(message);
-                    if(seed.Kind!=AL5SavedSeedKind.Seed){Stop(AL5OfflineDispatchStop.InvalidFrame);return;}
-                    pendingSecuritySeed=seed.Seed;lastObservedSeed=seed.Seed;
-                    if(seed.Seed!=AL5CalibrationWriteProfile.SavedSelectorZeroSeed)
-                    {Stop(AL5OfflineDispatchStop.UnsupportedSecurityProfile);return;}
-                }
+
             }
+        }
+
+        private bool StopForSecurityFailure()
+        {
+            if(security.State!=AL5SavedSecurityState.Stopped)return false;
+            AL5OfflineDispatchStop reason;
+            switch(security.Failure)
+            {
+                case AL5SavedSecurityFailure.InvalidKey:reason=AL5OfflineDispatchStop.SecurityInvalidKey;break;
+                case AL5SavedSecurityFailure.AttemptsExceeded:reason=AL5OfflineDispatchStop.SecurityAttemptsExceeded;break;
+                case AL5SavedSecurityFailure.DelayRequired:reason=AL5OfflineDispatchStop.SecurityDelayRequired;break;
+                case AL5SavedSecurityFailure.NegativeResponse:reason=AL5OfflineDispatchStop.SecurityNegativeResponse;break;
+                case AL5SavedSecurityFailure.UnsupportedSeed:reason=AL5OfflineDispatchStop.UnsupportedSecurityProfile;break;
+                case AL5SavedSecurityFailure.ShortSeedReply:reason=AL5OfflineDispatchStop.InvalidFrame;break;
+                default:reason=AL5OfflineDispatchStop.SecurityMalformed;break;
+            }
+            Stop(reason);return true;
         }
 
         private void Stop(AL5OfflineDispatchStop reason,AL5CapturedWriteState? priorPhase=null)
         {
+            security.Interrupt();
             stopReason=reason;
             if(!phaseAtStop.HasValue)phaseAtStop=priorPhase??candidate.State;
             if(candidate.State!=AL5CapturedWriteState.Stopped && !candidate.CompleteSavedComparison)candidate.TimeoutOrCancel();

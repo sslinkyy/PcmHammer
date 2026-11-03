@@ -12,8 +12,9 @@ namespace PcmHacking
     {
         internal AL5WriteExecutionReport(AL5WriteExecutionOutcome outcome,AL5OfflineDispatchState? state,
             AL5OfflineDispatchStop? reason,int sends,int receives,int blocks,bool outstanding,string? error,
-            string? originalHash=null,string? preparedHash=null,int? preparationChanges=null)
-        {Outcome=outcome;DispatcherState=state;StopReason=reason;SendCalls=sends;ReceiveCalls=receives;AcknowledgedBlocks=blocks;TransportCallOutstanding=outstanding;TransportError=error;OriginalReferenceSha256=originalHash;PreparedBanksSha256=preparedHash;SavedPreparationChangedBytes=preparationChanges;}
+            string? originalHash=null,string? preparedHash=null,int? preparationChanges=null,
+            AL5SavedSecurityState? securityState=null,AL5SavedSecurityFailure? securityFailure=null,byte? securityStatus=null,string? backupEvidenceId=null)
+        {Outcome=outcome;DispatcherState=state;StopReason=reason;SendCalls=sends;ReceiveCalls=receives;AcknowledgedBlocks=blocks;TransportCallOutstanding=outstanding;TransportError=error;OriginalReferenceSha256=originalHash;PreparedBanksSha256=preparedHash;SavedPreparationChangedBytes=preparationChanges;SavedSecurityState=securityState;SavedSecurityFailure=securityFailure;SavedSecurityStatus=securityStatus;BackupEvidenceId=backupEvidenceId;}
         public AL5WriteExecutionOutcome Outcome { get; }
         public AL5OfflineDispatchState? DispatcherState { get; }
         public AL5OfflineDispatchStop? StopReason { get; }
@@ -25,6 +26,10 @@ namespace PcmHacking
         public string? OriginalReferenceSha256 { get; }
         public string? PreparedBanksSha256 { get; }
         public int? SavedPreparationChangedBytes { get; }
+        public AL5SavedSecurityState? SavedSecurityState { get; }
+        public AL5SavedSecurityFailure? SavedSecurityFailure { get; }
+        public byte? SavedSecurityStatus { get; }
+        public string? BackupEvidenceId { get; }
         public bool PhysicalBackupVerified=>false;
         public bool LiveUploadEnabled => false;
         public bool LiveExecutionEnabled => false;
@@ -119,6 +124,7 @@ namespace PcmHacking
         private Task? ownedOperation;
         private int running,sends,receives;
         private string? transportError;
+        private string? backupEvidenceId;
         private readonly TimeSpan clockOrigin;
 
         internal AL5WriteExecutionSession(byte[] loader,byte[] calibration,byte[] reference,int retryBudget,
@@ -163,20 +169,34 @@ namespace PcmHacking
             if(state==AL5OfflineDispatchState.ActionAvailable && dispatcher.ProtocolState==AL5CapturedWriteState.EraseRequest && !dispatcher.HasSavedPreparedBankReference)
                 outcome=AL5WriteExecutionOutcome.PreparationBackupReviewRequired;
             return new AL5WriteExecutionReport(outcome,state,dispatcher.StopReason,sends,receives,dispatcher.PositiveProgramReplies,TransportCallOutstanding,transportError,
-                dispatcher.OriginalReferenceSha256,dispatcher.PreparedBanksSha256,dispatcher.SavedPreparationChangedBytes);
+                dispatcher.OriginalReferenceSha256,dispatcher.PreparedBanksSha256,dispatcher.SavedPreparationChangedBytes,
+                dispatcher.SavedSecurityState,dispatcher.SavedSecurityFailure,dispatcher.SavedSecurityStatus,backupEvidenceId);
         }
 
         internal Task<AL5WriteExecutionReport> RunUntilReviewAsync(CancellationToken token)=>RunExclusiveAsync(null,false,null,token);
         internal Task<AL5WriteExecutionReport> SubmitSavedSecurityEvidenceAsync(byte[] request,CancellationToken token)=>RunExclusiveAsync(request,false,null,token);
         internal Task<AL5WriteExecutionReport> ReviewChecksumRetryAsync(CancellationToken token)=>RunExclusiveAsync(null,true,null,token);
         internal Task<AL5WriteExecutionReport> RecordSavedPreparedBanksAsync(byte[] banks,CancellationToken token)=>RunExclusiveAsync(null,false,banks,token);
-        private async Task<AL5WriteExecutionReport> RunExclusiveAsync(byte[]? keyEvidence,bool retry,byte[]? preparedBanks,CancellationToken token)
+        internal Task<AL5WriteExecutionReport> RecordSavedBackupPathAsync(AL5SavedBackupPath backup,CancellationToken token)
+        {
+            if(backup==null)throw new ArgumentNullException(nameof(backup));
+            return RunExclusiveAsync(null,false,null,token,backup);
+        }
+        private async Task<AL5WriteExecutionReport> RunExclusiveAsync(byte[]? keyEvidence,bool retry,byte[]? preparedBanks,CancellationToken token,AL5SavedBackupPath? backup=null)
         {
             if(Interlocked.CompareExchange(ref running,1,0)!=0)throw new InvalidOperationException("An execution call already owns this session.");
             try
             {
                 if(IsTerminal())return Snapshot();
                 if(!AdvanceOrStop(token))return Snapshot();
+                if(backup!=null)
+                {
+                    var epochs=backup.CopyPreparedReference();
+                    if(backup.OriginalSha256!=dispatcher.OriginalReferenceSha256)
+                        throw new ArgumentException("The correlated backup belongs to a different original image.");
+                    dispatcher.RecordSavedPreparedBanks(epochs.CopyPrepared());
+                    backupEvidenceId=backup.EvidenceId;
+                }
                 if(preparedBanks!=null)dispatcher.RecordSavedPreparedBanks(preparedBanks);
                 if(keyEvidence!=null || retry)
                 {

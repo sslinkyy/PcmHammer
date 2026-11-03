@@ -116,7 +116,7 @@ sealed class MemoryIo : AL5WriteExecutionIo
     }
 }
 
-static class Program
+static partial class Program
 {
     static byte[] loader=Array.Empty<byte>(),original=Array.Empty<byte>(),calibration=Array.Empty<byte>();static string[] lines=Array.Empty<string>();
     static readonly List<object> results=new();
@@ -288,7 +288,7 @@ static class Program
             {
                 foreach(var boundary in new[]{AL5OfflineWriteBoundary.BeforeSecurityKey,AL5OfflineWriteBoundary.BeforeProgrammingEntry,AL5OfflineWriteBoundary.BeforeLoaderUpload,AL5OfflineWriteBoundary.BeforeErase,AL5OfflineWriteBoundary.AfterEraseBeforeData})
                     await VehicleCase(true,boundary,"first_saved_template");
-                await FaultCases();await QualificationChecks();await PreparationEpochs();await CompletionRaces();
+                await FaultCases();await QualificationChecks();await PreparationEpochs();await CompletionRaces();await SecurityAndBackupCases();
             }
         }
         var library=typeof(AL5CalibrationWriteExecutor).Assembly.Location;
