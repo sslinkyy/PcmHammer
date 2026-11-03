@@ -1,5 +1,7 @@
 # Resident reads before programming preparation
 
+The [joined reply-freshness continuation](RESIDENT_REPLY_FRESHNESS.md) distinguishes software retirement/requeue from initialization and identifies application C-runtime clearing as a candidate startup dependency. It does not qualify a physical freshness boundary.
+
 The most direct candidate for preserving the original mutable banks is the resident application Mode $23 path, before any programming-entry request or uploaded reader. The new trace executes more than the isolated read handler. It still does not qualify a live acquisition, and all live operations remain disabled while the spare is in transit.
 
 ## Native path observed

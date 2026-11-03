@@ -1,5 +1,7 @@
 # TCM Hammer
 
+[Resident reply freshness](RESIDENT_REPLY_FRESHNESS.md) joins native scheduling, submission, status events and startup-state clearing. Interface reset can requeue an old reply; physical freshness remains unqualified.
+
 [Resident pre-entry bank reads](RESIDENT_PREENTRY_BANK_BACKUP.md) traces a bank-first alternative before programming preparation, with native dispatcher coverage and a file-only resident-bank exporter. Live reads and writes remain disabled.
 
 [Security and backup continuation](SECURITY_AND_BACKUP_PATH.md) adds a profile-bound security exchange and an ordered correlated original/prepared acquisition path with a file-only exporter. Physical qualification and live operations remain disabled.
