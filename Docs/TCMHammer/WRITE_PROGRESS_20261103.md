@@ -53,3 +53,7 @@ The installed truck TCM is not the experimental target. The next required extern
 ## Continuation: previously documented equipment and external original path
 
 Review of the retained October 15 work confirms the T48/ADP_S44_EX-1/Xgpro workflow and a successful separate Intel readback. Re-identifying that equipment is not a remaining task. The [new external-original continuation](EXTERNAL_ORIGINAL_AND_RESET_VERIFICATION.md) imports two matching full-chip saved files with explicit byte representation, feeds the existing prepared-bank/unchanged-writer owner, and retains all physical gates. It also traces the finalizer's retained RAM marker and park path, and implements a terminal offline stop before finalization. Actual AL5 chip acquisition/recovery, loader timeout behavior and an independent verification window remain unqualified while the spare is in transit.
+
+## Continuation: startup bank verification
+
+The [journal restart continuation](STARTUP_BANK_VERIFICATION.md) traces historical, modeled-prepared and second modeled restart epochs. Eight-byte changes move with parent-bank selection; a subsequent startup makes six different changes. Exact ordered bank diagnosis is now available, but every bank byte is still compared and the writer continues to reject unexplained preservation differences. Physical reset/readback timing remains a qualification gate.

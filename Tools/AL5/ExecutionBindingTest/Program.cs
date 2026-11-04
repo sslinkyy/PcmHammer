@@ -286,6 +286,9 @@ static partial class Program
     }
     static async Task Main(string[] args)
     {
+        string? journalReport=null;
+        if(args.Length>3 && args[2]=="--journal-report")
+        {journalReport=args[3];args=args.Take(2).Concat(args.Skip(4)).ToArray();}
         if(args.Length<6 || args[0]!="--receipt" || (args.Length-4)%2!=0)throw new ArgumentException("--receipt NEW_JSON LOADER FULL_REFERENCE TEMPLATE CALIBRATION ...; scripted I/O only.");
         using var receipt=new FileStream(args[1],FileMode.CreateNew,FileAccess.Write,FileShare.Read);
         loader=File.ReadAllBytes(args[2]);var baseline=File.ReadAllBytes(args[3]);
@@ -301,6 +304,7 @@ static partial class Program
                     await VehicleCase(true,boundary,"first_saved_template");
                 await VehicleCase(false,AL5OfflineWriteBoundary.BeforeFinalization,"first_saved_template");
                 await FaultCases();await QualificationChecks();await PreparationEpochs();await CompletionRaces();await SecurityAndBackupCases();
+                if(journalReport!=null)JournalCases(journalReport,baseline);
             }
         }
         var library=typeof(AL5CalibrationWriteExecutor).Assembly.Location;

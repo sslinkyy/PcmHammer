@@ -21,7 +21,7 @@ def is_register(address):
     return a>=0xFFF000 or 0xFFE800<=a<0xFFE810
 
 
-def trace(image,pattern=0xA5,mmio_inputs=None,*,model_bank_programs=False,stop_after_communication=False,stop_before_startup_wait=False,scheduled_ticks=0,mmio_site_inputs=None,background_completion_probes=False):
+def trace(image,pattern=0xA5,mmio_inputs=None,*,model_bank_programs=False,stop_after_communication=False,stop_before_startup_wait=False,scheduled_ticks=0,mmio_site_inputs=None,background_completion_probes=False,saved_banks=None):
     if type(scheduled_ticks) is not int or not 0<=scheduled_ticks<=320:
         raise ValueError('Scripted tick campaign requires an integer count from zero through 320')
     if scheduled_ticks and stop_after_communication:
@@ -29,8 +29,13 @@ def trace(image,pattern=0xA5,mmio_inputs=None,*,model_bank_programs=False,stop_a
     if background_completion_probes and scheduled_ticks!=320:
         raise ValueError('Background completion probes require the complete 320-call startup witness')
     validate_source(image[:0x20000],image[0x20000:])
+    selected_reference_sha256=hashlib.sha256(image).hexdigest()
+    if saved_banks is not None:
+        if type(saved_banks) is not bytes or len(saved_banks)!=0x4000:
+            raise ValueError('Explicit saved bank overlay requires exactly 16,384 immutable bytes')
+        image=image[:0x4000]+saved_banks+image[0x8000:]
     from unicorn import Uc,UC_ARCH_M68K,UC_MODE_BIG_ENDIAN,UC_PROT_ALL,UC_PROT_READ,UC_PROT_EXEC,UC_HOOK_CODE,UC_HOOK_MEM_READ,UC_HOOK_MEM_WRITE,UC_HOOK_MEM_INVALID,UcError
-    from unicorn.m68k_const import UC_CPU_M68K_M68020,UC_M68K_REG_A7,UC_M68K_REG_SR,UC_M68K_REG_PC
+    from unicorn.m68k_const import UC_CPU_M68K_M68020,UC_M68K_REG_A7,UC_M68K_REG_SR,UC_M68K_REG_PC,UC_M68K_REG_D0
     from capstone import Cs,CS_ARCH_M68K,CS_MODE_BIG_ENDIAN,CS_MODE_M68K_020
     u=Uc(UC_ARCH_M68K,UC_MODE_BIG_ENDIAN);u.ctl_set_cpu_model(UC_CPU_M68K_M68020)
     u.mem_map(0,0x100000);u.mem_write(0,image);u.mem_protect(0,0x100000,UC_PROT_READ|UC_PROT_EXEC)
@@ -40,8 +45,8 @@ def trace(image,pattern=0xA5,mmio_inputs=None,*,model_bank_programs=False,stop_a
     u.mem_write(BASE,bytes([pattern])*0x3800)
     u.reg_write(UC_M68K_REG_A7,int.from_bytes(image[:4],'big'));u.reg_write(UC_M68K_REG_SR,0x2700)
     decoder=Cs(CS_ARCH_M68K,CS_MODE_M68K_020|CS_MODE_BIG_ENDIAN)
-    out=dict(initial_pattern=pattern,stop=None,instructions=0,mmio_writes=[],critical_writes=[],main_calls=[],boundaries=[],synthetic_bank_programs=[],scripted_ticks=[],native_event_masks=[],entry_counts={},software_submissions=[])
-    written=set();active=None;next_call=None;poll_reads={};foreground_resume=False;probe_mode=False;probe_reads=[]
+    out=dict(initial_pattern=pattern,stop=None,instructions=0,mmio_writes=[],critical_writes=[],main_calls=[],boundaries=[],synthetic_bank_programs=[],scripted_ticks=[],native_event_masks=[],entry_counts={},software_submissions=[],small_record_calls=[])
+    written=set();active=None;next_call=None;poll_reads={};foreground_resume=False;probe_mode=False;probe_reads=[];record_frames=[]
     inputs=[dict(row) for row in (mmio_inputs or [])];consumed=[]
     sites=[dict(row) for row in (mmio_site_inputs or [])];site_map={};site_consumed=[]
     for row in inputs+sites:
@@ -75,6 +80,21 @@ def trace(image,pattern=0xA5,mmio_inputs=None,*,model_bank_programs=False,stop_a
     def code(machine,pc,size,user):
         nonlocal active,next_call
         out['instructions']+=1
+        if record_frames:
+            call=record_frames[-1]
+            sp=machine.reg_read(UC_M68K_REG_A7)
+            if pc==call['return_pc'] and sp==call['entry_sp']+4:
+                call.update(returned=True,return_d0=machine.reg_read(UC_M68K_REG_D0))
+                record_frames.pop()
+        if pc in (0x228D8,0x2296C):
+            sp=machine.reg_read(UC_M68K_REG_A7)
+            out['small_record_calls'].append(dict(entry=pc,entry_sp=sp,
+                return_pc=int.from_bytes(machine.mem_read(sp,4),'big'),
+                slot=int.from_bytes(machine.mem_read(sp+4,4),'big'),
+                buffer=int.from_bytes(machine.mem_read(sp+8,4),'big'),
+                cached_parent=int.from_bytes(machine.mem_read(BASE+0xE64,4),'big'),
+                returned=False,storage_operations_before=len(out['synthetic_bank_programs'])))
+            record_frames.append(out['small_record_calls'][-1])
         if pc in STORAGE:
             if pc==0x22C3C and model_bank_programs and not probe_mode:
                 from emulate_storage_recovery import require_programmable
@@ -230,6 +250,8 @@ def trace(image,pattern=0xA5,mmio_inputs=None,*,model_bank_programs=False,stop_a
         out['entry_counts']=baseline_entries
     out.update(final_state=state(),banks_unchanged=bytes(u.mem_read(0x4000,0x4000))==image[0x4000:0x8000],
                application_entry=entry,flash_image_sha256=hashlib.sha256(image).hexdigest(),
+               selected_reference_sha256=selected_reference_sha256,
+               saved_bank_overlay_sha256=None if saved_banks is None else hashlib.sha256(saved_banks).hexdigest(),
                consumed_mmio_inputs=consumed,unused_mmio_inputs=inputs,
                consumed_mmio_site_inputs=site_consumed,mmio_site_inputs=sites,
                model_bank_programs=model_bank_programs,stop_after_communication=stop_after_communication,

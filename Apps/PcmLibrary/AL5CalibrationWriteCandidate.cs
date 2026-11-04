@@ -147,6 +147,19 @@ namespace PcmHacking
             return assessment;
         }
 
+        /// <summary>Diagnostic only. Never changes the strict comparison result, state or live authority.</summary>
+        public AL5SavedBankTransitionAssessment DiagnoseSavedStartupBanks(AL5SavedBankTransitionReview review,byte[] fullReadback)
+        {
+            if(review==null)throw new ArgumentNullException(nameof(review));
+            if(State!=AL5CapturedWriteState.AwaitingSavedVerification && !comparisonFailed)
+                throw new InvalidOperationException("Complete cleanup is required before saved startup diagnosis.");
+            if(preparedBanks==null || review.OriginalSha256!=BaselineSha256 || review.PreparedBanksSha256!=preparedBanks.PreparedSha256)
+                throw new ArgumentException("Saved prediction must own this original and prepared-bank epoch.");
+            if(fullReadback==null || fullReadback.Length!=baseline.Length)throw new ArgumentException("Complete saved readback required.");
+            var banks=new byte[AL5PreparedBankReference.Length];Buffer.BlockCopy(fullReadback,AL5PreparedBankReference.StartAddress,banks,0,banks.Length);
+            return review.CompareSavedBanks(banks);
+        }
+
         private bool comparisonFailed;
     }
 }

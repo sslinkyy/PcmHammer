@@ -52,6 +52,7 @@ static class Program
     {
         if(args.Length>0 && args[0]=="--external-chip")return ExternalChip(args);
         if(args.Length>0 && args[0]=="--external-prepared")return ExternalPrepared(args);
+        if(args.Length>0 && args[0]=="--startup-bank-review")return StartupBankReview(args);
         if(args.Length>0 && args[0]=="--resident-banks")return ResidentBanks(args);
         if(args.Length!=6)
         {
@@ -87,12 +88,58 @@ static class Program
     }
 
     static byte[] ReadFullChip(string path)
+        =>ReadSizedFile(path,0x100000);
+    static byte[] ReadSizedFile(string path,int count)
     {
         using var stream=new FileStream(path,FileMode.Open,FileAccess.Read,FileShare.Read);
-        if(stream.Length!=0x100000)throw new ArgumentException("Exact 1 MiB raw AL5 chip file required; no padding, truncation or Intel 512 KiB substitution.");
-        var bytes=new byte[0x100000];stream.ReadExactly(bytes);
+        if(stream.Length!=count)throw new ArgumentException("Exact "+count+" saved bytes required; no padding, truncation or short-image substitution.");
+        var bytes=new byte[count];stream.ReadExactly(bytes);
         if(stream.ReadByte()!=-1)throw new ArgumentException("Chip file changed size during import.");
         return bytes;
+    }
+
+    static int StartupBankReview(string[] args)
+    {
+        if(args.Length!=8)throw new ArgumentException("--startup-bank-review original-full.bin prepared-banks.bin readback-full.bin journal-report.json case-name evidence-id NEW-output-directory");
+        string output=Path.GetFullPath(args[7]);
+        if(Directory.Exists(output)||File.Exists(output))throw new ArgumentException("New output directory required.");
+        byte[] original=ReadFullChip(args[1]),prepared=ReadSizedFile(args[2],0x4000),readback=ReadFullChip(args[3]),metadata=File.ReadAllBytes(args[4]);
+        var security=new AL5SavedSecurityExchange(original); // Saved validation only; no session or key sender.
+        using var document=JsonDocument.Parse(metadata);var root=document.RootElement;
+        if(root.GetProperty("schema").GetString()!="al5-native-journal-restart-v1" || root.GetProperty("reference_sha256").GetString()!=Hash(original))
+            throw new ArgumentException("Journal prediction must name the exact saved original.");
+        foreach(string flag in new[]{"hardware_access","physical_reset_verified","physical_journal_transition_verified","host_verification_window_proven","live_upload_enabled","live_execution_enabled","live_write_enabled","ready_to_flash"})
+            if(root.GetProperty(flag).GetBoolean())throw new ArgumentException("Prediction cannot promote physical/live authority.");
+        var matches=root.GetProperty("cases").EnumerateArray().Where(row=>row.GetProperty("case").GetString()==args[5]).ToArray();
+        if(matches.Length!=1)throw new ArgumentException("One exact selected journal case required.");
+        var row=matches[0].GetProperty("observed");string bankHash=Hash(prepared);
+        byte[] overlaid=(byte[])original.Clone();prepared.CopyTo(overlaid,0x4000);
+        if(row.GetProperty("selected_reference_sha256").GetString()!=Hash(original) ||
+            row.GetProperty("flash_image_sha256").GetString()!=Hash(overlaid) ||
+            row.GetProperty("saved_bank_overlay_sha256").GetString()!=bankHash || row.GetProperty("bank_comparison").GetProperty("original_sha256").GetString()!=bankHash ||
+            row.GetProperty("stop").GetProperty("reason").GetString()!="after_native_startup_handshake")
+            throw new ArgumentException("Selected bounded prediction must own this prepared-bank epoch.");
+        var operations=new List<AL5SavedBankProgram>();
+        foreach(var operation in row.GetProperty("synthetic_bank_programs").EnumerateArray())
+        {
+            if(operation.GetProperty("implementation_executed").GetBoolean())throw new ArgumentException("Only declared host-modeled bank operations supported.");
+            byte[] before=Convert.FromHexString(operation.GetProperty("before").GetString()!),after=Convert.FromHexString(operation.GetProperty("after").GetString()!);
+            if(operation.GetProperty("bytes").GetInt32()!=after.Length)throw new ArgumentException("Saved operation length differs.");
+            operations.Add(new AL5SavedBankProgram(operation.GetProperty("caller_return").GetInt32(),operation.GetProperty("destination").GetInt32(),before,after));
+        }
+        var review=new AL5SavedBankTransitionReview(args[6],Hash(original),prepared,operations.ToArray());
+        if(review.PredictedBanksSha256!=row.GetProperty("bank_comparison").GetProperty("final_sha256").GetString())throw new ArgumentException("Ordered operations differ from the declared final-bank digest.");
+        var assessment=review.CompareSavedBanks(readback.AsSpan(0x4000,0x4000).ToArray());
+        var report=new {schema="al5-saved-startup-bank-diagnosis-v1",evidence_id=review.EvidenceId,selected_case=args[5],
+            original=Input(args[1],original),prepared=Input(args[2],prepared),readback=Input(args[3],readback),native_prediction=Input(args[4],metadata),
+            review.OriginalSha256,review.PreparedBanksSha256,review.PredictedBanksSha256,review.OperationCount,
+            assessment.ChangedFromPreparedBytes,assessment.DifferencesFromPrediction,assessment.MatchesSavedPrediction,
+            changed_addresses=assessment.CopyChangedAddresses(),prediction_mismatch_addresses=assessment.CopyPredictionMismatchAddresses(),
+            comparison_scope="all_16384_bank_bytes_only_not_other_flash_regions",preservation_verified=false,physical_transition_verified=false,
+            snapshot_coherence_verified=false,hardware_access=false,live_upload_enabled=false,live_execution_enabled=false,live_write_enabled=false,ready_to_flash=false};
+        Directory.CreateDirectory(output);Save(Path.Combine(output,"predicted_banks.offline.bin"),review.CopyPredictedBanks());
+        Save(Path.Combine(output,"review.json"),JsonSerializer.SerializeToUtf8Bytes(report,new JsonSerializerOptions{WriteIndented=true}));
+        Console.WriteLine("Saved bank diagnosis: "+assessment.DifferencesFromPrediction+" bytes differ from the exact prediction. This does not authorize preservation acceptance or live operations.");return 0;
     }
 
     static int ExternalChip(string[] args)

@@ -19,3 +19,5 @@ Output retains the complete original image, its original banks, the separate pre
 These are experimental correlated-reader transcripts, not stock Mode $23 traces, whose limited address echo cannot supply the same session correlation. A reconstructed historical fixture can test the software but cannot become a physical backup through export.
 
 After building, run `python Tools/AL5/test_saved_backup_tool.py --tool LocalOnly/SavedBackupTool/bin/SavedBackupTool.dll --output NEW-test-directory` for complete, stale-epoch, partial, wrong-nonce, duplicate-request, unowned-reply and existing-output cases. The test generates a synthetic image and never opens a hardware port.
+
+`--startup-bank-review ORIGINAL-full.bin PREPARED-banks.bin READBACK-full.bin native-journal-report.json case-name evidence-id NEW-directory` diagnoses exact ordered startup-bank predictions against all bank bytes. It exports predicted banks and a report; a match is not preservation or physical verification. See [startup bank verification](../../../Docs/TCMHammer/STARTUP_BANK_VERIFICATION.md).

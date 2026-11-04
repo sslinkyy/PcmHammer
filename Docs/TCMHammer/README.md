@@ -26,6 +26,8 @@ TCM Hammer is the transmission-controller section inside the Windows PCM Hammer 
 
 [External original and finalizer timing](EXTERNAL_ORIGINAL_AND_RESET_VERIFICATION.md) reviews the documented T48/Intel work, implements full-chip saved-original import and prepared-epoch binding, and adds a terminal offline boundary before finalization while retaining reset/verification qualification limits.
 
+[Startup bank verification](STARTUP_BANK_VERIFICATION.md) traces three conditional restart epochs and adds exact bank-transition diagnosis without relaxing strict preservation or enabling live operations.
+
 The top-level TCM Hammer menu groups the AL5 identity probe, direct Mode 0x23 calibration read, offline BIN comparison, offline saved-flash assessment, and offline calibration-write preparation/export. Read operations require an initialized adapter and are disabled while another operation runs. File-only operations remain available without an adapter. The calibration reader covers 0x08000..0x15FD7 (57,304 bytes), not a complete flash backup.
 
 [Write qualification plan](WRITE_QUALIFICATION_PLAN.md) records the application-to-boot chain, historical reader-to-writer validation and remaining physical gates.
