@@ -1,0 +1,1026 @@
+{
+  "schema": "al5-native-watchdog-tail-v1",
+  "loader_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
+  "source_sha256": "24671470172b2a4ee79d240ac1b33bff602443b4b8ac56014c8460bfa32db4ca",
+  "cases": [
+    {
+      "case": "success_ready",
+      "context": {
+        "entry": "success_tail",
+        "busy_reads": 0,
+        "park_visits": 16,
+        "initial_sr": 9984,
+        "idle_counter_is_selected_last_iteration": false
+      },
+      "observed": {
+        "stop": "bounded_native_park",
+        "instructions": 286858,
+        "ready_reads": 6,
+        "watchdog_pairs": 40964,
+        "watchdog_writes_suppressed": 81928,
+        "phases": {
+          "status": 6,
+          "delay_1": 20479,
+          "delay_2": 20479
+        },
+        "delay_calls": 2,
+        "delay_entries": [
+          {
+            "phase": "delay_1",
+            "instruction": 129
+          },
+          {
+            "phase": "delay_2",
+            "instruction": 143487
+          }
+        ],
+        "delay_returns": [
+          {
+            "phase": "delay_1",
+            "d5": 65535
+          },
+          {
+            "phase": "delay_2",
+            "d5": 65535
+          }
+        ],
+        "fifo_data": [
+          108,
+          240,
+          24,
+          118,
+          0,
+          134
+        ],
+        "fifo_writes": [
+          {
+            "value": 108,
+            "instruction": 11
+          },
+          {
+            "value": 240,
+            "instruction": 29
+          },
+          {
+            "value": 24,
+            "instruction": 47
+          },
+          {
+            "value": 118,
+            "instruction": 67
+          },
+          {
+            "value": 0,
+            "instruction": 88
+          },
+          {
+            "value": 134,
+            "instruction": 109
+          }
+        ],
+        "interface_writes": [
+          {
+            "pc": 16749870,
+            "address": 4294961152,
+            "value": 20,
+            "phase": "status",
+            "instruction": 8
+          },
+          {
+            "pc": 16750014,
+            "address": 4294961152,
+            "value": 4,
+            "phase": "status",
+            "instruction": 28
+          },
+          {
+            "pc": 16750014,
+            "address": 4294961152,
+            "value": 4,
+            "phase": "status",
+            "instruction": 46
+          },
+          {
+            "pc": 16750014,
+            "address": 4294961152,
+            "value": 4,
+            "phase": "status",
+            "instruction": 66
+          },
+          {
+            "pc": 16750014,
+            "address": 4294961152,
+            "value": 4,
+            "phase": "status",
+            "instruction": 87
+          },
+          {
+            "pc": 16750002,
+            "address": 4294961152,
+            "value": 12,
+            "phase": "status",
+            "instruction": 106
+          },
+          {
+            "pc": 16749114,
+            "address": 4294961152,
+            "value": 64,
+            "phase": "delay_1",
+            "instruction": 143484
+          },
+          {
+            "pc": 16749120,
+            "address": 4294961153,
+            "value": 0,
+            "phase": "delay_1",
+            "instruction": 143485
+          }
+        ],
+        "marker_writes": [
+          {
+            "address": 4294934528,
+            "declared_alias": 16744448,
+            "value": 53442,
+            "size": 2,
+            "instruction": 286842
+          }
+        ],
+        "park_visits": 16,
+        "first_park_instruction": 286843,
+        "service_pairs_at_park": 40964,
+        "last_service_instruction": 286836,
+        "receive_entries": 0,
+        "reset_opcodes": 0,
+        "marker": 53442,
+        "marker_alias": 53442,
+        "watchdog_service_digest": "a8e92c5aef6fbebf52b6c6b1e3b02fd08a8110c2a4093b9ea69d7aae98e4dc29",
+        "stack_delta": 0,
+        "service_pairs_after_park": 0,
+        "loader_bytes_unchanged": true
+      },
+      "native_checksum_and_flash_marker_programming_executed": false,
+      "hardware_access": false,
+      "mmio_instructions_executed": 0,
+      "physical_reset_verified": false,
+      "physical_timeout_verified": false,
+      "physical_fifo_ready_semantics_verified": false,
+      "final_status_wire_delivery_verified": false,
+      "host_readback_window_proven": false,
+      "live_upload_enabled": false,
+      "live_execution_enabled": false,
+      "live_write_enabled": false,
+      "ready_to_flash": false
+    },
+    {
+      "case": "bad_sum_ready",
+      "context": {
+        "entry": "bad_sum_tail",
+        "busy_reads": 0,
+        "park_visits": 16,
+        "initial_sr": 9984,
+        "idle_counter_is_selected_last_iteration": false
+      },
+      "observed": {
+        "stop": "bounded_native_park",
+        "instructions": 286857,
+        "ready_reads": 6,
+        "watchdog_pairs": 40964,
+        "watchdog_writes_suppressed": 81928,
+        "phases": {
+          "status": 6,
+          "delay_1": 20479,
+          "delay_2": 20479
+        },
+        "delay_calls": 2,
+        "delay_entries": [
+          {
+            "phase": "delay_1",
+            "instruction": 128
+          },
+          {
+            "phase": "delay_2",
+            "instruction": 143486
+          }
+        ],
+        "delay_returns": [
+          {
+            "phase": "delay_1",
+            "d5": 65535
+          },
+          {
+            "phase": "delay_2",
+            "d5": 65535
+          }
+        ],
+        "fifo_data": [
+          108,
+          240,
+          24,
+          118,
+          0,
+          255
+        ],
+        "fifo_writes": [
+          {
+            "value": 108,
+            "instruction": 11
+          },
+          {
+            "value": 240,
+            "instruction": 29
+          },
+          {
+            "value": 24,
+            "instruction": 47
+          },
+          {
+            "value": 118,
+            "instruction": 67
+          },
+          {
+            "value": 0,
+            "instruction": 88
+          },
+          {
+            "value": 255,
+            "instruction": 109
+          }
+        ],
+        "interface_writes": [
+          {
+            "pc": 16749870,
+            "address": 4294961152,
+            "value": 20,
+            "phase": "status",
+            "instruction": 8
+          },
+          {
+            "pc": 16750014,
+            "address": 4294961152,
+            "value": 4,
+            "phase": "status",
+            "instruction": 28
+          },
+          {
+            "pc": 16750014,
+            "address": 4294961152,
+            "value": 4,
+            "phase": "status",
+            "instruction": 46
+          },
+          {
+            "pc": 16750014,
+            "address": 4294961152,
+            "value": 4,
+            "phase": "status",
+            "instruction": 66
+          },
+          {
+            "pc": 16750014,
+            "address": 4294961152,
+            "value": 4,
+            "phase": "status",
+            "instruction": 87
+          },
+          {
+            "pc": 16750002,
+            "address": 4294961152,
+            "value": 12,
+            "phase": "status",
+            "instruction": 106
+          },
+          {
+            "pc": 16749114,
+            "address": 4294961152,
+            "value": 64,
+            "phase": "delay_1",
+            "instruction": 143483
+          },
+          {
+            "pc": 16749120,
+            "address": 4294961153,
+            "value": 0,
+            "phase": "delay_1",
+            "instruction": 143484
+          }
+        ],
+        "marker_writes": [
+          {
+            "address": 4294934528,
+            "declared_alias": 16744448,
+            "value": 53442,
+            "size": 2,
+            "instruction": 286841
+          }
+        ],
+        "park_visits": 16,
+        "first_park_instruction": 286842,
+        "service_pairs_at_park": 40964,
+        "last_service_instruction": 286835,
+        "receive_entries": 0,
+        "reset_opcodes": 0,
+        "marker": 53442,
+        "marker_alias": 53442,
+        "watchdog_service_digest": "a8e92c5aef6fbebf52b6c6b1e3b02fd08a8110c2a4093b9ea69d7aae98e4dc29",
+        "stack_delta": 0,
+        "service_pairs_after_park": 0,
+        "loader_bytes_unchanged": true
+      },
+      "native_checksum_and_flash_marker_programming_executed": false,
+      "hardware_access": false,
+      "mmio_instructions_executed": 0,
+      "physical_reset_verified": false,
+      "physical_timeout_verified": false,
+      "physical_fifo_ready_semantics_verified": false,
+      "final_status_wire_delivery_verified": false,
+      "host_readback_window_proven": false,
+      "live_upload_enabled": false,
+      "live_execution_enabled": false,
+      "live_write_enabled": false,
+      "ready_to_flash": false
+    },
+    {
+      "case": "success_delayed_ready",
+      "context": {
+        "entry": "success_tail",
+        "busy_reads": 5,
+        "park_visits": 16,
+        "initial_sr": 9984,
+        "idle_counter_is_selected_last_iteration": false
+      },
+      "observed": {
+        "stop": "bounded_native_park",
+        "instructions": 286918,
+        "ready_reads": 11,
+        "watchdog_pairs": 40969,
+        "watchdog_writes_suppressed": 81938,
+        "phases": {
+          "status": 11,
+          "delay_1": 20479,
+          "delay_2": 20479
+        },
+        "delay_calls": 2,
+        "delay_entries": [
+          {
+            "phase": "delay_1",
+            "instruction": 189
+          },
+          {
+            "phase": "delay_2",
+            "instruction": 143547
+          }
+        ],
+        "delay_returns": [
+          {
+            "phase": "delay_1",
+            "d5": 65535
+          },
+          {
+            "phase": "delay_2",
+            "d5": 65535
+          }
+        ],
+        "fifo_data": [
+          108,
+          240,
+          24,
+          118,
+          0,
+          134
+        ],
+        "fifo_writes": [
+          {
+            "value": 108,
+            "instruction": 11
+          },
+          {
+            "value": 240,
+            "instruction": 89
+          },
+          {
+            "value": 24,
+            "instruction": 107
+          },
+          {
+            "value": 118,
+            "instruction": 127
+          },
+          {
+            "value": 0,
+            "instruction": 148
+          },
+          {
+            "value": 134,
+            "instruction": 169
+          }
+        ],
+        "interface_writes": [
+          {
+            "pc": 16749870,
+            "address": 4294961152,
+            "value": 20,
+            "phase": "status",
+            "instruction": 8
+          },
+          {
+            "pc": 16750014,
+            "address": 4294961152,
+            "value": 4,
+            "phase": "status",
+            "instruction": 88
+          },
+          {
+            "pc": 16750014,
+            "address": 4294961152,
+            "value": 4,
+            "phase": "status",
+            "instruction": 106
+          },
+          {
+            "pc": 16750014,
+            "address": 4294961152,
+            "value": 4,
+            "phase": "status",
+            "instruction": 126
+          },
+          {
+            "pc": 16750014,
+            "address": 4294961152,
+            "value": 4,
+            "phase": "status",
+            "instruction": 147
+          },
+          {
+            "pc": 16750002,
+            "address": 4294961152,
+            "value": 12,
+            "phase": "status",
+            "instruction": 166
+          },
+          {
+            "pc": 16749114,
+            "address": 4294961152,
+            "value": 64,
+            "phase": "delay_1",
+            "instruction": 143544
+          },
+          {
+            "pc": 16749120,
+            "address": 4294961153,
+            "value": 0,
+            "phase": "delay_1",
+            "instruction": 143545
+          }
+        ],
+        "marker_writes": [
+          {
+            "address": 4294934528,
+            "declared_alias": 16744448,
+            "value": 53442,
+            "size": 2,
+            "instruction": 286902
+          }
+        ],
+        "park_visits": 16,
+        "first_park_instruction": 286903,
+        "service_pairs_at_park": 40969,
+        "last_service_instruction": 286896,
+        "receive_entries": 0,
+        "reset_opcodes": 0,
+        "marker": 53442,
+        "marker_alias": 53442,
+        "watchdog_service_digest": "55008a2b159826454e930f2894452d2c5084d59e586ef5e0fd5f92d3afd2de79",
+        "stack_delta": 0,
+        "service_pairs_after_park": 0,
+        "loader_bytes_unchanged": true
+      },
+      "native_checksum_and_flash_marker_programming_executed": false,
+      "hardware_access": false,
+      "mmio_instructions_executed": 0,
+      "physical_reset_verified": false,
+      "physical_timeout_verified": false,
+      "physical_fifo_ready_semantics_verified": false,
+      "final_status_wire_delivery_verified": false,
+      "host_readback_window_proven": false,
+      "live_upload_enabled": false,
+      "live_execution_enabled": false,
+      "live_write_enabled": false,
+      "ready_to_flash": false
+    },
+    {
+      "case": "permanent_sender_busy",
+      "context": {
+        "entry": "success_tail",
+        "busy_reads": null,
+        "park_visits": 16,
+        "initial_sr": 9984,
+        "idle_counter_is_selected_last_iteration": false
+      },
+      "observed": {
+        "stop": "sender_busy_loader_restart_boundary",
+        "instructions": 49161,
+        "ready_reads": 4095,
+        "watchdog_pairs": 4096,
+        "watchdog_writes_suppressed": 8192,
+        "phases": {
+          "status": 4096
+        },
+        "delay_calls": 0,
+        "delay_entries": [],
+        "delay_returns": [],
+        "fifo_data": [
+          108
+        ],
+        "fifo_writes": [
+          {
+            "value": 108,
+            "instruction": 11
+          }
+        ],
+        "interface_writes": [
+          {
+            "pc": 16749870,
+            "address": 4294961152,
+            "value": 20,
+            "phase": "status",
+            "instruction": 8
+          }
+        ],
+        "marker_writes": [],
+        "park_visits": 0,
+        "first_park_instruction": null,
+        "service_pairs_at_park": null,
+        "last_service_instruction": 49155,
+        "receive_entries": 0,
+        "reset_opcodes": 0,
+        "marker": 0,
+        "marker_alias": 0,
+        "watchdog_service_digest": "f9c1fce6402ac188e0d2027426357a00635f7a8e792c656190c37d5c30a54927",
+        "stack_delta": -12,
+        "service_pairs_after_park": 0,
+        "loader_bytes_unchanged": true
+      },
+      "native_checksum_and_flash_marker_programming_executed": false,
+      "hardware_access": false,
+      "mmio_instructions_executed": 0,
+      "physical_reset_verified": false,
+      "physical_timeout_verified": false,
+      "physical_fifo_ready_semantics_verified": false,
+      "final_status_wire_delivery_verified": false,
+      "host_readback_window_proven": false,
+      "live_upload_enabled": false,
+      "live_execution_enabled": false,
+      "live_write_enabled": false,
+      "ready_to_flash": false
+    },
+    {
+      "case": "last_successful_sender_poll",
+      "context": {
+        "entry": "success_tail",
+        "busy_reads": 4094,
+        "park_visits": 16,
+        "initial_sr": 9984,
+        "idle_counter_is_selected_last_iteration": false
+      },
+      "observed": {
+        "stop": "bounded_native_park",
+        "instructions": 335986,
+        "ready_reads": 4100,
+        "watchdog_pairs": 45058,
+        "watchdog_writes_suppressed": 90116,
+        "phases": {
+          "status": 4100,
+          "delay_1": 20479,
+          "delay_2": 20479
+        },
+        "delay_calls": 2,
+        "delay_entries": [
+          {
+            "phase": "delay_1",
+            "instruction": 49257
+          },
+          {
+            "phase": "delay_2",
+            "instruction": 192615
+          }
+        ],
+        "delay_returns": [
+          {
+            "phase": "delay_1",
+            "d5": 65535
+          },
+          {
+            "phase": "delay_2",
+            "d5": 65535
+          }
+        ],
+        "fifo_data": [
+          108,
+          240,
+          24,
+          118,
+          0,
+          134
+        ],
+        "fifo_writes": [
+          {
+            "value": 108,
+            "instruction": 11
+          },
+          {
+            "value": 240,
+            "instruction": 49157
+          },
+          {
+            "value": 24,
+            "instruction": 49175
+          },
+          {
+            "value": 118,
+            "instruction": 49195
+          },
+          {
+            "value": 0,
+            "instruction": 49216
+          },
+          {
+            "value": 134,
+            "instruction": 49237
+          }
+        ],
+        "interface_writes": [
+          {
+            "pc": 16749870,
+            "address": 4294961152,
+            "value": 20,
+            "phase": "status",
+            "instruction": 8
+          },
+          {
+            "pc": 16750014,
+            "address": 4294961152,
+            "value": 4,
+            "phase": "status",
+            "instruction": 49156
+          },
+          {
+            "pc": 16750014,
+            "address": 4294961152,
+            "value": 4,
+            "phase": "status",
+            "instruction": 49174
+          },
+          {
+            "pc": 16750014,
+            "address": 4294961152,
+            "value": 4,
+            "phase": "status",
+            "instruction": 49194
+          },
+          {
+            "pc": 16750014,
+            "address": 4294961152,
+            "value": 4,
+            "phase": "status",
+            "instruction": 49215
+          },
+          {
+            "pc": 16750002,
+            "address": 4294961152,
+            "value": 12,
+            "phase": "status",
+            "instruction": 49234
+          },
+          {
+            "pc": 16749114,
+            "address": 4294961152,
+            "value": 64,
+            "phase": "delay_1",
+            "instruction": 192612
+          },
+          {
+            "pc": 16749120,
+            "address": 4294961153,
+            "value": 0,
+            "phase": "delay_1",
+            "instruction": 192613
+          }
+        ],
+        "marker_writes": [
+          {
+            "address": 4294934528,
+            "declared_alias": 16744448,
+            "value": 53442,
+            "size": 2,
+            "instruction": 335970
+          }
+        ],
+        "park_visits": 16,
+        "first_park_instruction": 335971,
+        "service_pairs_at_park": 45058,
+        "last_service_instruction": 335964,
+        "receive_entries": 0,
+        "reset_opcodes": 0,
+        "marker": 53442,
+        "marker_alias": 53442,
+        "watchdog_service_digest": "7f4391cfd1e2d4f9d9af97d42c327826fbfe4655ae2ba10eab163d089c056ec1",
+        "stack_delta": 0,
+        "service_pairs_after_park": 0,
+        "loader_bytes_unchanged": true
+      },
+      "native_checksum_and_flash_marker_programming_executed": false,
+      "hardware_access": false,
+      "mmio_instructions_executed": 0,
+      "physical_reset_verified": false,
+      "physical_timeout_verified": false,
+      "physical_fifo_ready_semantics_verified": false,
+      "final_status_wire_delivery_verified": false,
+      "host_readback_window_proven": false,
+      "live_upload_enabled": false,
+      "live_execution_enabled": false,
+      "live_write_enabled": false,
+      "ready_to_flash": false
+    },
+    {
+      "case": "sender_countdown_exhausted",
+      "context": {
+        "entry": "success_tail",
+        "busy_reads": 4095,
+        "park_visits": 16,
+        "initial_sr": 9984,
+        "idle_counter_is_selected_last_iteration": false
+      },
+      "observed": {
+        "stop": "sender_busy_loader_restart_boundary",
+        "instructions": 49161,
+        "ready_reads": 4095,
+        "watchdog_pairs": 4096,
+        "watchdog_writes_suppressed": 8192,
+        "phases": {
+          "status": 4096
+        },
+        "delay_calls": 0,
+        "delay_entries": [],
+        "delay_returns": [],
+        "fifo_data": [
+          108
+        ],
+        "fifo_writes": [
+          {
+            "value": 108,
+            "instruction": 11
+          }
+        ],
+        "interface_writes": [
+          {
+            "pc": 16749870,
+            "address": 4294961152,
+            "value": 20,
+            "phase": "status",
+            "instruction": 8
+          }
+        ],
+        "marker_writes": [],
+        "park_visits": 0,
+        "first_park_instruction": null,
+        "service_pairs_at_park": null,
+        "last_service_instruction": 49155,
+        "receive_entries": 0,
+        "reset_opcodes": 0,
+        "marker": 0,
+        "marker_alias": 0,
+        "watchdog_service_digest": "f9c1fce6402ac188e0d2027426357a00635f7a8e792c656190c37d5c30a54927",
+        "stack_delta": -12,
+        "service_pairs_after_park": 0,
+        "loader_bytes_unchanged": true
+      },
+      "native_checksum_and_flash_marker_programming_executed": false,
+      "hardware_access": false,
+      "mmio_instructions_executed": 0,
+      "physical_reset_verified": false,
+      "physical_timeout_verified": false,
+      "physical_fifo_ready_semantics_verified": false,
+      "final_status_wire_delivery_verified": false,
+      "host_readback_window_proven": false,
+      "live_upload_enabled": false,
+      "live_execution_enabled": false,
+      "live_write_enabled": false,
+      "ready_to_flash": false
+    },
+    {
+      "case": "shared_exit_no_status",
+      "context": {
+        "entry": "shared_exit",
+        "busy_reads": 0,
+        "park_visits": 16,
+        "initial_sr": 9984,
+        "idle_counter_is_selected_last_iteration": false
+      },
+      "observed": {
+        "stop": "bounded_native_park",
+        "instructions": 286731,
+        "ready_reads": 0,
+        "watchdog_pairs": 40958,
+        "watchdog_writes_suppressed": 81916,
+        "phases": {
+          "delay_1": 20479,
+          "delay_2": 20479
+        },
+        "delay_calls": 2,
+        "delay_entries": [
+          {
+            "phase": "delay_1",
+            "instruction": 2
+          },
+          {
+            "phase": "delay_2",
+            "instruction": 143360
+          }
+        ],
+        "delay_returns": [
+          {
+            "phase": "delay_1",
+            "d5": 65535
+          },
+          {
+            "phase": "delay_2",
+            "d5": 65535
+          }
+        ],
+        "fifo_data": [],
+        "fifo_writes": [],
+        "interface_writes": [
+          {
+            "pc": 16749114,
+            "address": 4294961152,
+            "value": 64,
+            "phase": "delay_1",
+            "instruction": 143357
+          },
+          {
+            "pc": 16749120,
+            "address": 4294961153,
+            "value": 0,
+            "phase": "delay_1",
+            "instruction": 143358
+          }
+        ],
+        "marker_writes": [
+          {
+            "address": 4294934528,
+            "declared_alias": 16744448,
+            "value": 53442,
+            "size": 2,
+            "instruction": 286715
+          }
+        ],
+        "park_visits": 16,
+        "first_park_instruction": 286716,
+        "service_pairs_at_park": 40958,
+        "last_service_instruction": 286709,
+        "receive_entries": 0,
+        "reset_opcodes": 0,
+        "marker": 53442,
+        "marker_alias": 53442,
+        "watchdog_service_digest": "8b50ba53ecd02c4d411584fb637b7aac9974fce54d4f2b11868421639136f8e5",
+        "stack_delta": 0,
+        "service_pairs_after_park": 0,
+        "loader_bytes_unchanged": true
+      },
+      "native_checksum_and_flash_marker_programming_executed": false,
+      "hardware_access": false,
+      "mmio_instructions_executed": 0,
+      "physical_reset_verified": false,
+      "physical_timeout_verified": false,
+      "physical_fifo_ready_semantics_verified": false,
+      "final_status_wire_delivery_verified": false,
+      "host_readback_window_proven": false,
+      "live_upload_enabled": false,
+      "live_execution_enabled": false,
+      "live_write_enabled": false,
+      "ready_to_flash": false
+    },
+    {
+      "case": "idle_expiry_boundary",
+      "context": {
+        "entry": "idle_expiry",
+        "busy_reads": 0,
+        "park_visits": 16,
+        "initial_sr": 9984,
+        "idle_counter_is_selected_last_iteration": true
+      },
+      "observed": {
+        "stop": "bounded_native_park",
+        "instructions": 286734,
+        "ready_reads": 0,
+        "watchdog_pairs": 40958,
+        "watchdog_writes_suppressed": 81916,
+        "phases": {
+          "delay_1": 20479,
+          "delay_2": 20479
+        },
+        "delay_calls": 2,
+        "delay_entries": [
+          {
+            "phase": "delay_1",
+            "instruction": 5
+          },
+          {
+            "phase": "delay_2",
+            "instruction": 143363
+          }
+        ],
+        "delay_returns": [
+          {
+            "phase": "delay_1",
+            "d5": 65535
+          },
+          {
+            "phase": "delay_2",
+            "d5": 65535
+          }
+        ],
+        "fifo_data": [],
+        "fifo_writes": [],
+        "interface_writes": [
+          {
+            "pc": 16749114,
+            "address": 4294961152,
+            "value": 64,
+            "phase": "delay_1",
+            "instruction": 143360
+          },
+          {
+            "pc": 16749120,
+            "address": 4294961153,
+            "value": 0,
+            "phase": "delay_1",
+            "instruction": 143361
+          }
+        ],
+        "marker_writes": [
+          {
+            "address": 4294934528,
+            "declared_alias": 16744448,
+            "value": 53442,
+            "size": 2,
+            "instruction": 286718
+          }
+        ],
+        "park_visits": 16,
+        "first_park_instruction": 286719,
+        "service_pairs_at_park": 40958,
+        "last_service_instruction": 286712,
+        "receive_entries": 0,
+        "reset_opcodes": 0,
+        "marker": 53442,
+        "marker_alias": 53442,
+        "watchdog_service_digest": "8b50ba53ecd02c4d411584fb637b7aac9974fce54d4f2b11868421639136f8e5",
+        "stack_delta": 0,
+        "service_pairs_after_park": 0,
+        "loader_bytes_unchanged": true
+      },
+      "native_checksum_and_flash_marker_programming_executed": false,
+      "hardware_access": false,
+      "mmio_instructions_executed": 0,
+      "physical_reset_verified": false,
+      "physical_timeout_verified": false,
+      "physical_fifo_ready_semantics_verified": false,
+      "final_status_wire_delivery_verified": false,
+      "host_readback_window_proven": false,
+      "live_upload_enabled": false,
+      "live_execution_enabled": false,
+      "live_write_enabled": false,
+      "ready_to_flash": false
+    }
+  ],
+  "dependencies_sha256": {
+    "emulate_loader_parser.py": "62ba7801849fc51361c0dfab2b8b85063a3e590eda1b78d14329fb125c10416c"
+  },
+  "conditional_manual": {
+    "url": "https://www.nxp.com/docs/en/user-guide/MC68336376UMD.pdf",
+    "sections": [
+      "D.2.12",
+      "D.2.15"
+    ],
+    "actual_mcu_identified": false
+  },
+  "hardware_access": false,
+  "physical_reset_verified": false,
+  "physical_timeout_verified": false,
+  "host_readback_window_proven": false,
+  "live_upload_enabled": false,
+  "live_execution_enabled": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "limits": [
+    "Direct status/shared-exit or last-idle-iteration entries, not full receive, flash programming or final checksum execution.",
+    "Real helper and delay instructions, with every peripheral instruction suppressed and MOVE flags explicitly modeled.",
+    "Shared RAM aliases are a declared 24-bit model; native retained-marker storage is not a hardware reset.",
+    "No watchdog peripheral, clock, elapsed-time model, actual exception or physical reset is supplied."
+  ],
+  "input_reference": {
+    "selected": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\al5_bench_ready_20261102\\captured_efi_loader.bin",
+    "resolved": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\al5_bench_ready_20261102\\captured_efi_loader.bin"
+  }
+}

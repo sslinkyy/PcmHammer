@@ -13,8 +13,9 @@ namespace PcmHacking
         internal AL5WriteExecutionReport(AL5WriteExecutionOutcome outcome,AL5OfflineDispatchState? state,
             AL5OfflineDispatchStop? reason,int sends,int receives,int blocks,bool outstanding,string? error,
             string? originalHash=null,string? preparedHash=null,int? preparationChanges=null,
-            AL5SavedSecurityState? securityState=null,AL5SavedSecurityFailure? securityFailure=null,byte? securityStatus=null,string? backupEvidenceId=null)
-        {Outcome=outcome;DispatcherState=state;StopReason=reason;SendCalls=sends;ReceiveCalls=receives;AcknowledgedBlocks=blocks;TransportCallOutstanding=outstanding;TransportError=error;OriginalReferenceSha256=originalHash;PreparedBanksSha256=preparedHash;SavedPreparationChangedBytes=preparationChanges;SavedSecurityState=securityState;SavedSecurityFailure=securityFailure;SavedSecurityStatus=securityStatus;BackupEvidenceId=backupEvidenceId;}
+            AL5SavedSecurityState? securityState=null,AL5SavedSecurityFailure? securityFailure=null,byte? securityStatus=null,string? backupEvidenceId=null,
+            bool savedFinalizationReplyObserved=false,bool savedCleanupObserved=false)
+        {Outcome=outcome;DispatcherState=state;StopReason=reason;SendCalls=sends;ReceiveCalls=receives;AcknowledgedBlocks=blocks;TransportCallOutstanding=outstanding;TransportError=error;OriginalReferenceSha256=originalHash;PreparedBanksSha256=preparedHash;SavedPreparationChangedBytes=preparationChanges;SavedSecurityState=securityState;SavedSecurityFailure=securityFailure;SavedSecurityStatus=securityStatus;BackupEvidenceId=backupEvidenceId;SavedFinalizationReplyObserved=savedFinalizationReplyObserved;SavedCleanupObserved=savedCleanupObserved;}
         public AL5WriteExecutionOutcome Outcome { get; }
         public AL5OfflineDispatchState? DispatcherState { get; }
         public AL5OfflineDispatchStop? StopReason { get; }
@@ -37,6 +38,11 @@ namespace PcmHacking
         public bool ReadyToFlash => false;
         public bool PhysicalReadbackVerified => false;
         public bool RecoveryVerified => false;
+        public bool SavedFinalizationReplyObserved { get; }
+        public bool SavedCleanupObserved { get; }
+        public bool PhysicalResetVerified=>false;
+        public bool PostFinalizationReadbackWindowVerified=>false;
+        public bool PhysicalDeadlinesQualified=>false;
         internal static AL5WriteExecutionReport Disabled()=>new AL5WriteExecutionReport(AL5WriteExecutionOutcome.LiveDisabled,null,null,0,0,0,false,null);
     }
 
@@ -170,7 +176,8 @@ namespace PcmHacking
                 outcome=AL5WriteExecutionOutcome.PreparationBackupReviewRequired;
             return new AL5WriteExecutionReport(outcome,state,dispatcher.StopReason,sends,receives,dispatcher.PositiveProgramReplies,TransportCallOutstanding,transportError,
                 dispatcher.OriginalReferenceSha256,dispatcher.PreparedBanksSha256,dispatcher.SavedPreparationChangedBytes,
-                dispatcher.SavedSecurityState,dispatcher.SavedSecurityFailure,dispatcher.SavedSecurityStatus,backupEvidenceId);
+                dispatcher.SavedSecurityState,dispatcher.SavedSecurityFailure,dispatcher.SavedSecurityStatus,backupEvidenceId,
+                dispatcher.SavedFinalizationReplyObserved,dispatcher.SavedCleanupObserved);
         }
 
         internal Task<AL5WriteExecutionReport> RunUntilReviewAsync(CancellationToken token)=>RunExclusiveAsync(null,false,null,token);

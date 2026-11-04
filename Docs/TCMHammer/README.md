@@ -50,3 +50,5 @@ All existing AL5 assets belong to this section. Their paths remain stable so scr
 - [Temporary A12 alias model](../AL5/A12_RECOVERY_MODEL.md): conditional reset-to-boot-session emulation; physical recovery remains unverified.
 
 The offline writer rehearses loader entry, erase, programming, finalization, verification and failure handling using retained evidence. It has no authorized live write path. Creating this section does not enable kernel upload, execution, erase, programming or automatic retries.
+
+[Finalizer watchdog and verification timing](FINALIZER_WATCHDOG_TIMING.md) executes the native service helper/delays and bounded park with peripheral access suppressed; execution reports retain separate final reply and cleanup observations without claiming reset or safe timing.

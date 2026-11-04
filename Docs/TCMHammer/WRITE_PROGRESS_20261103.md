@@ -57,3 +57,7 @@ Review of the retained October 15 work confirms the T48/ADP_S44_EX-1/Xgpro workf
 ## Continuation: startup bank verification
 
 The [journal restart continuation](STARTUP_BANK_VERIFICATION.md) traces historical, modeled-prepared and second modeled restart epochs. Eight-byte changes move with parent-bank selection; a subsequent startup makes six different changes. Exact ordered bank diagnosis is now available, but every bank byte is still compared and the writer continues to reject unexplained preservation differences. Physical reset/readback timing remains a qualification gate.
+
+## 2026-11-04: finalizer watchdog continuation
+
+The [native watchdog tail](FINALIZER_WATCHDOG_TIMING.md) services through both delays, stores the retained marker and stops servicing in park. Sender-busy exhaustion instead branches to loader entry before marker/park. The saved execution report now separates final reply and cleanup from physical reset/readback timing; all physical/live gates remain false. Actual watchdog configuration and reset/readback epochs still require qualification on the arriving spare.

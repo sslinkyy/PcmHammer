@@ -42,6 +42,8 @@ namespace PcmHacking
         public string PreEraseSectorSha256 => sectors.SavedPreEraseSha256;
         public AL5CapturedWriteState State => comparisonFailed ? AL5CapturedWriteState.Stopped : session.State;
         public int PositiveProgramReplies => session.PositiveProgramReplies;
+        public bool SavedFinalizationReplyObserved=>session.SavedFinalizationReplyObserved;
+        public bool SavedCleanupObserved=>session.CleanupObserved;
         public int ChecksumErrors => session.ChecksumErrors;
         public int RepeatsWithoutReply => session.RepeatsWithoutReply;
         public bool CompleteSavedComparison { get; private set; }

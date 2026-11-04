@@ -24,6 +24,7 @@ namespace PcmHacking
         public int CleanupQueryRepeats { get; private set; }
         public bool CleanupNegative14Observed { get; private set; }
         public bool CleanupObserved { get; private set; }
+        public bool SavedFinalizationReplyObserved { get; private set; }
         public AL5CapturedWriteState State { get; private set; } = AL5CapturedWriteState.Setup;
         private static readonly (bool Tx, string Prefix, int Length)[] SetupRules = {
             (true,"6c18f03c55",5),(false,"6cf0187c550a0012",8),
@@ -211,7 +212,7 @@ namespace PcmHacking
                 case AL5CapturedWriteState.FinalizeRequest:
                     if(transmitted && Is(m,0x6C,0x18,0xF0,0x36,0xFF)){State=AL5CapturedWriteState.FinalizeReply;accepted=true;}break;
                 case AL5CapturedWriteState.FinalizeReply:
-                    if(!transmitted && Is(m,0x6C,0xF0,0x18,0x76,0,0x86)){State=AL5CapturedWriteState.Cleanup;accepted=true;}break;
+                    if(!transmitted && Is(m,0x6C,0xF0,0x18,0x76,0,0x86)){SavedFinalizationReplyObserved=true;State=AL5CapturedWriteState.Cleanup;accepted=true;}break;
                 case AL5CapturedWriteState.Cleanup:
                     if(exchangeIndex==1 && transmitted && Is(m,0x6C,0x18,0xF0,0x3C,0x55))
                     {CleanupQueryRepeats++;accepted=true;break;}

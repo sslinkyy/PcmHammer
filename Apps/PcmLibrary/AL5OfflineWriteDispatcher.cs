@@ -94,6 +94,8 @@ namespace PcmHacking
         public AL5CapturedWriteState? ProtocolPhaseAtStop { get { lock(sync)return phaseAtStop; } }
         public AL5CapturedWriteState ProtocolState { get { lock(sync)return candidate.State; } }
         public int PositiveProgramReplies { get { lock(sync)return candidate.PositiveProgramReplies; } }
+        public bool SavedFinalizationReplyObserved { get { lock(sync)return candidate.SavedFinalizationReplyObserved; } }
+        public bool SavedCleanupObserved { get { lock(sync)return candidate.SavedCleanupObserved; } }
         public int ChecksumErrors { get { lock(sync)return candidate.ChecksumErrors; } }
         public int IgnoredOtherSources { get { lock(sync)return ignoredOtherSources; } }
         public int TrailingCleanupReplies { get { lock(sync)return trailingCleanupReplies; } }

@@ -163,8 +163,11 @@ static partial class Program
                 Reject(()=>session.VerifySavedReadback(peer.Flash));
             }
         }
+        Check(!report.PhysicalResetVerified && !report.PostFinalizationReadbackWindowVerified && !report.PhysicalDeadlinesQualified,"Saved progress cannot qualify physical reset, readback timing or deadlines");
+        Check(report.SavedFinalizationReplyObserved==(boundary==AL5OfflineWriteBoundary.CompleteOfflineRehearsal) && report.SavedCleanupObserved==(boundary==AL5OfflineWriteBoundary.CompleteOfflineRehearsal),"Separate saved finalization and cleanup evidence survives async reporting");
         Check(port.Sends==report.SendCalls && !report.ReadyToFlash && !report.LiveWriteEnabled,"one call per owned dispatch; no live readiness");
-        results.Add(new { name="production_Vehicle_binding",passed=true,source,early,boundary=boundary.ToString(),report.SendCalls,report.AcknowledgedBlocks,
+        results.Add(new { name="production_Vehicle_binding",passed=true,source,early,boundary=boundary.ToString(),report.SendCalls,report.AcknowledgedBlocks,report.SavedFinalizationReplyObserved,report.SavedCleanupObserved,
+            report.PhysicalResetVerified,report.PostFinalizationReadbackWindowVerified,report.PhysicalDeadlinesQualified,
             peer.OmittedNoReplyRepeats,peer.OmittedProgrammingBroadcasts,readback_is_synthetic=true });
     }
     static async Task FaultCases()
@@ -303,7 +306,7 @@ static partial class Program
                 foreach(var boundary in new[]{AL5OfflineWriteBoundary.BeforeSecurityKey,AL5OfflineWriteBoundary.BeforeProgrammingEntry,AL5OfflineWriteBoundary.BeforeLoaderUpload,AL5OfflineWriteBoundary.BeforeErase,AL5OfflineWriteBoundary.AfterEraseBeforeData,AL5OfflineWriteBoundary.BeforeFinalization})
                     await VehicleCase(true,boundary,"first_saved_template");
                 await VehicleCase(false,AL5OfflineWriteBoundary.BeforeFinalization,"first_saved_template");
-                await FaultCases();await QualificationChecks();await PreparationEpochs();await CompletionRaces();await SecurityAndBackupCases();
+                await FaultCases();await QualificationChecks();await PreparationEpochs();await CompletionRaces();await SecurityAndBackupCases();await FinalizerTimingCases();
                 if(journalReport!=null)JournalCases(journalReport,baseline);
             }
         }
