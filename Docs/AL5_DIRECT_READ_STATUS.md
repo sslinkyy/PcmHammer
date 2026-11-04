@@ -1,5 +1,7 @@
 # AL5 direct read status — OS 15184109 / calibration 15183960
 
+Historical reader record: [current AL5 work status](TCMHammer/WORK_STATUS.md) owns continuation and full-backup limitations. The working calibration reader is not a complete flash acquisition.
+
 ## Live-read breakthrough
 
 The AL5 at VPW module `0x18` responds to stock-firmware Mode `0x23` memory reads at normal VPW 1X speed without requiring a security-key exchange or RAM kernel.

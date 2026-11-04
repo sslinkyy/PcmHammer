@@ -97,7 +97,22 @@ def seal(repo, output, app, writer, evidence, capture_dir=None, backup_tool=None
     return manifest
 
 
-def verify(package, repo=None):
+def drift_group(relative):
+    if relative.startswith('Apps/') or relative in SCOPES[4:]:
+        return 'application'
+    if relative.startswith('Kernels/'):
+        return 'kernel'
+    if relative.startswith('Tools/'):
+        return 'tools'
+    if relative.startswith('Docs/'):
+        return 'documentation'
+    # Unknown input categories must not silently bypass application checks.
+    return 'application'
+
+
+def verify(package, repo=None, application_only=False):
+    if application_only and repo is None:
+        raise ValueError('Application input verification requires --repo')
     manifest = json.loads((package/'manifest.json').read_text(encoding='utf-8'))
     if manifest.get('schema') != 'al5-offline-bench-package-v1' or not manifest.get('files'):
         raise ValueError('Not a sealed AL5 bench package')
@@ -121,7 +136,17 @@ def verify(package, repo=None):
             path = safe_child(repo, relative)
             if not path.is_file() or digest(path) != manifest['files']['source/'+relative]['sha256']:
                 drift.append(relative)
-    return dict(verified=not mismatches and not unexpected and not drift, files_checked=len(manifest['files']),
+    groups = {name: [] for name in ('application', 'kernel', 'tools', 'documentation')}
+    for relative in drift:
+        groups[drift_group(relative)].append(relative)
+    integrity = not mismatches and not unexpected
+    relevant_drift = groups['application'] if application_only else drift
+    return dict(verified=integrity and not relevant_drift, files_checked=len(manifest['files']),
+                verification_scope='application' if application_only else 'complete',
+                package_integrity_verified=integrity,
+                application_inputs_match=(not groups['application']) if repo is not None else None,
+                source_snapshot_matches=(not drift) if repo is not None else None,
+                source_drift_by_group=groups,
                 mismatches=mismatches, unexpected_files=unexpected, source_drift=drift,
                 tests_rerun=False, hardware_access=False, live_write_enabled=False, ready_to_flash=False)
 
@@ -138,11 +163,13 @@ if __name__ == '__main__':
     check = sub.add_parser('verify')
     check.add_argument('--package', type=Path, required=True)
     check.add_argument('--repo', type=Path)
+    check.add_argument('--application-only', action='store_true',
+                       help='Check package integrity and application source inputs; report other source drift separately')
     args = parser.parse_args()
     if args.operation == 'seal':
         value = seal(args.repo, args.output, args.app, args.writer, args.evidence, args.capture_dir, args.backup_tool)
         print('Sealed', len(value['files']), 'files; private/offline package only.')
     else:
-        value = verify(args.package, args.repo)
+        value = verify(args.package, args.repo, args.application_only)
         print(json.dumps(value, indent=2))
         raise SystemExit(0 if value['verified'] else 1)

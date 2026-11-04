@@ -71,5 +71,31 @@ class PackageTests(unittest.TestCase):
             package.seal(self.repo,self.output,self.app,self.writer,[self.evidence],backup_tool=self.root/'missing')
         self.assertFalse(self.output.exists())
 
+    def test_application_scope_reports_tool_kernel_and_doc_drift_without_rebuild_claim(self):
+        extras = ['Docs/TCMHammer/status.md', 'Tools/AL5/offline.py', 'Kernels/reader.s']
+        for relative in extras:
+            path = self.repo/relative;path.parent.mkdir(parents=True,exist_ok=True);path.write_text('old')
+        with patch.object(package,'source_paths',return_value=['Apps/Example.cs',*extras]):
+            self.seal()
+            for relative in extras:(self.repo/relative).write_text('new')
+            self.assertFalse(package.verify(self.output,self.repo)['verified'])
+            result=package.verify(self.output,self.repo,application_only=True)
+            self.assertTrue(result['verified']);self.assertTrue(result['package_integrity_verified'])
+            self.assertTrue(result['application_inputs_match']);self.assertFalse(result['source_snapshot_matches'])
+            for group in ('documentation','tools','kernel'):
+                self.assertEqual(1,len(result['source_drift_by_group'][group]))
+            self.source.write_text('changed')
+            self.assertFalse(package.verify(self.output,self.repo,application_only=True)['verified'])
+
+    def test_application_scope_still_rejects_corruption_and_requires_checkout(self):
+        self.seal()
+        with self.assertRaises(ValueError):package.verify(self.output,application_only=True)
+        (self.output/'application/PcmHammer.exe').write_bytes(b'changed')
+        self.assertFalse(package.verify(self.output,self.repo,application_only=True)['verified'])
+
+    def test_build_configuration_and_unknown_inputs_are_application_drift(self):
+        for name in ('Directory.Build.props','Apps/global.json','future-input'):
+            self.assertEqual('application',package.drift_group(name))
+
 
 if __name__=='__main__':unittest.main()

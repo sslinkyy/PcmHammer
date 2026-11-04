@@ -1,5 +1,7 @@
 # AL5: 30-point plan for a calibration writer candidate
 
+Continuation note (2026-11-04): use [current work status](WORK_STATUS.md) to distinguish completed implementation from the remaining physical gates. This dated plan is retained; do not restart completed discovery or rebuild unchanged software.
+
 Updated 2026-11-02 after the owner clarified that writing is the primary deliverable. Points 1-24 are writer implementation/validation; points 25-30 support the first bench write. Existing read evidence is reused. Reader expansion is limited to a demonstrated preservation prerequisite.
 
 All work before arrival remains offline. Live upload, execution, erase/programming and automatic retries stay disabled. The spare starts physical qualification; it does not establish that qualification by arriving.

@@ -1,5 +1,7 @@
 # TCM Hammer
 
+[Current AL5 work status and audit](WORK_STATUS.md) is the continuation entry point: completed work to reuse, superseded conclusions, branch preservation and the remaining first-write gates. Read it before the dated investigations below.
+
 [Resident receiver initialization](RESIDENT_RECEIVER_INITIALIZATION.md) joins C-runtime clear, communication setup, guarded receive, native dispatch, full scheduler selection and countdown behavior without enabling live operations.
 
 [Resident reply freshness](RESIDENT_REPLY_FRESHNESS.md) joins native scheduling, submission, status events and startup-state clearing. Interface reset can requeue an old reply; physical freshness remains unqualified.

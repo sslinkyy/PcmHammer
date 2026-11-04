@@ -1,5 +1,7 @@
 # Spare AL5: first-write qualification run sheet
 
+Read [current work status](WORK_STATUS.md) first for the selected profile, original/prepared acquisition choices and later finalizer evidence. This run sheet does not enable the separately gated live binding.
+
 Prepared 2026-11-02. The objective is to qualify the calibration writer on the spare. Ordinary reads are prerequisites for the write, not a new general reader campaign. No live action is started by this document. The current build still blocks AL5 writing and prototype upload/execution.
 
 ## Before delivery: completed work stays completed
@@ -9,10 +11,11 @@ Use the frozen package recorded in the local bench readiness report. It contains
 On arrival, run this file-only check against the actual sealed directory:
 
 ```powershell
-python Tools/AL5/freeze_bench_candidate.py verify --package FROZEN_PACKAGE_DIRECTORY --repo .
+python Tools/AL5/freeze_bench_candidate.py verify --package FROZEN_PACKAGE_DIRECTORY
+python Tools/AL5/freeze_bench_candidate.py verify --package FROZEN_PACKAGE_DIRECTORY --repo . --application-only
 ```
 
-Expected: verified true, tests_rerun false, no source drift or modified package files. This does not run emulation or access hardware. If files changed, inspect the listed differences and run only the affected checks. Do not reflexively repeat full-image or entire historical test suites.
+Expected: verified true and tests_rerun false. The first check requires package integrity; the second also requires matching application inputs while separately reporting tool/kernel/documentation drift. Neither launches emulation or hardware. Inspect changed producers and run only affected checks. Complete `--repo .` verification without `--application-only` still rejects all source drift. Do not reflexively repeat full-image or entire historical test suites.
 
 The package manifest is a local integrity inventory, not a signed authenticity guarantee. Keep its trusted copy with the retained qualification records.
 
@@ -30,7 +33,7 @@ Record missing coverage explicitly. The current stock reader does not give a qua
 
 ## Session 2: qualify the writer's entry and transport
 
-Review only the hardware gaps: current security/profile, preparation side effects, reset/watchdog transition, loader RAM ownership, message framing and physical completion. Preserve capture from setup through cleanup. The candidate's dynamic-key action is unresolved authorization evidence; its one captured seed/key pair must not silently become generic support.
+Review only the hardware gaps: current security/profile, preparation side effects, reset/watchdog transition, loader RAM ownership, message framing and physical completion. Preserve capture from setup through cleanup. The saved security owner is profile-bound to selector-zero boot words; actual fresh security on the spare remains unqualified. Its captured seed/key pair must not silently become generic support.
 
 The current source has no enabled live writer executor. Connecting the spare does not bypass this. Use the implemented immutable dispatcher boundaries for staged qualification: before key submission (default), before programming entry, before loader upload, and before erase. The after-erase boundary is already destructive and belongs to a later qualified test. A live binding and its bounded operation list still require separate review/qualification before a first erase. A smallest bounded read can verify handoff; there is no reason to repeat long full-image offline campaigns on arrival.
 

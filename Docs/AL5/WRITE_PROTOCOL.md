@@ -1,5 +1,7 @@
 # AL5 offline programming state machine
 
+Continuation index: [current AL5 work status](../TCMHammer/WORK_STATUS.md). Historical unknowns below must not restart checksum, loader or programming discovery already resolved by later evidence.
+
 **2026-10-30 evidence update:** [Captured successful EFILive writes](CAPTURED_WRITE_SESSIONS_20261030.md)
 now establish observed loader, erase/program/finalize exchanges and matching
 transmitted calibration bytes. Historical unknowns below describe the earlier

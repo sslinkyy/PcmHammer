@@ -1,5 +1,7 @@
 # Four write qualification priorities
 
+Continuation note (2026-11-04): [current work status](WORK_STATUS.md) consolidates later backup, finalizer and watchdog results. These priorities do not replace the newer evidence owners.
+
 The [security and backup continuation](SECURITY_AND_BACKUP_PATH.md) connects session-bound saved security and correlated acquisition epochs to this executor. It preserves the physical qualification boundaries below.
 
 The spare is still in transit. This checkpoint prepares an unchanged-calibration bench candidate; it does not authorize live upload, execution or writes.
