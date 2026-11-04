@@ -1,5 +1,7 @@
 # Finalizer watchdog service and verification timing
 
+The [cleanup readiness continuation](FINALIZATION_READINESS_TIMING.md) adds saved host/device tail intervals and a focused executor test that preserves the repeated identity query. Earlier normalized success fixtures do not establish cleanup polling or readback timing.
+
 This is offline code-path evidence. The spare remains in transit. No device access, live upload, execution, erase, programming or physical reset is enabled. Instruction counts are not elapsed-time measurements.
 
 ## New native trace

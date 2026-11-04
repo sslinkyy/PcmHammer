@@ -1,0 +1,349 @@
+{
+  "schema": "al5-finalization-readiness-review-v1",
+  "sessions": [
+    {
+      "schema": "al5-saved-finalization-timing-v1",
+      "source_sha256": "e436213e7f62d92b0a554a116a8a2d2fa1d8c2e1c41ace483432511ab49cda98",
+      "records_examined": 847,
+      "relevant_vehicle_records": 458,
+      "final_request": {
+        "record_ordinal": 795,
+        "decoded_offset": 181449,
+        "saved_date_f64_le_hex": "041833f8ba9ee640",
+        "message_sha256": "7eff3cd5790237e8fe90ae80a1eda99305a3f6764ac04956fa62bb44903a891d",
+        "message_bytes": 5,
+        "direction": "host_to_device",
+        "ms_after_final_request": 0.0,
+        "ms_after_final_reply": -55.999
+      },
+      "final_reply": {
+        "record_ordinal": 797,
+        "decoded_offset": 181530,
+        "saved_date_f64_le_hex": "fc7334f8ba9ee640",
+        "message_sha256": "2d73224e69301cdbd37d2d7160a06eeeed4d18ee9c3755c12e6c5df17b6c057c",
+        "message_bytes": 6,
+        "direction": "device_to_host",
+        "ms_after_final_request": 55.999,
+        "ms_after_final_reply": 0.0
+      },
+      "queries_before_first_identity": [
+        {
+          "record_ordinal": 809,
+          "decoded_offset": 181982,
+          "saved_date_f64_le_hex": "56b834f8ba9ee640",
+          "message_sha256": "baf5f864151f3a4369a3abc4ce0c1c10dfec6d6c11d6d118f4187a873803e7fb",
+          "message_bytes": 5,
+          "direction": "host_to_device",
+          "ms_after_final_request": 66.999,
+          "ms_after_final_reply": 11.0
+        },
+        {
+          "record_ordinal": 816,
+          "decoded_offset": 182201,
+          "saved_date_f64_le_hex": "8c8f50f8ba9ee640",
+          "message_sha256": "baf5f864151f3a4369a3abc4ce0c1c10dfec6d6c11d6d118f4187a873803e7fb",
+          "message_bytes": 5,
+          "direction": "host_to_device",
+          "ms_after_final_request": 1214.0,
+          "ms_after_final_reply": 1158.0
+        }
+      ],
+      "first_identity_reply": {
+        "record_ordinal": 818,
+        "decoded_offset": 182282,
+        "saved_date_f64_le_hex": "9c0551f8ba9ee640",
+        "message_sha256": "2ed635d86062e2a0dc153fd22cf5ebf40fcdb78c3948d3b276b1e4da01b9e9fa",
+        "message_bytes": 8,
+        "direction": "device_to_host",
+        "ms_after_final_request": 1233.0,
+        "ms_after_final_reply": 1177.0
+      },
+      "observed_query_count_before_identity": 2,
+      "final_reply_to_first_query_ms": 11.0,
+      "query_spacing_ms": [
+        1147.0
+      ],
+      "final_reply_to_identity_ms": 1177.0,
+      "last_query_to_identity_ms": 19.0,
+      "mode23_requests_after_final_reply": 0,
+      "mode63_replies_after_final_reply": 0,
+      "identity_query_response_pairing_proven": false,
+      "physical_reset_verified": false,
+      "flash_readback_verified": false,
+      "post_finalization_readback_window_verified": false,
+      "physical_deadlines_qualified": false,
+      "hardware_access": false,
+      "live_upload_enabled": false,
+      "live_execution_enabled": false,
+      "live_write_enabled": false,
+      "automatic_retry_enabled": false,
+      "ready_to_flash": false,
+      "limitations": [
+        "Saved wrapper timestamps are host/device observations, not wire or reset timestamps.",
+        "Repeated identity queries carry no transaction ID; reply causation is unresolved.",
+        "Identity response is not a flash read, coherent snapshot, or preservation comparison.",
+        "No observed delay is promoted to a watchdog deadline, polling policy or sleep duration."
+      ],
+      "source_selected_path": "LocalOnly\\autocal_usb_setup_20261030\\al5_efi_1x_02\\20261030_201340_AL5_W.htx",
+      "source_resolved_path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\autocal_usb_setup_20261030\\al5_efi_1x_02\\20261030_201340_AL5_W.htx",
+      "producers": {
+        "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\analyze_finalization_timing.py": "b365b5914a6d59440e2c60b1f6a31e3418eb25ec9c4ee8dd1fde1f0321a1f4bc",
+        "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\decode_trace_containers.py": "ab2feac05c102f3616c444889c428608e8466084bb7661743d5cd85e02cae382",
+        "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_autocal_read_gap.py": "ebaeeef7eec6159b8f547a48028c68f05bd243506efc98e51b82f36326899076",
+        "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\audit_trace_wrappers.py": "c824d113b63244d7e5d56b7bd53e3870fc155e666d897c12a570f1bdd69bd608",
+        "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\checksum.py": "b057805b2f5dc141141be5ce747ee78be98e441746a05d3a4a0cb3911bf2ef93"
+      }
+    },
+    {
+      "schema": "al5-saved-finalization-timing-v1",
+      "source_sha256": "8b8e4531ce8f854e2d91f2e081775e7426dcd3f97eae2afd601e246d6b6f36ec",
+      "records_examined": 909,
+      "relevant_vehicle_records": 473,
+      "final_request": {
+        "record_ordinal": 858,
+        "decoded_offset": 187816,
+        "saved_date_f64_le_hex": "a1781e83bb9ee640",
+        "message_sha256": "7eff3cd5790237e8fe90ae80a1eda99305a3f6764ac04956fa62bb44903a891d",
+        "message_bytes": 5,
+        "direction": "host_to_device",
+        "ms_after_final_request": 0.0,
+        "ms_after_final_reply": -56.0
+      },
+      "final_reply": {
+        "record_ordinal": 860,
+        "decoded_offset": 187897,
+        "saved_date_f64_le_hex": "9ad41f83bb9ee640",
+        "message_sha256": "2d73224e69301cdbd37d2d7160a06eeeed4d18ee9c3755c12e6c5df17b6c057c",
+        "message_bytes": 6,
+        "direction": "device_to_host",
+        "ms_after_final_request": 56.0,
+        "ms_after_final_reply": 0.0
+      },
+      "queries_before_first_identity": [
+        {
+          "record_ordinal": 872,
+          "decoded_offset": 188349,
+          "saved_date_f64_le_hex": "bd122083bb9ee640",
+          "message_sha256": "baf5f864151f3a4369a3abc4ce0c1c10dfec6d6c11d6d118f4187a873803e7fb",
+          "message_bytes": 5,
+          "direction": "host_to_device",
+          "ms_after_final_request": 66.0,
+          "ms_after_final_reply": 10.0
+        },
+        {
+          "record_ordinal": 879,
+          "decoded_offset": 188568,
+          "saved_date_f64_le_hex": "99a53b83bb9ee640",
+          "message_sha256": "baf5f864151f3a4369a3abc4ce0c1c10dfec6d6c11d6d118f4187a873803e7fb",
+          "message_bytes": 5,
+          "direction": "host_to_device",
+          "ms_after_final_request": 1202.0,
+          "ms_after_final_reply": 1146.0
+        }
+      ],
+      "first_identity_reply": {
+        "record_ordinal": 881,
+        "decoded_offset": 188649,
+        "saved_date_f64_le_hex": "72153c83bb9ee640",
+        "message_sha256": "2ed635d86062e2a0dc153fd22cf5ebf40fcdb78c3948d3b276b1e4da01b9e9fa",
+        "message_bytes": 8,
+        "direction": "device_to_host",
+        "ms_after_final_request": 1220.0,
+        "ms_after_final_reply": 1164.0
+      },
+      "observed_query_count_before_identity": 2,
+      "final_reply_to_first_query_ms": 10.0,
+      "query_spacing_ms": [
+        1136.0
+      ],
+      "final_reply_to_identity_ms": 1164.0,
+      "last_query_to_identity_ms": 18.0,
+      "mode23_requests_after_final_reply": 0,
+      "mode63_replies_after_final_reply": 0,
+      "identity_query_response_pairing_proven": false,
+      "physical_reset_verified": false,
+      "flash_readback_verified": false,
+      "post_finalization_readback_window_verified": false,
+      "physical_deadlines_qualified": false,
+      "hardware_access": false,
+      "live_upload_enabled": false,
+      "live_execution_enabled": false,
+      "live_write_enabled": false,
+      "automatic_retry_enabled": false,
+      "ready_to_flash": false,
+      "limitations": [
+        "Saved wrapper timestamps are host/device observations, not wire or reset timestamps.",
+        "Repeated identity queries carry no transaction ID; reply causation is unresolved.",
+        "Identity response is not a flash read, coherent snapshot, or preservation comparison.",
+        "No observed delay is promoted to a watchdog deadline, polling policy or sleep duration."
+      ],
+      "source_selected_path": "LocalOnly\\autocal_usb_setup_20261030\\al5_efi_1x_04\\20261030_203806_AL5_W.htx",
+      "source_resolved_path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\autocal_usb_setup_20261030\\al5_efi_1x_04\\20261030_203806_AL5_W.htx",
+      "producers": {
+        "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\analyze_finalization_timing.py": "b365b5914a6d59440e2c60b1f6a31e3418eb25ec9c4ee8dd1fde1f0321a1f4bc",
+        "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\decode_trace_containers.py": "ab2feac05c102f3616c444889c428608e8466084bb7661743d5cd85e02cae382",
+        "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_autocal_read_gap.py": "ebaeeef7eec6159b8f547a48028c68f05bd243506efc98e51b82f36326899076",
+        "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\audit_trace_wrappers.py": "c824d113b63244d7e5d56b7bd53e3870fc155e666d897c12a570f1bdd69bd608",
+        "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\checksum.py": "b057805b2f5dc141141be5ce747ee78be98e441746a05d3a4a0cb3911bf2ef93"
+      }
+    },
+    {
+      "schema": "al5-saved-finalization-timing-v1",
+      "source_sha256": "8384441f9da209b176734b8e4e90ca76fb422e4daed23152a414bc437b7c5daf",
+      "records_examined": 837,
+      "relevant_vehicle_records": 464,
+      "final_request": {
+        "record_ordinal": 785,
+        "decoded_offset": 182689,
+        "saved_date_f64_le_hex": "b8120a48bc9ee640",
+        "message_sha256": "7eff3cd5790237e8fe90ae80a1eda99305a3f6764ac04956fa62bb44903a891d",
+        "message_bytes": 5,
+        "direction": "host_to_device",
+        "ms_after_final_request": 0.0,
+        "ms_after_final_reply": -56.0
+      },
+      "final_reply": {
+        "record_ordinal": 787,
+        "decoded_offset": 182770,
+        "saved_date_f64_le_hex": "b16e0b48bc9ee640",
+        "message_sha256": "2d73224e69301cdbd37d2d7160a06eeeed4d18ee9c3755c12e6c5df17b6c057c",
+        "message_bytes": 6,
+        "direction": "device_to_host",
+        "ms_after_final_request": 56.0,
+        "ms_after_final_reply": 0.0
+      },
+      "queries_before_first_identity": [
+        {
+          "record_ordinal": 799,
+          "decoded_offset": 183222,
+          "saved_date_f64_le_hex": "9ea60b48bc9ee640",
+          "message_sha256": "baf5f864151f3a4369a3abc4ce0c1c10dfec6d6c11d6d118f4187a873803e7fb",
+          "message_bytes": 5,
+          "direction": "host_to_device",
+          "ms_after_final_request": 65.0,
+          "ms_after_final_reply": 9.0
+        },
+        {
+          "record_ordinal": 806,
+          "decoded_offset": 183441,
+          "saved_date_f64_le_hex": "78902748bc9ee640",
+          "message_sha256": "baf5f864151f3a4369a3abc4ce0c1c10dfec6d6c11d6d118f4187a873803e7fb",
+          "message_bytes": 5,
+          "direction": "host_to_device",
+          "ms_after_final_request": 1215.0,
+          "ms_after_final_reply": 1159.0
+        }
+      ],
+      "first_identity_reply": {
+        "record_ordinal": 808,
+        "decoded_offset": 183522,
+        "saved_date_f64_le_hex": "51002848bc9ee640",
+        "message_sha256": "2ed635d86062e2a0dc153fd22cf5ebf40fcdb78c3948d3b276b1e4da01b9e9fa",
+        "message_bytes": 8,
+        "direction": "device_to_host",
+        "ms_after_final_request": 1233.0,
+        "ms_after_final_reply": 1177.0
+      },
+      "observed_query_count_before_identity": 2,
+      "final_reply_to_first_query_ms": 9.0,
+      "query_spacing_ms": [
+        1150.0
+      ],
+      "final_reply_to_identity_ms": 1177.0,
+      "last_query_to_identity_ms": 18.0,
+      "mode23_requests_after_final_reply": 0,
+      "mode63_replies_after_final_reply": 0,
+      "identity_query_response_pairing_proven": false,
+      "physical_reset_verified": false,
+      "flash_readback_verified": false,
+      "post_finalization_readback_window_verified": false,
+      "physical_deadlines_qualified": false,
+      "hardware_access": false,
+      "live_upload_enabled": false,
+      "live_execution_enabled": false,
+      "live_write_enabled": false,
+      "automatic_retry_enabled": false,
+      "ready_to_flash": false,
+      "limitations": [
+        "Saved wrapper timestamps are host/device observations, not wire or reset timestamps.",
+        "Repeated identity queries carry no transaction ID; reply causation is unresolved.",
+        "Identity response is not a flash read, coherent snapshot, or preservation comparison.",
+        "No observed delay is promoted to a watchdog deadline, polling policy or sleep duration."
+      ],
+      "source_selected_path": "LocalOnly\\autocal_usb_setup_20261030\\al5_efi_1x_05\\20261030_211243_AL5_W.htx",
+      "source_resolved_path": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\autocal_usb_setup_20261030\\al5_efi_1x_05\\20261030_211243_AL5_W.htx",
+      "producers": {
+        "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\analyze_finalization_timing.py": "b365b5914a6d59440e2c60b1f6a31e3418eb25ec9c4ee8dd1fde1f0321a1f4bc",
+        "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\decode_trace_containers.py": "ab2feac05c102f3616c444889c428608e8466084bb7661743d5cd85e02cae382",
+        "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\inspect_autocal_read_gap.py": "ebaeeef7eec6159b8f547a48028c68f05bd243506efc98e51b82f36326899076",
+        "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\audit_trace_wrappers.py": "c824d113b63244d7e5d56b7bd53e3870fc155e666d897c12a570f1bdd69bd608",
+        "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\Tools\\AL5\\checksum.py": "b057805b2f5dc141141be5ce747ee78be98e441746a05d3a4a0cb3911bf2ef93"
+      }
+    }
+  ],
+  "execution_cases": [
+    {
+      "name": "captured_unanswered_cleanup_query_not_normalized",
+      "source": "al5_efi_1x_02",
+      "passed": true,
+      "PreservedCleanupQueryRepeats": 1,
+      "OmittedNoReplyRepeats": 2,
+      "OmittedProgrammingBroadcasts": 2,
+      "CleanupQueriesSubmitted": 1,
+      "FinalizationsSubmitted": 1,
+      "AcknowledgedBlocks": 192,
+      "outcome": "Stopped",
+      "stop_reason": "Timeout",
+      "SavedFinalizationReplyObserved": true,
+      "SavedCleanupObserved": false,
+      "PostFinalizationReadbackWindowVerified": false,
+      "limitation": "Other no-reply repeats remain normalized; no real timing, hardware or retry policy tested."
+    },
+    {
+      "name": "captured_unanswered_cleanup_query_not_normalized",
+      "source": "al5_efi_1x_04",
+      "passed": true,
+      "PreservedCleanupQueryRepeats": 1,
+      "OmittedNoReplyRepeats": 5,
+      "OmittedProgrammingBroadcasts": 5,
+      "CleanupQueriesSubmitted": 1,
+      "FinalizationsSubmitted": 1,
+      "AcknowledgedBlocks": 192,
+      "outcome": "Stopped",
+      "stop_reason": "Timeout",
+      "SavedFinalizationReplyObserved": true,
+      "SavedCleanupObserved": false,
+      "PostFinalizationReadbackWindowVerified": false,
+      "limitation": "Other no-reply repeats remain normalized; no real timing, hardware or retry policy tested."
+    },
+    {
+      "name": "captured_unanswered_cleanup_query_not_normalized",
+      "source": "al5_efi_1x_05",
+      "passed": true,
+      "PreservedCleanupQueryRepeats": 1,
+      "OmittedNoReplyRepeats": 1,
+      "OmittedProgrammingBroadcasts": 1,
+      "CleanupQueriesSubmitted": 1,
+      "FinalizationsSubmitted": 1,
+      "AcknowledgedBlocks": 192,
+      "outcome": "Stopped",
+      "stop_reason": "Timeout",
+      "SavedFinalizationReplyObserved": true,
+      "SavedCleanupObserved": false,
+      "PostFinalizationReadbackWindowVerified": false,
+      "limitation": "Other no-reply repeats remain normalized; no real timing, hardware or retry policy tested."
+    }
+  ],
+  "tested_library_sha256": "027a0e9bd9c403ad1d93108f90121d34b3f119025591b89f7169caf5e06743df",
+  "timing_unit_tests": 9,
+  "focused_executor_cases": 3,
+  "application_rebuilt": false,
+  "native_models_rerun": false,
+  "hardware_access": false,
+  "live_upload_enabled": false,
+  "live_execution_enabled": false,
+  "live_write_enabled": false,
+  "physical_reset_verified": false,
+  "post_finalization_readback_window_verified": false,
+  "remaining_software_gap": "Explicitly bounded cleanup identity polling; earlier successful executor scenarios normalized the repeated query."
+}

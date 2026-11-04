@@ -14,16 +14,22 @@ sealed class Peer
     public int OmittedProgrammingBroadcasts { get; private set; }
     public int ExpectedChecksumErrors { get; }
     public int FinalizationsSubmitted { get; private set; }
-    public Peer(string[] lines,byte[] reference)
+    public int CleanupQueriesSubmitted { get; private set; }
+    public int PreservedCleanupQueryRepeats { get; private set; }
+    public Peer(string[] lines,byte[] reference,bool preserveCleanupRepeats=false)
     {
-        Flash=(byte[])reference.Clone();frames=new();bool programming=false,replied=true;byte[]? last=null;
+        Flash=(byte[])reference.Clone();frames=new();bool programming=false,replied=true,cleanup=false;byte[]? last=null;
         foreach(string line in lines)
         {
             var frame=new Frame(line[0]=='T',Convert.FromHexString(line.Substring(2)));
             if(!frame.Tx && Is(frame.Bytes,"6cf0187600ee"))programming=true;
-            if(frame.Tx && Is(frame.Bytes,"6c18f036ff"))programming=false;
+            if(frame.Tx && Is(frame.Bytes,"6c18f036ff")){programming=false;cleanup=true;}
             if(programming && frame.Tx && Is(frame.Bytes,"6cfef02800")){OmittedProgrammingBroadcasts++;continue;}
-            if(frame.Tx && !replied && last!=null && last.SequenceEqual(frame.Bytes)){OmittedNoReplyRepeats++;continue;}
+            if(frame.Tx && !replied && last!=null && last.SequenceEqual(frame.Bytes))
+            {
+                if(preserveCleanupRepeats && cleanup && Is(frame.Bytes,"6c18f03c55"))PreservedCleanupQueryRepeats++;
+                else {OmittedNoReplyRepeats++;continue;}
+            }
             frames.Enqueue(frame);
             if(frame.Tx){last=frame.Bytes;replied=false;}else replied=true;
             if(!frame.Tx && Is(frame.Bytes,"6df018760077"))ExpectedChecksumErrors++;
@@ -33,6 +39,7 @@ sealed class Peer
     public List<byte[]> Submit(byte[] request)
     {
         if(Is(request,"6c18f036ff"))FinalizationsSubmitted++;
+        if(FinalizationsSubmitted>0 && Is(request,"6c18f03c55"))CleanupQueriesSubmitted++;
         if(frames.Count==0 || !frames.Peek().Tx || !frames.Dequeue().Bytes.SequenceEqual(request))throw new Exception("Executor send differs from derived saved scenario");
         if(request.Length>12 && request[3]==0x36 && request[4]==0)pending=(byte[])request.Clone();
         var replies=new List<byte[]>();
@@ -289,6 +296,8 @@ static partial class Program
     }
     static async Task Main(string[] args)
     {
+        bool cleanupTimingOnly=args.Length>2 && args[2]=="--cleanup-timing-only";
+        if(cleanupTimingOnly)args=args.Take(2).Concat(args.Skip(3)).ToArray();
         string? journalReport=null,postResetReport=null;
         while(args.Length>3 && (args[2]=="--journal-report" || args[2]=="--post-reset-report"))
         {
@@ -305,6 +314,11 @@ static partial class Program
             lines=File.ReadAllLines(args[index]);calibration=File.ReadAllBytes(args[index+1]);original=(byte[])baseline.Clone();
             var image=new AL5CapturedProgramImage();foreach(string line in lines){var m=Convert.FromHexString(line.Substring(2));if(line[0]=='T' && m.Length>12 && m[3]==0x36 && m[4]==0)image.Observe(m);}
             image.CopyCompleteImage().CopyTo(original,0x8000);
+            if(cleanupTimingOnly)
+            {
+                await CapturedCleanupOrderingCase(Path.GetFileName(Path.GetDirectoryName(args[index]))!);
+                continue;
+            }
             foreach(bool early in new[]{false,true})await VehicleCase(early,AL5OfflineWriteBoundary.CompleteOfflineRehearsal,Path.GetFileName(Path.GetDirectoryName(args[index]))!);
             if(index==4)
             {
@@ -320,6 +334,6 @@ static partial class Program
         await JsonSerializer.SerializeAsync(receipt,new { schema="al5-execution-binding-tests-v1",passed=true,hardware_access=false,live_write_enabled=false,
             library_sha256=Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(library))).ToLowerInvariant(),cases=results,
             limits="Saved stimuli and modeled flash only. Public live entry is unconditionally disabled; no physical programming/recovery was tested." },new JsonSerializerOptions{WriteIndented=true});
-        receipt.Flush(true);Console.WriteLine($"PASS {results.Count} asynchronous execution-binding cases; public live entry blocked, scripted port only.");
+        receipt.Flush(true);Console.WriteLine($"PASS {results.Count} offline execution/candidate cases; public live entry blocked, scripted port only.");
     }
 }
