@@ -1,0 +1,6966 @@
+{
+  "schema": "al5-watchdog-inheritance-post-reset-v1",
+  "reference_sha256": "12bf5a5aea1d9816ad3ef959c6168bc56310b7ab4eeaf41602abd2d8642f83a3",
+  "loader_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
+  "dependencies_sha256": {
+    "trace_watchdog_inheritance.py": "d5ef014b7dc648d1280874b881c2c5bfe93d858b6dd4563effe16e4b3fd9a47f",
+    "al5_watchdog_configuration.py": "6efde2197f43d9e36ed03cff57978b8cbd074bbd4798ae16911ad42394f62f4e",
+    "emulate_flash_fault_recovery.py": "753241666434e0025f7e70d2bee6fe5741053797e1d11128d0a361f0ec3c5566",
+    "emulate_calibration_marker.py": "f8854afe6419b9f5e88e0e51cecc9ef006ff043daf9c34fab9c6ca17505289a5",
+    "emulate_boot_loader_handoff.py": "e4b42498fcd0a77490052002ee1e6291a4dfe425c80c2b9ac85a0ac5466fcbf7",
+    "emulate_boot_receive_session.py": "d3580db54d26a44eda477693fbb25a7ad59f62085c3b4acf1dbe7042cc09b156",
+    "emulate_boot_receive_isr.py": "8081e9e93af19a753162d2257ee51fe4579cd0d9602bbc9ef621badee13d3b85",
+    "emulate_boot_session.py": "18198e3c16ae5431a30887af0b71e31f2b7703fbbd2113c2dceebf5ed351acb1",
+    "emulate_loader_error_sender.py": "ab02b80fcf1181a4d90e70658eb7ca5da4ac3a1fa069712ea90a360876fb83d1",
+    "emulate_loader_erase_failures.py": "2db16548347065ecf10bacf3d232a751b276dc1c4cf8c6e0ebc2486d7c8987b0",
+    "emulate_loader_entry.py": "e9b5566fc2b2906e4a1253bd0909ad620328e7629e04ccf119995b7a4a1e91f8",
+    "emulate_loader_parser.py": "62ba7801849fc51361c0dfab2b8b85063a3e590eda1b78d14329fb125c10416c"
+  },
+  "cases": [
+    {
+      "case": "watchdog_retained",
+      "observed": {
+        "fault": "a12_direct",
+        "window": "none",
+        "reset_sp": 4294938622,
+        "reset_pc": 1024,
+        "stop": "post_reset_calibration_check_return",
+        "instructions": 1020612,
+        "events": [],
+        "aliased_reads": 0,
+        "changed_data_reads": 0,
+        "first_changed_fetch": null,
+        "register_writes": [
+          {
+            "pc": 1030,
+            "address": 4294965760,
+            "physical_under_hypothesis": 16775680,
+            "size": 2,
+            "value": 576
+          },
+          {
+            "pc": 1036,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1042,
+            "address": 4294966084,
+            "physical_under_hypothesis": 16776004,
+            "size": 4,
+            "value": 4294934528
+          },
+          {
+            "pc": 1050,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1056,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1062,
+            "address": 4294966148,
+            "physical_under_hypothesis": 16776068,
+            "size": 4,
+            "value": 4294938624
+          },
+          {
+            "pc": 1070,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1084,
+            "address": 4294966020,
+            "physical_under_hypothesis": 16775940,
+            "size": 2,
+            "value": 65440
+          },
+          {
+            "pc": 1088,
+            "address": 4294966016,
+            "physical_under_hypothesis": 16775936,
+            "size": 2,
+            "value": 256
+          },
+          {
+            "pc": 1108,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1114,
+            "address": 4294965892,
+            "physical_under_hypothesis": 16775812,
+            "size": 4,
+            "value": 4294944768
+          },
+          {
+            "pc": 1122,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1128,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1134,
+            "address": 4294965956,
+            "physical_under_hypothesis": 16775876,
+            "size": 4,
+            "value": 4294946816
+          },
+          {
+            "pc": 1142,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1158,
+            "address": 4294965764,
+            "physical_under_hypothesis": 16775684,
+            "size": 2,
+            "value": 16388
+          },
+          {
+            "pc": 1166,
+            "address": 4294965793,
+            "physical_under_hypothesis": 16775713,
+            "size": 1,
+            "value": 132
+          },
+          {
+            "pc": 1190,
+            "address": 4294965825,
+            "physical_under_hypothesis": 16775745,
+            "size": 1,
+            "value": 7
+          },
+          {
+            "pc": 1198,
+            "address": 4294965828,
+            "physical_under_hypothesis": 16775748,
+            "size": 2,
+            "value": 175
+          },
+          {
+            "pc": 1206,
+            "address": 4294965830,
+            "physical_under_hypothesis": 16775750,
+            "size": 2,
+            "value": 177
+          },
+          {
+            "pc": 1214,
+            "address": 4294965832,
+            "physical_under_hypothesis": 16775752,
+            "size": 2,
+            "value": 7
+          },
+          {
+            "pc": 1222,
+            "address": 4294965834,
+            "physical_under_hypothesis": 16775754,
+            "size": 2,
+            "value": 26720
+          },
+          {
+            "pc": 1230,
+            "address": 4294965777,
+            "physical_under_hypothesis": 16775697,
+            "size": 1,
+            "value": 48
+          },
+          {
+            "pc": 1238,
+            "address": 4294965781,
+            "physical_under_hypothesis": 16775701,
+            "size": 1,
+            "value": 252
+          },
+          {
+            "pc": 1246,
+            "address": 4294965783,
+            "physical_under_hypothesis": 16775703,
+            "size": 1,
+            "value": 253
+          },
+          {
+            "pc": 809906,
+            "address": 4294966020,
+            "physical_under_hypothesis": 16775940,
+            "size": 2,
+            "value": 65440
+          },
+          {
+            "pc": 809910,
+            "address": 4294966016,
+            "physical_under_hypothesis": 16775936,
+            "size": 2,
+            "value": 256
+          },
+          {
+            "pc": 809920,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809924,
+            "address": 4294966084,
+            "physical_under_hypothesis": 16776004,
+            "size": 4,
+            "value": 4294934528
+          },
+          {
+            "pc": 809936,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809940,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809944,
+            "address": 4294966148,
+            "physical_under_hypothesis": 16776068,
+            "size": 4,
+            "value": 4294938624
+          },
+          {
+            "pc": 809952,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809956,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809960,
+            "address": 4294965892,
+            "physical_under_hypothesis": 16775812,
+            "size": 4,
+            "value": 4294944768
+          },
+          {
+            "pc": 809968,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809972,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809976,
+            "address": 4294965956,
+            "physical_under_hypothesis": 16775876,
+            "size": 4,
+            "value": 4294946816
+          },
+          {
+            "pc": 809984,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809988,
+            "address": 16775680,
+            "physical_under_hypothesis": 16775680,
+            "size": 2,
+            "value": 25153
+          },
+          {
+            "pc": 809996,
+            "address": 16775697,
+            "physical_under_hypothesis": 16775697,
+            "size": 1,
+            "value": 48
+          },
+          {
+            "pc": 810004,
+            "address": 16775701,
+            "physical_under_hypothesis": 16775701,
+            "size": 1,
+            "value": 252
+          },
+          {
+            "pc": 810012,
+            "address": 16775703,
+            "physical_under_hypothesis": 16775703,
+            "size": 1,
+            "value": 253
+          },
+          {
+            "pc": 810020,
+            "address": 16775705,
+            "physical_under_hypothesis": 16775705,
+            "size": 1,
+            "value": 161
+          },
+          {
+            "pc": 810028,
+            "address": 16775709,
+            "physical_under_hypothesis": 16775709,
+            "size": 1,
+            "value": 227
+          },
+          {
+            "pc": 810036,
+            "address": 16775711,
+            "physical_under_hypothesis": 16775711,
+            "size": 1,
+            "value": 16
+          },
+          {
+            "pc": 810044,
+            "address": 16775713,
+            "physical_under_hypothesis": 16775713,
+            "size": 1,
+            "value": 132
+          },
+          {
+            "pc": 810066,
+            "address": 16775714,
+            "physical_under_hypothesis": 16775714,
+            "size": 2,
+            "value": 64
+          },
+          {
+            "pc": 810074,
+            "address": 16775716,
+            "physical_under_hypothesis": 16775716,
+            "size": 2,
+            "value": 0
+          },
+          {
+            "pc": 810080,
+            "address": 16775745,
+            "physical_under_hypothesis": 16775745,
+            "size": 1,
+            "value": 7
+          },
+          {
+            "pc": 810088,
+            "address": 16775748,
+            "physical_under_hypothesis": 16775748,
+            "size": 2,
+            "value": 175
+          },
+          {
+            "pc": 810096,
+            "address": 16775750,
+            "physical_under_hypothesis": 16775750,
+            "size": 2,
+            "value": 177
+          },
+          {
+            "pc": 810106,
+            "address": 16775752,
+            "physical_under_hypothesis": 16775752,
+            "size": 2,
+            "value": 7
+          },
+          {
+            "pc": 810112,
+            "address": 16775754,
+            "physical_under_hypothesis": 16775754,
+            "size": 2,
+            "value": 26656
+          },
+          {
+            "pc": 810120,
+            "address": 16775756,
+            "physical_under_hypothesis": 16775756,
+            "size": 2,
+            "value": 7
+          },
+          {
+            "pc": 810126,
+            "address": 16775758,
+            "physical_under_hypothesis": 16775758,
+            "size": 2,
+            "value": 4128
+          },
+          {
+            "pc": 810134,
+            "address": 16775760,
+            "physical_under_hypothesis": 16775760,
+            "size": 2,
+            "value": 65472
+          },
+          {
+            "pc": 810142,
+            "address": 16775762,
+            "physical_under_hypothesis": 16775762,
+            "size": 2,
+            "value": 31200
+          },
+          {
+            "pc": 810150,
+            "address": 16775764,
+            "physical_under_hypothesis": 16775764,
+            "size": 2,
+            "value": 65512
+          },
+          {
+            "pc": 810158,
+            "address": 16775766,
+            "physical_under_hypothesis": 16775766,
+            "size": 2,
+            "value": 55328
+          },
+          {
+            "pc": 810170,
+            "address": 16775768,
+            "physical_under_hypothesis": 16775768,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810180,
+            "address": 16775770,
+            "physical_under_hypothesis": 16775770,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810186,
+            "address": 16775772,
+            "physical_under_hypothesis": 16775772,
+            "size": 2,
+            "value": 32769
+          },
+          {
+            "pc": 810194,
+            "address": 16775774,
+            "physical_under_hypothesis": 16775774,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810200,
+            "address": 16775776,
+            "physical_under_hypothesis": 16775776,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810206,
+            "address": 16775778,
+            "physical_under_hypothesis": 16775778,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810212,
+            "address": 16775780,
+            "physical_under_hypothesis": 16775780,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810218,
+            "address": 16775782,
+            "physical_under_hypothesis": 16775782,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810224,
+            "address": 16775784,
+            "physical_under_hypothesis": 16775784,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810230,
+            "address": 16775786,
+            "physical_under_hypothesis": 16775786,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810236,
+            "address": 16775788,
+            "physical_under_hypothesis": 16775788,
+            "size": 2,
+            "value": 12291
+          },
+          {
+            "pc": 810244,
+            "address": 16775790,
+            "physical_under_hypothesis": 16775790,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810250,
+            "address": 16775792,
+            "physical_under_hypothesis": 16775792,
+            "size": 2,
+            "value": 2563
+          },
+          {
+            "pc": 810258,
+            "address": 16775794,
+            "physical_under_hypothesis": 16775794,
+            "size": 2,
+            "value": 30832
+          },
+          {
+            "pc": 810266,
+            "address": 16775796,
+            "physical_under_hypothesis": 16775796,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810272,
+            "address": 16775798,
+            "physical_under_hypothesis": 16775798,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 781182,
+            "address": 16775716,
+            "physical_under_hypothesis": 16775716,
+            "size": 2,
+            "value": 33
+          },
+          {
+            "pc": 781190,
+            "address": 16775714,
+            "physical_under_hypothesis": 16775714,
+            "size": 2,
+            "value": 1600
+          }
+        ],
+        "watchdog_stores": 21960,
+        "vpw_initializer_entered": false,
+        "flash_writes_blocked": 0,
+        "physical_mapping_verified": false,
+        "live_upload_enabled": false,
+        "live_execution_enabled": false,
+        "live_write_enabled": false,
+        "recovery_verified": false,
+        "external_service_magic": 0,
+        "reset_status": 32,
+        "synthetic_irq_invoked": false,
+        "exception_return_executed": false,
+        "software_tx_frames": [],
+        "software_tx_observations": [],
+        "fifo_events_consumed": 0,
+        "integrity_observations": [
+          {
+            "pc": 2016,
+            "d4": 0,
+            "fault_active": false
+          },
+          {
+            "pc": 2158,
+            "d4": 0,
+            "fault_active": false
+          }
+        ],
+        "initial_persistent_banks_sha256": null,
+        "flash_fixture_sha256": "12bf5a5aea1d9816ad3ef959c6168bc56310b7ab4eeaf41602abd2d8642f83a3",
+        "retained_marker": 53442,
+        "initial_ram_sha256": null,
+        "reset_status_accesses": [
+          {
+            "operation": "read",
+            "pc": 2026,
+            "address": 4294965767,
+            "size": 1,
+            "value": 32
+          },
+          {
+            "operation": "read",
+            "pc": 2034,
+            "address": 4294965767,
+            "size": 1,
+            "value": 32
+          }
+        ],
+        "marker_accesses": [
+          {
+            "operation": "read",
+            "pc": 1254,
+            "value": 53442
+          },
+          {
+            "operation": "write",
+            "pc": 1260,
+            "size": 1,
+            "value": 150
+          },
+          {
+            "operation": "read",
+            "pc": 1338,
+            "value": 38505
+          },
+          {
+            "operation": "write",
+            "pc": 1406,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1490,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1580,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1660,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1712,
+            "size": 4,
+            "value": 1431655765
+          },
+          {
+            "operation": "write",
+            "pc": 1862,
+            "size": 4,
+            "value": 2863311530
+          },
+          {
+            "operation": "write",
+            "pc": 1986,
+            "size": 2,
+            "value": 53442
+          },
+          {
+            "operation": "read",
+            "pc": 2042,
+            "value": 53442
+          },
+          {
+            "operation": "write",
+            "pc": 2164,
+            "size": 2,
+            "value": 12262
+          },
+          {
+            "operation": "write",
+            "pc": 627920,
+            "size": 2,
+            "value": 1429
+          }
+        ],
+        "routing_observations": [
+          {
+            "pc": 2026,
+            "marker": 53442
+          },
+          {
+            "pc": 2034,
+            "marker": 53442
+          },
+          {
+            "pc": 2042,
+            "marker": 53442
+          },
+          {
+            "pc": 2054,
+            "marker": 53442
+          },
+          {
+            "pc": 2164,
+            "marker": 53442
+          }
+        ],
+        "post_reset_checks": true,
+        "application_entered": true,
+        "application_check_events": [
+          {
+            "pc": 694008,
+            "marker": 1429
+          },
+          {
+            "pc": 693772,
+            "marker": 1429
+          },
+          {
+            "pc": 627966,
+            "marker": 1429
+          }
+        ],
+        "watchdog_control_attempts": [
+          {
+            "pc": 1166,
+            "phase": "boot",
+            "address": 4294965793,
+            "size": 1,
+            "value": 132
+          },
+          {
+            "pc": 810044,
+            "phase": "application",
+            "address": 16775713,
+            "size": 1,
+            "value": 132
+          }
+        ],
+        "consumed_application_mmio_inputs": [],
+        "physical_watchdog_configuration_verified": false,
+        "physical_reset_verified": false,
+        "modeled_stack_alias": 4294934528,
+        "marker_at_application_entry": 12262,
+        "final_pc": 627966,
+        "fault_active_at_stop": false,
+        "reset_status_snapshot": 0,
+        "reset_marker": 1429,
+        "interface_flag": 0,
+        "interrupt_mask": 5,
+        "upload_armed_byte": 0,
+        "rom_unchanged_from_selected_view": true,
+        "unused_application_mmio_inputs": [],
+        "application_calibration_read_coverage": {
+          "bytes": 57302,
+          "ranges": [
+            [
+              32768,
+              90070
+            ]
+          ],
+          "marker_reads": [
+            {
+              "pc": 694020,
+              "address": 131070,
+              "size": 2,
+              "value": 19196
+            }
+          ],
+          "scope": "Native application CPU reads only; not independently acquired readback"
+        },
+        "final_sp": 16758744
+      },
+      "conditional_configuration": {
+        "effective_value_under_hypothesis": 132,
+        "enabled_under_hypothesis": true,
+        "prescaled_under_hypothesis": false,
+        "timing_field_under_hypothesis": 0,
+        "timeout_system_clock_cycles_under_hypothesis": 512,
+        "attempts": [
+          {
+            "pc": 1166,
+            "phase": "boot",
+            "attempted_value": 132,
+            "conditionally_accepted": true,
+            "effective_before": null,
+            "effective_after": 132
+          },
+          {
+            "pc": 810044,
+            "phase": "application",
+            "attempted_value": 132,
+            "conditionally_accepted": false,
+            "effective_before": 132,
+            "effective_after": 132
+          }
+        ],
+        "source_clock_hz": null,
+        "timeout_seconds": null,
+        "actual_mcu_identified": false,
+        "physical_configuration_verified": false,
+        "physical_timeout_verified": false
+      },
+      "same_reset_to_application_context": true,
+      "physical_reset_delivered": false,
+      "calibration_overlay_sha256": null
+    },
+    {
+      "case": "power_retained",
+      "observed": {
+        "fault": "a12_direct",
+        "window": "none",
+        "reset_sp": 4294938622,
+        "reset_pc": 1024,
+        "stop": "post_reset_calibration_check_return",
+        "instructions": 1020610,
+        "events": [],
+        "aliased_reads": 0,
+        "changed_data_reads": 0,
+        "first_changed_fetch": null,
+        "register_writes": [
+          {
+            "pc": 1030,
+            "address": 4294965760,
+            "physical_under_hypothesis": 16775680,
+            "size": 2,
+            "value": 576
+          },
+          {
+            "pc": 1036,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1042,
+            "address": 4294966084,
+            "physical_under_hypothesis": 16776004,
+            "size": 4,
+            "value": 4294934528
+          },
+          {
+            "pc": 1050,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1056,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1062,
+            "address": 4294966148,
+            "physical_under_hypothesis": 16776068,
+            "size": 4,
+            "value": 4294938624
+          },
+          {
+            "pc": 1070,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1084,
+            "address": 4294966020,
+            "physical_under_hypothesis": 16775940,
+            "size": 2,
+            "value": 65440
+          },
+          {
+            "pc": 1088,
+            "address": 4294966016,
+            "physical_under_hypothesis": 16775936,
+            "size": 2,
+            "value": 256
+          },
+          {
+            "pc": 1108,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1114,
+            "address": 4294965892,
+            "physical_under_hypothesis": 16775812,
+            "size": 4,
+            "value": 4294944768
+          },
+          {
+            "pc": 1122,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1128,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1134,
+            "address": 4294965956,
+            "physical_under_hypothesis": 16775876,
+            "size": 4,
+            "value": 4294946816
+          },
+          {
+            "pc": 1142,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1158,
+            "address": 4294965764,
+            "physical_under_hypothesis": 16775684,
+            "size": 2,
+            "value": 16388
+          },
+          {
+            "pc": 1166,
+            "address": 4294965793,
+            "physical_under_hypothesis": 16775713,
+            "size": 1,
+            "value": 132
+          },
+          {
+            "pc": 1190,
+            "address": 4294965825,
+            "physical_under_hypothesis": 16775745,
+            "size": 1,
+            "value": 7
+          },
+          {
+            "pc": 1198,
+            "address": 4294965828,
+            "physical_under_hypothesis": 16775748,
+            "size": 2,
+            "value": 175
+          },
+          {
+            "pc": 1206,
+            "address": 4294965830,
+            "physical_under_hypothesis": 16775750,
+            "size": 2,
+            "value": 177
+          },
+          {
+            "pc": 1214,
+            "address": 4294965832,
+            "physical_under_hypothesis": 16775752,
+            "size": 2,
+            "value": 7
+          },
+          {
+            "pc": 1222,
+            "address": 4294965834,
+            "physical_under_hypothesis": 16775754,
+            "size": 2,
+            "value": 26720
+          },
+          {
+            "pc": 1230,
+            "address": 4294965777,
+            "physical_under_hypothesis": 16775697,
+            "size": 1,
+            "value": 48
+          },
+          {
+            "pc": 1238,
+            "address": 4294965781,
+            "physical_under_hypothesis": 16775701,
+            "size": 1,
+            "value": 252
+          },
+          {
+            "pc": 1246,
+            "address": 4294965783,
+            "physical_under_hypothesis": 16775703,
+            "size": 1,
+            "value": 253
+          },
+          {
+            "pc": 809906,
+            "address": 4294966020,
+            "physical_under_hypothesis": 16775940,
+            "size": 2,
+            "value": 65440
+          },
+          {
+            "pc": 809910,
+            "address": 4294966016,
+            "physical_under_hypothesis": 16775936,
+            "size": 2,
+            "value": 256
+          },
+          {
+            "pc": 809920,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809924,
+            "address": 4294966084,
+            "physical_under_hypothesis": 16776004,
+            "size": 4,
+            "value": 4294934528
+          },
+          {
+            "pc": 809936,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809940,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809944,
+            "address": 4294966148,
+            "physical_under_hypothesis": 16776068,
+            "size": 4,
+            "value": 4294938624
+          },
+          {
+            "pc": 809952,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809956,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809960,
+            "address": 4294965892,
+            "physical_under_hypothesis": 16775812,
+            "size": 4,
+            "value": 4294944768
+          },
+          {
+            "pc": 809968,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809972,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809976,
+            "address": 4294965956,
+            "physical_under_hypothesis": 16775876,
+            "size": 4,
+            "value": 4294946816
+          },
+          {
+            "pc": 809984,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809988,
+            "address": 16775680,
+            "physical_under_hypothesis": 16775680,
+            "size": 2,
+            "value": 25153
+          },
+          {
+            "pc": 809996,
+            "address": 16775697,
+            "physical_under_hypothesis": 16775697,
+            "size": 1,
+            "value": 48
+          },
+          {
+            "pc": 810004,
+            "address": 16775701,
+            "physical_under_hypothesis": 16775701,
+            "size": 1,
+            "value": 252
+          },
+          {
+            "pc": 810012,
+            "address": 16775703,
+            "physical_under_hypothesis": 16775703,
+            "size": 1,
+            "value": 253
+          },
+          {
+            "pc": 810020,
+            "address": 16775705,
+            "physical_under_hypothesis": 16775705,
+            "size": 1,
+            "value": 161
+          },
+          {
+            "pc": 810028,
+            "address": 16775709,
+            "physical_under_hypothesis": 16775709,
+            "size": 1,
+            "value": 227
+          },
+          {
+            "pc": 810036,
+            "address": 16775711,
+            "physical_under_hypothesis": 16775711,
+            "size": 1,
+            "value": 16
+          },
+          {
+            "pc": 810044,
+            "address": 16775713,
+            "physical_under_hypothesis": 16775713,
+            "size": 1,
+            "value": 132
+          },
+          {
+            "pc": 810066,
+            "address": 16775714,
+            "physical_under_hypothesis": 16775714,
+            "size": 2,
+            "value": 64
+          },
+          {
+            "pc": 810074,
+            "address": 16775716,
+            "physical_under_hypothesis": 16775716,
+            "size": 2,
+            "value": 0
+          },
+          {
+            "pc": 810080,
+            "address": 16775745,
+            "physical_under_hypothesis": 16775745,
+            "size": 1,
+            "value": 7
+          },
+          {
+            "pc": 810088,
+            "address": 16775748,
+            "physical_under_hypothesis": 16775748,
+            "size": 2,
+            "value": 175
+          },
+          {
+            "pc": 810096,
+            "address": 16775750,
+            "physical_under_hypothesis": 16775750,
+            "size": 2,
+            "value": 177
+          },
+          {
+            "pc": 810106,
+            "address": 16775752,
+            "physical_under_hypothesis": 16775752,
+            "size": 2,
+            "value": 7
+          },
+          {
+            "pc": 810112,
+            "address": 16775754,
+            "physical_under_hypothesis": 16775754,
+            "size": 2,
+            "value": 26656
+          },
+          {
+            "pc": 810120,
+            "address": 16775756,
+            "physical_under_hypothesis": 16775756,
+            "size": 2,
+            "value": 7
+          },
+          {
+            "pc": 810126,
+            "address": 16775758,
+            "physical_under_hypothesis": 16775758,
+            "size": 2,
+            "value": 4128
+          },
+          {
+            "pc": 810134,
+            "address": 16775760,
+            "physical_under_hypothesis": 16775760,
+            "size": 2,
+            "value": 65472
+          },
+          {
+            "pc": 810142,
+            "address": 16775762,
+            "physical_under_hypothesis": 16775762,
+            "size": 2,
+            "value": 31200
+          },
+          {
+            "pc": 810150,
+            "address": 16775764,
+            "physical_under_hypothesis": 16775764,
+            "size": 2,
+            "value": 65512
+          },
+          {
+            "pc": 810158,
+            "address": 16775766,
+            "physical_under_hypothesis": 16775766,
+            "size": 2,
+            "value": 55328
+          },
+          {
+            "pc": 810170,
+            "address": 16775768,
+            "physical_under_hypothesis": 16775768,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810180,
+            "address": 16775770,
+            "physical_under_hypothesis": 16775770,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810186,
+            "address": 16775772,
+            "physical_under_hypothesis": 16775772,
+            "size": 2,
+            "value": 32769
+          },
+          {
+            "pc": 810194,
+            "address": 16775774,
+            "physical_under_hypothesis": 16775774,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810200,
+            "address": 16775776,
+            "physical_under_hypothesis": 16775776,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810206,
+            "address": 16775778,
+            "physical_under_hypothesis": 16775778,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810212,
+            "address": 16775780,
+            "physical_under_hypothesis": 16775780,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810218,
+            "address": 16775782,
+            "physical_under_hypothesis": 16775782,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810224,
+            "address": 16775784,
+            "physical_under_hypothesis": 16775784,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810230,
+            "address": 16775786,
+            "physical_under_hypothesis": 16775786,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810236,
+            "address": 16775788,
+            "physical_under_hypothesis": 16775788,
+            "size": 2,
+            "value": 12291
+          },
+          {
+            "pc": 810244,
+            "address": 16775790,
+            "physical_under_hypothesis": 16775790,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810250,
+            "address": 16775792,
+            "physical_under_hypothesis": 16775792,
+            "size": 2,
+            "value": 2563
+          },
+          {
+            "pc": 810258,
+            "address": 16775794,
+            "physical_under_hypothesis": 16775794,
+            "size": 2,
+            "value": 30832
+          },
+          {
+            "pc": 810266,
+            "address": 16775796,
+            "physical_under_hypothesis": 16775796,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810272,
+            "address": 16775798,
+            "physical_under_hypothesis": 16775798,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 781182,
+            "address": 16775716,
+            "physical_under_hypothesis": 16775716,
+            "size": 2,
+            "value": 33
+          },
+          {
+            "pc": 781190,
+            "address": 16775714,
+            "physical_under_hypothesis": 16775714,
+            "size": 2,
+            "value": 1600
+          }
+        ],
+        "watchdog_stores": 21960,
+        "vpw_initializer_entered": false,
+        "flash_writes_blocked": 0,
+        "physical_mapping_verified": false,
+        "live_upload_enabled": false,
+        "live_execution_enabled": false,
+        "live_write_enabled": false,
+        "recovery_verified": false,
+        "external_service_magic": 0,
+        "reset_status": 64,
+        "synthetic_irq_invoked": false,
+        "exception_return_executed": false,
+        "software_tx_frames": [],
+        "software_tx_observations": [],
+        "fifo_events_consumed": 0,
+        "integrity_observations": [
+          {
+            "pc": 2016,
+            "d4": 0,
+            "fault_active": false
+          },
+          {
+            "pc": 2158,
+            "d4": 0,
+            "fault_active": false
+          }
+        ],
+        "initial_persistent_banks_sha256": null,
+        "flash_fixture_sha256": "12bf5a5aea1d9816ad3ef959c6168bc56310b7ab4eeaf41602abd2d8642f83a3",
+        "retained_marker": 53442,
+        "initial_ram_sha256": null,
+        "reset_status_accesses": [
+          {
+            "operation": "read",
+            "pc": 2026,
+            "address": 4294965767,
+            "size": 1,
+            "value": 64
+          },
+          {
+            "operation": "read",
+            "pc": 2034,
+            "address": 4294965767,
+            "size": 1,
+            "value": 64
+          }
+        ],
+        "marker_accesses": [
+          {
+            "operation": "read",
+            "pc": 1254,
+            "value": 53442
+          },
+          {
+            "operation": "write",
+            "pc": 1260,
+            "size": 1,
+            "value": 150
+          },
+          {
+            "operation": "read",
+            "pc": 1338,
+            "value": 38505
+          },
+          {
+            "operation": "write",
+            "pc": 1406,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1490,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1580,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1660,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1712,
+            "size": 4,
+            "value": 1431655765
+          },
+          {
+            "operation": "write",
+            "pc": 1862,
+            "size": 4,
+            "value": 2863311530
+          },
+          {
+            "operation": "write",
+            "pc": 1986,
+            "size": 2,
+            "value": 53442
+          },
+          {
+            "operation": "write",
+            "pc": 2164,
+            "size": 2,
+            "value": 12262
+          },
+          {
+            "operation": "write",
+            "pc": 627920,
+            "size": 2,
+            "value": 1429
+          }
+        ],
+        "routing_observations": [
+          {
+            "pc": 2026,
+            "marker": 53442
+          },
+          {
+            "pc": 2034,
+            "marker": 53442
+          },
+          {
+            "pc": 2054,
+            "marker": 53442
+          },
+          {
+            "pc": 2164,
+            "marker": 53442
+          }
+        ],
+        "post_reset_checks": true,
+        "application_entered": true,
+        "application_check_events": [
+          {
+            "pc": 694008,
+            "marker": 1429
+          },
+          {
+            "pc": 693772,
+            "marker": 1429
+          },
+          {
+            "pc": 627966,
+            "marker": 1429
+          }
+        ],
+        "watchdog_control_attempts": [
+          {
+            "pc": 1166,
+            "phase": "boot",
+            "address": 4294965793,
+            "size": 1,
+            "value": 132
+          },
+          {
+            "pc": 810044,
+            "phase": "application",
+            "address": 16775713,
+            "size": 1,
+            "value": 132
+          }
+        ],
+        "consumed_application_mmio_inputs": [],
+        "physical_watchdog_configuration_verified": false,
+        "physical_reset_verified": false,
+        "modeled_stack_alias": 4294934528,
+        "marker_at_application_entry": 12262,
+        "final_pc": 627966,
+        "fault_active_at_stop": false,
+        "reset_status_snapshot": 0,
+        "reset_marker": 1429,
+        "interface_flag": 0,
+        "interrupt_mask": 5,
+        "upload_armed_byte": 0,
+        "rom_unchanged_from_selected_view": true,
+        "unused_application_mmio_inputs": [],
+        "application_calibration_read_coverage": {
+          "bytes": 57302,
+          "ranges": [
+            [
+              32768,
+              90070
+            ]
+          ],
+          "marker_reads": [
+            {
+              "pc": 694020,
+              "address": 131070,
+              "size": 2,
+              "value": 19196
+            }
+          ],
+          "scope": "Native application CPU reads only; not independently acquired readback"
+        },
+        "final_sp": 16758744
+      },
+      "conditional_configuration": {
+        "effective_value_under_hypothesis": 132,
+        "enabled_under_hypothesis": true,
+        "prescaled_under_hypothesis": false,
+        "timing_field_under_hypothesis": 0,
+        "timeout_system_clock_cycles_under_hypothesis": 512,
+        "attempts": [
+          {
+            "pc": 1166,
+            "phase": "boot",
+            "attempted_value": 132,
+            "conditionally_accepted": true,
+            "effective_before": null,
+            "effective_after": 132
+          },
+          {
+            "pc": 810044,
+            "phase": "application",
+            "attempted_value": 132,
+            "conditionally_accepted": false,
+            "effective_before": 132,
+            "effective_after": 132
+          }
+        ],
+        "source_clock_hz": null,
+        "timeout_seconds": null,
+        "actual_mcu_identified": false,
+        "physical_configuration_verified": false,
+        "physical_timeout_verified": false
+      },
+      "same_reset_to_application_context": true,
+      "physical_reset_delivered": false,
+      "calibration_overlay_sha256": null
+    },
+    {
+      "case": "external_retained",
+      "observed": {
+        "fault": "a12_direct",
+        "window": "none",
+        "reset_sp": 4294938622,
+        "reset_pc": 1024,
+        "stop": "post_reset_calibration_check_return",
+        "instructions": 1020608,
+        "events": [],
+        "aliased_reads": 0,
+        "changed_data_reads": 0,
+        "first_changed_fetch": null,
+        "register_writes": [
+          {
+            "pc": 1030,
+            "address": 4294965760,
+            "physical_under_hypothesis": 16775680,
+            "size": 2,
+            "value": 576
+          },
+          {
+            "pc": 1036,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1042,
+            "address": 4294966084,
+            "physical_under_hypothesis": 16776004,
+            "size": 4,
+            "value": 4294934528
+          },
+          {
+            "pc": 1050,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1056,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1062,
+            "address": 4294966148,
+            "physical_under_hypothesis": 16776068,
+            "size": 4,
+            "value": 4294938624
+          },
+          {
+            "pc": 1070,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1084,
+            "address": 4294966020,
+            "physical_under_hypothesis": 16775940,
+            "size": 2,
+            "value": 65440
+          },
+          {
+            "pc": 1088,
+            "address": 4294966016,
+            "physical_under_hypothesis": 16775936,
+            "size": 2,
+            "value": 256
+          },
+          {
+            "pc": 1108,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1114,
+            "address": 4294965892,
+            "physical_under_hypothesis": 16775812,
+            "size": 4,
+            "value": 4294944768
+          },
+          {
+            "pc": 1122,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1128,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1134,
+            "address": 4294965956,
+            "physical_under_hypothesis": 16775876,
+            "size": 4,
+            "value": 4294946816
+          },
+          {
+            "pc": 1142,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1158,
+            "address": 4294965764,
+            "physical_under_hypothesis": 16775684,
+            "size": 2,
+            "value": 16388
+          },
+          {
+            "pc": 1166,
+            "address": 4294965793,
+            "physical_under_hypothesis": 16775713,
+            "size": 1,
+            "value": 132
+          },
+          {
+            "pc": 1190,
+            "address": 4294965825,
+            "physical_under_hypothesis": 16775745,
+            "size": 1,
+            "value": 7
+          },
+          {
+            "pc": 1198,
+            "address": 4294965828,
+            "physical_under_hypothesis": 16775748,
+            "size": 2,
+            "value": 175
+          },
+          {
+            "pc": 1206,
+            "address": 4294965830,
+            "physical_under_hypothesis": 16775750,
+            "size": 2,
+            "value": 177
+          },
+          {
+            "pc": 1214,
+            "address": 4294965832,
+            "physical_under_hypothesis": 16775752,
+            "size": 2,
+            "value": 7
+          },
+          {
+            "pc": 1222,
+            "address": 4294965834,
+            "physical_under_hypothesis": 16775754,
+            "size": 2,
+            "value": 26720
+          },
+          {
+            "pc": 1230,
+            "address": 4294965777,
+            "physical_under_hypothesis": 16775697,
+            "size": 1,
+            "value": 48
+          },
+          {
+            "pc": 1238,
+            "address": 4294965781,
+            "physical_under_hypothesis": 16775701,
+            "size": 1,
+            "value": 252
+          },
+          {
+            "pc": 1246,
+            "address": 4294965783,
+            "physical_under_hypothesis": 16775703,
+            "size": 1,
+            "value": 253
+          },
+          {
+            "pc": 809906,
+            "address": 4294966020,
+            "physical_under_hypothesis": 16775940,
+            "size": 2,
+            "value": 65440
+          },
+          {
+            "pc": 809910,
+            "address": 4294966016,
+            "physical_under_hypothesis": 16775936,
+            "size": 2,
+            "value": 256
+          },
+          {
+            "pc": 809920,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809924,
+            "address": 4294966084,
+            "physical_under_hypothesis": 16776004,
+            "size": 4,
+            "value": 4294934528
+          },
+          {
+            "pc": 809936,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809940,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809944,
+            "address": 4294966148,
+            "physical_under_hypothesis": 16776068,
+            "size": 4,
+            "value": 4294938624
+          },
+          {
+            "pc": 809952,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809956,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809960,
+            "address": 4294965892,
+            "physical_under_hypothesis": 16775812,
+            "size": 4,
+            "value": 4294944768
+          },
+          {
+            "pc": 809968,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809972,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809976,
+            "address": 4294965956,
+            "physical_under_hypothesis": 16775876,
+            "size": 4,
+            "value": 4294946816
+          },
+          {
+            "pc": 809984,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809988,
+            "address": 16775680,
+            "physical_under_hypothesis": 16775680,
+            "size": 2,
+            "value": 25153
+          },
+          {
+            "pc": 809996,
+            "address": 16775697,
+            "physical_under_hypothesis": 16775697,
+            "size": 1,
+            "value": 48
+          },
+          {
+            "pc": 810004,
+            "address": 16775701,
+            "physical_under_hypothesis": 16775701,
+            "size": 1,
+            "value": 252
+          },
+          {
+            "pc": 810012,
+            "address": 16775703,
+            "physical_under_hypothesis": 16775703,
+            "size": 1,
+            "value": 253
+          },
+          {
+            "pc": 810020,
+            "address": 16775705,
+            "physical_under_hypothesis": 16775705,
+            "size": 1,
+            "value": 161
+          },
+          {
+            "pc": 810028,
+            "address": 16775709,
+            "physical_under_hypothesis": 16775709,
+            "size": 1,
+            "value": 227
+          },
+          {
+            "pc": 810036,
+            "address": 16775711,
+            "physical_under_hypothesis": 16775711,
+            "size": 1,
+            "value": 16
+          },
+          {
+            "pc": 810044,
+            "address": 16775713,
+            "physical_under_hypothesis": 16775713,
+            "size": 1,
+            "value": 132
+          },
+          {
+            "pc": 810066,
+            "address": 16775714,
+            "physical_under_hypothesis": 16775714,
+            "size": 2,
+            "value": 64
+          },
+          {
+            "pc": 810074,
+            "address": 16775716,
+            "physical_under_hypothesis": 16775716,
+            "size": 2,
+            "value": 0
+          },
+          {
+            "pc": 810080,
+            "address": 16775745,
+            "physical_under_hypothesis": 16775745,
+            "size": 1,
+            "value": 7
+          },
+          {
+            "pc": 810088,
+            "address": 16775748,
+            "physical_under_hypothesis": 16775748,
+            "size": 2,
+            "value": 175
+          },
+          {
+            "pc": 810096,
+            "address": 16775750,
+            "physical_under_hypothesis": 16775750,
+            "size": 2,
+            "value": 177
+          },
+          {
+            "pc": 810106,
+            "address": 16775752,
+            "physical_under_hypothesis": 16775752,
+            "size": 2,
+            "value": 7
+          },
+          {
+            "pc": 810112,
+            "address": 16775754,
+            "physical_under_hypothesis": 16775754,
+            "size": 2,
+            "value": 26656
+          },
+          {
+            "pc": 810120,
+            "address": 16775756,
+            "physical_under_hypothesis": 16775756,
+            "size": 2,
+            "value": 7
+          },
+          {
+            "pc": 810126,
+            "address": 16775758,
+            "physical_under_hypothesis": 16775758,
+            "size": 2,
+            "value": 4128
+          },
+          {
+            "pc": 810134,
+            "address": 16775760,
+            "physical_under_hypothesis": 16775760,
+            "size": 2,
+            "value": 65472
+          },
+          {
+            "pc": 810142,
+            "address": 16775762,
+            "physical_under_hypothesis": 16775762,
+            "size": 2,
+            "value": 31200
+          },
+          {
+            "pc": 810150,
+            "address": 16775764,
+            "physical_under_hypothesis": 16775764,
+            "size": 2,
+            "value": 65512
+          },
+          {
+            "pc": 810158,
+            "address": 16775766,
+            "physical_under_hypothesis": 16775766,
+            "size": 2,
+            "value": 55328
+          },
+          {
+            "pc": 810170,
+            "address": 16775768,
+            "physical_under_hypothesis": 16775768,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810180,
+            "address": 16775770,
+            "physical_under_hypothesis": 16775770,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810186,
+            "address": 16775772,
+            "physical_under_hypothesis": 16775772,
+            "size": 2,
+            "value": 32769
+          },
+          {
+            "pc": 810194,
+            "address": 16775774,
+            "physical_under_hypothesis": 16775774,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810200,
+            "address": 16775776,
+            "physical_under_hypothesis": 16775776,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810206,
+            "address": 16775778,
+            "physical_under_hypothesis": 16775778,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810212,
+            "address": 16775780,
+            "physical_under_hypothesis": 16775780,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810218,
+            "address": 16775782,
+            "physical_under_hypothesis": 16775782,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810224,
+            "address": 16775784,
+            "physical_under_hypothesis": 16775784,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810230,
+            "address": 16775786,
+            "physical_under_hypothesis": 16775786,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810236,
+            "address": 16775788,
+            "physical_under_hypothesis": 16775788,
+            "size": 2,
+            "value": 12291
+          },
+          {
+            "pc": 810244,
+            "address": 16775790,
+            "physical_under_hypothesis": 16775790,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810250,
+            "address": 16775792,
+            "physical_under_hypothesis": 16775792,
+            "size": 2,
+            "value": 2563
+          },
+          {
+            "pc": 810258,
+            "address": 16775794,
+            "physical_under_hypothesis": 16775794,
+            "size": 2,
+            "value": 30832
+          },
+          {
+            "pc": 810266,
+            "address": 16775796,
+            "physical_under_hypothesis": 16775796,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810272,
+            "address": 16775798,
+            "physical_under_hypothesis": 16775798,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 781182,
+            "address": 16775716,
+            "physical_under_hypothesis": 16775716,
+            "size": 2,
+            "value": 33
+          },
+          {
+            "pc": 781190,
+            "address": 16775714,
+            "physical_under_hypothesis": 16775714,
+            "size": 2,
+            "value": 1600
+          }
+        ],
+        "watchdog_stores": 21960,
+        "vpw_initializer_entered": false,
+        "flash_writes_blocked": 0,
+        "physical_mapping_verified": false,
+        "live_upload_enabled": false,
+        "live_execution_enabled": false,
+        "live_write_enabled": false,
+        "recovery_verified": false,
+        "external_service_magic": 0,
+        "reset_status": 128,
+        "synthetic_irq_invoked": false,
+        "exception_return_executed": false,
+        "software_tx_frames": [],
+        "software_tx_observations": [],
+        "fifo_events_consumed": 0,
+        "integrity_observations": [
+          {
+            "pc": 2016,
+            "d4": 0,
+            "fault_active": false
+          },
+          {
+            "pc": 2158,
+            "d4": 0,
+            "fault_active": false
+          }
+        ],
+        "initial_persistent_banks_sha256": null,
+        "flash_fixture_sha256": "12bf5a5aea1d9816ad3ef959c6168bc56310b7ab4eeaf41602abd2d8642f83a3",
+        "retained_marker": 53442,
+        "initial_ram_sha256": null,
+        "reset_status_accesses": [
+          {
+            "operation": "read",
+            "pc": 2026,
+            "address": 4294965767,
+            "size": 1,
+            "value": 128
+          }
+        ],
+        "marker_accesses": [
+          {
+            "operation": "read",
+            "pc": 1254,
+            "value": 53442
+          },
+          {
+            "operation": "write",
+            "pc": 1260,
+            "size": 1,
+            "value": 150
+          },
+          {
+            "operation": "read",
+            "pc": 1338,
+            "value": 38505
+          },
+          {
+            "operation": "write",
+            "pc": 1406,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1490,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1580,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1660,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1712,
+            "size": 4,
+            "value": 1431655765
+          },
+          {
+            "operation": "write",
+            "pc": 1862,
+            "size": 4,
+            "value": 2863311530
+          },
+          {
+            "operation": "write",
+            "pc": 1986,
+            "size": 2,
+            "value": 53442
+          },
+          {
+            "operation": "write",
+            "pc": 2164,
+            "size": 2,
+            "value": 12262
+          },
+          {
+            "operation": "write",
+            "pc": 627920,
+            "size": 2,
+            "value": 1429
+          }
+        ],
+        "routing_observations": [
+          {
+            "pc": 2026,
+            "marker": 53442
+          },
+          {
+            "pc": 2054,
+            "marker": 53442
+          },
+          {
+            "pc": 2164,
+            "marker": 53442
+          }
+        ],
+        "post_reset_checks": true,
+        "application_entered": true,
+        "application_check_events": [
+          {
+            "pc": 694008,
+            "marker": 1429
+          },
+          {
+            "pc": 693772,
+            "marker": 1429
+          },
+          {
+            "pc": 627966,
+            "marker": 1429
+          }
+        ],
+        "watchdog_control_attempts": [
+          {
+            "pc": 1166,
+            "phase": "boot",
+            "address": 4294965793,
+            "size": 1,
+            "value": 132
+          },
+          {
+            "pc": 810044,
+            "phase": "application",
+            "address": 16775713,
+            "size": 1,
+            "value": 132
+          }
+        ],
+        "consumed_application_mmio_inputs": [],
+        "physical_watchdog_configuration_verified": false,
+        "physical_reset_verified": false,
+        "modeled_stack_alias": 4294934528,
+        "marker_at_application_entry": 12262,
+        "final_pc": 627966,
+        "fault_active_at_stop": false,
+        "reset_status_snapshot": 0,
+        "reset_marker": 1429,
+        "interface_flag": 0,
+        "interrupt_mask": 5,
+        "upload_armed_byte": 0,
+        "rom_unchanged_from_selected_view": true,
+        "unused_application_mmio_inputs": [],
+        "application_calibration_read_coverage": {
+          "bytes": 57302,
+          "ranges": [
+            [
+              32768,
+              90070
+            ]
+          ],
+          "marker_reads": [
+            {
+              "pc": 694020,
+              "address": 131070,
+              "size": 2,
+              "value": 19196
+            }
+          ],
+          "scope": "Native application CPU reads only; not independently acquired readback"
+        },
+        "final_sp": 16758744
+      },
+      "conditional_configuration": {
+        "effective_value_under_hypothesis": 132,
+        "enabled_under_hypothesis": true,
+        "prescaled_under_hypothesis": false,
+        "timing_field_under_hypothesis": 0,
+        "timeout_system_clock_cycles_under_hypothesis": 512,
+        "attempts": [
+          {
+            "pc": 1166,
+            "phase": "boot",
+            "attempted_value": 132,
+            "conditionally_accepted": true,
+            "effective_before": null,
+            "effective_after": 132
+          },
+          {
+            "pc": 810044,
+            "phase": "application",
+            "attempted_value": 132,
+            "conditionally_accepted": false,
+            "effective_before": 132,
+            "effective_after": 132
+          }
+        ],
+        "source_clock_hz": null,
+        "timeout_seconds": null,
+        "actual_mcu_identified": false,
+        "physical_configuration_verified": false,
+        "physical_timeout_verified": false
+      },
+      "same_reset_to_application_context": true,
+      "physical_reset_delivered": false,
+      "calibration_overlay_sha256": null
+    },
+    {
+      "case": "calibration_crc_corrupt",
+      "observed": {
+        "fault": "a12_direct",
+        "window": "none",
+        "reset_sp": 4294938622,
+        "reset_pc": 1024,
+        "stop": "post_reset_calibration_crc_rejected",
+        "instructions": 1020590,
+        "events": [],
+        "aliased_reads": 0,
+        "changed_data_reads": 0,
+        "first_changed_fetch": null,
+        "register_writes": [
+          {
+            "pc": 1030,
+            "address": 4294965760,
+            "physical_under_hypothesis": 16775680,
+            "size": 2,
+            "value": 576
+          },
+          {
+            "pc": 1036,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1042,
+            "address": 4294966084,
+            "physical_under_hypothesis": 16776004,
+            "size": 4,
+            "value": 4294934528
+          },
+          {
+            "pc": 1050,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1056,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1062,
+            "address": 4294966148,
+            "physical_under_hypothesis": 16776068,
+            "size": 4,
+            "value": 4294938624
+          },
+          {
+            "pc": 1070,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1084,
+            "address": 4294966020,
+            "physical_under_hypothesis": 16775940,
+            "size": 2,
+            "value": 65440
+          },
+          {
+            "pc": 1088,
+            "address": 4294966016,
+            "physical_under_hypothesis": 16775936,
+            "size": 2,
+            "value": 256
+          },
+          {
+            "pc": 1108,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1114,
+            "address": 4294965892,
+            "physical_under_hypothesis": 16775812,
+            "size": 4,
+            "value": 4294944768
+          },
+          {
+            "pc": 1122,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1128,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1134,
+            "address": 4294965956,
+            "physical_under_hypothesis": 16775876,
+            "size": 4,
+            "value": 4294946816
+          },
+          {
+            "pc": 1142,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1158,
+            "address": 4294965764,
+            "physical_under_hypothesis": 16775684,
+            "size": 2,
+            "value": 16388
+          },
+          {
+            "pc": 1166,
+            "address": 4294965793,
+            "physical_under_hypothesis": 16775713,
+            "size": 1,
+            "value": 132
+          },
+          {
+            "pc": 1190,
+            "address": 4294965825,
+            "physical_under_hypothesis": 16775745,
+            "size": 1,
+            "value": 7
+          },
+          {
+            "pc": 1198,
+            "address": 4294965828,
+            "physical_under_hypothesis": 16775748,
+            "size": 2,
+            "value": 175
+          },
+          {
+            "pc": 1206,
+            "address": 4294965830,
+            "physical_under_hypothesis": 16775750,
+            "size": 2,
+            "value": 177
+          },
+          {
+            "pc": 1214,
+            "address": 4294965832,
+            "physical_under_hypothesis": 16775752,
+            "size": 2,
+            "value": 7
+          },
+          {
+            "pc": 1222,
+            "address": 4294965834,
+            "physical_under_hypothesis": 16775754,
+            "size": 2,
+            "value": 26720
+          },
+          {
+            "pc": 1230,
+            "address": 4294965777,
+            "physical_under_hypothesis": 16775697,
+            "size": 1,
+            "value": 48
+          },
+          {
+            "pc": 1238,
+            "address": 4294965781,
+            "physical_under_hypothesis": 16775701,
+            "size": 1,
+            "value": 252
+          },
+          {
+            "pc": 1246,
+            "address": 4294965783,
+            "physical_under_hypothesis": 16775703,
+            "size": 1,
+            "value": 253
+          },
+          {
+            "pc": 809906,
+            "address": 4294966020,
+            "physical_under_hypothesis": 16775940,
+            "size": 2,
+            "value": 65440
+          },
+          {
+            "pc": 809910,
+            "address": 4294966016,
+            "physical_under_hypothesis": 16775936,
+            "size": 2,
+            "value": 256
+          },
+          {
+            "pc": 809920,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809924,
+            "address": 4294966084,
+            "physical_under_hypothesis": 16776004,
+            "size": 4,
+            "value": 4294934528
+          },
+          {
+            "pc": 809936,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809940,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809944,
+            "address": 4294966148,
+            "physical_under_hypothesis": 16776068,
+            "size": 4,
+            "value": 4294938624
+          },
+          {
+            "pc": 809952,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809956,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809960,
+            "address": 4294965892,
+            "physical_under_hypothesis": 16775812,
+            "size": 4,
+            "value": 4294944768
+          },
+          {
+            "pc": 809968,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809972,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809976,
+            "address": 4294965956,
+            "physical_under_hypothesis": 16775876,
+            "size": 4,
+            "value": 4294946816
+          },
+          {
+            "pc": 809984,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809988,
+            "address": 16775680,
+            "physical_under_hypothesis": 16775680,
+            "size": 2,
+            "value": 25153
+          },
+          {
+            "pc": 809996,
+            "address": 16775697,
+            "physical_under_hypothesis": 16775697,
+            "size": 1,
+            "value": 48
+          },
+          {
+            "pc": 810004,
+            "address": 16775701,
+            "physical_under_hypothesis": 16775701,
+            "size": 1,
+            "value": 252
+          },
+          {
+            "pc": 810012,
+            "address": 16775703,
+            "physical_under_hypothesis": 16775703,
+            "size": 1,
+            "value": 253
+          },
+          {
+            "pc": 810020,
+            "address": 16775705,
+            "physical_under_hypothesis": 16775705,
+            "size": 1,
+            "value": 161
+          },
+          {
+            "pc": 810028,
+            "address": 16775709,
+            "physical_under_hypothesis": 16775709,
+            "size": 1,
+            "value": 227
+          },
+          {
+            "pc": 810036,
+            "address": 16775711,
+            "physical_under_hypothesis": 16775711,
+            "size": 1,
+            "value": 16
+          },
+          {
+            "pc": 810044,
+            "address": 16775713,
+            "physical_under_hypothesis": 16775713,
+            "size": 1,
+            "value": 132
+          },
+          {
+            "pc": 810066,
+            "address": 16775714,
+            "physical_under_hypothesis": 16775714,
+            "size": 2,
+            "value": 64
+          },
+          {
+            "pc": 810074,
+            "address": 16775716,
+            "physical_under_hypothesis": 16775716,
+            "size": 2,
+            "value": 0
+          },
+          {
+            "pc": 810080,
+            "address": 16775745,
+            "physical_under_hypothesis": 16775745,
+            "size": 1,
+            "value": 7
+          },
+          {
+            "pc": 810088,
+            "address": 16775748,
+            "physical_under_hypothesis": 16775748,
+            "size": 2,
+            "value": 175
+          },
+          {
+            "pc": 810096,
+            "address": 16775750,
+            "physical_under_hypothesis": 16775750,
+            "size": 2,
+            "value": 177
+          },
+          {
+            "pc": 810106,
+            "address": 16775752,
+            "physical_under_hypothesis": 16775752,
+            "size": 2,
+            "value": 7
+          },
+          {
+            "pc": 810112,
+            "address": 16775754,
+            "physical_under_hypothesis": 16775754,
+            "size": 2,
+            "value": 26656
+          },
+          {
+            "pc": 810120,
+            "address": 16775756,
+            "physical_under_hypothesis": 16775756,
+            "size": 2,
+            "value": 7
+          },
+          {
+            "pc": 810126,
+            "address": 16775758,
+            "physical_under_hypothesis": 16775758,
+            "size": 2,
+            "value": 4128
+          },
+          {
+            "pc": 810134,
+            "address": 16775760,
+            "physical_under_hypothesis": 16775760,
+            "size": 2,
+            "value": 65472
+          },
+          {
+            "pc": 810142,
+            "address": 16775762,
+            "physical_under_hypothesis": 16775762,
+            "size": 2,
+            "value": 31200
+          },
+          {
+            "pc": 810150,
+            "address": 16775764,
+            "physical_under_hypothesis": 16775764,
+            "size": 2,
+            "value": 65512
+          },
+          {
+            "pc": 810158,
+            "address": 16775766,
+            "physical_under_hypothesis": 16775766,
+            "size": 2,
+            "value": 55328
+          },
+          {
+            "pc": 810170,
+            "address": 16775768,
+            "physical_under_hypothesis": 16775768,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810180,
+            "address": 16775770,
+            "physical_under_hypothesis": 16775770,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810186,
+            "address": 16775772,
+            "physical_under_hypothesis": 16775772,
+            "size": 2,
+            "value": 32769
+          },
+          {
+            "pc": 810194,
+            "address": 16775774,
+            "physical_under_hypothesis": 16775774,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810200,
+            "address": 16775776,
+            "physical_under_hypothesis": 16775776,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810206,
+            "address": 16775778,
+            "physical_under_hypothesis": 16775778,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810212,
+            "address": 16775780,
+            "physical_under_hypothesis": 16775780,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810218,
+            "address": 16775782,
+            "physical_under_hypothesis": 16775782,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810224,
+            "address": 16775784,
+            "physical_under_hypothesis": 16775784,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810230,
+            "address": 16775786,
+            "physical_under_hypothesis": 16775786,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810236,
+            "address": 16775788,
+            "physical_under_hypothesis": 16775788,
+            "size": 2,
+            "value": 12291
+          },
+          {
+            "pc": 810244,
+            "address": 16775790,
+            "physical_under_hypothesis": 16775790,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810250,
+            "address": 16775792,
+            "physical_under_hypothesis": 16775792,
+            "size": 2,
+            "value": 2563
+          },
+          {
+            "pc": 810258,
+            "address": 16775794,
+            "physical_under_hypothesis": 16775794,
+            "size": 2,
+            "value": 30832
+          },
+          {
+            "pc": 810266,
+            "address": 16775796,
+            "physical_under_hypothesis": 16775796,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810272,
+            "address": 16775798,
+            "physical_under_hypothesis": 16775798,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 781182,
+            "address": 16775716,
+            "physical_under_hypothesis": 16775716,
+            "size": 2,
+            "value": 33
+          },
+          {
+            "pc": 781190,
+            "address": 16775714,
+            "physical_under_hypothesis": 16775714,
+            "size": 2,
+            "value": 1600
+          }
+        ],
+        "watchdog_stores": 21960,
+        "vpw_initializer_entered": false,
+        "flash_writes_blocked": 0,
+        "physical_mapping_verified": false,
+        "live_upload_enabled": false,
+        "live_execution_enabled": false,
+        "live_write_enabled": false,
+        "recovery_verified": false,
+        "external_service_magic": 0,
+        "reset_status": 32,
+        "synthetic_irq_invoked": false,
+        "exception_return_executed": false,
+        "software_tx_frames": [],
+        "software_tx_observations": [],
+        "fifo_events_consumed": 0,
+        "integrity_observations": [
+          {
+            "pc": 2016,
+            "d4": 0,
+            "fault_active": false
+          },
+          {
+            "pc": 2158,
+            "d4": 0,
+            "fault_active": false
+          }
+        ],
+        "initial_persistent_banks_sha256": null,
+        "flash_fixture_sha256": "79a48b2f4f93809723f5a11a8adbcacbeb8a9047e20f6fa43cd0f194a2350246",
+        "retained_marker": 53442,
+        "initial_ram_sha256": null,
+        "reset_status_accesses": [
+          {
+            "operation": "read",
+            "pc": 2026,
+            "address": 4294965767,
+            "size": 1,
+            "value": 32
+          },
+          {
+            "operation": "read",
+            "pc": 2034,
+            "address": 4294965767,
+            "size": 1,
+            "value": 32
+          }
+        ],
+        "marker_accesses": [
+          {
+            "operation": "read",
+            "pc": 1254,
+            "value": 53442
+          },
+          {
+            "operation": "write",
+            "pc": 1260,
+            "size": 1,
+            "value": 150
+          },
+          {
+            "operation": "read",
+            "pc": 1338,
+            "value": 38505
+          },
+          {
+            "operation": "write",
+            "pc": 1406,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1490,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1580,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1660,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1712,
+            "size": 4,
+            "value": 1431655765
+          },
+          {
+            "operation": "write",
+            "pc": 1862,
+            "size": 4,
+            "value": 2863311530
+          },
+          {
+            "operation": "write",
+            "pc": 1986,
+            "size": 2,
+            "value": 53442
+          },
+          {
+            "operation": "read",
+            "pc": 2042,
+            "value": 53442
+          },
+          {
+            "operation": "write",
+            "pc": 2164,
+            "size": 2,
+            "value": 12262
+          },
+          {
+            "operation": "write",
+            "pc": 627920,
+            "size": 2,
+            "value": 1429
+          },
+          {
+            "operation": "write",
+            "pc": 693852,
+            "size": 2,
+            "value": 12500
+          }
+        ],
+        "routing_observations": [
+          {
+            "pc": 2026,
+            "marker": 53442
+          },
+          {
+            "pc": 2034,
+            "marker": 53442
+          },
+          {
+            "pc": 2042,
+            "marker": 53442
+          },
+          {
+            "pc": 2054,
+            "marker": 53442
+          },
+          {
+            "pc": 2164,
+            "marker": 53442
+          }
+        ],
+        "post_reset_checks": true,
+        "application_entered": true,
+        "application_check_events": [
+          {
+            "pc": 694008,
+            "marker": 1429
+          },
+          {
+            "pc": 693772,
+            "marker": 1429
+          }
+        ],
+        "watchdog_control_attempts": [
+          {
+            "pc": 1166,
+            "phase": "boot",
+            "address": 4294965793,
+            "size": 1,
+            "value": 132
+          },
+          {
+            "pc": 810044,
+            "phase": "application",
+            "address": 16775713,
+            "size": 1,
+            "value": 132
+          }
+        ],
+        "consumed_application_mmio_inputs": [],
+        "physical_watchdog_configuration_verified": false,
+        "physical_reset_verified": false,
+        "modeled_stack_alias": 4294934528,
+        "marker_at_application_entry": 12262,
+        "final_pc": 693864,
+        "fault_active_at_stop": false,
+        "reset_status_snapshot": 0,
+        "reset_marker": 12500,
+        "interface_flag": 0,
+        "interrupt_mask": 7,
+        "upload_armed_byte": 0,
+        "rom_unchanged_from_selected_view": true,
+        "unused_application_mmio_inputs": [],
+        "application_calibration_read_coverage": {
+          "bytes": 57302,
+          "ranges": [
+            [
+              32768,
+              90070
+            ]
+          ],
+          "marker_reads": [
+            {
+              "pc": 694020,
+              "address": 131070,
+              "size": 2,
+              "value": 19196
+            }
+          ],
+          "scope": "Native application CPU reads only; not independently acquired readback"
+        },
+        "final_sp": 16758668
+      },
+      "conditional_configuration": {
+        "effective_value_under_hypothesis": 132,
+        "enabled_under_hypothesis": true,
+        "prescaled_under_hypothesis": false,
+        "timing_field_under_hypothesis": 0,
+        "timeout_system_clock_cycles_under_hypothesis": 512,
+        "attempts": [
+          {
+            "pc": 1166,
+            "phase": "boot",
+            "attempted_value": 132,
+            "conditionally_accepted": true,
+            "effective_before": null,
+            "effective_after": 132
+          },
+          {
+            "pc": 810044,
+            "phase": "application",
+            "attempted_value": 132,
+            "conditionally_accepted": false,
+            "effective_before": 132,
+            "effective_after": 132
+          }
+        ],
+        "source_clock_hz": null,
+        "timeout_seconds": null,
+        "actual_mcu_identified": false,
+        "physical_configuration_verified": false,
+        "physical_timeout_verified": false
+      },
+      "same_reset_to_application_context": true,
+      "physical_reset_delivered": false,
+      "calibration_overlay_sha256": "56a3d72c6b5b94d532dd5cd293cc4d84704d997801db6b953b7cf816f5911538"
+    },
+    {
+      "case": "calibration_compensation_corrupt",
+      "observed": {
+        "fault": "a12_direct",
+        "window": "none",
+        "reset_sp": 4294938622,
+        "reset_pc": 1024,
+        "stop": "post_reset_calibration_check_return",
+        "instructions": 1020612,
+        "events": [],
+        "aliased_reads": 0,
+        "changed_data_reads": 0,
+        "first_changed_fetch": null,
+        "register_writes": [
+          {
+            "pc": 1030,
+            "address": 4294965760,
+            "physical_under_hypothesis": 16775680,
+            "size": 2,
+            "value": 576
+          },
+          {
+            "pc": 1036,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1042,
+            "address": 4294966084,
+            "physical_under_hypothesis": 16776004,
+            "size": 4,
+            "value": 4294934528
+          },
+          {
+            "pc": 1050,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1056,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1062,
+            "address": 4294966148,
+            "physical_under_hypothesis": 16776068,
+            "size": 4,
+            "value": 4294938624
+          },
+          {
+            "pc": 1070,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1084,
+            "address": 4294966020,
+            "physical_under_hypothesis": 16775940,
+            "size": 2,
+            "value": 65440
+          },
+          {
+            "pc": 1088,
+            "address": 4294966016,
+            "physical_under_hypothesis": 16775936,
+            "size": 2,
+            "value": 256
+          },
+          {
+            "pc": 1108,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1114,
+            "address": 4294965892,
+            "physical_under_hypothesis": 16775812,
+            "size": 4,
+            "value": 4294944768
+          },
+          {
+            "pc": 1122,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1128,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1134,
+            "address": 4294965956,
+            "physical_under_hypothesis": 16775876,
+            "size": 4,
+            "value": 4294946816
+          },
+          {
+            "pc": 1142,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1158,
+            "address": 4294965764,
+            "physical_under_hypothesis": 16775684,
+            "size": 2,
+            "value": 16388
+          },
+          {
+            "pc": 1166,
+            "address": 4294965793,
+            "physical_under_hypothesis": 16775713,
+            "size": 1,
+            "value": 132
+          },
+          {
+            "pc": 1190,
+            "address": 4294965825,
+            "physical_under_hypothesis": 16775745,
+            "size": 1,
+            "value": 7
+          },
+          {
+            "pc": 1198,
+            "address": 4294965828,
+            "physical_under_hypothesis": 16775748,
+            "size": 2,
+            "value": 175
+          },
+          {
+            "pc": 1206,
+            "address": 4294965830,
+            "physical_under_hypothesis": 16775750,
+            "size": 2,
+            "value": 177
+          },
+          {
+            "pc": 1214,
+            "address": 4294965832,
+            "physical_under_hypothesis": 16775752,
+            "size": 2,
+            "value": 7
+          },
+          {
+            "pc": 1222,
+            "address": 4294965834,
+            "physical_under_hypothesis": 16775754,
+            "size": 2,
+            "value": 26720
+          },
+          {
+            "pc": 1230,
+            "address": 4294965777,
+            "physical_under_hypothesis": 16775697,
+            "size": 1,
+            "value": 48
+          },
+          {
+            "pc": 1238,
+            "address": 4294965781,
+            "physical_under_hypothesis": 16775701,
+            "size": 1,
+            "value": 252
+          },
+          {
+            "pc": 1246,
+            "address": 4294965783,
+            "physical_under_hypothesis": 16775703,
+            "size": 1,
+            "value": 253
+          },
+          {
+            "pc": 809906,
+            "address": 4294966020,
+            "physical_under_hypothesis": 16775940,
+            "size": 2,
+            "value": 65440
+          },
+          {
+            "pc": 809910,
+            "address": 4294966016,
+            "physical_under_hypothesis": 16775936,
+            "size": 2,
+            "value": 256
+          },
+          {
+            "pc": 809920,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809924,
+            "address": 4294966084,
+            "physical_under_hypothesis": 16776004,
+            "size": 4,
+            "value": 4294934528
+          },
+          {
+            "pc": 809936,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809940,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809944,
+            "address": 4294966148,
+            "physical_under_hypothesis": 16776068,
+            "size": 4,
+            "value": 4294938624
+          },
+          {
+            "pc": 809952,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809956,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809960,
+            "address": 4294965892,
+            "physical_under_hypothesis": 16775812,
+            "size": 4,
+            "value": 4294944768
+          },
+          {
+            "pc": 809968,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809972,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809976,
+            "address": 4294965956,
+            "physical_under_hypothesis": 16775876,
+            "size": 4,
+            "value": 4294946816
+          },
+          {
+            "pc": 809984,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809988,
+            "address": 16775680,
+            "physical_under_hypothesis": 16775680,
+            "size": 2,
+            "value": 25153
+          },
+          {
+            "pc": 809996,
+            "address": 16775697,
+            "physical_under_hypothesis": 16775697,
+            "size": 1,
+            "value": 48
+          },
+          {
+            "pc": 810004,
+            "address": 16775701,
+            "physical_under_hypothesis": 16775701,
+            "size": 1,
+            "value": 252
+          },
+          {
+            "pc": 810012,
+            "address": 16775703,
+            "physical_under_hypothesis": 16775703,
+            "size": 1,
+            "value": 253
+          },
+          {
+            "pc": 810020,
+            "address": 16775705,
+            "physical_under_hypothesis": 16775705,
+            "size": 1,
+            "value": 161
+          },
+          {
+            "pc": 810028,
+            "address": 16775709,
+            "physical_under_hypothesis": 16775709,
+            "size": 1,
+            "value": 227
+          },
+          {
+            "pc": 810036,
+            "address": 16775711,
+            "physical_under_hypothesis": 16775711,
+            "size": 1,
+            "value": 16
+          },
+          {
+            "pc": 810044,
+            "address": 16775713,
+            "physical_under_hypothesis": 16775713,
+            "size": 1,
+            "value": 132
+          },
+          {
+            "pc": 810066,
+            "address": 16775714,
+            "physical_under_hypothesis": 16775714,
+            "size": 2,
+            "value": 64
+          },
+          {
+            "pc": 810074,
+            "address": 16775716,
+            "physical_under_hypothesis": 16775716,
+            "size": 2,
+            "value": 0
+          },
+          {
+            "pc": 810080,
+            "address": 16775745,
+            "physical_under_hypothesis": 16775745,
+            "size": 1,
+            "value": 7
+          },
+          {
+            "pc": 810088,
+            "address": 16775748,
+            "physical_under_hypothesis": 16775748,
+            "size": 2,
+            "value": 175
+          },
+          {
+            "pc": 810096,
+            "address": 16775750,
+            "physical_under_hypothesis": 16775750,
+            "size": 2,
+            "value": 177
+          },
+          {
+            "pc": 810106,
+            "address": 16775752,
+            "physical_under_hypothesis": 16775752,
+            "size": 2,
+            "value": 7
+          },
+          {
+            "pc": 810112,
+            "address": 16775754,
+            "physical_under_hypothesis": 16775754,
+            "size": 2,
+            "value": 26656
+          },
+          {
+            "pc": 810120,
+            "address": 16775756,
+            "physical_under_hypothesis": 16775756,
+            "size": 2,
+            "value": 7
+          },
+          {
+            "pc": 810126,
+            "address": 16775758,
+            "physical_under_hypothesis": 16775758,
+            "size": 2,
+            "value": 4128
+          },
+          {
+            "pc": 810134,
+            "address": 16775760,
+            "physical_under_hypothesis": 16775760,
+            "size": 2,
+            "value": 65472
+          },
+          {
+            "pc": 810142,
+            "address": 16775762,
+            "physical_under_hypothesis": 16775762,
+            "size": 2,
+            "value": 31200
+          },
+          {
+            "pc": 810150,
+            "address": 16775764,
+            "physical_under_hypothesis": 16775764,
+            "size": 2,
+            "value": 65512
+          },
+          {
+            "pc": 810158,
+            "address": 16775766,
+            "physical_under_hypothesis": 16775766,
+            "size": 2,
+            "value": 55328
+          },
+          {
+            "pc": 810170,
+            "address": 16775768,
+            "physical_under_hypothesis": 16775768,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810180,
+            "address": 16775770,
+            "physical_under_hypothesis": 16775770,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810186,
+            "address": 16775772,
+            "physical_under_hypothesis": 16775772,
+            "size": 2,
+            "value": 32769
+          },
+          {
+            "pc": 810194,
+            "address": 16775774,
+            "physical_under_hypothesis": 16775774,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810200,
+            "address": 16775776,
+            "physical_under_hypothesis": 16775776,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810206,
+            "address": 16775778,
+            "physical_under_hypothesis": 16775778,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810212,
+            "address": 16775780,
+            "physical_under_hypothesis": 16775780,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810218,
+            "address": 16775782,
+            "physical_under_hypothesis": 16775782,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810224,
+            "address": 16775784,
+            "physical_under_hypothesis": 16775784,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810230,
+            "address": 16775786,
+            "physical_under_hypothesis": 16775786,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810236,
+            "address": 16775788,
+            "physical_under_hypothesis": 16775788,
+            "size": 2,
+            "value": 12291
+          },
+          {
+            "pc": 810244,
+            "address": 16775790,
+            "physical_under_hypothesis": 16775790,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810250,
+            "address": 16775792,
+            "physical_under_hypothesis": 16775792,
+            "size": 2,
+            "value": 2563
+          },
+          {
+            "pc": 810258,
+            "address": 16775794,
+            "physical_under_hypothesis": 16775794,
+            "size": 2,
+            "value": 30832
+          },
+          {
+            "pc": 810266,
+            "address": 16775796,
+            "physical_under_hypothesis": 16775796,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810272,
+            "address": 16775798,
+            "physical_under_hypothesis": 16775798,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 781182,
+            "address": 16775716,
+            "physical_under_hypothesis": 16775716,
+            "size": 2,
+            "value": 33
+          },
+          {
+            "pc": 781190,
+            "address": 16775714,
+            "physical_under_hypothesis": 16775714,
+            "size": 2,
+            "value": 1600
+          }
+        ],
+        "watchdog_stores": 21960,
+        "vpw_initializer_entered": false,
+        "flash_writes_blocked": 0,
+        "physical_mapping_verified": false,
+        "live_upload_enabled": false,
+        "live_execution_enabled": false,
+        "live_write_enabled": false,
+        "recovery_verified": false,
+        "external_service_magic": 0,
+        "reset_status": 32,
+        "synthetic_irq_invoked": false,
+        "exception_return_executed": false,
+        "software_tx_frames": [],
+        "software_tx_observations": [],
+        "fifo_events_consumed": 0,
+        "integrity_observations": [
+          {
+            "pc": 2016,
+            "d4": 0,
+            "fault_active": false
+          },
+          {
+            "pc": 2158,
+            "d4": 0,
+            "fault_active": false
+          }
+        ],
+        "initial_persistent_banks_sha256": null,
+        "flash_fixture_sha256": "39e332e2d412f67494b1f168da116574a73f1fa8018925e31f4258cbca0a8e5b",
+        "retained_marker": 53442,
+        "initial_ram_sha256": null,
+        "reset_status_accesses": [
+          {
+            "operation": "read",
+            "pc": 2026,
+            "address": 4294965767,
+            "size": 1,
+            "value": 32
+          },
+          {
+            "operation": "read",
+            "pc": 2034,
+            "address": 4294965767,
+            "size": 1,
+            "value": 32
+          }
+        ],
+        "marker_accesses": [
+          {
+            "operation": "read",
+            "pc": 1254,
+            "value": 53442
+          },
+          {
+            "operation": "write",
+            "pc": 1260,
+            "size": 1,
+            "value": 150
+          },
+          {
+            "operation": "read",
+            "pc": 1338,
+            "value": 38505
+          },
+          {
+            "operation": "write",
+            "pc": 1406,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1490,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1580,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1660,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1712,
+            "size": 4,
+            "value": 1431655765
+          },
+          {
+            "operation": "write",
+            "pc": 1862,
+            "size": 4,
+            "value": 2863311530
+          },
+          {
+            "operation": "write",
+            "pc": 1986,
+            "size": 2,
+            "value": 53442
+          },
+          {
+            "operation": "read",
+            "pc": 2042,
+            "value": 53442
+          },
+          {
+            "operation": "write",
+            "pc": 2164,
+            "size": 2,
+            "value": 12262
+          },
+          {
+            "operation": "write",
+            "pc": 627920,
+            "size": 2,
+            "value": 1429
+          }
+        ],
+        "routing_observations": [
+          {
+            "pc": 2026,
+            "marker": 53442
+          },
+          {
+            "pc": 2034,
+            "marker": 53442
+          },
+          {
+            "pc": 2042,
+            "marker": 53442
+          },
+          {
+            "pc": 2054,
+            "marker": 53442
+          },
+          {
+            "pc": 2164,
+            "marker": 53442
+          }
+        ],
+        "post_reset_checks": true,
+        "application_entered": true,
+        "application_check_events": [
+          {
+            "pc": 694008,
+            "marker": 1429
+          },
+          {
+            "pc": 693772,
+            "marker": 1429
+          },
+          {
+            "pc": 627966,
+            "marker": 1429
+          }
+        ],
+        "watchdog_control_attempts": [
+          {
+            "pc": 1166,
+            "phase": "boot",
+            "address": 4294965793,
+            "size": 1,
+            "value": 132
+          },
+          {
+            "pc": 810044,
+            "phase": "application",
+            "address": 16775713,
+            "size": 1,
+            "value": 132
+          }
+        ],
+        "consumed_application_mmio_inputs": [],
+        "physical_watchdog_configuration_verified": false,
+        "physical_reset_verified": false,
+        "modeled_stack_alias": 4294934528,
+        "marker_at_application_entry": 12262,
+        "final_pc": 627966,
+        "fault_active_at_stop": false,
+        "reset_status_snapshot": 0,
+        "reset_marker": 1429,
+        "interface_flag": 0,
+        "interrupt_mask": 5,
+        "upload_armed_byte": 0,
+        "rom_unchanged_from_selected_view": true,
+        "unused_application_mmio_inputs": [],
+        "application_calibration_read_coverage": {
+          "bytes": 57302,
+          "ranges": [
+            [
+              32768,
+              90070
+            ]
+          ],
+          "marker_reads": [
+            {
+              "pc": 694020,
+              "address": 131070,
+              "size": 2,
+              "value": 19196
+            }
+          ],
+          "scope": "Native application CPU reads only; not independently acquired readback"
+        },
+        "final_sp": 16758744
+      },
+      "conditional_configuration": {
+        "effective_value_under_hypothesis": 132,
+        "enabled_under_hypothesis": true,
+        "prescaled_under_hypothesis": false,
+        "timing_field_under_hypothesis": 0,
+        "timeout_system_clock_cycles_under_hypothesis": 512,
+        "attempts": [
+          {
+            "pc": 1166,
+            "phase": "boot",
+            "attempted_value": 132,
+            "conditionally_accepted": true,
+            "effective_before": null,
+            "effective_after": 132
+          },
+          {
+            "pc": 810044,
+            "phase": "application",
+            "attempted_value": 132,
+            "conditionally_accepted": false,
+            "effective_before": 132,
+            "effective_after": 132
+          }
+        ],
+        "source_clock_hz": null,
+        "timeout_seconds": null,
+        "actual_mcu_identified": false,
+        "physical_configuration_verified": false,
+        "physical_timeout_verified": false
+      },
+      "same_reset_to_application_context": true,
+      "physical_reset_delivered": false,
+      "calibration_overlay_sha256": "f6eaf734ef913c3e325b4aff59192dd5628ee318353339217301367916f5e48d"
+    },
+    {
+      "case": "calibration_marker_missing",
+      "observed": {
+        "fault": "a12_direct",
+        "window": "none",
+        "reset_sp": 4294938622,
+        "reset_pc": 1024,
+        "stop": "post_reset_calibration_marker_rejected",
+        "instructions": 447533,
+        "events": [],
+        "aliased_reads": 0,
+        "changed_data_reads": 0,
+        "first_changed_fetch": null,
+        "register_writes": [
+          {
+            "pc": 1030,
+            "address": 4294965760,
+            "physical_under_hypothesis": 16775680,
+            "size": 2,
+            "value": 576
+          },
+          {
+            "pc": 1036,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1042,
+            "address": 4294966084,
+            "physical_under_hypothesis": 16776004,
+            "size": 4,
+            "value": 4294934528
+          },
+          {
+            "pc": 1050,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1056,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1062,
+            "address": 4294966148,
+            "physical_under_hypothesis": 16776068,
+            "size": 4,
+            "value": 4294938624
+          },
+          {
+            "pc": 1070,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1084,
+            "address": 4294966020,
+            "physical_under_hypothesis": 16775940,
+            "size": 2,
+            "value": 65440
+          },
+          {
+            "pc": 1088,
+            "address": 4294966016,
+            "physical_under_hypothesis": 16775936,
+            "size": 2,
+            "value": 256
+          },
+          {
+            "pc": 1108,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1114,
+            "address": 4294965892,
+            "physical_under_hypothesis": 16775812,
+            "size": 4,
+            "value": 4294944768
+          },
+          {
+            "pc": 1122,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1128,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1134,
+            "address": 4294965956,
+            "physical_under_hypothesis": 16775876,
+            "size": 4,
+            "value": 4294946816
+          },
+          {
+            "pc": 1142,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1158,
+            "address": 4294965764,
+            "physical_under_hypothesis": 16775684,
+            "size": 2,
+            "value": 16388
+          },
+          {
+            "pc": 1166,
+            "address": 4294965793,
+            "physical_under_hypothesis": 16775713,
+            "size": 1,
+            "value": 132
+          },
+          {
+            "pc": 1190,
+            "address": 4294965825,
+            "physical_under_hypothesis": 16775745,
+            "size": 1,
+            "value": 7
+          },
+          {
+            "pc": 1198,
+            "address": 4294965828,
+            "physical_under_hypothesis": 16775748,
+            "size": 2,
+            "value": 175
+          },
+          {
+            "pc": 1206,
+            "address": 4294965830,
+            "physical_under_hypothesis": 16775750,
+            "size": 2,
+            "value": 177
+          },
+          {
+            "pc": 1214,
+            "address": 4294965832,
+            "physical_under_hypothesis": 16775752,
+            "size": 2,
+            "value": 7
+          },
+          {
+            "pc": 1222,
+            "address": 4294965834,
+            "physical_under_hypothesis": 16775754,
+            "size": 2,
+            "value": 26720
+          },
+          {
+            "pc": 1230,
+            "address": 4294965777,
+            "physical_under_hypothesis": 16775697,
+            "size": 1,
+            "value": 48
+          },
+          {
+            "pc": 1238,
+            "address": 4294965781,
+            "physical_under_hypothesis": 16775701,
+            "size": 1,
+            "value": 252
+          },
+          {
+            "pc": 1246,
+            "address": 4294965783,
+            "physical_under_hypothesis": 16775703,
+            "size": 1,
+            "value": 253
+          },
+          {
+            "pc": 809906,
+            "address": 4294966020,
+            "physical_under_hypothesis": 16775940,
+            "size": 2,
+            "value": 65440
+          },
+          {
+            "pc": 809910,
+            "address": 4294966016,
+            "physical_under_hypothesis": 16775936,
+            "size": 2,
+            "value": 256
+          },
+          {
+            "pc": 809920,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809924,
+            "address": 4294966084,
+            "physical_under_hypothesis": 16776004,
+            "size": 4,
+            "value": 4294934528
+          },
+          {
+            "pc": 809936,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809940,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809944,
+            "address": 4294966148,
+            "physical_under_hypothesis": 16776068,
+            "size": 4,
+            "value": 4294938624
+          },
+          {
+            "pc": 809952,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809956,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809960,
+            "address": 4294965892,
+            "physical_under_hypothesis": 16775812,
+            "size": 4,
+            "value": 4294944768
+          },
+          {
+            "pc": 809968,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809972,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 809976,
+            "address": 4294965956,
+            "physical_under_hypothesis": 16775876,
+            "size": 4,
+            "value": 4294946816
+          },
+          {
+            "pc": 809984,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 809988,
+            "address": 16775680,
+            "physical_under_hypothesis": 16775680,
+            "size": 2,
+            "value": 25153
+          },
+          {
+            "pc": 809996,
+            "address": 16775697,
+            "physical_under_hypothesis": 16775697,
+            "size": 1,
+            "value": 48
+          },
+          {
+            "pc": 810004,
+            "address": 16775701,
+            "physical_under_hypothesis": 16775701,
+            "size": 1,
+            "value": 252
+          },
+          {
+            "pc": 810012,
+            "address": 16775703,
+            "physical_under_hypothesis": 16775703,
+            "size": 1,
+            "value": 253
+          },
+          {
+            "pc": 810020,
+            "address": 16775705,
+            "physical_under_hypothesis": 16775705,
+            "size": 1,
+            "value": 161
+          },
+          {
+            "pc": 810028,
+            "address": 16775709,
+            "physical_under_hypothesis": 16775709,
+            "size": 1,
+            "value": 227
+          },
+          {
+            "pc": 810036,
+            "address": 16775711,
+            "physical_under_hypothesis": 16775711,
+            "size": 1,
+            "value": 16
+          },
+          {
+            "pc": 810044,
+            "address": 16775713,
+            "physical_under_hypothesis": 16775713,
+            "size": 1,
+            "value": 132
+          },
+          {
+            "pc": 810066,
+            "address": 16775714,
+            "physical_under_hypothesis": 16775714,
+            "size": 2,
+            "value": 64
+          },
+          {
+            "pc": 810074,
+            "address": 16775716,
+            "physical_under_hypothesis": 16775716,
+            "size": 2,
+            "value": 0
+          },
+          {
+            "pc": 810080,
+            "address": 16775745,
+            "physical_under_hypothesis": 16775745,
+            "size": 1,
+            "value": 7
+          },
+          {
+            "pc": 810088,
+            "address": 16775748,
+            "physical_under_hypothesis": 16775748,
+            "size": 2,
+            "value": 175
+          },
+          {
+            "pc": 810096,
+            "address": 16775750,
+            "physical_under_hypothesis": 16775750,
+            "size": 2,
+            "value": 177
+          },
+          {
+            "pc": 810106,
+            "address": 16775752,
+            "physical_under_hypothesis": 16775752,
+            "size": 2,
+            "value": 7
+          },
+          {
+            "pc": 810112,
+            "address": 16775754,
+            "physical_under_hypothesis": 16775754,
+            "size": 2,
+            "value": 26656
+          },
+          {
+            "pc": 810120,
+            "address": 16775756,
+            "physical_under_hypothesis": 16775756,
+            "size": 2,
+            "value": 7
+          },
+          {
+            "pc": 810126,
+            "address": 16775758,
+            "physical_under_hypothesis": 16775758,
+            "size": 2,
+            "value": 4128
+          },
+          {
+            "pc": 810134,
+            "address": 16775760,
+            "physical_under_hypothesis": 16775760,
+            "size": 2,
+            "value": 65472
+          },
+          {
+            "pc": 810142,
+            "address": 16775762,
+            "physical_under_hypothesis": 16775762,
+            "size": 2,
+            "value": 31200
+          },
+          {
+            "pc": 810150,
+            "address": 16775764,
+            "physical_under_hypothesis": 16775764,
+            "size": 2,
+            "value": 65512
+          },
+          {
+            "pc": 810158,
+            "address": 16775766,
+            "physical_under_hypothesis": 16775766,
+            "size": 2,
+            "value": 55328
+          },
+          {
+            "pc": 810170,
+            "address": 16775768,
+            "physical_under_hypothesis": 16775768,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810180,
+            "address": 16775770,
+            "physical_under_hypothesis": 16775770,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810186,
+            "address": 16775772,
+            "physical_under_hypothesis": 16775772,
+            "size": 2,
+            "value": 32769
+          },
+          {
+            "pc": 810194,
+            "address": 16775774,
+            "physical_under_hypothesis": 16775774,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810200,
+            "address": 16775776,
+            "physical_under_hypothesis": 16775776,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810206,
+            "address": 16775778,
+            "physical_under_hypothesis": 16775778,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810212,
+            "address": 16775780,
+            "physical_under_hypothesis": 16775780,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810218,
+            "address": 16775782,
+            "physical_under_hypothesis": 16775782,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810224,
+            "address": 16775784,
+            "physical_under_hypothesis": 16775784,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810230,
+            "address": 16775786,
+            "physical_under_hypothesis": 16775786,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810236,
+            "address": 16775788,
+            "physical_under_hypothesis": 16775788,
+            "size": 2,
+            "value": 12291
+          },
+          {
+            "pc": 810244,
+            "address": 16775790,
+            "physical_under_hypothesis": 16775790,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 810250,
+            "address": 16775792,
+            "physical_under_hypothesis": 16775792,
+            "size": 2,
+            "value": 2563
+          },
+          {
+            "pc": 810258,
+            "address": 16775794,
+            "physical_under_hypothesis": 16775794,
+            "size": 2,
+            "value": 30832
+          },
+          {
+            "pc": 810266,
+            "address": 16775796,
+            "physical_under_hypothesis": 16775796,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 810272,
+            "address": 16775798,
+            "physical_under_hypothesis": 16775798,
+            "size": 2,
+            "value": 26672
+          },
+          {
+            "pc": 781182,
+            "address": 16775716,
+            "physical_under_hypothesis": 16775716,
+            "size": 2,
+            "value": 33
+          },
+          {
+            "pc": 781190,
+            "address": 16775714,
+            "physical_under_hypothesis": 16775714,
+            "size": 2,
+            "value": 1600
+          }
+        ],
+        "watchdog_stores": 21960,
+        "vpw_initializer_entered": false,
+        "flash_writes_blocked": 0,
+        "physical_mapping_verified": false,
+        "live_upload_enabled": false,
+        "live_execution_enabled": false,
+        "live_write_enabled": false,
+        "recovery_verified": false,
+        "external_service_magic": 0,
+        "reset_status": 32,
+        "synthetic_irq_invoked": false,
+        "exception_return_executed": false,
+        "software_tx_frames": [],
+        "software_tx_observations": [],
+        "fifo_events_consumed": 0,
+        "integrity_observations": [
+          {
+            "pc": 2016,
+            "d4": 0,
+            "fault_active": false
+          },
+          {
+            "pc": 2158,
+            "d4": 0,
+            "fault_active": false
+          }
+        ],
+        "initial_persistent_banks_sha256": null,
+        "flash_fixture_sha256": "68092b1fe681636b5e43f15a9b679563c215e897c3f80f9dc01c58eb0c3ae79b",
+        "retained_marker": 53442,
+        "initial_ram_sha256": null,
+        "reset_status_accesses": [
+          {
+            "operation": "read",
+            "pc": 2026,
+            "address": 4294965767,
+            "size": 1,
+            "value": 32
+          },
+          {
+            "operation": "read",
+            "pc": 2034,
+            "address": 4294965767,
+            "size": 1,
+            "value": 32
+          }
+        ],
+        "marker_accesses": [
+          {
+            "operation": "read",
+            "pc": 1254,
+            "value": 53442
+          },
+          {
+            "operation": "write",
+            "pc": 1260,
+            "size": 1,
+            "value": 150
+          },
+          {
+            "operation": "read",
+            "pc": 1338,
+            "value": 38505
+          },
+          {
+            "operation": "write",
+            "pc": 1406,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1490,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1580,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1660,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1712,
+            "size": 4,
+            "value": 1431655765
+          },
+          {
+            "operation": "write",
+            "pc": 1862,
+            "size": 4,
+            "value": 2863311530
+          },
+          {
+            "operation": "write",
+            "pc": 1986,
+            "size": 2,
+            "value": 53442
+          },
+          {
+            "operation": "read",
+            "pc": 2042,
+            "value": 53442
+          },
+          {
+            "operation": "write",
+            "pc": 2164,
+            "size": 2,
+            "value": 12262
+          },
+          {
+            "operation": "write",
+            "pc": 627920,
+            "size": 2,
+            "value": 1429
+          },
+          {
+            "operation": "write",
+            "pc": 694030,
+            "size": 2,
+            "value": 52363
+          }
+        ],
+        "routing_observations": [
+          {
+            "pc": 2026,
+            "marker": 53442
+          },
+          {
+            "pc": 2034,
+            "marker": 53442
+          },
+          {
+            "pc": 2042,
+            "marker": 53442
+          },
+          {
+            "pc": 2054,
+            "marker": 53442
+          },
+          {
+            "pc": 2164,
+            "marker": 53442
+          }
+        ],
+        "post_reset_checks": true,
+        "application_entered": true,
+        "application_check_events": [
+          {
+            "pc": 694008,
+            "marker": 1429
+          }
+        ],
+        "watchdog_control_attempts": [
+          {
+            "pc": 1166,
+            "phase": "boot",
+            "address": 4294965793,
+            "size": 1,
+            "value": 132
+          },
+          {
+            "pc": 810044,
+            "phase": "application",
+            "address": 16775713,
+            "size": 1,
+            "value": 132
+          }
+        ],
+        "consumed_application_mmio_inputs": [],
+        "physical_watchdog_configuration_verified": false,
+        "physical_reset_verified": false,
+        "modeled_stack_alias": 4294934528,
+        "marker_at_application_entry": 12262,
+        "final_pc": 694042,
+        "fault_active_at_stop": false,
+        "reset_status_snapshot": 0,
+        "reset_marker": 52363,
+        "interface_flag": 0,
+        "interrupt_mask": 7,
+        "upload_armed_byte": 0,
+        "rom_unchanged_from_selected_view": true,
+        "unused_application_mmio_inputs": [],
+        "application_calibration_read_coverage": {
+          "bytes": 0,
+          "ranges": [],
+          "marker_reads": [
+            {
+              "pc": 694020,
+              "address": 131070,
+              "size": 2,
+              "value": 65535
+            }
+          ],
+          "scope": "Native application CPU reads only; not independently acquired readback"
+        },
+        "final_sp": 16758732
+      },
+      "conditional_configuration": {
+        "effective_value_under_hypothesis": 132,
+        "enabled_under_hypothesis": true,
+        "prescaled_under_hypothesis": false,
+        "timing_field_under_hypothesis": 0,
+        "timeout_system_clock_cycles_under_hypothesis": 512,
+        "attempts": [
+          {
+            "pc": 1166,
+            "phase": "boot",
+            "attempted_value": 132,
+            "conditionally_accepted": true,
+            "effective_before": null,
+            "effective_after": 132
+          },
+          {
+            "pc": 810044,
+            "phase": "application",
+            "attempted_value": 132,
+            "conditionally_accepted": false,
+            "effective_before": 132,
+            "effective_after": 132
+          }
+        ],
+        "source_clock_hz": null,
+        "timeout_seconds": null,
+        "actual_mcu_identified": false,
+        "physical_configuration_verified": false,
+        "physical_timeout_verified": false
+      },
+      "same_reset_to_application_context": true,
+      "physical_reset_delivered": false,
+      "calibration_overlay_sha256": null
+    },
+    {
+      "case": "retained_marker_lost",
+      "observed": {
+        "fault": "a12_direct",
+        "window": "none",
+        "reset_sp": 4294938622,
+        "reset_pc": 1024,
+        "stop": "native_boot_failure_wait",
+        "instructions": 32696,
+        "events": [],
+        "aliased_reads": 0,
+        "changed_data_reads": 0,
+        "first_changed_fetch": null,
+        "register_writes": [
+          {
+            "pc": 1030,
+            "address": 4294965760,
+            "physical_under_hypothesis": 16775680,
+            "size": 2,
+            "value": 576
+          },
+          {
+            "pc": 1036,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1042,
+            "address": 4294966084,
+            "physical_under_hypothesis": 16776004,
+            "size": 4,
+            "value": 4294934528
+          },
+          {
+            "pc": 1050,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1056,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1062,
+            "address": 4294966148,
+            "physical_under_hypothesis": 16776068,
+            "size": 4,
+            "value": 4294938624
+          },
+          {
+            "pc": 1070,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1084,
+            "address": 4294966020,
+            "physical_under_hypothesis": 16775940,
+            "size": 2,
+            "value": 65440
+          },
+          {
+            "pc": 1088,
+            "address": 4294966016,
+            "physical_under_hypothesis": 16775936,
+            "size": 2,
+            "value": 256
+          },
+          {
+            "pc": 1108,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1114,
+            "address": 4294965892,
+            "physical_under_hypothesis": 16775812,
+            "size": 4,
+            "value": 4294944768
+          },
+          {
+            "pc": 1122,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1128,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1134,
+            "address": 4294965956,
+            "physical_under_hypothesis": 16775876,
+            "size": 4,
+            "value": 4294946816
+          },
+          {
+            "pc": 1142,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1158,
+            "address": 4294965764,
+            "physical_under_hypothesis": 16775684,
+            "size": 2,
+            "value": 16388
+          },
+          {
+            "pc": 1166,
+            "address": 4294965793,
+            "physical_under_hypothesis": 16775713,
+            "size": 1,
+            "value": 132
+          },
+          {
+            "pc": 1190,
+            "address": 4294965825,
+            "physical_under_hypothesis": 16775745,
+            "size": 1,
+            "value": 7
+          },
+          {
+            "pc": 1198,
+            "address": 4294965828,
+            "physical_under_hypothesis": 16775748,
+            "size": 2,
+            "value": 175
+          },
+          {
+            "pc": 1206,
+            "address": 4294965830,
+            "physical_under_hypothesis": 16775750,
+            "size": 2,
+            "value": 177
+          },
+          {
+            "pc": 1214,
+            "address": 4294965832,
+            "physical_under_hypothesis": 16775752,
+            "size": 2,
+            "value": 7
+          },
+          {
+            "pc": 1222,
+            "address": 4294965834,
+            "physical_under_hypothesis": 16775754,
+            "size": 2,
+            "value": 26720
+          },
+          {
+            "pc": 1230,
+            "address": 4294965777,
+            "physical_under_hypothesis": 16775697,
+            "size": 1,
+            "value": 48
+          },
+          {
+            "pc": 1238,
+            "address": 4294965781,
+            "physical_under_hypothesis": 16775701,
+            "size": 1,
+            "value": 252
+          },
+          {
+            "pc": 1246,
+            "address": 4294965783,
+            "physical_under_hypothesis": 16775703,
+            "size": 1,
+            "value": 253
+          }
+        ],
+        "watchdog_stores": 564,
+        "vpw_initializer_entered": false,
+        "flash_writes_blocked": 0,
+        "physical_mapping_verified": false,
+        "live_upload_enabled": false,
+        "live_execution_enabled": false,
+        "live_write_enabled": false,
+        "recovery_verified": false,
+        "external_service_magic": 0,
+        "reset_status": 32,
+        "synthetic_irq_invoked": false,
+        "exception_return_executed": false,
+        "software_tx_frames": [],
+        "software_tx_observations": [],
+        "fifo_events_consumed": 0,
+        "integrity_observations": [
+          {
+            "pc": 2016,
+            "d4": 0,
+            "fault_active": false
+          }
+        ],
+        "initial_persistent_banks_sha256": null,
+        "flash_fixture_sha256": "12bf5a5aea1d9816ad3ef959c6168bc56310b7ab4eeaf41602abd2d8642f83a3",
+        "retained_marker": 0,
+        "initial_ram_sha256": null,
+        "reset_status_accesses": [
+          {
+            "operation": "read",
+            "pc": 2026,
+            "address": 4294965767,
+            "size": 1,
+            "value": 32
+          },
+          {
+            "operation": "read",
+            "pc": 2034,
+            "address": 4294965767,
+            "size": 1,
+            "value": 32
+          }
+        ],
+        "marker_accesses": [
+          {
+            "operation": "read",
+            "pc": 1254,
+            "value": 0
+          },
+          {
+            "operation": "write",
+            "pc": 1260,
+            "size": 1,
+            "value": 150
+          },
+          {
+            "operation": "read",
+            "pc": 1338,
+            "value": 38505
+          },
+          {
+            "operation": "write",
+            "pc": 1406,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1490,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1580,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1660,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1712,
+            "size": 4,
+            "value": 1431655765
+          },
+          {
+            "operation": "write",
+            "pc": 1862,
+            "size": 4,
+            "value": 2863311530
+          },
+          {
+            "operation": "write",
+            "pc": 1986,
+            "size": 2,
+            "value": 0
+          },
+          {
+            "operation": "read",
+            "pc": 2042,
+            "value": 0
+          },
+          {
+            "operation": "read",
+            "pc": 2226,
+            "value": 0
+          },
+          {
+            "operation": "read",
+            "pc": 2248,
+            "value": 0
+          },
+          {
+            "operation": "read",
+            "pc": 2270,
+            "value": 0
+          },
+          {
+            "operation": "read",
+            "pc": 2292,
+            "value": 0
+          },
+          {
+            "operation": "read",
+            "pc": 2312,
+            "value": 0
+          },
+          {
+            "operation": "read",
+            "pc": 2332,
+            "value": 0
+          },
+          {
+            "operation": "read",
+            "pc": 2352,
+            "value": 0
+          },
+          {
+            "operation": "read",
+            "pc": 2372,
+            "value": 0
+          },
+          {
+            "operation": "read",
+            "pc": 2382,
+            "value": 0
+          },
+          {
+            "operation": "read",
+            "pc": 2392,
+            "value": 0
+          }
+        ],
+        "routing_observations": [
+          {
+            "pc": 2026,
+            "marker": 0
+          },
+          {
+            "pc": 2034,
+            "marker": 0
+          },
+          {
+            "pc": 2042,
+            "marker": 0
+          },
+          {
+            "pc": 2226,
+            "marker": 0
+          },
+          {
+            "pc": 2414,
+            "marker": 0
+          }
+        ],
+        "post_reset_checks": true,
+        "application_entered": false,
+        "application_check_events": [],
+        "watchdog_control_attempts": [
+          {
+            "pc": 1166,
+            "phase": "boot",
+            "address": 4294965793,
+            "size": 1,
+            "value": 132
+          }
+        ],
+        "consumed_application_mmio_inputs": [],
+        "physical_watchdog_configuration_verified": false,
+        "physical_reset_verified": false,
+        "modeled_stack_alias": 4294934528,
+        "final_pc": 2414,
+        "fault_active_at_stop": false,
+        "reset_status_snapshot": 43690,
+        "reset_marker": 0,
+        "interface_flag": 170,
+        "interrupt_mask": 7,
+        "upload_armed_byte": 170,
+        "rom_unchanged_from_selected_view": true,
+        "unused_application_mmio_inputs": [],
+        "application_calibration_read_coverage": {
+          "bytes": 0,
+          "ranges": [],
+          "marker_reads": [],
+          "scope": "Native application CPU reads only; not independently acquired readback"
+        },
+        "final_sp": 4294938622
+      },
+      "conditional_configuration": {
+        "effective_value_under_hypothesis": 132,
+        "enabled_under_hypothesis": true,
+        "prescaled_under_hypothesis": false,
+        "timing_field_under_hypothesis": 0,
+        "timeout_system_clock_cycles_under_hypothesis": 512,
+        "attempts": [
+          {
+            "pc": 1166,
+            "phase": "boot",
+            "attempted_value": 132,
+            "conditionally_accepted": true,
+            "effective_before": null,
+            "effective_after": 132
+          }
+        ],
+        "source_clock_hz": null,
+        "timeout_seconds": null,
+        "actual_mcu_identified": false,
+        "physical_configuration_verified": false,
+        "physical_timeout_verified": false
+      },
+      "same_reset_to_application_context": true,
+      "physical_reset_delivered": false,
+      "calibration_overlay_sha256": null
+    },
+    {
+      "case": "os_checksum_fault",
+      "observed": {
+        "fault": "a12_direct",
+        "window": "os_check_to_reject",
+        "reset_sp": 4294938622,
+        "reset_pc": 1024,
+        "stop": "native_idle_boundary",
+        "instructions": 419119,
+        "events": [
+          {
+            "pc": 2054,
+            "fault_active": true
+          },
+          {
+            "pc": 2192,
+            "fault_active": false
+          }
+        ],
+        "aliased_reads": 167937,
+        "changed_data_reads": 167120,
+        "first_changed_fetch": null,
+        "register_writes": [
+          {
+            "pc": 1030,
+            "address": 4294965760,
+            "physical_under_hypothesis": 16775680,
+            "size": 2,
+            "value": 576
+          },
+          {
+            "pc": 1036,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1042,
+            "address": 4294966084,
+            "physical_under_hypothesis": 16776004,
+            "size": 4,
+            "value": 4294934528
+          },
+          {
+            "pc": 1050,
+            "address": 4294966080,
+            "physical_under_hypothesis": 16776000,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1056,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1062,
+            "address": 4294966148,
+            "physical_under_hypothesis": 16776068,
+            "size": 4,
+            "value": 4294938624
+          },
+          {
+            "pc": 1070,
+            "address": 4294966144,
+            "physical_under_hypothesis": 16776064,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1084,
+            "address": 4294966020,
+            "physical_under_hypothesis": 16775940,
+            "size": 2,
+            "value": 65440
+          },
+          {
+            "pc": 1088,
+            "address": 4294966016,
+            "physical_under_hypothesis": 16775936,
+            "size": 2,
+            "value": 256
+          },
+          {
+            "pc": 1108,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1114,
+            "address": 4294965892,
+            "physical_under_hypothesis": 16775812,
+            "size": 4,
+            "value": 4294944768
+          },
+          {
+            "pc": 1122,
+            "address": 4294965888,
+            "physical_under_hypothesis": 16775808,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1128,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 33280
+          },
+          {
+            "pc": 1134,
+            "address": 4294965956,
+            "physical_under_hypothesis": 16775876,
+            "size": 4,
+            "value": 4294946816
+          },
+          {
+            "pc": 1142,
+            "address": 4294965952,
+            "physical_under_hypothesis": 16775872,
+            "size": 2,
+            "value": 2560
+          },
+          {
+            "pc": 1158,
+            "address": 4294965764,
+            "physical_under_hypothesis": 16775684,
+            "size": 2,
+            "value": 16388
+          },
+          {
+            "pc": 1166,
+            "address": 4294965793,
+            "physical_under_hypothesis": 16775713,
+            "size": 1,
+            "value": 132
+          },
+          {
+            "pc": 1190,
+            "address": 4294965825,
+            "physical_under_hypothesis": 16775745,
+            "size": 1,
+            "value": 7
+          },
+          {
+            "pc": 1198,
+            "address": 4294965828,
+            "physical_under_hypothesis": 16775748,
+            "size": 2,
+            "value": 175
+          },
+          {
+            "pc": 1206,
+            "address": 4294965830,
+            "physical_under_hypothesis": 16775750,
+            "size": 2,
+            "value": 177
+          },
+          {
+            "pc": 1214,
+            "address": 4294965832,
+            "physical_under_hypothesis": 16775752,
+            "size": 2,
+            "value": 7
+          },
+          {
+            "pc": 1222,
+            "address": 4294965834,
+            "physical_under_hypothesis": 16775754,
+            "size": 2,
+            "value": 26720
+          },
+          {
+            "pc": 1230,
+            "address": 4294965777,
+            "physical_under_hypothesis": 16775697,
+            "size": 1,
+            "value": 48
+          },
+          {
+            "pc": 1238,
+            "address": 4294965781,
+            "physical_under_hypothesis": 16775701,
+            "size": 1,
+            "value": 252
+          },
+          {
+            "pc": 1246,
+            "address": 4294965783,
+            "physical_under_hypothesis": 16775703,
+            "size": 1,
+            "value": 253
+          },
+          {
+            "pc": 2804,
+            "address": 16775680,
+            "physical_under_hypothesis": 16775680,
+            "size": 2,
+            "value": 591
+          },
+          {
+            "pc": 2828,
+            "address": 16775714,
+            "physical_under_hypothesis": 16775714,
+            "size": 2,
+            "value": 320
+          },
+          {
+            "pc": 2836,
+            "address": 16775716,
+            "physical_under_hypothesis": 16775716,
+            "size": 2,
+            "value": 17
+          },
+          {
+            "pc": 2844,
+            "address": 16775756,
+            "physical_under_hypothesis": 16775756,
+            "size": 2,
+            "value": 7
+          },
+          {
+            "pc": 2852,
+            "address": 16775758,
+            "physical_under_hypothesis": 16775758,
+            "size": 2,
+            "value": 4192
+          },
+          {
+            "pc": 2860,
+            "address": 16775760,
+            "physical_under_hypothesis": 16775760,
+            "size": 2,
+            "value": 65472
+          },
+          {
+            "pc": 2868,
+            "address": 16775762,
+            "physical_under_hypothesis": 16775762,
+            "size": 2,
+            "value": 31200
+          },
+          {
+            "pc": 2876,
+            "address": 16775764,
+            "physical_under_hypothesis": 16775764,
+            "size": 2,
+            "value": 65512
+          },
+          {
+            "pc": 2884,
+            "address": 16775766,
+            "physical_under_hypothesis": 16775766,
+            "size": 2,
+            "value": 55328
+          },
+          {
+            "pc": 2896,
+            "address": 16775768,
+            "physical_under_hypothesis": 16775768,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 2906,
+            "address": 16775770,
+            "physical_under_hypothesis": 16775770,
+            "size": 2,
+            "value": 2080
+          },
+          {
+            "pc": 2912,
+            "address": 16775772,
+            "physical_under_hypothesis": 16775772,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 2918,
+            "address": 16775774,
+            "physical_under_hypothesis": 16775774,
+            "size": 2,
+            "value": 2080
+          },
+          {
+            "pc": 2924,
+            "address": 16775776,
+            "physical_under_hypothesis": 16775776,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 2930,
+            "address": 16775778,
+            "physical_under_hypothesis": 16775778,
+            "size": 2,
+            "value": 2080
+          },
+          {
+            "pc": 2936,
+            "address": 16775780,
+            "physical_under_hypothesis": 16775780,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 2942,
+            "address": 16775782,
+            "physical_under_hypothesis": 16775782,
+            "size": 2,
+            "value": 2080
+          },
+          {
+            "pc": 2948,
+            "address": 16775784,
+            "physical_under_hypothesis": 16775784,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 2954,
+            "address": 16775786,
+            "physical_under_hypothesis": 16775786,
+            "size": 2,
+            "value": 2080
+          },
+          {
+            "pc": 2960,
+            "address": 16775788,
+            "physical_under_hypothesis": 16775788,
+            "size": 2,
+            "value": 1027
+          },
+          {
+            "pc": 2968,
+            "address": 16775790,
+            "physical_under_hypothesis": 16775790,
+            "size": 2,
+            "value": 2096
+          },
+          {
+            "pc": 2976,
+            "address": 16775792,
+            "physical_under_hypothesis": 16775792,
+            "size": 2,
+            "value": 8195
+          },
+          {
+            "pc": 2984,
+            "address": 16775794,
+            "physical_under_hypothesis": 16775794,
+            "size": 2,
+            "value": 22640
+          },
+          {
+            "pc": 2992,
+            "address": 16775796,
+            "physical_under_hypothesis": 16775796,
+            "size": 2,
+            "value": 32768
+          },
+          {
+            "pc": 2998,
+            "address": 16775798,
+            "physical_under_hypothesis": 16775798,
+            "size": 2,
+            "value": 2080
+          },
+          {
+            "pc": 3004,
+            "address": 16775704,
+            "physical_under_hypothesis": 16775704,
+            "size": 2,
+            "value": 129
+          },
+          {
+            "pc": 3012,
+            "address": 16775708,
+            "physical_under_hypothesis": 16775708,
+            "size": 2,
+            "value": 227
+          },
+          {
+            "pc": 3020,
+            "address": 16775710,
+            "physical_under_hypothesis": 16775710,
+            "size": 2,
+            "value": 24
+          },
+          {
+            "pc": 3066,
+            "address": 16776212,
+            "physical_under_hypothesis": 16776212,
+            "size": 2,
+            "value": 241
+          },
+          {
+            "pc": 3072,
+            "address": 16776215,
+            "physical_under_hypothesis": 16776215,
+            "size": 1,
+            "value": 126
+          },
+          {
+            "pc": 3078,
+            "address": 16776214,
+            "physical_under_hypothesis": 16776214,
+            "size": 1,
+            "value": 83
+          },
+          {
+            "pc": 3084,
+            "address": 16776216,
+            "physical_under_hypothesis": 16776216,
+            "size": 2,
+            "value": 32789
+          },
+          {
+            "pc": 3090,
+            "address": 16776218,
+            "physical_under_hypothesis": 16776218,
+            "size": 2,
+            "value": 16140
+          },
+          {
+            "pc": 3096,
+            "address": 16776200,
+            "physical_under_hypothesis": 16776200,
+            "size": 2,
+            "value": 0
+          },
+          {
+            "pc": 3162,
+            "address": 16776512,
+            "physical_under_hypothesis": 16776512,
+            "size": 1,
+            "value": 189
+          },
+          {
+            "pc": 3178,
+            "address": 16776513,
+            "physical_under_hypothesis": 16776513,
+            "size": 1,
+            "value": 61
+          },
+          {
+            "pc": 3184,
+            "address": 16776480,
+            "physical_under_hypothesis": 16776480,
+            "size": 2,
+            "value": 144
+          },
+          {
+            "pc": 3190,
+            "address": 16776482,
+            "physical_under_hypothesis": 16776482,
+            "size": 2,
+            "value": 0
+          },
+          {
+            "pc": 3194,
+            "address": 16776223,
+            "physical_under_hypothesis": 16776223,
+            "size": 1,
+            "value": 0
+          },
+          {
+            "pc": 3200,
+            "address": 16776221,
+            "physical_under_hypothesis": 16776221,
+            "size": 1,
+            "value": 0
+          },
+          {
+            "pc": 3206,
+            "address": 16776220,
+            "physical_under_hypothesis": 16776220,
+            "size": 1,
+            "value": 0
+          },
+          {
+            "pc": 3212,
+            "address": 16776220,
+            "physical_under_hypothesis": 16776220,
+            "size": 1,
+            "value": 1
+          },
+          {
+            "pc": 3218,
+            "address": 16776218,
+            "physical_under_hypothesis": 16776218,
+            "size": 1,
+            "value": 191
+          },
+          {
+            "pc": 11840,
+            "address": 16771072,
+            "physical_under_hypothesis": 16771072,
+            "size": 1,
+            "value": 24
+          },
+          {
+            "pc": 11840,
+            "address": 16771073,
+            "physical_under_hypothesis": 16771073,
+            "size": 1,
+            "value": 2
+          }
+        ],
+        "watchdog_stores": 21824,
+        "vpw_initializer_entered": true,
+        "flash_writes_blocked": 0,
+        "physical_mapping_verified": false,
+        "live_upload_enabled": false,
+        "live_execution_enabled": false,
+        "live_write_enabled": false,
+        "recovery_verified": false,
+        "external_service_magic": 0,
+        "reset_status": 32,
+        "synthetic_irq_invoked": false,
+        "exception_return_executed": false,
+        "software_tx_frames": [],
+        "software_tx_observations": [],
+        "fifo_events_consumed": 0,
+        "integrity_observations": [
+          {
+            "pc": 2016,
+            "d4": 0,
+            "fault_active": false
+          },
+          {
+            "pc": 2158,
+            "d4": 10617,
+            "fault_active": true
+          }
+        ],
+        "initial_persistent_banks_sha256": null,
+        "flash_fixture_sha256": "12bf5a5aea1d9816ad3ef959c6168bc56310b7ab4eeaf41602abd2d8642f83a3",
+        "retained_marker": 53442,
+        "initial_ram_sha256": null,
+        "reset_status_accesses": [
+          {
+            "operation": "read",
+            "pc": 2026,
+            "address": 4294965767,
+            "size": 1,
+            "value": 32
+          },
+          {
+            "operation": "read",
+            "pc": 2034,
+            "address": 4294965767,
+            "size": 1,
+            "value": 32
+          },
+          {
+            "operation": "read",
+            "pc": 2690,
+            "address": 16775686,
+            "size": 2,
+            "value": 32
+          }
+        ],
+        "marker_accesses": [
+          {
+            "operation": "read",
+            "pc": 1254,
+            "value": 53442
+          },
+          {
+            "operation": "write",
+            "pc": 1260,
+            "size": 1,
+            "value": 150
+          },
+          {
+            "operation": "read",
+            "pc": 1338,
+            "value": 38505
+          },
+          {
+            "operation": "write",
+            "pc": 1406,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1490,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1580,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1660,
+            "size": 1,
+            "value": 105
+          },
+          {
+            "operation": "write",
+            "pc": 1712,
+            "size": 4,
+            "value": 1431655765
+          },
+          {
+            "operation": "write",
+            "pc": 1862,
+            "size": 4,
+            "value": 2863311530
+          },
+          {
+            "operation": "write",
+            "pc": 1986,
+            "size": 2,
+            "value": 53442
+          },
+          {
+            "operation": "read",
+            "pc": 2042,
+            "value": 53442
+          },
+          {
+            "operation": "write",
+            "pc": 2192,
+            "size": 2,
+            "value": 9163
+          },
+          {
+            "operation": "write",
+            "pc": 2214,
+            "size": 2,
+            "value": 46613
+          },
+          {
+            "operation": "read",
+            "pc": 2428,
+            "value": 46613
+          },
+          {
+            "operation": "write",
+            "pc": 2448,
+            "size": 4,
+            "value": 0
+          },
+          {
+            "operation": "write",
+            "pc": 2526,
+            "size": 2,
+            "value": 46613
+          },
+          {
+            "operation": "read",
+            "pc": 15478,
+            "value": 46613
+          }
+        ],
+        "routing_observations": [
+          {
+            "pc": 2026,
+            "marker": 53442
+          },
+          {
+            "pc": 2034,
+            "marker": 53442
+          },
+          {
+            "pc": 2042,
+            "marker": 53442
+          },
+          {
+            "pc": 2054,
+            "marker": 53442
+          },
+          {
+            "pc": 2192,
+            "marker": 53442
+          },
+          {
+            "pc": 2428,
+            "marker": 46613
+          }
+        ],
+        "post_reset_checks": true,
+        "application_entered": false,
+        "application_check_events": [],
+        "watchdog_control_attempts": [
+          {
+            "pc": 1166,
+            "phase": "boot",
+            "address": 4294965793,
+            "size": 1,
+            "value": 132
+          }
+        ],
+        "consumed_application_mmio_inputs": [],
+        "physical_watchdog_configuration_verified": false,
+        "physical_reset_verified": false,
+        "modeled_stack_alias": 4294934528,
+        "idle_interrupt_mask": 0,
+        "final_pc": 3712,
+        "fault_active_at_stop": false,
+        "reset_status_snapshot": 32,
+        "reset_marker": 46613,
+        "interface_flag": 1,
+        "interrupt_mask": 0,
+        "upload_armed_byte": 0,
+        "rom_unchanged_from_selected_view": true,
+        "unused_application_mmio_inputs": [],
+        "application_calibration_read_coverage": {
+          "bytes": 0,
+          "ranges": [],
+          "marker_reads": [],
+          "scope": "Native application CPU reads only; not independently acquired readback"
+        },
+        "final_sp": 4294938606
+      },
+      "conditional_configuration": {
+        "effective_value_under_hypothesis": 132,
+        "enabled_under_hypothesis": true,
+        "prescaled_under_hypothesis": false,
+        "timing_field_under_hypothesis": 0,
+        "timeout_system_clock_cycles_under_hypothesis": 512,
+        "attempts": [
+          {
+            "pc": 1166,
+            "phase": "boot",
+            "attempted_value": 132,
+            "conditionally_accepted": true,
+            "effective_before": null,
+            "effective_after": 132
+          }
+        ],
+        "source_clock_hz": null,
+        "timeout_seconds": null,
+        "actual_mcu_identified": false,
+        "physical_configuration_verified": false,
+        "physical_timeout_verified": false
+      },
+      "same_reset_to_application_context": true,
+      "physical_reset_delivered": false,
+      "calibration_overlay_sha256": null
+    }
+  ],
+  "reset_to_captured_loader": {
+    "before_copy": {
+      "stop": "before_synthetic_irq_rte",
+      "watchdog_control_attempts": [
+        {
+          "pc": 1166,
+          "phase": "boot",
+          "address": 4294965793,
+          "size": 1,
+          "value": 132
+        }
+      ]
+    },
+    "upload": {
+      "fault": "a12_direct",
+      "window": "none",
+      "reset_sp": 4294938622,
+      "reset_pc": 1024,
+      "stop": "before_captured_loader_entry",
+      "instructions": 132091,
+      "events": [],
+      "aliased_reads": 0,
+      "changed_data_reads": 0,
+      "first_changed_fetch": null,
+      "register_writes": [
+        {
+          "pc": 1030,
+          "address": 4294965760,
+          "physical_under_hypothesis": 16775680,
+          "size": 2,
+          "value": 576
+        },
+        {
+          "pc": 1036,
+          "address": 4294966080,
+          "physical_under_hypothesis": 16776000,
+          "size": 2,
+          "value": 33280
+        },
+        {
+          "pc": 1042,
+          "address": 4294966084,
+          "physical_under_hypothesis": 16776004,
+          "size": 4,
+          "value": 4294934528
+        },
+        {
+          "pc": 1050,
+          "address": 4294966080,
+          "physical_under_hypothesis": 16776000,
+          "size": 2,
+          "value": 2560
+        },
+        {
+          "pc": 1056,
+          "address": 4294966144,
+          "physical_under_hypothesis": 16776064,
+          "size": 2,
+          "value": 33280
+        },
+        {
+          "pc": 1062,
+          "address": 4294966148,
+          "physical_under_hypothesis": 16776068,
+          "size": 4,
+          "value": 4294938624
+        },
+        {
+          "pc": 1070,
+          "address": 4294966144,
+          "physical_under_hypothesis": 16776064,
+          "size": 2,
+          "value": 2560
+        },
+        {
+          "pc": 1084,
+          "address": 4294966020,
+          "physical_under_hypothesis": 16775940,
+          "size": 2,
+          "value": 65440
+        },
+        {
+          "pc": 1088,
+          "address": 4294966016,
+          "physical_under_hypothesis": 16775936,
+          "size": 2,
+          "value": 256
+        },
+        {
+          "pc": 1108,
+          "address": 4294965888,
+          "physical_under_hypothesis": 16775808,
+          "size": 2,
+          "value": 33280
+        },
+        {
+          "pc": 1114,
+          "address": 4294965892,
+          "physical_under_hypothesis": 16775812,
+          "size": 4,
+          "value": 4294944768
+        },
+        {
+          "pc": 1122,
+          "address": 4294965888,
+          "physical_under_hypothesis": 16775808,
+          "size": 2,
+          "value": 2560
+        },
+        {
+          "pc": 1128,
+          "address": 4294965952,
+          "physical_under_hypothesis": 16775872,
+          "size": 2,
+          "value": 33280
+        },
+        {
+          "pc": 1134,
+          "address": 4294965956,
+          "physical_under_hypothesis": 16775876,
+          "size": 4,
+          "value": 4294946816
+        },
+        {
+          "pc": 1142,
+          "address": 4294965952,
+          "physical_under_hypothesis": 16775872,
+          "size": 2,
+          "value": 2560
+        },
+        {
+          "pc": 1158,
+          "address": 4294965764,
+          "physical_under_hypothesis": 16775684,
+          "size": 2,
+          "value": 16388
+        },
+        {
+          "pc": 1166,
+          "address": 4294965793,
+          "physical_under_hypothesis": 16775713,
+          "size": 1,
+          "value": 132
+        },
+        {
+          "pc": 1190,
+          "address": 4294965825,
+          "physical_under_hypothesis": 16775745,
+          "size": 1,
+          "value": 7
+        },
+        {
+          "pc": 1198,
+          "address": 4294965828,
+          "physical_under_hypothesis": 16775748,
+          "size": 2,
+          "value": 175
+        },
+        {
+          "pc": 1206,
+          "address": 4294965830,
+          "physical_under_hypothesis": 16775750,
+          "size": 2,
+          "value": 177
+        },
+        {
+          "pc": 1214,
+          "address": 4294965832,
+          "physical_under_hypothesis": 16775752,
+          "size": 2,
+          "value": 7
+        },
+        {
+          "pc": 1222,
+          "address": 4294965834,
+          "physical_under_hypothesis": 16775754,
+          "size": 2,
+          "value": 26720
+        },
+        {
+          "pc": 1230,
+          "address": 4294965777,
+          "physical_under_hypothesis": 16775697,
+          "size": 1,
+          "value": 48
+        },
+        {
+          "pc": 1238,
+          "address": 4294965781,
+          "physical_under_hypothesis": 16775701,
+          "size": 1,
+          "value": 252
+        },
+        {
+          "pc": 1246,
+          "address": 4294965783,
+          "physical_under_hypothesis": 16775703,
+          "size": 1,
+          "value": 253
+        },
+        {
+          "pc": 2804,
+          "address": 16775680,
+          "physical_under_hypothesis": 16775680,
+          "size": 2,
+          "value": 591
+        },
+        {
+          "pc": 2828,
+          "address": 16775714,
+          "physical_under_hypothesis": 16775714,
+          "size": 2,
+          "value": 320
+        },
+        {
+          "pc": 2836,
+          "address": 16775716,
+          "physical_under_hypothesis": 16775716,
+          "size": 2,
+          "value": 17
+        },
+        {
+          "pc": 2844,
+          "address": 16775756,
+          "physical_under_hypothesis": 16775756,
+          "size": 2,
+          "value": 7
+        },
+        {
+          "pc": 2852,
+          "address": 16775758,
+          "physical_under_hypothesis": 16775758,
+          "size": 2,
+          "value": 4192
+        },
+        {
+          "pc": 2860,
+          "address": 16775760,
+          "physical_under_hypothesis": 16775760,
+          "size": 2,
+          "value": 65472
+        },
+        {
+          "pc": 2868,
+          "address": 16775762,
+          "physical_under_hypothesis": 16775762,
+          "size": 2,
+          "value": 31200
+        },
+        {
+          "pc": 2876,
+          "address": 16775764,
+          "physical_under_hypothesis": 16775764,
+          "size": 2,
+          "value": 65512
+        },
+        {
+          "pc": 2884,
+          "address": 16775766,
+          "physical_under_hypothesis": 16775766,
+          "size": 2,
+          "value": 55328
+        },
+        {
+          "pc": 2896,
+          "address": 16775768,
+          "physical_under_hypothesis": 16775768,
+          "size": 2,
+          "value": 32768
+        },
+        {
+          "pc": 2906,
+          "address": 16775770,
+          "physical_under_hypothesis": 16775770,
+          "size": 2,
+          "value": 2080
+        },
+        {
+          "pc": 2912,
+          "address": 16775772,
+          "physical_under_hypothesis": 16775772,
+          "size": 2,
+          "value": 32768
+        },
+        {
+          "pc": 2918,
+          "address": 16775774,
+          "physical_under_hypothesis": 16775774,
+          "size": 2,
+          "value": 2080
+        },
+        {
+          "pc": 2924,
+          "address": 16775776,
+          "physical_under_hypothesis": 16775776,
+          "size": 2,
+          "value": 32768
+        },
+        {
+          "pc": 2930,
+          "address": 16775778,
+          "physical_under_hypothesis": 16775778,
+          "size": 2,
+          "value": 2080
+        },
+        {
+          "pc": 2936,
+          "address": 16775780,
+          "physical_under_hypothesis": 16775780,
+          "size": 2,
+          "value": 32768
+        },
+        {
+          "pc": 2942,
+          "address": 16775782,
+          "physical_under_hypothesis": 16775782,
+          "size": 2,
+          "value": 2080
+        },
+        {
+          "pc": 2948,
+          "address": 16775784,
+          "physical_under_hypothesis": 16775784,
+          "size": 2,
+          "value": 32768
+        },
+        {
+          "pc": 2954,
+          "address": 16775786,
+          "physical_under_hypothesis": 16775786,
+          "size": 2,
+          "value": 2080
+        },
+        {
+          "pc": 2960,
+          "address": 16775788,
+          "physical_under_hypothesis": 16775788,
+          "size": 2,
+          "value": 1027
+        },
+        {
+          "pc": 2968,
+          "address": 16775790,
+          "physical_under_hypothesis": 16775790,
+          "size": 2,
+          "value": 2096
+        },
+        {
+          "pc": 2976,
+          "address": 16775792,
+          "physical_under_hypothesis": 16775792,
+          "size": 2,
+          "value": 8195
+        },
+        {
+          "pc": 2984,
+          "address": 16775794,
+          "physical_under_hypothesis": 16775794,
+          "size": 2,
+          "value": 22640
+        },
+        {
+          "pc": 2992,
+          "address": 16775796,
+          "physical_under_hypothesis": 16775796,
+          "size": 2,
+          "value": 32768
+        },
+        {
+          "pc": 2998,
+          "address": 16775798,
+          "physical_under_hypothesis": 16775798,
+          "size": 2,
+          "value": 2080
+        },
+        {
+          "pc": 3004,
+          "address": 16775704,
+          "physical_under_hypothesis": 16775704,
+          "size": 2,
+          "value": 129
+        },
+        {
+          "pc": 3012,
+          "address": 16775708,
+          "physical_under_hypothesis": 16775708,
+          "size": 2,
+          "value": 227
+        },
+        {
+          "pc": 3020,
+          "address": 16775710,
+          "physical_under_hypothesis": 16775710,
+          "size": 2,
+          "value": 24
+        },
+        {
+          "pc": 3066,
+          "address": 16776212,
+          "physical_under_hypothesis": 16776212,
+          "size": 2,
+          "value": 241
+        },
+        {
+          "pc": 3072,
+          "address": 16776215,
+          "physical_under_hypothesis": 16776215,
+          "size": 1,
+          "value": 126
+        },
+        {
+          "pc": 3078,
+          "address": 16776214,
+          "physical_under_hypothesis": 16776214,
+          "size": 1,
+          "value": 83
+        },
+        {
+          "pc": 3084,
+          "address": 16776216,
+          "physical_under_hypothesis": 16776216,
+          "size": 2,
+          "value": 32789
+        },
+        {
+          "pc": 3090,
+          "address": 16776218,
+          "physical_under_hypothesis": 16776218,
+          "size": 2,
+          "value": 16140
+        },
+        {
+          "pc": 3096,
+          "address": 16776200,
+          "physical_under_hypothesis": 16776200,
+          "size": 2,
+          "value": 0
+        },
+        {
+          "pc": 3162,
+          "address": 16776512,
+          "physical_under_hypothesis": 16776512,
+          "size": 1,
+          "value": 189
+        },
+        {
+          "pc": 3178,
+          "address": 16776513,
+          "physical_under_hypothesis": 16776513,
+          "size": 1,
+          "value": 61
+        },
+        {
+          "pc": 3184,
+          "address": 16776480,
+          "physical_under_hypothesis": 16776480,
+          "size": 2,
+          "value": 144
+        },
+        {
+          "pc": 3190,
+          "address": 16776482,
+          "physical_under_hypothesis": 16776482,
+          "size": 2,
+          "value": 0
+        },
+        {
+          "pc": 3194,
+          "address": 16776223,
+          "physical_under_hypothesis": 16776223,
+          "size": 1,
+          "value": 0
+        },
+        {
+          "pc": 3200,
+          "address": 16776221,
+          "physical_under_hypothesis": 16776221,
+          "size": 1,
+          "value": 0
+        },
+        {
+          "pc": 3206,
+          "address": 16776220,
+          "physical_under_hypothesis": 16776220,
+          "size": 1,
+          "value": 0
+        },
+        {
+          "pc": 3212,
+          "address": 16776220,
+          "physical_under_hypothesis": 16776220,
+          "size": 1,
+          "value": 1
+        },
+        {
+          "pc": 3218,
+          "address": 16776218,
+          "physical_under_hypothesis": 16776218,
+          "size": 1,
+          "value": 191
+        },
+        {
+          "pc": 11840,
+          "address": 16771072,
+          "physical_under_hypothesis": 16771072,
+          "size": 1,
+          "value": 24
+        },
+        {
+          "pc": 11840,
+          "address": 16771073,
+          "physical_under_hypothesis": 16771073,
+          "size": 1,
+          "value": 2
+        },
+        {
+          "pc": 11840,
+          "address": 16771072,
+          "physical_under_hypothesis": 16771072,
+          "size": 1,
+          "value": 20
+        },
+        {
+          "pc": 11840,
+          "address": 16771073,
+          "physical_under_hypothesis": 16771073,
+          "size": 1,
+          "value": 108
+        },
+        {
+          "pc": 11840,
+          "address": 16771072,
+          "physical_under_hypothesis": 16771072,
+          "size": 1,
+          "value": 4
+        },
+        {
+          "pc": 11840,
+          "address": 16771073,
+          "physical_under_hypothesis": 16771073,
+          "size": 1,
+          "value": 240
+        },
+        {
+          "pc": 11840,
+          "address": 16771072,
+          "physical_under_hypothesis": 16771072,
+          "size": 1,
+          "value": 4
+        },
+        {
+          "pc": 11840,
+          "address": 16771073,
+          "physical_under_hypothesis": 16771073,
+          "size": 1,
+          "value": 24
+        },
+        {
+          "pc": 11840,
+          "address": 16771072,
+          "physical_under_hypothesis": 16771072,
+          "size": 1,
+          "value": 4
+        },
+        {
+          "pc": 11840,
+          "address": 16771073,
+          "physical_under_hypothesis": 16771073,
+          "size": 1,
+          "value": 116
+        },
+        {
+          "pc": 11840,
+          "address": 16771072,
+          "physical_under_hypothesis": 16771072,
+          "size": 1,
+          "value": 12
+        },
+        {
+          "pc": 11840,
+          "address": 16771073,
+          "physical_under_hypothesis": 16771073,
+          "size": 1,
+          "value": 68
+        },
+        {
+          "pc": 11840,
+          "address": 16771072,
+          "physical_under_hypothesis": 16771072,
+          "size": 1,
+          "value": 20
+        },
+        {
+          "pc": 11840,
+          "address": 16771073,
+          "physical_under_hypothesis": 16771073,
+          "size": 1,
+          "value": 109
+        },
+        {
+          "pc": 11840,
+          "address": 16771072,
+          "physical_under_hypothesis": 16771072,
+          "size": 1,
+          "value": 4
+        },
+        {
+          "pc": 11840,
+          "address": 16771073,
+          "physical_under_hypothesis": 16771073,
+          "size": 1,
+          "value": 240
+        },
+        {
+          "pc": 11840,
+          "address": 16771072,
+          "physical_under_hypothesis": 16771072,
+          "size": 1,
+          "value": 4
+        },
+        {
+          "pc": 11840,
+          "address": 16771073,
+          "physical_under_hypothesis": 16771073,
+          "size": 1,
+          "value": 24
+        },
+        {
+          "pc": 11840,
+          "address": 16771072,
+          "physical_under_hypothesis": 16771072,
+          "size": 1,
+          "value": 4
+        },
+        {
+          "pc": 11840,
+          "address": 16771073,
+          "physical_under_hypothesis": 16771073,
+          "size": 1,
+          "value": 116
+        },
+        {
+          "pc": 11840,
+          "address": 16771072,
+          "physical_under_hypothesis": 16771072,
+          "size": 1,
+          "value": 12
+        },
+        {
+          "pc": 11840,
+          "address": 16771073,
+          "physical_under_hypothesis": 16771073,
+          "size": 1,
+          "value": 68
+        }
+      ],
+      "watchdog_stores": 3776,
+      "vpw_initializer_entered": true,
+      "flash_writes_blocked": 0,
+      "physical_mapping_verified": false,
+      "live_upload_enabled": false,
+      "live_execution_enabled": false,
+      "live_write_enabled": false,
+      "recovery_verified": false,
+      "external_service_magic": 0,
+      "reset_status": 32,
+      "synthetic_irq_invoked": true,
+      "exception_return_executed": false,
+      "software_tx_frames": [
+        "6cf0187444",
+        "6df0187444"
+      ],
+      "software_tx_observations": [
+        {
+          "frame": "6cf0187444",
+          "phase": "native_startup",
+          "pc": 11840
+        },
+        {
+          "frame": "6df0187444",
+          "phase": "synthetic_irq",
+          "pc": 11840
+        }
+      ],
+      "fifo_events_consumed": 1608,
+      "integrity_observations": [
+        {
+          "pc": 2016,
+          "d4": 0,
+          "fault_active": false
+        }
+      ],
+      "initial_persistent_banks_sha256": null,
+      "flash_fixture_sha256": "12bf5a5aea1d9816ad3ef959c6168bc56310b7ab4eeaf41602abd2d8642f83a3",
+      "retained_marker": 49089,
+      "initial_ram_sha256": null,
+      "reset_status_accesses": [
+        {
+          "operation": "read",
+          "pc": 2026,
+          "address": 4294965767,
+          "size": 1,
+          "value": 32
+        },
+        {
+          "operation": "read",
+          "pc": 2034,
+          "address": 4294965767,
+          "size": 1,
+          "value": 32
+        },
+        {
+          "operation": "read",
+          "pc": 2690,
+          "address": 16775686,
+          "size": 2,
+          "value": 32
+        }
+      ],
+      "marker_accesses": [
+        {
+          "operation": "read",
+          "pc": 1254,
+          "value": 49089
+        },
+        {
+          "operation": "write",
+          "pc": 1260,
+          "size": 1,
+          "value": 150
+        },
+        {
+          "operation": "read",
+          "pc": 1338,
+          "value": 38505
+        },
+        {
+          "operation": "write",
+          "pc": 1406,
+          "size": 1,
+          "value": 105
+        },
+        {
+          "operation": "write",
+          "pc": 1490,
+          "size": 1,
+          "value": 105
+        },
+        {
+          "operation": "write",
+          "pc": 1580,
+          "size": 1,
+          "value": 105
+        },
+        {
+          "operation": "write",
+          "pc": 1660,
+          "size": 1,
+          "value": 105
+        },
+        {
+          "operation": "write",
+          "pc": 1712,
+          "size": 4,
+          "value": 1431655765
+        },
+        {
+          "operation": "write",
+          "pc": 1862,
+          "size": 4,
+          "value": 2863311530
+        },
+        {
+          "operation": "write",
+          "pc": 1986,
+          "size": 2,
+          "value": 49089
+        },
+        {
+          "operation": "read",
+          "pc": 2042,
+          "value": 49089
+        },
+        {
+          "operation": "read",
+          "pc": 2226,
+          "value": 49089
+        },
+        {
+          "operation": "read",
+          "pc": 2248,
+          "value": 49089
+        },
+        {
+          "operation": "write",
+          "pc": 2258,
+          "size": 2,
+          "value": 45204
+        },
+        {
+          "operation": "read",
+          "pc": 2428,
+          "value": 45204
+        },
+        {
+          "operation": "write",
+          "pc": 2448,
+          "size": 4,
+          "value": 0
+        },
+        {
+          "operation": "write",
+          "pc": 2526,
+          "size": 2,
+          "value": 45204
+        },
+        {
+          "operation": "read",
+          "pc": 15478,
+          "value": 45204
+        }
+      ],
+      "routing_observations": [
+        {
+          "pc": 2026,
+          "marker": 49089
+        },
+        {
+          "pc": 2034,
+          "marker": 49089
+        },
+        {
+          "pc": 2042,
+          "marker": 49089
+        },
+        {
+          "pc": 2226,
+          "marker": 49089
+        },
+        {
+          "pc": 2428,
+          "marker": 45204
+        }
+      ],
+      "post_reset_checks": false,
+      "application_entered": false,
+      "application_check_events": [],
+      "watchdog_control_attempts": [
+        {
+          "pc": 1166,
+          "phase": "boot",
+          "address": 4294965793,
+          "size": 1,
+          "value": 132
+        }
+      ],
+      "consumed_application_mmio_inputs": [],
+      "physical_watchdog_configuration_verified": false,
+      "physical_reset_verified": false,
+      "modeled_stack_alias": 4294934528,
+      "idle_interrupt_mask": 0,
+      "final_pc": 16748544,
+      "fault_active_at_stop": false,
+      "reset_status_snapshot": 32,
+      "reset_marker": 45204,
+      "interface_flag": 1,
+      "interrupt_mask": 7,
+      "upload_armed_byte": 1,
+      "rom_unchanged_from_selected_view": true,
+      "unused_application_mmio_inputs": [],
+      "application_calibration_read_coverage": {
+        "bytes": 0,
+        "ranges": [],
+        "marker_reads": [],
+        "scope": "Native application CPU reads only; not independently acquired readback"
+      },
+      "final_sp": 4294938534,
+      "offline_captured_loader_handoff": {
+        "incoming_sp": 4294938534,
+        "incoming_physical_sp": 16748454,
+        "pending_return": 13240,
+        "stack_delta": -72,
+        "native_copied_bytes": 1590,
+        "code_preloaded": false,
+        "scripted_fifo_remaining": [
+          [
+            0,
+            0
+          ]
+        ],
+        "abandoned_frame_sha256": "cf1cc6a790648ff5d528464447d7e8bf98d0a8e8b99dd8392eb9a32e27ce4d08"
+      },
+      "offline_captured_loader_copied_bytes": 1590
+    },
+    "conditional_configuration": {
+      "effective_value_under_hypothesis": 132,
+      "enabled_under_hypothesis": true,
+      "prescaled_under_hypothesis": false,
+      "timing_field_under_hypothesis": 0,
+      "timeout_system_clock_cycles_under_hypothesis": 512,
+      "attempts": [
+        {
+          "pc": 1166,
+          "phase": "boot",
+          "attempted_value": 132,
+          "conditionally_accepted": true,
+          "effective_before": null,
+          "effective_after": 132
+        }
+      ],
+      "source_clock_hz": null,
+      "timeout_seconds": null,
+      "actual_mcu_identified": false,
+      "physical_configuration_verified": false,
+      "physical_timeout_verified": false
+    },
+    "reset_to_upload_same_context": true,
+    "boot_upload_to_loader_entry_same_context": true,
+    "first_loader_instruction_executed": false,
+    "programming_marker_is_synthetic_input": true
+  },
+  "manufacturer_reference": {
+    "url": "https://www.nxp.com/docs/en/user-guide/MC68336376UMD.pdf",
+    "sections": [
+      "D.2.12",
+      "D.2.15"
+    ],
+    "actual_mcu_identified": false
+  },
+  "hardware_access": false,
+  "physical_watchdog_configuration_verified": false,
+  "physical_reset_verified": false,
+  "independent_readback_verified": false,
+  "host_verification_window_proven": false,
+  "live_upload_enabled": false,
+  "live_execution_enabled": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "limits": [
+    "Synthetic reset status/retention and declared 24-bit aliases; peripheral values remain inert-model assumptions.",
+    "Native boot and application checks share a CPU/RAM context; execution stops at rejection or first calibration-check return before ordinary startup/storage.",
+    "CRC/marker fixtures alter only the declared calibration span/marker; OS address-alias fault uses the existing bounded fault model.",
+    "Write-once interpretation is conditional on the manufacturer family, not an identified AL5 MCU or measured effective register.",
+    "The reset-to-upload path uses a synthetic BFC1 marker and scripted FIFO/IRQ entry; no physical interrupt or reset is delivered, and execution stops before loader entry.",
+    "Native application acceptance is not a complete preservation comparison, independent acquisition or verified host readback boundary."
+  ],
+  "inputs": {
+    "reference": {
+      "selected": "LocalOnly\\al5_bench_ready_20261102\\historical_full_reference.bin",
+      "resolved": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\al5_bench_ready_20261102\\historical_full_reference.bin"
+    },
+    "loader": {
+      "selected": "LocalOnly\\al5_bench_ready_20261102\\captured_efi_loader.bin",
+      "resolved": "C:\\Codex Projects\\Car Tuning\\To tune\\AL5 Transmission Work\\PcmHammer\\LocalOnly\\al5_bench_ready_20261102\\captured_efi_loader.bin"
+    }
+  }
+}

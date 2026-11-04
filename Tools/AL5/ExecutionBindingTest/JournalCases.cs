@@ -9,9 +9,6 @@ static partial class Program
         using var document=JsonDocument.Parse(File.ReadAllBytes(reportPath));var root=document.RootElement;
         string fullHash=Convert.ToHexString(SHA256.HashData(nativeBaseline)).ToLowerInvariant();
         Check(root.GetProperty("schema").GetString()=="al5-native-journal-restart-v1" && root.GetProperty("reference_sha256").GetString()==fullHash,"Native journal source matches selected full baseline");
-        byte[] calibration=nativeBaseline.AsSpan(0x8000,AL5CalibrationInspection.Length).ToArray();
-        var sectors=new AL5CalibrationSectorPlan(calibration,nativeBaseline.AsSpan(0x8000,AL5ProgrammingWorkflow.SnapshotLength).ToArray());
-        var plan=new AL5EfiOfflineWritePlan(loader,AL5CalibrationWriteCandidate.LoaderSha256,calibration,sectors.CopyCollateralBackup());
         string directory=Path.GetDirectoryName(reportPath)!;
         foreach(var item in root.GetProperty("cases").EnumerateArray())
         {
@@ -24,17 +21,9 @@ static partial class Program
             Check(review.CopyPredictedBanks().SequenceEqual(File.ReadAllBytes(Path.Combine(directory,label+".after.bin"))),"Production diagnostic reproduces every native modeled bank byte");
             AL5CalibrationWriteCandidate Rehearse()
             {
-                var candidate=new AL5CalibrationWriteCandidate(loader,calibration,nativeBaseline);bool recorded=false;
-                Reject(()=>candidate.DiagnoseSavedStartupBanks(review,nativeBaseline));
-                foreach(string line in lines)
-                {
-                    bool tx=line[0]=='T';byte[] frame=Convert.FromHexString(line.Substring(2));
-                    if(!recorded && candidate.State==AL5CapturedWriteState.EraseRequest){candidate.RecordSavedPreparedBanks(before);recorded=true;}
-                    if(tx && frame.Length>12 && frame[3]==0x36 && frame[4]==0)
-                    {int address=(frame[7]<<16)|(frame[8]<<8)|frame[9];frame=plan.CopyRequest(2+(address-0x8000)/512);}
-                    candidate.ObserveSavedFrame(tx,frame);
-                }
-                Check(recorded && candidate.State==AL5CapturedWriteState.AwaitingSavedVerification,"Full scripted cleanup precedes diagnosis");return candidate;
+                var unstarted=new AL5CalibrationWriteCandidate(loader,nativeBaseline.AsSpan(0x8000,AL5CalibrationInspection.Length).ToArray(),nativeBaseline);
+                Reject(()=>unstarted.DiagnoseSavedStartupBanks(review,nativeBaseline));
+                return RehearseSavedPreparedCandidate(nativeBaseline,before);
             }
             var candidate=Rehearse();byte[] readback=candidate.CopyExpectedSavedImage();review.CopyPredictedBanks().CopyTo(readback,0x4000);
             var diagnosis=candidate.DiagnoseSavedStartupBanks(review,readback);

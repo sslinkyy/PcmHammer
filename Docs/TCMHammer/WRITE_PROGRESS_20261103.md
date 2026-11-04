@@ -61,3 +61,7 @@ The [journal restart continuation](STARTUP_BANK_VERIFICATION.md) traces historic
 ## 2026-11-04: finalizer watchdog continuation
 
 The [native watchdog tail](FINALIZER_WATCHDOG_TIMING.md) services through both delays, stores the retained marker and stops servicing in park. Sender-busy exhaustion instead branches to loader entry before marker/park. The saved execution report now separates final reply and cleanup from physical reset/readback timing; all physical/live gates remain false. Actual watchdog configuration and reset/readback epochs still require qualification on the arriving spare.
+
+## 2026-11-04: inherited configuration and post-reset verification
+
+The [inherited-watchdog continuation](WATCHDOG_INHERITANCE_AND_RESET_CHECKS.md) follows native boot to the application checks and, in a second owned reset context, to the captured loader-call boundary. The observed `84` configuration survives under the conditional write-once interpretation. A changed compensation word passes the examined application checks but fails strict saved writer verification. No physical deadline, reset/retention behavior or independent readback is qualified.
