@@ -68,9 +68,9 @@ Eight contexts show:
 Independent static tracing also distinguishes timeout/error behavior:
 
 - Receive idle/partial-frame timeout reaches `0xFF9236`, delays, writes
-  peripheral controls and attempts a reset-register store at `0xFFFF8000`,
+  peripheral controls and attempts a retained-marker store at `0xFFFF8000`,
   then self-loops if no reset occurs. The absolute-short address is not
-  calibration flash `0x8000`. The model does not execute the reset store.
+  calibration flash `0x8000`. Under the declared 24-bit mapping the word is retained RAM `0xFF8000`, whose `D0C2` value is interpreted by boot. It is not identified as a hardware reset register. The original model traps the store; the extended [verification-window trace](../TCMHammer/EXTERNAL_ORIGINAL_AND_RESET_VERIFICATION.md) optionally models its RAM value and reaches the park loop without delivering any reset.
 - Sender polling timeout jumps to RAM entry `0xFF9000`, which reinitializes
   its stack/budget. It does not restore flash or clear all receive state.
 - Program errors pass flash reset-command stores before reporting failure.

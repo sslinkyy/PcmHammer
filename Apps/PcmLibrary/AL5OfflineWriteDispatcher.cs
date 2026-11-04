@@ -6,7 +6,7 @@ namespace PcmHacking
     public enum AL5OfflineSendOutcome { AdapterAccepted, NotSubmitted, SubmissionUnknown }
     public enum AL5OfflineDispatchKind { Control, SecurityEvidence, Loader, Erase, Data, ChecksumRetry, Finalization, Cleanup, ProgrammingBroadcast }
     public enum AL5OfflineDispatchState { ActionAvailable, DispatchPrepared, AwaitingReply, AwaitingSecurityEvidence, ChecksumRetryReview, AwaitingReadback, Completed, Stopped, BoundaryReached }
-    public enum AL5OfflineWriteBoundary { BeforeSecurityKey, BeforeProgrammingEntry, BeforeLoaderUpload, BeforeErase, AfterEraseBeforeData, CompleteOfflineRehearsal }
+    public enum AL5OfflineWriteBoundary { BeforeSecurityKey, BeforeProgrammingEntry, BeforeLoaderUpload, BeforeErase, AfterEraseBeforeData, CompleteOfflineRehearsal, BeforeFinalization }
     public enum AL5OfflineDispatchStop { None, Timeout, Cancelled, SendNotSubmitted, SendSubmissionUnknown, UnexpectedReply, InvalidFrame, ProtocolFailure, RetryBudgetExhausted, VerificationFailed, UnsupportedSecurityProfile, LoaderChecksumRejected, LoaderRejected, UnqualifiedLoaderReply, ReceiveFault, InvalidClock, ExecutionWaitFault, SecurityInvalidKey, SecurityAttemptsExceeded, SecurityDelayRequired, SecurityNegativeResponse, SecurityMalformed }
 
     /// <summary>An immutable, single-use offline send reservation. It is not a live send capability.</summary>
@@ -159,6 +159,7 @@ namespace PcmHacking
                 case AL5OfflineWriteBoundary.BeforeLoaderUpload:return candidate.State==AL5CapturedWriteState.LoaderTransfer;
                 case AL5OfflineWriteBoundary.BeforeErase:return candidate.State==AL5CapturedWriteState.EraseRequest;
                 case AL5OfflineWriteBoundary.AfterEraseBeforeData:return candidate.State==AL5CapturedWriteState.Programming;
+                case AL5OfflineWriteBoundary.BeforeFinalization:return candidate.State==AL5CapturedWriteState.FinalizeRequest;
                 default:return false;
             }
         }

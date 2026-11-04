@@ -47,6 +47,8 @@ readiness flag is changed.
 ## Next evidence
 
 The owner reports a T48 with ADP_S44_EX-1 and Xgpro support for Am29F800BB.
+The retained October 15 work now supplies stronger equipment evidence: `OEM_LOOSE_CHIP_PROGRAM_RESULT_001.json` records Xgpro 13.16, T48 firmware 00.01.39, the ADP_S44_EX-1 adapter and Intel TB28F400B5B @SOP44 ID `0089 4471`. Erase/program/verify succeeded in the observed UI, followed by a separate 524,288-byte readback matching the saved explicitly pair-swapped programmer image. This review rechecked that readback's SHA-256 `7d86a8b7bcb3add08bd6e11cc166a39636574b8a8ac34747288549fc62cd2d69` against the retained bytes. The raw OEM source was preserved. The retained vendor-linked `T48_List.txt` (SHA-256 `bfd9e2836334b5954197da18c7a82b0ef0cc41a428bce5279cbbd8294999edc1`) lists `AM29F800BB @SOP44`. These are historical artifacts, not a current USB/firmware inspection or an AL5 chip-read/program result. The Intel demonstration's byte conversion must not silently become the AL5 conversion.
+
 Equipment support is not a validated chip-level recovery procedure. A future
 full-chip backup must have repeated matching reads, a retained original dump,
 and verified byte order against known calibration anchors. A matched replacement

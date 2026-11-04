@@ -13,6 +13,7 @@ sealed class Peer
     public int OmittedNoReplyRepeats { get; private set; }
     public int OmittedProgrammingBroadcasts { get; private set; }
     public int ExpectedChecksumErrors { get; }
+    public int FinalizationsSubmitted { get; private set; }
     public Peer(string[] lines,byte[] reference)
     {
         Flash=(byte[])reference.Clone();frames=new();bool programming=false,replied=true;byte[]? last=null;
@@ -31,6 +32,7 @@ sealed class Peer
     static bool Is(byte[] a,string hex)=>a.SequenceEqual(Convert.FromHexString(hex));
     public List<byte[]> Submit(byte[] request)
     {
+        if(Is(request,"6c18f036ff"))FinalizationsSubmitted++;
         if(frames.Count==0 || !frames.Peek().Tx || !frames.Dequeue().Bytes.SequenceEqual(request))throw new Exception("Executor send differs from derived saved scenario");
         if(request.Length>12 && request[3]==0x36 && request[4]==0)pending=(byte[])request.Clone();
         var replies=new List<byte[]>();
@@ -151,7 +153,16 @@ static partial class Program
             Reject(()=>session.VerifySavedReadback(calibration));
             var matched=session.VerifySavedReadback(peer.Flash);Check(matched.Outcome==AL5WriteExecutionOutcome.SavedComparisonMatched,"wire-derived synthetic readback exact");
         }
-        else Check(report.Outcome==AL5WriteExecutionOutcome.BoundaryReached && report.AcknowledgedBlocks==0,"bounded executor pauses without data programming");
+        else
+        {
+            Check(report.Outcome==AL5WriteExecutionOutcome.BoundaryReached && report.AcknowledgedBlocks==(boundary==AL5OfflineWriteBoundary.BeforeFinalization?192:0),"bounded executor retains the selected acknowledged-block progress");
+            if(boundary==AL5OfflineWriteBoundary.BeforeFinalization)
+            {
+                Check(peer.FinalizationsSubmitted==0,"finalization/reset-bound request is not submitted");
+                int sends=port.Sends;await session.RunUntilReviewAsync(CancellationToken.None);Check(port.Sends==sends,"terminal pre-finalization boundary cannot resume a send");
+                Reject(()=>session.VerifySavedReadback(peer.Flash));
+            }
+        }
         Check(port.Sends==report.SendCalls && !report.ReadyToFlash && !report.LiveWriteEnabled,"one call per owned dispatch; no live readiness");
         results.Add(new { name="production_Vehicle_binding",passed=true,source,early,boundary=boundary.ToString(),report.SendCalls,report.AcknowledgedBlocks,
             peer.OmittedNoReplyRepeats,peer.OmittedProgrammingBroadcasts,readback_is_synthetic=true });
@@ -286,8 +297,9 @@ static partial class Program
             foreach(bool early in new[]{false,true})await VehicleCase(early,AL5OfflineWriteBoundary.CompleteOfflineRehearsal,Path.GetFileName(Path.GetDirectoryName(args[index]))!);
             if(index==4)
             {
-                foreach(var boundary in new[]{AL5OfflineWriteBoundary.BeforeSecurityKey,AL5OfflineWriteBoundary.BeforeProgrammingEntry,AL5OfflineWriteBoundary.BeforeLoaderUpload,AL5OfflineWriteBoundary.BeforeErase,AL5OfflineWriteBoundary.AfterEraseBeforeData})
+                foreach(var boundary in new[]{AL5OfflineWriteBoundary.BeforeSecurityKey,AL5OfflineWriteBoundary.BeforeProgrammingEntry,AL5OfflineWriteBoundary.BeforeLoaderUpload,AL5OfflineWriteBoundary.BeforeErase,AL5OfflineWriteBoundary.AfterEraseBeforeData,AL5OfflineWriteBoundary.BeforeFinalization})
                     await VehicleCase(true,boundary,"first_saved_template");
+                await VehicleCase(false,AL5OfflineWriteBoundary.BeforeFinalization,"first_saved_template");
                 await FaultCases();await QualificationChecks();await PreparationEpochs();await CompletionRaces();await SecurityAndBackupCases();
             }
         }

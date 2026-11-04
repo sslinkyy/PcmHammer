@@ -48,7 +48,7 @@ def experiment(code, *, mode='status', priority=0x6D, source=0xF0,
             observed['stop'] = {RETURN: 'return', 0xFF9000: 'loader_restart_trap', 0xFF903A: 'receive_boundary'}[pc]
             machine.emu_stop()
         elif pc == 0xFF924A:
-            observed['stop'] = 'hardware_reset_trap'; machine.emu_stop()
+            observed['stop'] = 'retained_marker_store_trap'; machine.emu_stop()
         elif pc == 0xFF960C:
             observed['watchdog_calls_trapped'] += 1
         elif pc == 0xFF961A:
@@ -117,9 +117,9 @@ def run(code):
         ('cleanup_broadcasts', {'mode': 'cleanup'}, 'return'),
         ('length_zero', {'mode': 'raw_sender', 'length': 0}, 'body_read_trap'),
         ('length_one', {'mode': 'raw_sender', 'length': 1}, 'body_read_trap'),
-        ('exit_request', {'mode': 'exit_dispatch'}, 'hardware_reset_trap'),
-        ('finalize_success_tail', {'mode': 'finalize_success_tail'}, 'hardware_reset_trap'),
-        ('finalize_failure_tail', {'mode': 'finalize_failure_tail'}, 'hardware_reset_trap'),
+        ('exit_request', {'mode': 'exit_dispatch'}, 'retained_marker_store_trap'),
+        ('finalize_success_tail', {'mode': 'finalize_success_tail'}, 'retained_marker_store_trap'),
+        ('finalize_failure_tail', {'mode': 'finalize_failure_tail'}, 'retained_marker_store_trap'),
     ]
     records = []
     for label, kwargs, stop in cases:
@@ -136,7 +136,7 @@ def run(code):
     return {'payload_sha256': sha256(code), 'generator_sha256': sha256(Path(__file__).read_bytes()),
             'scope': 'Captured sender and bounded exit tails with synthetic FIFO readiness. Every MMIO instruction skipped; watchdog/delay stubbed and reset/restart trapped.',
             'limits': 'FIFO bytes are software observations, not complete physical frames. Controller CRC/checksum, arbitration, timing and successful reset/recovery remain unverified. Finalize tail cases bypass all verification and marker programming.',
-            'reset_mmio_address': '0xffff8000', 'physical_reset_verified': False,
+            'retained_marker_store_address': '0xffff8000', 'declared_24bit_marker_address':'0xff8000', 'physical_reset_verified': False,
             'cases': records, 'all_pass': all(c['pass'] for c in records),
             'ready_to_flash': False, 'live_write_enabled': False, 'erase_scope': None, 'would_send': []}
 

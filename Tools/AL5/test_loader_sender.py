@@ -39,7 +39,8 @@ class LoaderSenderTests(unittest.TestCase):
             self.assertEqual(6, group['bytes'])
             self.assertEqual(12, group['final_control'])
             self.assertEqual({'service': 0x76, 'subtype': 0, 'status': status}, group['status_body'])
-        self.assertEqual('0xffff8000', report['reset_mmio_address'])
+        self.assertEqual('0xffff8000', report['retained_marker_store_address'])
+        self.assertEqual('0xff8000', report['declared_24bit_marker_address'])
         self.assertFalse(report['physical_reset_verified'])
 
     def test_plan_cannot_promote_sender_to_recovery_or_transport(self):

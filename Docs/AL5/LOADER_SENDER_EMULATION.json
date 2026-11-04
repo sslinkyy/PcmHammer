@@ -1,9 +1,10 @@
 {
   "payload_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
-  "generator_sha256": "0c945fe392900724623547e7b7f328738fc02a383b1a92de4224776b4c9750fe",
+  "generator_sha256": "21479347ab6201c69736fb5bea0f97f872418d769a0553807416616e13c04644",
   "scope": "Captured sender and bounded exit tails with synthetic FIFO readiness. Every MMIO instruction skipped; watchdog/delay stubbed and reset/restart trapped.",
   "limits": "FIFO bytes are software observations, not complete physical frames. Controller CRC/checksum, arbitration, timing and successful reset/recovery remain unverified. Finalize tail cases bypass all verification and marker programming.",
-  "reset_mmio_address": "0xffff8000",
+  "retained_marker_store_address": "0xffff8000",
+  "declared_24bit_marker_address": "0xff8000",
   "physical_reset_verified": false,
   "cases": [
     {
@@ -312,9 +313,9 @@
     },
     {
       "case": "exit_request",
-      "expected_stop": "hardware_reset_trap",
+      "expected_stop": "retained_marker_store_trap",
       "observed": {
-        "stop": "hardware_reset_trap",
+        "stop": "retained_marker_store_trap",
         "ready_reads": 0,
         "watchdog_calls_trapped": 0,
         "delay_calls_trapped": 2,
@@ -330,7 +331,7 @@
         "fifo_groups": []
       },
       "expected": {
-        "stop": "hardware_reset_trap",
+        "stop": "retained_marker_store_trap",
         "delay_calls_trapped": 2,
         "exit_control_data_values": [
           0
@@ -340,9 +341,9 @@
     },
     {
       "case": "finalize_success_tail",
-      "expected_stop": "hardware_reset_trap",
+      "expected_stop": "retained_marker_store_trap",
       "observed": {
-        "stop": "hardware_reset_trap",
+        "stop": "retained_marker_store_trap",
         "ready_reads": 6,
         "watchdog_calls_trapped": 6,
         "delay_calls_trapped": 2,
@@ -381,7 +382,7 @@
         ]
       },
       "expected": {
-        "stop": "hardware_reset_trap",
+        "stop": "retained_marker_store_trap",
         "delay_calls_trapped": 2,
         "exit_control_data_values": [
           0
@@ -391,9 +392,9 @@
     },
     {
       "case": "finalize_failure_tail",
-      "expected_stop": "hardware_reset_trap",
+      "expected_stop": "retained_marker_store_trap",
       "observed": {
-        "stop": "hardware_reset_trap",
+        "stop": "retained_marker_store_trap",
         "ready_reads": 6,
         "watchdog_calls_trapped": 6,
         "delay_calls_trapped": 2,
@@ -432,7 +433,7 @@
         ]
       },
       "expected": {
-        "stop": "hardware_reset_trap",
+        "stop": "retained_marker_store_trap",
         "delay_calls_trapped": 2,
         "exit_control_data_values": [
           0

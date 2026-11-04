@@ -1,7 +1,8 @@
 """Captured AL5 finalization/checksum/error flow with synthetic marker readback.
 
-Every flash command/reset store is skipped; hardware sender is a guarded RTS
-stub. Stops before reset-side effects or at receive. No adapter or device API.
+Every flash/MMIO command is skipped; hardware sender is a guarded RTS stub.
+Default stops before the shared exit. Optional continuation models only the
+retained RAM marker and park path. No adapter, device or physical reset API.
 """
 import argparse
 import json
@@ -26,12 +27,12 @@ def fixture():
     return bytes(image)
 
 
-def experiment(code, image, *, marker=0xffff, readback='match'):
+def experiment(code, image, *, marker=0xffff, readback='match',reset_tail='stop'):
     if sha256(code) != EXPECTED_SHA:
         raise ValueError('captured loader hash mismatch')
     if (type(image) is not bytes or len(image) != LENGTH or type(marker) is not int or
             not 0 <= marker <= 65535 or type(readback) is not str or
-            readback not in ('match', 'mismatch', 'stop_before_command')):
+            readback not in ('match', 'mismatch', 'stop_before_command') or reset_tail not in ('stop','trap_store','model_marker_store')):
         raise ValueError('Requires exact calibration bytes, word marker and bounded readback mode')
     import unicorn
     if unicorn.__version__ != '2.1.4':
@@ -58,13 +59,31 @@ def experiment(code, image, *, marker=0xffff, readback='match'):
                     watchdog_calls_stubbed=0, flash_reset_sequences_skipped=0, poll_reads=0,
                     flash_command_instructions_executed=0, mmio_instructions_executed=0,
                     physical_reset_executed=False)
+    observed.update(reset_tail_mode=reset_tail,reset_delay_calls=0,suppressed_reset_tail_stores=[],retained_marker_store=None)
     steps = 0
     def hook(machine, pc, size, _):
         nonlocal steps
-        if pc in (0xff9236, 0xff903a):
+        if pc==0xff9236 and reset_tail!='stop':
+            pass
+        elif pc in (0xff9236, 0xff903a):
             observed['stop'] = 'before_shared_reset_exit' if pc == 0xff9236 else 'receive_boundary'
             machine.emu_stop()
             return
+        if pc==0xff961a and reset_tail!='stop':observed['reset_delay_calls']+=1
+        if pc in (0xff923a,0xff9240) and reset_tail!='stop':
+            observed['suppressed_reset_tail_stores'].append(dict(pc=hex(pc),address=hex(0xffffe800 if pc==0xff923a else 0xffffe801),size=1,value=0x40 if pc==0xff923a else 0,executed=False))
+            machine.reg_write(UC_M68K_REG_PC,pc+6);return
+        if pc==0xff924a and reset_tail!='stop':
+            modeled=reset_tail=='model_marker_store'
+            observed['retained_marker_store']=dict(pc=hex(pc),address='0xffff8000',declared_24bit_address='0xff8000',size=2,value=0xd0c2,native_instruction_executed=False,host_modeled=modeled)
+            if not modeled:observed['stop']='before_retained_marker_store';machine.emu_stop()
+            else:
+                # Declared 24-bit marker alias only; no hardware reset operation.
+                machine.mem_write(0xffff8000,b'\xd0\xc2');machine.mem_write(0xff8000,b'\xd0\xc2')
+                machine.reg_write(UC_M68K_REG_PC,0xff9250)
+            return
+        if pc==0xff9250 and reset_tail=='model_marker_store':
+            observed['stop']='park_after_modeled_marker_store';machine.emu_stop();return
         if pc == 0xff960c:
             observed['watchdog_calls_stubbed'] += 1
             return
@@ -95,7 +114,7 @@ def experiment(code, image, *, marker=0xffff, readback='match'):
             observed['flash_reset_sequences_skipped'] += 1
             machine.reg_write(UC_M68K_REG_PC, 0xff945a)
             return
-        if not permitted_pc(pc, size):
+        if not permitted_pc(pc, size) and not (reset_tail!='stop' and any(a<=pc and pc+size<=b for a,b in ((0xff9236,0xff9252),(0xff961a,0xff962c)))):
             raise RuntimeError(f'Escaped finalization model at {pc:#x}+{size}')
         steps += 1
     def write(machine, access, address, size, value, _):
@@ -113,13 +132,14 @@ def experiment(code, image, *, marker=0xffff, readback='match'):
     uc.hook_add(UC_HOOK_CODE, hook)
     uc.hook_add(UC_HOOK_MEM_WRITE, write)
     uc.hook_add(UC_HOOK_MEM_READ, read)
-    uc.emu_start(0xff91d6, 0xff962c, timeout=5_000_000, count=500000)
+    uc.emu_start(0xff91d6, 0xff962c, timeout=5_000_000, count=500000 if reset_tail=='stop' else 1000000)
     if observed['stop'] is None:
         raise RuntimeError('Finalization exhausted its budget without a classified stop')
     observed.update(marker_after=hex(int.from_bytes(uc.mem_read(MARKER, 2), 'big')),
+                    modeled_retained_marker=hex(int.from_bytes(uc.mem_read(0xffff8000,2),'big')),
                     stack_delta=uc.reg_read(UC_M68K_REG_A7)-STACK,
                     retained_error_bits=uc.reg_read(UC_M68K_REG_D7)&255, native_instructions=steps)
-    return dict(context=dict(image_sha256=sha256(image), marker_before=hex(marker), readback=readback,
+    return dict(context=dict(image_sha256=sha256(image), marker_before=hex(marker), readback=readback,reset_tail=reset_tail,
                              image_be16_sum=word_sum(image), image_native_checksum_valid=checksum_valid(image)),
                 observed=observed, synthetic_pointer_table=True, physical_marker_programming_proven=False,
                 full_receive_or_session_executed=False, physical_recovery_proven=False,

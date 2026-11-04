@@ -110,5 +110,35 @@ static partial class Program
             Reject(()=>partial.CopyOriginalImage());Reject(()=>partial.CopyPreparedReference());
             results.Add(new {name="incomplete_and_foreign_backup_rejected",passed=true});
         }
+        {
+            var owned=(byte[])original.Clone();var path=AL5SavedBackupPath.FromSavedExternalOriginal("external-saved-original",owned,Hex("1234567890abcdef"));
+            owned[0]^=1;Check(path.CopyOriginalImage().SequenceEqual(original) && path.OriginalBytesObserved==0x100000 && path.OriginalSourceKind=="ExternalSavedImage","external original is immutable complete saved data, not a fabricated response campaign");
+            Reject(()=>path.BeginNextSavedRequest());Reject(()=>path.ObserveSavedReply(Array.Empty<byte>()));
+            var peer=new Peer(lines,original);peer.Flash[0x6000]^=1;AcquirePrepared(path,peer.Flash);
+            var io=new MemoryIo(peer);var session=Session(io);await session.RunUntilReviewAsync(CancellationToken.None);
+            var report=await session.SubmitSavedSecurityEvidenceAsync(Hex("6c18f02702bc08"),CancellationToken.None);
+            Check(report.Outcome==AL5WriteExecutionOutcome.PreparationBackupReviewRequired,"external file cannot skip pre-erase prepared review");
+            report=await session.RecordSavedBackupPathAsync(path,CancellationToken.None);
+            while(report.Outcome==AL5WriteExecutionOutcome.ChecksumReviewRequired)report=await session.ReviewChecksumRetryAsync(CancellationToken.None);
+            Check(report.BackupEvidenceId==path.EvidenceId && report.OriginalReferenceSha256==path.OriginalSha256,"external original retains the executor hash/evidence binding");
+            Check(session.VerifySavedReadback(peer.Flash).Outcome==AL5WriteExecutionOutcome.SavedComparisonMatched && !path.PreEntryPhysicalAcquisitionVerified && !report.PhysicalBackupVerified && !report.ReadyToFlash,"external saved original feeds unchanged rehearsal without physical claims");
+            results.Add(new {name="external_original_to_unchanged_executor",passed=true,readback_is_synthetic=true});
+        }
+        {
+            var changed=(byte[])original.Clone();changed[0xFFFFF]^=1;
+            var path=AL5SavedBackupPath.FromSavedExternalOriginal("foreign-external-original",changed,Hex("1234567890abcdef"));AcquirePrepared(path,changed);
+            var peer=new Peer(lines,original);var io=new MemoryIo(peer);var session=Session(io);await session.RunUntilReviewAsync(CancellationToken.None);
+            await session.SubmitSavedSecurityEvidenceAsync(Hex("6c18f02702bc08"),CancellationToken.None);int sends=io.Sends;
+            await RejectAsync(()=>session.RecordSavedBackupPathAsync(path,CancellationToken.None));Check(io.Sends==sends,"foreign external original cannot authorize another send");
+            results.Add(new {name="foreign_external_original_rejected",passed=true});
+        }
+        {
+            Reject(()=>AL5SavedBackupPath.FromSavedExternalOriginal("short",new byte[0x80000],Hex("1234567890abcdef")));
+            Reject(()=>AL5SavedBackupPath.FromSavedExternalOriginal("bad nonce",original,new byte[7]));
+            var path=AL5SavedBackupPath.FromSavedExternalOriginal("interrupted-external",original,Hex("1234567890abcdef"));
+            path.TimeoutOrCancel();Reject(()=>path.RecordEntryBoundaryForOfflineReview());Reject(()=>path.BeginNextSavedRequest());Reject(()=>path.CopyPreparedReference());
+            Check(path.Phase==AL5SavedBackupPhase.Stopped && !path.ReadyToFlash,"external saved data does not reopen a stopped acquisition");
+            results.Add(new {name="external_original_bounds_and_stop",passed=true});
+        }
     }
 }

@@ -274,7 +274,7 @@ static class WriteDispatcherTest
         Check(new AL5OfflineWriteDispatcher(loader,calibration,reference,0).Boundary==AL5OfflineWriteBoundary.BeforeSecurityKey,"default pauses before key submission");
         Reject(()=>New(boundary:(AL5OfflineWriteBoundary)999));
         foreach(var boundary in new[]{AL5OfflineWriteBoundary.BeforeSecurityKey,AL5OfflineWriteBoundary.BeforeProgrammingEntry,
-            AL5OfflineWriteBoundary.BeforeLoaderUpload,AL5OfflineWriteBoundary.BeforeErase,AL5OfflineWriteBoundary.AfterEraseBeforeData})
+            AL5OfflineWriteBoundary.BeforeLoaderUpload,AL5OfflineWriteBoundary.BeforeErase,AL5OfflineWriteBoundary.AfterEraseBeforeData,AL5OfflineWriteBoundary.BeforeFinalization})
         {
             var d=New(boundary:boundary);int consumed=0;
             foreach(string line in lines)
@@ -284,7 +284,8 @@ static class WriteDispatcherTest
             }
             Check(d.State==AL5OfflineDispatchState.BoundaryReached && consumed<lines.Length,"selected qualification boundary reached");
             Check(d.PendingDispatch==null && d.ReplyOwnerDispatch==null,"pause has no new send or awaited reply");
-            Check(d.StopReason==AL5OfflineDispatchStop.None && d.PositiveProgramReplies==0,"boundary is a pause, not successful programming or failure");
+            Check(d.StopReason==AL5OfflineDispatchStop.None && d.PositiveProgramReplies==(boundary==AL5OfflineWriteBoundary.BeforeFinalization?192:0),"boundary retains the exact acknowledged-data progress without finalizing");
+            if(boundary==AL5OfflineWriteBoundary.BeforeFinalization)Check(d.ProtocolState==AL5CapturedWriteState.FinalizeRequest && (d.LastAdapterAcceptedDispatch!.Kind==AL5OfflineDispatchKind.Data || d.LastAdapterAcceptedDispatch.Kind==AL5OfflineDispatchKind.ChecksumRetry),"last owned send remains a data block or reviewed retry; finalization was not reserved");
             Reject(()=>d.PrepareNextOfflineDispatch());Reject(()=>d.PrepareSavedSecurityEvidence(Convert.FromHexString("6c18f02702bc08")));
             Reject(()=>d.CompleteSavedSend(d.LastAdapterAcceptedDispatch!,AL5OfflineSendOutcome.AdapterAccepted));
             Reject(()=>d.ObserveSavedReply(Convert.FromHexString("6df018760073")));Blocked(d);

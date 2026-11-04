@@ -49,3 +49,7 @@ Part 2's software requirements are now explicit. Actual spare profile, independe
 30. Integrate only the qualified profiles and recovery behavior into the TCM Hammer workflow.
 
 The installed truck TCM is not the experimental target. The next required external inputs are the spare's arrival/identity, verified bench connection information, and an applicable independent acquisition/restoration capability. Work on unresolved safe-reader entry can continue offline; no packet or test receipt removes those physical requirements.
+
+## Continuation: previously documented equipment and external original path
+
+Review of the retained October 15 work confirms the T48/ADP_S44_EX-1/Xgpro workflow and a successful separate Intel readback. Re-identifying that equipment is not a remaining task. The [new external-original continuation](EXTERNAL_ORIGINAL_AND_RESET_VERIFICATION.md) imports two matching full-chip saved files with explicit byte representation, feeds the existing prepared-bank/unchanged-writer owner, and retains all physical gates. It also traces the finalizer's retained RAM marker and park path, and implements a terminal offline stop before finalization. Actual AL5 chip acquisition/recovery, loader timeout behavior and an independent verification window remain unqualified while the spare is in transit.

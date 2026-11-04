@@ -1,7 +1,7 @@
 {
   "schema": "al5-loader-finalize-v1",
   "payload_sha256": "b545d9b2d078662466ab32d9cdeb5b3c38c840135e8aeca09f33760ec66780fa",
-  "generator_sha256": "993b3c7f6f66c4bb21db53603d5351f3f2138a9770a594257756e55b99e4153f",
+  "generator_sha256": "a1b8518e312db14e09a42644af17ebf204bef4bd41bb251fc03d0284803cd04d",
   "cases": [
     {
       "case": "valid",
@@ -9,6 +9,7 @@
         "image_sha256": "44fd039e0545c28ee8371fb9bba84237c8164be7e429e17498c452f21dd41475",
         "marker_before": "0xffff",
         "readback": "match",
+        "reset_tail": "stop",
         "image_be16_sum": 0,
         "image_native_checksum_valid": true
       },
@@ -34,7 +35,12 @@
         "flash_command_instructions_executed": 0,
         "mmio_instructions_executed": 0,
         "physical_reset_executed": false,
+        "reset_tail_mode": "stop",
+        "reset_delay_calls": 0,
+        "suppressed_reset_tail_stores": [],
+        "retained_marker_store": null,
         "marker_after": "0x4afc",
+        "modeled_retained_marker": "0x0",
         "stack_delta": 0,
         "retained_error_bits": 0,
         "native_instructions": 229477
@@ -54,6 +60,7 @@
         "image_sha256": "87ed7ef592c68bd62ff5028ab2b007008f5cc246e9a50ece4e23c831af0fd6b4",
         "marker_before": "0xffff",
         "readback": "match",
+        "reset_tail": "stop",
         "image_be16_sum": 0,
         "image_native_checksum_valid": false
       },
@@ -79,7 +86,12 @@
         "flash_command_instructions_executed": 0,
         "mmio_instructions_executed": 0,
         "physical_reset_executed": false,
+        "reset_tail_mode": "stop",
+        "reset_delay_calls": 0,
+        "suppressed_reset_tail_stores": [],
+        "retained_marker_store": null,
         "marker_after": "0x4afc",
+        "modeled_retained_marker": "0x0",
         "stack_delta": 0,
         "retained_error_bits": 0,
         "native_instructions": 229477
@@ -99,6 +111,7 @@
         "image_sha256": "4cc6000434ba86c006240feb891645d714b0a7300463d4c607dd34aace24cb14",
         "marker_before": "0xffff",
         "readback": "match",
+        "reset_tail": "stop",
         "image_be16_sum": 256,
         "image_native_checksum_valid": false
       },
@@ -118,7 +131,12 @@
         "flash_command_instructions_executed": 0,
         "mmio_instructions_executed": 0,
         "physical_reset_executed": false,
+        "reset_tail_mode": "stop",
+        "reset_delay_calls": 0,
+        "suppressed_reset_tail_stores": [],
+        "retained_marker_store": null,
         "marker_after": "0xffff",
+        "modeled_retained_marker": "0x0",
         "stack_delta": 0,
         "retained_error_bits": 0,
         "native_instructions": 229452
@@ -138,6 +156,7 @@
         "image_sha256": "77f10c3114c8d2c3505dd50635acd52ce2e16b1298e2c824531e4ae37951afd0",
         "marker_before": "0xffff",
         "readback": "match",
+        "reset_tail": "stop",
         "image_be16_sum": 36884,
         "image_native_checksum_valid": false
       },
@@ -157,7 +176,12 @@
         "flash_command_instructions_executed": 0,
         "mmio_instructions_executed": 0,
         "physical_reset_executed": false,
+        "reset_tail_mode": "stop",
+        "reset_delay_calls": 0,
+        "suppressed_reset_tail_stores": [],
+        "retained_marker_store": null,
         "marker_after": "0xffff",
+        "modeled_retained_marker": "0x0",
         "stack_delta": 0,
         "retained_error_bits": 0,
         "native_instructions": 229452
@@ -177,6 +201,7 @@
         "image_sha256": "59ffecf64c96038a6dc5f0b1ee998ee010b961924abf460c56e5f90b46500006",
         "marker_before": "0xffff",
         "readback": "match",
+        "reset_tail": "stop",
         "image_be16_sum": 43871,
         "image_native_checksum_valid": false
       },
@@ -196,7 +221,12 @@
         "flash_command_instructions_executed": 0,
         "mmio_instructions_executed": 0,
         "physical_reset_executed": false,
+        "reset_tail_mode": "stop",
+        "reset_delay_calls": 0,
+        "suppressed_reset_tail_stores": [],
+        "retained_marker_store": null,
         "marker_after": "0xffff",
+        "modeled_retained_marker": "0x0",
         "stack_delta": 0,
         "retained_error_bits": 0,
         "native_instructions": 229452
@@ -216,6 +246,7 @@
         "image_sha256": "44fd039e0545c28ee8371fb9bba84237c8164be7e429e17498c452f21dd41475",
         "marker_before": "0xffff",
         "readback": "mismatch",
+        "reset_tail": "stop",
         "image_be16_sum": 0,
         "image_native_checksum_valid": true
       },
@@ -241,7 +272,12 @@
         "flash_command_instructions_executed": 0,
         "mmio_instructions_executed": 0,
         "physical_reset_executed": false,
+        "reset_tail_mode": "stop",
+        "reset_delay_calls": 0,
+        "suppressed_reset_tail_stores": [],
+        "retained_marker_store": null,
         "marker_after": "0x4afd",
+        "modeled_retained_marker": "0x0",
         "stack_delta": -4,
         "retained_error_bits": 64,
         "native_instructions": 290933
@@ -261,6 +297,7 @@
         "image_sha256": "44fd039e0545c28ee8371fb9bba84237c8164be7e429e17498c452f21dd41475",
         "marker_before": "0xffff",
         "readback": "stop_before_command",
+        "reset_tail": "stop",
         "image_be16_sum": 0,
         "image_native_checksum_valid": true
       },
@@ -274,7 +311,12 @@
         "flash_command_instructions_executed": 0,
         "mmio_instructions_executed": 0,
         "physical_reset_executed": false,
+        "reset_tail_mode": "stop",
+        "reset_delay_calls": 0,
+        "suppressed_reset_tail_stores": [],
+        "retained_marker_store": null,
         "marker_after": "0xffff",
+        "modeled_retained_marker": "0x0",
         "stack_delta": -4,
         "retained_error_bits": 0,
         "native_instructions": 229456
@@ -294,6 +336,7 @@
         "image_sha256": "4cc6000434ba86c006240feb891645d714b0a7300463d4c607dd34aace24cb14",
         "marker_before": "0x4afc",
         "readback": "match",
+        "reset_tail": "stop",
         "image_be16_sum": 256,
         "image_native_checksum_valid": false
       },
@@ -313,7 +356,12 @@
         "flash_command_instructions_executed": 0,
         "mmio_instructions_executed": 0,
         "physical_reset_executed": false,
+        "reset_tail_mode": "stop",
+        "reset_delay_calls": 0,
+        "suppressed_reset_tail_stores": [],
+        "retained_marker_store": null,
         "marker_after": "0x4afc",
+        "modeled_retained_marker": "0x0",
         "stack_delta": 0,
         "retained_error_bits": 0,
         "native_instructions": 229452

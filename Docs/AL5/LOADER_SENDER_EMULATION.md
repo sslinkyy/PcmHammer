@@ -45,14 +45,12 @@ request census cannot validate these sender observations on a physical bus.
 
 The synthetic Mode `0x3C` subtype `0x55` request reaches the shared exit at
 `0xFF9236`. It calls the delay helper twice, models control `0x40` plus data zero,
-and reaches the reset store at `0xFF924A`. Its absolute short operand `$8000.w`
-sign-extends to **MMIO `0xFFFF8000`**, not flash address `0x8000`. The store value
-is statically `0xD0C2`; the instruction remains trapped.
+and reaches the retained-marker store at `0xFF924A`. Its absolute short operand `$8000.w`
+sign-extends to `0xFFFF8000`, not flash address `0x8000`. Under the declared 24-bit mapping this is retained RAM `0xFF8000`; boot saves/restores and interprets its `0xD0C2` value. It is not identified as a hardware reset register. The instruction remains trapped in the sender model.
 
 Direct finalization-tail entries produce status `0x86` or `0xFF` and then reach
-the same reset trap. They bypass the sum verification and completion-marker
-programming, so they do not prove either occurred. Both tested tails reset;
-neither acknowledgment establishes bootability, completed programming or recovery.
+the same retained-marker trap. They bypass the sum verification and completion-marker
+programming, so they do not prove either occurred. Both tested tails reach that path; neither executes or proves a physical reset. Neither status establishes bootability, completed programming or recovery. The [extended finalizer trace](../TCMHammer/EXTERNAL_ORIGINAL_AND_RESET_VERIFICATION.md) executes the delay loops and separately models the RAM-marker/park continuation.
 
 ## Reproduction and next work
 

@@ -180,12 +180,14 @@ static class Program
         }
         if(boundary!=AL5OfflineWriteBoundary.CompleteOfflineRehearsal)
         {
-            Check(dispatch.State==AL5OfflineDispatchState.BoundaryReached && dataSubmitted==0,"bounded qualification does not submit a data block");
+            Check(dispatch.State==AL5OfflineDispatchState.BoundaryReached &&
+                (boundary==AL5OfflineWriteBoundary.BeforeFinalization?dispatch.PositiveProgramReplies==192:dataSubmitted==0),"bounded qualification retains exact stage progress");
             var requests=port.Sends.Select(w=>w.Skip(w[0]==0x11?3:2).Take(w.Length-(w[0]==0x11?3:2)-1).ToArray()).ToArray();
             if(boundary==AL5OfflineWriteBoundary.BeforeSecurityKey)Check(!requests.Any(m=>m.Length>=5 && m[3]==0x27 && m[4]==2),"default boundary submits no key");
             if(boundary==AL5OfflineWriteBoundary.BeforeProgrammingEntry)Check(!requests.Any(m=>m.Length>=4 && m[3]==0x34),"entry boundary submits no Mode 34");
             if(boundary==AL5OfflineWriteBoundary.BeforeLoaderUpload)Check(!requests.Any(m=>m.Length==1602),"upload boundary submits no loader");
-            if(boundary!=AL5OfflineWriteBoundary.AfterEraseBeforeData)Check(!requests.Any(m=>Is(m,"6c18f036ee")),"pre-erase boundary never submits erase");
+            if(boundary!=AL5OfflineWriteBoundary.AfterEraseBeforeData && boundary!=AL5OfflineWriteBoundary.BeforeFinalization)Check(!requests.Any(m=>Is(m,"6c18f036ee")),"pre-erase boundary never submits erase");
+            if(boundary==AL5OfflineWriteBoundary.BeforeFinalization)Check(!requests.Any(m=>Is(m,"6c18f036ff")),"pre-finalization boundary submits no finalization/reset-bound request");
         }
         else if(failAt.HasValue || loaderFailure!=null)Check(injected && dispatch.State==AL5OfflineDispatchState.Stopped,"failure scenario stopped at selected phase");
         else
@@ -254,7 +256,7 @@ static class Program
             foreach(string failure in new[]{"6cf018768077","6cf0187f36800636ff9022","6cf018760073"})
                 foreach(bool query in new[]{false,true})await IntegratedWriter(loader,reference,args[5],args[6],false,loaderFailure:failure,sendIdentityBeforeLoaderFailure:query);
             foreach(var boundary in new[]{AL5OfflineWriteBoundary.BeforeSecurityKey,AL5OfflineWriteBoundary.BeforeProgrammingEntry,
-                AL5OfflineWriteBoundary.BeforeLoaderUpload,AL5OfflineWriteBoundary.BeforeErase,AL5OfflineWriteBoundary.AfterEraseBeforeData})
+                AL5OfflineWriteBoundary.BeforeLoaderUpload,AL5OfflineWriteBoundary.BeforeErase,AL5OfflineWriteBoundary.AfterEraseBeforeData,AL5OfflineWriteBoundary.BeforeFinalization})
                 await IntegratedWriter(loader,reference,args[5],args[6],true,boundary:boundary);
         }
         var assembly=typeof(OBDXProDevice).Assembly.Location;

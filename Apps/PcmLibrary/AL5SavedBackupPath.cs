@@ -9,7 +9,7 @@ namespace PcmHacking
     /// <summary>Ordered saved-response acquisition of original flash and prepared banks. Not proof of physical acquisition or safe reader entry.</summary>
     public sealed class AL5SavedBackupPath
     {
-        private readonly AL5ReadOnlyFlashCampaign original;
+        private readonly AL5ReadOnlyFlashCampaign? original;
         private readonly AL5ReadOnlyRangeCampaign prepared;
         private AL5PreparedBankReference? reference;
         private byte[]? originalImage;
@@ -23,9 +23,21 @@ namespace PcmHacking
             if(same)throw new ArgumentException("Original and prepared acquisition require distinct nonces.");
             EvidenceId=evidenceId;
         }
+        private AL5SavedBackupPath(string evidenceId,byte[] externalOriginal,AL5ReadOnlyRangeCampaign prepared)
+        {
+            if(string.IsNullOrWhiteSpace(evidenceId))throw new ArgumentException("Explicit saved evidence identity required.");
+            if(externalOriginal==null || externalOriginal.Length!=AL5ReadOnlyFlashCampaign.ImageLength)
+                throw new ArgumentException("Complete canonical external saved original required.");
+            EvidenceId=evidenceId;this.prepared=prepared;originalImage=(byte[])externalOriginal.Clone();
+            using(var hash=SHA256.Create())OriginalSha256=BitConverter.ToString(hash.ComputeHash(originalImage)).Replace("-","").ToLowerInvariant();
+        }
+        /// <summary>Owns canonical file bytes only; it does not prove chip identity, acquisition epoch or physical backup.</summary>
+        public static AL5SavedBackupPath FromSavedExternalOriginal(string evidenceId,byte[] externalOriginal,byte[] preparedNonce)=>
+            new AL5SavedBackupPath(evidenceId,externalOriginal,new AL5ReadOnlyRangeCampaign(new AL5ReadOnlyCoreSession(preparedNonce),AL5PreparedBankReference.StartAddress,AL5PreparedBankReference.Length));
         public string EvidenceId { get; }
         public AL5SavedBackupPhase Phase { get; private set; }
-        public int OriginalBytesObserved=>original.BytesObserved;
+        public int OriginalBytesObserved=>original?.BytesObserved??originalImage?.Length??0;
+        public string OriginalSourceKind=>original==null?"ExternalSavedImage":"CorrelatedSavedReplies";
         public int PreparedBytesObserved=>prepared.BytesObserved;
         public string? OriginalSha256 { get; private set; }
         public string? PreparedBanksSha256=>reference?.PreparedSha256;
@@ -38,7 +50,11 @@ namespace PcmHacking
         public bool ReadyToFlash=>false;
         public byte[] BeginNextSavedRequest()
         {
-            if(Phase==AL5SavedBackupPhase.OriginalAcquisition)return original.BeginNextSavedVpwRequest();
+            if(Phase==AL5SavedBackupPhase.OriginalAcquisition)
+            {
+                if(original==null)throw new InvalidOperationException("External saved original is complete; record the explicit entry boundary before prepared acquisition.");
+                return original.BeginNextSavedVpwRequest();
+            }
             if(Phase==AL5SavedBackupPhase.EntryBoundaryRecorded)Phase=AL5SavedBackupPhase.PreparedAcquisition;
             if(Phase==AL5SavedBackupPhase.PreparedAcquisition)return prepared.BeginNextSavedVpwRequest();
             throw new InvalidOperationException("No acquisition slot available.");
@@ -48,6 +64,7 @@ namespace PcmHacking
             AL5ReadOnlyCoreReply result;
             if(Phase==AL5SavedBackupPhase.OriginalAcquisition)
             {
+                if(original==null)throw new InvalidOperationException("No original response campaign owns an external-file observation.");
                 result=original.ObserveSavedVpwReply(reply);
                 if(original.Stopped)Phase=AL5SavedBackupPhase.Stopped;
                 if(original.Complete && originalImage==null)
@@ -71,7 +88,7 @@ namespace PcmHacking
         }
         public void RecordEntryBoundaryForOfflineReview()
         {
-            if(Phase!=AL5SavedBackupPhase.OriginalAcquisition || !original.Complete)
+            if(Phase!=AL5SavedBackupPhase.OriginalAcquisition || originalImage==null || (original!=null && !original.Complete))
                 throw new InvalidOperationException("Complete original coverage is required before recording entry.");
             Phase=AL5SavedBackupPhase.EntryBoundaryRecorded;
         }
@@ -88,7 +105,7 @@ namespace PcmHacking
         public void TimeoutOrCancel()
         {
             if(Phase==AL5SavedBackupPhase.Complete || Phase==AL5SavedBackupPhase.Stopped)throw new InvalidOperationException("Backup path is terminal.");
-            if(Phase==AL5SavedBackupPhase.OriginalAcquisition && !original.Complete)original.TimeoutOrCancel();
+            if(Phase==AL5SavedBackupPhase.OriginalAcquisition && original!=null && !original.Complete)original.TimeoutOrCancel();
             if(Phase==AL5SavedBackupPhase.PreparedAcquisition)prepared.TimeoutOrCancel();
             Phase=AL5SavedBackupPhase.Stopped;
         }

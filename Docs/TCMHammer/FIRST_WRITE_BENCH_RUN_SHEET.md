@@ -42,7 +42,7 @@ Require the chosen controller/profile and fresh security to be qualified, an ade
 
 Prepare the candidate from the spare's unchanged calibration, exact loader and complete reference using the offline tool. Review its hashes, two erase sectors, 192 data blocks, collateral restoration and separate finalization. Expected-image files are never used as proof of independent readback.
 
-The [current multipart checkpoint](WRITE_PROGRESS_20261103.md) adds an explicit preflight gate: define the verification epoch around the finalizer's reset attempt and ordinary startup journal updates. The current candidate correctly rejects unexplained bank differences even when programmed sectors match. Do not proceed by accepting a newly observed post-startup bank file as its own expected baseline, or by ignoring the entire bank region.
+The [current multipart checkpoint](WRITE_PROGRESS_20261103.md) adds an explicit preflight gate: define the verification epoch around the finalizer's retained-marker/park tail and unqualified physical reset and ordinary startup journal updates. The current candidate correctly rejects unexplained bank differences even when programmed sectors match. Do not proceed by accepting a newly observed post-startup bank file as its own expected baseline, or by ignoring the entire bank region.
 
 Once the required live gates are explicitly satisfied and programming is enabled in a reviewed build, capture the complete write. Independently read back and compare calibration, collateral, marker, persistent banks and other preserved regions. Record preparation-related differences explicitly. Confirm subsequent boot/identity separately from successful protocol acknowledgements.
 
@@ -51,3 +51,7 @@ Once the required live gates are explicitly satisfied and programming is enabled
 First establish the recovery route without deliberately damaging the controller's only usable state. Vendor re-entry, boot-session recovery, external flash restoration and conditional A12 behavior are different paths. Record required software entitlement, equipment, original image coverage and actual results. Do not claim one is available just because the intact application currently communicates.
 
 Only then design separately authorized interruptions at entry, erase, partial programming and finalization. The installed truck TCM is excluded. If a gate fails, preserve the evidence and investigate that specific failure; a failed hardware test does not invalidate unrelated completed offline checks.
+
+## Latest original and finalization tools
+
+The [external-original and timing continuation](EXTERNAL_ORIGINAL_AND_RESET_VERIFICATION.md) records the already demonstrated T48/Intel workflow and the new matching full-chip importer. Use the spare's actual identified chip and explicitly verified representation; do not assume the Intel conversion applies. `BeforeFinalization` is an additional terminal offline boundary after 192 data acknowledgements and before `36 FF`. It is already destructive in the model and proves no physical pause/readback service. The finalizer stores a retained RAM marker and parks; it does not establish an intervening host verification window or a reset deadline.
