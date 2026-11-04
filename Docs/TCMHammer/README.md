@@ -22,6 +22,8 @@ TCM Hammer is the transmission-controller section inside the Windows PCM Hammer 
 
 [Startup scheduling continuation](RESIDENT_STARTUP_SCHEDULING.md) follows the remaining main calls, interrupt unmasking, native timer-dispatched callbacks and handshake, including background reply tracking that prevents treating startup completion as a freshness fence.
 
+[Writer-first multipart progress](WRITE_PROGRESS_20261103.md) records the acquisition-strategy decision, security/backup bootstrap dependency, current software candidate and remaining spare-bench stages.
+
 The top-level TCM Hammer menu groups the AL5 identity probe, direct Mode 0x23 calibration read, offline BIN comparison, offline saved-flash assessment, and offline calibration-write preparation/export. Read operations require an initialized adapter and are disabled while another operation runs. File-only operations remain available without an adapter. The calibration reader covers 0x08000..0x15FD7 (57,304 bytes), not a complete flash backup.
 
 [Write qualification plan](WRITE_QUALIFICATION_PLAN.md) records the application-to-boot chain, historical reader-to-writer validation and remaining physical gates.

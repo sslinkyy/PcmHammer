@@ -21,6 +21,8 @@ Malformed lengths, unexpected seeds, unknown statuses and unsupported profiles s
 
 This is a profile-specific saved-evidence path, not general fresh-controller security support. The [native authorization audit](../AL5/READER_STARTUP_QUIESCE_SECURITY.md#fresh-security-support-audit) remains the source for handler behavior. The spare's boot profile, current selector, physical seed response, acceptance and lockout timing still need qualification.
 
+The complete-reference constructor also exposes an acquisition dependency: stock Mode $23 cannot independently supply the boot security words. If a proposed full-reader handoff itself requires authorization or bank-changing preparation, a historical reference cannot substitute for the spare's missing original bytes. The [multipart checkpoint](WRITE_PROGRESS_20261103.md) selects correlated, coherent acquisition as the primary development path, with external flash acquisition as the fallback when safe pre-entry handoff cannot be qualified.
+
 ## Original and prepared acquisition have different sessions
 
 `AL5SavedBackupPath` connects the existing correlated reader campaigns to the writer's required pre-erase review:
@@ -35,6 +37,8 @@ The executor retains the evidence identity, original-image hash, prepared-bank h
 The [saved backup exporter](../../Tools/AL5/SavedBackupTool/README.md) validates complete transcripts before producing original and prepared BINs plus a report with input paths, hashes and coverage. It rejects existing output directories and incomplete, out-of-order, unowned or mismatched transcripts. The experimental correlated-reader format is required; a stock Mode $23 trace cannot supply missing session/address correlation merely by relabeling it.
 
 The new path remains a saved-response model. Running the experimental reader without first changing persistent banks is still a physical entry/ownership problem. Historical reconstructed firmware, synthetic responses and supplied files do not prove original pre-entry acquisition or physical address mapping. These flags remain false in every successful export and executor report.
+
+Nonce and full-address correlation also do not make a changing bank an atomic snapshot. The ordinary startup/periodic journal writes now traced through native scheduling require quiescing or an independently validated coherence procedure for an original full acquisition. Epoch labels and complete byte counts cannot conceal mixed-time journal contents.
 
 ## Validation scope
 

@@ -13,7 +13,7 @@ static class Program
     }
     static int Main(string[] args)
     {
-        if(args.Length<2 || args.Length>4)throw new ArgumentException("Pinned SPS OS and native freshness report [receiver-init report [startup-scheduling report]] required; file-only tests.");
+        if(args.Length<2 || args.Length>5)throw new ArgumentException("Pinned SPS OS and native freshness report [receiver-init report [startup-scheduling report [saved-candidate directory]]] required; file-only tests.");
         byte[] os=File.ReadAllBytes(args[0]);using var doc=JsonDocument.Parse(File.ReadAllBytes(args[1]));var root=doc.RootElement;
         Check(root.GetProperty("schema").GetString()=="al5-native-resident-reply-freshness-v1","Exact native producer schema");
         foreach(string flag in new[]{"hardware_access","session_boundary_proven","physical_status_semantics_verified","live_read_enabled","live_upload_enabled","live_execution_enabled","live_write_enabled"})
@@ -52,9 +52,70 @@ static class Program
         c=new AL5SavedPersistentBankCampaign(os);c.BeginNextSavedVpwRequest();
         Check(c.ObserveSavedVpwReply(alias,out _)==AL5SavedReplyKind.MatchingLow16Echo && c.BytesObserved==4,"A new host campaign cannot distinguish the native same-echo alias");
         Blocked(c);Reject(()=>c.CopyCompleteSavedBanks());
+        CheckQueuedDelivery(os,alias).GetAwaiter().GetResult();
         if(args.Length>=3)CheckReceiverInitialization(os,args[2]);
-        if(args.Length==4)CheckStartupScheduling(os,args[3]);
+        if(args.Length>=4)CheckStartupScheduling(os,args[3]);
+        if(args.Length==5)CheckJournalReadbackEpoch(args[3],args[4]);
         Console.WriteLine("PASS 12 native state outcomes and production host duplicate/alias/stop guards; no physical freshness or live authority.");return 0;
+    }
+
+    static void CheckJournalReadbackEpoch(string startupPath,string directory)
+    {
+        using var doc=JsonDocument.Parse(File.ReadAllBytes(startupPath));var row=doc.RootElement.GetProperty("cases").EnumerateArray().Single();
+        byte[] loader=File.ReadAllBytes(Path.Combine(directory,"loader.reference.bin"));
+        byte[] calibration=File.ReadAllBytes(Path.Combine(directory,"calibration.reference.bin"));
+        byte[] original=File.ReadAllBytes(Path.Combine(directory,"baseline.reference.bin"));
+        var frames=File.ReadAllLines(Path.Combine(directory,"rehearsal.jsonl"));
+        AL5CalibrationWriteCandidate Rehearse()
+        {
+            var candidate=new AL5CalibrationWriteCandidate(loader,calibration,original);
+            foreach(string frame in frames)
+            {
+                using var record=JsonDocument.Parse(frame);var value=record.RootElement;
+                candidate.ObserveSavedFrame(value.GetProperty("transmitted").GetBoolean(),Convert.FromHexString(value.GetProperty("message_hex").GetString()!));
+            }
+            Check(candidate.State==AL5CapturedWriteState.AwaitingSavedVerification,"Saved lifecycle reaches its existing cleanup/verification boundary");
+            return candidate;
+        }
+        var control=Rehearse();control.VerifySavedFullReadback(control.CopyExpectedSavedImage());
+        Check(control.CompleteSavedComparison && !control.PhysicalReadbackVerified && !control.ReadyToFlash,"Predicted control is a saved comparison, not independent physical readback");
+        var changed=Rehearse();var readback=changed.CopyExpectedSavedImage();
+        foreach(var operation in row.GetProperty("synthetic_bank_programs").EnumerateArray())
+        {
+            int address=operation.GetProperty("destination").GetInt32();byte[] before=Convert.FromHexString(operation.GetProperty("before").GetString()!);
+            byte[] after=Convert.FromHexString(operation.GetProperty("after").GetString()!);
+            Check(!operation.GetProperty("implementation_executed").GetBoolean() && before.Length==after.Length &&
+                readback.AsSpan(address,before.Length).SequenceEqual(before),"Native journal request applies to the owned historical bank state");
+            after.CopyTo(readback,address);
+        }
+        var assessment=changed.VerifySavedFullReadback(readback);
+        Check(assessment.ExactSavedImageMatch && !changed.CompleteSavedComparison && changed.ChangedPersistentBankBytes==8 && changed.ChangedOtherProtectedBytes==0,
+            "Native ordinary journal changes keep full preservation verification failed despite exact programmed-sector comparison");
+        Check(changed.State==AL5CapturedWriteState.Stopped && !changed.LiveWriteEnabled && !changed.PhysicalReadbackVerified && !changed.ReadyToFlash,"Journal evidence cannot silently whitelist bank changes or enable writes");
+        Console.WriteLine("PASS native startup journal applied to the saved writer lifecycle: programmed sectors match, eight bank changes still fail complete preservation verification.");
+    }
+
+    static async Task CheckQueuedDelivery(byte[] os,byte[] nativeAlias)
+    {
+        static byte[] Dvi(byte command,byte[] payload)
+        {
+            var bytes=new byte[payload.Length+3];bytes[0]=command;bytes[1]=(byte)payload.Length;payload.CopyTo(bytes,2);
+            bytes[^1]=(byte)~(bytes.Take(bytes.Length-1).Sum(b=>(int)b)&255);return bytes;
+        }
+        using var port=new DeferredFramePort();using var device=new OBDXProDevice(port,new Tests.TestLogger());
+        port.Enqueue(Dvi(8,nativeAlias));port.Enqueue(Dvi(0x20,new byte[]{0}));
+        Check(await device.SendMessage(new Message(Convert.FromHexString("6D18F02300400001"))),"Scripted adapter accepts one request");
+        Check(device.ReceivedMessageCount==1,"Production GT parser queued the earlier bus frame before adapter acknowledgement");
+        device.ClearMessageQueue();
+        Check(device.ReceivedMessageCount==0 && port.Discards==1,"Host queue and local port discard completed");
+        port.ArmUpstream(Dvi(8,nativeAlias));
+        var late=await device.ReceiveMessage();
+        Check(late.GetBytes().SequenceEqual(nativeAlias),"A separate upstream delivery survives the completed local flush");
+        var campaign=new AL5SavedPersistentBankCampaign(os);campaign.BeginNextSavedVpwRequest();
+        Check(campaign.ObserveSavedVpwReply(late.GetBytes(),out _)==AL5SavedReplyKind.MatchingLow16Echo && campaign.BytesObserved==4,"A fresh host owner still cannot identify the late native upper-bank alias");
+        Check(port.Sends==1,"Queue boundary test sends no automatic retries");Blocked(campaign);
+        campaign.TimeoutOrCancel();Reject(()=>campaign.CopyCompleteSavedBanks());
+        Console.WriteLine("PASS production GT queue/discard counterexample with scripted upstream delivery; a local flush does not prove end-to-end freshness.");
     }
 
     static void CheckStartupScheduling(byte[] os,string path)
@@ -78,6 +139,24 @@ static class Program
         var campaign=new AL5SavedPersistentBankCampaign(os);campaign.BeginNextSavedVpwRequest();
         Check(campaign.ObserveSavedVpwReply(frame,out _)==AL5SavedReplyKind.Unrelated && campaign.BytesObserved==0 && campaign.HasPendingRequest,"Background startup frame cannot advance bank coverage");
         campaign.TimeoutOrCancel();Reject(()=>campaign.BeginNextSavedVpwRequest());Reject(()=>campaign.CopyCompleteSavedBanks());Blocked(campaign);
+        if(row.TryGetProperty("background_completion_probes",out var probes) && probes.GetArrayLength()>0)
+        {
+            Check(probes.GetArrayLength()==4,"Complete background completion branch corpus");
+            foreach(var probe in probes.EnumerateArray())
+            {
+                Check(probe.GetProperty("returned").GetBoolean() && probe.GetProperty("banks_unchanged_during_probe").GetBoolean() &&
+                    !probe.GetProperty("physical_status_semantics_verified").GetBoolean(),"Native background branches remain conditional and non-programming");
+                string name=probe.GetProperty("case").GetString()!;
+                string tracking=probe.GetProperty("after").GetProperty("tracking").GetString()!;
+                Check(tracking==(name=="empty_receive_retains"?"0002":"0000"),"Native background retirement depends on receive context");
+                foreach(var repeated in probe.GetProperty("submissions").EnumerateArray())
+                {
+                    var owner=new AL5SavedPersistentBankCampaign(os);owner.BeginNextSavedVpwRequest();
+                    Check(owner.ObserveSavedVpwReply(Convert.FromHexString(repeated.GetProperty("hex").GetString()!),out _)==AL5SavedReplyKind.Unrelated && owner.BytesObserved==0 && owner.HasPendingRequest,"Requeued native background response does not become bank data");
+                    owner.TimeoutOrCancel();Blocked(owner);
+                }
+            }
+        }
         Console.WriteLine("PASS native startup scheduling witness through production host: background response cannot advance bank coverage; physical freshness remains false.");
     }
 

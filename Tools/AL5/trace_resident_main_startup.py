@@ -21,11 +21,13 @@ def is_register(address):
     return a>=0xFFF000 or 0xFFE800<=a<0xFFE810
 
 
-def trace(image,pattern=0xA5,mmio_inputs=None,*,model_bank_programs=False,stop_after_communication=False,stop_before_startup_wait=False,scheduled_ticks=0,mmio_site_inputs=None):
+def trace(image,pattern=0xA5,mmio_inputs=None,*,model_bank_programs=False,stop_after_communication=False,stop_before_startup_wait=False,scheduled_ticks=0,mmio_site_inputs=None,background_completion_probes=False):
     if type(scheduled_ticks) is not int or not 0<=scheduled_ticks<=320:
         raise ValueError('Scripted tick campaign requires an integer count from zero through 320')
     if scheduled_ticks and stop_after_communication:
         raise ValueError('Tick continuation cannot stop at the earlier communication boundary')
+    if background_completion_probes and scheduled_ticks!=320:
+        raise ValueError('Background completion probes require the complete 320-call startup witness')
     validate_source(image[:0x20000],image[0x20000:])
     from unicorn import Uc,UC_ARCH_M68K,UC_MODE_BIG_ENDIAN,UC_PROT_ALL,UC_PROT_READ,UC_PROT_EXEC,UC_HOOK_CODE,UC_HOOK_MEM_READ,UC_HOOK_MEM_WRITE,UC_HOOK_MEM_INVALID,UcError
     from unicorn.m68k_const import UC_CPU_M68K_M68020,UC_M68K_REG_A7,UC_M68K_REG_SR,UC_M68K_REG_PC
@@ -39,7 +41,7 @@ def trace(image,pattern=0xA5,mmio_inputs=None,*,model_bank_programs=False,stop_a
     u.reg_write(UC_M68K_REG_A7,int.from_bytes(image[:4],'big'));u.reg_write(UC_M68K_REG_SR,0x2700)
     decoder=Cs(CS_ARCH_M68K,CS_MODE_M68K_020|CS_MODE_BIG_ENDIAN)
     out=dict(initial_pattern=pattern,stop=None,instructions=0,mmio_writes=[],critical_writes=[],main_calls=[],boundaries=[],synthetic_bank_programs=[],scripted_ticks=[],native_event_masks=[],entry_counts={},software_submissions=[])
-    written=set();active=None;next_call=None;poll_reads={};foreground_resume=False
+    written=set();active=None;next_call=None;poll_reads={};foreground_resume=False;probe_mode=False;probe_reads=[]
     inputs=[dict(row) for row in (mmio_inputs or [])];consumed=[]
     sites=[dict(row) for row in (mmio_site_inputs or [])];site_map={};site_consumed=[]
     for row in inputs+sites:
@@ -74,7 +76,7 @@ def trace(image,pattern=0xA5,mmio_inputs=None,*,model_bank_programs=False,stop_a
         nonlocal active,next_call
         out['instructions']+=1
         if pc in STORAGE:
-            if pc==0x22C3C and model_bank_programs:
+            if pc==0x22C3C and model_bank_programs and not probe_mode:
                 from emulate_storage_recovery import require_programmable
                 sp=machine.reg_read(UC_M68K_REG_A7)
                 args=[int.from_bytes(machine.mem_read(sp+4+i*4,4),'big') for i in range(4)]
@@ -119,6 +121,8 @@ def trace(image,pattern=0xA5,mmio_inputs=None,*,model_bank_programs=False,stop_a
 
     def read(machine,access,address,size,value,user):
         pc=machine.reg_read(UC_M68K_REG_PC)
+        if probe_mode and probe_reads and all(probe_reads[0][k]==v for k,v in (('pc',pc),('address',address),('size',size))):
+            row=probe_reads.pop(0);machine.mem_write(address,row['value'].to_bytes(size,'big'));poll_reads.clear();return
         if is_register(address) and inputs and all(inputs[0][k]==v for k,v in (('pc',pc),('address',address),('size',size))):
             row=inputs.pop(0);machine.mem_write(address,row['value'].to_bytes(size,'big'))
             consumed.append(row);poll_reads.clear();return
@@ -180,6 +184,50 @@ def trace(image,pattern=0xA5,mmio_inputs=None,*,model_bank_programs=False,stop_a
                 if out['stop'] is None:out['stop']=dict(reason='foreground_resume_budget',pc=u.reg_read(UC_M68K_REG_PC))
                 break
         else:out['stop']=dict(reason='scripted_tick_limit',pc=u.reg_read(UC_M68K_REG_PC))
+    out['background_completion_probes']=[]
+    if background_completion_probes and out['stop']['reason']=='after_native_startup_handshake':
+        original_stop=dict(out['stop']);snapshot=u.context_save();memory=bytes(u.mem_read(BASE,0x8000));known=set(written)
+        baseline_lengths={name:len(out[name]) for name in ('mmio_writes','critical_writes','software_submissions','native_event_masks')}
+        baseline_entries=dict(out['entry_counts'])
+        banks_before=bytes(u.mem_read(0x4000,0x4000));probe_mode=True
+        def probe_state():
+            return dict(state(),pending_region=bytes(u.mem_read(BASE+0xF36,16)).hex())
+        def native_call(entry,arguments=()):
+            saved=u.context_save();sp=u.reg_read(UC_M68K_REG_A7)-4*(1+len(arguments));old=bytes(u.mem_read(sp,4*(1+len(arguments))))
+            u.mem_write(sp,(0x100000).to_bytes(4,'big')+b''.join(value.to_bytes(4,'big') for value in arguments))
+            u.reg_write(UC_M68K_REG_A7,sp);out['stop']=None
+            try:u.emu_start(entry,0x100000,timeout=2_000_000,count=100000)
+            except UcError as error:
+                if out['stop'] is None:out['stop']=dict(reason='emulator_error',pc=u.reg_read(UC_M68K_REG_PC),detail=str(error))
+            returned=u.reg_read(UC_M68K_REG_PC)==0x100000 and out['stop'] is None
+            u.context_restore(saved);u.mem_write(sp,old)
+            return returned
+        for label,accumulate,data,reset in [('empty_receive_retains',False,0x30,False),('nonempty_receive_retires',True,0x30,False),
+                                         ('nonempty_receive_requeues',True,0,False),('interface_clear_requeues',False,0,True)]:
+            u.context_restore(snapshot);u.mem_write(BASE,memory);written.clear();written.update(known);poll_reads.clear();probe_reads.clear()
+            before=probe_state();returned=True;submission_start=len(out['software_submissions'])
+            if accumulate:
+                for byte in bytes.fromhex('6d18f02300400001'):
+                    if not native_call(0x23570,(byte,)):returned=False;break
+            staged=probe_state()
+            if returned and reset:returned=native_call(0xC04FC)
+            elif returned:
+                probe_reads.extend([dict(pc=0x70AAC,address=0xFFFFE802,size=1,value=0xE0),
+                                    dict(pc=0x70BE0,address=0xFFFFE803,size=1,value=data),
+                                    dict(pc=0x70C7C,address=0xFFFFE802,size=1,value=0)])
+                returned=native_call(0x70AA8)
+            after=probe_state();stop=None if returned else out['stop']
+            if returned and label in ('nonempty_receive_requeues','interface_clear_requeues'):
+                returned=native_call(0x238AC)
+                if not returned:stop=out['stop']
+            out['background_completion_probes'].append(dict(case=label,status=None if reset else 0xE0,data=None if reset else data,
+                before=before,staged=staged,after=after,after_scheduler=probe_state(),returned=returned,stop=stop,
+                unused_inputs=list(probe_reads),submissions=out['software_submissions'][submission_start:],
+                banks_unchanged_during_probe=bytes(u.mem_read(0x4000,0x4000))==banks_before,
+                forked_from_same_startup_snapshot=True,physical_status_semantics_verified=False))
+        u.context_restore(snapshot);u.mem_write(BASE,memory);written.clear();written.update(known);poll_reads.clear();probe_reads.clear();probe_mode=False;out['stop']=original_stop
+        for name,length in baseline_lengths.items():del out[name][length:]
+        out['entry_counts']=baseline_entries
     out.update(final_state=state(),banks_unchanged=bytes(u.mem_read(0x4000,0x4000))==image[0x4000:0x8000],
                application_entry=entry,flash_image_sha256=hashlib.sha256(image).hexdigest(),
                consumed_mmio_inputs=consumed,unused_mmio_inputs=inputs,
@@ -206,13 +254,14 @@ if __name__=='__main__':
     parser.add_argument('--stop-before-startup-wait',action='store_true')
     parser.add_argument('--scheduled-ticks',type=int,default=0,help='Synthetic calls to native timer body; no hardware interrupt delivery or elapsed-time claim')
     parser.add_argument('--mmio-site-inputs',type=Path,help='Explicit repeatable read-site assumptions, usable only after ordered inputs are consumed')
+    parser.add_argument('--background-completion-probes',action='store_true')
     args=parser.parse_args()
     if args.output.exists():parser.error('New output required')
     inputs=[] if args.mmio_inputs is None else json.loads(args.mmio_inputs.read_text(encoding='utf-8'))
     if not isinstance(inputs,list):parser.error('MMIO input document must be an explicit list')
     sites=[] if args.mmio_site_inputs is None else json.loads(args.mmio_site_inputs.read_text(encoding='utf-8'))
     if not isinstance(sites,list):parser.error('MMIO site document must be an explicit list')
-    image=args.full_reference.read_bytes();result=dict(schema='al5-offline-application-startup-audit-v1',cases=[trace(image,mmio_inputs=inputs,model_bank_programs=args.model_bank_programs,stop_after_communication=args.stop_after_communication,stop_before_startup_wait=args.stop_before_startup_wait,scheduled_ticks=args.scheduled_ticks,mmio_site_inputs=sites)],
+    image=args.full_reference.read_bytes();result=dict(schema='al5-offline-application-startup-audit-v1',cases=[trace(image,mmio_inputs=inputs,model_bank_programs=args.model_bank_programs,stop_after_communication=args.stop_after_communication,stop_before_startup_wait=args.stop_before_startup_wait,scheduled_ticks=args.scheduled_ticks,mmio_site_inputs=sites,background_completion_probes=args.background_completion_probes)],
         input_reference=dict(selected=str(args.full_reference),resolved=str(args.full_reference.resolve())),
         source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         source_dependency_sha256={name:hashlib.sha256(Path(__file__).with_name(name).read_bytes()).hexdigest() for name in

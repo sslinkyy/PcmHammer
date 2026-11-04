@@ -137,7 +137,7 @@ class StartupTests(unittest.TestCase):
 
     def test_native_scheduler_changes_handshake_and_retains_background_response(self):
         observed=trace(self.image,mmio_inputs=self.scheduler_inputs(),model_bank_programs=True,
-                       scheduled_ticks=320,mmio_site_inputs=self.scheduler_sites())
+                       scheduled_ticks=320,mmio_site_inputs=self.scheduler_sites(),background_completion_probes=True)
         self.assertEqual(dict(reason='after_native_startup_handshake',pc=0x5004C),observed['stop'])
         ticks=observed['scripted_ticks'];self.assertEqual(320,len(ticks))
         self.assertTrue(all(row['returned'] and not row['physical_exception_delivered'] for row in ticks))
@@ -154,11 +154,26 @@ class StartupTests(unittest.TestCase):
         self.assertEqual('000000000000',observed['final_state']['body'])
         self.assertEqual(13,len(observed['synthetic_bank_programs']))
         self.assertEqual([0x4A1D,0x4A1E,0x4A23,0x4A29,0x4A2F,0x4A41,0x4A42,0x4A47],observed['bank_comparison']['changed_addresses'])
+        probes={row['case']:row for row in observed['background_completion_probes']}
+        self.assertEqual(4,len(probes))
+        for row in probes.values():
+            self.assertTrue(row['returned'] and row['banks_unchanged_during_probe'])
+            self.assertFalse(row['physical_status_semantics_verified'])
+            self.assertEqual([],row['unused_inputs'])
+            self.assertEqual('0002',row['before']['tracking'])
+        self.assertEqual('0002',probes['empty_receive_retains']['after']['tracking'])
+        self.assertEqual('0000',probes['nonempty_receive_retires']['after']['tracking'])
+        for name in ('nonempty_receive_requeues','interface_clear_requeues'):
+            row=probes[name]
+            self.assertEqual('0000',row['after']['tracking'])
+            self.assertEqual('20',row['after']['pending_region'][:2])
+            self.assertEqual(['49fe1806'],[s['hex'] for s in row['submissions']])
 
     def test_scripted_tick_and_site_assumptions_fail_closed(self):
         for count in (-1,321,True):
             with self.subTest(count=count),self.assertRaises(ValueError):trace(self.image,scheduled_ticks=count)
         with self.assertRaises(ValueError):trace(self.image,scheduled_ticks=1,stop_after_communication=True)
+        with self.assertRaises(ValueError):trace(self.image,background_completion_probes=True)
         row=self.scheduler_sites()[0]
         with self.assertRaises(ValueError):trace(self.image,mmio_site_inputs=[row,row])
 

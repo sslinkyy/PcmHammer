@@ -42,6 +42,8 @@ Require the chosen controller/profile and fresh security to be qualified, an ade
 
 Prepare the candidate from the spare's unchanged calibration, exact loader and complete reference using the offline tool. Review its hashes, two erase sectors, 192 data blocks, collateral restoration and separate finalization. Expected-image files are never used as proof of independent readback.
 
+The [current multipart checkpoint](WRITE_PROGRESS_20261103.md) adds an explicit preflight gate: define the verification epoch around the finalizer's reset attempt and ordinary startup journal updates. The current candidate correctly rejects unexplained bank differences even when programmed sectors match. Do not proceed by accepting a newly observed post-startup bank file as its own expected baseline, or by ignoring the entire bank region.
+
 Once the required live gates are explicitly satisfied and programming is enabled in a reviewed build, capture the complete write. Independently read back and compare calibration, collateral, marker, persistent banks and other preserved regions. Record preparation-related differences explicitly. Confirm subsequent boot/identity separately from successful protocol acknowledgements.
 
 ## Recovery experiments are a separate session

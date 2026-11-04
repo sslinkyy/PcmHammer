@@ -57,3 +57,18 @@ python Tools/AL5/test_trace_resident_main_startup.py --full-reference PINNED_FUL
 Twelve regression methods cover the previous startup boundaries plus remaining main calls, the observed interrupt mask, the strict first-tick dependency, native event/callback selection, the native handshake stores, exact background submission/tracking and bank changes, and rejection of invalid scripted campaigns. Existing production-host tests separately retain the twelve reply-freshness and eleven receiver/restore outcomes. Neither test set grants physical or live-operation authority.
 
 Pass the new scheduler report as the fourth argument to `ResidentFreshnessTest` after the pinned SPS OS, earlier freshness report and receiver-init report. The production campaign consumes the actual native background submission and classifies it as unrelated, preserving its pending bank request with zero acquired bytes. Timeout remains terminal, incomplete export remains rejected, and physical/live gates remain false.
+
+## Background completion and acquisition decision
+
+`--background-completion-probes` with the complete 320-call witness forks four continuations from the same saved startup CPU/RAM state. Each runs native code, with all storage primitives trapped, and preserves the banks from that starting snapshot:
+
+- Numeric `E0/30` with empty RX retains tracking index two.
+- With an accumulated eight-byte read request, `E0/30` retires tracking.
+- With that accumulation, `E0/00` clears tracking and requeues pending index two. The complete native scheduler submits `49 FE 18 06` again.
+- Native interface clear also requeues index two, and the scheduler resubmits those bytes.
+
+These are conditional numeric status cases, not hardware success/error labels. Probe logs are separate from the baseline scheduling counts/submissions; restoring the analysis snapshot is not a controller reset or a proposed session fence.
+
+The host test also feeds the earlier native same-echo upper-bank reply through the production GT DVI parser, queues it before an adapter ACK, and clears the real host queue with a successfully completed scripted local-port discard. A separate scripted upstream delivery after that clear reaches the parser and new bank owner; the stock echo still matches. No real port opens, and the test does not claim to measure a GT firmware FIFO. It demonstrates why the implemented local clear does not establish an end-to-end physical boundary.
+
+The resulting decision and the complete-backup/security dependency are recorded in the [writer-first multipart checkpoint](WRITE_PROGRESS_20261103.md). Stock observations remain usable within their existing scope; they are not promoted to a qualified complete original acquisition.

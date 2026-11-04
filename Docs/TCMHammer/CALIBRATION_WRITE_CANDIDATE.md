@@ -16,6 +16,8 @@ A checksum rejection exposes the exact retained packet for explicit offline retr
 
 After cleanup, comparison requires all 1 MiB of saved readback. Calibration, collateral and marker are assessed separately. Persistent-bank changes outside the erase sectors are counted separately from other protected changes. Even if preparation legitimately changes those banks, the candidate does not silently accept the difference as preservation. Expected images are predictions, not backups or independent readback.
 
+The [multipart checkpoint](WRITE_PROGRESS_20261103.md) identifies an unresolved verification-epoch requirement. The captured loader's finalizer enters its shared reset attempt, and the newly traced ordinary startup/periodic journal path can change banks afterward. Applying those actual modeled native journal requests to a complete saved writer rehearsal leaves the programmed sectors exact but causes eight bank differences and a terminal incomplete-preservation result. This is the intended conservative comparison, not authority to ignore the differences. Before an enabled writer, qualify when and how the independent bank-preservation comparison is acquired; finalization success and a post-startup bank snapshot alone do not resolve that timing question.
+
 ## Offline preparation command
 
 From the repository root:
