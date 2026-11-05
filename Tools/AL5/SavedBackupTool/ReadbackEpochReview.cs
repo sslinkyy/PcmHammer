@@ -9,20 +9,12 @@ static partial class Program
         string output=Path.GetFullPath(args[13]);
         if(Directory.Exists(output) || File.Exists(output))throw new ArgumentException("New output directory required; existing evidence is retained.");
         byte[] original=ReadFullChip(args[1]),prepared=ReadSizedFile(args[2],0x4000),loader=ReadSizedFile(args[3],1590),lifecycle=File.ReadAllBytes(args[4]);
-        var frames=new List<(bool Transmitted,byte[] Frame)>();
-        using(var reader=new StreamReader(new MemoryStream(lifecycle),new System.Text.UTF8Encoding(false,true)))
-        {
-            while(reader.ReadLine() is string line)
-            {
-                if(line.Length<3 || line[1]!=' ' || (line[0]!='T' && line[0]!='R'))throw new ArgumentException("Malformed saved lifecycle record.");
-                frames.Add((line[0]=='T',Convert.FromHexString(line.Substring(2))));
-            }
-        }
+        var frames=ParseSavedLifecycle(lifecycle);
         AL5SavedReadbackEpochKind kind=args[11] switch {
             "startup-unobserved"=>AL5SavedReadbackEpochKind.AfterCleanupStartupUnobserved,
             "declared-startup"=>AL5SavedReadbackEpochKind.AfterDeclaredStartup,
             _=>throw new ArgumentException("Explicit supported startup declaration required; it is not a physical observation.")};
-        var epoch=AL5SavedReadbackEpoch.RehearseSavedLifecycle(loader,original,prepared,frames.ToArray(),args[12],kind,
+        var epoch=AL5SavedReadbackEpoch.RehearseSavedLifecycle(loader,original,prepared,frames,args[12],kind,
             Convert.FromHexString(args[8]),Convert.FromHexString(args[9]),Convert.FromHexString(args[10]));
         byte[] before=File.ReadAllBytes(args[5]),image=File.ReadAllBytes(args[6]),after=File.ReadAllBytes(args[7]);
         var beforeCounts=Consume(epoch.BeginNextSavedRequest,epoch.ObserveSavedReply,before);

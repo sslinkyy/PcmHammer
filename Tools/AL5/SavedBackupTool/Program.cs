@@ -51,6 +51,8 @@ static partial class Program
     static int Run(string[] args)
     {
         if(args.Length>0 && args[0]=="--readback-epoch")return ReadbackEpoch(args);
+        if(args.Length>0 && args[0]=="--external-readback")return ExternalReadback(args);
+        if(args.Length>0 && args[0]=="--capture-external-readback")return CaptureExternalReadback(args);
         if(args.Length>0 && args[0]=="--external-chip")return ExternalChip(args);
         if(args.Length>0 && args[0]=="--external-prepared")return ExternalPrepared(args);
         if(args.Length>0 && args[0]=="--startup-bank-review")return StartupBankReview(args);
@@ -145,28 +147,22 @@ static partial class Program
 
     static int ExternalChip(string[] args)
     {
-        if(args.Length!=6)throw new ArgumentException("--external-chip first-raw.bin second-raw.bin cpu-bytes|swap16 evidence-id NEW-output-directory");
+        if(args.Length!=6 && (args.Length!=8 || args[6]!="--target-id"))throw new ArgumentException("--external-chip first-raw.bin second-raw.bin cpu-bytes|swap16 evidence-id NEW-output-directory [--target-id TARGET-ID]");
+        string? targetId=args.Length==8?args[7]:null;
+        if(targetId!=null && string.IsNullOrWhiteSpace(targetId))throw new ArgumentException("Nonblank explicit target identity required.");
         if(args[3]!="cpu-bytes" && args[3]!="swap16")throw new ArgumentException("Explicit byte representation required; no automatic word swap.");
         if(string.IsNullOrWhiteSpace(args[4]))throw new ArgumentException("Explicit evidence identity required.");
         string output=Path.GetFullPath(args[5]);
         if(Directory.Exists(output)||File.Exists(output))throw new ArgumentException("New output directory required.");
-        string SelectedTarget(string path)
-        {
-            var file=new FileInfo(path);return Path.GetFullPath(file.ResolveLinkTarget(true)?.FullName??file.FullName);
-        }
-        if(string.Equals(SelectedTarget(args[1]),SelectedTarget(args[2]),OperatingSystem.IsWindows()?StringComparison.OrdinalIgnoreCase:StringComparison.Ordinal))
-            throw new ArgumentException("Select two distinct dump paths; self-comparison is not a repeated-read check.");
-        byte[] first=ReadFullChip(args[1]),second=ReadFullChip(args[2]);
-        if(!first.SequenceEqual(second))throw new ArgumentException("Raw chip files differ; no output image is synthesized.");
-        if(first.All(b=>b==255)||first.All(b=>b==0))throw new ArgumentException("Blank or zero-filled input is not an AL5 original.");
-        byte[] canonical=(byte[])first.Clone();
-        if(args[3]=="swap16")for(int i=0;i<canonical.Length;i+=2)(canonical[i],canonical[i+1])=(canonical[i+1],canonical[i]);
+        var pair=ReadExternalPair(args[1],args[2],args[3]);
+        byte[] first=pair.CopyFirstRaw(),second=pair.CopySecondRaw(),canonical=pair.CopyCanonical();
+        if(pair.AllFF || pair.AllZero)throw new ArgumentException("Blank or zero-filled input is not an AL5 original.");
         byte[] calibration=canonical.AsSpan(AL5CalibrationInspection.StartAddress,AL5CalibrationInspection.Length).ToArray();
         var profile=AL5CalibrationWriteProfile.InspectSavedReference(canonical,calibration);
         if(!profile.SavedBytesMatchProfile)throw new ArgumentException("Selected representation does not match the supported AL5 boot/OS/calibration profile; no automatic reinterpretation.");
         byte[] banks=canonical.AsSpan(0x4000,0x4000).ToArray();
         var report=new {
-            schema="al5-saved-external-chip-backup-v1",evidence_id=args[4],raw_first=Input(args[1],first),raw_second=Input(args[2],second),
+            schema="al5-saved-external-chip-backup-v1",evidence_id=args[4],target_id=targetId,raw_first=Input(args[1],first),raw_second=Input(args[2],second),
             representation=args[3],explicit_adjacent_pair_conversion=args[3]=="swap16",raw_saved_files_match=true,
             canonical_bytes=canonical.Length,canonical_sha256=Hash(canonical),original_bank_sha256=Hash(banks),saved_profile=profile,
             acquisition_epoch="caller_supplied_external_dump_epoch_not_physically_verified",provenance="saved_files_only_not_hardware_read_or_recovery_proof",
@@ -188,25 +184,9 @@ static partial class Program
         if(string.IsNullOrWhiteSpace(args[4]))throw new ArgumentException("Explicit evidence identity required.");
         string output=Path.GetFullPath(args[6]);
         if(Directory.Exists(output)||File.Exists(output))throw new ArgumentException("New output directory required.");
-        string source=Path.GetFullPath(args[1]);byte[] metadata=File.ReadAllBytes(Path.Combine(source,"backup.json"));
-        using var document=JsonDocument.Parse(metadata);var report=document.RootElement;
-        if(report.GetProperty("schema").GetString()!="al5-saved-external-chip-backup-v1")throw new ArgumentException("External original importer report required.");
-        foreach(string flag in new[]{"chip_identity_verified","physical_data_lane_mapping_verified","pre_entry_physical_acquisition_verified","physical_recovery_verified","hardware_access","live_upload_enabled","live_execution_enabled","live_write_enabled","ready_to_flash"})
-            if(report.GetProperty(flag).GetBoolean())throw new ArgumentException("Saved importer evidence must not promote physical/live authority.");
-        byte[] first=ReadFullChip(Path.Combine(source,"first.raw.saved.bin")),second=ReadFullChip(Path.Combine(source,"second.raw.saved.bin"));
-        byte[] original=ReadFullChip(Path.Combine(source,"original.canonical.saved.bin"));
-        if(!first.SequenceEqual(second)||Hash(first)!=report.GetProperty("raw_first").GetProperty("sha256").GetString()||
-            Hash(second)!=report.GetProperty("raw_second").GetProperty("sha256").GetString()||Hash(original)!=report.GetProperty("canonical_sha256").GetString())
-            throw new ArgumentException("External original artifacts no longer match their importer report.");
-        string order=report.GetProperty("representation").GetString()!;
-        if(order!="cpu-bytes"&&order!="swap16")throw new ArgumentException("Unsupported external byte representation.");
-        if(order=="swap16")for(int i=0;i<first.Length;i+=2)(first[i],first[i+1])=(first[i+1],first[i]);
-        if(!first.SequenceEqual(original))throw new ArgumentException("Canonical bytes differ from the explicitly represented raw files.");
+        string source=Path.GetFullPath(args[1]);var loaded=LoadExternalOriginal(source);byte[] metadata=loaded.Metadata,original=loaded.Original;
         var security=new AL5SavedSecurityExchange(original); // Pure saved-profile validation; never sends a key.
         byte[] originalBanks=original.AsSpan(0x4000,0x4000).ToArray();
-        if(Hash(originalBanks)!=report.GetProperty("original_bank_sha256").GetString()||
-            !File.ReadAllBytes(Path.Combine(source,"original_banks.saved.bin")).SequenceEqual(originalBanks))
-            throw new ArgumentException("Original bank artifact differs from the complete external original.");
         byte[] transcript=File.ReadAllBytes(args[2]);
         var campaign=AL5SavedBackupPath.FromSavedExternalOriginal(args[4],original,Convert.FromHexString(args[3]));
         campaign.RecordEntryBoundaryForOfflineReview();var counts=Consume(campaign,transcript);

@@ -1,0 +1,162 @@
+{
+  "schema": "al5-spare-external-acquisition-review-v1",
+  "status": "spare_in_transit_no_actual_acquisition",
+  "tested_library_sha256": "c2f7030b43fdb59e3f1fcc2d23d4229e94b4f49103ed0f16b7c12d71d76aa408",
+  "external_readback_cases": [
+    {
+      "case": "matched",
+      "passed": true,
+      "expected_outcome": "strict_saved_comparison_matched"
+    },
+    {
+      "case": "shutdown_declared",
+      "passed": true,
+      "expected_outcome": "strict_saved_comparison_matched"
+    },
+    {
+      "case": "archived_original_sources",
+      "passed": true,
+      "expected_outcome": "strict_saved_comparison_matched"
+    },
+    {
+      "case": "swapped",
+      "passed": true,
+      "expected_outcome": "strict_saved_comparison_matched"
+    },
+    {
+      "case": "wrong_selected_order",
+      "passed": true,
+      "expected_outcome": "strict_saved_comparison_failed"
+    },
+    {
+      "case": "boot_corrupt",
+      "passed": true,
+      "expected_outcome": "strict_saved_comparison_failed"
+    },
+    {
+      "case": "compensation_corrupt",
+      "passed": true,
+      "expected_outcome": "strict_saved_comparison_failed"
+    },
+    {
+      "case": "bank_changed",
+      "passed": true,
+      "expected_outcome": "strict_saved_comparison_failed"
+    },
+    {
+      "case": "blank_failure_retained",
+      "passed": true,
+      "expected_outcome": "strict_saved_comparison_failed"
+    },
+    {
+      "case": "zero_failure_retained",
+      "passed": true,
+      "expected_outcome": "strict_saved_comparison_failed"
+    },
+    {
+      "case": "mismatched_pair",
+      "passed": true,
+      "expected_outcome": null
+    },
+    {
+      "case": "partial_image",
+      "passed": true,
+      "expected_outcome": null
+    },
+    {
+      "case": "unknown_order",
+      "passed": true,
+      "expected_outcome": null
+    },
+    {
+      "case": "same_path",
+      "passed": true,
+      "expected_outcome": null
+    },
+    {
+      "case": "original_artifact_alias",
+      "passed": true,
+      "expected_outcome": null
+    },
+    {
+      "case": "original_source_alias",
+      "passed": true,
+      "expected_outcome": null
+    },
+    {
+      "case": "wrong_target",
+      "passed": true,
+      "expected_outcome": null
+    },
+    {
+      "case": "empty_history",
+      "passed": true,
+      "expected_outcome": null
+    },
+    {
+      "case": "promoted_original_flag",
+      "passed": true,
+      "expected_outcome": null
+    },
+    {
+      "case": "changed_original_artifact",
+      "passed": true,
+      "expected_outcome": null
+    },
+    {
+      "case": "untagged_original",
+      "passed": true,
+      "expected_outcome": null
+    },
+    {
+      "case": "unknown_power_epoch",
+      "passed": true,
+      "expected_outcome": null
+    },
+    {
+      "case": "existing_output_retained",
+      "passed": true,
+      "expected_outcome": null
+    },
+    {
+      "case": "capture_blank_without_lifecycle",
+      "passed": true,
+      "expected_outcome": "captured_saved_pair_comparison_unavailable"
+    },
+    {
+      "case": "capture_damaged_without_lifecycle",
+      "passed": true,
+      "expected_outcome": "captured_saved_pair_comparison_unavailable"
+    },
+    {
+      "case": "capture_wrong_target",
+      "passed": true,
+      "expected_outcome": null
+    }
+  ],
+  "original_import_cases": 14,
+  "prepared_join_cases": 7,
+  "correlated_exporter_cases": 12,
+  "epoch_cases": 20,
+  "disabled_gate_combinations": 210,
+  "unchanged_producers": [
+    "Apps/PcmLibrary/AL5CalibrationWriteCandidate.cs",
+    "Apps/PcmLibrary/AL5WriteExecutionBinding.cs",
+    "Apps/PcmLibrary/AL5OfflineWriteDispatcher.cs",
+    "Apps/PcmLibrary/AL5ReadOnlyCoreSession.cs",
+    "Apps/PcmLibrary/AL5ReadOnlyRangeCampaign.cs",
+    "Apps/PcmLibrary/AL5ReadOnlyFlashCampaign.cs",
+    "Apps/PcmLibrary/AL5SavedBankTransitionReview.cs"
+  ],
+  "standalone_writer_reused": true,
+  "native_models_rerun": false,
+  "hardware_access": false,
+  "actual_original_acquired": false,
+  "actual_prepared_banks_acquired": false,
+  "actual_al5_restoration_demonstrated": false,
+  "live_upload_enabled": false,
+  "live_execution_enabled": false,
+  "live_write_enabled": false,
+  "ready_to_flash": false,
+  "failed_write_capture_without_lifecycle_implemented": true
+}

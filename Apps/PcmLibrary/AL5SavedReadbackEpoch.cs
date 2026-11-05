@@ -104,6 +104,10 @@ namespace PcmHacking
         public static AL5SavedReadbackEpoch RehearseSavedLifecycle(byte[] loader,byte[] original,byte[] prepared,
             (bool Transmitted,byte[] Frame)[] frames,string evidenceId,AL5SavedReadbackEpochKind kind,
             byte[] beforeNonce,byte[] imageNonce,byte[] afterNonce)
+            =>CreateForCompletedSavedCandidate(RehearseSavedCandidate(loader,original,prepared,frames),
+                evidenceId,kind,beforeNonce,imageNonce,afterNonce);
+        internal static AL5CalibrationWriteCandidate RehearseSavedCandidate(byte[] loader,byte[] original,byte[] prepared,
+            (bool Transmitted,byte[] Frame)[] frames)
         {
             if(original==null || original.Length!=0x100000 || prepared==null || prepared.Length!=0x4000)
                 throw new ArgumentException("Complete saved original image and prepared banks required.");
@@ -120,7 +124,9 @@ namespace PcmHacking
                 if(frame.Frame==null)throw new ArgumentException("Missing saved lifecycle frame.");
                 candidate.ObserveSavedFrame(frame.Transmitted,(byte[])frame.Frame.Clone());
             }
-            return CreateForCompletedSavedCandidate(candidate,evidenceId,kind,beforeNonce,imageNonce,afterNonce);
+            if(candidate.State!=AL5CapturedWriteState.AwaitingSavedVerification || !candidate.SavedCleanupObserved || !candidate.HasSavedPreparedBankReference)
+                throw new InvalidOperationException("Complete saved cleanup and prepared banks required before readback review.");
+            return candidate;
         }
         private static string Hex(byte[] b)=>BitConverter.ToString(b).Replace("-","").ToLowerInvariant();
         private static string Hash(byte[] b){using(var h=SHA256.Create())return Hex(h.ComputeHash(b));}

@@ -1,5 +1,7 @@
 # External original acquisition and finalizer timing
 
+For current spare intake, use the [target-tagged original and external readback commands](SPARE_EXTERNAL_ACQUISITION.md). The historical untagged importer examples below remain supported, but new external readback requires the original's explicit target ID.
+
 This continuation reviews the retained programmer work before extending the AL5 tools. The spare is still in transit. No programmer, adapter, vehicle, upload, execution or live write is accessed or enabled.
 
 ## Existing equipment evidence

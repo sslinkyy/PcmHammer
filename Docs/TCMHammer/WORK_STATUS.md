@@ -78,6 +78,8 @@ The examined application CRC checks 57,302 calibration bytes, excluding the fina
 
 ### 11. T48 and recovery
 
+The [spare external acquisition route](SPARE_EXTERNAL_ACQUISITION.md) now provides target-tagged original intake and a post-write external-pair comparison that needs no reader-kernel entry. It reuses the known T48/file workflow and strict comparator, retains blank/corrupted readbacks as failures, and supplies an empty intake workspace for actual observations. The spare remains in transit; no physical epoch, prepared-bank acquisition or AL5 restoration is established by these file tests.
+
 [Physical hardware](../AL5/PHYSICAL_HARDWARE_20261010.md) and the external-original continuation already document T48, Xgpro 13.16, firmware 00.01.39 and ADP_S44_EX-1. A loose Intel TB28F400B5B 44-pin chip was programmed/verified with an independent 512 KiB readback. Do not ask the user to identify this equipment again.
 
 That Intel result does not qualify the spare AL5's chip, byte order, rework or restore operation. [A12 modeling](../AL5/A12_RECOVERY_MODEL.md), physical pin 38 and reset-status hypotheses are retained research, not demonstrated recovery. An intact bottom boot sector does not guarantee SPS recovery. Reopen recovery against the actual spare/chip or new physical evidence, not the generic P59 analogy.
@@ -97,7 +99,7 @@ Keep XDF GUI follow-up and future shift/TCC tuning separate from the unchanged-c
 ## Remaining work, in order
 
 1. **Actual spare and bench:** record identity/profile, actual chip markings and verified AL5 wiring. The packet has no verified bench pinout. Do not reuse an E54 harness or guessed pins. Spare arrival alone does not make the disabled candidate writable.
-2. **Independent original and restoration:** select the external or correlated route, obtain a coherent complete original, and demonstrate applicable AL5 restoration before erase. The T48 workflow is known; actual AL5 fitment/acquisition/recovery is not.
+2. **Independent original and restoration:** prepare the target-tagged external original/readback route as the first bench option if actual chip access/restoration can be qualified. It avoids a second reader upload for comparison. Correlated acquisition remains an alternative, not another mandatory campaign. Obtain the actual complete original and demonstrate applicable AL5 restoration before erase; equipment identification is already documented.
 3. **Bounded access qualification:** establish fresh security and preparation effects on the spare, transport/handoff/RAM/watchdog behavior and independently acquired prepared banks. Capture each boundary; unknown or ambiguous completion stops. Implement the separately reviewed live bench factory/UI binding only for qualified stages.
 4. **Resolve finalization/readback timing:** cleanup polling and the ordered saved readback-epoch workflow are implemented and tested offline. Qualify the actual independent acquisition on the spare, including reader-entry effects and reset/startup history. Preserve marker/collateral and diagnose startup journals exactly; do not relax whole-bank comparison because samples agree or a model predicts changes. There is no measured reset/readback window yet.
 5. **First write and custom path:** run the unchanged-calibration candidate, independently compare the full required regions and verify reboot/identity. Establish reproducibility before a minimal custom calibration. Deliberate interrupted-write experiments follow demonstrated restoration capability.
@@ -108,11 +110,11 @@ The installed truck is not the experimental qualification target. No fresh resea
 
 The pre-audit frozen packet `LocalOnly/AL5_INHERITED_WATCHDOG_BENCH_PACKAGE_V1` (1,103 sealed files) remains intact as historical evidence. Its application is from `LocalOnly/tcmhammer_watchdog_tail_preflight_v1`, library SHA256 `027a0e9bd9c403ad1d93108f90121d34b3f119025591b89f7169caf5e06743df`. The newer cleanup-poll source changes require the separately built disabled candidate `LocalOnly/tcmhammer_cleanup_poll_preflight_v1`, library SHA256 `a96e2564e12a732067fc4c1b3d891f029e737879b6826bd052524b6159e1f98c`; see the cleanup-poll continuation and its receipts. Do not claim that the historical packet's application inputs still match the newer source.
 
-The current disabled arrival packet is `LocalOnly/AL5_READBACK_EPOCH_BENCH_PACKAGE_V1`. It reuses the source-matched standalone offline writer and unchanged capture helpers, includes the new Windows candidate and pinned backup exporter, and retains prior native evidence plus current host/epoch checks. The current library SHA256 is `4048e5a74e0b99d952434ee3eb7cbe01f3d51ff59771876fcfd33c20390d9084`; see the independent epoch continuation. Use file-only checks, from the PcmHammer checkout:
+The current disabled arrival packet is `LocalOnly/AL5_SPARE_ACQUISITION_BENCH_PACKAGE_V2`, including capture-only handling when a write does not reach cleanup. It reuses the source-matched standalone offline writer and unchanged capture helpers, includes the new Windows candidate and pinned backup exporter, and retains prior native evidence plus current acquisition checks. The current library SHA256 is `c2f7030b43fdb59e3f1fcc2d23d4229e94b4f49103ed0f16b7c12d71d76aa408`; see the spare external acquisition continuation. Use file-only checks, from the PcmHammer checkout:
 
 ```powershell
-python Tools/AL5/freeze_bench_candidate.py verify --package LocalOnly/AL5_READBACK_EPOCH_BENCH_PACKAGE_V1
-python Tools/AL5/freeze_bench_candidate.py verify --package LocalOnly/AL5_READBACK_EPOCH_BENCH_PACKAGE_V1 --repo . --application-only
+python Tools/AL5/freeze_bench_candidate.py verify --package LocalOnly/AL5_SPARE_ACQUISITION_BENCH_PACKAGE_V2
+python Tools/AL5/freeze_bench_candidate.py verify --package LocalOnly/AL5_SPARE_ACQUISITION_BENCH_PACKAGE_V2 --repo . --application-only
 ```
 
 The first verifies the sealed inventory. The second also checks application inputs and explicitly reports documentation/tool/kernel drift separately. `verified` in application scope does **not** qualify changed tools or kernels, prove dependency completeness, rebuild software, or authorize hardware. The default `--repo .` complete scope still fails on any source drift. Inspect changed producers and run affected checks only; do not reseal/rebuild every runtime because a status document changed. All scopes fail for modified, missing or extra package files.

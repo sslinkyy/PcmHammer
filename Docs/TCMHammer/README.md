@@ -4,6 +4,8 @@
 
 [Independent readback epoch review](INDEPENDENT_READBACK_EPOCH.md) joins ordered correlated bank/full-image/bank observations to strict preservation and the existing startup-bank diagnosis. Equal samples remain insufficient to prove an atomic physical snapshot or non-mutating reader entry.
 
+[Spare external acquisition](SPARE_EXTERNAL_ACQUISITION.md) prepares the known T48/file workflow for target-tagged original intake and full external readback comparison after the first bench write, avoiding a second reader upload. The spare is still in transit and all live gates remain disabled.
+
 [Resident receiver initialization](RESIDENT_RECEIVER_INITIALIZATION.md) joins C-runtime clear, communication setup, guarded receive, native dispatch, full scheduler selection and countdown behavior without enabling live operations.
 
 [Resident reply freshness](RESIDENT_REPLY_FRESHNESS.md) joins native scheduling, submission, status events and startup-state clearing. Interface reset can requeue an old reply; physical freshness remains unqualified.

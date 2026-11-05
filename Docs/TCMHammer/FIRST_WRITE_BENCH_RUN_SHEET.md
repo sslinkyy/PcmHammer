@@ -2,6 +2,8 @@
 
 Read [current work status](WORK_STATUS.md) first for the selected profile, original/prepared acquisition choices and later finalizer evidence. This run sheet does not enable the separately gated live binding.
 
+For the actual spare, follow [target-tagged external acquisition](SPARE_EXTERNAL_ACQUISITION.md) before first startup when that route is physically appropriate. Preserve its original chip state first; the calibration/identity reads below are supplementary and must not silently precede the chosen original epoch.
+
 Prepared 2026-11-02. The objective is to qualify the calibration writer on the spare. Ordinary reads are prerequisites for the write, not a new general reader campaign. No live action is started by this document. The current build still blocks AL5 writing and prototype upload/execution.
 
 ## Before delivery: completed work stays completed
