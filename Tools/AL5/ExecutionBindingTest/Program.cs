@@ -299,7 +299,8 @@ static partial class Program
     static async Task Main(string[] args)
     {
         bool cleanupTimingOnly=args.Length>2 && args[2]=="--cleanup-timing-only";
-        if(cleanupTimingOnly)args=args.Take(2).Concat(args.Skip(3)).ToArray();
+        bool readbackEpochOnly=args.Length>2 && args[2]=="--readback-epoch-only";
+        if(cleanupTimingOnly || readbackEpochOnly)args=args.Take(2).Concat(args.Skip(3)).ToArray();
         string? journalReport=null,postResetReport=null;
         while(args.Length>3 && (args[2]=="--journal-report" || args[2]=="--post-reset-report"))
         {
@@ -316,6 +317,11 @@ static partial class Program
             lines=File.ReadAllLines(args[index]);calibration=File.ReadAllBytes(args[index+1]);original=(byte[])baseline.Clone();
             var image=new AL5CapturedProgramImage();foreach(string line in lines){var m=Convert.FromHexString(line.Substring(2));if(line[0]=='T' && m.Length>12 && m[3]==0x36 && m[4]==0)image.Observe(m);}
             image.CopyCompleteImage().CopyTo(original,0x8000);
+            if(readbackEpochOnly)
+            {
+                if(index==4)ReadbackEpochCases(baseline,journalReport??throw new ArgumentException("Saved native journal report required for epoch review."));
+                continue;
+            }
             if(cleanupTimingOnly)
             {
                 await CapturedCleanupOrderingCase(Path.GetFileName(Path.GetDirectoryName(args[index]))!);

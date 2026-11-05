@@ -4,12 +4,13 @@ using System.Text.Json;
 
 static partial class Program
 {
-    static void JournalCases(string reportPath,byte[] nativeBaseline)
+    static List<(string Label,byte[] Before,AL5SavedBankTransitionReview Review,int Changed,AL5SavedBankProgram[] Operations)> LoadSavedJournalEpochs(string reportPath,byte[] nativeBaseline)
     {
         using var document=JsonDocument.Parse(File.ReadAllBytes(reportPath));var root=document.RootElement;
         string fullHash=Convert.ToHexString(SHA256.HashData(nativeBaseline)).ToLowerInvariant();
         Check(root.GetProperty("schema").GetString()=="al5-native-journal-restart-v1" && root.GetProperty("reference_sha256").GetString()==fullHash,"Native journal source matches selected full baseline");
         string directory=Path.GetDirectoryName(reportPath)!;
+        var epochs=new List<(string,byte[],AL5SavedBankTransitionReview,int,AL5SavedBankProgram[])>();
         foreach(var item in root.GetProperty("cases").EnumerateArray())
         {
             string label=item.GetProperty("case").GetString()!;var observed=item.GetProperty("observed");
@@ -19,6 +20,16 @@ static partial class Program
                 Convert.FromHexString(op.GetProperty("before").GetString()!),Convert.FromHexString(op.GetProperty("after").GetString()!))).ToArray();
             var review=new AL5SavedBankTransitionReview("native-saved-"+label,fullHash,before,operations);
             Check(review.CopyPredictedBanks().SequenceEqual(File.ReadAllBytes(Path.Combine(directory,label+".after.bin"))),"Production diagnostic reproduces every native modeled bank byte");
+            epochs.Add((label,before,review,observed.GetProperty("bank_comparison").GetProperty("changed_addresses").GetArrayLength(),operations));
+        }
+        return epochs;
+    }
+    static void JournalCases(string reportPath,byte[] nativeBaseline)
+    {
+        string fullHash=Convert.ToHexString(SHA256.HashData(nativeBaseline)).ToLowerInvariant();
+        foreach(var epoch in LoadSavedJournalEpochs(reportPath,nativeBaseline))
+        {
+            string label=epoch.Label;byte[] before=epoch.Before;var review=epoch.Review;var operations=epoch.Operations;
             AL5CalibrationWriteCandidate Rehearse()
             {
                 var unstarted=new AL5CalibrationWriteCandidate(loader,nativeBaseline.AsSpan(0x8000,AL5CalibrationInspection.Length).ToArray(),nativeBaseline);
@@ -27,7 +38,7 @@ static partial class Program
             }
             var candidate=Rehearse();byte[] readback=candidate.CopyExpectedSavedImage();review.CopyPredictedBanks().CopyTo(readback,0x4000);
             var diagnosis=candidate.DiagnoseSavedStartupBanks(review,readback);
-            Check(diagnosis.MatchesSavedPrediction && diagnosis.ChangedFromPreparedBytes==observed.GetProperty("bank_comparison").GetProperty("changed_addresses").GetArrayLength(),"Exact native prediction diagnoses the owned epoch");
+            Check(diagnosis.MatchesSavedPrediction && diagnosis.ChangedFromPreparedBytes==epoch.Changed,"Exact native prediction diagnoses the owned epoch");
             Check(!candidate.CompleteSavedComparison && !diagnosis.PreservationVerified && !diagnosis.PhysicalTransitionVerified && !diagnosis.ReadyToFlash,"Diagnosis never authorizes preservation or live readiness");
             var match=candidate.VerifySavedFullReadback(readback);
             Check(match.ExactSavedImageMatch && !candidate.CompleteSavedComparison && candidate.State==AL5CapturedWriteState.Stopped && candidate.ChangedPersistentBankBytes==diagnosis.ChangedFromPreparedBytes,"Native startup differences still fail strict preservation");

@@ -70,6 +70,8 @@ The `0x84` inherited configuration survives under a conditional family/write-onc
 
 ### 10. Post-reset comparison and journal changes
 
+The [independent readback epoch review](INDEPENDENT_READBACK_EPOCH.md) now joins a completed saved writer to ordered bank/full-image/bank campaigns with distinct correlation nonces and exact original/prepared/expected hashes. A file-only exporter preserves stable, unstable and mismatching observations without adopting observed banks as expected. The existing strict comparator and ordered journal diagnosis remain unchanged. Sample agreement does not prove coherence or non-mutating reader entry; both remain physical gates.
+
 [Startup bank verification](STARTUP_BANK_VERIFICATION.md) and the watchdog continuation own ordered historical/prepared/second-startup diagnostics. Eight changed bank bytes in one startup and six in another are distinct modeled epochs, not a global whitelist. Full 16 KiB bank comparison remains strict.
 
 The examined application CRC checks 57,302 calibration bytes, excluding the final compensation word. A changed compensation word can pass those application checks but fail the writer's strict full comparison. Application boot success alone cannot prove preservation. A physically usable independent comparison epoch remains a first-write gate.
@@ -97,7 +99,7 @@ Keep XDF GUI follow-up and future shift/TCC tuning separate from the unchanged-c
 1. **Actual spare and bench:** record identity/profile, actual chip markings and verified AL5 wiring. The packet has no verified bench pinout. Do not reuse an E54 harness or guessed pins. Spare arrival alone does not make the disabled candidate writable.
 2. **Independent original and restoration:** select the external or correlated route, obtain a coherent complete original, and demonstrate applicable AL5 restoration before erase. The T48 workflow is known; actual AL5 fitment/acquisition/recovery is not.
 3. **Bounded access qualification:** establish fresh security and preparation effects on the spare, transport/handoff/RAM/watchdog behavior and independently acquired prepared banks. Capture each boundary; unknown or ambiguous completion stops. Implement the separately reviewed live bench factory/UI binding only for qualified stages.
-4. **Resolve finalization/readback timing:** the scoped cleanup identity-poll owner is implemented and tested offline. Choose and qualify the independent comparison epoch on the spare. Preserve marker/collateral and diagnose startup journals exactly; do not relax whole-bank comparison because a model predicts some changes. There is no measured reset/readback window yet.
+4. **Resolve finalization/readback timing:** cleanup polling and the ordered saved readback-epoch workflow are implemented and tested offline. Qualify the actual independent acquisition on the spare, including reader-entry effects and reset/startup history. Preserve marker/collateral and diagnose startup journals exactly; do not relax whole-bank comparison because samples agree or a model predicts changes. There is no measured reset/readback window yet.
 5. **First write and custom path:** run the unchanged-calibration candidate, independently compare the full required regions and verify reboot/identity. Establish reproducibility before a minimal custom calibration. Deliberate interrupted-write experiments follow demonstrated restoration capability.
 
 The installed truck is not the experimental qualification target. No fresh research is required simply because the spare is still in transit; advance only a named unresolved gate with new evidence.
@@ -106,11 +108,11 @@ The installed truck is not the experimental qualification target. No fresh resea
 
 The pre-audit frozen packet `LocalOnly/AL5_INHERITED_WATCHDOG_BENCH_PACKAGE_V1` (1,103 sealed files) remains intact as historical evidence. Its application is from `LocalOnly/tcmhammer_watchdog_tail_preflight_v1`, library SHA256 `027a0e9bd9c403ad1d93108f90121d34b3f119025591b89f7169caf5e06743df`. The newer cleanup-poll source changes require the separately built disabled candidate `LocalOnly/tcmhammer_cleanup_poll_preflight_v1`, library SHA256 `a96e2564e12a732067fc4c1b3d891f029e737879b6826bd052524b6159e1f98c`; see the cleanup-poll continuation and its receipts. Do not claim that the historical packet's application inputs still match the newer source.
 
-The current disabled arrival packet is `LocalOnly/AL5_CLEANUP_POLL_BENCH_PACKAGE_V1`. It reuses the source-matched standalone offline writer, includes the new Windows candidate and backup exporter rebuilt against the changed shared library, and retains prior native evidence plus current host checks. Use file-only checks, from the PcmHammer checkout:
+The current disabled arrival packet is `LocalOnly/AL5_READBACK_EPOCH_BENCH_PACKAGE_V1`. It reuses the source-matched standalone offline writer and unchanged capture helpers, includes the new Windows candidate and pinned backup exporter, and retains prior native evidence plus current host/epoch checks. The current library SHA256 is `4048e5a74e0b99d952434ee3eb7cbe01f3d51ff59771876fcfd33c20390d9084`; see the independent epoch continuation. Use file-only checks, from the PcmHammer checkout:
 
 ```powershell
-python Tools/AL5/freeze_bench_candidate.py verify --package LocalOnly/AL5_CLEANUP_POLL_BENCH_PACKAGE_V1
-python Tools/AL5/freeze_bench_candidate.py verify --package LocalOnly/AL5_CLEANUP_POLL_BENCH_PACKAGE_V1 --repo . --application-only
+python Tools/AL5/freeze_bench_candidate.py verify --package LocalOnly/AL5_READBACK_EPOCH_BENCH_PACKAGE_V1
+python Tools/AL5/freeze_bench_candidate.py verify --package LocalOnly/AL5_READBACK_EPOCH_BENCH_PACKAGE_V1 --repo . --application-only
 ```
 
 The first verifies the sealed inventory. The second also checks application inputs and explicitly reports documentation/tool/kernel drift separately. `verified` in application scope does **not** qualify changed tools or kernels, prove dependency completeness, rebuild software, or authorize hardware. The default `--repo .` complete scope still fails on any source drift. Inspect changed producers and run affected checks only; do not reseal/rebuild every runtime because a status document changed. All scopes fail for modified, missing or extra package files.

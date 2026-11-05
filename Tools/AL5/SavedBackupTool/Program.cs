@@ -3,7 +3,7 @@ using System.Text.Json;
 using PcmHacking;
 
 // File-only transcript consumer. No Vehicle, adapter, USB or serial object is constructed.
-static class Program
+static partial class Program
 {
     static string Hash(byte[] bytes)=>Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
     static object Input(string path,byte[] bytes)=>new {selected=path,resolved=Path.GetFullPath(path),bytes=bytes.Length,sha256=Hash(bytes)};
@@ -50,6 +50,7 @@ static class Program
     }
     static int Run(string[] args)
     {
+        if(args.Length>0 && args[0]=="--readback-epoch")return ReadbackEpoch(args);
         if(args.Length>0 && args[0]=="--external-chip")return ExternalChip(args);
         if(args.Length>0 && args[0]=="--external-prepared")return ExternalPrepared(args);
         if(args.Length>0 && args[0]=="--startup-bank-review")return StartupBankReview(args);
