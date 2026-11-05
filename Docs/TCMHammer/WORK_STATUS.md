@@ -62,7 +62,7 @@ Choose **one physically qualified original acquisition route**. Do not require b
 
 ### 9. Finalizer, inherited watchdog and reset
 
-The [cleanup timing continuation](FINALIZATION_READINESS_TIMING.md) retains three real saved tail intervals and exposes a cleanup-repeat normalization in the earlier executor success fixtures. Three focused tests with the unchanged library now preserve cleanup order and stop at the first unanswered identity query. A bounded cleanup-poll owner is still needed; neither observed identity traffic nor a fixed wait qualifies independent readback.
+The [cleanup timing continuation](FINALIZATION_READINESS_TIMING.md) retains three real saved tail intervals and exposes cleanup-repeat normalization in the earlier executor success fixtures. The [bounded cleanup-poll review](CLEANUP_IDENTITY_POLL_REVIEW.md) now implements a narrow opt-in offline owner: only a completed empty identity receive can offer explicit review, with attempt/window limits and terminal I/O failures. Default-stop controls remain; all three saved two-query tails now complete through explicit review. Neither observed identity traffic nor a fixed wait qualifies independent readback.
 
 [Finalizer timing](FINALIZER_WATCHDOG_TIMING.md) and [watchdog inheritance](WATCHDOG_INHERITANCE_AND_RESET_CHECKS.md) own the latest native traces. `D0C2` is stored in retained RAM at effective `0xFFFF8000/0xFF8000`, not a reset register. Two delay loops each service the watchdog 20,479 times, then the loader parks without further service. There is no RESET opcode on that tail. Sender timeout instead takes a software jump back to loader entry before reaching the marker/park path.
 
@@ -97,20 +97,20 @@ Keep XDF GUI follow-up and future shift/TCC tuning separate from the unchanged-c
 1. **Actual spare and bench:** record identity/profile, actual chip markings and verified AL5 wiring. The packet has no verified bench pinout. Do not reuse an E54 harness or guessed pins. Spare arrival alone does not make the disabled candidate writable.
 2. **Independent original and restoration:** select the external or correlated route, obtain a coherent complete original, and demonstrate applicable AL5 restoration before erase. The T48 workflow is known; actual AL5 fitment/acquisition/recovery is not.
 3. **Bounded access qualification:** establish fresh security and preparation effects on the spare, transport/handoff/RAM/watchdog behavior and independently acquired prepared banks. Capture each boundary; unknown or ambiguous completion stops. Implement the separately reviewed live bench factory/UI binding only for qualified stages.
-4. **Resolve finalization/readback timing:** implement the separately scoped cleanup identity-poll owner identified in the timing continuation, then choose and qualify the independent comparison epoch. Preserve marker/collateral and diagnose startup journals exactly; do not relax whole-bank comparison because a model predicts some changes. There is no measured reset/readback window yet.
+4. **Resolve finalization/readback timing:** the scoped cleanup identity-poll owner is implemented and tested offline. Choose and qualify the independent comparison epoch on the spare. Preserve marker/collateral and diagnose startup journals exactly; do not relax whole-bank comparison because a model predicts some changes. There is no measured reset/readback window yet.
 5. **First write and custom path:** run the unchanged-calibration candidate, independently compare the full required regions and verify reboot/identity. Establish reproducibility before a minimal custom calibration. Deliberate interrupted-write experiments follow demonstrated restoration capability.
 
 The installed truck is not the experimental qualification target. No fresh research is required simply because the spare is still in transit; advance only a named unresolved gate with new evidence.
 
 ## Reuse and verification procedure
 
-The latest pre-audit frozen packet is `LocalOnly/AL5_INHERITED_WATCHDOG_BENCH_PACKAGE_V1` (1,103 sealed files). Its application is from `LocalOnly/tcmhammer_watchdog_tail_preflight_v1`; PcmLibrary.dll SHA256 is `027a0e9bd9c403ad1d93108f90121d34b3f119025591b89f7169caf5e06743df`. The saved application-reuse receipt compared 491 producing inputs. These are retained artifacts, not a newly built application.
+The pre-audit frozen packet `LocalOnly/AL5_INHERITED_WATCHDOG_BENCH_PACKAGE_V1` (1,103 sealed files) remains intact as historical evidence. Its application is from `LocalOnly/tcmhammer_watchdog_tail_preflight_v1`, library SHA256 `027a0e9bd9c403ad1d93108f90121d34b3f119025591b89f7169caf5e06743df`. The newer cleanup-poll source changes require the separately built disabled candidate `LocalOnly/tcmhammer_cleanup_poll_preflight_v1`, library SHA256 `a96e2564e12a732067fc4c1b3d891f029e737879b6826bd052524b6159e1f98c`; see the cleanup-poll continuation and its receipts. Do not claim that the historical packet's application inputs still match the newer source.
 
-Use file-only checks, from the PcmHammer checkout:
+The current disabled arrival packet is `LocalOnly/AL5_CLEANUP_POLL_BENCH_PACKAGE_V1`. It reuses the source-matched standalone offline writer, includes the new Windows candidate and backup exporter rebuilt against the changed shared library, and retains prior native evidence plus current host checks. Use file-only checks, from the PcmHammer checkout:
 
 ```powershell
-python Tools/AL5/freeze_bench_candidate.py verify --package LocalOnly/AL5_INHERITED_WATCHDOG_BENCH_PACKAGE_V1
-python Tools/AL5/freeze_bench_candidate.py verify --package LocalOnly/AL5_INHERITED_WATCHDOG_BENCH_PACKAGE_V1 --repo . --application-only
+python Tools/AL5/freeze_bench_candidate.py verify --package LocalOnly/AL5_CLEANUP_POLL_BENCH_PACKAGE_V1
+python Tools/AL5/freeze_bench_candidate.py verify --package LocalOnly/AL5_CLEANUP_POLL_BENCH_PACKAGE_V1 --repo . --application-only
 ```
 
 The first verifies the sealed inventory. The second also checks application inputs and explicitly reports documentation/tool/kernel drift separately. `verified` in application scope does **not** qualify changed tools or kernels, prove dependency completeness, rebuild software, or authorize hardware. The default `--repo .` complete scope still fails on any source drift. Inspect changed producers and run affected checks only; do not reseal/rebuild every runtime because a status document changed. All scopes fail for modified, missing or extra package files.

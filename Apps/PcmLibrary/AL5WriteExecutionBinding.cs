@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PcmHacking
 {
-    public enum AL5WriteExecutionOutcome { LiveDisabled, BoundaryReached, SecurityReviewRequired, ChecksumReviewRequired, ReadbackRequired, SavedComparisonMatched, Stopped, Executing, PreparationBackupReviewRequired }
+    public enum AL5WriteExecutionOutcome { LiveDisabled, BoundaryReached, SecurityReviewRequired, ChecksumReviewRequired, ReadbackRequired, SavedComparisonMatched, Stopped, Executing, PreparationBackupReviewRequired, CleanupIdentityPollReviewRequired }
 
     public sealed class AL5WriteExecutionReport
     {
@@ -14,8 +14,9 @@ namespace PcmHacking
             AL5OfflineDispatchStop? reason,int sends,int receives,int blocks,bool outstanding,string? error,
             string? originalHash=null,string? preparedHash=null,int? preparationChanges=null,
             AL5SavedSecurityState? securityState=null,AL5SavedSecurityFailure? securityFailure=null,byte? securityStatus=null,string? backupEvidenceId=null,
-            bool savedFinalizationReplyObserved=false,bool savedCleanupObserved=false)
-        {Outcome=outcome;DispatcherState=state;StopReason=reason;SendCalls=sends;ReceiveCalls=receives;AcknowledgedBlocks=blocks;TransportCallOutstanding=outstanding;TransportError=error;OriginalReferenceSha256=originalHash;PreparedBanksSha256=preparedHash;SavedPreparationChangedBytes=preparationChanges;SavedSecurityState=securityState;SavedSecurityFailure=securityFailure;SavedSecurityStatus=securityStatus;BackupEvidenceId=backupEvidenceId;SavedFinalizationReplyObserved=savedFinalizationReplyObserved;SavedCleanupObserved=savedCleanupObserved;}
+            bool savedFinalizationReplyObserved=false,bool savedCleanupObserved=false,
+            int cleanupIdentityPollAttempts=0,bool savedCleanupIdentityObserved=false,AL5OfflineCleanupPollPolicy? cleanupPolicy=null)
+        {Outcome=outcome;DispatcherState=state;StopReason=reason;SendCalls=sends;ReceiveCalls=receives;AcknowledgedBlocks=blocks;TransportCallOutstanding=outstanding;TransportError=error;OriginalReferenceSha256=originalHash;PreparedBanksSha256=preparedHash;SavedPreparationChangedBytes=preparationChanges;SavedSecurityState=securityState;SavedSecurityFailure=securityFailure;SavedSecurityStatus=securityStatus;BackupEvidenceId=backupEvidenceId;SavedFinalizationReplyObserved=savedFinalizationReplyObserved;SavedCleanupObserved=savedCleanupObserved;CleanupIdentityPollAttempts=cleanupIdentityPollAttempts;SavedCleanupIdentityObserved=savedCleanupIdentityObserved;CleanupIdentityPollLimit=cleanupPolicy?.MaximumAttempts;CleanupIdentityPollWindow=cleanupPolicy?.TotalWindow;}
         public AL5WriteExecutionOutcome Outcome { get; }
         public AL5OfflineDispatchState? DispatcherState { get; }
         public AL5OfflineDispatchStop? StopReason { get; }
@@ -40,6 +41,11 @@ namespace PcmHacking
         public bool RecoveryVerified => false;
         public bool SavedFinalizationReplyObserved { get; }
         public bool SavedCleanupObserved { get; }
+        public int CleanupIdentityPollAttempts { get; }
+        public bool SavedCleanupIdentityObserved { get; }
+        public int? CleanupIdentityPollLimit { get; }
+        public TimeSpan? CleanupIdentityPollWindow { get; }
+        public bool CleanupIdentityResponsePairingProven=>false;
         public bool PhysicalResetVerified=>false;
         public bool PostFinalizationReadbackWindowVerified=>false;
         public bool PhysicalDeadlinesQualified=>false;
@@ -135,7 +141,7 @@ namespace PcmHacking
 
         internal AL5WriteExecutionSession(byte[] loader,byte[] calibration,byte[] reference,int retryBudget,
             AL5OfflineWriteTimeBudget budgets,AL5OfflineWriteBoundary boundary,AL5WriteExecutionIo io,
-            IAL5WriteExecutionClock clock,IAL5WriteExecutionWaiter waiter)
+            IAL5WriteExecutionClock clock,IAL5WriteExecutionWaiter waiter,AL5OfflineCleanupPollPolicy? cleanupPollPolicy=null)
         {
             if(budgets==null || io==null || clock==null || waiter==null)throw new ArgumentNullException();
             // Task.Delay on this netstandard runtime cannot represent a wait beyond Int32 milliseconds.
@@ -146,7 +152,7 @@ namespace PcmHacking
             var original=(byte[])reference.Clone();var candidate=(byte[])calibration.Clone();
             for(int i=0;i<candidate.Length;i++)if(candidate[i]!=original[0x8000+i])
                 throw new ArgumentException("The first qualification executor accepts unchanged calibration only.");
-            dispatcher=new AL5OfflineWriteDispatcher(loader,candidate,original,retryBudget,budgets,boundary);
+            dispatcher=new AL5OfflineWriteDispatcher(loader,candidate,original,retryBudget,budgets,boundary,cleanupPollPolicy);
             this.io=io;this.clock=clock;this.waiter=waiter;
             clockOrigin=clock.Elapsed;
             if(clockOrigin<TimeSpan.Zero)throw new ArgumentOutOfRangeException(nameof(clock),"Execution clock must be nonnegative.");
@@ -165,6 +171,7 @@ namespace PcmHacking
                 case AL5OfflineDispatchState.BoundaryReached:outcome=AL5WriteExecutionOutcome.BoundaryReached;break;
                 case AL5OfflineDispatchState.AwaitingSecurityEvidence:outcome=AL5WriteExecutionOutcome.SecurityReviewRequired;break;
                 case AL5OfflineDispatchState.ChecksumRetryReview:outcome=AL5WriteExecutionOutcome.ChecksumReviewRequired;break;
+                case AL5OfflineDispatchState.CleanupIdentityPollReview:outcome=AL5WriteExecutionOutcome.CleanupIdentityPollReviewRequired;break;
                 case AL5OfflineDispatchState.AwaitingReadback:outcome=AL5WriteExecutionOutcome.ReadbackRequired;break;
                 case AL5OfflineDispatchState.Completed:outcome=AL5WriteExecutionOutcome.SavedComparisonMatched;break;
                 case AL5OfflineDispatchState.ActionAvailable:
@@ -177,19 +184,21 @@ namespace PcmHacking
             return new AL5WriteExecutionReport(outcome,state,dispatcher.StopReason,sends,receives,dispatcher.PositiveProgramReplies,TransportCallOutstanding,transportError,
                 dispatcher.OriginalReferenceSha256,dispatcher.PreparedBanksSha256,dispatcher.SavedPreparationChangedBytes,
                 dispatcher.SavedSecurityState,dispatcher.SavedSecurityFailure,dispatcher.SavedSecurityStatus,backupEvidenceId,
-                dispatcher.SavedFinalizationReplyObserved,dispatcher.SavedCleanupObserved);
+                dispatcher.SavedFinalizationReplyObserved,dispatcher.SavedCleanupObserved,
+                dispatcher.CleanupIdentityPollAttempts,dispatcher.SavedCleanupIdentityObserved,dispatcher.CleanupPollPolicy);
         }
 
         internal Task<AL5WriteExecutionReport> RunUntilReviewAsync(CancellationToken token)=>RunExclusiveAsync(null,false,null,token);
         internal Task<AL5WriteExecutionReport> SubmitSavedSecurityEvidenceAsync(byte[] request,CancellationToken token)=>RunExclusiveAsync(request,false,null,token);
         internal Task<AL5WriteExecutionReport> ReviewChecksumRetryAsync(CancellationToken token)=>RunExclusiveAsync(null,true,null,token);
+        internal Task<AL5WriteExecutionReport> ReviewCleanupIdentityPollAsync(CancellationToken token)=>RunExclusiveAsync(null,false,null,token,null,true);
         internal Task<AL5WriteExecutionReport> RecordSavedPreparedBanksAsync(byte[] banks,CancellationToken token)=>RunExclusiveAsync(null,false,banks,token);
         internal Task<AL5WriteExecutionReport> RecordSavedBackupPathAsync(AL5SavedBackupPath backup,CancellationToken token)
         {
             if(backup==null)throw new ArgumentNullException(nameof(backup));
             return RunExclusiveAsync(null,false,null,token,backup);
         }
-        private async Task<AL5WriteExecutionReport> RunExclusiveAsync(byte[]? keyEvidence,bool retry,byte[]? preparedBanks,CancellationToken token,AL5SavedBackupPath? backup=null)
+        private async Task<AL5WriteExecutionReport> RunExclusiveAsync(byte[]? keyEvidence,bool retry,byte[]? preparedBanks,CancellationToken token,AL5SavedBackupPath? backup=null,bool cleanupPollReview=false)
         {
             if(Interlocked.CompareExchange(ref running,1,0)!=0)throw new InvalidOperationException("An execution call already owns this session.");
             try
@@ -205,10 +214,10 @@ namespace PcmHacking
                     backupEvidenceId=backup.EvidenceId;
                 }
                 if(preparedBanks!=null)dispatcher.RecordSavedPreparedBanks(preparedBanks);
-                if(keyEvidence!=null || retry)
+                if(keyEvidence!=null || retry || cleanupPollReview)
                 {
                     AL5OfflineWriteDispatch request;
-                    try{request=retry?dispatcher.PrepareChecksumRetryForOfflineReview():dispatcher.PrepareSavedSecurityEvidence(keyEvidence!);}
+                    try{request=cleanupPollReview?dispatcher.PrepareCleanupIdentityPollForOfflineReview():retry?dispatcher.PrepareChecksumRetryForOfflineReview():dispatcher.PrepareSavedSecurityEvidence(keyEvidence!);}
                     catch(InvalidOperationException){if(IsTerminal())return Snapshot();throw;}
                     if(!await SendAsync(request,token).ConfigureAwait(false))return Snapshot();
                 }
@@ -302,7 +311,7 @@ namespace PcmHacking
             try{reply=await operation.ConfigureAwait(false);}
             catch(Exception error){transportError=error.Message;dispatcher.StopFromExecutionBinding(AL5OfflineDispatchStop.ReceiveFault);return false;}
             if(!AdvanceOrStop(token))return false;
-            if(reply==null){dispatcher.Timeout();return false;}
+            if(reply==null){dispatcher.RecordCompletedEmptyReceive();return false;}
             try{dispatcher.ObserveSavedReply(reply);}
             catch(ArgumentException error){transportError=error.Message;return false;}
             catch(InvalidOperationException error){transportError=error.Message;return false;}

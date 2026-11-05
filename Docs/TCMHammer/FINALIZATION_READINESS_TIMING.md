@@ -1,5 +1,7 @@
 # Finalization response, cleanup polling and readback epochs
 
+Follow-up: [bounded cleanup identity-poll review](CLEANUP_IDENTITY_POLL_REVIEW.md) now implements the offline owner described below, with explicit review/attempt/window limits. The earlier observations and default-stop regressions remain evidence; the physical readback epoch is still unqualified.
+
 2026-11-04 continuation of [current work status](WORK_STATUS.md). This is saved-capture and offline host evidence. The spare remains in transit. No live security, upload, execution, programming, reset or adapter access is enabled.
 
 ## What the saved tails establish

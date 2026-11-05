@@ -5,9 +5,9 @@ namespace PcmHacking
 {
     public enum AL5OfflineSendOutcome { AdapterAccepted, NotSubmitted, SubmissionUnknown }
     public enum AL5OfflineDispatchKind { Control, SecurityEvidence, Loader, Erase, Data, ChecksumRetry, Finalization, Cleanup, ProgrammingBroadcast }
-    public enum AL5OfflineDispatchState { ActionAvailable, DispatchPrepared, AwaitingReply, AwaitingSecurityEvidence, ChecksumRetryReview, AwaitingReadback, Completed, Stopped, BoundaryReached }
+    public enum AL5OfflineDispatchState { ActionAvailable, DispatchPrepared, AwaitingReply, AwaitingSecurityEvidence, ChecksumRetryReview, AwaitingReadback, Completed, Stopped, BoundaryReached, CleanupIdentityPollReview }
     public enum AL5OfflineWriteBoundary { BeforeSecurityKey, BeforeProgrammingEntry, BeforeLoaderUpload, BeforeErase, AfterEraseBeforeData, CompleteOfflineRehearsal, BeforeFinalization }
-    public enum AL5OfflineDispatchStop { None, Timeout, Cancelled, SendNotSubmitted, SendSubmissionUnknown, UnexpectedReply, InvalidFrame, ProtocolFailure, RetryBudgetExhausted, VerificationFailed, UnsupportedSecurityProfile, LoaderChecksumRejected, LoaderRejected, UnqualifiedLoaderReply, ReceiveFault, InvalidClock, ExecutionWaitFault, SecurityInvalidKey, SecurityAttemptsExceeded, SecurityDelayRequired, SecurityNegativeResponse, SecurityMalformed }
+    public enum AL5OfflineDispatchStop { None, Timeout, Cancelled, SendNotSubmitted, SendSubmissionUnknown, UnexpectedReply, InvalidFrame, ProtocolFailure, RetryBudgetExhausted, VerificationFailed, UnsupportedSecurityProfile, LoaderChecksumRejected, LoaderRejected, UnqualifiedLoaderReply, ReceiveFault, InvalidClock, ExecutionWaitFault, SecurityInvalidKey, SecurityAttemptsExceeded, SecurityDelayRequired, SecurityNegativeResponse, SecurityMalformed, CleanupPollAttemptsExhausted, CleanupPollWindowExpired }
 
     /// <summary>An immutable, single-use offline send reservation. It is not a live send capability.</summary>
     public sealed class AL5OfflineWriteDispatch
@@ -52,15 +52,26 @@ namespace PcmHacking
         private bool awaitingLoaderIdentity;
         private byte[]? lastObservedAl5Reply;
         private int? lastReceivedFrameLength;
+        private readonly AL5OfflineCleanupPollPolicy? cleanupPollPolicy;
+        private bool cleanupPollReview,cleanupIdentityObserved;
+        private int cleanupPollAttempts;
+        private long? cleanupPollStartedTicks;
+        private AL5OfflineWriteDispatch? lastEmptyCleanupReplyOwner;
 
         public AL5OfflineWriteDispatcher(byte[] loader,byte[] calibration,byte[] savedFullBaseline,int checksumRetryBudgetPerBlock,
             AL5OfflineWriteTimeBudget? timeBudget=null,AL5OfflineWriteBoundary boundary=AL5OfflineWriteBoundary.BeforeSecurityKey)
+            :this(loader,calibration,savedFullBaseline,checksumRetryBudgetPerBlock,timeBudget,boundary,null) { }
+
+        public AL5OfflineWriteDispatcher(byte[] loader,byte[] calibration,byte[] savedFullBaseline,int checksumRetryBudgetPerBlock,
+            AL5OfflineWriteTimeBudget? timeBudget,AL5OfflineWriteBoundary boundary,AL5OfflineCleanupPollPolicy? cleanupPollPolicy)
         {
             if(checksumRetryBudgetPerBlock<0)throw new ArgumentOutOfRangeException(nameof(checksumRetryBudgetPerBlock));
             if(!Enum.IsDefined(typeof(AL5OfflineWriteBoundary),boundary))throw new ArgumentOutOfRangeException(nameof(boundary));
             // This budget is a caller-selected offline policy, not a discovered firmware limit.
             ChecksumRetryBudgetPerBlock=checksumRetryBudgetPerBlock;
             this.timeBudget=timeBudget;
+            if(cleanupPollPolicy!=null && timeBudget==null)throw new ArgumentException("Cleanup polling requires explicit session time budgets.");
+            this.cleanupPollPolicy=cleanupPollPolicy;
             Boundary=boundary;
             if(loader==null || calibration==null || savedFullBaseline==null)throw new ArgumentNullException();
             // Profile inspection and candidate construction consume the same owned snapshots.
@@ -96,6 +107,10 @@ namespace PcmHacking
         public int PositiveProgramReplies { get { lock(sync)return candidate.PositiveProgramReplies; } }
         public bool SavedFinalizationReplyObserved { get { lock(sync)return candidate.SavedFinalizationReplyObserved; } }
         public bool SavedCleanupObserved { get { lock(sync)return candidate.SavedCleanupObserved; } }
+        public bool SavedCleanupIdentityObserved { get { lock(sync)return cleanupIdentityObserved; } }
+        public int CleanupIdentityPollAttempts { get { lock(sync)return cleanupPollAttempts; } }
+        public AL5OfflineCleanupPollPolicy? CleanupPollPolicy=>cleanupPollPolicy;
+        public AL5OfflineWriteDispatch? LastCompletedEmptyCleanupReplyOwner { get { lock(sync)return lastEmptyCleanupReplyOwner; } }
         public int ChecksumErrors { get { lock(sync)return candidate.ChecksumErrors; } }
         public int IgnoredOtherSources { get { lock(sync)return ignoredOtherSources; } }
         public int TrailingCleanupReplies { get { lock(sync)return trailingCleanupReplies; } }
@@ -133,6 +148,7 @@ namespace PcmHacking
                     if(stopReason!=AL5OfflineDispatchStop.None || candidate.State==AL5CapturedWriteState.Stopped)return AL5OfflineDispatchState.Stopped;
                     if(pending!=null)return AL5OfflineDispatchState.DispatchPrepared;
                     if(awaitingReply)return AL5OfflineDispatchState.AwaitingReply;
+                    if(cleanupPollReview)return AL5OfflineDispatchState.CleanupIdentityPollReview;
                     if(IsBoundaryReached())return AL5OfflineDispatchState.BoundaryReached;
                     switch(candidate.NextOfflineAction().Kind)
                     {
@@ -244,6 +260,42 @@ namespace PcmHacking
             }
         }
 
+        private bool OwnsCleanupIdentityReply()=>candidate.State==AL5CapturedWriteState.Cleanup &&
+            candidate.SavedFinalizationReplyObserved && !cleanupIdentityObserved && pending==null && awaitingReply &&
+            replyOwner!=null && replyOwner.Kind==AL5OfflineDispatchKind.Cleanup &&
+            Exact(replyOwner.CopyRequest(),0x6C,0x18,0xF0,0x3C,0x55);
+
+        // The execution owner calls this only after an actual receive task has
+        // completed successfully with no message. A timed-out outstanding task
+        // never reaches this boundary and remains terminal/owned.
+        internal void RecordCompletedEmptyReceive()
+        {
+            lock(sync)
+            {
+                RequireOpen();
+                if(cleanupPollPolicy==null || !OwnsCleanupIdentityReply())
+                {Stop(AL5OfflineDispatchStop.Timeout);return;}
+                if(cleanupPollAttempts>=cleanupPollPolicy.MaximumAttempts)
+                {Stop(AL5OfflineDispatchStop.CleanupPollAttemptsExhausted);return;}
+                lastEmptyCleanupReplyOwner=replyOwner;replyOwner=null;awaitingReply=false;cleanupPollReview=true;
+            }
+        }
+
+        internal AL5OfflineWriteDispatch PrepareCleanupIdentityPollForOfflineReview()
+        {
+            lock(sync)
+            {
+                RequireSendSlot();
+                if(!cleanupPollReview || cleanupPollPolicy==null || lastEmptyCleanupReplyOwner==null ||
+                    candidate.State!=AL5CapturedWriteState.Cleanup || !candidate.SavedFinalizationReplyObserved || cleanupIdentityObserved)
+                    throw new InvalidOperationException("Only a completed empty cleanup identity receive owns this review slot.");
+                if(cleanupPollAttempts>=cleanupPollPolicy.MaximumAttempts)
+                    throw new InvalidOperationException("Cleanup identity attempt limit exhausted.");
+                cleanupPollReview=false;
+                return Reserve(AL5OfflineDispatchKind.Cleanup,new byte[]{0x6C,0x18,0xF0,0x3C,0x55});
+            }
+        }
+
         public void CompleteSavedSend(AL5OfflineWriteDispatch dispatch,AL5OfflineSendOutcome outcome)
         {
             lock(sync)
@@ -260,6 +312,8 @@ namespace PcmHacking
                 catch(ArgumentException){Stop(AL5OfflineDispatchStop.InvalidFrame,dispatch.Phase);throw;}
                 catch(InvalidOperationException){Stop(AL5OfflineDispatchStop.ProtocolFailure,dispatch.Phase);throw;}
                 pending=null;lastAccepted=dispatch;
+                if(dispatch.Kind==AL5OfflineDispatchKind.Cleanup && Exact(dispatch.CopyRequest(),0x6C,0x18,0xF0,0x3C,0x55))
+                {cleanupPollAttempts++;if(!cleanupPollStartedTicks.HasValue)cleanupPollStartedTicks=clockTicks;}
                 if(dispatch.Kind==AL5OfflineDispatchKind.Loader){lastLoader=dispatch;awaitingLoaderIdentity=true;}
                 if(dispatch.Kind!=AL5OfflineDispatchKind.ProgrammingBroadcast)
                 {
@@ -321,6 +375,8 @@ namespace PcmHacking
                 if(candidate.State==AL5CapturedWriteState.Stopped){Stop(AL5OfflineDispatchStop.ProtocolFailure,priorPhase);return;}
                 if(priorPhase==AL5CapturedWriteState.LoaderIdentityReply && candidate.State==AL5CapturedWriteState.LoaderSerial)
                     awaitingLoaderIdentity=false;
+                if(OwnsCleanupIdentityReply() && Exact(message,0x6C,0xF0,0x18,0x7C,0x55,0x0A,0,0x12))
+                    cleanupIdentityObserved=true;
                 lastReplyOwner=replyOwner;
                 awaitingReply=candidate.NextOfflineAction().Kind==AL5OfflineWriteActionKind.SavedReplyRequired;
                 if(!awaitingReply)replyOwner=null;
@@ -379,6 +435,8 @@ namespace PcmHacking
                 long remaining=timeBudget.TotalSession.Ticks-clockTicks;
                 if(pending!=null)remaining=Math.Min(remaining,timeBudget.Send.Ticks-(clockTicks-sendStartedTicks));
                 if(awaitingReply && replyOwner!=null)remaining=Math.Min(remaining,timeBudget.ReplyBudget(replyOwner).Ticks-(clockTicks-replyStartedTicks));
+                if(cleanupPollPolicy!=null && cleanupPollStartedTicks.HasValue && !cleanupIdentityObserved)
+                    remaining=Math.Min(remaining,cleanupPollPolicy.TotalWindow.Ticks-(clockTicks-cleanupPollStartedTicks.Value));
                 return TimeSpan.FromTicks(Math.Max(0,remaining));
             }
         }
@@ -389,6 +447,9 @@ namespace PcmHacking
                 RequireOpen();
                 if(elapsed.Ticks<clockTicks)throw new ArgumentOutOfRangeException(nameof(elapsed),"Saved elapsed time must be nonnegative and monotonic.");
                 clockTicks=elapsed.Ticks;
+                if(cleanupPollPolicy!=null && cleanupPollStartedTicks.HasValue && !cleanupIdentityObserved &&
+                    clockTicks-cleanupPollStartedTicks.Value>=cleanupPollPolicy.TotalWindow.Ticks)
+                {Stop(AL5OfflineDispatchStop.CleanupPollWindowExpired);return;}
                 if(timeBudget==null)return;
                 // Differences avoid adding a duration to a near-overflow timestamp.
                 // Other-source RX and auxiliary broadcasts cannot extend a data reply's deadline.

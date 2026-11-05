@@ -6,6 +6,7 @@
     <Compile Include="WriteDispatcherTest.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5OfflineWriteDispatcher.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5OfflineWriteTimeBudget.cs" />
+    <Compile Include="../../Apps/PcmLibrary/AL5OfflineCleanupPollPolicy.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5CalibrationWriteProfile.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5SavedSecuritySeed.cs" />
     <Compile Include="../../Apps/PcmLibrary/AL5SavedSecurityExchange.cs" />

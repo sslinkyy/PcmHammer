@@ -16,6 +16,7 @@ sealed class Peer
     public int FinalizationsSubmitted { get; private set; }
     public int CleanupQueriesSubmitted { get; private set; }
     public int PreservedCleanupQueryRepeats { get; private set; }
+    public string? LastSubmittedPrefix { get; private set; }
     public Peer(string[] lines,byte[] reference,bool preserveCleanupRepeats=false)
     {
         Flash=(byte[])reference.Clone();frames=new();bool programming=false,replied=true,cleanup=false;byte[]? last=null;
@@ -38,6 +39,7 @@ sealed class Peer
     static bool Is(byte[] a,string hex)=>a.SequenceEqual(Convert.FromHexString(hex));
     public List<byte[]> Submit(byte[] request)
     {
+        LastSubmittedPrefix=Convert.ToHexString(request.AsSpan(0,Math.Min(5,request.Length))).ToLowerInvariant();
         if(Is(request,"6c18f036ff"))FinalizationsSubmitted++;
         if(FinalizationsSubmitted>0 && Is(request,"6c18f03c55"))CleanupQueriesSubmitted++;
         if(frames.Count==0 || !frames.Peek().Tx || !frames.Dequeue().Bytes.SequenceEqual(request))throw new Exception("Executor send differs from derived saved scenario");
@@ -136,16 +138,16 @@ static partial class Program
     static AL5WriteExecutionSession Session(AL5WriteExecutionIo io,IAL5WriteExecutionClock? clock=null,
         AL5OfflineWriteBoundary boundary=AL5OfflineWriteBoundary.CompleteOfflineRehearsal,AL5OfflineWriteTimeBudget? budgets=null,int retryBudget=3)
         =>new(loader,calibration,original,retryBudget,budgets??Budgets(),boundary,io,clock??new AL5StopwatchExecutionClock(),new AL5TaskWriteExecutionWaiter());
-    static async Task<AL5WriteExecutionReport> Drive(AL5WriteExecutionSession session,Peer peer)
+    static async Task<AL5WriteExecutionReport> Drive(AL5WriteExecutionSession session,Peer peer,CancellationToken token=default)
     {
-        var report=await session.RunUntilReviewAsync(CancellationToken.None);int reviewed=0;
+        var report=await session.RunUntilReviewAsync(token);int reviewed=0;
         while(report.Outcome==AL5WriteExecutionOutcome.SecurityReviewRequired || report.Outcome==AL5WriteExecutionOutcome.ChecksumReviewRequired || report.Outcome==AL5WriteExecutionOutcome.PreparationBackupReviewRequired)
         {
             Check(reviewed++<peer.ExpectedChecksumErrors+3,"review budget derives from saved errors plus key/preparation reviews");
             report=report.Outcome==AL5WriteExecutionOutcome.PreparationBackupReviewRequired?
-                await session.RecordSavedPreparedBanksAsync(peer.Flash.AsSpan(0x4000,0x4000).ToArray(),CancellationToken.None):report.Outcome==AL5WriteExecutionOutcome.SecurityReviewRequired?
-                await session.SubmitSavedSecurityEvidenceAsync(Convert.FromHexString("6c18f02702bc08"),CancellationToken.None):
-                await session.ReviewChecksumRetryAsync(CancellationToken.None);
+                await session.RecordSavedPreparedBanksAsync(peer.Flash.AsSpan(0x4000,0x4000).ToArray(),token):report.Outcome==AL5WriteExecutionOutcome.SecurityReviewRequired?
+                await session.SubmitSavedSecurityEvidenceAsync(Convert.FromHexString("6c18f02702bc08"),token):
+                await session.ReviewChecksumRetryAsync(token);
         }
         return report;
     }
@@ -317,6 +319,7 @@ static partial class Program
             if(cleanupTimingOnly)
             {
                 await CapturedCleanupOrderingCase(Path.GetFileName(Path.GetDirectoryName(args[index]))!);
+                await CleanupPollCases(Path.GetFileName(Path.GetDirectoryName(args[index]))!,index==4);
                 continue;
             }
             foreach(bool early in new[]{false,true})await VehicleCase(early,AL5OfflineWriteBoundary.CompleteOfflineRehearsal,Path.GetFileName(Path.GetDirectoryName(args[index]))!);
